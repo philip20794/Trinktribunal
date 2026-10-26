@@ -1,0 +1,27 @@
+{
+  "fixtureId": "TT003-JUDGE-REMOVED",
+  "decisionRefs": [
+    "D-06"
+  ],
+  "operation": "rotateJudgeAfterRosterBoundary",
+  "input": {
+    "previousRosterIds": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "previousJudgeId": "B",
+    "newEffectiveRosterIds": [
+      "D",
+      "A",
+      "C"
+    ],
+    "previousJudgeRemoved": true
+  },
+  "expected": {
+    "nextJudgeId": "C",
+    "ruleEventCausesAdditionalRotation": false
+  },
+  "notes": "Removed judge: choose next surviving player from the old frozen order."
+}
