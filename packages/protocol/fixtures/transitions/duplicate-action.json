@@ -1,0 +1,28 @@
+{
+  "fixtureId": "TT003-IDEMPOTENT-D07",
+  "decisionRefs": [
+    "D-07",
+    "D-13"
+  ],
+  "operation": "completeCaseWithIdempotency",
+  "input": {
+    "gameId": "g1",
+    "roundId": "r2",
+    "actionId": "a2",
+    "completedBefore": 1,
+    "appliedActionIds": [],
+    "repeatCount": 2
+  },
+  "expected": {
+    "completedAfter": 2,
+    "caseCompletion": "completed_without_verdict",
+    "persistedActionIds": [
+      "a2"
+    ],
+    "successfulApplications": 1,
+    "newRoleSelectionEvents": 0,
+    "newHistoryEvents": 0,
+    "judgeRotations": 1
+  },
+  "notes": "Two identical skip actions may each receive an ACK but only the first mutates state."
+}
