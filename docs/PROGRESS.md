@@ -21,7 +21,7 @@ Statuswechsel mit Datum, Beleg und gegebenenfalls Blocker-ID erfassen. Bei einer
 
 | ID | Status | Ergebnis / Beleg |
 | --- | --- | --- |
-| PLAN-001 | ERLEDIGT | README, sämtliche fünf Bestandsdokumente, beide Datenformatdokumente und alle drei JSON-Kataloge gelesen. 70 Aufgaben mit Abhängigkeiten, Akzeptanz, Tests, lokaler Prüfung und Abschluss; drei Planungsdokumente plus README-Verweise erstellt. Abdeckungsmatrix und technische Quellen stehen im Plan. Dokument-/Datenprüfungen siehe unten. |
+| PLAN-001 | ERLEDIGT | README, sämtliche fünf Bestandsdokumente, beide Datenformatdokumente und die damaligen Datenkataloge gelesen. 70 Aufgaben mit Abhängigkeiten, Akzeptanz, Tests, lokaler Prüfung und Abschluss; drei Planungsdokumente plus README-Verweise erstellt. Abdeckungsmatrix und technische Quellen stehen im Plan. Dokument-/Datenprüfungen siehe unten. |
 
 Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IMPLEMENTATION_PLAN.md` ermitteln; keinen erfundenen oder selbstreferenziellen Commit-Hash eintragen. Ein Gitpush ist kein Anwendungsrelease.
 
@@ -111,7 +111,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-058 | Gesamten Multiplayer mit Störungen durchspielen | OFFEN | — |
 | TT-059 | Angriffs- und Missbrauchsgrenzen nachweisen | OFFEN | — |
 | TT-060 | Avatar-Baukasten und thematische Übergänge fertigstellen | OFFEN | — |
-| TT-061 | Englische Regeln ergänzen und Fragenübersetzungen prüfen | OFFEN | — |
+| TT-061 | Deutsche und englische Inhalte redaktionell fertig prüfen | OFFEN | — |
 | TT-062 | Web-/Android-Performance messen und Wasm entscheiden | OFFEN | — |
 | TT-063 | Nachrichten, Storage und Free-Tier-Budget messen | OFFEN | — |
 | TT-064 | Bedienbarkeit, Fehler- und Leerzustände final prüfen | OFFEN | — |
@@ -151,7 +151,7 @@ Derzeit keine begonnene Aufgabe BLOCKIERT. Absehbare Voraussetzungen: Android-To
 
 ## Prüfbeleg PLAN-001
 
-Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001**. Seitdem wurden D-01, D-03 und D-04 fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
+Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001** (damals 500 Fragen je Sprache, vor der Materialbereinigung/Planaktualisierung; inzwischen 491/491 Fragen und 25/25 Regeln). Seitdem wurden D-01, D-03 und D-04 fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
 
 Am 26.10.2026 lokal durchgeführt:
 
