@@ -28,7 +28,7 @@ Spieler werden mit Namen und zufälligen, anpassbaren Avataren angelegt und per 
 
 Ein Spielleiter erstellt einen Raum mit QR-Code/Link; alle treten mit eigenem Handy bei. Jeder bearbeitet Namen und Avatar selbst, die Gruppe sieht dieselben Figuren in einem gemeinsamen Gerichtssaal. Zahlen bleiben geheim und werden auf jedem Gerät einzeln angezeigt.
 
-**Optional: Alle sind Richter.** Dann bekommt auch der sonstige Richter eine Zahl und gibt eine Antwort. Jeder versucht, die Gruppe selbst zu sortieren. So können mehrere Spieler in derselben Runde Schlucke bekommen.
+**Optional: Alle sind Richter.** Alle erhalten eine geheime Zahl und sortieren die komplette Gruppe einschließlich sich selbst. **Jeder trinkt nur so viele Schlucke, wie er in seiner eigenen Reihenfolge Spieler falsch platziert hat.** Anders als im normalen Modus trinken falsch einsortierte Mitspieler nicht zusätzlich mit.
 
 ## Spielwelt
 
