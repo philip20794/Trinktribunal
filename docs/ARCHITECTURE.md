@@ -8,7 +8,7 @@
 - **Webhosting:** Cloudflare Pages für den statischen Flutter-Web-Build (`build/web`). Installation als PWA optional; Offline-Caching benötigt einen **eigenen Service Worker**.
 - **Multiplayer:** Cloudflare Worker (TypeScript) als Einstieg; je Spielraum ein SQLite-backed Durable Object mit WebSocket Hibernation.
 - **Inhalte:** Versionierter Fragenkatalog in `data/questions/`, beim Build als Flutter-Assets eingebunden. Sprachneutrale Karten-/Regel-IDs mit einer auf sechs Stunden begrenzten lokalen Ziehhistorie und internen Nutzungszählern (D-01), die beide lokalen Modi teilen. Anpassbare **menschliche Cartoon-Avatare** aus skalierbaren Grafik-Ebenen; Name, Avatar-Baukasten und Sprache lokal speichern.
-- **Zugang:** Kein Benutzerkonto notwendig. Räume per Link/QR-Code und Code beitreten.
+- **Zugang:** Kein Benutzerkonto oder Login notwendig. Räume per Link/QR-Code und Code beitreten; D-16 ermöglicht das Wiederbetreten desselben laufenden Raums mit derselben Identität auch nach vollständigem Schließen/Neustart von Browser oder Android-App über ein dauerhaft gespeichertes privates Raum-Credential (Web bevorzugt IndexedDB, Android Keystore-gestützt). Andere Geräte benötigen einen neuen Join, keine Accountsynchronisation.
 
 ## Geplante Projektstruktur
 
@@ -41,7 +41,7 @@ Spielphasen: `Lobby → Fallakte / Regelereignis → Zahlen → Antworten → So
 
 - Server ist die **maßgebliche Instanz** für Raumzustand, geheime Zahlen, erlaubte Aktionen und Ergebnisse. **Bei „Alle sind Richter“** bewertet er jede private Sortierung separat: persönliche Schluckzahl = Zahl der falsch platzierten Figuren, **keine zusätzliche Trinkpflicht für falsch platzierte Mitspieler**.
 - Zahlen werden nur dem betreffenden Spieler übermittelt; Antworten/Sortierungen im Modus „Alle sind Richter“ bleiben bis zur vorgesehenen Aufdeckung privat.
-- Zufälliger Raumcode und separates geheimes Spieler-Token zur Wiederverbindung; serverseitige Prüfung von Nachrichten, Runde, Phase und Berechtigung.
+- Zufälliger Raumcode und separates geheimes Spieler-Token zur Wiederverbindung; serverseitige Prüfung von Nachrichten, Runde, Phase und Berechtigung. Das D-16-Credential bleibt über die App-/Browser-Laufzeit hinaus erhalten, bis es abläuft, widerrufen oder lokal gelöscht wird. Erste WebSocket-Nachricht authentifiziert vor jeder privaten Datenausgabe; QR/Einladung enthält niemals das Token. Gleichzeitige Tabs derselben Identität konkurrieren nicht als zwei Spieler: neuere Verbindung ersetzt die ältere.
 - Gemeinsamer, **versionierter JSON-Nachrichtenvertrag** mit DTOs/Schemas; Dart- und TypeScript-Typen werden daran angepasst.
 - Ein Spieler hat eine **stabile playerId**; die Avatar-Konfiguration enthält nur IDs für einzelne Bausteine sowie eine `avatarRevision`. Bei Bearbeitung im Raum werden kleine Änderungen an alle Clients übertragen. Alle Clients verwenden denselben versionierten Asset-Katalog.
 - **Partie-Einstellungen** (Zielzahl der Fälle, Trinkregelanzahl, Schwierigkeitsfaktor, „Alle sind Richter“) werden beim Start eingefroren. Änderungen erfordern einen bestätigten Neustart; Teilnehmer- und Profiländerungen bleiben erlaubt.
