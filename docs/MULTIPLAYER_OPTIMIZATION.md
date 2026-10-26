@@ -12,9 +12,11 @@
 ## 2. Wenige Nachrichten und Datenbankzugriffe
 
 - Flutter sendet **Aktionen statt ganzer Spielzustände** (z. B. `join`, `ready`, `submit_order`, `reveal`, `next_round`). Server prüft und verteilt nur relevante Änderungen.
-- **Fragen-ID + Katalogversion** statt des ganzen Fragentexts senden; Katalog liegt als Flutter-Asset auch im Client.
+- **Fragen- bzw. Trinkregel-ID + jeweilige Katalogversion** statt Volltext senden; Kataloge liegen als Flutter-Assets auch im Client. Aktive Regeln nur als IDs im Raumzustand speichern.
 - Keine Drag-Bewegungen, laufenden Countdowns oder Animation-Frames über WebSocket schicken. Drag-and-drop geschieht lokal; erst die **fertige Reihenfolge** übertragen.
 - Geheime Zahlen niemals vor der Aufdeckung an andere Teilnehmer senden. Im Modus „Alle sind Richter“ Sortierungen bis zum Abschluss getrennt halten.
+- **Avatare:** Nur Baustein-IDs und geänderte Felder samt `playerId`/`avatarRevision` synchronisieren, keine Bilder oder kompletten Render-Daten. Mit demselben Asset-Katalog sehen Figuren auf allen Geräten gleich aus; veraltete Updates verwerfen.
+- **Spieländerungen:** Während eines Falls die Menge der zu sortierenden Spieler und ihre geheimen Zahlen einfrieren. Beitritte/Austritte ab nächstem Fall anwenden; Schieberegler und sonstige Partie-Optionen nach Start sperren. Neue Partie nur durch bestätigte Host-Aktion starten.
 - Nur bei relevanten Zustandsänderungen in SQLite speichern. Kompakte Raumdaten; keine Datenbankzugriffe für reine UI-Interaktionen. Raumdaten nach Inaktivität/Spielende per Alarm bereinigen.
 - Nachrichten mit `roomId`, `roundId`, `phase` und eindeutiger `actionId` versionieren; ungültige, doppelte und verspätete Aktionen verwerfen.
 
@@ -30,7 +32,9 @@
 
 - Join-/Raumerstellung, Nachrichtengröße, Raumgröße und Aktionsrate begrenzen. Geheim-Token nur privat speichern/übertragen, niemals in öffentlichen Raumsnapshots.
 - Dart-Client und TypeScript-Server nutzen denselben **versionierten JSON-Vertrag**. Gemeinsame Regel-Testfälle verhindern abweichende Bewertungen.
-- Tests: 8 Spieler × 20 Runden, Parallelräume, Abbruch/Reload, Hibernation, Wiederverbindung, doppelte Aktionen, alle sind Richter.
+- Tests: 8 Spieler × 50 Fälle und 7 Regelereignisse (Standardeinstellungen), Parallelräume, Abbruch/Reload, Hibernation, Wiederverbindung, doppelte Aktionen, alle sind Richter, Spieleränderungen zwischen Fällen und Avatar-Updates während der Partie.
 - **Messen:** Worker-/DO-Anfragen, eingehende WebSocket-Nachrichten, DO-GB-Sekunden, SQLite-Lese-/Schreibzeilen, Speicher, Fehlerraten und Latenz. Vor Veröffentlichung die geltenden [Workers-Limits](https://developers.cloudflare.com/workers/platform/limits/), [DO-Limits](https://developers.cloudflare.com/durable-objects/platform/limits/) und [Preise](https://developers.cloudflare.com/durable-objects/platform/pricing/) kontrollieren. Keine garantierte Zahl kostenloser Spieler ohne Messung.
+
+Details zu Regeln und Nutzerabläufen: [Spielkonzept](GAME_DESIGN.md), [Screens](USER_FLOWS.md).
 
 Referenzen: [Cloudflare WebSocket Hibernation](https://developers.cloudflare.com/durable-objects/best-practices/websockets/), [Flutter Web Deployment](https://docs.flutter.dev/deployment/web), [Flutter Web FAQ](https://docs.flutter.dev/platform-integration/web/faq).
