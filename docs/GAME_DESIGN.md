@@ -27,15 +27,13 @@ Trinkregel-Ereignisse haben **keine geheime Zahl, keine Sortierung und keinen Ri
 
 ## Trinkregeln als JSON
 
-Geplant: ein eigener, versionierter, lokalisierbarer Katalog in `data/rules/` (z. B. `de.json`, `en.json`). Pro Regel:
+Die verbindliche Struktur für alle Trinkregeln steht in [data/rules/README.md](../data/rules/README.md). Geplant sind versionierte, übersetzbare JSON-Kataloge wie `data/rules/de.json` und `data/rules/en.json`.
 
-- `id`: dauerhafte, sprachunabhängige ID.
-- `text`: Anweisung der jeweiligen Sprache.
-- `excludes`: optionale Liste von IDs, mit denen die Regel nicht gleichzeitig aktiv sein darf (standardmäßig `[]`).
+Jede Regel erhält eine eindeutige `id`, einen `text` und optional `players` mit Platzhaltern wie `{player1}` / `{player2}` sowie `excludes` für unverträgliche Regeln. Spieler werden beim Ziehen einmalig ausgewählt und mit stabilen IDs bis zum Partiende zugewiesen. `differentFrom` stellt sicher, dass bestimmte Rollen unterschiedliche Personen erhalten.
 
-Eine gezogene Regel wird **sofort aktiv und bleibt bis zum Ende der Partie** gültig. Die aktiven Regeln sind im Spiel jederzeit einsehbar. Derselbe Eintrag wird nicht mehrfach gezogen. Vor jeder Auslosung werden bereits aktive Regeln und Konflikte **in beide Richtungen** geprüft: A schließt B aus **oder** B schließt A aus → nicht gemeinsam aktiv. Reichen kompatible Regeln nicht aus, werden keine ungültigen Kombinationen erzwungen; die UI zeigt die reduzierte Anzahl an.
+Eine Regel wird sofort aktiv und bleibt bis zum Ende der Partie gültig. Vor der Auslosung werden Konflikte in beide Richtungen und die benötigte Spieleranzahl geprüft. Aktive Regeln sind jederzeit einsehbar; derselbe Eintrag wird nicht erneut gezogen. Reichen passende Regeln nicht aus, wird die Zielanzahl reduziert.
 
-Der Fragenkatalog bleibt davon getrennt unter `data/questions/`. Fragen- und Regel-IDs sowie die Katalogversion sind im Multiplayer eindeutig.
+Der Fragenkatalog unter `data/questions/` bleibt unabhängig vom Regelkatalog. Im Multiplayer führt der Server die Auslosung durch und synchronisiert die Regel-ID samt Spielerzuweisungen.
 
 ## Konfiguration und Änderungen
 
