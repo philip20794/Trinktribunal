@@ -32,7 +32,7 @@
 
 - Join-/Raumerstellung, Nachrichtengröße, Raumgröße und Aktionsrate begrenzen. Geheim-Token nur privat speichern/übertragen, niemals in öffentlichen Raumsnapshots.
 - Dart-Client und TypeScript-Server nutzen denselben **versionierten JSON-Vertrag**. Gemeinsame Regel-Testfälle verhindern abweichende Bewertungen.
-- Tests: 8 Spieler × 50 Fälle und 7 Regelereignisse (Standardeinstellungen), Parallelräume, Abbruch/Reload, Hibernation, Wiederverbindung, doppelte Aktionen, alle sind Richter, Spieleränderungen zwischen Fällen und Avatar-Updates während der Partie.
+- Tests: 8 Spieler × 50 Fälle und 7 Regelereignisse (Standardeinstellungen), Parallelräume, Abbruch/Reload, Hibernation, Wiederverbindung, doppelte Aktionen, Spieleränderungen zwischen Fällen und Avatar-Updates während der Partie. **„Alle sind Richter“:** Jede Sortierung separat bewerten; nur die eigenen Fehlplatzierungen führen zu eigenen Schlucken, keine Mittrink-Effekte; mögliche Fehlerzahlen einer gültigen Permutation: 0 oder mindestens 2.
 - **Messen:** Worker-/DO-Anfragen, eingehende WebSocket-Nachrichten, DO-GB-Sekunden, SQLite-Lese-/Schreibzeilen, Speicher, Fehlerraten und Latenz. Vor Veröffentlichung die geltenden [Workers-Limits](https://developers.cloudflare.com/workers/platform/limits/), [DO-Limits](https://developers.cloudflare.com/durable-objects/platform/limits/) und [Preise](https://developers.cloudflare.com/durable-objects/platform/pricing/) kontrollieren. Keine garantierte Zahl kostenloser Spieler ohne Messung.
 
 Details zu Regeln und Nutzerabläufen: [Spielkonzept](GAME_DESIGN.md), [Screens](USER_FLOWS.md).
