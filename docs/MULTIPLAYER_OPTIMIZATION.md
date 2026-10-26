@@ -14,7 +14,7 @@
 - Flutter sendet **Aktionen statt ganzer Spielzustände** (z. B. `join`, `ready`, `submit_order`, `reveal`, `next_round`). Server prüft und verteilt nur relevante Änderungen.
 - **Fragen- bzw. Trinkregel-ID + jeweilige Katalogversion** statt Volltext senden; Kataloge liegen als Flutter-Assets auch im Client. Aktive Regel-IDs mit Spielerrollenzuweisungen und gezogenen IDs im Raumzustand speichern, nicht bloß als Texte.
 - Keine Drag-Bewegungen, laufenden Countdowns oder Animation-Frames über WebSocket schicken. Drag-and-drop geschieht lokal; erst die **fertige Reihenfolge** übertragen.
-- Geheime Zahlen niemals vor der Aufdeckung an andere Teilnehmer senden. Im Modus „Alle sind Richter“ Sortierungen bis zum Abschluss getrennt halten.
+- Geheime Zahlen niemals vor der Aufdeckung an andere Teilnehmer senden. Im Modus „Alle sind Richter“ bleiben Sortierungen und persönliche Ergebnisse auch nach dem Abschluss ausschließlich beim jeweiligen Urheber (D-09).
 - **Avatare:** Nur Baustein-IDs und geänderte Felder samt `playerId`/`avatarRevision` synchronisieren, keine Bilder oder kompletten Render-Daten. Mit demselben Asset-Katalog sehen Figuren auf allen Geräten gleich aus; veraltete Updates verwerfen.
 - **D-05:** Bei personenabhängigen Fragen/Trinkregeln wählt der Server Rollen anhand eines **gemeinsamen Fairness-Zählers pro playerId und Partie**, nicht durch isolierte reine Zufallswürfe. Kleinster gültiger Zähler hat Vorrang; Richter kann betroffen sein. Join eines neuen Spielers initialisiert auf den höchsten aktiven Zähler (kein Aufholen); Neu-Zuordnung nur an Fallgrenze, atomar mit Counter-Änderung. Mehrfaches `{player1}` pro Inhalt zählt nur einmal. Nur tatsächliche erfolgreiche Zuweisungen zählen, kein Reconnect oder erneute Projektion. Zähler nach einer neuen Partie zurücksetzen, nicht mit D-01-Sechsstunden-Inhaltshistorie verwechseln.
 - **Spieländerungen:** Während eines Falls die Menge der zu sortierenden Spieler und ihre geheimen Zahlen einfrieren. Beitritte/Austritte ab nächstem Fall anwenden; Schieberegler und sonstige Partie-Optionen nach Start sperren. Neue Partie nur durch bestätigte Host-Aktion starten.
@@ -23,7 +23,7 @@
 
 ## 3. Flutter Web schlank halten
 
-- `flutter build web --wasm` prüfen und nutzen, sofern Abhängigkeiten kompatibel sind; Flutter liefert für nicht unterstützte Browser einen JavaScript-Fallback mit.
+- Normalen JS-Web-Build als Baseline verwenden. `flutter build web --wasm` samt JavaScript-Fallback nach D-18 nur übernehmen, wenn Kompatibilität, Offlinefähigkeit und ein messbarer Vorteil nachgewiesen sind.
 - Startbildschirm und Lobby einfach halten; große Animationen, Zusatzassets und Audio erst laden, wenn benötigt. Bilder/SVGs auf mobile Größen und Speicherverbrauch optimieren.
 - Statische Assets über Cloudflare Pages/CDN ausliefern. Versionsgerechte **Cache-Header** einsetzen, damit Nutzer Updates bekommen und Wiederbesuche schnell sind.
 - Für die lokalen Modi im Browser einen **eigenen Service Worker / Precache** konfigurieren und offline testen: Flutter erzeugt standardmäßig keinen funktionalen Caching-Service-Worker mehr. Android kann gebündelte Assets direkt offline verwenden.

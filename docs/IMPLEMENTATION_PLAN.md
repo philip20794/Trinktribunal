@@ -1,20 +1,20 @@
 # Entwicklungsplan für Trinktribunal
 
-Stand: 26.10.2026. **Fachlich finalisierter Implementierungsplan, keine implementierte App.** Entscheidungen D-01 bis D-18 sind verbindlich festgelegt; die Ausgestaltung technischer Unterpunkte erfolgt in den zugeordneten Tasks ohne erneute Produktentscheidung. **Alle 70 Implementierungsaufgaben bleiben offen.** Die Nutzungsrechte fremder/übernommener Inhalte sind ein gesondertes, vor öffentlichem Release nachzuweisendes Gate (TT-065). Geprüfte Basis: Commit `b1afcb0` auf `main` im Repository `philip20794/Trinktribunal`. Der lokale Ausgangsstand `66eb976` wurde um die während der Planung veröffentlichten englischen Kataloge und bereinigten Fragen mit Spieler-Platzhaltern aktualisiert. Diese Datenänderungen stammen aus bestehenden Remote-Commits, nicht aus diesem Dokumentationsauftrag.
+Stand: 26.10.2026. **Fachlich finalisierter Implementierungsplan, keine implementierte App.** Entscheidungen D-01 bis D-18 sind verbindlich festgelegt; die Ausgestaltung technischer Unterpunkte erfolgt in den zugeordneten Tasks ohne erneute Produktentscheidung. **Alle 70 Implementierungsaufgaben bleiben offen.** Die Nutzungsrechte fremder/übernommener Inhalte sind ein gesondertes, vor öffentlichem Release nachzuweisendes Gate (TT-065). Zuletzt vollständig abgeglichene Git-Basis: `e95d541` auf `main` in `philip20794/Trinktribunal`, einschließlich der nachträglichen KI-Änderungen an Katalogen, Fachentscheidungen und Abläufen. [Aktueller Abgleich und Entwicklungsbereitschaft](qa/PLAN_RECONCILIATION.md).
 
 Dieser Plan beschreibt die gesamte erste vollständige Android- und Web-App. Die Umsetzung beginnt erst in einem gesonderten Entwicklungsauftrag. [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) enthält lokale Befehle und Prüfroutinen; [PROGRESS.md](PROGRESS.md) verfolgt jede Aufgabe. GitHub Actions, Cloudflare-Deployments und kostenpflichtige Dienste sind keine Entwicklungsvoraussetzung.
 
 ## 1. Analysierter Bestand
 
-Vollständig gelesen: [README](../README.md), [Architektur](ARCHITECTURE.md), [Multiplayer-Optimierung](MULTIPLAYER_OPTIMIZATION.md), [Spielkonzept](GAME_DESIGN.md), [Screens](USER_FLOWS.md), [Gestaltung](VISUAL_DESIGN.md), [Fragenformat](../data/questions/README.md), [Regelformat](../data/rules/README.md) sowie alle vier vollständigen JSON-Kataloge (Fragen und Regeln jeweils DE/EN). Neue Remoteänderungen wurden zusätzlich gegen den bereits gelesenen Bestand geprüft. Die Bestandsdokumente bleiben erhalten; Vorschläge dieses Plans sind noch keine stillschweigende Änderung ihrer Regeln.
+Vollständig gelesen: [README](../README.md), [Architektur](ARCHITECTURE.md), [Multiplayer-Optimierung](MULTIPLAYER_OPTIMIZATION.md), [Spielkonzept](GAME_DESIGN.md), [Screens](USER_FLOWS.md), [Gestaltung](VISUAL_DESIGN.md), [Fragenformat](../data/questions/README.md), [Regelformat](../data/rules/README.md), die 17 Entscheidungsdokumente für D-01/02/04–18 sowie alle vier JSON-Kataloge (Fragen und Regeln jeweils DE/EN). D-03 ist im Entscheidungsregister und den Katalogformaten beschlossen. Die freigegebenen D-Beschlüsse sind die fachliche Quelle; technische Verträge und Aufgaben konkretisieren sie und dürfen sie nicht still ändern.
 
 | Befund | Konsequenz |
 | --- | --- |
-| Zwölf versionierte Bestandsdateien, ausschließlich Dokumentation und JSON; kein Flutter-/Worker-Projekt, keine Tests, Assets, Lockfiles oder Workflows | TT-001 schafft sofort einen sichtbaren Client. Es gibt noch keine ausführbaren Projektbefehle außer Git und Datenprüfung. |
+| Abgleichbasis `e95d541`: 32 versionierte Dateien, davon 17 Entscheidungsdokumente; ausschließlich Dokumentation und JSON, kein Flutter-/Worker-Projekt, keine App-Tests, Assets, Lockfiles oder Workflows | TT-001 schafft sofort einen sichtbaren Client. Es gibt noch keine ausführbaren Projektbefehle außer Git und Datenprüfung. |
 | `data/questions/top-ten/de.json`: Formatversion 1, Sprache `de`, 491 eindeutige IDs aus dem Bereich `001-a` bis `250-b`, vollständige Texte und drei Skalenfelder | Neun bewusst entfernte IDs nicht als Lücke reparieren oder neu nummerieren. Beide Kartenseiten sind eigenständige Fragen. |
-| `data/questions/top-ten/en.json`: Formatversion 1, Sprache `en`, dieselben 491 IDs in derselben Reihenfolge; `scale.connector` ist `to` | Vorhandene Übersetzung verwenden und prüfen, nicht erneut erstellen. Das Format-README nennt noch nur `bis`; Beschreibung in TT-004 sprachabhängig präzisieren. |
+| `data/questions/top-ten/en.json`: Formatversion 1, Sprache `en`, dieselben 491 IDs in derselben Reihenfolge; `scale.connector` ist `to` | Vorhandene Übersetzung und bereits korrigierte Formatbeschreibung verwenden. TT-004 prüft `bis`/`to` und die Sprachparität. |
 | Gleicher Fragetext bei `024-b` und `206-a`, aber unterschiedliche Skalen | Kein Fehler; nicht nach Text deduplizieren, sondern IDs verwenden. |
-| Je 60 Fragen definieren `players.player1.selection=random`; neun Materialfragen entfernt: `008-b`, `023-a`, `039-b`, `041-b`, `043-b`, `174-a`, `188-a`, `205-a`, `221-a` | Fallbezogene Bindung getrennt von langfristigen Trinkregelrollen implementieren. Kartenmodus ohne Namensliste benötigt Filter oder manuelle Zuweisung. |
+| Je 60 Fragen definieren `players.player1.selection=random`; neun Materialfragen entfernt: `008-b`, `023-a`, `039-b`, `041-b`, `043-b`, `174-a`, `188-a`, `205-a`, `221-a` | Fallbezogene Bindung getrennt von langfristigen Trinkregelrollen implementieren; gemeinsamer D-05-Personenzähler. Kartenmodus schließt Rollenfragen gemäß beschlossenem D-03 aus. |
 | `110-a` und `052-b` sind in DE/EN bereits auf `{player1}` und die passende Skala bereinigt; `051-a` behandelt hingegen die fiktionale Figur Captain Hook | Bereits korrigierte Fragen nicht erneut verändern. Redaktioneller Testbestand prüft diese IDs, Originalbedeutung und DE/EN-Parität. |
 | `data/rules/{de,en}.json`: Formatversion 1, je 25 gleiche Regel-IDs; je drei mit Spielerrollen (`toast_to_player`, `apology_to_player`, `thanks_to_player`), 22 ohne | Englische Regeln sind vorhanden. IDs, Rollen, differentFrom und excludes müssen sprachübergreifend gleich bleiben. |
 | D-04 ist entschieden: `left_hand_drinking` ↔ `two_hands_drinking` sowie `two_hands_drinking` ↔ `touch_player_while_drinking` sind gegenseitig ausgeschlossen; Kobold und Fliege dürfen gemeinsam aktiv sein. | Verstoß: ein manueller Strafschluck ohne Strafketten; notwendiges Vorlesen und Zahlenaufdecken sind ausgenommen. |
@@ -43,20 +43,20 @@ Durchgeführte Bestandsprüfung: alle vier Dateien als UTF-8-JSON geparst; Frage
 
 **Entscheidungsstand: Sämtliche D-01 bis D-18 am 26.10.2026 für die erste Version beschlossen.** D-05 trennt entschiedene Spielmechanik von der **extern noch nachzuweisenden Inhalts-/Rechtefreigabe vor Release**. D-15 legt Designrichtung und Assetverfahren fest; konkrete UI-Token sind technische Ausarbeitung. D-18 legt einen messbasierten Rendererentscheid in TT-062 fest, kein vorausgesetztes Wasm-Ergebnis. Verbindliche Beschlüsse stehen in `docs/decisions/`; bei der Implementierung werden sie in Verträge, Fixtures und Tests übertragen, nicht erneut nach Geschmack umentschieden. Der Agent darf begründete technische Details festlegen; fachliche Abweichungen brauchen Freigabe. Keine dieser Fragen blockiert TT-001. Nicht nachgewiesene Nutzungslizenzen blockieren weiterhin TT-065 und öffentliche Veröffentlichung.
 
-| ID | Lücke / Widerspruch | Vorgeschlagene Lösung und Auswirkung | Entscheidung spätestens in |
+| ID | Regelungsbereich | Beschlossene Vorgabe und Auswirkung | Umsetzungsaufgaben |
 | --- | --- | --- | --- |
 | D-01 | Fallzählung, verteilte Regelereignisse und 6-Stunden-Ziehhistorie | **ENTSCHIEDEN:** Standard 50 reguläre Fälle + bis zu 7 zusätzliche Regelereignisse. `F−1` Zwischenräume in möglichst gleich große Segmente teilen, je Segment einen Slot zufällig wählen; **keine benachbarten Slots, wenn bei gegebener F/R-Kombination möglich**, sonst Nachbarschaft zulassen (F=3/R=2). Fragen/Regeln nach gültigen 6h-ID-Zählern zuerst 0, danach Minimum; keine ID-Wiederholung innerhalb einer Partie. [Beschluss](decisions/D-01-game-schedule-and-six-hour-history.md). | TT-003/007/008/027/034/044/045/046/050/057 |
 | D-02 | Spielerzahl, Frage-/Regel-Slider, Faktor und Namenslänge | **ENTSCHIEDEN (26.10.2026):** **3–20 Spieler**, 1 bis zur Zahl geeigneter Fragen (**491** mit Namen, **431** im Kartenmodus), 0 bis zur Zahl geeigneter Regeln (25 mit Namen, 22 im Kartenmodus), zugleich maximal **F−1** Regelereignisse. Faktor **1,0–3,0 in 0,1-Schritten**; Namen **1–24 sichtbare Unicode-Zeichen nach Trim** (Graphem-Cluster), Doppel-Namen mit unterscheidbarem Avatar/Kürzel zulässig. Standard 50 Fragen, 7 Regeln, Faktor 1,5; Spieler werden tatsächlich eingegeben, kein erfundener Default-Teilnehmer. Unter 3 wirksamen Spielern pausieren; 21. Spieler ablehnen. Alle Ansichten/Sortierungen für 20 auf Handy und Desktop scrollbar und zugänglich. [Beschluss](decisions/D-02-config-bounds.md). | TT-003/006/009/016/020/021/034/037/053/058/062 (Umsetzung) |
 | D-03 | Kartenmodus ohne IDs versus personenbezogene Fragen und Regeln | **ENTSCHIEDEN (26.10.2026):** Nur die 431 Fragen ohne Spielerrollen und 22 unpersönlichen Regeln ziehen; Zielzahl an geeigneten Bestand binden, keine versteckte Namenspflicht. Manuelle personenbezogene Zuweisungen allenfalls als späteres Zusatzfeature. Keine rohen Platzhalter anzeigen. | TT-003 (Umsetzung und Testfälle) |
 | D-04 | Regelkonflikte und Strafen für Zusatzregeln | **ENTSCHIEDEN (26.10.2026):** Gegenseitige Ausschlüsse `left_hand_drinking` ↔ `two_hands_drinking` und `two_hands_drinking` ↔ `touch_player_while_drinking`, jeweils in DE/EN-JSON. `imaginary_kobold` und `imaginary_fly` bleiben gleichzeitig möglich. Ein eigenständiger Regelverstoß führt zu genau einem zusätzlichen Strafschluck; Strafschlucke verursachen keine weiteren Strafschlucke (keine Ketten). Beim zum Spiel erforderlichen Vorlesen und beim regulären Aufdecken/Ansagen geheimer Zahlen gelten keine Sprachverbote/Ansagestrafen. Gruppen ahnden solche Verstöße selbst; die App berechnet sie nicht automatisch. Siehe [D-04-Beschluss](decisions/D-04-rule-conflicts.md). | TT-005 (Validierung, keine neue Entscheidung) |
-| D-05 | Faire Personenbezüge, Fragenerschöpfung, Inhaltsrechte | **SPIELMECHANIK ENTSCHIEDEN:** gemeinsame Partie-Zähler je `playerId` für Fragen/Regeln, seltenste zulässige Person zuerst, Zufall bei Gleichstand; Richter zulässig, neue/rückkehrende Spieler starten mindestens am aktiven Zählermaximum. Katalogziel auf gültige eindeutige IDs begrenzen, innerhalb einer Partie niemals wiederholen; bei unerwartet erschöpften Kandidaten sicher anhalten und unvollständigen Fortschritt anzeigen statt doppelte Frage/erfundene Abschlusszählung. **Release-Gate:** redaktionelle Prüfung und nachweisbare Inhalts-/Nutzungsrechte in TT-061/065, keine automatische Freigabe. [Beschluss](decisions/D-05-person-selection-fairness.md). | TT-003/005–008/025/044/045/053/056/057/061/065 |
-| D-06 | Richter entfernt und Reihenfolge zugleich geändert | **ENTSCHIEDEN:** Bleibt bisheriger Richter, gilt sein Nachfolger in der neuen Liste; bei Entfernung erster noch aktiver Nachfolger der eingefrorenen alten zyklischen Liste, sonst erster Eintrag der neuen Liste. Änderungen wirken erst an Fallgrenze; keine Rotation bei Regel-Slot/Alle-Richter-Modus. [Beschluss](decisions/D-06-judge-rotation-on-roster-changes.md). | TT-003/024/025/053 |
+| D-05 | Faire Personenbezüge, Fragenerschöpfung, Inhaltsrechte | **SPIELMECHANIK ENTSCHIEDEN:** gemeinsame Partie-Zähler je `playerId` für Fragen/Regeln, seltenste zulässige Person zuerst, Zufall bei Gleichstand; Richter zulässig. Neue IDs starten am aktiven Zählermaximum, lokale Reaktivierung derselben ID bei `max(alter Stand, aktives Maximum)`; Resume mit gültigem Token verändert ID/Zähler nicht. Katalogziel auf gültige eindeutige IDs begrenzen, innerhalb einer Partie niemals wiederholen; bei unerwartet erschöpften Kandidaten sicher anhalten statt doppelte Frage/erfundene Abschlusszählung. **Release-Gate:** Redaktion und nachweisbare Nutzungsrechte in TT-061/065. [Beschluss](decisions/D-05-person-selection-fairness.md). | TT-003/005–008/025/044/045/053/056/057/061/065 |
+| D-06 | Richter/Vorleser und Besetzungswechsel | **ENTSCHIEDEN:** Bleibt die bisherige Rollen-ID, gilt ihr Nachfolger in der neuen Liste; bei Entfernung erster noch aktiver Nachfolger der eingefrorenen alten zyklischen Liste, sonst erster Eintrag der neuen Liste. Änderungen wirken an der Fallgrenze. Bei allen Richtern rotiert der organisatorische Vorleser nach jedem abgeschlossenen Fall, beginnend mit dem ersten aktiven Eintrag; keine zusätzliche Macht. Regel-Slots rotieren weder Richter noch Vorleser. [Beschluss](decisions/D-06-judge-rotation-on-roster-changes.md). | TT-003/024/025/052/053 |
 | D-07 | Blockierte Fälle, fehlende Spieler und Abschluss ohne Urteil | **ENTSCHIEDEN:** angezeigte Frage zählt bei explizit bestätigtem Abschluss ohne Urteil +1, keine Ersatzfrage, keine fiktiven Fehler/Schlucke; Rotation und Regelslot genau einmal. Fehlende Ready-/Zahl-/Ordnungsabgaben warten ohne Auto-Timeout/Vertretungsabgabe. Nur Host darf im Multiplayer bewusst ohne Urteil abschließen; Hostverlust folgt D-08 (90 s). Echtes Leave gilt für aktuelle Empfängerliste erst an Fallgrenze; unter drei Spielern vor nächstem Fall/Regelslot pausieren. [Beschluss](decisions/D-07-interrupted-case-completion.md). | TT-003/007/010/024/026/043/045/047/050/053/058 |
 | D-08 | Dauerhafter Host-Ausfall, Host versus Richter | **ENTSCHIEDEN:** Host-Rückkehr innerhalb 90 Sekunden, danach atomare Übergabe an frühestverbundenen geeigneten Teilnehmer nach stabiler Beitrittsreihenfolge; ohne Kandidat pausieren. Alter Host bekommt Rechte nicht automatisch zurück; kein Polling. [Beschluss](decisions/D-08-host-failover.md). | TT-034/043/054–057 |
 | D-09 | Öffentliche und persönliche Aufdeck-/Ergebnisdaten | **ENTSCHIEDEN:** normaler serverseitiger Aufdeckcursor, nur freigegebene Zahlen öffentlich. Alle Richter: persönliche Ordnungen/Fehler/Schlucke ausschließlich an den Urheber; nur gemeinsame Zahlenaufdeckung öffentlich. Host sieht keine fremden Privatwerte. [Beschluss](decisions/D-09-private-reveal-projections.md). | TT-034/046–052/057/059 |
 | D-10 | Zufallsvertrag und Ganzzahlrundung | **ENTSCHIEDEN:** Faktor als Zehntelinteger, `X=(N*factorTenths+9) ~/ 10`; gemeinsame Dart/TS-Fixtures mit injizierten Zufallsentscheidungen und UTC-Uhr statt identischem PRNG-Seed. Produktionszufall sicher und nicht öffentlich. [Beschluss](decisions/D-10-random-and-rounding.md). | TT-003/006–008/017/044 |
 | D-11 | UI-Sprache versus Katalogsprache im Raum | **ENTSCHIEDEN:** UI-Sprache pro Gerät; Inhaltssprache einer Multiplayer-Partie vom Host vor Start gesetzt und eingefroren. IDs/Rollen sprachneutral; fehlende/inkompatible Sprachpakete melden statt mischen. [Beschluss](decisions/D-11-language-scope.md). | TT-028/034/046/061 |
-| D-12 | Wiederaufnahme, Speicherfristen, Raumablauf | **ENTSCHIEDEN:** lokal versionierter letzter gültiger Snapshot, Geheimzahl nach Resume verdeckt; Raumablauf 24 Stunden ohne fachliche Aktivität, spätestens 48 Stunden nach Erstellung. Abschluss/Leave widerruft Secrets, 6h-Inhaltshistorie bleibt über neue Partien erhalten. [Beschluss](decisions/D-12-retention-and-resume.md). | TT-027/039/055–057/068 |
+| D-12 | Wiederaufnahme, Speicherfristen, Raumablauf | **ENTSCHIEDEN:** lokal versionierter letzter gültiger Snapshot, Geheimzahl nach Resume verdeckt; Raumablauf 24 Stunden ohne fachliche Aktivität, spätestens 48 Stunden nach Erstellung. Leave/Kick/Raumschließung/-ablauf widerrufen betroffene Credentials. Ein Fallabschluss widerruft kein Resume-Token; ein Partieneustart verwirft alte Fallgeheimnisse und Personenzähler, erhält aber Raumzuordnungen und 6h-Inhaltshistorie. [Beschluss](decisions/D-12-retention-and-resume.md). | TT-027/039/055–057/068 |
 | D-13 | Vollständiger persistierter Regelzustand | **ENTSCHIEDEN:** aktive/deaktivierte/gezogene Regel-IDs, Spielerrollenbindungen, Ereignisplan und verbrauchte Slots, Kataloghash, Fallzustand, D-05-Zähler und Dedupe-Antworten persistieren; D-01-Verlauf raumbezogen und getrennt. [Beschluss](decisions/D-13-persisted-rule-state.md). | TT-003/027/045/056/057 |
 | D-14 | Raumcode, Kollisionen, Erstellung | **ENTSCHIEDEN:** acht Zeichen aus verwechslungsarmem Alphabet, sichere Zufallsquelle, DO-Codeadressierung und atomare `create-if-absent`-Prüfung mit begrenztem Retry. Ungültiger Join erstellt keinen Raum; Raumcode kein Login. [Beschluss](decisions/D-14-room-codes.md). | TT-034/037/040/059 |
 | D-15 | Finale Design-/Avatar-Assets | **ENTSCHIEDEN (Stil/Umsetzungsweg):** eigene skalierbare menschliche Cartoon-Ebenen, warme Gerichtssaalpalette, kleine vollständige Bausteinauswahl und lokal lizenzierte Fonts; konkrete Farb-/Schriftwerte und Breakpoints in TT-013 als technische Galerieentscheidung dokumentieren. Keine Foto-Uploads oder Asset-API. [Beschluss](decisions/D-15-visual-asset-policy.md). | TT-013/014/060/065 |
@@ -109,11 +109,13 @@ docs/{decisions,qa}/      # Entscheidungs- und lokale Prüfbelege
 
 ### Zustandsautomat und Sichtbarkeit
 
-`setup/lobby → caseFile | ruleEvent → numbers → answers → ordering → revealing → verdict → judgeChange → nextBoundary → caseFile | finished`.
+Normaler Ablauf: `setup/lobby → caseFile → numbers → answers → ordering → revealing → verdict → completed → nextBoundary → ruleEvent? → caseFile | finished`.
+
+D-07-Zweig aus einer laufenden angezeigten Fallphase: `confirmCompleteWithoutVerdict → completed_without_verdict → nextBoundary`. Verworfene Bestätigung und Disconnect bleiben in der bisherigen Phase. Beide Abschlusswege erreichen dieselbe genau einmal ausgeführte Fallgrenze; nur `verdict` erzeugt Fehler-/Schluckwerte. Kartenmodus überspringt digitale Vergabe/Sortierung; alle Richter nutzen private Ordnungen.
 
 - Kartenmodus überspringt digitale Zahlenübergabe/Sortierung; optionale manuelle Fehlerzahl ist ausdrücklich manuell. Richterwechsel als Tischhinweis ohne erfundene Identität.
 - Bei „Alle sind Richter“ entfällt `judgeChange`; der **Vorleser rotiert verbindlich nach jedem abgeschlossenen regulären Fall** (nicht nach Regelereignissen) in der Spielerreihenfolge, beginnend beim ersten aktiven Eintrag. Bei Rosteränderungen gilt D-06; Vorlesen verleiht keine Host- oder Geheimnisrechte. Regelereignis kehrt an denselben Fallbeginn zurück, ohne doppelte Anwendung wartender Besetzungsänderungen.
-- `gameId` trennt Neustarts, `roundId` jeden Fallversuch, `caseIndex` zählt nur regulär abgeschlossene Fälle. `revision` steigt pro angenommener Zustandsänderung. Aufdeckcursor, eingefrorene Empfänger, bestätigte Ordnungen und pending roster gehören zum Zustand.
+- `gameId` trennt Neustarts, `roundId` jeden begonnenen regulären Fall. `completedCaseCount` zählt Abschlüsse mit Urteil **und** nach D-07 ohne Urteil; Frageanzeige allein erhöht diesen Fortschrittszähler nicht. Ein gegebenenfalls verwendeter `caseIndex` bezeichnet ausdrücklich den laufenden Fall und darf nicht zugleich Abschlusszahl sein. `revision` steigt pro angenommener Zustandsänderung. Aufdeckcursor, eingefrorene Empfänger, bestätigte Ordnungen und pending roster gehören zum Zustand.
 - Snapshot öffentlich: Phase, erlaubte Teilnehmerdaten, Frage-/Regel-ID mit Hash, aktuelle Fragenzuweisung und aktive Regelzuweisungen getrennt, Ready/Abgabe-Status, bereits veröffentlichte Zahlen. Privat: nur eigene Zahl, eigene Abgabe, eigenes Ergebnis gemäß Phase. Unberechtigte Felder **nicht serialisieren**, nicht bloß im Widget verstecken.
 - Mutation enthält Version, Raum-/Partie-/Runden-ID, erwartete Phase/Revision und `actionId`; Server leitet Identität aus der Sitzung ab. Ein erneut gesendeter identischer Request liefert gespeichertes Resultat/ACK ohne erneute Wirkung; gleiche ID mit anderem Inhalt wird abgelehnt.
 - Normal: Host steuert Start/Übergänge/Gruppenverwaltung; Richter allein verändert/bestätigt Sortierung. Alle Richter: jeder nur eigene Abgabe. Bereitschaft ist pro Phase definiert; Host darf keine Geheimzahl oder fremde Ordnung stellvertretend setzen.
@@ -141,6 +143,8 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 **Leseschlüssel der Aufgaben:** „Auto“ bezeichnet zu erstellende/zu ergänzende Tests, „Manuell“ den konkreten Akzeptanzablauf. „Lokal“ nennt den Einstieg; `W`, `C`, `D`, `S`, `MP`, `E`, `B` sind die eindeutig definierten Befehlsgruppen im Workflow. Testpfade sind jeweils relativ zu Client (`C`) oder Server (`S`), sonst zum Repository. Dokumentationsaufgaben benötigen keine App-Testattrappen.
 
+Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor TT-002 direkte Flutter-Befehle, vor TT-042 die zwei manuellen Multiplayer-Terminals aus dem Workflow. Die Vorführung einer Aufgabe darf nicht von einem erst später geplanten Harness abhängen. Bestehende D-Dokumente bleiben die einzige fachliche Beschlussquelle; neue Dateien unter `docs/contracts/` beschreiben ausschließlich technische Verträge.
+
 ## 5. Arbeitspakete
 
 ### M0 – sofort sichtbare Grundlage
@@ -152,7 +156,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Abhängigkeiten:** keine. D-01 bis D-18 blockieren dieses Gerüst nicht.
 - **Akzeptanz:** Start in Chrome ohne Backend; 360×800 und 1440×900 ohne Overflow; Navigation zurück funktioniert; sichtbare Textänderung per Hot Reload ohne verlorene Navigation. `.idea/` nicht übernehmen.
 - **Auto:** `flutter analyze`, `flutter test test/app_shell_test.dart` für alle Einstiege und Back-Navigation.
-- **Manuell / lokal:** Workflow-Erststart, danach `W`; Größen umschalten und `r` nach einer temporären Textänderung. Änderung anschließend sauber zurücknehmen.
+- **Manuell / lokal:** Direkter Workflow-Erststart mit `flutter run -d chrome --web-hostname=127.0.0.1 --web-port=7357` aus `apps/client` (Skript `W` entsteht erst in TT-002); Größen umschalten und `r` nach einer temporären Textänderung. Änderung anschließend sauber zurücknehmen.
 - **Abschluss:** G; erster Browser-Screenshot/Prüfbeleg und tatsächliche Flutter-/Dart-Version dokumentiert.
 
 #### TT-002 – Windows-Start und lokale Prüfroutine vereinheitlichen
@@ -168,7 +172,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-003 – Fachentscheidungen und Zustandsvertrag festschreiben
 
 - **Umsetzung:** Bestätigte D-01/02/03 sowie die beschlossene D-05-Personenfairness (einschließlich Richter, neue Spieler starten auf höchstem aktiven Personen-Zählerstand, Reset bei neuer Partie) samt Sechs-Stunden-Inhaltspräferenz und den 3–20 Spieler-/Slider-/Namensgrenzen umsetzen und beschlossene D-06/10/13/17 in Zustands- und Aktionsverträge übertragen; Zustands-/Aktionsliste und Rechte für lokale Varianten dokumentieren. Grenzbeispiele als JSON mit Ein-/Ausgabe, Fehlercodes, injizierter UTC-Uhr und Zufallsentscheidungen festlegen. D-04/05/07 sind ebenfalls fachlich beschlossen; das externe Freigabegate D-05/TT-065 nicht als Lizenznachweis ausgeben.
-- **Dateien:** `docs/decisions/001-game-contract.md`, `packages/protocol/README.md`, `packages/protocol/fixtures/{rules,transitions}/`, Fortschrittsregister.
+- **Dateien:** `docs/contracts/GAME_STATE.md`, `packages/protocol/README.md`, `packages/protocol/fixtures/{rules,transitions}/`, Fortschrittsregister; bestehende D-01–D-18-Dokumente nur referenzieren, keinen zweiten konkurrierenden Fachbeschluss anlegen.
 - **Abhängigkeiten:** TT-002.
 - **Akzeptanz:** Fallzählung mit R Slots zwischen F Fragen, die wiederverwendete Ziehhistorie und deren Sechs-Stunden-Grenze, separaten spielerbezogenen Fairness-Zählern und korrekt initialisierten neuen Spielern, **D-07-Abschluss einer angezeigten Frage ohne Urteil mit Fallzählung +1**, Reihenfolgeeinfügen, Zahlenlücken, entfernte Richter und Rollenwechsel ohne Widerspruch beschrieben; Beispiel korrekte Ordnung A/B/C/D, Vorschlag B/A/D/C → E=4; Richter 4, alle vier 4. Alle-Richter-Beispiel unabhängig davon.
 - **Auto:** JSON parsebar, eindeutige Fixture-IDs, Dokumentlinks gültig (`D`).
@@ -180,17 +184,17 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-004 – Beide Katalogformate validieren und bündeln
 
 - **Umsetzung:** JSON-Schemas, semantischer Validator und deterministisches Asset-Manifest mit Formatversion, Sprache, IDs und SHA-256. `sync-assets.ps1` kopiert aus `data/`; `-Check` schreibt nichts und erkennt veraltete Kopien. Typisierte Dart-Loader liefern Lade-/Formatfehler.
-- **Dateien:** `packages/protocol/schemas/{questions,rules,catalog-manifest}.schema.json`, `scripts/{validate-data.mjs,sync-assets.ps1}`, `apps/client/lib/data/catalogs/`, `apps/client/assets/catalogs/`, `test/data/catalog_test.dart`, `pubspec.yaml`, `data/questions/README.md` (sprachabhängiger Connector).
+- **Dateien:** `packages/protocol/schemas/{questions,rules,catalog-manifest}.schema.json`, `scripts/{validate-data.mjs,sync-assets.ps1}`, `apps/client/lib/data/catalogs/`, `apps/client/assets/catalogs/`, `test/data/catalog_test.dart`, `pubspec.yaml`; vorhandene Datenformatdokumente als Quelle.
 - **Abhängigkeiten:** TT-003.
-- **Akzeptanz:** Je 491 DE-/EN-Fragen und 25 DE-/EN-Regeln laden; ID-Parität wird geprüft. Fehlende Texte, ungenutzte Rollen, Selbst-/Fremdreferenzen und doppelte IDs scheitern. Unterschiedliche Skalen bei gleichem Text bleiben erlaubt. Kanonische JSON-Serialisierung fürs Manifest definiert.
-- **Auto:** Positive Bestandsprüfung plus negative Fixtures für jeden Validatorzweig; Assetdrift-Test.
+- **Akzeptanz:** Je 491 DE-/EN-Fragen und 25 DE-/EN-Regeln laden; ID-Menge und Reihenfolge, Rollen und Regelconstraints stimmen zwischen Sprachen überein. Fragenrollen über `text`, `scale.green` und `scale.red` gemeinsam validieren und ersetzen. Die neun dokumentierten fehlenden IDs sind gewollt; keine Vollständigkeit aller a/b-Paare erzwingen. Fehlende Texte, ungenutzte Rollen, Selbst-/Fremdreferenzen und doppelte IDs scheitern. Unterschiedliche Skalen bei gleichem Text bleiben erlaubt. Kanonische JSON-Serialisierung fürs Manifest definiert.
+- **Auto:** Positive Bestandsprüfung plus negative Fixtures für jeden Validatorzweig, insbesondere nur im Skalenende benutzte Rolle, fehlende Skalenrolle, Sprach-/ID-Reihenfolgedrift, reziproke D-04-Paare und gültig entfernte IDs; Assetdrift-Test.
 - **Manuell / lokal:** `D`, `C`; im Start-Diagnosebereich Kataloganzahlen/Sprachen anzeigen, ungültigen Fixture-Katalog mit hilfreichem Fehler laden.
 - **Abschluss:** G; nur Quelle editierbar, generierte Assetstrategie dokumentiert.
 
 #### TT-005 – Redaktionelle Konflikte inventarisieren und entscheiden
 
 - **Umsetzung:** Alle betroffenen Fragen-IDs beider Sprachen und Regelpaare in Reviewliste aufnehmen; bestätigte D-04-Ausschlüsse und manuelle Straf-/Ausnahmeregeln sowie den D-05-Beschluss zur fairen Spielerrollenauslosung absichern. **D-07 hat den Abbruch bereits ausgespielter Fragen als gezählte Abschlüsse festgelegt**; D-05-Katalogerschöpfung entsprechend Beschluss absichern; redaktionelle Restprüfung und Nutzungsrechte als dokumentiertes, vor Veröffentlichung nachzuweisendes Gate behandeln. Anpassungen einzeln mit alter Bedeutung/Begründung, stabile IDs behalten. Captain Hook in `051-a` ist eine fiktionale Figur, keine ersetzbare Spielrolle. Bereits korrigierte Fälle `110-a` und `052-b` anhand des aktuellen Katalogs prüfen statt erneut umzuschreiben. Provenienz offen dokumentieren, Veröffentlichung noch nicht freigeben.
-- **Dateien:** `docs/decisions/002-content-policy.md`, `docs/qa/content-review.md`, gegebenenfalls `data/questions/top-ten/{de,en}.json`, `data/rules/de.json` und Formatdokumente.
+- **Dateien:** `docs/qa/content-review.md`, gegebenenfalls `data/questions/top-ten/{de,en}.json`, `data/rules/{de,en}.json` und Formatdokumente; bestehende D-04/D-05-Beschlüsse referenzieren.
 - **Abhängigkeiten:** TT-004.
 - **Akzeptanz:** Spielerbezüge und Requisiten geprüft; D-04-Paare in beiden Sprachen reziprok, Kobold/Fliege vereinbar, Strafschlucke ohne Ketten und Sprach-Ausnahmen für erforderliches Vorlesen/Zahlenaufdecken dokumentiert. Keine automatische Erkennung oder Addition von Regelverstößen durch App/Server. Änderungen am Katalog bekommen neuen Inhaltshash.
 - **Auto:** `D`; Fixtures prüfen wechselseitigen Ausschluss, beide beschlossenen Paare in DE/EN und den erlaubten Kobold/Fliege-Fall.
@@ -210,7 +214,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-007 – Frage ziehen und Ereignisplan erzeugen
 
 - **Umsetzung:** Fragen ohne Wiederholung **innerhalb derselben Partie** nach ID ziehen; bei Fragen mit `players` die gültige Rollenverteilung gemäß beschlossener D-05-Personenfairness nur einmal je tatsächlicher Ziehung festlegen und pro beteiligter eindeutiger Spieler-ID zählen. Mit injiziertem Zufall und der bestätigten rollierenden 6-Stunden-Nutzungshistorie (D-01): zuerst gültige IDs mit Zähler 0, wenn keine dann zufällig aus den IDs mit minimalem Zähler. Keine vorab nur reservierten Fragen als genutzt zählen. Fachliche Ziehung samt Nutzungseintrag atomar, keine Doppelzählung bei Neuaufbau. Bei Partiestart Regel-Lücken einmalig stratifiziert und zufällig in den `F−1` Zwischenräumen planen; nach D-01 nur nicht direkt benachbarte Slots zulassen, **wenn ein solcher Plan bei F/R möglich ist** (ansonsten Nachbarschaft erlaubt, etwa F=3/R=2). Keine unbeschränkt wiederholte Zufallsablehnung. Regeln erst bei tatsächlichem Ereignis auswählen.
-- **Dateien:** `apps/client/lib/domain/{question_deck,event_schedule}.dart`, `test/domain/schedule_test.dart`, `packages/protocol/fixtures/rules/schedule.json`.
+- **Dateien:** `apps/client/lib/domain/{question_deck,event_schedule,question_assignment}.dart`, `lib/domain/selection/` (wiederverwendbare Inhalts-/Personenauswahl), `test/domain/{schedule,question_assignment}_test.dart`, `packages/protocol/fixtures/rules/{schedule,question_assignments}.json`.
 - **Abhängigkeiten:** TT-005, TT-006.
 - **Akzeptanz:** 50 Fragen und höchstens 7 zusätzliche Ereignisse, nie vor erster/nach letzter Frage und höchstens ein Ereignis je Zwischenraum; F=1/R=7 ergibt R_eff=0. Kein erneutes Ziehen/Erhöhen von Inhalts- oder Personen-Nutzungszählern bei Widget-Neuaufbau. Sprachübergreifend dieselben IDs in der D-01-Historie; innerhalb einer Partie keine wiederholte Frage. Bei personenbezogenen Fragen bleibt dieselbe D-05-Zuordnung in Text/Skala gespeichert; Richter ist wählbar.
 - **Auto:** 1/3/50/491 Fälle (Kartenmodus max. 431), ausdrücklich ohne Urteil abgeschlossener Fall zählt +1 und verbraucht Frage-/Regellücke genau einmal, erschöpfter Katalog, R=0 und R>F-1, stratifizierte Ereignispositionen mit Nicht-Nachbarschaft wenn möglich, F=3/R=2 als erlaubter Gegenfall; Sechs-Stunden-Fensterrand, Fälle mit noch ungenutzten IDs, Fallback nach geringstem 6h-Inhaltszähler und zufälliger Gleichstand, Partieneustart ohne Inhaltshistorienschwund; D-05: Personen-Zähler bei neuer Partie auf 0, A/B/C/D mit 0/0/0/0 → vier verschiedene Referenzen, identischer Spieler nur einmal trotz mehrfacher Platzhalter im Text; deterministische Fixtures.
@@ -331,7 +335,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-019 – Antwortphase und Richterdarstellung
 
-- **Umsetzung:** Nach Übergabe Frage und Skala sichtbar halten, mündliche Antworten erklären, Richter oberhalb/außerhalb der Bank. Aktion zur Sortierung erst nach abgeschlossener Übergabe.
+- **Umsetzung:** Nach Übergabe Frage und Skala mit derselben gespeicherten Fragenzuweisung aus TT-007 sichtbar halten; alle Platzhalter in Text und Skalen auf aktuelle Namen auflösen, ohne Neuauslosung/Counteränderung. Mündliche Antworten erklären, Richter oberhalb/außerhalb der Bank. Aktion zur Sortierung erst nach abgeschlossener Übergabe.
 - **Dateien:** `apps/client/lib/features/case_file/answer_screen.dart`, `lib/design/judge_header.dart`, `test/features/answer_phase_test.dart`.
 - **Abhängigkeiten:** TT-018, TT-013.
 - **Akzeptanz:** Keine Zahl fremder Personen sichtbar; Richter-ID unverändert; langer Fragetext und sechs/zwanzig Personen passen mit sinnvoller Scrollaufteilung.
@@ -364,7 +368,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** Reine Urteilfunktion prüft vollständige gültige Ordnung, sortiert nach Zahlen und bildet Fehlpositionsmenge und Schlucke. Alle-Richter-Funktion getrennt, später wiederverwendbar. Keine Regelfreitext-Strafen addieren.
 - **Dateien:** `apps/client/lib/domain/verdict.dart`, `test/domain/verdict_test.dart`, `packages/protocol/fixtures/rules/verdict.json`.
 - **Abhängigkeiten:** TT-017, TT-003.
-- **Akzeptanz:** Normal: E=2 → Richter 2 und exakt zwei falsch Platzierte je 2; richtig Platzierte 0. Alle Richter: A=2/B=4/C=0 bleibt 2/4/0. Zahlwert 9 an Position 3 kann richtig sein.
+- **Akzeptanz:** Normal: E=2 → Richter 2 und exakt zwei falsch Platzierte je 2; richtig Platzierte 0. Alle Richter mit **vier** Beteiligten A/B/C/D: korrekte Ordnung A/B/C/D, Abgaben A=B/A/C/D → 2, B=B/A/D/C → 4, C und D=A/B/C/D → je 0; keine fremden Mittrinkwerte. Vier Fehlpositionen sind mit nur drei Beteiligten unmöglich. Zahlwert 9 an Position 3 kann richtig sein.
 - **Auto:** Identität, Tausch, Zyklus, komplette Umkehr, Lücken; fehlende/doppelte/fremde IDs zurückweisen; Exhaustivtest aller Permutationen kleiner N (kein E=1).
 - **Manuell / lokal:** `C`; drei Fixture-Urteile handschriftlich nachrechnen.
 - **Abschluss:** G; kanonische erwartete Ergebnisse für TypeScript vorhanden.
@@ -405,7 +409,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Dateien:** `apps/client/integration_test/local_game_test.dart`, `docs/qa/M2.md`.
 - **Abhängigkeiten:** TT-025.
 - **Akzeptanz:** 3–20 Spieler bedienbar und auch bei zwanzig Teilnehmern scrollbare/lesbare Übergaben und Sortierungen, sechs Fälle reproduzierbar; keine Geheimzahl auf Back/Tabwechsel; M1-Regression grün.
-- **Auto:** `E` lokale Spiele, `C`, gemeinsame Dart-Fixtures.
+- **Auto:** `E` lokale Spiele, `C`, gemeinsame Dart-Fixtures; mindestens einen angezeigten Fall ausdrücklich ohne Urteil abschließen, Fortschritt/Rotation/Regelslot genau einmal, kein künstliches Null-Fehler-Urteil und kein Personen-/6h-Doppelzählen.
 - **Manuell / lokal:** `W`; mindestens eine Runde mit echter Geräteweitergabe und zwanzig Figuren per Maus/Tastatur/Touch samt Auto-Scroll.
 - **Abschluss:** G; M2 mit Screens und Fehler-/Grenzbelegen abgenommen.
 
@@ -414,10 +418,10 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-027 – Lokale Partie sicher speichern und wiederaufnehmen
 
 - **Umsetzung:** beschlossenen lokalen D-12-Speichervertrag umsetzen; versionierter Snapshot nach fachlichen Änderungen, atomarer Austausch und Validierung beim Laden. **ContentUsageStore** hält separat von der Partie die 6-Stunden-Nutzung je Frage/Regel für beide lokalen Modi und die auf demselben Gerät gehosteten Räume; UTC-Ereignisse nach sechs Stunden bereinigen, innerhalb derselben Partie gezogene IDs im Partiezustand behalten. Idempotente Zusammenführung per Ereignisidentität. Letzten gültigen Zustand behalten; beschädigte/inkompatible Partie mit Resetangebot behandeln. Profil und Partie getrennt löschen können.
-- **Dateien:** `apps/client/lib/data/local_game_store.dart`, `lib/application/resume_controller.dart`, `lib/features/home/resume_dialog.dart`, `test/data/local_game_store_test.dart`.
+- **Dateien:** `apps/client/lib/data/{local_game_store,content_usage_store,local_state_transaction}.dart`, `lib/application/resume_controller.dart`, `lib/features/home/resume_dialog.dart`, `test/data/local_game_store_test.dart`.
 - **Abhängigkeiten:** TT-026.
 - **Akzeptanz:** Reload in Übergabe/Sortierung/Aufdeckung erhält konsistente Partie, zeigt beim Wiederöffnen keine Zahl automatisch. Fehlender Speicher/Quota sperrt Spiel nicht, weist aber auf fehlende Wiederaufnahme hin.
-- **Auto:** Snapshot-Roundtrip jeder Phase, alte Schema-/Katalogversion, defektes JSON, Teil-Schreibfehler, kein doppeltes Ziehen oder Counter-Update nach Resume; 6h-Ablauf mit Testuhr, gemeinsame lokale Historie beider Modi und Sprachwechsel, eingeschränkter/fehlender Browser-Speicher.
+- **Auto:** Snapshot-Roundtrip jeder Phase einschließlich Fragenzuweisung/Abschlussstatus, alte Schema-/Katalogversion, defektes JSON, Teil-Schreibfehler, kein doppeltes Ziehen oder Counter-Update nach Resume. Partiezustand und zugehöriges 6h-Ziehereignis logisch getrennt, aber zusammen atomar committen; Crash zwischen Schreibschritten darf nicht nur einen davon erhalten. 6h-Ablauf mit Testuhr, gemeinsame lokale Historie beider Modi und Sprachwechsel, eingeschränkter/fehlender Browser-Speicher.
 - **Manuell / lokal:** `W`, Tab schließen/öffnen und Speichern blockieren; `C`.
 - **Abschluss:** G; verständliche Datenschutzhinweise für gemeinsam genutztes Gerät.
 
@@ -429,7 +433,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Akzeptanz:** Sprachwechsel erhält Partie/Regel-ID und Profil; EN-Fragen und EN-Trinkregeln sind bereits vor TT-061 nutzbar, sofern die automatischen Schema-/Paritätsprüfungen bestanden sind; lange Übersetzungen überlaufen nicht; Audio ist keine Bedienvoraussetzung.
 - **Auto:** ARB-Schlüssel-/Platzhalterparität, persistierte Sprache, Wechsel während aktiver Partie.
 - **Manuell / lokal:** `W`, beide UI-Sprachen und 200 % Text; `C`.
-- **Abschluss:** G; fehlende Inhaltsübersetzungen bleiben als TT-061 offen sichtbar.
+- **Abschluss:** G; vorhandene DE/EN-Kataloge integriert, redaktionelle Schlussprüfung bleibt TT-061; keine bereits vorhandenen Übersetzungen als fehlend ausweisen.
 
 #### TT-029 – Lokalen Web-Release reproduzierbar ausliefern
 
@@ -486,10 +490,10 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-034 – Multiplayer-Nachrichten und private Projektionen spezifizieren
 
 - **Umsetzung:** D-09/14 gemäß Beschluss umsetzen; D-16 ist beschlossen: HTTP-Join mit privater playerId und hochentropem Resume-Token, gerätegebundene dauerhafte Speicherung, Fortsetzen nach Browser-/App-Neustart, getrennte Raumzuordnungen und bewusstes Beitreten als neuer Spieler. Schemas für Create/Join/Auth/Resume/Leave, Aktionen, ACK/Fehler, Snapshot/Deltas. Versions-/Hash-Handshake, Host-/Richter-Rechtematrix und Sichtbarkeit jeder Phase; Ablauf/Widerruf sowie abgelöste Verbindungen definieren. Gemäß D-01 optional begrenzte/validierte **private 6h-Host-Historie** beim Raumstart und private idempotente Ziehereignis-Rückgabe an denselben Host definieren (IDs, UTC-Zeit, deduplizierende Ereignis-ID; ohne Spielernamen/Antworten). Keine Raumhistorie im öffentlichen Snapshot.
-- **Dateien:** `packages/protocol/schemas/`, `fixtures/messages/`, `docs/decisions/004-room-protocol.md`, `packages/protocol/README.md`.
+- **Dateien:** `packages/protocol/schemas/`, `fixtures/messages/`, `docs/contracts/ROOM_PROTOCOL.md`, `packages/protocol/README.md`; D-08/09/12/14/16 als bestehende fachliche Quellen referenzieren.
 - **Abhängigkeiten:** TT-003, TT-033.
 - **Akzeptanz:** Jeder Nachrichtentyp hat Positiv-/Negativbeispiel, Größenbegrenzung, Rolle und Phase; Secret nicht in öffentlichem Snapshot/Link/Fehler. Auth-Handshake löst Browser-Headerproblem ohne URL-Token. Fortsetzen derselben playerId nach vollständigem Geräte-App-/Browser-Neustart, Widerruf/Leave und zwei Tabs sind als D-16-Fälle spezifiziert.
-- **Auto:** Schemaprüfung aller Fixtures (`D`); Fixtures für unerlaubte Felder und Versionskonflikte.
+- **Auto:** Schemaprüfung aller Fixtures (`D`); Fixtures für unerlaubte Felder und Versionskonflikte. Privaten Host-Historienimport/-abgleich auf Ereignis-ID, gültige Inhalts-ID, UTC-Fenster, Duplikate und begrenzte Mengen prüfen; bei größeren Verläufen begrenzte Seiten/Chunks statt Überschreiten der Request-/Framegrenze vorsehen.
 - **Manuell / lokal:** Öffentliche/private Nachricht pro Phase gegeneinander lesen; `W` lokale Modi vorführen.
 - **Abschluss:** G; Vertrag hinreichend für unabhängige Dart-/TS-Adapter.
 
@@ -525,8 +529,8 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-038 – Authentifizierten Hibernation-WebSocket anschließen
 
-- **Umsetzung:** Worker leitet Upgrade zum Raum; `ctx.acceptWebSocket`, erste Nachricht authentifiziert das D-16-Resume-Token; davor keine Raumdaten. Autorisierte Identität/Socketgeneration in Attachments, Timeout/Originprüfung/Connection-Limits; Token nicht loggen. Neue Verbindung derselben ID ersetzt alte nach Vertrag und informiert den abgelösten Tab.
-- **Dateien:** `apps/server/src/room/{sockets,projection}.ts`, `test/room/socket_auth.test.ts`.
+- **Umsetzung:** Worker leitet Upgrade zum Raum; `ctx.acceptWebSocket`, erste Nachricht authentifiziert das D-16-Resume-Token; davor keine Raumdaten. Autorisierte Identität/Socketgeneration in Attachments, Timeout/Originprüfung/Connection-Limits; Token nicht loggen. Grundform des gemeinsamen persistierten Fristenplans für Auth-Timeouts einführen, später in TT-054/055 um Host-/Raumfristen erweitern. Neue Verbindung derselben ID ersetzt alte nach Vertrag und informiert den abgelösten Tab.
+- **Dateien:** `apps/server/src/room/{sockets,projection,deadlines}.ts`, `test/room/{socket_auth,deadlines}.test.ts`.
 - **Abhängigkeiten:** TT-037.
 - **Akzeptanz:** Unauthentifizierter/falscher Token erhält keinen Snapshot; Host- und Spieleridentität nicht aus behauptetem playerId-Feld; nur erlaubte Origins, ein aktiver Socket pro Spieler.
 - **Auto:** Auth-Timeout, gestohlen behauptete IDs ohne Token, falscher Raum, Duplicate-Socket, Attachment-Rehydrierung und Redaction.
@@ -536,11 +540,11 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-039 – Clienttransport mit klaren Verbindungszuständen
 
 - **Umsetzung:** Web/Android-Adapter für HTTP-Join + WS-Auth, `connecting/online/reconnecting/closed/error`; begrenzter Backoff mit Jitter. D-16: `RoomCredentialStore` als persistenter raumbezogener Speicher (Web bevorzugt IndexedDB, Android Keystore-gestützt), mehrere Räume verwalten, gültige Tokens bei Neustart für Fortsetzen anbieten, nach Leave/Kick/Expiry bereinigen. Keine Tokens im Profilstore oder Offlinecache. Serveransichten über Riverpod. Nur sicher wiederholbare Aktionen mit derselben ID erneut senden.
-- **Dateien:** `apps/client/lib/data/room_transport.dart`, `lib/application/room_controller.dart`, `test/data/room_transport_test.dart`.
+- **Dateien:** `apps/client/lib/data/{room_transport,room_credential_store}.dart`, plattformspezifische Credential-Adapter, `lib/application/room_controller.dart`, `test/data/{room_transport,room_credential_store}_test.dart`.
 - **Abhängigkeiten:** TT-038.
 - **Akzeptanz:** Offline lokale Modi funktionieren weiter; Multiplayer zeigt Status und führt keine simulierten Serverergebnisse aus; Netzwerkverlust stoppt autoritative Aktionen verständlich. Vollständiges Schließen und erneutes Öffnen des Browsers/der Android-App findet gültige Raum-Credentials wieder; gesperrter oder gelöschter Speicher führt zu verständlichem Neueinstieg.
 - **Auto:** Fake-Transport für ACK-Verlust, Parserfehler, Reconnectabbruch, Versionsfehler; Timer mittels Testuhr.
-- **Manuell / lokal:** `C`, `MP`; Worker beenden/neustarten, UI darf nicht einfrieren.
+- **Manuell / lokal:** `C`; Worker und Client mit den zwei manuellen Terminals des Workflows starten (Harness `MP` entsteht erst TT-042), Worker beenden/neustarten, UI darf nicht einfrieren.
 - **Abschluss:** G; erster Client-Raumkontakt lokal nachweisbar.
 
 #### TT-040 – Erstellen-/Beitreten-Screens und Einladungen
@@ -550,7 +554,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Abhängigkeiten:** TT-039, TT-015.
 - **Akzeptanz:** Zwei getrennte Browsersitzungen im selben Raum; falscher/abgelaufener/voller Raum verständlich; Join-Link nach Refresh korrekt. Einladung nutzt öffentliche Clientbasis, nicht Workerbasis. Fortsetzen nach erneutem Öffnen ohne unbemerkten zusätzlichen Join; mehrere lokale Raumzuordnungen bleiben unterscheidbar.
 - **Auto:** Link-/Code-Normalisierung, untrusted URL-Parameter, Clipboardfehler und QR-Nutzlast ohne Secrets.
-- **Manuell / lokal:** `MP`; Browser A erstellt, B tritt per Link und C per Code bei; QR mit Handy nur im eingerichteten LAN-Test verwenden.
+- **Manuell / lokal:** Manuelle Multiplayer-Terminals des Workflows; Browser A erstellt, B tritt per Link und C per Code bei. `MP`-Harness erst nach TT-042; QR mit Handy nur im eingerichteten LAN-Test verwenden.
 - **Abschluss:** G; keine Authentifizierung über erratenen Code allein.
 
 #### TT-041 – Lobby, Tabs und Live-Profile synchronisieren
@@ -560,7 +564,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Abhängigkeiten:** TT-040, TT-036.
 - **Akzeptanz:** Alle Clients sehen gleiche Figuren; eigene Profilbearbeitung auch Nicht-Host; fremde Profile können nicht geändert werden; veraltete Revision verworfen/aktualisiert.
 - **Auto:** Gleichzeitige Updates, stale Revision, unbekannte Avatar-IDs, Rechteprüfung und kein Drift bei Wiederverbindung.
-- **Manuell / lokal:** `MP`, Name/Haare in B ändern, A/C kontrollieren; `C`, `S`.
+- **Manuell / lokal:** Manuelle Multiplayer-Terminals des Workflows, Name/Haare in B ändern, A/C kontrollieren; `C`, `S`. `MP`-Harness folgt TT-042.
 - **Abschluss:** G; mindestens zwei Browser sichtbar synchron.
 
 #### TT-042 – Lokale Mehrbrowser-Harness und Lobby-Abnahme
@@ -578,7 +582,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-043 – TypeScript-Spielkern und Phasenrechte
 
 - **Umsetzung:** Reine TS-Modelle/Reducer nach Dart-Vertrag; den bestätigten Teil von D-07 umsetzen: Host kann eine angezeigte Frage ausdrücklich als **abgeschlossen ohne Urteil** beenden, Fortschritt +1, verbrauchte Frage bleibt verbraucht, kein Ersatzfall derselben Nummer. D-07-Wartezustände ohne automatischen Abschluss/Vertretungsabgabe samt Hostrecht und D-08-Hostausfall umsetzen; Phase/Aktion/Rollenmatrix inklusive Abschluss ohne Urteil und Neustart; injizierter Zufall/Uhr. Host und Richter strikt trennen. Noch keine komplexe UI neu bauen.
-- **Dateien:** `apps/server/src/domain/`, `test/domain/transitions.test.ts`, `docs/decisions/005-round-control.md`, gemeinsame Transition-Fixtures.
+- **Dateien:** `apps/server/src/domain/`, `test/domain/transitions.test.ts`, `docs/contracts/{GAME_STATE,ROOM_PROTOCOL}.md`, gemeinsame Transition-Fixtures; bestehenden D-07-Beschluss anwenden.
 - **Abhängigkeiten:** TT-042, TT-025.
 - **Akzeptanz:** Dieselbe Eingabe erzeugt denselben Fachzustand wie Dart; keine Clientdaten bestimmen Geheimzahl oder Urteil. Fehlende Spieler stoppen ohne Zwangsabgabe, bis sich Teilnehmer wieder verbinden oder der Host eine ausdrücklich bestätigte **gezählte** Beendigung ohne Urteil auslöst.
 - **Auto:** Alle Phase/Aktion-Kombinationen, Host≠Richter, stale Runde/Partie, unerlaubter Neustart, **bestätigter Abschluss ohne Urteil zählt +1, rotiert normal einmal und lässt den nächsten D-01-Regelslot einmal folgen**, kein Urteil/keine erfundenen Schlucke, keine automatische Beendigung nur wegen Disconnect; Frage wird nicht ersetzt. Fehlende/ungültige Eingaben dürfen keine Zählung auslösen.
@@ -588,7 +592,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-044 – TS-Zahlen, Fragen und Trinkregeln mit Parität
 
 - **Umsetzung:** TS-Port der Zahlenvergabe, Deck-/Ereignisplanung, D-01-Auswahl mit sechs Stunden Inhalts-Nutzungszählern und D-05-Personenfairness-Zählern samt Join-Initialisierung sowie Rollenconstraints; Server nutzt validierte Katalogdaten/Manifest aus `data/`. Gemeinsame Fixtures beider Sprachen kanonisch vergleichen, nicht eigene getrennte erwartete Werte pflegen.
-- **Dateien:** `apps/server/src/domain/{numbers,schedule,drinking_rules}.ts`, `test/domain/rules.test.ts`, `scripts/check-parity.ps1`, gemeinsame Fixtures.
+- **Dateien:** `apps/server/src/domain/{numbers,schedule,question_assignment,drinking_rules}.ts`, `src/domain/selection/`, `test/domain/rules.test.ts`, `scripts/check-parity.ps1`, gemeinsame Fixtures aus TT-007/008.
 - **Abhängigkeiten:** TT-043, TT-008, TT-017.
 - **Akzeptanz:** Dart/TS identische Zahlen und identische D-05-Spielerrollenauswahl/Zählerstände bei gleichen vorgegebenen Ziehungen, X, Berechtigungen, Join/Leave und Aktivierungen; Produktionszufall weder voraussehbar noch öffentlich. Kein mehrfacher Katalogparse pro Aktion.
 - **Auto:** `check-parity.ps1`, R=0/F=1, Spielerrollen-Mangel und Zahlenlücken; D-05 mit mehrdeutigen zulässigen Rollen, Richter, neuen und zurückkehrenden Spieler-IDs, Rollenneubindung sowie gemeinsamem Fragen-/Regelzähler; beide Runner scheitern bei absichtlich geändertem erwartetem Wert in temporärer Fixture.
@@ -610,7 +614,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** Host startet mit eingefrorener Konfiguration/Katalogen/Besetzung und einer bei Raumerstellung validierten optionalen 6h-Host-Historie; serverseitige D-01-Auswahl setzt den pro Raum persistierten Counter fort. Regelereignis oder Frage, eigene private Zahl und freiwilliges Öffnen; normal Richter ohne Zahl. Bestehende Fall-/Geheimzahlwidgets über Session-Fassade anschließen.
 - **Dateien:** `apps/server/src/room/start_round.ts`, `apps/client/lib/features/multiplayer/game_screen.dart`, `test/features/online_numbers_test.dart`, `apps/server/test/room/private_numbers.test.ts`.
 - **Abhängigkeiten:** TT-045, TT-018, TT-041.
-- **Akzeptanz:** Drei Clients: jeder nur eigene Zahl auf Protokollebene; Host als Nicht-Richter sieht keine zusätzlichen Zahlen; Partyoptionen nach Start gesperrt.
+- **Akzeptanz:** Drei Clients: jeder nur eigene Zahl auf Protokollebene, alle aber dieselben gespeicherten Fragenrollen und vollständig aufgelöste Text-/Skalenbezüge; Host als Nicht-Richter sieht keine zusätzlichen Zahlen; Partyoptionen nach Start gesperrt. Reconnect zieht die Bezugsperson nicht neu.
 - **Auto:** Snapshot/Delta/ACK/Fehler-Serialisierung auf Fremdzahlen prüfen; Start bei fehlender Mindestbesetzung/Hash-Mismatch abgelehnt.
 - **Manuell / lokal:** `MP`, Netzwerkframes aller Rollen und versteckte Akte prüfen; `C`, `S`.
 - **Abschluss:** G; erster echter Multiplayer-Fall bis zur Zahlannahme sichtbar.
@@ -669,12 +673,12 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-052 – Alle Richter: gemeinsame Aufdeckung, persönliche Ergebnisse
 
-- **Umsetzung:** Gemeinsamer Reveal erst nach allen erforderlichen Abgaben; persönliche Fehler/Schlucke privat projizieren. Kein zusätzliches Mittrinken, kein Richterwechsel; Frage/Vorleser/Fallzählung weiterführen.
+- **Umsetzung:** Gemeinsamer Reveal erst nach allen erforderlichen Abgaben; persönliche Fehler/Schlucke privat projizieren. Kein zusätzliches Mittrinken, kein Richterwechsel; den organisatorischen Vorleser nach jedem abgeschlossenen Fall gemäß D-06 rotieren, auch bei Abschluss ohne Urteil, nie bei Regelereignissen.
 - **Dateien:** `apps/server/src/room/{all_judges,reveal,projection}.ts`, `apps/client/lib/features/verdict/personal_verdict.dart`, `test/room/all_judges_verdict.test.ts` (Server).
 - **Abhängigkeiten:** TT-051, TT-049.
-- **Akzeptanz:** Fixture mit A=2/B=4/C=0 zeigt jedem exakt eigenen Wert; Zahlenaufdeckung synchron, fremde persönliche Ergebnisse/Ordnungen bleiben gemäß D-09 privat. Null oder mindestens zwei Fehler.
-- **Auto:** Parität aller persönlichen Urteile, Leaktests, doppelte Aufdeckung und letzter Fall ohne Richterwechsel.
-- **Manuell / lokal:** `MP`, drei unterschiedliche Abgaben; `C`, `S`, Paritätscheck.
+- **Akzeptanz:** Vier-Beteiligten-Fixture aus TT-022 mit A=2/B=4/C=0/D=0 zeigt jedem exakt eigenen Wert; Zahlenaufdeckung synchron, fremde persönliche Ergebnisse/Ordnungen bleiben gemäß D-09 privat. Null oder mindestens zwei Fehler. Vorleser beginnt beim ersten aktiven Eintrag und wechselt ohne zusätzliche Rechte.
+- **Auto:** Parität aller persönlichen Urteile, Leaktests, doppelte Aufdeckung, Vorleserrotation mit/ohne Urteil, kein Wechsel bei Regelereignis und korrekter Abschluss des letzten Falls.
+- **Manuell / lokal:** `MP`, vier isolierte Spieler mit den vier Fixture-Abgaben; `C`, `S`, Paritätscheck. Der spätere Drei-Browser-Smoke verwendet ausschließlich mit drei Personen mögliche Fehlerzahlen.
 - **Abschluss:** G; vollständige Partie „Alle sind Richter“ lokal möglich.
 
 #### TT-053 – Multiplayer-Besetzung und Reihenfolge während Partie
@@ -690,20 +694,20 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 #### TT-054 – Host dauerhaft verlieren und neu zuweisen
 
 - **Umsetzung:** D-08 (90 Sekunden) umsetzen; Presence-/Lease-Zeitpunkte speichern, Hostrückkehr innerhalb Frist, danach berechtigte Übernahme serverseitig atomar prüfen. Nur einmaliger Alarm/ereignisbezogene Zeitprüfung, kein periodischer Timer. Host bleibt von Richterrolle unabhängig.
-- **Dateien:** `docs/decisions/006-host-lifecycle.md`, `apps/server/src/room/host_lifecycle.ts`, `apps/client/lib/features/multiplayer/host_status.dart`, `test/room/host_lifecycle.test.ts` (Server).
+- **Dateien:** `apps/server/src/room/{host_lifecycle,deadlines}.ts`, `apps/client/lib/features/multiplayer/host_status.dart`, `test/room/{host_lifecycle,deadlines}.test.ts` (Server); bestehenden D-08-Beschluss anwenden.
 - **Abhängigkeiten:** TT-053.
 - **Akzeptanz:** Nach verbindlichen 90 Sekunden genau ein Host; zeitgleiche Anträge deterministisch; alter Host bekommt bei Rückkehr keine verdrängenden Rechte. Kein Kandidat: warten/ablaufen lassen.
-- **Auto:** Testuhr statt reales Warten, Fristgrenzen, parallele Übernahmen, alte Hostaktion und Richterkonflikt.
+- **Auto:** Testuhr statt reales Warten, Fristgrenzen, parallele Übernahmen, alte Hostaktion und Richterkonflikt; gemeinsamer Fristenplan reserviert bereits den frühesten Alarmtermin statt konkurrierender `setAlarm`-Aufrufe.
 - **Manuell / lokal:** `MP`, Hostfenster schließen, Übernahme prüfen, alten Host wieder öffnen; `C`, `S`.
 - **Abschluss:** G; Frist/UX/Serververtrag gemeinsam dokumentiert.
 
 #### TT-055 – Raumablauf, Löschung und datensparsame Logs
 
 - **Umsetzung:** D-12 mit 24 Stunden Inaktivität und hartem Raummaximum 48 Stunden umsetzen; letzte Aktivität, Endzeit/Maximalalter, berechtigte Raumschließung und Alarmbereinigung. Nur fachliche Aktivität verlängert Frist; keine endlosen Ping-Verlängerungen. D-16: Tokens bei Leave, Kick und Raumablauf widerrufen; abgelaufene lokale Zuordnungen beim nächsten Appstart bereinigen. Aufräumen aller privaten Zustände und Aktionshistorien.
-- **Dateien:** `apps/server/src/room/{expiry,logging}.ts`, `test/room/expiry.test.ts`, `docs/decisions/007-retention.md`.
+- **Dateien:** `apps/server/src/room/{expiry,logging,deadlines}.ts`, `test/room/{expiry,deadlines}.test.ts`; bestehenden D-12-Beschluss anwenden.
 - **Abhängigkeiten:** TT-054.
 - **Akzeptanz:** Abgelaufener Raum liefert definierte Meldung statt leerer Neugründung; Storage/Alarme/Sockets bereinigt. Logs enthalten Fehlercode und technische Revision, keine Namen/Token/Zahlen/Ordnungen oder vollständige Payloads.
-- **Auto:** Fake-Clock-Ablauf, Alarmretry, aktive/inaktive Räume, Speicherlöschung und Redaction mit eingebetteten Geheimnis-Markern.
+- **Auto:** Fake-Clock-Ablauf, Alarmretry, aktive/inaktive Räume, Speicherlöschung und Redaction mit eingebetteten Geheimnis-Markern. Hostfrist und Ablauf über gemeinsamen Fristenplan testen: kein Überschreiben des früheren Termins, Ablauf hat bei gleichzeitig fälligem Hostwechsel Vorrang.
 - **Manuell / lokal:** `MP` mit kurzer ausschließlich lokaler Testfrist; nach Neustart abgelaufenen Code eingeben; `S`.
 - **Abschluss:** G; tatsächliche Fristen fließen in Datenschutzhinweis ein.
 
@@ -713,7 +717,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Dateien:** `apps/server/src/room/{repository,migrations}.ts`, `test/room/rehydration.test.ts`, `packages/protocol/fixtures/transitions/persistence/`.
 - **Abhängigkeiten:** TT-055, TT-045.
 - **Akzeptanz:** Instanzneuerstellung in jeder Phase verändert weder Zahlen noch Ergebnisse oder D-05-Personen-Zähler; alte bestätigte Aktionen bleiben dedupliziert; keine Zufallsneuzuweisung im Konstruktor.
-- **Auto:** Runtime-Tests mit Instanzneuerstellung/gespeichertem Snapshot, alle Phasen, Alarmwiederholung, Migrationsfehler, Attachments ohne geheime Klartext-Token.
+- **Auto:** Runtime-Tests mit Instanzneuerstellung/gespeichertem Snapshot, alle Phasen, gespeicherte Fragenzuweisung, Alarmwiederholung und Rekonstruktion des gemeinsamen Fristenplans, Migrationsfehler, Attachments ohne geheime Klartext-Token.
 - **Manuell / lokal:** `MP`, Wrangler mit persistiertem lokalen Zustand stoppen/neustarten und Spiel fortsetzen; `S`.
 - **Abschluss:** G; lokale Rehydrierung belegt. Tatsächliche Edge-Hibernation/Abrechnung ist damit nicht gemessen und bleibt spätere Betriebsvalidierung.
 
@@ -766,13 +770,13 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Abhängigkeiten:** TT-005, TT-028; unabhängig von Backend und finaler Grafik ausführbar.
 - **Akzeptanz:** Für jeden freigegebenen DE-Eintrag eine vollständige EN-Fassung; keine fehlenden Skalen/Platzhalter; kein deutschsprachiger Text als angeblich englische Karte. Falls Ersatzkatalog nötig: gleiche vollständige Sprachabdeckung des Ersatzumfangs.
 - **Auto:** ID-/Rollen-/Excludes-Parität, nichtleere Texte, Hash-/Assetprüfung; DE/EN-Widget-Smokes.
-- **Manuell / lokal:** Jede Übersetzung auf Bedeutung/Skalenrichtung prüfen; `W` und `MP` je eine EN-Partie, `D`, `C`.
+- **Manuell / lokal:** Jede Übersetzung auf Bedeutung/Skalenrichtung prüfen; `W` für eine EN-Partie, `D`, `C`. Online-Smoke mit `MP` nach TT-042 zusätzlich in TT-058/069; die eigenständig vorziehbare Inhaltsprüfung hängt nicht vom noch fehlenden Multiplayer ab.
 - **Abschluss:** G; DE/EN-Review je ID nachweisbar, keine halbe Übersetzung als fertiges Feature.
 
 #### TT-062 – Web-/Android-Performance messen und Wasm entscheiden
 
 - **Umsetzung:** D-18 anhand normalem Webrelease und Wasm-Build entscheiden; Abhängigkeiten/Renderer/Fallback/Cache/Headers prüfen. Kleine Profilselektoren, Avatar-Repaintgrenzen und Lazy-Loading nur wo messbar sinnvoll; Offlinepaket vollständig halten.
-- **Dateien:** `scripts/build-web.ps1`, `apps/client/lib/design/`, `apps/client/web/`, `docs/qa/performance.md`, `docs/decisions/008-web-renderer.md`.
+- **Dateien:** `scripts/build-web.ps1`, `apps/client/lib/design/`, `apps/client/web/`, `docs/qa/performance.md`; Messergebnis im bestehenden D-18-Dokument ergänzen, keine konkurrierende Rendererentscheidung anlegen.
 - **Abhängigkeiten:** TT-060, TT-061, TT-031, TT-032, TT-058.
 - **Akzeptanz:** Messgerät/Browser/Netzprofil dokumentiert. Vorläufige Budgets: bedienbar ≤5 s kalt bei festgehaltenem 10-Mbit/s-Profil, ≤2 s warm; p95 Sortierframe ≤32 ms am gewählten Mittelklassegerät; kein stetiges Speicherwachstum über 50 Fälle. D-02-Stresstest mit 20 gleichzeitig sichtbaren Figuren, Scroll-/Drag-Auto-Scroll und 200 % Textskalierung auf mobil und Desktop. Abweichung beheben oder begründet neu entscheiden.
 - **Auto:** Beide Builds kompilieren oder Wasm-Ablehnung mit reproduzierbarem Befund; Bundle-/Precachegrößen und Profil-Smokes.
@@ -890,7 +894,8 @@ Sparmaßnahmen: ein DO/Raum, genau ein Socket/Spieler, Hibernation, IDs/Hashes s
 | Lokales Handy hält alle Zahlen im Speicher | UI/Lifecycle/Resume konsequent verdecken (TT-018/027); kein Schutzversprechen gegen Besitzer mit Debugger. Multiplayer dagegen echte serverseitige Geheimhaltung. |
 | Persistierte Namensänderungen oder Rosterupdates zerstören Zuordnung | stabile IDs, eingefrorener Fall und pending roster (TT-025/053). |
 | Abgebrochene/verspätete WS-Aktion wirkt doppelt | gameId/roundId/revision/actionId, Commit vor Broadcast, persistierte Dedupe (TT-045/057). |
-| Host/fehlender Spieler blockiert Runde dauerhaft | expliziter neutraler Fallabbruch und begründete Hostübernahme (D-07/08, TT-054). |
+| Host/fehlender Spieler blockiert Runde dauerhaft | bestätigter, als Fall gezählter Abschluss ohne Urteil und Hostübernahme (D-07/08, TT-043/054), keine automatische Wertung. |
+| Hostwechsel und Raumablauf überschreiben ihren Alarm gegenseitig | Ein persistierter gemeinsamer Fristenplan mit idempotentem Dispatch; TT-054/055/056. Bei Ablauf keine Wiederbelebung durch Hostwechsel. |
 | Scheinbar offline, aber Renderer/Font fehlt | vollständiges Precache/Ready, kalter Release-Offlinetest, Update A→B (TT-030/031). |
 | Quota/Privatmodus löscht lokale Daten | Speicheradapter mit Fehlerzustand, Offlineversprechen konditional (TT-027/031). |
 | Hibernation verliert RAM; lokale Simulation entspricht nicht jedem Edgeverhalten | Storage/Attachments, Rehydrierungstests und getrennte spätere Betriebsvalidierung (TT-056/070). |
@@ -907,7 +912,7 @@ Sparmaßnahmen: ein DO/Raum, genau ein Socket/Spieler, Hibernation, IDs/Hashes s
 | GAME_DESIGN: 50/7/1,5, ohne Wiederholung innerhalb der Partie, 6h-Nutzungscounter über Partien, X, eingefrorene Optionen, Ereignisse ohne Rotation | TT-003, TT-006–011, TT-027, TT-034, TT-044–046, TT-050/057 | Zählung/Ziehverlauf D-01 und Grenzen D-02 entschieden (3–20 Spieler, 431/491 Fragen, 22/25 Regeln, Faktor 1,0–3,0, Namen 1–24 Zeichen). |
 | GAME_DESIGN: Gruppen-/Profilwechsel, Neustart/Ende | TT-015/025/027/041/053/057 | aktuelle Profile von eingefrorener Teilnahme getrennt. |
 | Regelformat: Rollen, einmalige ID-Bindung, differentFrom, beidseitige excludes, Deaktivieren, Übersetzungen | TT-004/005/008/025/044/053/061 | D-03/04/13 beschlossen und in Fixtures abzubilden. |
-| Fragenformat: 491 Aufgaben je Sprache (9 Materialfragen entfernt), IDs/Sprachen, grün/connector/rot ohne feste Zahlen | TT-004/005/007/009/061/065 | Skalenrichtung und Inhaltsrechte gesondert geprüft. |
+| Fragenformat: 491 Aufgaben je Sprache (9 Materialfragen entfernt), gleiche ID-Reihenfolge, 60 Fragen mit Text-/Skalenrollen | TT-004/005/007/009/019/027/044/046/056/061/065 | Fallbezogene Zuweisung in Text und Skalen, D-05-Fairness, Persistenz und synchrone Darstellung geprüft; Kartenfilter verbindlich. |
 | USER_FLOWS: Start, eigener Avatar, allgemeine Einstellungen | TT-001/013/015/028 | vor Backend erreichbar. |
 | USER_FLOWS: Kartenanzahl, Slider, Fallakte, optionales manuelles Urteil | TT-006/009–012 | keine Namenpflicht, manuelle Wertung sichtbar gekennzeichnet. |
 | USER_FLOWS: Spielerliste, Reihenfolge, zufällige Avatare, Geheimzahlübergabe | TT-014–019/025 | Richter übersprungen, Zahl erst bewusst öffnen. |
@@ -940,6 +945,7 @@ Am 26.10.2026 offizielle Dokumentation abgerufen; tatsächliche Abhängigkeitsve
 - [Cloudflare lokal entwickeln](https://developers.cloudflare.com/workers/local-development/): Wrangler/Miniflare führt Worker und Bindings lokal aus; `--local` und Konfigurationsprüfung verhindern versehentliche Remote-Bindings.
 - [Cloudflare Vitest](https://developers.cloudflare.com/workers/testing/vitest-integration/): aktuell `@cloudflare/vitest-plugin` für lokale Workers-Runtime-Tests; Version mit Wrangler/Node in TT-035 gemeinsam pinnen, nicht ungeprüft ältere Pool-Beispiele übernehmen.
 - [WebSocket Hibernation](https://developers.cloudflare.com/durable-objects/best-practices/websockets/): Hibernation API, gespeicherte Attachments und wiederhergestellter Raumzustand; TT-038/056.
+- [Durable-Object-Alarme](https://developers.cloudflare.com/durable-objects/api/alarms/): Pro DO ist nur ein Alarm gleichzeitig geplant; er kann mehrfach ausgeführt werden. Deshalb gemeinsame persistierte Fristen für Hostwechsel und Ablauf sowie idempotenter Dispatch in TT-054–056 statt unabhängiger Alarmsetter.
 - [DO-Preise](https://developers.cloudflare.com/durable-objects/platform/pricing/), [Workers-Limits](https://developers.cloudflare.com/workers/platform/limits/), [DO-Limits](https://developers.cloudflare.com/durable-objects/platform/limits/): vor Veröffentlichung erneut lesen; ein lokaler Lasttest belegt keine garantierte kostenlose Onlinekapazität.
 
 **Fachliche Planfreigabe: vollständig.** Keine offenen D-01–D-18-Entscheidungen für das Entwickeln; fremde Nutzungsrechte und reale Betriebs-/Gerätetests bleiben vor öffentlicher Veröffentlichung zu prüfen. **Erste Entwicklungsaufgabe: TT-001.** Ergebnis ist die im Browser startbare, navigierbare Flutter-Web-App. Vorher weder Backend noch komplette Spiellogik aufbauen.

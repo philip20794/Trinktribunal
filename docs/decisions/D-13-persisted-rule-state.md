@@ -4,7 +4,8 @@
 
 Für jede Partie werden neben den öffentlich angezeigten IDs fachlich mindestens folgende Daten versioniert gespeichert:
 
-- `gameId`, `roundId`, `caseIndex`, Phasenstatus, Revision, unveränderliche Konfiguration, aktuelle/ausstehende Besetzung, Richter-/Vorleser-ID und eingefrorene Empfängerliste.
+- `gameId`, `roundId`, laufender `caseIndex`, separate Zahl abgeschlossener Fälle (`completedCaseCount`, mit Urteil und nach D-07 ohne Urteil), Phasenstatus, Revision, unveränderliche Konfiguration, aktuelle/ausstehende Besetzung, Richter-/Vorleser-ID und eingefrorene Empfängerliste.
+- Aktuelle Frage-ID und ihre einmalig festgelegten `playerId`-Rollenbindungen für Text und Skalen. Sie bleiben beim Reload identisch und gelten nur für diesen Fall; nicht mit den länger gültigen Trinkregelbindungen verwechseln.
 - Die gezogenen Frage-IDs **einschließlich bereits ohne Urteil abgeschlossener Fälle**, aktive und deaktivierte Regel-IDs sowie deren feste `playerId`-Rollenzuweisungen und Regelstatus; Ereignisplan einschließlich bereits verbrauchter/entfallener Slots.
 - Die vom aktuellen Fall vergebenen privaten Zahlen, bestätigten privaten Ordnungen, bereits freigegebener Aufdeckcursor und Ergebnis-/Abschlussstatus.
 - Den **partiebezogenen D-05-Personenfairness-Zähler** pro stabiler ID, inklusive bei Austritt zurückbehaltener Rejoin-Zähler, sowie genau einmalige Rollen-Neuzuweisungen.

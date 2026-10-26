@@ -70,7 +70,7 @@ git log -5 --oneline
 Get-Command flutter,dart,node,npm,git -ErrorAction SilentlyContinue
 ```
 
-Bei der Planungsanalyse gefunden: Flutter unter `C:\flutter\bin`, SDK-Cache meldet Flutter **3.47.7 stable / Dart 3.13.5**; Node **v24.20.0**, npm **11.19.0**. Flutter wurde nur anhand seiner lokalen Versionsdatei identifiziert; `flutter doctor`, Android-SDK, Java, ChromeDriver und tatsächliche Builds sind **noch nicht geprüft**. TT-001/032/035 müssen die verwendeten Versionen bestätigen. `rg` war in der Agent-Shell nicht verfügbar; ersatzweise `Get-ChildItem` und `Select-String` verwenden.
+Zuletzt am 26.10.2026 mit `flutter doctor -v` geprüft: **Flutter 3.47.7 stable / Dart 3.13.5**, Chrome **155.0.8059.85**, Android-SDK **36.0.0** unter `C:\android_sdk`, JDK **17.0.11** aus Android Studio; Android-Lizenzen akzeptiert. Node **v24.20.0**, npm **11.19.0**. Webentwicklung ist vorbereitet; derzeit kein Androidgerät/-emulator verbunden. **ChromeDriver fehlt im PATH** und wird erst in TT-012 eingerichtet. Die Visual-Studio-Warnung betrifft Windows-Desktop und blockiert Android/Web nicht. Mehrere vorhandene ADB-Binaries nicht pauschal entfernen; bei Androidtests gezielt `C:\android_sdk\platform-tools\adb.exe` verwenden. Details: [Umgebungs- und Planabgleich](qa/PLAN_RECONCILIATION.md). App-Builds und Paketkompatibilität sind noch nicht geprüft; TT-001/032/035 bestätigen die jeweils benötigten Kombinationen. `rg` war in der Agent-Shell nicht verfügbar; ersatzweise `Get-ChildItem` und `Select-String` verwenden.
 
 Ein Agent kann unter einem anderen Windows-Benutzer laufen. Falls Git für genau dieses vertrauenswürdige lokale Repository „dubious ownership“ meldet, eine **befehlsbezogene** Ausnahme verwenden:
 
@@ -79,6 +79,8 @@ git -c safe.directory=C:/Users/Philip/IdeaProjects/Trinktribunal status --short 
 ```
 
 Dies verändert keine globale Konfiguration. Bei weiteren Git-Befehlen dieselbe Option einsetzen. Kein `safe.directory=*`, kein Besitzwechsel und kein Löschen fremder Änderungen. Die bereits vorhandene unversionierte `.idea/` bleibt außerhalb der Dokumentationscommits.
+
+Flutter Doctor lief in der eingeschränkten Agent-Shell zunächst ohne Ausgabe und wurde kontrolliert beendet. Der erfolgreiche zweite Lauf benötigte reguläre SDK-Schreib-/Netzrechte und eine nur für seinen Prozess gesetzte Git-Vertrauensausnahme für `C:/flutter` (`GIT_CONFIG_COUNT=1`, `GIT_CONFIG_KEY_0=safe.directory`, `GIT_CONFIG_VALUE_0=C:/flutter`). Kein SDK-Upgrade und keine globale Git-Konfigurationsänderung durchführen; hängende Prüfläufe nicht durch Löschen gemeinsamer SDK-Locks oder Beenden fremder Dartprozesse behandeln.
 
 ### Benötigte Werkzeuge
 
@@ -263,6 +265,8 @@ Anfänglich zulässige lokale Origins explizit: `http://127.0.0.1:7357` und `htt
 7. Sortierung absichtlich vertauschen, stufenweise aufdecken und Ergebnisse vergleichen. Network-Frames prüfen: verborgene fremde Zahlen dürfen nicht nur optisch verborgen, sondern müssen abwesend sein.
 8. Neue Partie mit „Alle sind Richter“: alle einschließlich eigener Figur sortieren; unterschiedliche private Abgaben und ausschließlich persönliche Schluckwerte prüfen.
 
+Für das konkrete Urteil-Fixture **2/4/0/0** aus TT-022/052 vier isolierte Teilnehmer verwenden: korrekte Ordnung A/B/C/D, A gibt B/A/C/D ab, B gibt B/A/D/C ab, C und D geben A/B/C/D ab. Ein Drei-Spieler-Smoke darf nur tatsächlich mögliche Fehlerzahlen verwenden; vier Fehlpositionen sind dort unmöglich. Der Vorleser rotiert gemäß D-06 nach jedem abgeschlossenen Fall, nicht bei Regelereignissen.
+
 D-16: Web-Resume-Tokens werden **persistent pro Browser-Origin/-Profil** (vorzugsweise IndexedDB) gespeichert, nicht nur pro Tab in sessionStorage. Gleichzeitige Tabs können dieselbe Identität laden: Zweitverbindung ersetzt die alte, alter Tab meldet den Identitätskonflikt; es sind nicht automatisch zwei Spieler. Bewusstes „Als neuer Spieler beitreten“ erzeugt eine andere Identität. Für automatisierte Mehrbrowserprüfung isolierte Profile/Kontexte mit getrenntem Speicher verwenden. Nach **vollständigem Beenden und erneutem Öffnen des Browsers** muss „Partie fortsetzen“ dieselbe playerId zurückbringen. Android-Credentials sind geschützt zu speichern. Das geplante Harness erzeugt synthetische Teilnehmernamen und bereinigt nur eigene Testprofile.
 
 ### Störungscheck je Meilenstein
@@ -282,7 +286,7 @@ D-16: Web-Resume-Tokens werden **persistent pro Browser-Origin/-Profil** (vorzug
 | Personenauswahl mit mehreren Rollen | Richter zulässig, Rollen-Constraints vor Fairness und je ausgewählter Person nur eine Zählung pro Eintrag; TT-007/008/044 |
 | Raum 20 Spieler voll | 21. Beitritt klar abgelehnt; keine zusätzliche Identität/Spielerzahländerung, TT-037/053 |
 | Weniger als drei wirksame Teilnehmer | Pause statt stiller Fallfortsetzung oder erfundener Wertung; TT-006/053 |
-| 20 Figuren sortieren | Scroll-/Auto-Scroll und Tastaturbedienung auf schmalem Browser und Handy prüfen; TT-020/022/062 |
+| 20 Figuren sortieren | Scroll-/Auto-Scroll und Tastaturbedienung auf schmalem Browser und Handy prüfen; TT-020/021/062 |
 | Regelträger verlässt Gruppe | erst nächste Grenze neu binden/deaktivieren; TT-053 |
 | Doppelklick / altes ACK / alte roundId | genau eine Wirkung oder typisierter Fehler; TT-045 |
 | Serverprozess stoppen und mit demselben Persistenzpfad neu starten | fachlicher Zustand bleibt, Sockets verbinden neu; TT-056/057 |
@@ -489,7 +493,7 @@ Vor dem Push Remoteänderungen vergleichen; bei Auth-/Netzproblemen bleibt der l
 3. `PROGRESS.md`: IN ARBEIT/BLOCKIERT zuerst lesen, letzten Prüfbeleg und Handoff verstehen. Fertige Aufgaben nicht erneut implementieren.
 4. Im finalisierten Plan genau die nächste ausgewählte Task-ID und zugehörigen beschlossenen D-Dokumente lesen; relevante Fachquelle/Module hinzunehmen, nicht das ganze Projekt neu planen.
 5. Tatsächliche Dateien/Tests gegen Status prüfen. Ein grünes Kästchen ohne Code/Beleg ist kein Nachweis. Fehlende Abhängigkeit zuerst lösen oder eine unabhängige offene Aufgabe wählen.
-6. Aufgabe auf IN ARBEIT setzen, kleines Ziel benennen; letzten funktionierenden Stand mit `W` prüfen. Nicht mehrere Tasks heimlich gleichzeitig umsetzen.
+6. Aufgabe auf IN ARBEIT setzen, kleines Ziel benennen; letzten funktionierenden Stand prüfen. Bei TT-001 gibt es noch keine App; den dokumentierten direkten Erststart verwenden. `W` erst nach TT-002, `MP` erst nach TT-042; davor die direkten Kommandos/Terminals aus diesem Workflow. Nicht mehrere Tasks heimlich gleichzeitig umsetzen.
 7. Konkrete Akzeptanz implementieren, relevante Tests ausführen, manual/local Gate prüfen. Bestehende D-01–D-18-Beschlüsse anwenden; echte Widersprüche als präzisen Blocker dokumentieren, keine fachlichen Abweichungen erfinden.
 8. Bei Abschluss Beleg und Progress aktualisieren, gezielt committen, gemäß Auftrag pushen. Falls unterbrochen: genaue nächste Aktion, geänderte Dateien, offene Tests und Fehlerzustand notieren.
 
