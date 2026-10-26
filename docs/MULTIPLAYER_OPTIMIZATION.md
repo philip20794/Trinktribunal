@@ -7,7 +7,7 @@
 - **Ein Durable Object pro Spielraum**, nicht pro Spieler. Jeder Flutter-Client hält genau **eine WebSocket-Verbindung** zum Raum; kein Polling.
 - Cloudflare **WebSocket Hibernation API** über `ctx.acceptWebSocket()` verwenden. Keine dauernden Timer oder Heartbeats auf dem Server, die den Raum unnötig wach halten.
 - Verbindungsbezogene Identität in **WebSocket-Attachments**, dauerhaft benötigten Spielzustand in **SQLite-Storage** halten. Nach Hibernation ist In-Memory-Zustand verloren.
-- Bei Verbindungsabbruch: automatisches Wiederverbinden mit exponentiellem Backoff und geheimem Spieler-Token, anschließend einen autorisierten Raum-Snapshot laden.
+- Bei Verbindungsabbruch: automatisches Wiederverbinden mit exponentiellem Backoff und geheimem Spieler-Token, anschließend einen autorisierten Raum-Snapshot laden. **D-16:** Raum-Credential persistent und getrennt von normalem Profil-/Offlinespeicher sichern; nach vollständigem Schließen und erneutem Öffnen auf demselben Gerät „Partie fortsetzen“ ermöglichen (Web IndexedDB, Android geschützte Speicherung). Kein Login, keine systemweite Identität.
 
 ## 2. Wenige Nachrichten und Datenbankzugriffe
 
@@ -30,9 +30,9 @@
 
 ## 4. Sicherheit, Tests und Limits
 
-- Join-/Raumerstellung, Nachrichtengröße, Raumgröße und Aktionsrate begrenzen. Geheim-Token nur privat speichern/übertragen, niemals in öffentlichen Raumsnapshots.
+- Join-/Raumerstellung, Nachrichtengröße, Raumgröße und Aktionsrate begrenzen. Geheim-Token nur privat speichern/übertragen, niemals in öffentlichen Raumsnapshots, Links/QR, Logs oder Offlinecache. Web-Origin-Speicher ersetzt keinen Schutz gegen fremdes JavaScript; strikte CSP, Escaping und keine unkontrollierten Skripte. Auf Leave/Kick/Expiry folgt Tokenwiderruf und kontrollierte lokale Bereinigung. Doppelter Browser-Tab derselben playerId ist keine neue Person; nur ein aktiver Socket je Identität.
 - Dart-Client und TypeScript-Server nutzen denselben **versionierten JSON-Vertrag**. Gemeinsame Regel-Testfälle verhindern abweichende Bewertungen.
-- Tests: 8 Spieler × 50 Fälle und 7 Regelereignisse (Standardeinstellungen), getrennte Räume und Partieneustarts mit 6h-Historie, bevorzugt ungezogene IDs und danach minimale 6h-Zähler, keine Doppelzählung bei Reconnect/ACK, Host-Historienimport/Rückabgleich, Abbruch/Reload, Hibernation, Wiederverbindung, doppelte Aktionen, Spieleränderungen zwischen Fällen und Avatar-Updates während der Partie. **„Alle sind Richter“:** Jede Sortierung separat bewerten; nur die eigenen Fehlplatzierungen führen zu eigenen Schlucken, keine Mittrink-Effekte; mögliche Fehlerzahlen einer gültigen Permutation: 0 oder mindestens 2.
+- Tests: 8 Spieler × 50 Fälle und 7 Regelereignisse (Standardeinstellungen), getrennte Räume und Partieneustarts mit 6h-Historie, bevorzugt ungezogene IDs und danach minimale 6h-Zähler, keine Doppelzählung bei Reconnect/ACK, Host-Historienimport/Rückabgleich, Abbruch/Reload, Browser vollständig schließen und erneut öffnen, Android-App beenden und neu starten, D-16-Tokenablauf und zwei konkurrierende Tabs, Hibernation, Wiederverbindung, doppelte Aktionen, Spieleränderungen zwischen Fällen und Avatar-Updates während der Partie. **„Alle sind Richter“:** Jede Sortierung separat bewerten; nur die eigenen Fehlplatzierungen führen zu eigenen Schlucken, keine Mittrink-Effekte; mögliche Fehlerzahlen einer gültigen Permutation: 0 oder mindestens 2.
 - **Messen:** Worker-/DO-Anfragen, eingehende WebSocket-Nachrichten, DO-GB-Sekunden, SQLite-Lese-/Schreibzeilen, Speicher, Fehlerraten und Latenz. Vor Veröffentlichung die geltenden [Workers-Limits](https://developers.cloudflare.com/workers/platform/limits/), [DO-Limits](https://developers.cloudflare.com/durable-objects/platform/limits/) und [Preise](https://developers.cloudflare.com/durable-objects/platform/pricing/) kontrollieren. Keine garantierte Zahl kostenloser Spieler ohne Messung.
 
 Details zu Regeln und Nutzerabläufen: [Spielkonzept](GAME_DESIGN.md), [Screens](USER_FLOWS.md).
