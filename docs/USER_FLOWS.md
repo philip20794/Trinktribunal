@@ -20,7 +20,7 @@ Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**. Gemä�
 
 1. **Spieler einrichten:** **3–20** Namen mit je 1–24 sichtbaren Unicode-Zeichen hinzufügen, Liste per **Drag & Drop** oder zugängliche Auf/Ab-Steuerung umsortieren; auch mit 20 Spielern gut lesbar und scrollbar. Diese Reihenfolge bestimmt sowohl die Geräteübergabe zur Geheimzahl als auch die **Rotation der Richter**.
 2. Zu jedem Namen wird automatisch ein **zufälliger menschlicher Avatar** erzeugt. Optional kann bereits beim Hinzufügen „männlich“ oder „weiblich“ als Ausgangsfigur gewählt werden. Avatare bleiben später im Editor anpassbar.
-3. **Partie-Einstellungen:** Wie Modus 1; danach starten.
+3. **Partie-Einstellungen:** Wie Modus 1; danach starten. D-05: Bei Fragen und Regeln mit `{player1}` usw. werden Bezugspersonen möglichst gleichmäßig anhand eines internen Zählers je Partie verteilt; auch der Richter kann ausgelost werden.
 4. **Geheimzahl:** Das Handy geht in Listenreihenfolge an die Beteiligten **ohne den Richter**. Zuerst „Gerät an [Name]“, dann „Geheime Akte öffnen“, Zahl anzeigen und vor der Weitergabe wieder verbergen.
 5. **Antworten/Sortieren/Urteil:** Anklagebank mit Avatar-Namensschildern; Richter zieht die Figuren in die vermutete Reihenfolge. Zahlen und Fehler erscheinen in der Aufdeckung.
 6. **Während des Spiels:** Namen/Avatare bearbeiten, Spieler hinzufügen/entfernen und Reihenfolge anpassen. Änderungen an der Besetzung werden **ab dem nächsten Fall** wirksam. Der nächste Richter ist jeweils der nächste noch aktive Eintrag nach dem aktuellen Richter in der aktuellen Liste (zyklisch).
@@ -35,7 +35,7 @@ Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**. Gemä�
 4. **Host-Einstellungen vor Start:** Mit 3–20 aktiven Spielern Spieldauer (1–491 Fragen), Trinkregelanzahl (höchstens 25 geeignete Regeln und F−1 Zwischenräume), Schwierigkeit (Faktor 1,0–3,0) und optional **„Alle sind Richter“**. Nach Start sperren; Änderung nur durch bestätigten Neustart.
 5. **Normales Spiel:** Der aktuelle Richter steht **separat oberhalb** der Anklagebank und wird **nicht als zu sortierende Figur** angezeigt. Die übrigen Spieler erscheinen auf dem schlangenförmigen Sortierfeld; nur der Richter kann die Reihenfolge bearbeiten. Alle sehen Fallakte, Spielphase und aktive Trinkregeln; jeder erhält **nur die eigene** Geheimzahl.
 6. **Alle sind Richter:** Niemand wird aus dem Sortierfeld herausgenommen. Jeder erhält eine geheime Zahl und sortiert **alle einschließlich sich selbst** auf seinem Gerät. Bis zur gemeinsamen Aufdeckung sieht niemand fremde Sortierungen. Im Urteil bekommt **jeder nur seine eigene Fehlerzahl als Schluckzahl** angezeigt (0 oder mindestens 2). Es gibt **kein zusätzliches Mittrinken** für Spieler, die jemand anderes falsch platziert hat.
-7. **Live-Änderungen:** Namens-/Avatar-Änderungen werden an alle übertragen und sofort angezeigt. Beitritte, Austritte und Umstellungen der Spielerreihenfolge wirken für Zahlenvergabe und Richterrotation **ab dem nächsten Fall**.
+7. **Live-Änderungen:** Namens-/Avatar-Änderungen werden an alle übertragen und sofort angezeigt. Beitritte, Austritte und Umstellungen der Spielerreihenfolge wirken für Zahlenvergabe und Richterrotation **ab dem nächsten Fall**. D-05: Neue Spieler starten beim höchsten aktuellen Personen-Zähler, nicht bei null; sie müssen ausgelassene frühere Ziehungen nicht nachholen. Wiederverbinden ist kein neuer Beitritt.
 
 Über das Spielmenü ist ein **ausdrückliches „Raum verlassen“** möglich; dies widerruft die Sitzung und entfernt nach Bestätigung die gespeicherte Zuordnung. Das Schließen des Browsers oder der App zählt ausdrücklich nicht als Verlassen. Sind mehrere Raumzuordnungen gespeichert, kann die App den gewünschten Raum auswählen lassen. Das Fortsetzen auf einem anderen Gerät ist ohne Account nicht zugesagt; wenn Browserdaten fehlen oder das Token abgelaufen ist, erscheint ein verständlicher neuer Join.
 
@@ -47,7 +47,7 @@ Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechsel
 - **Geheime Akte:** Klarer Privatbildschirm, erst auf Tippen sichtbar; keine versehentliche Anzeige der nächsten Person.
 - **Anklagebank:** 2–3 Figuren je Reihe, **schlangenförmige Reihenfolge**, Drag & Drop, Positionen sichtbar. Auch bei 20 Teilnehmern auf kleinen Geräten lesbar und scrollbar, mit Auto-Scroll beim Ziehen und alternativer Tastatur-/Auf-/Ab-Bedienung.
 - **Urteil:** Nacheinander aufgedeckte Zahlen, falsch platzierte Figuren, Fehler und Schlucke. Im normalen Modus: Richter und seine falsch platzierten Spieler trinken die Fehlerzahl. Bei „Alle sind Richter“: persönliche Auswertung pro Spieler, **nur eigene Fehler = eigene Schlucke**, ohne Mittrinken; kein Richterwechsel.
-- **Fortschritt & Ende:** Zähler `Fall 12/50` plus Anzeige aktiver Trinkregeln; am Partieende Abschlussansicht mit Aktion „Neue Partie“.
+- **Fortschritt & Ende:** Zähler `Fall 12/50` plus Anzeige aktiver Trinkregeln; am Partieende Abschlussansicht mit Aktion „Neue Partie“. Neue Partien setzen den D-05-Personen-Zähler zurück, nicht aber die D-01-Sechsstunden-Historie der Inhalts-IDs.
 
 ## Einheitliche Regeln für die Oberfläche
 
