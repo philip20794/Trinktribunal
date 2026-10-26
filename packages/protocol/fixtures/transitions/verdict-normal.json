@@ -1,0 +1,40 @@
+{
+  "fixtureId": "TT003-VERDICT-NORMAL-FOUR",
+  "decisionRefs": [
+    "D-10",
+    "D-17"
+  ],
+  "operation": "evaluateNormalVerdict",
+  "input": {
+    "judgeId": "J",
+    "trueAscendingIds": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "proposedAscendingIds": [
+      "B",
+      "A",
+      "D",
+      "C"
+    ]
+  },
+  "expected": {
+    "wrongPositionCount": 4,
+    "misplacedPlayerIds": [
+      "B",
+      "A",
+      "D",
+      "C"
+    ],
+    "sipCounts": {
+      "J": 4,
+      "A": 4,
+      "B": 4,
+      "C": 4,
+      "D": 4
+    }
+  },
+  "notes": "Errors count wrong positions (4), not pairwise inversions."
+}
