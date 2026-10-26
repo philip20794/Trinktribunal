@@ -49,7 +49,12 @@
     },
     {
       "id": "003-b",
-      "text": "You're having a huge argument with the person to your right. What do you throw out the window in anger?",
+      "text": "You're having a huge argument with {player1}. What do you throw out the window in anger?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "They couldn't care less",
         "connector": "to",
@@ -112,7 +117,12 @@
     },
     {
       "id": "007-a",
-      "text": "The Captain's gravestone reads: 'Here lies ...' Finish the inscription.",
+      "text": "The gravestone of {player1} reads: 'Here lies ...' Finish the inscription.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not flattering at all",
         "connector": "to",
@@ -138,17 +148,13 @@
       }
     },
     {
-      "id": "008-b",
-      "text": "Mime lifting and carrying the game box.",
-      "scale": {
-        "green": "Light as a feather",
-        "connector": "to",
-        "red": "Unbelievably heavy"
-      }
-    },
-    {
       "id": "009-a",
-      "text": "At a party, introduce the person on your right to their crush. What do you say?",
+      "text": "At a party, you introduce {player1} to their crush. What do you say?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A guaranteed rejection",
         "connector": "to",
@@ -229,7 +235,12 @@
     },
     {
       "id": "013-b",
-      "text": "The Captain wants to buy something from an online classifieds site. What is it?",
+      "text": "{player1} wants to buy something from an online classifieds site. What is it?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Completely useless to him",
         "connector": "to",
@@ -283,7 +294,12 @@
     },
     {
       "id": "016-b",
-      "text": "The Captain has invited a Tinder date over. What poster is hanging above his bed?",
+      "text": "{player1} has invited a Tinder date over. What poster is hanging above the bed?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "His date runs for the hills",
         "connector": "to",
@@ -382,7 +398,12 @@
     },
     {
       "id": "022-a",
-      "text": "The Captain is on the front page of the newspaper. What's the headline?",
+      "text": "{player1} is on the front page of the newspaper. What's the headline?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not flattering in the slightest",
         "connector": "to",
@@ -396,15 +417,6 @@
         "green": "Puts me straight back to sleep",
         "connector": "to",
         "red": "Wakes me right up"
-      }
-    },
-    {
-      "id": "023-a",
-      "text": "Pretend the game box is a mirror. Look at your newly operated-on nose and act out your reaction.",
-      "scale": {
-        "green": "The surgery has gone horribly wrong",
-        "connector": "to",
-        "red": "My new nose looks gorgeous"
       }
     },
     {
@@ -499,7 +511,12 @@
     },
     {
       "id": "028-b",
-      "text": "Which '... For Dummies' guide does the Captain need?",
+      "text": "Which '... For Dummies' guide does {player1} need?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "He has absolutely no use for it",
         "connector": "to",
@@ -598,7 +615,12 @@
     },
     {
       "id": "034-a",
-      "text": "You're secretly in love with someone in the group. Declare your love in two rhyming sentences.",
+      "text": "You're secretly in love with {player1}. Declare your love in two rhyming sentences.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not romantic at all",
         "connector": "to",
@@ -696,15 +718,6 @@
       }
     },
     {
-      "id": "039-b",
-      "text": "Pretend the game instructions are a restaurant menu. Read out a dish from it.",
-      "scale": {
-        "green": "Cheap fast food",
-        "connector": "to",
-        "red": "Three-Michelin-star cuisine"
-      }
-    },
-    {
       "id": "040-a",
       "text": "What item would have come in handy when the Titanic sank?",
       "scale": {
@@ -715,7 +728,12 @@
     },
     {
       "id": "040-b",
-      "text": "Look another player deep in the eyes and hypnotize them into doing something. What do you make them do?",
+      "text": "Look {player1} deep in the eyes and hypnotize them. What do you make them do?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A small favor",
         "connector": "to",
@@ -729,15 +747,6 @@
         "green": "Completely harmless to humans",
         "connector": "to",
         "red": "Extremely dangerous to humans"
-      }
-    },
-    {
-      "id": "041-b",
-      "text": "Pass the game box to another player and tell them what you think of the game.",
-      "scale": {
-        "green": "You hate this game",
-        "connector": "to",
-        "red": "You love this game"
       }
     },
     {
@@ -765,15 +774,6 @@
         "green": "I'm its afternoon snack",
         "connector": "to",
         "red": "I get away easily"
-      }
-    },
-    {
-      "id": "043-b",
-      "text": "Pass the game box to another player. How do you do it?",
-      "scale": {
-        "green": "Extremely rudely",
-        "connector": "to",
-        "red": "With genuine warmth"
       }
     },
     {
@@ -814,7 +814,12 @@
     },
     {
       "id": "046-a",
-      "text": "It's Kindness Day. Give someone at the table a compliment.",
+      "text": "It's Kindness Day. Give {player1} a compliment.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A nice little compliment",
         "connector": "to",
@@ -931,7 +936,12 @@
     },
     {
       "id": "052-b",
-      "text": "Invent a nickname for the Captain and use it for the rest of the game.",
+      "text": "Invent a nickname for {player1} and use it for the rest of the game.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "So annoying he'll hate it",
         "connector": "to",
@@ -1030,7 +1040,12 @@
     },
     {
       "id": "058-a",
-      "text": "A DNA test reveals that the Captain is related to ... Finish the sentence.",
+      "text": "A DNA test reveals that {player1} is related to ... Finish the sentence.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "The worst news imaginable",
         "connector": "to",
@@ -1048,7 +1063,12 @@
     },
     {
       "id": "059-a",
-      "text": "The player on your right takes your photo with an imaginary camera: 'One, two, three, click!' Strike a pose.",
+      "text": "Imagine {player1} taking your photo with an invisible camera, counting: 'One, two, three, click!' Strike a pose.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "The worst photo pose",
         "connector": "to",
@@ -1075,7 +1095,12 @@
     },
     {
       "id": "060-b",
-      "text": "Surprise! The Captain's mother has covered his wallpaper, curtains and duvet in the same pattern. What pattern is it?",
+      "text": "Surprise! The mother of {player1} has decorated the wallpaper, curtains and duvet with the same pattern. What pattern is it?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "The worst design choice",
         "connector": "to",
@@ -1102,7 +1127,12 @@
     },
     {
       "id": "062-a",
-      "text": "Look another player straight in the eyes and explain why you're breaking up with them.",
+      "text": "Look {player1} straight in the eyes and explain why you're breaking up with them.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "An utterly silly reason",
         "connector": "to",
@@ -1111,7 +1141,12 @@
     },
     {
       "id": "062-b",
-      "text": "Where could the Captain take a date out for dinner?",
+      "text": "Where could {player1} take a date out for dinner?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Completely unimpressive",
         "connector": "to",
@@ -1165,7 +1200,12 @@
     },
     {
       "id": "065-b",
-      "text": "What birthday present do you get the Captain?",
+      "text": "What birthday present do you get {player1}?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "He's bitterly disappointed",
         "connector": "to",
@@ -1273,7 +1313,12 @@
     },
     {
       "id": "071-b",
-      "text": "You enter the Captain in a talent show. What should he do on stage?",
+      "text": "You enter {player1} in a talent show. What should they do on stage?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "He's terrible at it",
         "connector": "to",
@@ -1354,7 +1399,12 @@
     },
     {
       "id": "076-a",
-      "text": "An earthquake opens a chasm between you and the player on your left. Throw them your car keys so they can go for help. Act out the throw.",
+      "text": "An earthquake opens a chasm between you and {player1}. Throw {player1} your car keys so they can go for help. Act out the throw.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A complete miss",
         "connector": "to",
@@ -1390,7 +1440,12 @@
     },
     {
       "id": "078-a",
-      "text": "You're a witch who's brewed a transformation potion. The Captain drinks it. What object does he turn into?",
+      "text": "You're a witch who's brewed a transformation potion. {player1} drinks it. What object do they turn into?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "The worst possible fate for him",
         "connector": "to",
@@ -1453,7 +1508,12 @@
     },
     {
       "id": "081-b",
-      "text": "Stand up and act out serving another player a glass of fine wine.",
+      "text": "Stand up and act out serving {player1} a glass of fine wine.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Incredibly clumsy",
         "connector": "to",
@@ -1534,7 +1594,12 @@
     },
     {
       "id": "086-a",
-      "text": "You're going hiking for several days. What do you secretly slip into someone else's backpack for them to carry?",
+      "text": "You're going hiking for several days. What do you secretly slip into {player1}'s backpack for them to carry?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Light as a feather",
         "connector": "to",
@@ -1543,7 +1608,12 @@
     },
     {
       "id": "086-b",
-      "text": "What might the Captain post on Facebook?",
+      "text": "What might {player1} post on Facebook?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Very unlikely",
         "connector": "to",
@@ -1642,7 +1712,12 @@
     },
     {
       "id": "092-a",
-      "text": "You give the Captain a ticket to a huge trade show or convention. What's it for?",
+      "text": "You give {player1} a ticket to a huge trade show or convention. What's it for?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "He'd rather die than attend",
         "connector": "to",
@@ -1768,7 +1843,12 @@
     },
     {
       "id": "099-a",
-      "text": "What nickname did the Captain have at school?",
+      "text": "What nickname did {player1} have at school?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Totally unpopular",
         "connector": "to",
@@ -1831,7 +1911,12 @@
     },
     {
       "id": "102-b",
-      "text": "Someone at the table quietly lets one rip. How do you react?",
+      "text": "Imagine {player1} quietly letting one rip. How do you react?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Barely noticeable",
         "connector": "to",
@@ -1966,7 +2051,12 @@
     },
     {
       "id": "110-a",
-      "text": "The Captain is thinking of visiting his parents this weekend. Their village is hosting the annual Festival of ... Finish the name.",
+      "text": "{player1} is thinking of visiting their parents this weekend. Their village is hosting the annual Festival of ... Finish the name.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not tempting to the Captain at all",
         "connector": "to",
@@ -2083,7 +2173,12 @@
     },
     {
       "id": "116-b",
-      "text": "Which fictional character would the Captain most want beside him on a ten-hour flight?",
+      "text": "Which fictional character would {player1} most want beside them on a ten-hour flight?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A truly awful flight",
         "connector": "to",
@@ -2092,7 +2187,12 @@
     },
     {
       "id": "117-a",
-      "text": "Mime handing an invisible egg to another player.",
+      "text": "Mime handing an invisible egg to {player1}.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "With extreme care",
         "connector": "to",
@@ -2182,7 +2282,12 @@
     },
     {
       "id": "122-a",
-      "text": "What's on the Captain's mind right now? Finish: 'The Captain is thinking about ...'",
+      "text": "What's on {player1}'s mind right now? Finish: '{player1} is thinking about ...'",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Extremely unlikely",
         "connector": "to",
@@ -2299,7 +2404,12 @@
     },
     {
       "id": "128-b",
-      "text": "The Captain is stranded in the jungle and has to live like Tarzan forever. What would he miss most?",
+      "text": "{player1} is stranded in the jungle and has to live like Tarzan forever. What would they miss most?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "He'd barely miss it",
         "connector": "to",
@@ -2317,7 +2427,12 @@
     },
     {
       "id": "129-b",
-      "text": "Say 'Boo!' to another player and try to scare them.",
+      "text": "Say 'Boo!' to {player1} and try to scare them.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Sweet and friendly",
         "connector": "to",
@@ -2335,7 +2450,12 @@
     },
     {
       "id": "130-b",
-      "text": "You're a fortune-teller. Read another player's future from your crystal ball.",
+      "text": "You're a fortune-teller. Read {player1}'s future from your crystal ball.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A future full of bad luck",
         "connector": "to",
@@ -2380,7 +2500,12 @@
     },
     {
       "id": "133-a",
-      "text": "Scold the person on your left as if they were a child who'd misbehaved.",
+      "text": "Scold {player1} as if they were a child who'd misbehaved.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A tiny bit of mischief",
         "connector": "to",
@@ -2398,7 +2523,12 @@
     },
     {
       "id": "134-a",
-      "text": "Which famous person, alive or dead, might the Captain unexpectedly meet?",
+      "text": "Which famous person, alive or dead, might {player1} unexpectedly meet?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "The worst surprise imaginable",
         "connector": "to",
@@ -2443,7 +2573,12 @@
     },
     {
       "id": "136-b",
-      "text": "The Captain is giving away a dream vacation. What do you promise him to make sure he chooses you?",
+      "text": "{player1} is giving away a dream vacation. What do you promise to make sure they choose you?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not convincing at all",
         "connector": "to",
@@ -2497,7 +2632,12 @@
     },
     {
       "id": "139-b",
-      "text": "The player on your left is a supervillain. Look them deep in the eyes and say: 'I'm Batman.'",
+      "text": "{player1} is a supervillain. Look them deep in the eyes and say: 'I'm Batman.'",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not believable at all",
         "connector": "to",
@@ -2506,7 +2646,12 @@
     },
     {
       "id": "140-a",
-      "text": "Take an imaginary magic wand and cast a spell you've invented on another player.",
+      "text": "Take an imaginary magic wand and cast a spell you've invented on {player1}.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A really nasty spell",
         "connector": "to",
@@ -2650,7 +2795,12 @@
     },
     {
       "id": "148-a",
-      "text": "The Captain never knows what to do on Sunday mornings. Recommend an activity.",
+      "text": "{player1} never knows what to do on Sunday mornings. Recommend an activity.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not enjoyable at all",
         "connector": "to",
@@ -2776,7 +2926,12 @@
     },
     {
       "id": "155-a",
-      "text": "You give the Captain a T-shirt with a slogan on it. What does it say?",
+      "text": "You give {player1} a T-shirt with a slogan on it. What does it say?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "He'd never wear it",
         "connector": "to",
@@ -2902,7 +3057,12 @@
     },
     {
       "id": "162-a",
-      "text": "What item would the Captain fight through crowds to buy on the first day of a big sale?",
+      "text": "What item would {player1} fight through crowds to buy on the first day of a big sale?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Extremely unlikely",
         "connector": "to",
@@ -2992,7 +3152,12 @@
     },
     {
       "id": "167-a",
-      "text": "What pet would you give the Captain?",
+      "text": "What pet would you give {player1}?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "He'd want to abandon it by the roadside",
         "connector": "to",
@@ -3055,7 +3220,12 @@
     },
     {
       "id": "170-b",
-      "text": "The person to your left asks: 'Do you love me?' Reply: 'Yes!'",
+      "text": "{player1} asks you: 'Do you love me?' Reply: 'Yes!'",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not convincing at all",
         "connector": "to",
@@ -3117,15 +3287,6 @@
       }
     },
     {
-      "id": "174-a",
-      "text": "Touch an imaginary game box with your fingertip. It's electrified! Act out your reaction.",
-      "scale": {
-        "green": "Just a tiny tingle",
-        "connector": "to",
-        "red": "A massive electric shock"
-      }
-    },
-    {
       "id": "174-b",
       "text": "A couple has just got married. What wedding present do you give them?",
       "scale": {
@@ -3145,7 +3306,12 @@
     },
     {
       "id": "175-b",
-      "text": "Describe a situation that would frighten the Captain.",
+      "text": "Describe a situation that would frighten {player1}.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A little scare",
         "connector": "to",
@@ -3334,7 +3500,12 @@
     },
     {
       "id": "186-a",
-      "text": "In the afterlife, the Captain lives in a world full of ... Finish the sentence.",
+      "text": "In the afterlife, {player1} lives in a world full of ... Finish the sentence.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Pure hell",
         "connector": "to",
@@ -3369,15 +3540,6 @@
       }
     },
     {
-      "id": "188-a",
-      "text": "You lift the lid of the game box. There's a tarantula underneath! Act out your fear.",
-      "scale": {
-        "green": "A mild fright",
-        "connector": "to",
-        "red": "Absolute panic"
-      }
-    },
-    {
       "id": "188-b",
       "text": "What job might the French president take after leaving office?",
       "scale": {
@@ -3388,7 +3550,12 @@
     },
     {
       "id": "189-a",
-      "text": "Which Disney character is most like the Captain?",
+      "text": "Which Disney character is most like {player1}?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Nothing like him",
         "connector": "to",
@@ -3424,7 +3591,12 @@
     },
     {
       "id": "191-a",
-      "text": "Give another player a nickname made up of an animal and an adjective.",
+      "text": "Give {player1} a nickname made up of an animal and an adjective.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Extremely insulting",
         "connector": "to",
@@ -3505,7 +3677,12 @@
     },
     {
       "id": "195-b",
-      "text": "The Captain is now a wrestler standing in the ring. Shout his ring name!",
+      "text": "{player1} is a wrestler standing in the ring. Shout their ring name!",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Totally ridiculous",
         "connector": "to",
@@ -3675,15 +3852,6 @@
       }
     },
     {
-      "id": "205-a",
-      "text": "Say 'I really enjoy playing Top Ten' in an accent.",
-      "scale": {
-        "green": "From the farthest south on Earth",
-        "connector": "to",
-        "red": "From the farthest north on Earth"
-      }
-    },
-    {
       "id": "205-b",
       "text": "You finally find your seat on a high-speed train. But sitting right behind you is ... Finish the sentence.",
       "scale": {
@@ -3703,7 +3871,12 @@
     },
     {
       "id": "206-b",
-      "text": "You're all building a humanoid robot together. Which physical or mental trait from another player do you give it?",
+      "text": "You're all building a humanoid robot together. Which physical or mental trait from {player1} do you give it?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A completely useless robot",
         "connector": "to",
@@ -3739,7 +3912,12 @@
     },
     {
       "id": "208-b",
-      "text": "Act out saying 'I love you' to another player.",
+      "text": "Act out saying 'I love you' to {player1}.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Not convincing at all",
         "connector": "to",
@@ -3775,7 +3953,12 @@
     },
     {
       "id": "210-b",
-      "text": "What lie might the Captain have put in their dating profile?",
+      "text": "What lie might {player1} have put in their dating profile?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A tiny exaggeration",
         "connector": "to",
@@ -3793,7 +3976,12 @@
     },
     {
       "id": "211-b",
-      "text": "What costume would you recommend the Captain wear to a costume party?",
+      "text": "What costume would you recommend {player1} wear to a costume party?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Doesn't suit them at all",
         "connector": "to",
@@ -3928,7 +4116,12 @@
     },
     {
       "id": "219-a",
-      "text": "The Captain is looking for a new career. What job would you recommend?",
+      "text": "{player1} is looking for a new career. What job would you recommend?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Completely unsuited to it",
         "connector": "to",
@@ -3960,15 +4153,6 @@
         "green": "A terrible idea",
         "connector": "to",
         "red": "A brilliant idea"
-      }
-    },
-    {
-      "id": "221-a",
-      "text": "The game box is sad because it's about to go back on the shelf. Pick it up and comfort it.",
-      "scale": {
-        "green": "Not comforting at all",
-        "connector": "to",
-        "red": "Incredibly comforting"
       }
     },
     {
@@ -4027,7 +4211,12 @@
     },
     {
       "id": "224-b",
-      "text": "Proudly show another player something and announce: 'This is my honorary membership card for the ... Club!' Finish the name.",
+      "text": "Proudly show {player1} something and announce: 'This is my honorary membership card for the ... Club!' Finish the name.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A pretty embarrassing club",
         "connector": "to",
@@ -4045,7 +4234,12 @@
     },
     {
       "id": "225-b",
-      "text": "What will the Captain's life look like in ten years? Describe their future.",
+      "text": "What will {player1}'s life look like in ten years? Describe their future.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Their worst nightmare",
         "connector": "to",
@@ -4126,7 +4320,12 @@
     },
     {
       "id": "230-a",
-      "text": "You're in charge of marketing for Robo3000. Invent an advertising slogan for a new robot vacuum named after the player on your left.",
+      "text": "You're in charge of marketing for Robo3000. Invent an advertising slogan for a new robot vacuum named after {player1}.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "The least persuasive ad imaginable",
         "connector": "to",
@@ -4252,7 +4451,12 @@
     },
     {
       "id": "237-a",
-      "text": "Name a word from the dictionary. How often does the Captain use it?",
+      "text": "Name a word from the dictionary. How often does {player1} use it?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Never says it",
         "connector": "to",
@@ -4414,7 +4618,12 @@
     },
     {
       "id": "246-a",
-      "text": "The Captain points to a man in the group. Imagine he's suddenly naked. What object does he use to cover his private parts?",
+      "text": "Imagine {player1} suddenly standing there naked. What object do they use to cover themselves?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Hardly anything to cover",
         "connector": "to",
@@ -4450,7 +4659,12 @@
     },
     {
       "id": "248-a",
-      "text": "Get down on one knee or hold out an imaginary ring and propose to another player.",
+      "text": "Get down on one knee or hold out an imaginary ring and propose to {player1}.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Guaranteed rejection",
         "connector": "to",
@@ -4495,7 +4709,12 @@
     },
     {
       "id": "250-b",
-      "text": "One of the players is a vampire! Point at them and explain how you figured it out.",
+      "text": "{player1} is a vampire! Point at them and explain how you figured it out.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "A tiny clue",
         "connector": "to",
