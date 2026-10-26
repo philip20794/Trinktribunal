@@ -225,6 +225,8 @@ D-16: Web-Resume-Tokens werden **persistent pro Browser-Origin/-Profil** (vorzug
 | Zwei Tabs mit derselben playerId | Neuere autorisierte Verbindung ersetzt die alte; kein doppelter Spieler; TT-038/042/057 |
 | Host verschwindet | verständliches Warten, später eindeutige Hostübernahme nach D-08; TT-054 |
 | Join/Leave/Reorder mitten im Fall | aktuelle Zahlen/Urteil unverändert, neue Besetzung erst nächster Fall; TT-053 |
+| Neuer Spieler während der laufenden Partie | Personen-Zähler mindestens auf aktuellen Höchststand; keine Aufholserien; TT-025/053 |
+| Personenauswahl mit mehreren Rollen | Richter zulässig, Rollen-Constraints vor Fairness und je ausgewählter Person nur eine Zählung pro Eintrag; TT-007/008/044 |
 | Raum 20 Spieler voll | 21. Beitritt klar abgelehnt; keine zusätzliche Identität/Spielerzahländerung, TT-037/053 |
 | Weniger als drei wirksame Teilnehmer | Pause statt stiller Fallfortsetzung oder erfundener Wertung; TT-006/053 |
 | 20 Figuren sortieren | Scroll-/Auto-Scroll und Tastaturbedienung auf schmalem Browser und Handy prüfen; TT-020/022/062 |
@@ -247,6 +249,10 @@ Erst nach erfolgreichem Loopbacktest und ausdrücklich gewünschtem LAN-Test:
 - Auf einem echten Handy ist `127.0.0.1` das Handy, nicht der PC. Androidemulator erreicht den PC typischerweise über `10.0.2.2`; Gerätepfad separat dokumentieren.
 - Service Worker funktionieren auf localhost als sicherem Entwicklungskontext; gewöhnliches LAN-HTTP ist kein zuverlässiger PWA-/Offlinetest. Dafür localhost am PC oder ein bewusst eingerichtetes vertrauenswürdiges lokales HTTPS verwenden.
 - Android-Debug darf für lokalen Worker gezielt HTTP erlauben; Releasekonfiguration HTTPS/WSS. Keine globale Cleartext-Freigabe für Release.
+
+### Personenreferenzen fair auslosen (D-05, Teilbeschluss)
+
+Ab TT-007/008/025 mit gemeinsamen Domain-Fixtures prüfen: vier gleich berechtigte Spieler A/B/C/D mit Zählern 0/0/0/0 müssen in vier personenbezogenen Ziehungen alle einmal berücksichtigt werden, bevor jemand ein zweites Mal gezogen wird. Auch Richter und Selbstbezug sind zulässig; `differentFrom` geht vor. Mehrfaches `{player1}` zählt nur einmal pro tatsächlich gebundenem Eintrag. Neuer Spieler D bei A/B/C=4/4/5 beginnt bei 5, nicht bei 0: keine bevorzugten Nachhol-Ziehungen. Rückkehr nach echtem Leave, Neubesetzung von Regelrollen, Profiländerung und bloßer Reconnect getrennt testen. Ab TT-044 Dart/TypeScript-Parität; ab TT-045/053/056/057 atomare Zählung und persistierte/idempotente Counter. Neue Partie: Personen-Zähler zurück auf null; D-01-Inhaltshistorie bleibt sechs Stunden erhalten. [D-05-Teilbeschluss](decisions/D-05-person-selection-fairness.md).
 
 ### Sechs-Stunden-Ziehhistorie prüfen
 
