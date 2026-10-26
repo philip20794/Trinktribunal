@@ -149,7 +149,7 @@
     },
     {
       "id": "009-a",
-      "text": "At a party, you introduce {player1} to their crush. What do you say?",
+      "text": "At a party, you introduce {player1} to your crush. What do you say?",
       "players": {
         "player1": {
           "selection": "random"
@@ -1517,7 +1517,7 @@
       "scale": {
         "green": "Incredibly clumsy",
         "connector": "to",
-        "red": "Service worthy of a Michelin-starred restaurant"
+        "red": "Service worthy of a three-star restaurant"
       }
     },
     {
@@ -3686,7 +3686,7 @@
       "scale": {
         "green": "Totally ridiculous",
         "connector": "to",
-        "red": "Incredibly intimidating"
+        "red": "Incredibly impressive"
       }
     },
     {

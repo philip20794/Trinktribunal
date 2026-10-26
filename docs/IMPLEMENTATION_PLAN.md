@@ -935,7 +935,7 @@ Sparmaßnahmen: ein DO/Raum, genau ein Socket/Spieler, Hibernation, IDs/Hashes s
 
 ## 8. Technische Quellen und Gültigkeitsgrenzen
 
-Am 26.10.2026 offizielle Dokumentation abgerufen; tatsächliche Abhängigkeitsversionen erst in TT-001/035 verifizieren und festhalten. Keine hier beschriebene Appfunktion wurde bereits gebaut oder getestet.
+Am 26.10.2026 offizielle Dokumentation abgerufen; tatsächliche Abhängigkeitsversionen erst in TT-001/035 verifizieren und festhalten. Diese Quellenliste stammt aus der Planungsphase; tatsächlich umgesetzte und geprüfte Aufgaben stehen im aktuellen Fortschrittsregister.
 
 - [Flutter Web starten und bauen](https://docs.flutter.dev/platform-integration/web/building): Web-Hot-Reload ist seit Flutter 3.35 standardmäßig verfügbar; Chrome-/Edge-/Webserver-Vorschau möglich. TT-001 prüft den konkreten SDK-Stand.
 - [Flutter Web FAQ](https://docs.flutter.dev/platform-integration/web/faq): eigener Offline-Service-Worker notwendig; TT-030/031 verlassen sich nicht auf einen automatisch erzeugten Cache.

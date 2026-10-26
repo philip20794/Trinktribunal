@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Integration von `task/TT-001-flutter-shell` (`251a788`) mit `main` (`0d8cd2d`), Mergebasis gesichert in `3bc0000`. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Aktuelle M0-Abnahme](qa/M0.md).
 
-**Aktuell: M0 abgeschlossen. 4/70 Aufgaben abgenommen; automatische Gates grün und visuelle Browserabnahme am 26.10.2026 durch den Nutzer bestätigt. Merge und Fortsetzung ausdrücklich autorisiert.** Keine GitHub Actions oder Cloudflare-Deployments.
+**Aktuell: M0 abgeschlossen. 5/70 Aufgaben abgenommen; automatische Gates grün und visuelle Browserabnahme am 26.10.2026 durch den Nutzer bestätigt. Merge und Fortsetzung ausdrücklich autorisiert.** Keine GitHub Actions oder Cloudflare-Deployments.
 
 ## Statusregeln
 
@@ -34,14 +34,16 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 
 **TT-001–TT-003 – ERLEDIGT.** App-Shell, Windows-Workflow und Zustandsvertrag geprüft; lokale Tests/Builds und Nutzerabnahme siehe [M0](qa/M0.md). chrome-devtools bleibt agentenseitig unerreichbar, deshalb keine automatische visuelle Prüfung behauptet.
 
-**TT-004 – ERLEDIGT.** Schemas, semantischer Validator, deterministisches Manifest/Assets, typisierte Flutter-Loader und Debugdiagnose. 73 Node-/17 Flutter-Tests, Analyze und JS-Webbuild erfolgreich. [Prüfbeleg](qa/TT-004.md). Nächste Aufgabe: TT-005.
+**TT-004 – ERLEDIGT.** Schemas, semantischer Validator, deterministisches Manifest/Assets, typisierte Flutter-Loader und Debugdiagnose. 73 Node-/17 Flutter-Tests, Analyze und JS-Webbuild erfolgreich. [Prüfbeleg](qa/TT-004.md). TT-005 ist ebenfalls abgeschlossen.
+
+**TT-005 – ERLEDIGT.** Personenfragen und alle Regeln DE/EN abgeglichen, drei kleine EN-Bedeutungsabweichungen korrigiert, Assethash erneuert, fünf Regressionstests ergänzt. Gesamtcheck: 78 Node-/17 Flutter-Tests, Analyze/Format grün. Rechteklärung bleibt explizites TT-065-Releasegate. [Inhaltsreview](qa/content-review.md).
 
 ## Meilensteine
 
 | Meilenstein | Aufgaben | Status | Lokales Demo-Gate / späterer Beleg |
 | --- | --- | --- | --- |
 | M0 | TT-001–TT-003 | ERLEDIGT | Lokale Tests/Builds und manuelle Nutzerabnahme · [M0](qa/M0.md) |
-| M1 | TT-004–TT-012 | OFFEN | Kartenmodus mit drei Fällen und zwei Ereignissen bis Neustart; `docs/qa/M1.md`. |
+| M1 | TT-004–TT-012 | IN ARBEIT | Kartenmodus mit drei Fällen und zwei Ereignissen bis Neustart; `docs/qa/M1.md`. |
 | M2 | TT-013–TT-026 | OFFEN | Vier Personen, sechs Fälle, Avatar/Übergabe/Bank/Urteil/Wechsel; `docs/qa/M2.md`. |
 | M3 | TT-027–TT-033 | OFFEN | Wiederaufnahme, kalter Web-Offlinestart, Android-Flugmodus; `docs/qa/M3.md`. |
 | M4 | TT-034–TT-042 | OFFEN | Drei isolierte Browser in synchroner lokaler Lobby; `docs/qa/M4.md`. |
@@ -62,7 +64,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
 | TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
 | TT-004 | Beide Katalogformate validieren und bündeln | ERLEDIGT | 73 Node-/17 Flutter-Tests, Analyze, Webbuild · [TT-004](qa/TT-004.md) |
-| TT-005 | Redaktionelle Konflikte inventarisieren und entscheiden | OFFEN | — |
+| TT-005 | Redaktionelle Konflikte inventarisieren und entscheiden | ERLEDIGT | Inhaltsreview, 5 Regressionstests, Rechtegate dokumentiert · [Review](qa/content-review.md) |
 | TT-006 | Konfiguration und unveränderliche Spielmodelle | OFFEN | — |
 | TT-007 | Frage ziehen und Ereignisplan erzeugen | OFFEN | — |
 | TT-008 | Trinkregeln auswählen und Rollen binden | OFFEN | — |
@@ -156,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Aufgabe: TT-005 – Redaktionelle Konflikte inventarisieren und entscheiden.**
+**Nächste Aufgabe: TT-006 – Konfiguration und unveränderliche Spielmodelle.**
 
 Der aktuelle [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) ersetzt die historische Bestandsaufnahme unten als Aussage über den heutigen Entwicklungsstand. Alle 70 TT-Aufgaben bleiben OFFEN; der erfolgreiche Umgebungscheck ist kein bestandener App-Build.
 
@@ -179,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-004-catalogs; M0 bereits auf main e45e1b7
+Branch: main nach geprüftem TT-004/005-Merge; nächster Featurebranch task/TT-006-game-models
 Aktueller Beleg: docs/qa/M0.md
-Naechster Schritt: TT-005 gemaess Plan; danach TT-006
+Naechster Schritt: TT-006 gemaess Plan, reine Dart-Domain ohne Flutter/Riverpod/IO
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```
