@@ -3315,7 +3315,7 @@
       "scale": {
         "green": "Ein kleiner Schreck für {player1}",
         "connector": "bis",
-        "red": "{player1} bekommt die Angst des Lebens"
+        "red": "Der schlimmste Schrecken für {player1}"
       }
     },
     {
