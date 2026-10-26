@@ -6,6 +6,17 @@ Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) u
 
 Ziel: Nach TT-001 ist ein Browserfenster jederzeit mit dem aktuellen Stand bedienbar. Jeder kleine Entwicklungsschritt erhält diesen Zustand. Alle Prüfungen und Builds laufen auf dem eigenen PC; eine spätere CI darf dieselben Skripte aufrufen, ist aber keine Voraussetzung.
 
+## TT-003: vorbereiteter Fachvertrag und Fixtures (noch nicht abgenommen)
+
+Im selben Featurebranch liegen der [TT-003-Fachvertrag](decisions/001-game-contract.md), das [Protokoll-README](../packages/protocol/README.md), 17 fachliche JSON-Beispielfälle und der unabhängige Node-Orakeltest `scripts/tests/protocol-fixtures.test.mjs`.
+
+```powershell
+node --test .\scripts\tests\protocol-fixtures.test.mjs
+powershell -NoProfile -File .\scripts\check.ps1 -Scope Docs
+```
+
+Die JSON-Fixtures wurden unmittelbar aus GitHub gelesen und strukturell in JavaScript geprüft; verschiedene fachliche Ergebnisse wurden unabhängig nachgerechnet. **Der Node-Orakeltest selbst wurde noch nicht im vollständigen Windows-Checkout ausgeführt.** Vor TT-003-Abnahme die spätere Dart-/TypeScript-Anbindung prüfen, Einfüge-/Rotation-/Abbruchbeispiele manuell nachspielen und TT-001-/002-Abhängigkeiten schließen. TT-004 bleibt bis dahin unbegonnen.
+
 ## TT-002: vorbereitete Windows-Befehle (noch nicht abgenommen)
 
 Diese Dateien liegen bereits vor, sind aber **keine abgeschlossene Aufgabe**, solange TT-001 und die lokalen TT-002-Gates fehlen:
@@ -19,7 +30,7 @@ powershell -NoProfile -File .\scripts\check.ps1 -Scope Client
 powershell -NoProfile -File .\scripts\check.ps1 -Scope All
 ```
 
-`dev-client.ps1` prüft PATH und TCP-Port, startet `flutter pub get` und `flutter run`; optional `-ApiBaseUrl` wird als `--dart-define=API_BASE_URL=…` übergeben. `check.ps1` führt für Docs den reinen Node-Link-/70-ID-Prüfer und dessen vier `node --test`-Tests aus, für Client `flutter pub get`, Dart-Formatcheck, Flutter Analyze und alle Flutter-Tests. Bei `All` wird der noch fehlende Server ausdrücklich als ungetestet gemeldet; es gibt keine Deploymentaktion. Programme müssen im PATH liegen, Exitcodes werden weitergegeben.
+`dev-client.ps1` prüft PATH und TCP-Port, startet `flutter pub get` und `flutter run`; optional `-ApiBaseUrl` wird als `--dart-define=API_BASE_URL=…` übergeben. `check.ps1` führt für Docs den reinen Node-Link-/70-ID-Prüfer, dessen vier `node --test`-Tests und die TT-003-JSON-Orakeltests aus, für Client `flutter pub get`, Dart-Formatcheck, Flutter Analyze und alle Flutter-Tests. Bei `All` wird der noch fehlende Server ausdrücklich als ungetestet gemeldet; es gibt keine Deploymentaktion. Programme müssen im PATH liegen, Exitcodes werden weitergegeben.
 
 **Bereits lokal in einer isolierten Node-22-Kopie geprüft:** `node --check scripts/check-docs.mjs` und `node --test scripts/tests/check-docs.test.mjs` – vier Tests bestanden, darunter fehlender Link, doppelte ID und fehlende Registerzeile. **Nicht geprüft:** vollständiger Repo-Dokumentenlauf nach Checkout, PowerShell-Syntax/Ausführung, Flutter-Befehle, Portkonflikte unter Windows und fehlendes Flutter im isolierten PATH. Diese Nachweise sind vor dem Abschluss zu ergänzen.
 
