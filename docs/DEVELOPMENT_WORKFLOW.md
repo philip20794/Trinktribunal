@@ -40,7 +40,9 @@ powershell -NoProfile -File .\scripts\check.ps1 -Scope All
 
 Der Branch `task/TT-001-flutter-shell` enthält bereits die Dart-App-Shell mit drei Einstiegen, Profil, Einstellungen, Web-Bootstrap und Widgettests. Die anfangs dokumentierte Konzeptbasis beschreibt den historischen Stand vor diesem ersten Implementierungsschritt. **Die App ist noch nicht lokal gestartet oder abgenommen**; die Remote-Arbeitsumgebung hat kein Flutter-/Dart-SDK. `PROGRESS.md` ist maßgeblich für den offenen Taskstatus.
 
-Nach `git fetch origin` und `git switch task/TT-001-flutter-shell` im eigenen Windows-Checkout zunächst den Gitstatus prüfen. Dann die fehlenden durch Flutter erzeugten Plattformdateien ergänzen:
+Nach `git fetch origin` und `git switch task/TT-001-flutter-shell` im eigenen Windows-Checkout zunächst den Gitstatus prüfen. **Bevorzugt** das neu ergänzte, quellenschonende Skript `powershell -NoProfile -File .\\scripts\\init-client.ps1` ausführen. Es prüft SHA-256 der bereits vorhandenen Client-Quellen, startet `flutter create` ohne `--overwrite`, erwartet Android-/Flutter-Metadaten und führt anschließend `flutter pub get`, `flutter analyze` und `flutter test` aus. Ein generierter Standardtest für die nicht vorhandene `MyApp` wird durch den bereits versionierten echten `test/widget_test.dart` verhindert. Das Skript ist hier mangels Flutter und PowerShell **nicht lokal ausgeführt** worden.
+
+Alternativ zur Fehlersuche die generierten Plattformdateien manuell mit den folgenden Befehlen ergänzen:
 
 ```powershell
 flutter --version
