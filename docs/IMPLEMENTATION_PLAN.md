@@ -212,8 +212,8 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** Fragen ohne Wiederholung **innerhalb derselben Partie** nach ID ziehen; bei Fragen mit `players` die gültige Rollenverteilung gemäß beschlossener D-05-Personenfairness nur einmal je tatsächlicher Ziehung festlegen und pro beteiligter eindeutiger Spieler-ID zählen. Mit injiziertem Zufall und der bestätigten rollierenden 6-Stunden-Nutzungshistorie (D-01): zuerst gültige IDs mit Zähler 0, wenn keine dann zufällig aus den IDs mit minimalem Zähler. Keine vorab nur reservierten Fragen als genutzt zählen. Fachliche Ziehung samt Nutzungseintrag atomar, keine Doppelzählung bei Neuaufbau. Bei Partiestart Regel-Lücken einmalig stratifiziert und zufällig in den `F−1` Zwischenräumen planen; Regeln erst bei tatsächlichem Ereignis auswählen.
 - **Dateien:** `apps/client/lib/domain/{question_deck,event_schedule}.dart`, `test/domain/schedule_test.dart`, `packages/protocol/fixtures/rules/schedule.json`.
 - **Abhängigkeiten:** TT-005, TT-006.
-- **Akzeptanz:** 50 Fragen und höchstens 7 zusätzliche Ereignisse, nie vor erster/nach letzter Frage und höchstens ein Ereignis je Zwischenraum; F=1/R=7 ergibt R_eff=0. Kein erneutes Ziehen/Erhöhen des Nutzungszählers bei Widget-Neuaufbau. Sprachübergreifend dieselben IDs in Historie; innerhalb einer Partie keine wiederholte Frage.
-- **Auto:** 1/3/50/491 Fälle (Kartenmodus max. 431), erschöpfter Katalog, R=0 und R>F-1, stratifizierte Ereignispositionen; Sechs-Stunden-Fensterrand, Fälle mit noch ungenutzten IDs, Fallback nach geringstem 6h-Zähler und zufälliger Gleichstand, Partieneustart ohne Historienschwund; deterministische Fixtures.
+- **Akzeptanz:** 50 Fragen und höchstens 7 zusätzliche Ereignisse, nie vor erster/nach letzter Frage und höchstens ein Ereignis je Zwischenraum; F=1/R=7 ergibt R_eff=0. Kein erneutes Ziehen/Erhöhen von Inhalts- oder Personen-Nutzungszählern bei Widget-Neuaufbau. Sprachübergreifend dieselben IDs in der D-01-Historie; innerhalb einer Partie keine wiederholte Frage. Bei personenbezogenen Fragen bleibt dieselbe D-05-Zuordnung in Text/Skala gespeichert; Richter ist wählbar.
+- **Auto:** 1/3/50/491 Fälle (Kartenmodus max. 431), erschöpfter Katalog, R=0 und R>F-1, stratifizierte Ereignispositionen; Sechs-Stunden-Fensterrand, Fälle mit noch ungenutzten IDs, Fallback nach geringstem 6h-Inhaltszähler und zufälliger Gleichstand, Partieneustart ohne Inhaltshistorienschwund; D-05: Personen-Zähler bei neuer Partie auf 0, A/B/C/D mit 0/0/0/0 → vier verschiedene Referenzen, identischer Spieler nur einmal trotz mehrfacher Platzhalter im Text; deterministische Fixtures.
 - **Manuell / lokal:** `C`; kurzen Plan aus Fixture mit Fallzähler verfolgen.
 - **Abschluss:** G; Zählung und reduzierte Ziele im Modell unterscheidbar.
 
@@ -222,7 +222,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** Kompatibilitätsprüfung in beide Richtungen; Constraint-Lösung für beliebige `differentFrom`-Graphen statt bloß Rollenanzahl mit D-05-Fairness: gültige Komplettzuordnung, pro Rolle zuerst seltenste zulässige aktive Person, bei Gleichstand Zufall; Mehrfachvorkommen derselben Person innerhalb eines Eintrags zählen nur einmal. Einmalige ID-Zuweisung, dynamische Namensauflösung, gezogene/aktive/deaktivierte Regeln getrennt speichern. Kartenmodus filtert gemäß D-03. Erst **fachlich zulässige, in dieser Partie noch nicht gezogene** Regeln bilden; darunter D-01-Auswahl: bevorzugt 6 Stunden ungenutzte IDs, sonst kleinster Nutzungscounter, Zufall bei Gleichstand. Zähler erst bei Aktivierung fortschreiben; kein Mehrfachzählen bei Wiederholung einer Aktion.
 - **Dateien:** `apps/client/lib/domain/rules/`, `test/domain/drinking_rules_test.dart`, `packages/protocol/fixtures/rules/drinking_rules.json`.
 - **Abhängigkeiten:** TT-005, TT-006, TT-007.
-- **Akzeptanz:** Mehrfaches `{player1}` immer dieselbe ID; ohne Ausschluss gleiche Person möglich; kein Wiederziehen; Mangel reduziert Ziel ohne Schleife. Umbenennen verändert Zuordnung nicht.
+- **Akzeptanz:** Mehrfaches `{player1}` immer dieselbe ID; ohne Ausschluss gleiche Person möglich; kein Wiederziehen; Mangel reduziert Ziel ohne Schleife. Richter als Referenz möglich, Rollenrestriktionen vor Fairness; Karten-/Regelrollen nutzen denselben D-05-Personen-Zähler und erhöhen ihn pro verschiedener gewählter ID nur einmal bei Aktivierung. Wiederbindung nach Leave zählt nur neu vergebene Rollen; Namensänderung verändert Zuordnung oder Zähler nicht.
 - **Auto:** Einseitiger Konflikt, drei Rollen mit zwei zulässigen Personen, unerfüllbarer Graph, leere Kandidaten, wiederholte Platzhalter, vier Spieler mit Zähler 0 werden erst reihum einmal gezogen statt eine Person dreimal, Rollenzuordnung für Richter zulässig, `differentFrom` vor Zählerausgleich; 25 Regeln und vier Kurzpartien mit 6h-Zählern: Wiederverwendung nur über Partien, Konfliktfilter vor 6h-Priorität, Kobold und Fliege erlaubt, kein doppeltes Aktivieren/Erhöhen.
 - **Manuell / lokal:** `C`; Fixture-Regeltexte mit zwei gleichnamigen Spielern und Kartenmodus kontrollieren.
 - **Abschluss:** G; Regelergebnis als sprachneutrale Aktivierung vorhanden.
@@ -391,11 +391,11 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-025 – Spieler während lokaler Partie ändern
 
-- **Umsetzung:** Aktuelle und vorgemerkte Besetzung getrennt; sofortige Profiländerungen, Aufnahme/Entfernung/Reorder erst an nächster Fallgrenze. Rotation nach D-06, X neu berechnen; Regelrollen neu zuweisen/deaktivieren, gezogene IDs behalten.
+- **Umsetzung:** Aktuelle und vorgemerkte Besetzung getrennt; sofortige Profiländerungen, Aufnahme/Entfernung/Reorder erst an nächster Fallgrenze. D-05-Personenfairness: neuen Spieler auf maximalen aktuellen Zählerstand setzen, bei Rejoin mit alter ID auf maximalen Wert aus eigenem altem und aktivem Höchstzähler; Disconnect allein ändert nichts. Bereits gebundene Rollen im laufenden Fall bleiben bestehen, späterige Regel-Neuzuweisungen zählen nur neue Spieler einmal. Rotation nach D-06, X neu berechnen; Regelrollen neu zuweisen/deaktivieren, gezogene IDs behalten.
 - **Dateien:** `apps/client/lib/domain/roster_changes.dart`, `lib/features/setup/roster_management.dart`, `test/domain/roster_changes_test.dart`.
 - **Abhängigkeiten:** TT-008, TT-024.
 - **Akzeptanz:** Laufende Zahlen und Urteile bleiben stabil; Vorschau zeigt „ab nächstem Fall“; entfernte Personen bleiben für aktuelles Urteil darstellbar; zu wenige Personen pausiert. Entfernte Regelrolle wird erst an Grenze ersetzt.
-- **Auto:** Richterentfernung+Reorder, mehrere Beitritte/Austritte, gleichnamige Personen, nicht erfüllbare Rollen, minimale Besetzung und kein erneutes Anwenden an Regelereignis.
+- **Auto:** Richterentfernung+Reorder, mehrere Beitritte/Austritte, gleichnamige Personen, nicht erfüllbare Rollen, minimale Besetzung und kein erneutes Anwenden an Regelereignis. D-05: A/B/C mit 4/4/5 → neuer D startet 5, kein Null-Aufhol-Burst; Wiedereintritt nach Leave setzt Zähler nicht zurück, bei Resume/Disconnect keine Veränderung.
 - **Manuell / lokal:** `W`; während Übergabe und Sortierung ändern, nächsten Fall prüfen; `C`.
 - **Abschluss:** G; genaue Beispiele als weitere gemeinsame Transition-Fixtures.
 
@@ -587,20 +587,20 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-044 – TS-Zahlen, Fragen und Trinkregeln mit Parität
 
-- **Umsetzung:** TS-Port der Zahlenvergabe, Deck-/Ereignisplanung, D-01-Auswahl mit sechs Stunden Nutzungszählern und Rollenconstraints; Server nutzt validierte Katalogdaten/Manifest aus `data/`. Gemeinsame Fixtures beider Sprachen kanonisch vergleichen, nicht eigene getrennte erwartete Werte pflegen.
+- **Umsetzung:** TS-Port der Zahlenvergabe, Deck-/Ereignisplanung, D-01-Auswahl mit sechs Stunden Inhalts-Nutzungszählern und D-05-Personenfairness-Zählern samt Join-Initialisierung sowie Rollenconstraints; Server nutzt validierte Katalogdaten/Manifest aus `data/`. Gemeinsame Fixtures beider Sprachen kanonisch vergleichen, nicht eigene getrennte erwartete Werte pflegen.
 - **Dateien:** `apps/server/src/domain/{numbers,schedule,drinking_rules}.ts`, `test/domain/rules.test.ts`, `scripts/check-parity.ps1`, gemeinsame Fixtures.
 - **Abhängigkeiten:** TT-043, TT-008, TT-017.
-- **Akzeptanz:** Dart/TS identische Zahlen bei gleichen vorgegebenen Ziehungen, X und Aktivierungen; Produktionszufall weder voraussehbar noch öffentlich. Kein mehrfacher Katalogparse pro Aktion.
-- **Auto:** `check-parity.ps1`, R=0/F=1, Spielerrollen-Mangel und Zahlenlücken; beide Runner scheitern bei absichtlich geändertem erwartetem Wert in temporärer Fixture.
+- **Akzeptanz:** Dart/TS identische Zahlen und identische D-05-Spielerrollenauswahl/Zählerstände bei gleichen vorgegebenen Ziehungen, X, Berechtigungen, Join/Leave und Aktivierungen; Produktionszufall weder voraussehbar noch öffentlich. Kein mehrfacher Katalogparse pro Aktion.
+- **Auto:** `check-parity.ps1`, R=0/F=1, Spielerrollen-Mangel und Zahlenlücken; D-05 mit mehrdeutigen zulässigen Rollen, Richter, neuen und zurückkehrenden Spieler-IDs, Rollenneubindung sowie gemeinsamem Fragen-/Regelzähler; beide Runner scheitern bei absichtlich geändertem erwartetem Wert in temporärer Fixture.
 - **Manuell / lokal:** `C`, `S`; Beispieldaten mit lokalem Testlauf nachrechnen.
 - **Abschluss:** G; Inhaltshashvergleich Bestandteil beider Builds.
 
 #### TT-045 – Atomare Aktionen, Revisionen und Idempotenz
 
-- **Umsetzung:** Raumzustand inklusive **D-01-Inhaltsziehhistorie je Raum über Partien** + letzte Aktionsantworten konsistent persistieren; Validieren→Transition→Commit→Verteilen. Angezeigte Frage bzw. aktivierte Regel und zeitlicher Nutzungseintrag werden atomar committed; Host-Import und Rückabgleich nach Ereignis-ID deduplizieren. Begrenzte Dedupe-Historie je Sitzung/Partie, same-ID/different-payload ablehnen; Snapshot bei Revisionslücke. Keine Writes bei Drag/UI-Ereignissen.
+- **Umsetzung:** Raumzustand inklusive **D-01-Inhaltsziehhistorie je Raum über Partien** und **D-05-Spielerrollen-Zähler im aktuellen Partiezustand** + letzte Aktionsantworten konsistent persistieren; Validieren→Transition→Commit→Verteilen. Angezeigte Frage bzw. aktivierte Regel und zeitlicher Nutzungseintrag werden atomar committed; Host-Import und Rückabgleich nach Ereignis-ID deduplizieren. Begrenzte Dedupe-Historie je Sitzung/Partie, same-ID/different-payload ablehnen; Snapshot bei Revisionslücke. Keine Writes bei Drag/UI-Ereignissen.
 - **Dateien:** `apps/server/src/room/{repository,actions}.ts`, `test/room/atomic_actions.test.ts`, `apps/client/lib/application/room_controller.dart`.
 - **Abhängigkeiten:** TT-044, TT-038.
-- **Akzeptanz:** Doppelter `next_round` zählt einmal, verlorenes ACK lässt sich sicher wiederholen; Neustart invalidiert alte Aktionen; vor Commit kein Erfolgsbroadcast.
+- **Akzeptanz:** Doppelter `next_round` zählt einmal (auch Frage-/Regel-IDs und alle daraus entstandenen D-05-Personen-Zähler), verlorenes ACK lässt sich sicher wiederholen; Neustart invalidiert alte Aktionen und setzt Personen-Zähler auf Null, behält D-01-Sechsstunden-Historie; vor Commit kein Erfolgsbroadcast.
 - **Auto:** Gleichzeitige Requests, Speicherfehler vor Commit, ACK-Verlust nach Commit, doppelte IDs mit anderem Inhalt, Prozess-Neuinstanzierung, Revisionslücke.
 - **Manuell / lokal:** `MP`, langsames Netz/Doppelklick simulieren; `S`, `C`.
 - **Abschluss:** G; Idempotenz über Reconnect und DO-Neuaufbau hinweg belegt.
@@ -679,11 +679,11 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-053 – Multiplayer-Besetzung und Reihenfolge während Partie
 
-- **Umsetzung:** Pending roster mit Join/Leave/Host-Entfernen/Reorder; Teilnahme eines Neuzugangs erst nächster Fall, davor nur öffentliche Ansicht. Aktueller Fall und Zahlen eingefroren, sofortige Profilupdates separat. Regeln neu binden/deaktivieren.
+- **Umsetzung:** Pending roster mit Join/Leave/Host-Entfernen/Reorder; Teilnahme eines Neuzugangs erst nächster Fall, davor nur öffentliche Ansicht. Aktueller Fall und Zahlen eingefroren, sofortige Profilupdates separat. D-05-Personen-Zähler bei Join auf den maximalen aktiven Zählerstand und bei Wiederkehr mindestens darauf anheben, bestehende Rolle/Counter bei reinem Socket-Reconnect nicht ändern. Regeln neu binden/deaktivieren, neue Zuordnung nur einmal zählen.
 - **Dateien:** `apps/server/src/room/roster.ts`, `src/domain/roster_changes.ts`, `apps/client/lib/features/multiplayer/roster_management.dart`, `test/room/roster_changes.test.ts` (Server).
 - **Abhängigkeiten:** TT-052, TT-025.
 - **Akzeptanz:** X erst nächster Fall neu; maximal 20 aktive Teilnehmer; unter drei wirksamen Spielern pausiert der nächste Fall mit verständlichem Zustand. Ausscheidender Richter nach D-06; entzogene Sitzung bekommt keine weiteren privaten Daten. Disconnect allein ist kein Leave. Unfertiger Fall bleibt wartend oder wird nach D-07 explizit abgebrochen.
-- **Auto:** Beitritt/Austritt in jeder Phase beider Modi, Regelrollen-Mangel, Richterentfernung+Reorder, Min/Max, Entzug von Tokens/Socketrechten.
+- **Auto:** Beitritt/Austritt in jeder Phase beider Modi, Regelrollen-Mangel, Richterentfernung+Reorder, Min/Max, Entzug von Tokens/Socketrechten; D-05-Zähler-Baseline bei Neuzugang/Retour unter mehreren vorherigen Ziehungen, idempotente Rebinds, keine Rollenneuziehung bei Offline-Reconnect.
 - **Manuell / lokal:** `MP`, vierter Browser während Sortierung, einen Spieler entfernen, nächste Grenze kontrollieren; `C`, `S`, Parität.
 - **Abschluss:** G; Änderungen funktionieren ohne rückwirkende Umschreibung des Urteils.
 
@@ -709,10 +709,10 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-056 – Rehydrierung und persistierte Zustandsmigration testen
 
-- **Umsetzung:** Konstruktor lädt versionierten Raumzustand und Attachments; persistierte Rollenzuweisungen, Dedupe, Cursor, Hostfrist und ausstehende Rosteränderungen wiederherstellen. Migrationen atomar; unbekannte Version verständlich schließen statt Zustand raten.
+- **Umsetzung:** Konstruktor lädt versionierten Raumzustand und Attachments; persistierte Rollenzuweisungen mit D-05-Personen-Fairness-Zählern (Partie, nicht 6h-übergreifend), Dedupe, Cursor, Hostfrist und ausstehende Rosteränderungen wiederherstellen. Migrationen atomar; unbekannte Version verständlich schließen statt Zustand raten.
 - **Dateien:** `apps/server/src/room/{repository,migrations}.ts`, `test/room/rehydration.test.ts`, `packages/protocol/fixtures/transitions/persistence/`.
 - **Abhängigkeiten:** TT-055, TT-045.
-- **Akzeptanz:** Instanzneuerstellung in jeder Phase verändert weder Zahlen noch Ergebnisse; alte bestätigte Aktionen bleiben dedupliziert; keine Zufallsneuzuweisung im Konstruktor.
+- **Akzeptanz:** Instanzneuerstellung in jeder Phase verändert weder Zahlen noch Ergebnisse oder D-05-Personen-Zähler; alte bestätigte Aktionen bleiben dedupliziert; keine Zufallsneuzuweisung im Konstruktor.
 - **Auto:** Runtime-Tests mit Instanzneuerstellung/gespeichertem Snapshot, alle Phasen, Alarmwiederholung, Migrationsfehler, Attachments ohne geheime Klartext-Token.
 - **Manuell / lokal:** `MP`, Wrangler mit persistiertem lokalen Zustand stoppen/neustarten und Spiel fortsetzen; `S`.
 - **Abschluss:** G; lokale Rehydrierung belegt. Tatsächliche Edge-Hibernation/Abrechnung ist damit nicht gemessen und bleibt spätere Betriebsvalidierung.
@@ -722,7 +722,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** D-16-Resume-Pfad nach Reload und vollständigem Schließen/Neustart des Browsers oder der Android-App prüfen: persistente Raum-Credentials laden, autorisieren, rollenbereinigter Snapshot plus Revision, eigene Geheimzahl zunächst verdeckt, Entwürfe nur für gleiche roundId wiederherstellen. Tokenverlust/Expiry/Revocation → verständlicher neuer Join ohne Identitätsübernahme. Veraltete Sockets/ACKs ignorieren. D-01-Host-Rückabgleich aller noch gültigen Ziehereignisse ohne Doppelzählung nach Reconnect/Reload, andere Rollen ohne privaten Ziehverlauf.
 - **Dateien:** `apps/client/lib/{data/room_transport.dart,application/room_controller.dart}`, `apps/server/src/room/resume.ts`, `test/data/reconnect_test.dart`, `test/room/resume.test.ts` (Server).
 - **Abhängigkeiten:** TT-056, TT-039.
-- **Akzeptanz:** Reload und kompletter Browser-/App-Neustart behalten bei gültigem Token dieselbe playerId und erlaubte Daten, Geheimzahl zunächst verborgen; kein zweiter Spieler nach jedem Retry; bereits bestätigte Abgabe nicht nochmals auswerten; abgelaufene/kicked Tokens abgelehnt.
+- **Akzeptanz:** Reload und kompletter Browser-/App-Neustart behalten bei gültigem Token dieselbe playerId, ihren D-05-Auswahlzähler und erlaubte Daten, Geheimzahl zunächst verborgen; kein zweiter Spieler oder zusätzliche Personenziehung nach jedem Retry; bereits bestätigte Abgabe nicht nochmals auswerten; abgelaufene/kicked Tokens abgelehnt.
 - **Auto:** Netztrennung vor/nach Commit, Retry-Sturm begrenzt, Spiel fortgeschritten während Offlinezeit, doppelte Tabs mit gemeinsamem Browser-Speicher, persistente Raum-Credentials nach Neustart, Tokenverlust/Widerruf/Ablauf und verweigerter Speicher.
 - **Manuell / lokal:** `MP`, Browser offline/online, Reload, Browser vollständig schließen und erneut öffnen, Android-App beenden und erneut öffnen, Workerrestart in Sortierung/Aufdeckung sowie zweite Tabs und ausdrückliches Verlassen testen; `C`, `S`.
 - **Abschluss:** G; Fehleransichten bieten Wiederholen/Verlassen ohne stillen Zustandsverlust.
@@ -872,7 +872,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 5. **End-to-End:** Flutter `integration_test` über lokalen ChromeDriver; mehrere echte WS-Testclients für Parallelität/Protokoll, getrennte Browserprofile für sichtbare Synchronität. Ein einzelner Widgettest belegt keine Mehrbrowserfunktion.
 6. **Release-/Geräteprüfung:** Lokaler statischer Webserver für Service Worker/Cache/Headers; Android Debug und Release am eigenen Gerät. Performance am Profil-/Releasebuild statt Debug messen.
 
-Pflicht-Fixtures: D-02 mit N=2/3/12/20/21, Nameslängen 0/1/24/25 Graphem-Cluster, 431/432 bzw. 491/492 Fragen, 22/23 bzw. 25/26 Regeln und F=1/R=7; D-16 mit vollständigem Browser-/App-Neustart, mehreren Raumzuordnungen, verlorenem/abgelaufenem/widerrufenem Credential und doppeltem Browser-Tab; D-01 mit 6h-Rollfenster, Zähler=0/1/2/3, UTC-Fensterrand, Mehrpartie-Wiederverwendung, Host-Import/-Rückabgleich und idempotenten Ziehereignissen; N=3/8/12/20; Faktor 1,0/1,5/3,0; Zahlenlücken; ungültiges X; keine/mehrere/alle Fehlpositionen; exakt eine Fehlposition als unmöglich; alle-Richter-Werte 2/4/0; asymmetrische excludes; same-role mehrmals; differentFrom mit zyklischem Constraintgraph (kein rekursiver Endloslauf); ausgeschiedener Regelträger; Richter entfernt/reordered; F=1/R=7; 50+7; leere Kandidaten; Join/Leave jeder Phase; Neustart und alte actionId; Katalog-/Protokollmismatch; Crash vor/nach Commit.
+Pflicht-Fixtures: D-05 mit A/B/C/D anfangs 0/0/0/0 → vor Wiederholung vier verschiedene Auswahlen, Richterzulässigkeit, Fragen- und Regelrollen im selben Zähler, `{player1}` mehrfach, `differentFrom`, A/B/C=4/4/5 + neue D=5, Rückkehr nach Leave, neuer Partie-Zählerreset und keine Doppelzählung bei Wiederaufnahme; D-02 mit N=2/3/12/20/21, Nameslängen 0/1/24/25 Graphem-Cluster, 431/432 bzw. 491/492 Fragen, 22/23 bzw. 25/26 Regeln und F=1/R=7; D-16 mit vollständigem Browser-/App-Neustart, mehreren Raumzuordnungen, verlorenem/abgelaufenem/widerrufenem Credential und doppeltem Browser-Tab; D-01 mit 6h-Rollfenster, Zähler=0/1/2/3, UTC-Fensterrand, Mehrpartie-Wiederverwendung, Host-Import/-Rückabgleich und idempotenten Ziehereignissen; N=3/8/12/20; Faktor 1,0/1,5/3,0; Zahlenlücken; ungültiges X; keine/mehrere/alle Fehlpositionen; exakt eine Fehlposition als unmöglich; alle-Richter-Werte 2/4/0; asymmetrische excludes; same-role mehrmals; differentFrom mit zyklischem Constraintgraph (kein rekursiver Endloslauf); ausgeschiedener Regelträger; Richter entfernt/reordered; F=1/R=7; 50+7; leere Kandidaten; Join/Leave jeder Phase; Neustart und alte actionId; Katalog-/Protokollmismatch; Crash vor/nach Commit.
 
 ### Free-Tier-Modell ohne Kostenversprechen
 
