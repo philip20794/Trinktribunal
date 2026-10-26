@@ -1,44 +1,58 @@
 # Architektur
 
-> Geplante Zielarchitektur für Trinktribunal; die Bausteine sind noch nicht vollständig implementiert.
+> Geplante Zielarchitektur, zunächst für **Android und Web**. Noch keine vollständig implementierte Anwendung.
 
-## Stack
+## Technologie
 
-- **Frontend:** Vue 3, TypeScript, Vite, Pinia, Tailwind CSS, installierbare PWA.
-- **Hosting:** Cloudflare Pages (statische Dateien).
-- **Multiplayer:** Cloudflare Worker als API-Einstieg und ein **SQLite-backed Durable Object pro Spielraum** mit WebSockets.
-- **Inhalte:** Versionierte Fragen als JSON unter `data/questions/`; Figuren als kombinierbare SVG-Elemente. Keine Registrierung erforderlich.
+- **Client:** Flutter + Dart – ein UI-Codebestand für Android (APK/AAB) und Flutter Web. Responsives Layout für Mobilgeräte und Desktop-Browser; Zustandsverwaltung über Riverpod.
+- **Webhosting:** Cloudflare Pages für den statischen Flutter-Web-Build (`build/web`). Installation als PWA optional; Offline-Caching benötigt einen **eigenen Service Worker**.
+- **Multiplayer:** Cloudflare Worker (TypeScript) als Einstieg; je Spielraum ein SQLite-backed Durable Object mit WebSocket Hibernation.
+- **Inhalte:** Versionierter Fragenkatalog in `data/questions/`, beim Build als Flutter-Assets eingebunden. Anpassbare Getränkefiguren aus skalierbaren Grafik-Assets; Namen und Einstellungen lokal speichern.
+- **Zugang:** Kein Benutzerkonto notwendig. Räume per Link/QR-Code und Code beitreten.
 
-## Zielstruktur
+## Geplante Projektstruktur
 
 ```text
-apps/web/             PWA, Screens und lokale Speicherung
-apps/server/          Worker, Raumverwaltung und WebSocket-API
-packages/game-core/   Spielregeln, Zustandsübergänge, Auswertung
-packages/shared/      Gemeinsame Typen und Nachrichtenformate
-data/questions/       Fragenkatalog als JSON (bereits vorhanden)
+apps/
+  client/             Flutter-App: android/, web/, lib/, assets/, test/
+  server/             Cloudflare Worker, Durable Objects, Server-Tests
+packages/
+  protocol/           Plattformneutrale JSON-Schemas und Testfälle
+data/questions/       Fragenkatalog (bestehend)
+docs/                 Architektur und Optimierung
 ```
+
+Im Flutter-Client werden UI, Spielzustand, lokale Spielregeln und Multiplayer-Transport getrennt. Die **lokalen Spielmodi nutzen Dart-Regeln**; im Multiplayer entscheidet **ausschließlich der TypeScript-Server**. Identische Regel-Testfälle in `packages/protocol/` prüfen beide Implementierungen auf gleiche Ergebnisse (Zahlenvergabe, Reihenfolge, Fehler, Schlucke).
 
 ## Spielmodi
 
-1. **Ein Handy + Zahlenkarten:** Fragen und Ablauf in der PWA; physische Karten liefern die geheimen Zahlen.
-2. **Ein Handy ohne Karten:** Die PWA verteilt und zeigt Zahlen nacheinander auf demselben Gerät.
-3. **Jeder ein Handy:** Raumcode/QR-Code verbindet die Geräte über den Worker mit einem Durable Object. Der Server verteilt geheime Zahlen, verwaltet Spielphasen und wertet die Sortierungen aus. Optional sortieren alle Spieler selbst.
+1. **Ein Handy + Karten:** Richter liest Fragen aus der App, geheime Zahlen liegen auf physischen Karten. Die Reihenfolge wird in der App ausgewertet.
+2. **Ein Handy ohne Karten:** Die App weist geheim Zahlen zu und zeigt sie nacheinander auf einem Gerät.
+3. **Jeder ein Handy:** Spieler verbinden sich per Raumcode/QR-Link; der Server verteilt die geheimen Zahlen und synchronisiert die Runde. Optional erhält auch der Richter eine Zahl und alle sortieren selbst.
 
-Die Modi 1 und 2 laufen **ohne Backend und nach dem ersten Laden offline**. Alle Modi verwenden dieselben reinen TypeScript-Funktionen aus `game-core`, insbesondere für Zahlenvergabe, Reihenfolge und Schluckberechnung.
+Modus 1 und 2 funktionieren **ohne Backend**, auf Android offline und im Web nach erfolgreicher Offline-Einrichtung und Speicherung aller benötigten Assets. Modus 3 benötigt Internet.
 
-## Multiplayer-Ablauf und Sicherheit
+## Multiplayer-Datenfluss
 
-`Lobby → Frage → geheime Zahlen → Antworten → Sortieren → Aufdecken → Auswertung → Richterwechsel`
+`Flutter-Clients ↔ WebSocket ↔ Worker ↔ Durable Object (Raum)`
 
-- Das Durable Object ist die **maßgebliche Instanz** für Raumzustand, Zahlen, Spielphasen und Ergebnisse. Clients senden nur Aktionen, niemals selbst berechnete Urteile.
-- Geheime Zahlen gehen ausschließlich an den jeweiligen Spieler; an alle gesendet werden nur öffentliche Informationen.
-- Join und Wiederverbindung verwenden einen zufälligen Raumcode und ein separates, geheimes Spieler-Token. Nachrichten werden serverseitig auf Berechtigung, Format und zulässige Phase geprüft.
-- Anzeigename und Figurenkonfiguration werden lokal gespeichert; pro Raum wird nur die nötige Konfiguration übertragen.
-- Für den Modus „Alle sind Richter“ werden die Sortierungen getrennt erfasst und erst nach Abschluss der Runde offengelegt. Die genauen Trinkregeln dieses Modus sind noch festzulegen.
+Spielphasen: `Lobby → Frage → Zahlen → Antworten → Sortieren → Aufdecken → Auswerten → Richterwechsel`.
 
-## Umsetzung
+- Server ist die **maßgebliche Instanz** für Raumzustand, geheime Zahlen, erlaubte Aktionen und Ergebnisse.
+- Zahlen werden nur dem betreffenden Spieler übermittelt; Antworten/Sortierungen im Modus „Alle sind Richter“ bleiben bis zur vorgesehenen Aufdeckung privat.
+- Zufälliger Raumcode und separates geheimes Spieler-Token zur Wiederverbindung; serverseitige Prüfung von Nachrichten, Runde, Phase und Berechtigung.
+- Gemeinsamer, **versionierter JSON-Nachrichtenvertrag** mit DTOs/Schemas; Dart- und TypeScript-Typen werden daran angepasst.
+- Figurenprofil bleibt lokal und wird beim Beitritt nur in nötigen Feldern übertragen.
 
-Zuerst PWA und `game-core` mit Tests, dann die lokalen Spielmodi, anschließend Multiplayer und Personalisierung. Eine native App kann bei Bedarf später über Capacitor ergänzt werden.
+## Entwicklung und Veröffentlichung
+
+1. Flutter-Grundgerüst, Fragen-Assets, Designsystem und Dart-Regeln mit Tests.
+2. Lokale Varianten und personalisierbare Figuren.
+3. Worker, Multiplayer-Räume, Wiederverbindung und Integrationstests.
+4. Performance-/Lasttests und Veröffentlichung: `flutter build apk` für Android, `flutter build web --wasm` mit Browser-Fallback für Web. Web-Startzeit und Offline-Modus auf echten Geräten prüfen.
+
+CI soll `flutter analyze`, `flutter test`, Client-Builds und die Tests des TypeScript-Backends ausführen. Cloudflare-Free-Limits vor dem Livegang überprüfen.
 
 Siehe [Multiplayer-Optimierung](MULTIPLAYER_OPTIMIZATION.md).
+
+Referenzen: [Flutter Web Deployment](https://docs.flutter.dev/deployment/web), [Flutter Wasm](https://docs.flutter.dev/platform-integration/web/wasm), [Flutter Web FAQ](https://docs.flutter.dev/platform-integration/web/faq).
