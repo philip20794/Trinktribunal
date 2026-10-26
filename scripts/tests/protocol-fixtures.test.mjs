@@ -255,3 +255,61 @@ test('D-01: 50 cases with seven spaced rule slots', () => {
   assert.equal(expected.nonAdjacent, true);
   assert.equal(expected.allBetweenQuestions, true);
 });
+
+
+test('D-02: Unicode grapheme-cluster name length and trimming', () => {
+  const { input, expected } = get('TT003-NAME-GRAPHEMES');
+  const segmenter = new Intl.Segmenter('de', { granularity: 'grapheme' });
+  const names = input.cases.map(c => c.raw.trim());
+  assert.deepEqual(names, input.cases.map(c => c.expectedTrimmed));
+  const lengths = names.map(name => [...segmenter.segment(name)].length);
+  assert.deepEqual(lengths, expected.graphemeCounts);
+  assert.deepEqual(lengths.map(n => n >= 1 && n <= 24), expected.valid);
+  assert.equal(expected.errorForInvalid, 'INVALID_NAME');
+});
+
+test('D-17: incomplete, duplicated, or foreign roster orders are rejected', () => {
+  const { input, expected } = get('TT003-ORDER-INVALID');
+  const truth = [...input.rosterIds].sort();
+  const valid = input.proposals.map(p =>
+    p.length === truth.length && new Set(p).size === truth.length &&
+    JSON.stringify([...p].sort()) === JSON.stringify(truth));
+  assert.deepEqual(valid, expected.valid);
+  assert.deepEqual(expected.errors,
+    expected.valid.map(v => v ? null : 'INVALID_PERMUTATION'));
+});
+
+test('D-07: skip is reserved for host or local operator after confirmation', () => {
+  const { input, expected } = get('TT003-SKIP-PERMISSIONS');
+  const accepted = input.cases.map(c =>
+    (c.mode === 'multiplayer' ? c.actor === 'host' : c.actor === 'local') &&
+    c.confirmed && c.questionShown);
+  assert.deepEqual(accepted, expected.accepted);
+  for (const [i, c] of input.cases.entries()) {
+    if (accepted[i]) assert.equal(expected.errors[i], null);
+    else if (c.mode === 'multiplayer' && c.actor !== 'host')
+      assert.equal(expected.errors[i], 'UNAUTHORIZED_ACTION');
+    else assert.equal(expected.errors[i], 'INVALID_PHASE');
+  }
+});
+
+test('D-01/D-05: a new game resets people but retains content history', () => {
+  const { input, expected } = get('TT003-NEW-GAME-COUNTERS');
+  assert.deepEqual(Object.fromEntries(
+    Object.keys(input.personCounters).map(playerId => [playerId, 0])),
+  expected.newPersonCounters);
+  assert.deepEqual(input.historyEntries.map(e => e.eventId),
+    expected.retainedHistoryEventIds);
+  assert.equal(expected.newGameIdDifferent, true);
+});
+
+test('D-01: a skipped rule event is not a case or judge rotation', () => {
+  const { input, expected } = get('TT003-RULE-SLOT-NOMATCH');
+  assert.deepEqual(input.eligibleRuleIds, []);
+  assert.equal(expected.slotStatus, 'skipped');
+  assert.equal(expected.activatedRuleId, null);
+  assert.equal(expected.completedCases, input.completedCases);
+  assert.equal(expected.judgeId, input.judgeId);
+  assert.equal(expected.additionalCaseCount, 0);
+  assert.equal(expected.additionalJudgeRotations, 0);
+});
