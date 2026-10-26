@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Geprüfte Planungsbasis nach Remoteabgleich: `e7b420e` (ursprünglich lokal `66eb976`). [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell im Featurebranch `task/TT-001-flutter-shell`: TT-001 IN ARBEIT, TT-002 vorbereitend IN ARBEIT (Abhängigkeit TT-001 noch offen).** App-Shell, drei navigierbare Einstiege, Profil/Einstellungen, Widgettests, Web-Einstieg und Windows-Skripte sind angelegt. Android-Gerüst, Flutter-Metadaten, Lockfile sowie Flutter-/PowerShell-Prüfungen stehen weiterhin aus. **0/70 Aufgaben vollständig abgenommen.** Keine GitHub Actions oder Cloudflare-Deployments.
+**Aktuell im Featurebranch `task/TT-001-flutter-shell`: TT-001 und TT-002 IN ARBEIT, TT-003 vorbereitend IN ARBEIT (TT-001/TT-002 noch nicht abgenommen).** App-Shell, Widgettests, Web-Einstieg und Windows-Skripte liegen vor. Zusätzlich wurden der TT-003-Zustands-/Aktionsvertrag, das Protokollformat, 17 JSON-Fixtures und ein Node-Orakeltest angelegt. Android-Gerüst, Flutter-Metadaten, Lockfile sowie Flutter-/PowerShell-Prüfungen stehen weiterhin aus. **0/70 Aufgaben vollständig abgenommen.** Keine GitHub Actions oder Cloudflare-Deployments.
 
 ## Statusregeln
 
@@ -42,6 +42,12 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 
 **Isolierter Node-Test in dieser Arbeitsumgebung:** `node --check scripts/check-docs.mjs` → Exitcode 0; `node --test scripts/tests/check-docs.test.mjs` → 4/4 Tests grün, Exitcode 0. Testgegenstand war eine lokale äquivalente Skriptkopie mit synthetischen 70-Aufgaben-Fixtures, **kein Checkout des privaten Repositories**. Vollständige Repo-Prüfung, PowerShell- und Flutter-Testausführung sowie manuelle Windows-Port-/PATH-Fälle weiterhin **nicht ausgeführt**. Beide Tasks müssen auf Windows abgenommen werden, ehe TT-003 planmäßig begonnen wird.
 
+**TT-003 – FACHLICH VORBEREITET / IN ARBEIT (26.10.2026, gleicher Branch).** Vorhanden: `docs/decisions/001-game-contract.md` (Zustände, zulässige Aktionen und Autorisierung, eingefrorene Konfiguration, Auswahl-/Verlaufsinvarianten, D-07-Fallabschluss, D-06-Rotation, D-17-Einfügen, Fehlercodes und Dedupe), `packages/protocol/README.md`, **17 deterministische JSON-Fixtures** in `packages/protocol/fixtures/{rules,transitions}/` sowie `scripts/tests/protocol-fixtures.test.mjs`. `check.ps1 -Scope Docs` ruft den neuen Test zusätzlich auf.
+
+**Tatsächlich geprüft:** Alle 17 Fixture-Dateien aus dem Featurebranch über GitHub gelesen und mit `JSON.parse` auf gültiges JSON geprüft; 17 unterschiedliche `fixtureId`-Werte, `decisionRefs`, `input`/`expected` vorhanden. In einer isolierten JavaScript-Prüfung die vereinbarten Ergebnisse für D-02/10-Konfiguration, D-01-Uhr-/Zählergrenze, D-05-Rollen/Neuzugang, Normal-/Alle-Richter-Urteil, D-06-Rotation und D-07-Fallabschluss nachgerechnet: **ohne gefundenen Widerspruch**. **Nicht als bestanden behauptet:** `node --test scripts/tests/protocol-fixtures.test.mjs` im vollständigen Checkout, Dart-/TypeScript-Engine, manueller Tischdurchlauf, TT-001-/002-Gates. D-17-Einfügen ist im Vertrag spezifiziert; vollständige Fixture-/Engine-Abdeckung bleibt Teil der TT-003-Abnahme.
+
+**Abhängigkeitsgate:** TT-003 wird ausdrücklich **nicht ERLEDIGT**, bevor TT-001 und TT-002 planmäßig abgenommen und TT-003-JSON/Links/Tischbeispiele lokal bestätigt sind. TT-004 beginnt nicht vor TT-003-Abschluss.
+
 ## Meilensteine
 
 | Meilenstein | Aufgaben | Status | Lokales Demo-Gate / späterer Beleg |
@@ -66,7 +72,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | --- | --- | --- | --- |
 | TT-001 | Flutter-Web-App mit drei Einstiegen starten | IN ARBEIT | Featurebranch task/TT-001-flutter-shell; Quellen vorhanden, Flutter-Gerüst und lokale Tests offen |
 | TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | IN ARBEIT | Skripte und vier Node-Fixturetests im Branch; TT-001-Abhängigkeit und Windows-Abnahme offen |
-| TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | OFFEN | — |
+| TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | IN ARBEIT | Vertrag, Protokoll-README, 17 JSON-Fixtures, Node-Test angelegt; TT-001/002 und lokale Abnahme ausstehend |
 | TT-004 | Beide Katalogformate validieren und bündeln | OFFEN | — |
 | TT-005 | Redaktionelle Konflikte inventarisieren und entscheiden | OFFEN | — |
 | TT-006 | Konfiguration und unveränderliche Spielmodelle | OFFEN | — |
