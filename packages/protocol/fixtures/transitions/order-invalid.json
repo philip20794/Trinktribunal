@@ -1,0 +1,55 @@
+{
+  "fixtureId": "TT003-ORDER-INVALID",
+  "decisionRefs": [
+    "D-17"
+  ],
+  "operation": "validateCommittedOrderCases",
+  "input": {
+    "rosterIds": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "proposals": [
+      [
+        "A",
+        "A",
+        "C",
+        "D"
+      ],
+      [
+        "A",
+        "B",
+        "C"
+      ],
+      [
+        "A",
+        "B",
+        "C",
+        "Z"
+      ],
+      [
+        "B",
+        "A",
+        "D",
+        "C"
+      ]
+    ]
+  },
+  "expected": {
+    "valid": [
+      false,
+      false,
+      false,
+      true
+    ],
+    "errors": [
+      "INVALID_PERMUTATION",
+      "INVALID_PERMUTATION",
+      "INVALID_PERMUTATION",
+      null
+    ]
+  },
+  "notes": "A confirmed order is an exact permutation of the frozen roster."
+}
