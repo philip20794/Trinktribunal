@@ -1,0 +1,4506 @@
+{
+  "version": 1,
+  "language": "de",
+  "questions": [
+    {
+      "id": "001-a",
+      "text": "Du schreibst einem Freund eine Postkarte aus dem Urlaub. Lies sie vor.",
+      "scale": {
+        "green": "Der Urlaub ist eine einzige Katastrophe",
+        "connector": "bis",
+        "red": "Der Urlaub ist einfach genial"
+      }
+    },
+    {
+      "id": "001-b",
+      "text": "Der IT-Verantwortliche fragt dich vor allen Leuten nach deinem Passwort. Wie lautet es?",
+      "scale": {
+        "green": "Überhaupt nicht peinlich",
+        "connector": "bis",
+        "red": "Extrem peinlich"
+      }
+    },
+    {
+      "id": "002-a",
+      "text": "Du bist in einem Sportgeschäft, als dich plötzlich ein böser Clown angreift. Was schnappst du dir, um es nach ihm zu werfen?",
+      "scale": {
+        "green": "Kaum wirksam",
+        "connector": "bis",
+        "red": "Extrem wirksam"
+      }
+    },
+    {
+      "id": "002-b",
+      "text": "Sag „Nein“ in einem passenden Tonfall.",
+      "scale": {
+        "green": "Überhaupt nicht überzeugend",
+        "connector": "bis",
+        "red": "Absolut überzeugend"
+      }
+    },
+    {
+      "id": "003-a",
+      "text": "Stelle pantomimisch dar, wie du einen Crêpe in einer Pfanne hochwirfst.",
+      "scale": {
+        "green": "Nur ein kleines Stück hoch",
+        "connector": "bis",
+        "red": "Extrem hoch"
+      }
+    },
+    {
+      "id": "003-b",
+      "text": "Du streitest dich heftig mit der Person rechts von dir. Was wirfst du vor Wut aus dem Fenster?",
+      "scale": {
+        "green": "Das ist der Person völlig egal",
+        "connector": "bis",
+        "red": "Das bricht ihr für immer das Herz"
+      }
+    },
+    {
+      "id": "004-a",
+      "text": "Du kommst morgens völlig übermüdet zur Arbeit. An der Kaffeemaschine erzählst du von deiner Nacht.",
+      "scale": {
+        "green": "Eine schreckliche Nacht",
+        "connector": "bis",
+        "red": "Eine absolute Traumnacht"
+      }
+    },
+    {
+      "id": "004-b",
+      "text": "Erfinde den Namen eines Batman-Gadgets, ähnlich dem Batmobil, das Batman bei seinen Einsätzen helfen soll.",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Absolut unverzichtbar"
+      }
+    },
+    {
+      "id": "005-a",
+      "text": "Du hast bei IKEA ein Möbelstück entdeckt, das du unbedingt haben möchtest. Wie heißt es?",
+      "scale": {
+        "green": "Kinderleicht auszusprechen",
+        "connector": "bis",
+        "red": "Unmöglich auszusprechen"
+      }
+    },
+    {
+      "id": "005-b",
+      "text": "Du entdeckst eine Kleinanzeige in der Zeitung. Was steht darin?",
+      "scale": {
+        "green": "Darauf würde niemand antworten wollen",
+        "connector": "bis",
+        "red": "Darauf möchte man sofort antworten"
+      }
+    },
+    {
+      "id": "006-a",
+      "text": "Stelle pantomimisch dar, wie du dir die Haare kämmst.",
+      "scale": {
+        "green": "Ganz kurze Haare",
+        "connector": "bis",
+        "red": "Extrem lange Haare"
+      }
+    },
+    {
+      "id": "006-b",
+      "text": "Angeblich gibt es nichts Schmerzvolleres, als barfuß auf einen Legostein zu treten. Aber in Wahrheit ist es, auf … zu treten. Ergänze den Satz.",
+      "scale": {
+        "green": "Überhaupt nicht schmerzhaft",
+        "connector": "bis",
+        "red": "Unfassbar schmerzhaft"
+      }
+    },
+    {
+      "id": "007-a",
+      "text": "Auf dem Grabstein des Captains steht: „Hier ruht …“. Ergänze die Inschrift.",
+      "scale": {
+        "green": "Überhaupt nicht schmeichelhaft",
+        "connector": "bis",
+        "red": "Äußerst schmeichelhaft"
+      }
+    },
+    {
+      "id": "007-b",
+      "text": "Mist! Dir sind die Gurkenscheiben für deine Gesichtsmaske ausgegangen. Womit ersetzt du sie?",
+      "scale": {
+        "green": "Eine furchtbare Idee",
+        "connector": "bis",
+        "red": "Eine geniale Idee"
+      }
+    },
+    {
+      "id": "008-a",
+      "text": "Du bist zur Party des Jahrhunderts an einem geheimen Ort eingeladen. Als du dort ankommst, siehst du … Wo bist du gelandet?",
+      "scale": {
+        "green": "Ich renne sofort weg",
+        "connector": "bis",
+        "red": "Hier steigt die Party meiner Träume"
+      }
+    },
+    {
+      "id": "008-b",
+      "text": "Stelle pantomimisch dar, wie du die Spieleschachtel hochhebst und trägst.",
+      "scale": {
+        "green": "Federleicht",
+        "connector": "bis",
+        "red": "Unglaublich schwer"
+      }
+    },
+    {
+      "id": "009-a",
+      "text": "Auf einer Party stellst du die Person rechts von dir ihrem Schwarm vor. Was sagst du?",
+      "scale": {
+        "green": "Garantiert ein Korb",
+        "connector": "bis",
+        "red": "Dank dir klappt es mit dem Flirt"
+      }
+    },
+    {
+      "id": "009-b",
+      "text": "Welcher Star ist diese Woche auf dem Cover eines Promi-Magazins?",
+      "scale": {
+        "green": "Damit verkauft sich das Heft kaum",
+        "connector": "bis",
+        "red": "Damit verkauft sich das Heft hervorragend"
+      }
+    },
+    {
+      "id": "010-a",
+      "text": "Nenne eine echte oder erfundene Figur, der du deine Kinder zum Babysitten anvertrauen würdest.",
+      "scale": {
+        "green": "Die schlechteste Wahl überhaupt",
+        "connector": "bis",
+        "red": "Die beste Wahl überhaupt"
+      }
+    },
+    {
+      "id": "010-b",
+      "text": "Du bist gestern schon wieder durch die Führerscheinprüfung gefallen. Was ist passiert?",
+      "scale": {
+        "green": "Nur ganz knapp durchgefallen",
+        "connector": "bis",
+        "red": "Du bist eine Gefahr für die Allgemeinheit"
+      }
+    },
+    {
+      "id": "011-a",
+      "text": "Stelle pantomimisch dar, wie du reagierst, wenn dir jemand ein Baby in die Arme legt.",
+      "scale": {
+        "green": "Ich bin dafür überhaupt nicht gemacht",
+        "connector": "bis",
+        "red": "Ich fühle mich total wohl damit"
+      }
+    },
+    {
+      "id": "011-b",
+      "text": "Du suchst mit einem Metalldetektor am Strand. Plötzlich piept es! Du findest keine Münze, sondern etwas anderes. Was ist es?",
+      "scale": {
+        "green": "Ein völlig wertloser Fund",
+        "connector": "bis",
+        "red": "Ein sensationeller Fund"
+      }
+    },
+    {
+      "id": "012-a",
+      "text": "Du bist unglaublich stolz auf deine Sammlung und verkündest: „Ich habe die größte …-Sammlung der Welt!“ Ergänze den Satz.",
+      "scale": {
+        "green": "Alle machen sich über dich lustig",
+        "connector": "bis",
+        "red": "Alle finden es großartig"
+      }
+    },
+    {
+      "id": "012-b",
+      "text": "Mache ein Schnarchgeräusch.",
+      "scale": {
+        "green": "Ganz leise",
+        "connector": "bis",
+        "red": "Extrem laut"
+      }
+    },
+    {
+      "id": "013-a",
+      "text": "Ein Terminator klopft an deine Tür und verkündet: „Ich komme aus der Zukunft. Meine Mission ist …“ Ergänze den Satz.",
+      "scale": {
+        "green": "Völlig lächerlich",
+        "connector": "bis",
+        "red": "Von größter Bedeutung"
+      }
+    },
+    {
+      "id": "013-b",
+      "text": "Der Captain möchte sich bei Kleinanzeigen etwas kaufen. Was ist es?",
+      "scale": {
+        "green": "Für ihn völlig nutzlos",
+        "connector": "bis",
+        "red": "Für ihn extrem nützlich"
+      }
+    },
+    {
+      "id": "014-a",
+      "text": "Du reist in die Vergangenheit und triffst dein elfjähriges Ich. Was sagst du ihm?",
+      "scale": {
+        "green": "Ein völlig nutzloser Rat",
+        "connector": "bis",
+        "red": "Ein äußerst hilfreicher Rat"
+      }
+    },
+    {
+      "id": "014-b",
+      "text": "Die Erfindung des Jahrhunderts: „Eine Unterhose, die …“ Ergänze den Satz.",
+      "scale": {
+        "green": "Eine richtig schlechte Idee",
+        "connector": "bis",
+        "red": "Eine geniale Erfindung"
+      }
+    },
+    {
+      "id": "015-a",
+      "text": "Ein rücksichtsloser Autofahrer schneidet dir den Weg ab. Beschimpfe ihn!",
+      "scale": {
+        "green": "Ganz harmlos",
+        "connector": "bis",
+        "red": "Richtig heftig"
+      }
+    },
+    {
+      "id": "015-b",
+      "text": "Du hast in der Wüste furchtbaren Durst und entdeckst endlich eine Oase. Stelle pantomimisch dar, wie du trinkst.",
+      "scale": {
+        "green": "Ich habe eigentlich gar keinen Durst",
+        "connector": "bis",
+        "red": "Ich habe seit drei Tagen nichts getrunken"
+      }
+    },
+    {
+      "id": "016-a",
+      "text": "Ihr sitzt im Restaurant. Welches Dessert steht auf der Speisekarte?",
+      "scale": {
+        "green": "Ein ganz gewöhnliches Dessert",
+        "connector": "bis",
+        "red": "Ein völlig ausgefallenes Dessert"
+      }
+    },
+    {
+      "id": "016-b",
+      "text": "Der Captain hat ein Tinder-Date bei sich zu Hause eingeladen. Welches Poster hängt über seinem Bett?",
+      "scale": {
+        "green": "Das Date ergreift die Flucht",
+        "connector": "bis",
+        "red": "Das Date glaubt, die große Liebe gefunden zu haben"
+      }
+    },
+    {
+      "id": "017-a",
+      "text": "Du hast ein Airbnb gebucht und kommst mit deinem Rucksack an. Beschreibe das Zimmer, in dem du schlafen wirst.",
+      "scale": {
+        "green": "Eine böse Überraschung",
+        "connector": "bis",
+        "red": "Eine richtig tolle Überraschung"
+      }
+    },
+    {
+      "id": "017-b",
+      "text": "Zeige mit deinen Händen pantomimisch: „Ich habe einen Fisch gefangen, und der war so groß!“",
+      "scale": {
+        "green": "Ein winziger Fisch",
+        "connector": "bis",
+        "red": "Ein riesiger Fisch"
+      }
+    },
+    {
+      "id": "018-a",
+      "text": "„Mama, das ist Kevin. Er ist …“ Ergänze den Satz mit seinem Beruf.",
+      "scale": {
+        "green": "Der schlimmste Beruf aus Sicht der Schwiegereltern",
+        "connector": "bis",
+        "red": "Der Traumberuf aus Sicht der Schwiegereltern"
+      }
+    },
+    {
+      "id": "018-b",
+      "text": "Du stehst so lange bei der Post an, dass du in der Zwischenzeit Zeit für … gehabt hättest. Ergänze den Satz.",
+      "scale": {
+        "green": "Eine ganz kurze Beschäftigung",
+        "connector": "bis",
+        "red": "Eine extrem zeitaufwendige Beschäftigung"
+      }
+    },
+    {
+      "id": "019-a",
+      "text": "Nenne einen Gegenstand.",
+      "scale": {
+        "green": "So etwas besitzt niemand",
+        "connector": "bis",
+        "red": "So etwas besitzt wirklich jeder"
+      }
+    },
+    {
+      "id": "019-b",
+      "text": "Sage: „Meine Damen und Herren, eine Schweigeminute!“ Halte dann eine Schweigeminute ab, indem du ununterbrochen weiterredest, und beende sie mit „Danke“.",
+      "scale": {
+        "green": "Eine sehr kurze Schweigeminute",
+        "connector": "bis",
+        "red": "Eine sehr lange Schweigeminute"
+      }
+    },
+    {
+      "id": "020-a",
+      "text": "Lies eine erfundene SMS vor, die du von deinem Partner oder deiner Partnerin bekommst.",
+      "scale": {
+        "green": "Eine Nachricht, die man niemals bekommen möchte",
+        "connector": "bis",
+        "red": "Eine Nachricht, über die man sich riesig freut"
+      }
+    },
+    {
+      "id": "020-b",
+      "text": "Du kommst nach Hause, und deine Freunde rufen plötzlich: „Überraschung!“ Spiele deine Reaktion.",
+      "scale": {
+        "green": "Das habe ich längst gewusst",
+        "connector": "bis",
+        "red": "Ich bin völlig aus dem Häuschen"
+      }
+    },
+    {
+      "id": "021-a",
+      "text": "Du möchtest etwas oder jemanden streicheln. Was oder wen?",
+      "scale": {
+        "green": "Überhaupt keine Lust",
+        "connector": "bis",
+        "red": "Unbedingt streicheln wollen"
+      }
+    },
+    {
+      "id": "021-b",
+      "text": "Steh auf: Du bist Chirurg oder Chirurgin am Operationstisch. Spiele deine Operation pantomimisch vor und kommentiere, was du tust.",
+      "scale": {
+        "green": "Eine Katastrophe für den Patienten",
+        "connector": "bis",
+        "red": "Die bestmögliche Operation für den Patienten"
+      }
+    },
+    {
+      "id": "022-a",
+      "text": "Der Captain steht auf der Titelseite der Zeitung. Wie lautet die Schlagzeile?",
+      "scale": {
+        "green": "Überhaupt nicht schmeichelhaft",
+        "connector": "bis",
+        "red": "Äußerst schmeichelhaft"
+      }
+    },
+    {
+      "id": "022-b",
+      "text": "Montagmorgen: Du kommst kaum aus dem Bett. Welches Lied hilft dir beim Aufstehen?",
+      "scale": {
+        "green": "Davon schlafe ich gleich wieder ein",
+        "connector": "bis",
+        "red": "Davon bin ich sofort hellwach"
+      }
+    },
+    {
+      "id": "023-a",
+      "text": "Die Spieleschachtel ist ein Spiegel. Du betrachtest darin deine frisch operierte Nase. Spiele deine Reaktion.",
+      "scale": {
+        "green": "Die Operation ist völlig misslungen",
+        "connector": "bis",
+        "red": "Die neue Nase ist wunderschön"
+      }
+    },
+    {
+      "id": "023-b",
+      "text": "Erfinde ein Motto für deine Hochzeit – inklusive Kleidung, Dekoration und Essen.",
+      "scale": {
+        "green": "Das schlimmste Hochzeitsmotto überhaupt",
+        "connector": "bis",
+        "red": "Das perfekte Hochzeitsmotto"
+      }
+    },
+    {
+      "id": "024-a",
+      "text": "Du bist im Jenseits. Gott sagt zu dir: „Du kommst definitiv in die Hölle, weil du dein Leben lang …“ Ergänze den Satz.",
+      "scale": {
+        "green": "Das ist ungerecht, so schlimm war das nicht",
+        "connector": "bis",
+        "red": "Okay, das habe ich wohl verdient"
+      }
+    },
+    {
+      "id": "024-b",
+      "text": "Nenne eine Zeichentrickfigur.",
+      "scale": {
+        "green": "Strunzdumm",
+        "connector": "bis",
+        "red": "Genial intelligent"
+      }
+    },
+    {
+      "id": "025-a",
+      "text": "Beim Speeddating sagst du: „Ich bin Meister oder Meisterin in …“ Ergänze den Satz.",
+      "scale": {
+        "green": "Total uncool",
+        "connector": "bis",
+        "red": "Supercool"
+      }
+    },
+    {
+      "id": "025-b",
+      "text": "Du stehst auf dem Basketballfeld und bekommst den Ball zugespielt. Spiele vor, wie du ihn fängst und zum Korb läufst.",
+      "scale": {
+        "green": "Absoluter Anfänger",
+        "connector": "bis",
+        "red": "NBA-Superstar"
+      }
+    },
+    {
+      "id": "026-a",
+      "text": "Drohe deinem Kind: „Wenn du deinen Spinat nicht aufisst, …“ Ergänze den Satz.",
+      "scale": {
+        "green": "Kaum gemein",
+        "connector": "bis",
+        "red": "Extrem gemein"
+      }
+    },
+    {
+      "id": "026-b",
+      "text": "Welche echte oder erfundene Person würdest du in dein Escape-Room-Team holen?",
+      "scale": {
+        "green": "Die schlechteste Wahl",
+        "connector": "bis",
+        "red": "Die beste Wahl"
+      }
+    },
+    {
+      "id": "027-a",
+      "text": "Bevor du ein Strandfoto von dir auf Facebook postest, bearbeitest du es in Photoshop, um anzugeben. Was veränderst du?",
+      "scale": {
+        "green": "Bringt überhaupt nichts",
+        "connector": "bis",
+        "red": "Macht mächtig Eindruck"
+      }
+    },
+    {
+      "id": "027-b",
+      "text": "Spiele pantomimisch, wie du in einem Wartezimmer sitzt und auf deinen Termin wartest.",
+      "scale": {
+        "green": "Völlig entspannt",
+        "connector": "bis",
+        "red": "Extrem ungeduldig"
+      }
+    },
+    {
+      "id": "028-a",
+      "text": "Du hast eine Zeitmaschine. Welches Ereignis aus der Vergangenheit möchtest du miterleben?",
+      "scale": {
+        "green": "Um keinen Preis",
+        "connector": "bis",
+        "red": "Ein Lebenstraum geht in Erfüllung"
+      }
+    },
+    {
+      "id": "028-b",
+      "text": "Welchen „… für Dummies“-Ratgeber könnte der Captain gebrauchen?",
+      "scale": {
+        "green": "Den braucht er überhaupt nicht",
+        "connector": "bis",
+        "red": "Den braucht er dringend"
+      }
+    },
+    {
+      "id": "029-a",
+      "text": "Spiele vor, wie du beim Bowling wirfst, und zeige deine Reaktion auf den Wurf.",
+      "scale": {
+        "green": "Kompletter Fehlwurf",
+        "connector": "bis",
+        "red": "Perfekter Strike"
+      }
+    },
+    {
+      "id": "029-b",
+      "text": "Du nimmst an einem Backwettbewerb teil und backst eine riesige Torte in Form von … Ergänze den Satz.",
+      "scale": {
+        "green": "Damit verlierst du den Wettbewerb",
+        "connector": "bis",
+        "red": "Damit beeindruckst du alle"
+      }
+    },
+    {
+      "id": "030-a",
+      "text": "Du moderierst die Nachrichten. Verkünde die Schlagzeile des Tages.",
+      "scale": {
+        "green": "Interessiert absolut niemanden",
+        "connector": "bis",
+        "red": "Die Nachricht des Jahrhunderts"
+      }
+    },
+    {
+      "id": "030-b",
+      "text": "Aprilscherz! Du steckst einem Freund überraschend etwas unter sein T-Shirt. Was ist es?",
+      "scale": {
+        "green": "Ein völlig harmloser Scherz",
+        "connector": "bis",
+        "red": "Ein richtig fieser Scherz"
+      }
+    },
+    {
+      "id": "031-a",
+      "text": "Du suchst etwas im Schlafzimmer deiner Eltern, findest eine Schatulle und öffnest sie. Was ist darin?",
+      "scale": {
+        "green": "Überhaupt nicht peinlich",
+        "connector": "bis",
+        "red": "Unfassbar peinlich"
+      }
+    },
+    {
+      "id": "031-b",
+      "text": "Spiele pantomimisch, wie traurig dich der Film „Bambi“ macht.",
+      "scale": {
+        "green": "Völlig ungerührt wie ein Jäger",
+        "connector": "bis",
+        "red": "Gerührt wie ein besonders tierlieber Mensch"
+      }
+    },
+    {
+      "id": "032-a",
+      "text": "Was ziehst du für einen Tag am Strand an?",
+      "scale": {
+        "green": "Völlig unpassend",
+        "connector": "bis",
+        "red": "Perfekt geeignet"
+      }
+    },
+    {
+      "id": "032-b",
+      "text": "Deine Freunde lesen eine SMS, die du gerade von deiner Mutter bekommen hast. Was steht darin?",
+      "scale": {
+        "green": "Überhaupt nicht peinlich",
+        "connector": "bis",
+        "red": "Extrem peinlich"
+      }
+    },
+    {
+      "id": "033-a",
+      "text": "„Achtung, hinter dir! Das ist ja schrecklich!“ Spiele pantomimisch, wie du dich umdrehst.",
+      "scale": {
+        "green": "Zeitlupentempo",
+        "connector": "bis",
+        "red": "Blitzschnell"
+      }
+    },
+    {
+      "id": "033-b",
+      "text": "Auf Tinder zeigt jemand Interesse an dir. Du erkennst die Person: Ihr kennt euch bereits! Wer ist es?",
+      "scale": {
+        "green": "Die schlimmstmögliche Überraschung",
+        "connector": "bis",
+        "red": "Die schönstmögliche Überraschung"
+      }
+    },
+    {
+      "id": "034-a",
+      "text": "Du bist heimlich in eine Person aus der Runde verliebt. Mach ihr mit zwei sich reimenden Sätzen eine Liebeserklärung.",
+      "scale": {
+        "green": "Überhaupt nicht romantisch",
+        "connector": "bis",
+        "red": "Unglaublich romantisch"
+      }
+    },
+    {
+      "id": "034-b",
+      "text": "Du darfst für den Rest deines Lebens nur eine Smartphone-App behalten. Welche wählst du?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Absolut unverzichtbar"
+      }
+    },
+    {
+      "id": "035-a",
+      "text": "Um die Wikinger nach Walhall, ihrem Paradies, zu locken, verspricht man ihnen … Ergänze den Satz.",
+      "scale": {
+        "green": "Überhaupt nicht verlockend",
+        "connector": "bis",
+        "red": "Äußerst verlockend"
+      }
+    },
+    {
+      "id": "035-b",
+      "text": "Du nimmst an einem Air-Guitar-Wettbewerb teil. Spiele deinen Auftritt pantomimisch vor.",
+      "scale": {
+        "green": "Ungeschickter Anfänger",
+        "connector": "bis",
+        "red": "Absoluter Profi"
+      }
+    },
+    {
+      "id": "036-a",
+      "text": "Sag einen Satz, den man in einer Reality-TV-Show hören könnte.",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Absolut typisch"
+      }
+    },
+    {
+      "id": "036-b",
+      "text": "Bald feiert am Broadway das Musical „…, The Musical“ Premiere. Erfinde den Titel.",
+      "scale": {
+        "green": "Klingt überhaupt nicht verlockend",
+        "connector": "bis",
+        "red": "Das muss man unbedingt sehen"
+      }
+    },
+    {
+      "id": "037-a",
+      "text": "Spiele pantomimisch, wie du die Kerzen auf einer Geburtstagstorte auspustest.",
+      "scale": {
+        "green": "Eine einzige Kerze",
+        "connector": "bis",
+        "red": "Hundert Kerzen"
+      }
+    },
+    {
+      "id": "037-b",
+      "text": "Du spielst American Football. Welchen Spitznamen geben dir deine Teamkollegen in der Umkleide?",
+      "scale": {
+        "green": "Äußerst unvorteilhaft",
+        "connector": "bis",
+        "red": "Damit begeisterst du alle Fans"
+      }
+    },
+    {
+      "id": "038-a",
+      "text": "Nenne eine Fernsehsendung.",
+      "scale": {
+        "green": "Völlig anspruchslos",
+        "connector": "bis",
+        "red": "Hochintellektuell"
+      }
+    },
+    {
+      "id": "038-b",
+      "text": "Beim großen Familienessen stehst du auf, klopfst mit einem imaginären Löffel gegen dein Glas und sagst: „Ich muss euch etwas mitteilen …“ Ergänze den Satz.",
+      "scale": {
+        "green": "Kaum überraschend",
+        "connector": "bis",
+        "red": "Extrem überraschend"
+      }
+    },
+    {
+      "id": "039-a",
+      "text": "Du kommst in deinem Hotelzimmer im Urlaub an, öffnest das Fenster und siehst die Aussicht. Spiele deine Reaktion.",
+      "scale": {
+        "green": "Na ja, eher enttäuschend",
+        "connector": "bis",
+        "red": "Atemberaubend schön"
+      }
+    },
+    {
+      "id": "039-b",
+      "text": "Stell dir vor, die Spielanleitung ist eine Speisekarte. Lies daraus ein Gericht vor.",
+      "scale": {
+        "green": "Billiges Imbissessen",
+        "connector": "bis",
+        "red": "Gehobene Drei-Sterne-Küche"
+      }
+    },
+    {
+      "id": "040-a",
+      "text": "Welchen Gegenstand hätte man beim Untergang der Titanic dabeihaben sollen?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Äußerst nützlich"
+      }
+    },
+    {
+      "id": "040-b",
+      "text": "Sieh einer anderen Person tief in die Augen und hypnotisiere sie, damit sie etwas Bestimmtes tut. Was soll sie machen?",
+      "scale": {
+        "green": "Eine nette Kleinigkeit",
+        "connector": "bis",
+        "red": "Dafür wird sie dich richtig hassen"
+      }
+    },
+    {
+      "id": "041-a",
+      "text": "Nenne ein Tier.",
+      "scale": {
+        "green": "Für Menschen völlig harmlos",
+        "connector": "bis",
+        "red": "Für Menschen extrem gefährlich"
+      }
+    },
+    {
+      "id": "041-b",
+      "text": "Reiche die Spieleschachtel an eine andere Person weiter und sage ihr, was du von dem Spiel hältst.",
+      "scale": {
+        "green": "Du hasst dieses Spiel",
+        "connector": "bis",
+        "red": "Du liebst dieses Spiel"
+      }
+    },
+    {
+      "id": "042-a",
+      "text": "Du bist in einem tibetischen Tempel. Um Zen-Meister zu werden, musst du nur noch eine letzte Prüfung bestehen. Welche ist das?",
+      "scale": {
+        "green": "Kinderleicht",
+        "connector": "bis",
+        "red": "Extrem schwierig"
+      }
+    },
+    {
+      "id": "042-b",
+      "text": "Du heiratest in Las Vegas! Was ist das Besondere an deiner Hochzeit?",
+      "scale": {
+        "green": "Kaum originell",
+        "connector": "bis",
+        "red": "Völlig ausgefallen"
+      }
+    },
+    {
+      "id": "043-a",
+      "text": "Ein Tyrannosaurus Rex verfolgt dich. Wie versuchst du, ihm zu entkommen?",
+      "scale": {
+        "green": "Ich werde sein Nachmittagssnack",
+        "connector": "bis",
+        "red": "Ich entkomme mit Leichtigkeit"
+      }
+    },
+    {
+      "id": "043-b",
+      "text": "Reiche die Spieleschachtel an eine andere Person weiter. Wie machst du das?",
+      "scale": {
+        "green": "Äußerst unfreundlich",
+        "connector": "bis",
+        "red": "Besonders herzlich"
+      }
+    },
+    {
+      "id": "044-a",
+      "text": "Erfinde eine reißerische Schlagzeile über den Präsidenten für die Titelseite einer Klatschzeitschrift.",
+      "scale": {
+        "green": "Völlig uninteressant",
+        "connector": "bis",
+        "red": "Eine absolute Schlagzeile"
+      }
+    },
+    {
+      "id": "044-b",
+      "text": "Du bist Gast auf einer Hochzeit. Welche Überraschung hast du für das Brautpaar am Abend vorbereitet?",
+      "scale": {
+        "green": "Eine katastrophale Überraschung",
+        "connector": "bis",
+        "red": "Eine großartige Überraschung"
+      }
+    },
+    {
+      "id": "045-a",
+      "text": "Spiele deine Reaktion nach, nachdem du ein Bonbon mit einem ganz ungewöhnlichen Geschmack probiert hast.",
+      "scale": {
+        "green": "Schmeckt wie Popel",
+        "connector": "bis",
+        "red": "Schmeckt wie mein Lieblingsparfüm"
+      }
+    },
+    {
+      "id": "045-b",
+      "text": "Mit einer Körpergröße von 1,50 Metern erlebt man manche Situationen anders. Beschreibe eine solche Situation.",
+      "scale": {
+        "green": "Extrem unangenehm",
+        "connector": "bis",
+        "red": "Einfach genial"
+      }
+    },
+    {
+      "id": "046-a",
+      "text": "Heute ist der Tag der Freundlichkeit. Mache einer Person am Tisch ein Kompliment.",
+      "scale": {
+        "green": "Ein nettes Kompliment",
+        "connector": "bis",
+        "red": "Ein überschwängliches Lob"
+      }
+    },
+    {
+      "id": "046-b",
+      "text": "Du verbringst das Wochenende mit einem Serienmarathon. Welche Serie schaust du?",
+      "scale": {
+        "green": "Die schlechteste Serie überhaupt",
+        "connector": "bis",
+        "red": "Die beste Serie überhaupt"
+      }
+    },
+    {
+      "id": "047-a",
+      "text": "Welche Dokumentation läuft heute Abend im Fernsehen?",
+      "scale": {
+        "green": "Ein Thema, das dich überhaupt nicht interessiert",
+        "connector": "bis",
+        "red": "Ein Thema, das du auf keinen Fall verpassen willst"
+      }
+    },
+    {
+      "id": "047-b",
+      "text": "Schlüpfe in die Rolle von Gandalf und rufe: „Du kommst nicht vorbei!“",
+      "scale": {
+        "green": "Überhaupt nicht überzeugend",
+        "connector": "bis",
+        "red": "Absolut überzeugend"
+      }
+    },
+    {
+      "id": "048-a",
+      "text": "Vervollständige den Satz aus einem Reisekatalog: „Paris, die Stadt der ...“",
+      "scale": {
+        "green": "Alles andere als schmeichelhaft",
+        "connector": "bis",
+        "red": "Unglaublich verlockend"
+      }
+    },
+    {
+      "id": "048-b",
+      "text": "Dein Wecker schafft es nicht, dich aus dem Bett zu holen. Welche ungewöhnliche Methode könnte dich morgens wecken?",
+      "scale": {
+        "green": "Ganz sanft",
+        "connector": "bis",
+        "red": "Äußerst brutal"
+      }
+    },
+    {
+      "id": "049-a",
+      "text": "Dein Kind zeigt dir sein Zeugnis. Spiele deine Reaktion darauf.",
+      "scale": {
+        "green": "Es ist das schlechteste Kind der Klasse",
+        "connector": "bis",
+        "red": "Es ist Klassenbeste oder Klassenbester"
+      }
+    },
+    {
+      "id": "049-b",
+      "text": "Vervollständige den Warnaufkleber am Heck deines Autos: „Achtung, ... am Steuer!“",
+      "scale": {
+        "green": "Niemand würde deswegen langsamer fahren",
+        "connector": "bis",
+        "red": "Alle würden sofort abbremsen"
+      }
+    },
+    {
+      "id": "050-a",
+      "text": "Ein Drache als Haustier wäre doch großartig! Warum?",
+      "scale": {
+        "green": "Kaum überzeugendes Argument",
+        "connector": "bis",
+        "red": "Unschlagbares Argument"
+      }
+    },
+    {
+      "id": "050-b",
+      "text": "Welche Schauspielerin oder welchen Schauspieler würdest du für ein neues Kinoplakat auswählen?",
+      "scale": {
+        "green": "Damit lockst du niemanden ins Kino",
+        "connector": "bis",
+        "red": "Damit strömen die Massen ins Kino"
+      }
+    },
+    {
+      "id": "051-a",
+      "text": "Das Krokodil aus Peter Pan hat einen weiteren Körperteil von Captain Hook gefressen. Welchen?",
+      "scale": {
+        "green": "Den würde er kaum vermissen",
+        "connector": "bis",
+        "red": "Den würde er schrecklich vermissen"
+      }
+    },
+    {
+      "id": "051-b",
+      "text": "Spiele nach, wie du mit deiner Angel einen Fisch aus dem Wasser ziehst.",
+      "scale": {
+        "green": "Eine winzige Sardine",
+        "connector": "bis",
+        "red": "Einen riesigen Wal"
+      }
+    },
+    {
+      "id": "052-a",
+      "text": "Du darfst dir vom Dschinn aus Aladins Wunderlampe etwas wünschen. Was wünschst du dir?",
+      "scale": {
+        "green": "Völlig nutzloser Wunsch",
+        "connector": "bis",
+        "red": "Genialer Wunsch"
+      }
+    },
+    {
+      "id": "052-b",
+      "text": "Erfinde einen Spitznamen für den Captain, den du den Rest der Runde benutzt.",
+      "scale": {
+        "green": "So nervig, dass er ihn hasst",
+        "connector": "bis",
+        "red": "So gut, dass er ihn behalten will"
+      }
+    },
+    {
+      "id": "053-a",
+      "text": "Dir fällt am Valentinstag in letzter Minute ein, dass du noch ein Geschenk brauchst. Was verschenkst du?",
+      "scale": {
+        "green": "Das schlechteste Geschenk",
+        "connector": "bis",
+        "red": "Das beste Geschenk"
+      }
+    },
+    {
+      "id": "053-b",
+      "text": "Spiele einen Hamster, der in seinem Laufrad rennt.",
+      "scale": {
+        "green": "Alt, übergewichtig und erschöpft",
+        "connector": "bis",
+        "red": "Jung, energiegeladen und voller Tatendrang"
+      }
+    },
+    {
+      "id": "054-a",
+      "text": "Der Babysitter ruft dich völlig aufgelöst an: „Es ist schrecklich ...“ Wie geht der Satz weiter?",
+      "scale": {
+        "green": "Ein eher peinliches Problem",
+        "connector": "bis",
+        "red": "Eine absolute Katastrophe"
+      }
+    },
+    {
+      "id": "054-b",
+      "text": "Beim Fußball wird eine neue Zusatzregel eingeführt. Welche?",
+      "scale": {
+        "green": "Das Publikum schläft ein",
+        "connector": "bis",
+        "red": "Das Publikum rastet vor Begeisterung aus"
+      }
+    },
+    {
+      "id": "055-a",
+      "text": "Du gründest ein Start-up mit einer revolutionären neuen Smartphone-App. Was kann die App?",
+      "scale": {
+        "green": "Überhaupt nicht nützlich",
+        "connector": "bis",
+        "red": "Unglaublich nützlich"
+      }
+    },
+    {
+      "id": "055-b",
+      "text": "Spiele nach, wie du nach einer Vorstellung applaudierst.",
+      "scale": {
+        "green": "Die Vorstellung war grottenschlecht",
+        "connector": "bis",
+        "red": "Die Vorstellung war fantastisch"
+      }
+    },
+    {
+      "id": "056-a",
+      "text": "Du bekommst eine Karte für ein einmaliges Konzert geschenkt. Für welches Konzert?",
+      "scale": {
+        "green": "Eine furchtbare Überraschung",
+        "connector": "bis",
+        "red": "Eine fantastische Überraschung"
+      }
+    },
+    {
+      "id": "056-b",
+      "text": "Ein Kollege schickt dir ein Foto aus seinem Urlaub. Wie antwortest du?",
+      "scale": {
+        "green": "Da bleibe ich lieber bei der Arbeit",
+        "connector": "bis",
+        "red": "Ich bin wahnsinnig neidisch!"
+      }
+    },
+    {
+      "id": "057-a",
+      "text": "Spiele nach, wie du ein Tennismatch bei den French Open verfolgst.",
+      "scale": {
+        "green": "Ein quälend langsamer Ballwechsel",
+        "connector": "bis",
+        "red": "Ein rasend schneller Ballwechsel"
+      }
+    },
+    {
+      "id": "057-b",
+      "text": "Du kommst nach einer durchzechten Nacht nach Hause und willst niemanden wecken. Allerdings hast du etwas dabei, das Lärm macht. Was ist es?",
+      "scale": {
+        "green": "So leise, dass es niemand bemerkt",
+        "connector": "bis",
+        "red": "So laut, dass du sofort erwischt wirst"
+      }
+    },
+    {
+      "id": "058-a",
+      "text": "Der Captain erfährt durch einen DNA-Test, dass er mit ... verwandt ist. Vervollständige den Satz.",
+      "scale": {
+        "green": "Die schlimmstmögliche Nachricht",
+        "connector": "bis",
+        "red": "Die bestmögliche Nachricht"
+      }
+    },
+    {
+      "id": "058-b",
+      "text": "Du bist ein Weihnachtswichtel und sollst dieses Jahr allen Menschen dasselbe Geschenk bringen. Was schlägst du dem Weihnachtsmann vor?",
+      "scale": {
+        "green": "Das schlechteste Geschenk",
+        "connector": "bis",
+        "red": "Das genialste Geschenk"
+      }
+    },
+    {
+      "id": "059-a",
+      "text": "Die Person rechts von dir fotografiert dich mit einer unsichtbaren Kamera und zählt: „Eins, zwei, drei, Klick!“ Stell dich in Pose.",
+      "scale": {
+        "green": "Die schlimmste Fotopose",
+        "connector": "bis",
+        "red": "Die beste Fotopose"
+      }
+    },
+    {
+      "id": "059-b",
+      "text": "Welches Reiseziel würdest du für den nächsten Urlaub wählen?",
+      "scale": {
+        "green": "Da willst du auf keinen Fall hin",
+        "connector": "bis",
+        "red": "Dein absolutes Traumreiseziel"
+      }
+    },
+    {
+      "id": "060-a",
+      "text": "Vervollständige den Satz: „Was ich an Daniela besonders mag, ist ...“",
+      "scale": {
+        "green": "Wenig anziehend",
+        "connector": "bis",
+        "red": "Äußerst anziehend"
+      }
+    },
+    {
+      "id": "060-b",
+      "text": "Überraschung! Die Mutter des Captains hat seine Tapeten, Vorhänge und Bettdecke mit demselben Muster versehen. Welches Muster ist das?",
+      "scale": {
+        "green": "Die schlimmste Idee",
+        "connector": "bis",
+        "red": "Die beste Idee"
+      }
+    },
+    {
+      "id": "061-a",
+      "text": "Du bist zum ersten Mal bei deiner Schwiegerfamilie aus Savoyen zum Essen eingeladen. Es gibt Käsefondue! Spiele mit einem Stift als Fonduegabel vor, wie das Essen läuft.",
+      "scale": {
+        "green": "Es geht völlig schief",
+        "connector": "bis",
+        "red": "Es läuft hervorragend"
+      }
+    },
+    {
+      "id": "061-b",
+      "text": "Nenne einen Grund, warum man heiraten sollte.",
+      "scale": {
+        "green": "Ein völlig unsinniger Grund",
+        "connector": "bis",
+        "red": "Ein richtig guter Grund"
+      }
+    },
+    {
+      "id": "062-a",
+      "text": "Sieh einer anderen Person tief in die Augen und erkläre ihr, warum du mit ihr Schluss machst.",
+      "scale": {
+        "green": "Ein völlig alberner Grund",
+        "connector": "bis",
+        "red": "Ein wirklich guter Grund"
+      }
+    },
+    {
+      "id": "062-b",
+      "text": "Wohin könnte der Captain seine Partnerin oder seinen Partner zum Essen ausführen?",
+      "scale": {
+        "green": "Völlig unspektakulär",
+        "connector": "bis",
+        "red": "Äußerst beeindruckend"
+      }
+    },
+    {
+      "id": "063-a",
+      "text": "Du betrittst nachts ein verlassenes Haus. Plötzlich steht jemand Unheimliches direkt vor dir. Wer ist es?",
+      "scale": {
+        "green": "Kaum gruselig",
+        "connector": "bis",
+        "red": "Absolut furchteinflößend"
+      }
+    },
+    {
+      "id": "063-b",
+      "text": "Sage den Satz: „Meine Schwiegermutter kommt!“",
+      "scale": {
+        "green": "Das ist eine absolute Katastrophe!",
+        "connector": "bis",
+        "red": "Das ist ja großartig!"
+      }
+    },
+    {
+      "id": "064-a",
+      "text": "Welches Spielzeug könnte einem Kindermenü im Fast-Food-Restaurant beiliegen?",
+      "scale": {
+        "green": "Das schlechteste vorstellbare Spielzeug",
+        "connector": "bis",
+        "red": "Der absolute Kinderliebling"
+      }
+    },
+    {
+      "id": "064-b",
+      "text": "Deine beste Freundin zeigt dir ihr neugeborenes Baby. Reagiere und sage ihr, wie du es findest.",
+      "scale": {
+        "green": "Ein wirklich hässliches Baby",
+        "connector": "bis",
+        "red": "Ein wunderschönes Baby"
+      }
+    },
+    {
+      "id": "065-a",
+      "text": "Du arbeitest bei der Post und wirst in eine andere Stadt versetzt. In welche?",
+      "scale": {
+        "green": "Eine richtig schlechte Nachricht",
+        "connector": "bis",
+        "red": "Eine richtig gute Nachricht"
+      }
+    },
+    {
+      "id": "065-b",
+      "text": "Welches Geburtstagsgeschenk machst du dem Captain?",
+      "scale": {
+        "green": "Er ist bitter enttäuscht",
+        "connector": "bis",
+        "red": "Er springt vor Freude in die Luft"
+      }
+    },
+    {
+      "id": "066-a",
+      "text": "Spiele einen Hund nach, der einen Fluss durchschwimmt.",
+      "scale": {
+        "green": "Ein ruhiger Bach",
+        "connector": "bis",
+        "red": "Ein reißender Wildwasserfluss"
+      }
+    },
+    {
+      "id": "066-b",
+      "text": "In einer Zeitschrift steht: „Die neue Trenddiät: Iss ausschließlich …“ Vervollständige den Satz.",
+      "scale": {
+        "green": "Der schlechteste Ernährungstipp",
+        "connector": "bis",
+        "red": "Der beste Ernährungstipp"
+      }
+    },
+    {
+      "id": "067-a",
+      "text": "Lies eine verdächtige Nachricht vor, die deine Partnerin oder dein Partner erhalten hat.",
+      "scale": {
+        "green": "Völlig harmlos",
+        "connector": "bis",
+        "red": "Da läuft definitiv eine Affäre!"
+      }
+    },
+    {
+      "id": "067-b",
+      "text": "Willkommen im Freizeitpark! Welche Attraktion wählst du?",
+      "scale": {
+        "green": "Völlig unspektakulär",
+        "connector": "bis",
+        "red": "Absolut atemberaubend"
+      }
+    },
+    {
+      "id": "068-a",
+      "text": "Du bist Kapitän deines eigenen Schiffs. Was für ein Schiff ist es und wie heißt es?",
+      "scale": {
+        "green": "Überhaupt nicht prestigeträchtig",
+        "connector": "bis",
+        "red": "Äußerst prestigeträchtig"
+      }
+    },
+    {
+      "id": "068-b",
+      "text": "Spiele deinen Tod in einer dramatischen Filmszene nach.",
+      "scale": {
+        "green": "Schnell und plötzlich",
+        "connector": "bis",
+        "red": "Ein langer, qualvoller Todeskampf"
+      }
+    },
+    {
+      "id": "069-a",
+      "text": "In Fast & Furious 12 gibt es eine Verfolgungsjagd mit … Vervollständige den Satz.",
+      "scale": {
+        "green": "Wie aus einem Billigfilm",
+        "connector": "bis",
+        "red": "Ein spektakulärer Hollywood-Blockbuster"
+      }
+    },
+    {
+      "id": "069-b",
+      "text": "Eine Wahrsagerin verrät dir, wie du einmal sterben wirst. Was sieht sie?",
+      "scale": {
+        "green": "Die schlimmste Art zu sterben",
+        "connector": "bis",
+        "red": "Die für dich beste Art zu sterben"
+      }
+    },
+    {
+      "id": "070-a",
+      "text": "Was könntest du statt einer Wärmflasche mit ins Bett nehmen?",
+      "scale": {
+        "green": "Wärmt überhaupt nicht",
+        "connector": "bis",
+        "red": "Wärmt hervorragend"
+      }
+    },
+    {
+      "id": "070-b",
+      "text": "Du leitest einen Fitnesskurs. Mach eine neue Übung vor, die alle nachmachen sollen.",
+      "scale": {
+        "green": "Eine kleine Aufwärmbewegung",
+        "connector": "bis",
+        "red": "Eine schweißtreibende Powerübung"
+      }
+    },
+    {
+      "id": "071-a",
+      "text": "Was würdest du auf eine Durchquerung der Sahara mitnehmen?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Extrem nützlich"
+      }
+    },
+    {
+      "id": "071-b",
+      "text": "Du meldest den Captain bei einer Talentshow an. Was sollte er auf der Bühne vorführen?",
+      "scale": {
+        "green": "Darin ist er furchtbar schlecht",
+        "connector": "bis",
+        "red": "Darin ist er fantastisch"
+      }
+    },
+    {
+      "id": "072-a",
+      "text": "An eurem Spieltisch bricht eine Zombie-Epidemie aus! In welche andere Stadt fliehst du?",
+      "scale": {
+        "green": "Ganz in der Nähe",
+        "connector": "bis",
+        "red": "So weit entfernt wie möglich"
+      }
+    },
+    {
+      "id": "072-b",
+      "text": "Du bist nachts im Dschungel. Mach das Geräusch nach, das du plötzlich hörst.",
+      "scale": {
+        "green": "Völlig beruhigend",
+        "connector": "bis",
+        "red": "Extrem beängstigend"
+      }
+    },
+    {
+      "id": "073-a",
+      "text": "Welchen Gegenstand würdest du auf eine Reise auf die Malediven mitnehmen?",
+      "scale": {
+        "green": "Völlig verzichtbar",
+        "connector": "bis",
+        "red": "Absolut unverzichtbar"
+      }
+    },
+    {
+      "id": "073-b",
+      "text": "Du bist eine allmächtige Gottheit und willst den Menschen endlich beweisen, dass du existierst. Was tust du?",
+      "scale": {
+        "green": "Überhaupt nicht überzeugend",
+        "connector": "bis",
+        "red": "Absolut überzeugend"
+      }
+    },
+    {
+      "id": "074-a",
+      "text": "Spiele nach, wie du die Ziellinie eines Marathons überquerst.",
+      "scale": {
+        "green": "Du bist völlig am Ende",
+        "connector": "bis",
+        "red": "Das war ein Kinderspiel"
+      }
+    },
+    {
+      "id": "074-b",
+      "text": "Du willst den Mount Everest besteigen. Beschreibe, was du dabei trägst.",
+      "scale": {
+        "green": "Völlig ungeeignet",
+        "connector": "bis",
+        "red": "Perfekt für die Besteigung geeignet"
+      }
+    },
+    {
+      "id": "075-a",
+      "text": "Ihr spielt alle in derselben Fußballmannschaft. Nach dem Spiel erzählst du in der Kabine von deiner besten Aktion auf dem Platz.",
+      "scale": {
+        "green": "Eine völlig misslungene Aktion",
+        "connector": "bis",
+        "red": "Ein legendärer Spielzug"
+      }
+    },
+    {
+      "id": "075-b",
+      "text": "Oh nein, das Toilettenpapier ist alle! Womit wischst du dich ab?",
+      "scale": {
+        "green": "Völlig ungeeignet",
+        "connector": "bis",
+        "red": "Funktioniert hervorragend"
+      }
+    },
+    {
+      "id": "076-a",
+      "text": "Bei einem Erdbeben trennt dich eine Erdspalte von der Person links von dir. Du musst ihr deinen Autoschlüssel zuwerfen, damit sie Hilfe holen kann. Spiele den Wurf nach.",
+      "scale": {
+        "green": "Ein völlig misslungener Wurf",
+        "connector": "bis",
+        "red": "Ein perfekter Wurf"
+      }
+    },
+    {
+      "id": "076-b",
+      "text": "Nenne einen Beruf, mit dem man Geld verdienen kann.",
+      "scale": {
+        "green": "Sehr wenig Geld",
+        "connector": "bis",
+        "red": "Sehr viel Geld"
+      }
+    },
+    {
+      "id": "077-a",
+      "text": "Du verkaufst Staubsauger. Was ist dein bestes Verkaufsargument?",
+      "scale": {
+        "green": "Ein miserables Verkaufsargument",
+        "connector": "bis",
+        "red": "Ein hervorragendes Verkaufsargument"
+      }
+    },
+    {
+      "id": "077-b",
+      "text": "Du betrittst bei Fort Boyard einen neuen Prüfungsraum. Welche Herausforderung erwartet dich?",
+      "scale": {
+        "green": "Richtig angenehm",
+        "connector": "bis",
+        "red": "Extrem sadistisch"
+      }
+    },
+    {
+      "id": "078-a",
+      "text": "Du bist eine Hexe und hast einen Verwandlungstrank gebraut. Der Captain trinkt ihn. In welchen Gegenstand verwandelt er sich?",
+      "scale": {
+        "green": "Das Schlimmste, was ihm passieren könnte",
+        "connector": "bis",
+        "red": "Eine richtig tolle Verwandlung für ihn"
+      }
+    },
+    {
+      "id": "078-b",
+      "text": "Ein Baby spricht sein erstes Wort. Was sagt es?",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "079-a",
+      "text": "Du stehst Modell in einem Malkurs. Nimm eine Pose ein.",
+      "scale": {
+        "green": "Daraus wird ein furchtbares Bild",
+        "connector": "bis",
+        "red": "Daraus wird ein Meisterwerk"
+      }
+    },
+    {
+      "id": "079-b",
+      "text": "Dein erster Arbeitstag im Zoo: Du musst Tierkot beseitigen. In welchem Gehege wirst du eingesetzt?",
+      "scale": {
+        "green": "Das schlimmste Gehege",
+        "connector": "bis",
+        "red": "Das angenehmste Gehege"
+      }
+    },
+    {
+      "id": "080-a",
+      "text": "Miraculix hat neben dem Zaubertrank einen zweiten Trank erfunden, der … Vervollständige den Satz.",
+      "scale": {
+        "green": "Für die Gallier völlig nutzlos",
+        "connector": "bis",
+        "red": "Für die Gallier extrem hilfreich"
+      }
+    },
+    {
+      "id": "080-b",
+      "text": "Du bist heute Abend DJ. Welchen Song legst du auf, um für Partystimmung zu sorgen?",
+      "scale": {
+        "green": "Ein absoluter Stimmungskiller",
+        "connector": "bis",
+        "red": "Ein Song, der alle zum Feiern bringt"
+      }
+    },
+    {
+      "id": "081-a",
+      "text": "Vervollständige den Satz: „Ich hasse Leute, die …“",
+      "scale": {
+        "green": "Da stellst du dich aber an!",
+        "connector": "bis",
+        "red": "Das ist absolut unverzeihlich!"
+      }
+    },
+    {
+      "id": "081-b",
+      "text": "Steh auf und spiele nach, wie du einer anderen Person ein Glas edlen Wein servierst.",
+      "scale": {
+        "green": "Extrem tollpatschig",
+        "connector": "bis",
+        "red": "Service wie im Drei-Sterne-Restaurant"
+      }
+    },
+    {
+      "id": "082-a",
+      "text": "Gewalt, Sex und … Ergänze die dritte Zutat für eine erfolgreiche Fernsehserie.",
+      "scale": {
+        "green": "Damit floppt die Serie",
+        "connector": "bis",
+        "red": "Damit wird die Serie ein Hit"
+      }
+    },
+    {
+      "id": "082-b",
+      "text": "Du besichtigst ein Schloss. Der Tourguide erzählt, was in diesem Zimmer geschehen ist. Was war es?",
+      "scale": {
+        "green": "Zum Einschlafen langweilig",
+        "connector": "bis",
+        "red": "Unglaublich spannend"
+      }
+    },
+    {
+      "id": "083-a",
+      "text": "Spiele pantomimisch einen Dirigenten.",
+      "scale": {
+        "green": "Ganz zurückhaltend",
+        "connector": "bis",
+        "red": "Übertrieben leidenschaftlich"
+      }
+    },
+    {
+      "id": "083-b",
+      "text": "Eine radioaktive Explosion verleiht dir Superkräfte. Wie heißt du als Superheld und was ist deine besondere Fähigkeit?",
+      "scale": {
+        "green": "Ein ziemlich jämmerlicher Superheld",
+        "connector": "bis",
+        "red": "Ein absolut beeindruckender Superheld"
+      }
+    },
+    {
+      "id": "084-a",
+      "text": "Beschreibe das Ferienhaus, in dem du deine Wochenenden verbringst.",
+      "scale": {
+        "green": "Der schlimmste Ort überhaupt",
+        "connector": "bis",
+        "red": "Der schönste Ort, den man sich vorstellen kann"
+      }
+    },
+    {
+      "id": "084-b",
+      "text": "Wem könntest du zufällig in der Umkleidekabine eines Fitnessstudios begegnen? Nenne eine echte oder erfundene Person.",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "085-a",
+      "text": "Außerirdische landen auf der Erde und du hast den ersten Kontakt. Welchen Gegenstand schenkst du ihnen als Willkommensgeschenk?",
+      "scale": {
+        "green": "Ein völlig unpassendes Geschenk",
+        "connector": "bis",
+        "red": "Ein Geschenk, das einem Botschafter würdig wäre"
+      }
+    },
+    {
+      "id": "085-b",
+      "text": "Spiele pantomimisch einen Jongleur.",
+      "scale": {
+        "green": "Blutiger Anfänger",
+        "connector": "bis",
+        "red": "Absoluter Profi"
+      }
+    },
+    {
+      "id": "086-a",
+      "text": "Ihr seid mehrere Tage wandern. Was schmuggelst du heimlich in den Rucksack einer anderen Person, damit sie es tragen muss?",
+      "scale": {
+        "green": "Federleicht",
+        "connector": "bis",
+        "red": "Extrem schwer"
+      }
+    },
+    {
+      "id": "086-b",
+      "text": "Was könnte der Captain auf Facebook posten?",
+      "scale": {
+        "green": "Äußerst unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "087-a",
+      "text": "Spiele deine Reaktion nach, wenn Paris Saint-Germain (PSG) ein Tor schießt.",
+      "scale": {
+        "green": "Fußball ist dir völlig egal",
+        "connector": "bis",
+        "red": "Du bist der größte PSG-Fan"
+      }
+    },
+    {
+      "id": "087-b",
+      "text": "Du stehst dringend vor einer langen Toilettenschlange. Mit welchem Argument versuchst du, dich vor allen anderen durchzulassen?",
+      "scale": {
+        "green": "Überhaupt nicht überzeugend",
+        "connector": "bis",
+        "red": "Extrem überzeugend"
+      }
+    },
+    {
+      "id": "088-a",
+      "text": "Erzähle von einem erfundenen Missgeschick auf einer Reise.",
+      "scale": {
+        "green": "Nur eine kleine Unannehmlichkeit",
+        "connector": "bis",
+        "red": "Eine absolute Katastrophe"
+      }
+    },
+    {
+      "id": "088-b",
+      "text": "Nenne eine echte oder erfundene Person. Wie lange braucht sie wohl im Badezimmer?",
+      "scale": {
+        "green": "Nur ganz kurz",
+        "connector": "bis",
+        "red": "Eine gefühlte Ewigkeit"
+      }
+    },
+    {
+      "id": "089-a",
+      "text": "Eine Prinzessin in Rüstung will einen Prinzen befreien, der ganz oben in einem Turm eingesperrt ist. Welches Hindernis steht zwischen ihr und ihrem Geliebten?",
+      "scale": {
+        "green": "Ein winziges Hindernis",
+        "connector": "bis",
+        "red": "Ein riesiges Problem"
+      }
+    },
+    {
+      "id": "089-b",
+      "text": "Steh auf und springe auf der Stelle.",
+      "scale": {
+        "green": "Nur ein kleiner Hüpfer",
+        "connector": "bis",
+        "red": "So hoch wie möglich"
+      }
+    },
+    {
+      "id": "090-a",
+      "text": "Du besuchst mit Kindern einen Zoo. Welches Tier könnte ihnen begegnen?",
+      "scale": {
+        "green": "Sie beachten es kaum",
+        "connector": "bis",
+        "red": "Sie rennen begeistert darauf zu"
+      }
+    },
+    {
+      "id": "090-b",
+      "text": "Du hast ein Verbrechen beobachtet. Was erzählst du als Augenzeuge, damit der Täter gefasst wird?",
+      "scale": {
+        "green": "Für die Ermittlungen völlig nutzlos",
+        "connector": "bis",
+        "red": "Für die Ermittlungen äußerst hilfreich"
+      }
+    },
+    {
+      "id": "091-a",
+      "text": "Halte ein imaginäres Lenkrad und spiele nach, wie du Auto fährst.",
+      "scale": {
+        "green": "Wie ein gemütlicher Opa",
+        "connector": "bis",
+        "red": "Wie ein professioneller Rennfahrer"
+      }
+    },
+    {
+      "id": "091-b",
+      "text": "Eine Frau bekommt mitten im Nirgendwo ein Kind. Nur du bist da, um ihr zu helfen. Was würdest du besorgen?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Äußerst hilfreich"
+      }
+    },
+    {
+      "id": "092-a",
+      "text": "Du schenkst dem Captain eine Eintrittskarte für eine große Messe. Was ist das für eine Messe?",
+      "scale": {
+        "green": "Da würde er lieber sterben, als hinzugehen",
+        "connector": "bis",
+        "red": "Die würde er auf keinen Fall verpassen"
+      }
+    },
+    {
+      "id": "092-b",
+      "text": "Du erfährst, dass Brad Pitt eine unangenehme Angewohnheit hat. Welche?",
+      "scale": {
+        "green": "Harmlos und leicht zu übersehen",
+        "connector": "bis",
+        "red": "Ein absolutes K.-o.-Kriterium"
+      }
+    },
+    {
+      "id": "093-a",
+      "text": "Dein Onkel Johnny ist von seiner letzten Expedition nicht zurückgekehrt. Welchen Gegenstand von einer früheren Expedition hat er dir vererbt?",
+      "scale": {
+        "green": "Etwas völlig Gewöhnliches",
+        "connector": "bis",
+        "red": "Ein unglaublich seltener Fund"
+      }
+    },
+    {
+      "id": "093-b",
+      "text": "Spiele pantomimisch einen Masseur, der jemanden auf einer Liege massiert.",
+      "scale": {
+        "green": "Ganz sanft",
+        "connector": "bis",
+        "red": "Extrem kräftig"
+      }
+    },
+    {
+      "id": "094-a",
+      "text": "Du kannst eine erfundene Figur zum Leben erwecken. Wen wählst du?",
+      "scale": {
+        "green": "Eine furchtbare Idee",
+        "connector": "bis",
+        "red": "Die beste Idee überhaupt"
+      }
+    },
+    {
+      "id": "094-b",
+      "text": "Welchen Satz sagt ein Immobilienmakler bei der Besichtigung einer neuen Wohnung?",
+      "scale": {
+        "green": "Danach will man sofort flüchten",
+        "connector": "bis",
+        "red": "Danach will man die Wohnung unbedingt kaufen"
+      }
+    },
+    {
+      "id": "095-a",
+      "text": "Welches Foto würdest du als Profilbild auf einer Dating-App verwenden?",
+      "scale": {
+        "green": "Auf gar keinen Fall",
+        "connector": "bis",
+        "red": "Auf jeden Fall"
+      }
+    },
+    {
+      "id": "095-b",
+      "text": "Stell dir vor, deine Hand ist ein kleiner Mensch auf einem Bahnsteig. Spiele mit ihr nach, wie er zum Zug läuft.",
+      "scale": {
+        "green": "Der Zug fährt erst in einer Stunde",
+        "connector": "bis",
+        "red": "Der Zug fährt jeden Moment ab"
+      }
+    },
+    {
+      "id": "096-a",
+      "text": "Du wurdest geblitzt. Welche Begründung gibst du der Polizei, um einen Strafzettel zu vermeiden?",
+      "scale": {
+        "green": "Eine völlig unglaubwürdige Ausrede",
+        "connector": "bis",
+        "red": "Ein wirklich guter Grund"
+      }
+    },
+    {
+      "id": "096-b",
+      "text": "Nenne eine bekannte Persönlichkeit.",
+      "scale": {
+        "green": "Hat kaum Facebook-Fans",
+        "connector": "bis",
+        "red": "Hat unglaublich viele Facebook-Fans"
+      }
+    },
+    {
+      "id": "097-a",
+      "text": "Du bist Präsident oder Präsidentin. Welches neue Ministerium würdest du gründen?",
+      "scale": {
+        "green": "Interessiert nur dich selbst",
+        "connector": "bis",
+        "red": "Interessiert die ganze Welt"
+      }
+    },
+    {
+      "id": "097-b",
+      "text": "Spiele einen Bauchredner und lass deine Hand sprechen. Was sagt sie?",
+      "scale": {
+        "green": "Eine richtig gemeine Hand",
+        "connector": "bis",
+        "red": "Eine ausgesprochen freundliche Hand"
+      }
+    },
+    {
+      "id": "098-a",
+      "text": "Steh auf und stell dir vor, du stehst bei der Siegerehrung auf dem obersten Podestplatz und bekommst eine Goldmedaille. Wie reagierst du?",
+      "scale": {
+        "green": "Äußerst bescheiden",
+        "connector": "bis",
+        "red": "Wie eine riesige Diva"
+      }
+    },
+    {
+      "id": "098-b",
+      "text": "Angeblich kann dein Vater heimlich etwas überhaupt nicht ausstehen. Was ist es?",
+      "scale": {
+        "green": "Völlig unglaubwürdig",
+        "connector": "bis",
+        "red": "Absolut glaubwürdig"
+      }
+    },
+    {
+      "id": "099-a",
+      "text": "Welchen Spitznamen hatte der Captain wohl in der Schule?",
+      "scale": {
+        "green": "Total unbeliebt",
+        "connector": "bis",
+        "red": "Der absolute Superstar"
+      }
+    },
+    {
+      "id": "099-b",
+      "text": "Du bist Berufsberater. Edward mit den Scherenhänden möchte einen Job finden. Welchen Beruf empfiehlst du ihm?",
+      "scale": {
+        "green": "Eine furchtbare Empfehlung",
+        "connector": "bis",
+        "red": "Eine geniale Empfehlung"
+      }
+    },
+    {
+      "id": "100-a",
+      "text": "Nenne eine Erfindung aus der Geschichte der Menschheit.",
+      "scale": {
+        "green": "Hat kaum etwas verändert",
+        "connector": "bis",
+        "red": "Hat die Welt revolutioniert"
+      }
+    },
+    {
+      "id": "100-b",
+      "text": "Du sitzt am Steuer, als eine Herde Ponys die Straße überquert. Ahme das Hupen deines Autos nach.",
+      "scale": {
+        "green": "Ganz leise und zurückhaltend",
+        "connector": "bis",
+        "red": "Ohrenbetäubend laut"
+      }
+    },
+    {
+      "id": "101-a",
+      "text": "Batman möchte Robin ersetzen. Erfinde ein neues Duo: „Batman und …“",
+      "scale": {
+        "green": "Die schlechteste Idee überhaupt",
+        "connector": "bis",
+        "red": "Das perfekte Superhelden-Duo"
+      }
+    },
+    {
+      "id": "101-b",
+      "text": "Erfinde einen Spruch, der in einem chinesischen Glückskeks stehen könnte.",
+      "scale": {
+        "green": "Sofort verständlich",
+        "connector": "bis",
+        "red": "Völlig rätselhaft"
+      }
+    },
+    {
+      "id": "102-a",
+      "text": "Dein Gesicht ist auf riesigen Werbeplakaten in der Stadt zu sehen. Für welches Produkt machst du Werbung?",
+      "scale": {
+        "green": "Überhaupt nicht schmeichelhaft",
+        "connector": "bis",
+        "red": "Äußerst schmeichelhaft"
+      }
+    },
+    {
+      "id": "102-b",
+      "text": "Jemand neben dir am Tisch lässt unbemerkt einen fahren. Wie reagierst du?",
+      "scale": {
+        "green": "Kaum zu riechen",
+        "connector": "bis",
+        "red": "Extrem übelriechend"
+      }
+    },
+    {
+      "id": "103-a",
+      "text": "Spiele pantomimisch, wie du mit einem Hammer einen Nagel einschlägst.",
+      "scale": {
+        "green": "Ganz vorsichtig",
+        "connector": "bis",
+        "red": "Mit voller Wucht"
+      }
+    },
+    {
+      "id": "103-b",
+      "text": "Du wirst in Hogwarts aufgenommen. An deinem ersten Schultag bringst du ein magisches Haustier mit. Welches Tier ist es?",
+      "scale": {
+        "green": "Dafür schämst du dich ein bisschen",
+        "connector": "bis",
+        "red": "Damit gibst du richtig an"
+      }
+    },
+    {
+      "id": "104-a",
+      "text": "Alle an die Wahlurnen! Welche reale oder erfundene Person – lebend oder tot – wäre eine gute Präsidentin oder ein guter Präsident Frankreichs?",
+      "scale": {
+        "green": "Die denkbar schlechteste Wahl",
+        "connector": "bis",
+        "red": "Die beste Wahl überhaupt"
+      }
+    },
+    {
+      "id": "104-b",
+      "text": "Stell dir vor, alle Mitspielenden verbringen gemeinsam ein Wochenende. Was unternehmt ihr?",
+      "scale": {
+        "green": "Sterbenslangweilig",
+        "connector": "bis",
+        "red": "Unglaublich spannend"
+      }
+    },
+    {
+      "id": "105-a",
+      "text": "Jemand gewinnt fünf Millionen im Lotto und gibt das ganze Geld auf einmal für etwas aus. Wofür?",
+      "scale": {
+        "green": "Eine völlig bescheuerte Anschaffung",
+        "connector": "bis",
+        "red": "Eine ausgesprochen sinnvolle Anschaffung"
+      }
+    },
+    {
+      "id": "105-b",
+      "text": "Du stehst vor einem modernen Kunstwerk. Spiele deine Reaktion pantomimisch vor.",
+      "scale": {
+        "green": "Ich verstehe überhaupt nichts",
+        "connector": "bis",
+        "red": "Dieses Meisterwerk haut mich um"
+      }
+    },
+    {
+      "id": "106-a",
+      "text": "Stell dir vor, M&M's hätten eine geheime Zutat. Welche könnte das sein?",
+      "scale": {
+        "green": "Die schlimmstmögliche Zutat",
+        "connector": "bis",
+        "red": "Die beste Zutat überhaupt"
+      }
+    },
+    {
+      "id": "106-b",
+      "text": "Ihr übernachtet in einem verlassenen Herrenhaus. Mitternacht. Plötzlich hörst du ein verdächtiges Geräusch auf dem Dachboden. Was tust du?",
+      "scale": {
+        "green": "Du bist ein riesiger Angsthase",
+        "connector": "bis",
+        "red": "Du reagierst unglaublich mutig"
+      }
+    },
+    {
+      "id": "107-a",
+      "text": "Du hast ein revolutionäres Medikament erfunden, mit dem man immer gesund bleibt. Leider hat es eine Nebenwirkung. Welche?",
+      "scale": {
+        "green": "Kaum der Rede wert",
+        "connector": "bis",
+        "red": "Ein gewaltiges Problem"
+      }
+    },
+    {
+      "id": "107-b",
+      "text": "Spiele pantomimisch vor, wie du mit Kopfhörern Musik hörst.",
+      "scale": {
+        "green": "Zu einem langsamen Schmusesong",
+        "connector": "bis",
+        "red": "Zu knallhartem Rock"
+      }
+    },
+    {
+      "id": "108-a",
+      "text": "Du verursachst beim Autofahren einen kleinen Blechschaden. Die andere Person steigt aus ihrem Auto. Was sagst du?",
+      "scale": {
+        "green": "Ich versuche, mit ihr zu verhandeln",
+        "connector": "bis",
+        "red": "Ich fülle den Unfallbericht ohne Widerworte aus"
+      }
+    },
+    {
+      "id": "108-b",
+      "text": "Was könnte eine Miss France bei ihrer Dankesrede sagen?",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "109-a",
+      "text": "Alle sitzen gemeinsam am Tisch und du lässt einen fahren. Mach das passende Geräusch.",
+      "scale": {
+        "green": "Kaum zu bemerken",
+        "connector": "bis",
+        "red": "Unüberhörbar"
+      }
+    },
+    {
+      "id": "109-b",
+      "text": "Du hilfst bei einem Umzug und sollst einen Gegenstand in den sechsten Stock tragen. Welcher ist es?",
+      "scale": {
+        "green": "Kinderleicht zu tragen",
+        "connector": "bis",
+        "red": "Eine absolute Schlepperei"
+      }
+    },
+    {
+      "id": "110-a",
+      "text": "Der Captain überlegt, seine Eltern am Wochenende zu besuchen. In ihrem Dorf findet gerade das große Fest der ... statt. Vervollständige den Namen.",
+      "scale": {
+        "green": "Für den Captain überhaupt nicht verlockend",
+        "connector": "bis",
+        "red": "Für den Captain absolut unwiderstehlich"
+      }
+    },
+    {
+      "id": "110-b",
+      "text": "Filmabend! Nenne eine französische Filmkomödie.",
+      "scale": {
+        "green": "Die schlechteste",
+        "connector": "bis",
+        "red": "Die beste"
+      }
+    },
+    {
+      "id": "111-a",
+      "text": "Du schläfst in einem Zwölfbettzimmer einer Jugendherberge. Plötzlich taucht eine neue Reisegruppe auf. Was ist das für eine Gruppe?",
+      "scale": {
+        "green": "Eine herrlich ruhige Nacht",
+        "connector": "bis",
+        "red": "Eine Horrornacht, in der du ausrasten könntest"
+      }
+    },
+    {
+      "id": "111-b",
+      "text": "Spiele pantomimisch, wie du auf einem Pferd ausreitest.",
+      "scale": {
+        "green": "Auf einem braven Pony",
+        "connector": "bis",
+        "red": "Auf einem wilden Hengst"
+      }
+    },
+    {
+      "id": "112-a",
+      "text": "Ergänze den Titel des nächsten Kinohits: „Batman – Der letzte Kampf gegen ...“",
+      "scale": {
+        "green": "Äußerst unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "112-b",
+      "text": "Du gehst durch die Stadt. Alle drehen sich nach dir um und starren dich an. Warum?",
+      "scale": {
+        "green": "Aus dem schlimmstmöglichen Grund",
+        "connector": "bis",
+        "red": "Aus dem bestmöglichen Grund"
+      }
+    },
+    {
+      "id": "113-a",
+      "text": "Dreh Däumchen und zeige, wie schnell du darin bist.",
+      "scale": {
+        "green": "Ganz langsam",
+        "connector": "bis",
+        "red": "Rasend schnell"
+      }
+    },
+    {
+      "id": "113-b",
+      "text": "Du fliehst nachts auf einem Floß von einer Pazifikinsel. Im Wasser lauern Haie und ein Sturm zieht auf. Welchen Gegenstand brauchst du zum Überleben?",
+      "scale": {
+        "green": "Damit überlebst du kaum eine Minute",
+        "connector": "bis",
+        "red": "Damit hältst du besonders lange durch"
+      }
+    },
+    {
+      "id": "114-a",
+      "text": "Wo könnte man einen romantischen Nachmittag verbringen?",
+      "scale": {
+        "green": "Der schlechteste Ort dafür",
+        "connector": "bis",
+        "red": "Der perfekte Ort dafür"
+      }
+    },
+    {
+      "id": "114-b",
+      "text": "Du hältst bei einer Hochzeitsfeier eine Rede und erzählst eine peinliche Anekdote über das Brautpaar. Was erzählst du?",
+      "scale": {
+        "green": "Ein bisschen unangenehm",
+        "connector": "bis",
+        "red": "So peinlich, dass du rausgeworfen wirst"
+      }
+    },
+    {
+      "id": "115-a",
+      "text": "Dein Haus ist nicht besonders schön, deshalb willst du es vor dem Verkauf mit Home-Staging aufwerten. Was stellst du hinein oder veränderst du?",
+      "scale": {
+        "green": "Bringt überhaupt nichts",
+        "connector": "bis",
+        "red": "Macht das Haus sofort begehrenswert"
+      }
+    },
+    {
+      "id": "115-b",
+      "text": "Spiele pantomimisch einen Hund, der beim Tierarzt ist.",
+      "scale": {
+        "green": "Ein ganz liebes Hündchen",
+        "connector": "bis",
+        "red": "Ein richtig bissiger Hund"
+      }
+    },
+    {
+      "id": "116-a",
+      "text": "Nenne einen Vornamen, den du deinem Kind geben könntest.",
+      "scale": {
+        "green": "Das Kind wird dir sein Leben lang böse sein",
+        "connector": "bis",
+        "red": "Das Kind wird der Star auf dem Schulhof"
+      }
+    },
+    {
+      "id": "116-b",
+      "text": "Neben welcher erfundenen Figur würde der Captain am liebsten auf einem zehnstündigen Flug sitzen?",
+      "scale": {
+        "green": "Ein furchtbarer Flug",
+        "connector": "bis",
+        "red": "Ein unvergesslich schönes Erlebnis"
+      }
+    },
+    {
+      "id": "117-a",
+      "text": "Gib einem anderen Mitspieler pantomimisch ein unsichtbares Ei weiter.",
+      "scale": {
+        "green": "Extrem vorsichtig",
+        "connector": "bis",
+        "red": "Das wird garantiert Rührei"
+      }
+    },
+    {
+      "id": "117-b",
+      "text": "Deine Partnerin liegt seit 24 Stunden in den Wehen und wird langsam erschöpft. Was sagst du zu ihr?",
+      "scale": {
+        "green": "Überhaupt nicht aufmunternd",
+        "connector": "bis",
+        "red": "Unglaublich aufmunternd"
+      }
+    },
+    {
+      "id": "118-a",
+      "text": "Deine Partnerin oder dein Partner schnarcht. Wie sorgst du dafür, dass endlich Ruhe ist?",
+      "scale": {
+        "green": "Ganz sanft",
+        "connector": "bis",
+        "red": "Ziemlich brutal"
+      }
+    },
+    {
+      "id": "118-b",
+      "text": "Du galtst als Favorit bei der Präsidentschaftswahl. Jetzt ist ein peinlicher Skandal über dich aufgedeckt worden. Wie reagierst du?",
+      "scale": {
+        "green": "Ich gewinne trotzdem noch",
+        "connector": "bis",
+        "red": "Meine Karriere ist komplett ruiniert"
+      }
+    },
+    {
+      "id": "119-a",
+      "text": "Das angebliche Klischee vom Frauenglück: Mit einem Detox-Tee auf dem Sofa sitzen und ... anschauen. Ergänze den Satz.",
+      "scale": {
+        "green": "Eine winzige Freude",
+        "connector": "bis",
+        "red": "Das pure Glück"
+      }
+    },
+    {
+      "id": "119-b",
+      "text": "Karaoke-Abend! Sing das nächste Lied.",
+      "scale": {
+        "green": "Alle ergreifen die Flucht",
+        "connector": "bis",
+        "red": "Alle wollen eine Zugabe"
+      }
+    },
+    {
+      "id": "120-a",
+      "text": "Angeblich kann Chuck Norris sogar ... Ergänze den Satz.",
+      "scale": {
+        "green": "Das kann wirklich jeder",
+        "connector": "bis",
+        "red": "Unglaublich – aber Chuck Norris kann es"
+      }
+    },
+    {
+      "id": "120-b",
+      "text": "Ein Alien entführt dich in seinem Raumschiff. Was macht es mit dir?",
+      "scale": {
+        "green": "Ganz schrecklich",
+        "connector": "bis",
+        "red": "Richtig nett"
+      }
+    },
+    {
+      "id": "121-a",
+      "text": "Spiele pantomimisch vor, wie du im Kino sitzt und einen Film ansiehst.",
+      "scale": {
+        "green": "Der langweiligste Film aller Zeiten",
+        "connector": "bis",
+        "red": "Ein absolut großartiger Film"
+      }
+    },
+    {
+      "id": "121-b",
+      "text": "Ihr seid die erste Mannschaft, die auf dem Mars landet. Alle haben eine eigene Aufgabe. Was ist deine Mission?",
+      "scale": {
+        "green": "Vollkommen überflüssig",
+        "connector": "bis",
+        "red": "Absolut unverzichtbar"
+      }
+    },
+    {
+      "id": "122-a",
+      "text": "Woran denkt der Captain wohl gerade? Ergänze: „Der Captain denkt im Moment an ...“",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "122-b",
+      "text": "In der Fortsetzung von „The Sixth Sense“ namens „The Seventh Sense“ sieht ein kleiner Junge Menschen, die ... Ergänze den Satz.",
+      "scale": {
+        "green": "Überhaupt nicht überraschend",
+        "connector": "bis",
+        "red": "Extrem überraschend"
+      }
+    },
+    {
+      "id": "123-a",
+      "text": "Die Kinderbuchreihe „Conni“ bekommt einen neuen Band. Erfinde den Titel „Conni ...“",
+      "scale": {
+        "green": "Für Kinder völlig ungeeignet",
+        "connector": "bis",
+        "red": "Für Kinder perfekt geeignet"
+      }
+    },
+    {
+      "id": "123-b",
+      "text": "Du hast einen Oscar gewonnen! Spiele vor, wie du auf der Bühne reagierst und dich bedankst.",
+      "scale": {
+        "green": "Völlig gleichgültig",
+        "connector": "bis",
+        "red": "Überglücklich"
+      }
+    },
+    {
+      "id": "124-a",
+      "text": "Nenne eine echte oder erfundene Person, die für ihre vielen oder wenigen Liebesabenteuer bekannt sein könnte.",
+      "scale": {
+        "green": "Überhaupt keine Eroberungen",
+        "connector": "bis",
+        "red": "Unzählige Eroberungen"
+      }
+    },
+    {
+      "id": "124-b",
+      "text": "Spiele pantomimisch vor, wie du auf Skiern einen Hang hinunterfährst.",
+      "scale": {
+        "green": "Wie ein völlig unbeholfener Anfänger",
+        "connector": "bis",
+        "red": "Wie ein echter Skiprofi"
+      }
+    },
+    {
+      "id": "125-a",
+      "text": "Du schläfst. Spiele vor, was in deinem Traum passiert.",
+      "scale": {
+        "green": "Ein wunderschöner Traum",
+        "connector": "bis",
+        "red": "Ein schrecklicher Albtraum"
+      }
+    },
+    {
+      "id": "125-b",
+      "text": "Du traust dich endlich, die Person an der Supermarktkasse anzusprechen, die du jeden Tag siehst und toll findest. Mit welchem Anmachspruch versuchst du dein Glück?",
+      "scale": {
+        "green": "Super aufdringlich und unangenehm",
+        "connector": "bis",
+        "red": "Unglaublich romantisch"
+      }
+    },
+    {
+      "id": "126-a",
+      "text": "Es ist Allergiesaison. Niese entsprechend laut.",
+      "scale": {
+        "green": "Ganz leise und unauffällig",
+        "connector": "bis",
+        "red": "Ohrenbetäubend laut"
+      }
+    },
+    {
+      "id": "126-b",
+      "text": "Du bist zu einem Abendessen in einem verfluchten Tempel mitten im Dschungel eingeladen. Die Gäste neben dir bekommen Affenhirn-Sorbet. Was wird dir serviert?",
+      "scale": {
+        "green": "Einfach widerlich",
+        "connector": "bis",
+        "red": "Richtig lecker"
+      }
+    },
+    {
+      "id": "127-a",
+      "text": "Du betrittst ein Spukhaus. Welches Geräusch hörst du? Mach es nach.",
+      "scale": {
+        "green": "Kaum gruselig",
+        "connector": "bis",
+        "red": "Extrem furchteinflößend"
+      }
+    },
+    {
+      "id": "127-b",
+      "text": "Du bist der Superschurke im nächsten großen Kinofilm. Erfinde deinen Namen und deine Superkraft.",
+      "scale": {
+        "green": "Ein ziemlich harmloser Bösewicht",
+        "connector": "bis",
+        "red": "Ein furchteinflößender Oberschurke"
+      }
+    },
+    {
+      "id": "128-a",
+      "text": "Wo würdest du dich bei einer Zombie-Invasion verstecken?",
+      "scale": {
+        "green": "Hier überlebst du mit Sicherheit",
+        "connector": "bis",
+        "red": "Hier bist du garantiert verloren"
+      }
+    },
+    {
+      "id": "128-b",
+      "text": "Der Captain ist mitten im Dschungel gestrandet und muss den Rest seines Lebens wie Tarzan leben. Was würde ihm am meisten fehlen?",
+      "scale": {
+        "green": "Das würde er kaum vermissen",
+        "connector": "bis",
+        "red": "Das würde er schrecklich vermissen"
+      }
+    },
+    {
+      "id": "129-a",
+      "text": "Du sitzt in Polizeigewahrsam, weil du von deinem Haus einen Tunnel zur französischen Zentralbank gegraben hast. Du darfst genau einmal telefonieren. Wen rufst du an?",
+      "scale": {
+        "green": "Eine völlig unlogische Wahl",
+        "connector": "bis",
+        "red": "Die einzig logische Wahl"
+      }
+    },
+    {
+      "id": "129-b",
+      "text": "Sag zu einer anderen Person am Tisch „Buh!“ und erschrecke sie.",
+      "scale": {
+        "green": "Süß und freundlich",
+        "connector": "bis",
+        "red": "Extrem furchteinflößend"
+      }
+    },
+    {
+      "id": "130-a",
+      "text": "Nenne eine bekannte Persönlichkeit, lebend oder tot, die an einer Survival-Realityshow teilnehmen könnte.",
+      "scale": {
+        "green": "Scheidet garantiert als Erstes aus",
+        "connector": "bis",
+        "red": "Gewinnt die Show mit Sicherheit"
+      }
+    },
+    {
+      "id": "130-b",
+      "text": "Du bist Wahrsagerin oder Wahrsager. Lies einer anderen Person die Zukunft aus deiner Kristallkugel vor.",
+      "scale": {
+        "green": "Eine Zukunft voller Pech",
+        "connector": "bis",
+        "red": "Eine Zukunft voller Glück und Abenteuer"
+      }
+    },
+    {
+      "id": "131-a",
+      "text": "Stelle pantomimisch dar, wie du auf einem Melkschemel sitzt und eine Kuh melkst.",
+      "scale": {
+        "green": "Kein einziger Tropfen Milch",
+        "connector": "bis",
+        "red": "Die Milch fließt in Strömen"
+      }
+    },
+    {
+      "id": "131-b",
+      "text": "Du wachst mit schrecklichen Kopfschmerzen auf und entdeckst ein neues Tattoo auf deinem Arm. Was ist darauf zu sehen?",
+      "scale": {
+        "green": "Hilfe, wie furchtbar!",
+        "connector": "bis",
+        "red": "Wow, wie genial!"
+      }
+    },
+    {
+      "id": "132-a",
+      "text": "Kinder sagen immer die Wahrheit, besonders an der Supermarktkasse. Was ruft dein Kind plötzlich laut durch den Laden?",
+      "scale": {
+        "green": "Völlig harmlos",
+        "connector": "bis",
+        "red": "Unfassbar peinlich"
+      }
+    },
+    {
+      "id": "132-b",
+      "text": "„Wie wunderschön, Schatz!“ Nenne ein Kleidungsstück oder Accessoire.",
+      "scale": {
+        "green": "Total altmodisch",
+        "connector": "bis",
+        "red": "Unglaublich stylisch"
+      }
+    },
+    {
+      "id": "133-a",
+      "text": "Schimpfe mit der Person links von dir, als wäre sie ein Kind, das etwas angestellt hat.",
+      "scale": {
+        "green": "Eine winzige Dummheit",
+        "connector": "bis",
+        "red": "Ein riesiger Mist"
+      }
+    },
+    {
+      "id": "133-b",
+      "text": "Was könntest du am Wochenende mit deinem zehnjährigen Neffen unternehmen?",
+      "scale": {
+        "green": "Er würde dich dafür hassen",
+        "connector": "bis",
+        "red": "Er würde dich dafür lieben"
+      }
+    },
+    {
+      "id": "134-a",
+      "text": "Welche berühmte Persönlichkeit, lebend oder tot, könnte der Captain überraschend treffen?",
+      "scale": {
+        "green": "Die schlimmste Überraschung überhaupt",
+        "connector": "bis",
+        "red": "Die schönste Überraschung überhaupt"
+      }
+    },
+    {
+      "id": "134-b",
+      "text": "Ihr trefft euch mit Freunden auf Snacks und Getränke. Was bringst du mit?",
+      "scale": {
+        "green": "Extrem geizig",
+        "connector": "bis",
+        "red": "Unglaublich großzügig"
+      }
+    },
+    {
+      "id": "135-a",
+      "text": "Spiele mit Geräuschen und Schreien vor, wie du dir mit Wachs die Haare an einer Körperstelle entfernst.",
+      "scale": {
+        "green": "Kaum schmerzhaft",
+        "connector": "bis",
+        "red": "Unerträglich schmerzhaft"
+      }
+    },
+    {
+      "id": "135-b",
+      "text": "Deine Fußballmannschaft braucht ein neues Maskottchen. Als was soll es sich verkleiden?",
+      "scale": {
+        "green": "Völlig unspektakulär",
+        "connector": "bis",
+        "red": "Unglaublich beeindruckend"
+      }
+    },
+    {
+      "id": "136-a",
+      "text": "Welchen Gegenstand würdest du bei einer Zombie-Invasion unbedingt dabeihaben wollen?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Extrem nützlich"
+      }
+    },
+    {
+      "id": "136-b",
+      "text": "Der Captain kann jemandem eine Traumreise schenken. Was versprichst du ihm, damit er dich auswählt?",
+      "scale": {
+        "green": "Überhaupt nicht überzeugend",
+        "connector": "bis",
+        "red": "Absolut überzeugend"
+      }
+    },
+    {
+      "id": "137-a",
+      "text": "Du landest auf einem fremden Planeten, der nur von einer bestimmten Art von Wesen bewohnt wird. Wer lebt dort?",
+      "scale": {
+        "green": "Dort würdest du niemals leben wollen",
+        "connector": "bis",
+        "red": "Deine absolute Traumzivilisation"
+      }
+    },
+    {
+      "id": "137-b",
+      "text": "Stelle pantomimisch ein Tier dar, ohne seinen Namen zu nennen.",
+      "scale": {
+        "green": "Ein winzig kleines Tier",
+        "connector": "bis",
+        "red": "Ein riesengroßes Tier"
+      }
+    },
+    {
+      "id": "138-a",
+      "text": "Du triffst die Person wieder, die dir damals in der Schule deine große Liebe ausgespannt hat. Jetzt willst du dich rächen. Was tust du?",
+      "scale": {
+        "green": "Ein harmloser kleiner Racheakt",
+        "connector": "bis",
+        "red": "Die Rache deines Lebens"
+      }
+    },
+    {
+      "id": "138-b",
+      "text": "Nenne einen Gegenstand, mit dem man ein Feuer anzünden könnte.",
+      "scale": {
+        "green": "Überhaupt nicht wirksam",
+        "connector": "bis",
+        "red": "Äußerst wirksam"
+      }
+    },
+    {
+      "id": "139-a",
+      "text": "Welches Produkt könnte als Nächstes im Souvenirshop des französischen Präsidentenpalasts verkauft werden?",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "139-b",
+      "text": "Die Person links von dir ist ein Superschurke. Schau ihr tief in die Augen und sage: „Ich bin Batman.“",
+      "scale": {
+        "green": "Überhaupt nicht glaubwürdig",
+        "connector": "bis",
+        "red": "Der Person schlottern schon die Knie"
+      }
+    },
+    {
+      "id": "140-a",
+      "text": "Nimm einen imaginären Zauberstab und belege eine andere Person mit einem selbst erfundenen Zauberspruch.",
+      "scale": {
+        "green": "Ein richtig gemeiner Zauber",
+        "connector": "bis",
+        "red": "Ein besonders netter Zauber"
+      }
+    },
+    {
+      "id": "140-b",
+      "text": "Oh nein, die Toilette ist verstopft! Womit versuchst du, sie wieder freizubekommen?",
+      "scale": {
+        "green": "Völlig wirkungslos",
+        "connector": "bis",
+        "red": "Absolut wirkungsvoll"
+      }
+    },
+    {
+      "id": "141-a",
+      "text": "Ergänze eine Suchanfrage im Internet: „Wie kann ich ...?“",
+      "scale": {
+        "green": "Danach sucht fast niemand",
+        "connector": "bis",
+        "red": "Danach suchen unglaublich viele Menschen"
+      }
+    },
+    {
+      "id": "141-b",
+      "text": "Du öffnest ein neues Spiel und dir steigt ein Geruch in die Nase. Spiele deine Reaktion auf den Geruch vor.",
+      "scale": {
+        "green": "Ein unerträglicher Gestank",
+        "connector": "bis",
+        "red": "Ein herrlicher Duft"
+      }
+    },
+    {
+      "id": "142-a",
+      "text": "Nenne einen Gegenstand, den man in einer bestimmten Höhenlage finden könnte.",
+      "scale": {
+        "green": "In sehr geringer Höhe",
+        "connector": "bis",
+        "red": "In sehr großer Höhe"
+      }
+    },
+    {
+      "id": "142-b",
+      "text": "Du bist beim Bewerbungsgespräch für deinen absoluten Traumjob. Welchen Fehler machst du?",
+      "scale": {
+        "green": "Das wird man dir verzeihen",
+        "connector": "bis",
+        "red": "Damit hast du den Job verspielt"
+      }
+    },
+    {
+      "id": "143-a",
+      "text": "Sage den Satz „Die Erde ist flach“ in einem passenden Tonfall.",
+      "scale": {
+        "green": "Du glaubst selbst kein Wort davon",
+        "connector": "bis",
+        "red": "Du bist felsenfest davon überzeugt"
+      }
+    },
+    {
+      "id": "143-b",
+      "text": "Zum Valentinstag ist alles vorbereitet: gedimmtes Licht, Kerzen, Champagner und ... Ergänze den Satz.",
+      "scale": {
+        "green": "Überhaupt nicht romantisch",
+        "connector": "bis",
+        "red": "Unglaublich romantisch"
+      }
+    },
+    {
+      "id": "144-a",
+      "text": "Du wirst festgenommen und landest in Polizeigewahrsam. Was hast du angestellt?",
+      "scale": {
+        "green": "Eine kleine Bagatelle",
+        "connector": "bis",
+        "red": "Ein extrem schweres Vergehen"
+      }
+    },
+    {
+      "id": "144-b",
+      "text": "Du bist ein kleiner Adliger im Mittelalter. Was ist auf deinem Familienwappen abgebildet?",
+      "scale": {
+        "green": "Vor dir hat niemand Angst",
+        "connector": "bis",
+        "red": "Alle fürchten dich"
+      }
+    },
+    {
+      "id": "145-a",
+      "text": "Du hast einen revolutionären Motor erfunden, der mit ... betrieben wird. Womit läuft er?",
+      "scale": {
+        "green": "Originell, aber ziemlich nutzlos",
+        "connector": "bis",
+        "red": "Genial – die Energie der Zukunft"
+      }
+    },
+    {
+      "id": "145-b",
+      "text": "Begrüße jemanden mit anderen Worten als „Hallo“ und dem passenden Tonfall.",
+      "scale": {
+        "green": "Äußerst unhöflich",
+        "connector": "bis",
+        "red": "Überaus höflich"
+      }
+    },
+    {
+      "id": "146-a",
+      "text": "Dein Handy klingelt. Geh ran und spiele deine Reaktion auf den Anruf.",
+      "scale": {
+        "green": "Ein völlig gewöhnlicher Anruf",
+        "connector": "bis",
+        "red": "Eine riesige Überraschung"
+      }
+    },
+    {
+      "id": "146-b",
+      "text": "Stell dir vor, Daenerys wäre nicht die „Mutter der Drachen“, sondern die „Mutter der ...“. Ergänze den Titel.",
+      "scale": {
+        "green": "Unfassbar peinlich",
+        "connector": "bis",
+        "red": "Unglaublich cool"
+      }
+    },
+    {
+      "id": "147-a",
+      "text": "Du bist ein menschenähnlicher Roboter. Stelle deine Bewegungen pantomimisch dar.",
+      "scale": {
+        "green": "Ein ziemlich unbeholfener Roboter",
+        "connector": "bis",
+        "red": "Von einem echten Menschen nicht zu unterscheiden"
+      }
+    },
+    {
+      "id": "147-b",
+      "text": "Das typische Männerglück: auf dem Sofa liegen, ein Bier in der Hand und ... schauen. Ergänze den Satz.",
+      "scale": {
+        "green": "Ein kleines bisschen Glück",
+        "connector": "bis",
+        "red": "Das größte Glück überhaupt"
+      }
+    },
+    {
+      "id": "148-a",
+      "text": "Der Captain weiß nie, was er am Sonntagmorgen unternehmen soll. Empfiehl ihm eine Beschäftigung.",
+      "scale": {
+        "green": "Überhaupt nicht angenehm",
+        "connector": "bis",
+        "red": "Herrlich angenehm"
+      }
+    },
+    {
+      "id": "148-b",
+      "text": "Du hast deinem Hund Tricks beigebracht. Unglaublich, jetzt kann er sogar ... Ergänze den Satz.",
+      "scale": {
+        "green": "Kaum überraschend",
+        "connector": "bis",
+        "red": "Absolut verblüffend"
+      }
+    },
+    {
+      "id": "149-a",
+      "text": "Stelle mit Bewegungen und Geräuschen dar, welches Instrument du in einem Orchester spielst.",
+      "scale": {
+        "green": "Das leiseste Instrument",
+        "connector": "bis",
+        "red": "Das lauteste Instrument"
+      }
+    },
+    {
+      "id": "149-b",
+      "text": "Beim Kauf deines Autos gibt es zwei Jahre Garantie, Metallic-Lack und ... gratis dazu. Ergänze das Angebot.",
+      "scale": {
+        "green": "Ein völlig nutzloses Extra",
+        "connector": "bis",
+        "red": "Ein unschlagbarer Vorteil"
+      }
+    },
+    {
+      "id": "150-a",
+      "text": "Du führst deine Freunde stolz durch deinen Garten: „Schaut mal, genau in der Mitte steht ...!“ Ergänze.",
+      "scale": {
+        "green": "Total enttäuschend",
+        "connector": "bis",
+        "red": "Einfach wunderschön"
+      }
+    },
+    {
+      "id": "150-b",
+      "text": "Der Nachbar in der Wohnung über dir macht Lärm. Was treibt er?",
+      "scale": {
+        "green": "Kaum störend",
+        "connector": "bis",
+        "red": "Unglaublich nervig"
+      }
+    },
+    {
+      "id": "151-a",
+      "text": "Der Hase geht in Rente und sucht einen Ersatz für sein Rennen gegen die Schildkröte. Nenne ein Tier.",
+      "scale": {
+        "green": "Extrem langsam",
+        "connector": "bis",
+        "red": "Rasend schnell"
+      }
+    },
+    {
+      "id": "151-b",
+      "text": "Ziehe pantomimisch an einem imaginären Seil. Zeige, wie schwer das ist, was am anderen Ende hängt.",
+      "scale": {
+        "green": "Da hängt überhaupt nichts dran",
+        "connector": "bis",
+        "red": "Etwas unglaublich Schweres"
+      }
+    },
+    {
+      "id": "152-a",
+      "text": "Du nimmst Musikunterricht. Welches Instrument lernst du, um beim Flirten Eindruck zu machen?",
+      "scale": {
+        "green": "Überhaupt nicht hilfreich",
+        "connector": "bis",
+        "red": "Absolut unwiderstehlich"
+      }
+    },
+    {
+      "id": "152-b",
+      "text": "„Sie heirateten und ...“ – diese Geschichte endet nicht wie ein Märchen. Erfinde das Ende.",
+      "scale": {
+        "green": "Das schlimmstmögliche Ende",
+        "connector": "bis",
+        "red": "Das schönstmögliche Ende"
+      }
+    },
+    {
+      "id": "153-a",
+      "text": "Welche Forderung könnte jemand stellen, der Geiseln genommen hat?",
+      "scale": {
+        "green": "Völlig belanglos",
+        "connector": "bis",
+        "red": "Eine gigantische Forderung"
+      }
+    },
+    {
+      "id": "153-b",
+      "text": "Du möchtest lieber einen Filmmarathon schauen als auszugehen. Erfinde eine Ausrede, um zu Hause zu bleiben.",
+      "scale": {
+        "green": "Völlig unglaubwürdig",
+        "connector": "bis",
+        "red": "Absolut überzeugend"
+      }
+    },
+    {
+      "id": "154-a",
+      "text": "Was sagt dein Horoskop heute Morgen voraus? Erfinde eine Vorhersage.",
+      "scale": {
+        "green": "Ein rabenschwarzer Tag",
+        "connector": "bis",
+        "red": "Eine fantastische Nachricht"
+      }
+    },
+    {
+      "id": "154-b",
+      "text": "Du stehst im Wrestling-Ring. Welche berühmte Persönlichkeit, lebendig oder tot, tritt gegen dich an?",
+      "scale": {
+        "green": "Die besiege ich locker",
+        "connector": "bis",
+        "red": "Das überlebe ich nicht"
+      }
+    },
+    {
+      "id": "155-a",
+      "text": "Du schenkst dem Captain ein T-Shirt mit einem Spruch darauf. Was steht auf dem Shirt?",
+      "scale": {
+        "green": "Das würde er niemals anziehen",
+        "connector": "bis",
+        "red": "Das würde er jeden Tag tragen"
+      }
+    },
+    {
+      "id": "155-b",
+      "text": "Als welches Tier würdest du im nächsten Leben gerne wiedergeboren werden?",
+      "scale": {
+        "green": "Auf gar keinen Fall",
+        "connector": "bis",
+        "red": "Unbedingt"
+      }
+    },
+    {
+      "id": "156-a",
+      "text": "Ein Angreifer steht vor dir. Zeige ihm eine Kampfpose, als wärst du ein echter Kampfsportprofi.",
+      "scale": {
+        "green": "Völlig unglaubwürdig",
+        "connector": "bis",
+        "red": "Absolut überzeugend"
+      }
+    },
+    {
+      "id": "156-b",
+      "text": "Du bist bei Freunden eingeladen. Was bringst du mit?",
+      "scale": {
+        "green": "Etwas total Gewöhnliches",
+        "connector": "bis",
+        "red": "Etwas unglaublich Originelles"
+      }
+    },
+    {
+      "id": "157-a",
+      "text": "Zu einem perfekten Urlaub gehören Sonne, Abwechslung und ... Ergänze den Satz.",
+      "scale": {
+        "green": "Ein völlig vermasselter Urlaub",
+        "connector": "bis",
+        "red": "Der absolute Traumurlaub"
+      }
+    },
+    {
+      "id": "157-b",
+      "text": "Stelle pantomimisch ein Duell im Wilden Westen dar. Zieh deinen imaginären Revolver!",
+      "scale": {
+        "green": "Eine klägliche Niederlage",
+        "connector": "bis",
+        "red": "Schneller als Lucky Luke"
+      }
+    },
+    {
+      "id": "158-a",
+      "text": "Du sorgst als Bogenschütze im Sherwood Forest für Gerechtigkeit. Zeige pantomimisch, wie du deinen Bogen benutzt.",
+      "scale": {
+        "green": "Völlig tollpatschig",
+        "connector": "bis",
+        "red": "Wie Robin Hood persönlich"
+      }
+    },
+    {
+      "id": "158-b",
+      "text": "„Für den Nobelpreis im Umweltschutz tue ich Folgendes: ...“ Ergänze den Satz.",
+      "scale": {
+        "green": "Alles andere als umweltfreundlich",
+        "connector": "bis",
+        "red": "Ein echtes Vorbild für den Umweltschutz"
+      }
+    },
+    {
+      "id": "159-a",
+      "text": "Zeige pantomimisch, wie du dir eine Krawatte bindest.",
+      "scale": {
+        "green": "Völliger Anfänger",
+        "connector": "bis",
+        "red": "Absoluter Profi"
+      }
+    },
+    {
+      "id": "159-b",
+      "text": "Du bist Schulleiter und sagst: „Herr und Frau Martin, ich habe Sie wegen Ihres Sohnes herbestellt, weil ...“ Ergänze den Satz.",
+      "scale": {
+        "green": "Ein harmloser Streich",
+        "connector": "bis",
+        "red": "Eine wirklich schlimme Tat"
+      }
+    },
+    {
+      "id": "160-a",
+      "text": "Erfinde die Überschrift eines Artikels, der auf Facebook gepostet wird.",
+      "scale": {
+        "green": "Niemand reagiert darauf",
+        "connector": "bis",
+        "red": "Der Beitrag bekommt unglaublich viele Likes"
+      }
+    },
+    {
+      "id": "160-b",
+      "text": "Ein Clown steht vor dir. Schneide eine Grimasse wie er.",
+      "scale": {
+        "green": "Ein furchteinflößender Horrorclown",
+        "connector": "bis",
+        "red": "Ein Clown, über den alle lachen"
+      }
+    },
+    {
+      "id": "161-a",
+      "text": "Erfinde ein elftes Gebot, das nach „Du sollst nicht töten“ kommt.",
+      "scale": {
+        "green": "Für die Menschheit völlig nutzlos",
+        "connector": "bis",
+        "red": "Für die Menschheit enorm nützlich"
+      }
+    },
+    {
+      "id": "161-b",
+      "text": "Gong! Die erste Runde beginnt. Du stehst als Boxer im Ring. Spiele deinen Kampf pantomimisch.",
+      "scale": {
+        "green": "Ein völliger Angsthase",
+        "connector": "bis",
+        "red": "Wie Rocky Balboa"
+      }
+    },
+    {
+      "id": "162-a",
+      "text": "Für welchen Gegenstand würde sich der Captain am ersten Tag des Schlussverkaufs ins Getümmel stürzen?",
+      "scale": {
+        "green": "Äußerst unwahrscheinlich",
+        "connector": "bis",
+        "red": "Absolut wahrscheinlich"
+      }
+    },
+    {
+      "id": "162-b",
+      "text": "Deine Mutter liest dir jeden Abend dasselbe Buch zum Einschlafen vor. Welches ist es?",
+      "scale": {
+        "green": "Das schlimmste Buch überhaupt",
+        "connector": "bis",
+        "red": "Das beste Buch überhaupt"
+      }
+    },
+    {
+      "id": "163-a",
+      "text": "Ein kleiner Junge pinkelt in den Schnee und malt damit ein Bild. Was zeichnet er?",
+      "scale": {
+        "green": "Kaum Harndrang",
+        "connector": "bis",
+        "red": "Eine riesige volle Blase"
+      }
+    },
+    {
+      "id": "163-b",
+      "text": "Stell die Handlung einer brandneuen Netflix-Serie vor. Worum geht es?",
+      "scale": {
+        "green": "Das würde niemand anschauen",
+        "connector": "bis",
+        "red": "Ein garantierter Serienhit"
+      }
+    },
+    {
+      "id": "164-a",
+      "text": "Stelle mit Bewegungen und Geräuschen dar, wie du Austernsuppe isst.",
+      "scale": {
+        "green": "Fast lautlos",
+        "connector": "bis",
+        "red": "Ohrenbetäubend laut"
+      }
+    },
+    {
+      "id": "164-b",
+      "text": "Du bewirbst dich als Buchhalterin oder Buchhalter. Welches Hobby gibst du im Lebenslauf an?",
+      "scale": {
+        "green": "Damit verschreckst du jeden Arbeitgeber",
+        "connector": "bis",
+        "red": "Damit überzeugst du den Arbeitgeber sofort"
+      }
+    },
+    {
+      "id": "165-a",
+      "text": "Du hast eine Million im Lotto gewonnen! Wo versteckst du den Gewinnschein, bevor du das Geld abholst?",
+      "scale": {
+        "green": "Das schlechteste Versteck",
+        "connector": "bis",
+        "red": "Das beste Versteck"
+      }
+    },
+    {
+      "id": "165-b",
+      "text": "Dir fällt ein Gegenstand auf die Füße. Spiele deine Reaktion nach.",
+      "scale": {
+        "green": "Der Gegenstand ist federleicht",
+        "connector": "bis",
+        "red": "Der Gegenstand ist unglaublich schwer"
+      }
+    },
+    {
+      "id": "166-a",
+      "text": "Was hast du gerade auf Facebook gepostet? Erzähle von dem Ereignis.",
+      "scale": {
+        "green": "Ein völlig alltägliches Ereignis",
+        "connector": "bis",
+        "red": "Ein unvergessliches Erlebnis"
+      }
+    },
+    {
+      "id": "166-b",
+      "text": "E.T. hat nach Hause telefoniert und ruft jetzt erneut jemanden an: „E.T. telefoniert mit ...“ Ergänze den Satz.",
+      "scale": {
+        "green": "Hilft kein bisschen, die Erde zu verlassen",
+        "connector": "bis",
+        "red": "Hilft enorm bei der Rückreise nach Hause"
+      }
+    },
+    {
+      "id": "167-a",
+      "text": "Welches Haustier würdest du dem Captain schenken?",
+      "scale": {
+        "green": "Das würde er am liebsten sofort an der Autobahn aussetzen",
+        "connector": "bis",
+        "red": "Davon hat er schon immer geträumt"
+      }
+    },
+    {
+      "id": "167-b",
+      "text": "Was könnte man am Wochenende unternehmen?",
+      "scale": {
+        "green": "Eine ganz entspannte Beschäftigung",
+        "connector": "bis",
+        "red": "Eine Aktivität, die man womöglich nicht überlebt"
+      }
+    },
+    {
+      "id": "168-a",
+      "text": "Du bist bei „Wer wird Millionär?“ angekommen und musst die letzte Frage beantworten. Denk dir diese Frage aus.",
+      "scale": {
+        "green": "Kinderleicht – die Million ist sicher",
+        "connector": "bis",
+        "red": "Unlösbar – die Million ist futsch"
+      }
+    },
+    {
+      "id": "168-b",
+      "text": "Du beaufsichtigst eine Abiturprüfung. Spiele pantomimisch, wie du die Prüflinge überwachst.",
+      "scale": {
+        "green": "Kaum aufmerksam",
+        "connector": "bis",
+        "red": "Übertrieben streng und wachsam"
+      }
+    },
+    {
+      "id": "169-a",
+      "text": "Morgen wachst du im Körper einer Filmfigur auf. Welche Figur ist es?",
+      "scale": {
+        "green": "Eine unglaublich böse Figur",
+        "connector": "bis",
+        "red": "Eine besonders liebenswerte Figur"
+      }
+    },
+    {
+      "id": "169-b",
+      "text": "Du stürmst in eine Hochzeit und rufst: „Sagt diese Hochzeit ab!“ Was ist der Grund?",
+      "scale": {
+        "green": "Völlig unbegründet",
+        "connector": "bis",
+        "red": "Mehr als berechtigt"
+      }
+    },
+    {
+      "id": "170-a",
+      "text": "Jemand hält dir die Tür auf. Wie bedankst du dich?",
+      "scale": {
+        "green": "Nur ganz knapp",
+        "connector": "bis",
+        "red": "Mit einer ausufernden Dankesrede"
+      }
+    },
+    {
+      "id": "170-b",
+      "text": "Die Person links von dir fragt: „Hast du mich lieb?“ Antworte mit „Ja!“",
+      "scale": {
+        "green": "Überhaupt nicht überzeugend",
+        "connector": "bis",
+        "red": "Absolut überzeugend"
+      }
+    },
+    {
+      "id": "171-a",
+      "text": "Woran denkst du beim morgendlichen Joggen?",
+      "scale": {
+        "green": "Das bremst dich sofort aus",
+        "connector": "bis",
+        "red": "Das motiviert dich, noch schneller zu laufen"
+      }
+    },
+    {
+      "id": "171-b",
+      "text": "Du eröffnest einen Freizeitpark namens „...land“. Welches Thema hat der Park?",
+      "scale": {
+        "green": "Das unattraktivste Thema überhaupt",
+        "connector": "bis",
+        "red": "Ein Thema, das alle begeistert"
+      }
+    },
+    {
+      "id": "172-a",
+      "text": "Du bist Kapitän der Titanic und forderst über die Lautsprecher alle auf, zu den Rettungsbooten zu gehen. Spiele deine Ansage.",
+      "scale": {
+        "green": "Völlig beruhigend und souverän",
+        "connector": "bis",
+        "red": "Panik pur: „Wir sinken!“"
+      }
+    },
+    {
+      "id": "172-b",
+      "text": "Du hast dein Auto getunt. Was hast du eingebaut oder verändert?",
+      "scale": {
+        "green": "Total peinlich",
+        "connector": "bis",
+        "red": "Unglaublich stilvoll"
+      }
+    },
+    {
+      "id": "173-a",
+      "text": "Du stehst vorne auf der Titanic, die Arme ausgestreckt, und rufst: „Ich bin der König der Welt!“ Spiele die Szene.",
+      "scale": {
+        "green": "Völlig niedergeschlagen",
+        "connector": "bis",
+        "red": "Überglücklich und euphorisch"
+      }
+    },
+    {
+      "id": "173-b",
+      "text": "Was ist dir heute Morgen passiert? Erzähle von deinem Morgen.",
+      "scale": {
+        "green": "Ein Morgen voller Pech",
+        "connector": "bis",
+        "red": "Der glücklichste Morgen deines Lebens"
+      }
+    },
+    {
+      "id": "174-a",
+      "text": "Du berührst eine imaginäre Spieleschachtel mit der Fingerspitze. Sie steht unter Strom! Spiele deine Reaktion.",
+      "scale": {
+        "green": "Nur ein winziges Kribbeln",
+        "connector": "bis",
+        "red": "Ein gewaltiger Stromschlag"
+      }
+    },
+    {
+      "id": "174-b",
+      "text": "Ein Paar hat geheiratet. Was schenkst du den Frischvermählten?",
+      "scale": {
+        "green": "Ein völlig unspektakuläres Geschenk",
+        "connector": "bis",
+        "red": "Ein Geschenk, das alle umhaut"
+      }
+    },
+    {
+      "id": "175-a",
+      "text": "Welchen männlichen Schauspieler würdest du für die Rolle des Gottes der Schönheit und Attraktivität besetzen? Er darf leben oder bereits verstorben sein.",
+      "scale": {
+        "green": "Die denkbar schlechteste Besetzung",
+        "connector": "bis",
+        "red": "Die perfekte Besetzung"
+      }
+    },
+    {
+      "id": "175-b",
+      "text": "Erzähle von einer Situation, die dem Captain Angst machen würde.",
+      "scale": {
+        "green": "Ein kleiner Schreck",
+        "connector": "bis",
+        "red": "Die Angst seines Lebens"
+      }
+    },
+    {
+      "id": "176-a",
+      "text": "Führe pantomimisch deinen Hund Kiki spazieren.",
+      "scale": {
+        "green": "Ein winziger, ganz ruhiger Hund",
+        "connector": "bis",
+        "red": "Ein riesiger, völlig aufgedrehter Hund"
+      }
+    },
+    {
+      "id": "176-b",
+      "text": "Es gibt den Weltfrauentag, den Tag des Fahrrads und den Tag der Fotografie. Morgen ist der Tag des ... Ergänze.",
+      "scale": {
+        "green": "Das interessiert wirklich niemanden",
+        "connector": "bis",
+        "red": "Ein großartiger Anlass zum Feiern"
+      }
+    },
+    {
+      "id": "177-a",
+      "text": "Du sitzt im Flugzeug von Paris nach Tahiti. Während des gesamten Flugs läuft immer derselbe Film. Welcher Film ist es?",
+      "scale": {
+        "green": "Der schlimmste Film, den man sich vorstellen kann",
+        "connector": "bis",
+        "red": "Der beste Film aller Zeiten"
+      }
+    },
+    {
+      "id": "177-b",
+      "text": "Erzähle, was du beim Angeln gefangen hast.",
+      "scale": {
+        "green": "Überhaupt nicht beeindruckend",
+        "connector": "bis",
+        "red": "Unglaublich beeindruckend"
+      }
+    },
+    {
+      "id": "178-a",
+      "text": "„Und am achten Tag erschuf Gott ...“ Ergänze den Satz.",
+      "scale": {
+        "green": "Das Schlimmste, was Gott hätte erschaffen können",
+        "connector": "bis",
+        "red": "Seine beste Schöpfung überhaupt"
+      }
+    },
+    {
+      "id": "178-b",
+      "text": "Du hast im Urlaub auf den Goldfisch deines rechten Nachbarn aufgepasst. Jetzt ist er tot. Entschuldige dich bei deinem Nachbarn.",
+      "scale": {
+        "green": "„Ist mir doch egal“",
+        "connector": "bis",
+        "red": "„Es tut mir unendlich leid“"
+      }
+    },
+    {
+      "id": "179-a",
+      "text": "Du schaust einen Film. Wie stirbt am Ende der Bösewicht?",
+      "scale": {
+        "green": "Auf die dümmstmögliche Weise",
+        "connector": "bis",
+        "red": "Auf unglaublich spektakuläre Weise"
+      }
+    },
+    {
+      "id": "179-b",
+      "text": "Dein Chef kündigt neue Arbeitsbedingungen an. Was verändert sich?",
+      "scale": {
+        "green": "Die schlimmste Änderung überhaupt",
+        "connector": "bis",
+        "red": "Die beste Änderung, die man sich wünschen kann"
+      }
+    },
+    {
+      "id": "180-a",
+      "text": "Jemand flirtet mit dir. Antworte mit einem Satz.",
+      "scale": {
+        "green": "Du hast überhaupt kein Interesse",
+        "connector": "bis",
+        "red": "Du bist extrem interessiert"
+      }
+    },
+    {
+      "id": "180-b",
+      "text": "In der Kochshow „Kitchen Nightmares“ ist der Chefkoch entsetzt: So etwas hat er noch nie in einer Küche gesehen! Was entdeckt er?",
+      "scale": {
+        "green": "Eine harmlose Kleinigkeit",
+        "connector": "bis",
+        "red": "Etwas absolut Widerliches"
+      }
+    },
+    {
+      "id": "181-a",
+      "text": "Schreibe einen Neujahrsgruß weiter: „Ich wünsche dir Liebe, Geld, Gesundheit und vor allem ...“",
+      "scale": {
+        "green": "Überhaupt nicht nett",
+        "connector": "bis",
+        "red": "Unglaublich herzlich"
+      }
+    },
+    {
+      "id": "181-b",
+      "text": "Halte ein imaginäres kleines Tier in den Händen und spiele deine Reaktion auf das Tier.",
+      "scale": {
+        "green": "Ein furchteinflößendes Biest",
+        "connector": "bis",
+        "red": "Ein zuckersüßes Tierchen"
+      }
+    },
+    {
+      "id": "182-a",
+      "text": "Wie heißt deine Rockband, die du mit deinen Freunden gegründet hast?",
+      "scale": {
+        "green": "Total weichgespült",
+        "connector": "bis",
+        "red": "Richtig rockig"
+      }
+    },
+    {
+      "id": "182-b",
+      "text": "Du hast beim Spicken einen Spickzettel an deinem Körper versteckt. Spiele pantomimisch, wie du ihn hervorholst und ansiehst.",
+      "scale": {
+        "green": "An der unpraktischsten Stelle versteckt",
+        "connector": "bis",
+        "red": "Am praktischsten Ort versteckt"
+      }
+    },
+    {
+      "id": "183-a",
+      "text": "„Klopf, klopf ...“ Gib ein kleines Vergehen zu, das du begangen hast.",
+      "scale": {
+        "green": "Ganz leicht zuzugeben",
+        "connector": "bis",
+        "red": "Extrem schwer zu gestehen"
+      }
+    },
+    {
+      "id": "183-b",
+      "text": "Beim Weihnachtsessen erzählt jeder von einer guten Tat, die er vollbracht hat. Welche Tat erzählst du?",
+      "scale": {
+        "green": "Eine winzige gute Tat",
+        "connector": "bis",
+        "red": "Eine unglaublich großartige Tat"
+      }
+    },
+    {
+      "id": "184-a",
+      "text": "„René und Bernadette spazieren zusammen durch die Wiese ...“ Setze die Geschichte mit zwei gereimten Zeilen fort.",
+      "scale": {
+        "green": "Überhaupt nicht romantisch",
+        "connector": "bis",
+        "red": "Unglaublich romantisch"
+      }
+    },
+    {
+      "id": "184-b",
+      "text": "Welcher Gast sorgt auf einer Hochzeit für besonders gute Stimmung?",
+      "scale": {
+        "green": "Trägt überhaupt nichts zur Stimmung bei",
+        "connector": "bis",
+        "red": "Bringt die ganze Feier zum Kochen"
+      }
+    },
+    {
+      "id": "185-a",
+      "text": "Du bist bei deinem ersten Date im Restaurant. Spiele pantomimisch, wie die Person gegenüber von dir isst.",
+      "scale": {
+        "green": "Völlig ungehobelt",
+        "connector": "bis",
+        "red": "Unglaublich elegant"
+      }
+    },
+    {
+      "id": "185-b",
+      "text": "„Männer wollen immer mehr ...“ Ergänze den Satz. Wovon wollen sie mehr?",
+      "scale": {
+        "green": "Absolut unerwünscht",
+        "connector": "bis",
+        "red": "Heiß begehrt"
+      }
+    },
+    {
+      "id": "186-a",
+      "text": "Im Jenseits lebt der Captain in einer Welt voller ... Ergänze den Satz.",
+      "scale": {
+        "green": "Die reinste Hölle",
+        "connector": "bis",
+        "red": "Das absolute Paradies"
+      }
+    },
+    {
+      "id": "186-b",
+      "text": "Du bist Bürgermeister von Paris. Was lässt du als bleibendes Zeichen deiner Amtszeit bauen?",
+      "scale": {
+        "green": "Überhaupt nicht prestigeträchtig",
+        "connector": "bis",
+        "red": "Äußerst prestigeträchtig"
+      }
+    },
+    {
+      "id": "187-a",
+      "text": "Stelle die Handlung eines Films vor, den du drehen möchtest.",
+      "scale": {
+        "green": "Ein langweiliger Flop, den niemand sehen will",
+        "connector": "bis",
+        "red": "Ein riesiger Kino-Blockbuster"
+      }
+    },
+    {
+      "id": "187-b",
+      "text": "Du bist in einer Crêperie in der Bretagne. Womit lässt du deinen Crêpe belegen?",
+      "scale": {
+        "green": "Die schlimmste Füllung überhaupt",
+        "connector": "bis",
+        "red": "Die leckerste Füllung aller Zeiten"
+      }
+    },
+    {
+      "id": "188-a",
+      "text": "Du öffnest die Spieleschachtel. Darunter sitzt eine Vogelspinne! Spiele deine Angst vor.",
+      "scale": {
+        "green": "Nur ein kleiner Schreck",
+        "connector": "bis",
+        "red": "Panik pur"
+      }
+    },
+    {
+      "id": "188-b",
+      "text": "Welchen Beruf könnte der französische Präsident nach seiner Amtszeit ergreifen?",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "189-a",
+      "text": "Welche Disney-Figur würde am besten zum Captain passen?",
+      "scale": {
+        "green": "Passt überhaupt nicht zu ihm",
+        "connector": "bis",
+        "red": "Passt perfekt zu ihm"
+      }
+    },
+    {
+      "id": "189-b",
+      "text": "Ein Freund hat dich auf einem Facebook-Foto markiert. Was machst du darauf?",
+      "scale": {
+        "green": "Extrem peinlich",
+        "connector": "bis",
+        "red": "Besonders vorteilhaft"
+      }
+    },
+    {
+      "id": "190-a",
+      "text": "Die Toilette ist besetzt! Spiele vor, wie dringend du aufs Klo musst.",
+      "scale": {
+        "green": "Kaum dringend",
+        "connector": "bis",
+        "red": "Ich muss SOFORT!"
+      }
+    },
+    {
+      "id": "190-b",
+      "text": "Du bist endlich der oberste Diktator! Steh auf und vervollständige deine Antrittsrede: „Liebes Volk, meine erste Maßnahme wird sein …“",
+      "scale": {
+        "green": "Überaus freundlich",
+        "connector": "bis",
+        "red": "Abgrundtief böse"
+      }
+    },
+    {
+      "id": "191-a",
+      "text": "Gib einem Mitspieler einen Spitznamen aus einem Tiernamen und einem Adjektiv.",
+      "scale": {
+        "green": "Extrem beleidigend",
+        "connector": "bis",
+        "red": "Richtig lieb gemeint"
+      }
+    },
+    {
+      "id": "191-b",
+      "text": "Eine neue Realityshow heißt „Die Chaoten aus …“. Vervollständige den Titel.",
+      "scale": {
+        "green": "Niemand würde einschalten",
+        "connector": "bis",
+        "red": "Ein gigantischer Quotenhit"
+      }
+    },
+    {
+      "id": "192-a",
+      "text": "Du bist im Flugzeug und gleich mit dem Fallschirmspringen dran. Steh auf und spiele deinen Weg zur Sprungtür vor.",
+      "scale": {
+        "green": "Ein ängstlicher Anfänger",
+        "connector": "bis",
+        "red": "Ein furchtloser Profi"
+      }
+    },
+    {
+      "id": "192-b",
+      "text": "Vervollständige den Satz: „Die Welt wäre besser, wenn …“",
+      "scale": {
+        "green": "Eine ganz nette Idee",
+        "connector": "bis",
+        "red": "Die perfekte Lösung"
+      }
+    },
+    {
+      "id": "193-a",
+      "text": "Mit welcher echten oder erfundenen Person würdest du allein auf einer einsamen Insel stranden?",
+      "scale": {
+        "green": "Die schlimmstmögliche Begleitung",
+        "connector": "bis",
+        "red": "Die perfekte Begleitung"
+      }
+    },
+    {
+      "id": "193-b",
+      "text": "Stell dir vor, dein Handy könnte sprechen. Nimm es in die Hand und höre zu: Was sagt es zu dir?",
+      "scale": {
+        "green": "Etwas richtig Gemeines",
+        "connector": "bis",
+        "red": "Etwas unglaublich Nettes"
+      }
+    },
+    {
+      "id": "194-a",
+      "text": "Eine Wespe fliegt ins Zimmer und umkreist dich. Spiele deine Reaktion vor.",
+      "scale": {
+        "green": "Völlig unbeeindruckt",
+        "connector": "bis",
+        "red": "Panik pur"
+      }
+    },
+    {
+      "id": "194-b",
+      "text": "Nenne etwas, das du durch die Sicherheitskontrolle am Flughafen bringen willst.",
+      "scale": {
+        "green": "Ganz problemlos",
+        "connector": "bis",
+        "red": "Praktisch unmöglich"
+      }
+    },
+    {
+      "id": "195-a",
+      "text": "Denk dir eine Erfindung aus und beschreibe sie.",
+      "scale": {
+        "green": "Vollkommen nutzlos",
+        "connector": "bis",
+        "red": "Alle würden sich darum reißen"
+      }
+    },
+    {
+      "id": "195-b",
+      "text": "Der Captain ist jetzt Wrestler und steht im Ring. Rufe seinen Kampfnamen!",
+      "scale": {
+        "green": "Total lächerlich",
+        "connector": "bis",
+        "red": "Unglaublich beeindruckend"
+      }
+    },
+    {
+      "id": "196-a",
+      "text": "Du arbeitest in einer Bibliothek. Nenne einen echten oder erfundenen Buchtitel.",
+      "scale": {
+        "green": "Niemand würde das Buch jemals ausleihen",
+        "connector": "bis",
+        "red": "Alle reißen sich um das Buch"
+      }
+    },
+    {
+      "id": "196-b",
+      "text": "Warum bist du heute Morgen zu spät gekommen? Denk dir eine Begründung aus.",
+      "scale": {
+        "green": "Ganz alltäglich",
+        "connector": "bis",
+        "red": "Völlig außergewöhnlich"
+      }
+    },
+    {
+      "id": "197-a",
+      "text": "Jodle wie in den Alpen: „Tralalala, Juchhuuu!“",
+      "scale": {
+        "green": "Ganz kurz",
+        "connector": "bis",
+        "red": "Endlos lang"
+      }
+    },
+    {
+      "id": "197-b",
+      "text": "Durch einen Fehler wird dein Browserverlauf an deinen Chef geschickt. Welche Website taucht darin auf?",
+      "scale": {
+        "green": "Lässt dich richtig schlecht dastehen",
+        "connector": "bis",
+        "red": "Lässt dich besonders gut dastehen"
+      }
+    },
+    {
+      "id": "198-a",
+      "text": "Der Präsident ruft dich an. Was soll er dir sagen?",
+      "scale": {
+        "green": "Eine böse Überraschung",
+        "connector": "bis",
+        "red": "Eine großartige Überraschung"
+      }
+    },
+    {
+      "id": "198-b",
+      "text": "Du eröffnest ein Restaurant. Wie nennst du es?",
+      "scale": {
+        "green": "Niemand möchte dort essen",
+        "connector": "bis",
+        "red": "Alle wollen dort unbedingt hin"
+      }
+    },
+    {
+      "id": "199-a",
+      "text": "Du bist bei der Feuerwehr und der Held des Tages: Du bist allein in ein brennendes Haus gegangen und mit … wieder herausgekommen. Ergänze den Satz.",
+      "scale": {
+        "green": "Eine kleine nette Geste",
+        "connector": "bis",
+        "red": "Eine wahre Heldentat"
+      }
+    },
+    {
+      "id": "199-b",
+      "text": "Spiele pantomimisch und mit Geräuschen auf einem unsichtbaren Schlagzeug.",
+      "scale": {
+        "green": "Ein ruhiges Musikstück",
+        "connector": "bis",
+        "red": "Krachender Hardrock"
+      }
+    },
+    {
+      "id": "200-a",
+      "text": "In der Stadt findet ein riesiges Versteckspiel statt. Wo versteckst du dich?",
+      "scale": {
+        "green": "Sofort gefunden",
+        "connector": "bis",
+        "red": "Niemals gefunden"
+      }
+    },
+    {
+      "id": "200-b",
+      "text": "Du öffnest dein Weihnachtsgeschenk. Spiele deine Reaktion vor.",
+      "scale": {
+        "green": "Das mieseste Geschenk überhaupt",
+        "connector": "bis",
+        "red": "Das perfekte Geschenk"
+      }
+    },
+    {
+      "id": "201-a",
+      "text": "Du wirst beschuldigt, in der Silvesternacht einen Mord begangen zu haben. Erfinde ein Alibi.",
+      "scale": {
+        "green": "Du wirst sofort freigelassen",
+        "connector": "bis",
+        "red": "Du wanderst direkt ins Gefängnis"
+      }
+    },
+    {
+      "id": "201-b",
+      "text": "Eine Zeitmaschine bringt dich in die Steinzeit. Was nimmst du mit?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Extrem nützlich"
+      }
+    },
+    {
+      "id": "202-a",
+      "text": "Du bist neu im Dorf von Asterix und Obelix. Wie lautet dein gallischer Name, der auf „-ix“ endet?",
+      "scale": {
+        "green": "Total peinlich",
+        "connector": "bis",
+        "red": "Richtig cool"
+      }
+    },
+    {
+      "id": "202-b",
+      "text": "Beim Logopäden sollst du den Zungenbrecher „Fischers Fritz fischt frische Fische“ aufsagen. Sprich ihn laut aus.",
+      "scale": {
+        "green": "Du verhaspelst dich ständig",
+        "connector": "bis",
+        "red": "Völlig fehlerfrei"
+      }
+    },
+    {
+      "id": "203-a",
+      "text": "Dein Partner oder deine Partnerin hat dir einen Heiratsantrag gemacht. Wie lief er ab?",
+      "scale": {
+        "green": "Überhaupt nicht romantisch",
+        "connector": "bis",
+        "red": "Unglaublich romantisch"
+      }
+    },
+    {
+      "id": "203-b",
+      "text": "Wofür könnte man eine Klobürste noch verwenden – außer zum Toilettenputzen?",
+      "scale": {
+        "green": "Völlig unsinnig",
+        "connector": "bis",
+        "red": "Durchaus sinnvoll"
+      }
+    },
+    {
+      "id": "204-a",
+      "text": "Jemand ruft: „Vorsicht, hinter dir ist …!“ Vervollständige den Satz.",
+      "scale": {
+        "green": "Das ist mir völlig egal",
+        "connector": "bis",
+        "red": "Ich drehe mich sofort um"
+      }
+    },
+    {
+      "id": "204-b",
+      "text": "Du hast gerade ein Bild gemalt. Beschreibe, was darauf zu sehen ist.",
+      "scale": {
+        "green": "Ein schreckliches Gekritzel",
+        "connector": "bis",
+        "red": "Ein echtes Meisterwerk"
+      }
+    },
+    {
+      "id": "205-a",
+      "text": "Sage „Ich spiele wirklich gern Top Ten“ mit einem Akzent.",
+      "scale": {
+        "green": "Aus dem tiefsten Süden der Welt",
+        "connector": "bis",
+        "red": "Aus dem höchsten Norden der Welt"
+      }
+    },
+    {
+      "id": "205-b",
+      "text": "Du findest endlich deinen Platz im ICE. Doch direkt hinter dir sitzt … Ergänze.",
+      "scale": {
+        "green": "Eine völlig ruhige Fahrt",
+        "connector": "bis",
+        "red": "Eine extrem turbulente Fahrt"
+      }
+    },
+    {
+      "id": "206-a",
+      "text": "Nenne eine Zeichentrickfigur.",
+      "scale": {
+        "green": "Winzig klein",
+        "connector": "bis",
+        "red": "Riesengroß"
+      }
+    },
+    {
+      "id": "206-b",
+      "text": "Ihr entwickelt gemeinsam einen humanoiden Roboter. Welche körperliche oder geistige Eigenschaft eines Mitspielers gebt ihr ihm?",
+      "scale": {
+        "green": "Ein völlig unbrauchbarer Roboter",
+        "connector": "bis",
+        "red": "Ein absoluter Superroboter"
+      }
+    },
+    {
+      "id": "207-a",
+      "text": "Gedimmtes Licht, Kaminfeuer und dein Schwarm ist bei dir. Mit welchem Lied willst du ihn oder sie verführen?",
+      "scale": {
+        "green": "Überhaupt nicht wirkungsvoll",
+        "connector": "bis",
+        "red": "Absolut unwiderstehlich"
+      }
+    },
+    {
+      "id": "207-b",
+      "text": "Du sitzt auf der Toilette. Spiele vor, wie sehr du dich anstrengen musst.",
+      "scale": {
+        "green": "Geht ganz leicht",
+        "connector": "bis",
+        "red": "Extrem verstopft"
+      }
+    },
+    {
+      "id": "208-a",
+      "text": "Du bist ein Marsmensch, landest auf der Erde und begegnest zum ersten Mal einem Menschen. Was sagst du?",
+      "scale": {
+        "green": "Sehr feindselig",
+        "connector": "bis",
+        "red": "Besonders freundlich"
+      }
+    },
+    {
+      "id": "208-b",
+      "text": "Sage einem Mitspieler schauspielerisch „Ich liebe dich“.",
+      "scale": {
+        "green": "Überhaupt nicht überzeugend",
+        "connector": "bis",
+        "red": "Vollkommen überzeugend"
+      }
+    },
+    {
+      "id": "209-a",
+      "text": "Auf der Titelseite einer Klatschzeitschrift steht: ‚Promi völlig betrunken im Straßengraben gefunden – mehr auf Seite 12!‘ Welcher Promi könnte gemeint sein?",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "209-b",
+      "text": "Du bist beim Speed-Dating. Mit welchem Satz würdest du dich von deiner besten Seite zeigen?",
+      "scale": {
+        "green": "Der schlechteste Anmachspruch",
+        "connector": "bis",
+        "red": "Der beste Anmachspruch"
+      }
+    },
+    {
+      "id": "210-a",
+      "text": "Du bringst das neue Parfüm Chanel Nr. 13 heraus. Ergänze den Werbespruch: ‚Der Duft, der nach ... riecht.‘",
+      "scale": {
+        "green": "Dem schlimmsten Geruch",
+        "connector": "bis",
+        "red": "Dem herrlichsten Duft"
+      }
+    },
+    {
+      "id": "210-b",
+      "text": "Welche Lüge könnte der Kapitän der Runde in seinem Datingprofil stehen haben?",
+      "scale": {
+        "green": "Eine winzige Schummelei",
+        "connector": "bis",
+        "red": "Eine gewaltige Lüge"
+      }
+    },
+    {
+      "id": "211-a",
+      "text": "Welches Tier hat den längsten Schwanz? Nenne ein Tier.",
+      "scale": {
+        "green": "Sehr kurzer Schwanz",
+        "connector": "bis",
+        "red": "Extrem langer Schwanz"
+      }
+    },
+    {
+      "id": "211-b",
+      "text": "Welches Kostüm würdest du dem Kapitän der Runde für eine Kostümparty empfehlen?",
+      "scale": {
+        "green": "Passt überhaupt nicht zu ihm",
+        "connector": "bis",
+        "red": "Steht ihm perfekt"
+      }
+    },
+    {
+      "id": "212-a",
+      "text": "Man sagt, man soll Oma nicht ins Brennnesselfeld schubsen. Aber wohin dürfte man sie schubsen? Ergänze den Satz.",
+      "scale": {
+        "green": "Richtig gemein",
+        "connector": "bis",
+        "red": "Besonders lieb"
+      }
+    },
+    {
+      "id": "212-b",
+      "text": "‚Mr. Bond, wenn Sie mir den Geheimcode nicht verraten, werde ich ...‘ Ergänze die Drohung.",
+      "scale": {
+        "green": "Eine harmlose Drohung",
+        "connector": "bis",
+        "red": "Eine furchterregende Drohung"
+      }
+    },
+    {
+      "id": "213-a",
+      "text": "Du betrittst einen Saloon im Wilden Westen. Spiele deinen Auftritt als Cowboy.",
+      "scale": {
+        "green": "Völlig unscheinbar",
+        "connector": "bis",
+        "red": "Unglaublich eindrucksvoll"
+      }
+    },
+    {
+      "id": "213-b",
+      "text": "Ein geheimnisvoller Mann gibt dir ein Diktiergerät. Darauf hörst du: ‚Ihre Mission, sollten Sie sie annehmen, lautet ...‘ Ergänze die Nachricht.",
+      "scale": {
+        "green": "Kinderleicht",
+        "connector": "bis",
+        "red": "Praktisch unmöglich"
+      }
+    },
+    {
+      "id": "214-a",
+      "text": "Dein Handy klingelt mitten in einer wichtigen Besprechung. Welcher Klingelton ist es?",
+      "scale": {
+        "green": "Kaum peinlich",
+        "connector": "bis",
+        "red": "Extrem peinlich"
+      }
+    },
+    {
+      "id": "214-b",
+      "text": "Ein Pfadfinder steht vor deiner Tür und möchte Kekse verkaufen. Was sagst du, um ihn loszuwerden?",
+      "scale": {
+        "green": "Sehr freundlich",
+        "connector": "bis",
+        "red": "Richtig gemein"
+      }
+    },
+    {
+      "id": "215-a",
+      "text": "Sage: ‚Wir stehen im Finale!‘ Spiele dabei deine Begeisterung über den Einzug der französischen Fußballnationalmannschaft ins Finale.",
+      "scale": {
+        "green": "Fußball ist mir völlig egal",
+        "connector": "bis",
+        "red": "Ich bin der allergrößte Fan"
+      }
+    },
+    {
+      "id": "215-b",
+      "text": "Du springst aus einem Flugzeug, aber statt deines Fallschirms hast du versehentlich einen Rucksack dabei! Was ist darin, das dich retten könnte?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Extrem hilfreich"
+      }
+    },
+    {
+      "id": "216-a",
+      "text": "Du wachst nach einer wilden Partynacht auf und entdeckst, was du gestern angestellt hast. Erzähle davon.",
+      "scale": {
+        "green": "Ein bisschen beschwipst",
+        "connector": "bis",
+        "red": "Vollkommen abgestürzt"
+      }
+    },
+    {
+      "id": "216-b",
+      "text": "Nenne einen Ort, an dem du sein könntest.",
+      "scale": {
+        "green": "Ich will sofort weg!",
+        "connector": "bis",
+        "red": "Hier möchte ich für immer bleiben!"
+      }
+    },
+    {
+      "id": "217-a",
+      "text": "Du untersuchst einen Tatort. Welchen Hinweis hast du gefunden? Verkünde deine Entdeckung.",
+      "scale": {
+        "green": "Völlig nutzloser Hinweis",
+        "connector": "bis",
+        "red": "Der entscheidende Beweis"
+      }
+    },
+    {
+      "id": "217-b",
+      "text": "Spiele pantomimisch vor, wie du mit großer Geste Minztee aus einer Kanne in ein Glas gießt.",
+      "scale": {
+        "green": "Aus ganz geringer Höhe",
+        "connector": "bis",
+        "red": "Aus unglaublich großer Höhe"
+      }
+    },
+    {
+      "id": "218-a",
+      "text": "Piraten entern dein Schiff! Spiele pantomimisch einen Schwertkampf.",
+      "scale": {
+        "green": "Kläglich gescheitert",
+        "connector": "bis",
+        "red": "Ein meisterhafter Schwertkämpfer"
+      }
+    },
+    {
+      "id": "218-b",
+      "text": "Du wartest in der Notaufnahme, als jemand mit einem ungewöhnlichen Notfall hereinkommt. Was ist passiert?",
+      "scale": {
+        "green": "Kann ruhig warten",
+        "connector": "bis",
+        "red": "Muss sofort behandelt werden"
+      }
+    },
+    {
+      "id": "219-a",
+      "text": "Der Kapitän der Runde sucht einen neuen Beruf. Welchen würdest du ihm empfehlen?",
+      "scale": {
+        "green": "Dafür wäre er völlig ungeeignet",
+        "connector": "bis",
+        "red": "Dieser Beruf passt perfekt zu ihm"
+      }
+    },
+    {
+      "id": "219-b",
+      "text": "Bob ist bei Frauen wahnsinnig erfolgreich. Sein Geheimnis lautet ... Ergänze den Satz.",
+      "scale": {
+        "green": "Überhaupt nicht attraktiv",
+        "connector": "bis",
+        "red": "Unwiderstehlich attraktiv"
+      }
+    },
+    {
+      "id": "220-a",
+      "text": "Erzähle von einem romantischen Wochenende zu zweit.",
+      "scale": {
+        "green": "Ein absolutes Desaster",
+        "connector": "bis",
+        "red": "Ein traumhaftes Wochenende"
+      }
+    },
+    {
+      "id": "220-b",
+      "text": "Dank einer neuen App kannst du eine verstorbene berühmte Persönlichkeit wieder zum Leben erwecken. Wen wählst du?",
+      "scale": {
+        "green": "Eine furchtbare Idee",
+        "connector": "bis",
+        "red": "Eine großartige Idee"
+      }
+    },
+    {
+      "id": "221-a",
+      "text": "Die Spieleschachtel ist traurig, weil sie gleich wieder ins Regal kommt. Nimm sie in die Hand und tröste sie.",
+      "scale": {
+        "green": "Überhaupt nicht tröstlich",
+        "connector": "bis",
+        "red": "Unglaublich tröstlich"
+      }
+    },
+    {
+      "id": "221-b",
+      "text": "In welchem Land würdest du für immer leben wollen?",
+      "scale": {
+        "green": "Die schlechteste Wahl",
+        "connector": "bis",
+        "red": "Die beste Wahl"
+      }
+    },
+    {
+      "id": "222-a",
+      "text": "In diesem Raum war heimlich eine Kamera installiert. Welche Szene hat sie gestern aufgenommen?",
+      "scale": {
+        "green": "Völlig uninteressant",
+        "connector": "bis",
+        "red": "Eine unglaublich pikante Enthüllung"
+      }
+    },
+    {
+      "id": "222-b",
+      "text": "Wie würdest du deinen Hund nennen?",
+      "scale": {
+        "green": "Klingt überhaupt nicht furchteinflößend",
+        "connector": "bis",
+        "red": "Macht jedem sofort Angst"
+      }
+    },
+    {
+      "id": "223-a",
+      "text": "Du hast etwas im Internet bestellt. Wegen eines Fehlers liefert der Versandhändler dir statt einem Exemplar gleich 1.000 Stück davon. Was hast du bestellt?",
+      "scale": {
+        "green": "Eine katastrophale Nachricht",
+        "connector": "bis",
+        "red": "Eine fantastische Nachricht"
+      }
+    },
+    {
+      "id": "223-b",
+      "text": "Spiele pantomimisch, wie du ein scharf gewürztes Gericht probierst.",
+      "scale": {
+        "green": "Kaum scharf",
+        "connector": "bis",
+        "red": "Unfassbar scharf"
+      }
+    },
+    {
+      "id": "224-a",
+      "text": "Spiele pantomimisch, wie du langsam ins Meer steigst.",
+      "scale": {
+        "green": "Das Wasser ist eiskalt",
+        "connector": "bis",
+        "red": "Das Wasser ist herrlich warm"
+      }
+    },
+    {
+      "id": "224-b",
+      "text": "Halte einem Mitspieler stolz etwas hin und behaupte: ‚Das ist mein Ehrenmitgliedsausweis vom Club der ...‘ Ergänze den Satz.",
+      "scale": {
+        "green": "Ziemlich peinlicher Club",
+        "connector": "bis",
+        "red": "Ein unfassbar exklusiver Club"
+      }
+    },
+    {
+      "id": "225-a",
+      "text": "Filmabend! Nenne einen Film, der zu Tränen rührt.",
+      "scale": {
+        "green": "Kaum eine Träne",
+        "connector": "bis",
+        "red": "Ein wahrer Tränenstrom"
+      }
+    },
+    {
+      "id": "225-b",
+      "text": "Wie sieht das Leben des Kapitäns der Runde in zehn Jahren aus? Beschreibe seine Zukunft.",
+      "scale": {
+        "green": "Sein schlimmster Albtraum",
+        "connector": "bis",
+        "red": "Sein absoluter Traum"
+      }
+    },
+    {
+      "id": "226-a",
+      "text": "Du hast ein Rubbellos gekauft. Spiele deine Reaktion, als du siehst, wie viel du gewonnen hast.",
+      "scale": {
+        "green": "1 Euro",
+        "connector": "bis",
+        "red": "100 Millionen Euro"
+      }
+    },
+    {
+      "id": "226-b",
+      "text": "Erfinde einen Kosenamen für deinen Partner oder deine Partnerin.",
+      "scale": {
+        "green": "Damit ist die Trennung vorprogrammiert",
+        "connector": "bis",
+        "red": "Dafür liebt man dich jeden Tag mehr"
+      }
+    },
+    {
+      "id": "227-a",
+      "text": "Inspektor Gadget präsentiert stolz seine neueste Erfindung: ‚Go-Go-Gadgeto ...!‘ Ergänze den Satz.",
+      "scale": {
+        "green": "Kaum zu gebrauchen",
+        "connector": "bis",
+        "red": "Unglaublich nützlich"
+      }
+    },
+    {
+      "id": "227-b",
+      "text": "Nach einer durchzechten Nacht rufst du deine Schwiegermutter an. Was sagst du ihr?",
+      "scale": {
+        "green": "Kaum Folgen",
+        "connector": "bis",
+        "red": "Riesige Konsequenzen"
+      }
+    },
+    {
+      "id": "228-a",
+      "text": "Du darfst das Leben einer Serienfigur übernehmen. Welche wählst du?",
+      "scale": {
+        "green": "Ein wahrer Albtraum",
+        "connector": "bis",
+        "red": "Das absolute Traumleben"
+      }
+    },
+    {
+      "id": "228-b",
+      "text": "Du sitzt in einem Flugzeug kurz vor dem Start. Über Lautsprecher sagt der Pilot: ‚Guten Tag, ich bin Kevin, Ihr Pilot ...‘ Ergänze seine Ansage.",
+      "scale": {
+        "green": "Überhaupt nicht beruhigend",
+        "connector": "bis",
+        "red": "Äußerst beruhigend"
+      }
+    },
+    {
+      "id": "229-a",
+      "text": "Eilmeldung: Oberst von Gatow hat wieder zugeschlagen! Diesmal war es in der Küche mit ... Welcher Küchengegenstand war die Tatwaffe?",
+      "scale": {
+        "green": "Völlig ungeeignet als Waffe",
+        "connector": "bis",
+        "red": "Äußerst wirkungsvoll"
+      }
+    },
+    {
+      "id": "229-b",
+      "text": "Wirf einen Gegenstand, zum Beispiel eine Münze.",
+      "scale": {
+        "green": "So nah wie möglich",
+        "connector": "bis",
+        "red": "So weit wie möglich"
+      }
+    },
+    {
+      "id": "230-a",
+      "text": "Du bist für das Marketing bei Robo3000 verantwortlich. Erfinde einen Werbeslogan für einen neuen Saugroboter, der den Vornamen der Person links von dir trägt.",
+      "scale": {
+        "green": "Am wenigsten verkaufsfördernd",
+        "connector": "bis",
+        "red": "Am verkaufsförderndsten"
+      }
+    },
+    {
+      "id": "230-b",
+      "text": "Worauf könnte man verzichten?",
+      "scale": {
+        "green": "Ja, ganz einfach",
+        "connector": "bis",
+        "red": "Nein, unmöglich, ohne das zu leben"
+      }
+    },
+    {
+      "id": "231-a",
+      "text": "Du bist Coach bei „The Voice“ und sitzt im drehbaren Sessel. Ein Kandidat singt vor. Reagiere auf seinen Auftritt.",
+      "scale": {
+        "green": "Er singt schrecklich schief",
+        "connector": "bis",
+        "red": "Sein Stil ist genial!"
+      }
+    },
+    {
+      "id": "231-b",
+      "text": "Was könnte in deinem Koffer für den Winterurlaub liegen?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Extrem nützlich"
+      }
+    },
+    {
+      "id": "232-a",
+      "text": "Welchen neuen Beruf könnte der Papst ergreifen?",
+      "scale": {
+        "green": "Völlig unwahrscheinlich",
+        "connector": "bis",
+        "red": "Sehr wahrscheinlich"
+      }
+    },
+    {
+      "id": "232-b",
+      "text": "Du moderierst eine Teleshopping-Sendung. Präsentiere den Küchenroboter Macho3000 und preise seine Vorzüge an.",
+      "scale": {
+        "green": "Den würde niemand kaufen",
+        "connector": "bis",
+        "red": "Den wollen alle unbedingt haben"
+      }
+    },
+    {
+      "id": "233-a",
+      "text": "In welches Land würdest du jemanden für ein Wochenende voller kulinarischer Genüsse mitnehmen?",
+      "scale": {
+        "green": "Das schlechteste Reiseziel",
+        "connector": "bis",
+        "red": "Das beste Reiseziel"
+      }
+    },
+    {
+      "id": "233-b",
+      "text": "Führe den geheimen Begrüßungsgruß deiner Gang vor, mit dem du ein anderes Gangmitglied begrüßt.",
+      "scale": {
+        "green": "Die Gang wirkt überhaupt nicht gefährlich",
+        "connector": "bis",
+        "red": "Die Gang ist furchteinflößend"
+      }
+    },
+    {
+      "id": "234-a",
+      "text": "Erzähle ein Geheimnis, das jemand haben könnte.",
+      "scale": {
+        "green": "Eine harmlose Kleinigkeit",
+        "connector": "bis",
+        "red": "Ein brisantes Staatsgeheimnis"
+      }
+    },
+    {
+      "id": "234-b",
+      "text": "Bei einer Hotdog-Essmeisterschaft treten verschiedene Figuren an. Welche echte oder erfundene Person schickst du ins Rennen?",
+      "scale": {
+        "green": "Verliert garantiert",
+        "connector": "bis",
+        "red": "Gewinnt garantiert"
+      }
+    },
+    {
+      "id": "235-a",
+      "text": "Du trainierst im Fitnessstudio und willst die Aufmerksamkeit deines Trainers auf dich ziehen. Spiele die Szene pantomimisch.",
+      "scale": {
+        "green": "Hilfe, das ist viel zu schwer!",
+        "connector": "bis",
+        "red": "Schaut her, ich bin ein Muskelprotz!"
+      }
+    },
+    {
+      "id": "235-b",
+      "text": "Nenne ein Geräusch, das man durch das Fenster zu Hause hören könnte.",
+      "scale": {
+        "green": "Sehr unangenehm",
+        "connector": "bis",
+        "red": "Wunderschön anzuhören"
+      }
+    },
+    {
+      "id": "236-a",
+      "text": "Spieglein, Spieglein an der Wand: Wer ist die schönste Schauspielerin im ganzen Land? Nenne eine Schauspielerin.",
+      "scale": {
+        "green": "Da muss der Spiegel blind sein",
+        "connector": "bis",
+        "red": "Atemberaubend schön"
+      }
+    },
+    {
+      "id": "236-b",
+      "text": "Du bist für einen Tag ein internationaler Superstar. Was machst du?",
+      "scale": {
+        "green": "Extrem großzügig",
+        "connector": "bis",
+        "red": "Extrem egoistisch"
+      }
+    },
+    {
+      "id": "237-a",
+      "text": "Nenne ein Wort aus dem Wörterbuch. Wie häufig verwendet der Käpt’n es?",
+      "scale": {
+        "green": "Das Wort benutzt er nie",
+        "connector": "bis",
+        "red": "Das Wort benutzt er ständig"
+      }
+    },
+    {
+      "id": "237-b",
+      "text": "Auf dem Dorffest wird wie jedes Jahr eine „Miss Irgendwas“ gewählt. Ergänze den Titel: „Miss …“",
+      "scale": {
+        "green": "Völlig geschmacklos",
+        "connector": "bis",
+        "red": "Richtig stilvoll"
+      }
+    },
+    {
+      "id": "238-a",
+      "text": "Stelle eine typische Wochenendbeschäftigung pantomimisch dar.",
+      "scale": {
+        "green": "Das mache ich nie",
+        "connector": "bis",
+        "red": "Das mache ich sehr oft"
+      }
+    },
+    {
+      "id": "238-b",
+      "text": "Du organisierst ein Casting für eine Realityshow. Nenne ein Auswahlkriterium für die Kandidaten.",
+      "scale": {
+        "green": "Überhaupt nicht gefragt",
+        "connector": "bis",
+        "red": "Besonders gefragt"
+      }
+    },
+    {
+      "id": "239-a",
+      "text": "Du hältst einen Vortrag in einem großen Hörsaal. Kündige das Thema deines Vortrags an.",
+      "scale": {
+        "green": "Interessiert niemanden",
+        "connector": "bis",
+        "red": "Füllt den ganzen Hörsaal"
+      }
+    },
+    {
+      "id": "239-b",
+      "text": "Sage „Es gibt ja gar keine richtigen Jahreszeiten mehr!“ und spiele dabei, wie sich das Wetter anfühlt.",
+      "scale": {
+        "green": "Bitterkalt",
+        "connector": "bis",
+        "red": "Brütend heiß"
+      }
+    },
+    {
+      "id": "240-a",
+      "text": "Du sitzt in einem Heißluftballon, der kaum noch aufsteigt. Was wirfst du über Bord?",
+      "scale": {
+        "green": "Federleicht",
+        "connector": "bis",
+        "red": "Extrem schwer"
+      }
+    },
+    {
+      "id": "240-b",
+      "text": "Erfinde eine Tripadvisor-Bewertung für ein Restaurant.",
+      "scale": {
+        "green": "Da will garantiert niemand essen",
+        "connector": "bis",
+        "red": "Da möchte man sofort hin"
+      }
+    },
+    {
+      "id": "241-a",
+      "text": "Du schickst einem Freund im Gefängnis einen Geburtstagskuchen. Welchen Gegenstand versteckst du darin, um ihm bei der Flucht zu helfen?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Äußerst hilfreich"
+      }
+    },
+    {
+      "id": "241-b",
+      "text": "Stelle eine Geste oder einen Gesichtsausdruck pantomimisch dar.",
+      "scale": {
+        "green": "Das mache ich nie",
+        "connector": "bis",
+        "red": "Das mache ich ständig"
+      }
+    },
+    {
+      "id": "242-a",
+      "text": "Du wachst neben einer Person auf, mit der du überhaupt nicht gerechnet hast. Wer ist es? Nenne eine echte Person.",
+      "scale": {
+        "green": "Eine schreckliche Überraschung",
+        "connector": "bis",
+        "red": "Eine wunderbare Überraschung"
+      }
+    },
+    {
+      "id": "242-b",
+      "text": "Du bist einen Tag lang unsichtbar. Was stellst du an?",
+      "scale": {
+        "green": "Ganz vernünftig",
+        "connector": "bis",
+        "red": "Völlig verrückt"
+      }
+    },
+    {
+      "id": "243-a",
+      "text": "Nach einem Schiffsunglück strandest du mit nur einem Gegenstand auf einer einsamen Insel. Welcher ist es?",
+      "scale": {
+        "green": "Völlig nutzlos",
+        "connector": "bis",
+        "red": "Unverzichtbar"
+      }
+    },
+    {
+      "id": "243-b",
+      "text": "Du spielst Poker und hast einen Royal Flush auf der Hand! Spiele deine Reaktion pantomimisch.",
+      "scale": {
+        "green": "Perfektes Pokerface",
+        "connector": "bis",
+        "red": "Man sieht dir die Freude sofort an"
+      }
+    },
+    {
+      "id": "244-a",
+      "text": "Stelle pantomimisch dar, wie du in einer Klassenarbeit bei deinem Sitznachbarn abschreibst.",
+      "scale": {
+        "green": "Völlig unauffällig",
+        "connector": "bis",
+        "red": "Für alle sichtbar"
+      }
+    },
+    {
+      "id": "244-b",
+      "text": "Du kannst mit einem Fingerschnippen etwas vom Himmel regnen lassen. Was soll es sein?",
+      "scale": {
+        "green": "Das Schlimmste überhaupt",
+        "connector": "bis",
+        "red": "Das wäre richtig toll"
+      }
+    },
+    {
+      "id": "245-a",
+      "text": "Was machen Schüler, während die Lehrkraft etwas an die Tafel schreibt?",
+      "scale": {
+        "green": "Eine völlig ruhige Klasse",
+        "connector": "bis",
+        "red": "Eine völlig aufgedrehte Klasse"
+      }
+    },
+    {
+      "id": "245-b",
+      "text": "Für eine Fortsetzung von „Der mit dem Wolf tanzt“ soll der Titel „Der mit … tanzt“ ergänzt werden. Womit tanzt der Held?",
+      "scale": {
+        "green": "Garantierter Kinoflop",
+        "connector": "bis",
+        "red": "Ein riesiger Kinohit"
+      }
+    },
+    {
+      "id": "246-a",
+      "text": "Der Käpt’n zeigt auf einen Mann aus der Runde. Stell dir vor, er steht plötzlich nackt da: Mit welchem Gegenstand verdeckt er sein bestes Stück?",
+      "scale": {
+        "green": "Da gibt es kaum etwas zu verdecken",
+        "connector": "bis",
+        "red": "Da muss einiges verdeckt werden"
+      }
+    },
+    {
+      "id": "246-b",
+      "text": "Was könnte man seiner Schwiegermutter sagen?",
+      "scale": {
+        "green": "Richtig gemein",
+        "connector": "bis",
+        "red": "Besonders nett"
+      }
+    },
+    {
+      "id": "247-a",
+      "text": "Jemand erzählt einen Witz. Spiele pantomimisch, wie du darüber lachst.",
+      "scale": {
+        "green": "Überhaupt nicht lustig",
+        "connector": "bis",
+        "red": "Zum Totlachen komisch"
+      }
+    },
+    {
+      "id": "247-b",
+      "text": "Eine Kinderband covert einen bekannten Song. Welchen? Wenn du möchtest, sing ihn vor.",
+      "scale": {
+        "green": "Perfekt für Kinder",
+        "connector": "bis",
+        "red": "Ganz und gar nicht für Kinder geeignet"
+      }
+    },
+    {
+      "id": "248-a",
+      "text": "Geh auf ein Knie oder halte einen imaginären Ring hin und mach einem Mitspieler einen Heiratsantrag.",
+      "scale": {
+        "green": "Damit bekommst du garantiert einen Korb",
+        "connector": "bis",
+        "red": "Da sagt dein Schwarm garantiert Ja"
+      }
+    },
+    {
+      "id": "248-b",
+      "text": "Was könnte im Fernsehen laufen?",
+      "scale": {
+        "green": "Das schaut fast niemand",
+        "connector": "bis",
+        "red": "Das schauen alle"
+      }
+    },
+    {
+      "id": "249-a",
+      "text": "Nenne einen echten oder erfundenen Abschluss, dessen Urkunde über deinem Kamin hängen könnte.",
+      "scale": {
+        "green": "Überhaupt nicht angesehen",
+        "connector": "bis",
+        "red": "Höchst angesehen"
+      }
+    },
+    {
+      "id": "249-b",
+      "text": "Disney sucht eine neue Synchronstimme. Singe den Refrain von „Lass jetzt los“ aus „Die Eiskönigin“.",
+      "scale": {
+        "green": "Mit ganz tiefer Stimme",
+        "connector": "bis",
+        "red": "Mit ganz hoher Stimme"
+      }
+    },
+    {
+      "id": "250-a",
+      "text": "Du darfst in einen Pool springen, der mit etwas anderem als Wasser gefüllt ist. Womit ist er gefüllt?",
+      "scale": {
+        "green": "Ein absoluter Albtraum",
+        "connector": "bis",
+        "red": "Ein Traum"
+      }
+    },
+    {
+      "id": "250-b",
+      "text": "Einer der Mitspieler ist ein Vampir! Zeige auf ihn und erkläre, woran du ihn erkannt hast.",
+      "scale": {
+        "green": "Ein winziger Hinweis",
+        "connector": "bis",
+        "red": "Ein unwiderlegbarer Beweis"
+      }
+    }
+  ]
+}
