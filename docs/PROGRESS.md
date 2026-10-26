@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Geprüfte Planungsbasis nach Remoteabgleich: `e7b420e` (ursprünglich lokal `66eb976`). [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: Fachentscheidungen D-01 bis D-18 vollständig für die erste Version festgelegt, Planung abgeschlossen, App-Entwicklung noch nicht begonnen.** Kein Client-/Servercode, kein neuer Datenkatalog, keine Start-/Testskripte implementiert. Keine GitHub Actions aktiviert, keine Cloudflare-Deployments ausgeführt. Die nächste Entwicklungsaufgabe ist **TT-001** und benötigt einen gesonderten Umsetzungsauftrag.
+**Aktuell im Featurebranch task/TT-001-flutter-shell: Planung abgeschlossen; TT-001 IN ARBEIT.** Flutter-Dart-App-Shell, drei navigierbare Einstiege, Profil- und Einstellungsansichten, Web-Einstieg und Widgettests sind angelegt. Android-Gerüst, Flutter-Metadaten, Lockfile, lokale SDK-Prüfung und sämtliche Ausführungstests stehen aus. TT-001 ist nicht erledigt. Keine GitHub Actions oder Cloudflare-Deployments.
 
 ## Statusregeln
 
@@ -29,13 +29,20 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 
 ## Laufende Arbeit
 
-Keine Implementierungsaufgabe in Arbeit.
+**TT-001 – IN ARBEIT (26.10.2026)** auf Branch `task/TT-001-flutter-shell`.
+
+Über GitHub angelegt: `apps/client/pubspec.yaml`, `analysis_options.yaml`, `lib/main.dart`, `lib/app/trinktribunal_app.dart`, `lib/features/home/`, `lib/features/profile/`, `lib/features/settings/`, `test/app_shell_test.dart`, `web/` (HTML, Bootstrap, Manifest) und `.gitignore`. Einstiegskarten und Zurücknavigation sind im Dart-Code verdrahtet. Diese Ansichten sind als Vorschau gekennzeichnet; noch keine Spiellogik.
+
+**Noch offen für die Abnahme von TT-001:** Windows-SDK-Version und `flutter doctor -v` prüfen; `flutter create --platforms=android,web --project-name trinktribunal apps/client` ohne Überschreiben vorhandener Quellen ausführen; Android-Gerüst, `.metadata` und `pubspec.lock` ergänzen; `flutter analyze`, `flutter test test/app_shell_test.dart`, Chrome-Start auf 127.0.0.1:7357, 360×800/1440×900, Zurücknavigation und Hot Reload tatsächlich durchführen; Ergebnisse und Screenshot dokumentieren. Erst danach TT-001 als ERLEDIGT markieren.
+
+**Nicht ausgeführt:** Diese Arbeitsumgebung besitzt weder Flutter noch Dart und kann das private Repository nicht lokal klonen. Deshalb keine Build-/Test-/Browser-Ergebnisse behauptet. Das Repository wurde ausschließlich über den verbundenen GitHub-Zugang auf dem Featurebranch verändert.
+
 
 ## Meilensteine
 
 | Meilenstein | Aufgaben | Status | Lokales Demo-Gate / späterer Beleg |
 | --- | --- | --- | --- |
-| M0 | TT-001–TT-003 | OFFEN | Drei Einstiege, Zurücknavigation, Hot Reload, Windowschecks; Workflow + Taskbelege. |
+| M0 | TT-001–TT-003 | IN ARBEIT | Drei Einstiege, Zurücknavigation, Hot Reload, Windowschecks; Workflow + Taskbelege. |
 | M1 | TT-004–TT-012 | OFFEN | Kartenmodus mit drei Fällen und zwei Ereignissen bis Neustart; `docs/qa/M1.md`. |
 | M2 | TT-013–TT-026 | OFFEN | Vier Personen, sechs Fälle, Avatar/Übergabe/Bank/Urteil/Wechsel; `docs/qa/M2.md`. |
 | M3 | TT-027–TT-033 | OFFEN | Wiederaufnahme, kalter Web-Offlinestart, Android-Flugmodus; `docs/qa/M3.md`. |
@@ -53,7 +60,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 
 | ID | Aufgabe | Status | Commit / Beleg / Blocker |
 | --- | --- | --- | --- |
-| TT-001 | Flutter-Web-App mit drei Einstiegen starten | OFFEN | — |
+| TT-001 | Flutter-Web-App mit drei Einstiegen starten | IN ARBEIT | Featurebranch task/TT-001-flutter-shell; Quellen vorhanden, Flutter-Gerüst und lokale Tests offen |
 | TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | OFFEN | — |
 | TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | OFFEN | — |
 | TT-004 | Beide Katalogformate validieren und bündeln | OFFEN | — |
@@ -151,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächster Umsetzungsauftrag: TT-001.** Kein Fachfreigabe-Halt mehr. Nicht erledigte Akzeptanz/Tests und tatsächliche technische Blocker weiterhin ehrlich im Aufgabenregister dokumentieren.
+**Aktive Aufgabe: TT-001 lokal vervollständigen und abnehmen.** Kein Fachfreigabe-Halt mehr. Nicht erledigte Akzeptanz/Tests und tatsächliche technische Blocker weiterhin ehrlich im Aufgabenregister dokumentieren.
 
 ## Prüfbeleg PLAN-001
 
@@ -169,14 +176,14 @@ Am 26.10.2026 lokal durchgeführt:
 
 **Nicht ausgeführt:** Flutter-Analyze/-Tests/-Builds, Worker- oder Integrationstests, Android-Doctor/Builds, Cloudflare-Last-/Onlineprüfungen. PLAN-002 umfasst ebenfalls keine Anwendungstests. Es gibt noch keinen Anwendungscode. Die im Plan genannten Akzeptanztests sind zukünftige Pflichten, keine heutigen Ergebnisse.
 
-## Übergabe an den nächsten Entwicklungsauftrag
+## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
 Naechste Aufgabe: TT-001
-Voraussetzung: ausdruecklicher Auftrag zur Implementierung
+Voraussetzung: Auftrag liegt vor; Featurebranch auschecken, vorhandene Quellen erhalten
 Ziel: sichtbare Flutter-Web-App mit drei Einstiegen, Profil/Einstellungen und Zuruecknavigation
 Zuerst: Gitstatus, Workflow und TT-001 lesen; Flutter-Version/doctor pruefen
-Danach: Flutter-Geruest fuer Android/Web erstellen, Riverpod, einfache navigierbare Screens
+Danach: fehlendes Flutter-/Android-Geruest und pubspec.lock erzeugen; vorhandene Dart- und Webquellen nicht ueberschreiben
 Lokaler Nachweis: Chrome 127.0.0.1:7357, 360x800 und 1440x900, Hot Reload
 Automatisch: flutter analyze + App-Shell-Widgettest
 Nicht vorziehen: Backend, komplette Spiellogik, Deployments oder GitHub Actions
