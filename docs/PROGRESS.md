@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Integration von `task/TT-001-flutter-shell` (`251a788`) mit `main` (`0d8cd2d`), Mergebasis gesichert in `3bc0000`. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Aktuelle M0-Abnahme](qa/M0.md).
 
-**Aktuell: Vorhandene App-Shell lokal vervollständigt, automatische Prüfungen und Web-/Android-Debugbuilds erfolgreich. TT-001 wartet auf Browserabnahme via chrome-devtools; TT-002/003 sind technisch vorbereitet und geprüft, bleiben abhängig von TT-001. 0/70 Aufgaben final abgenommen; main noch nicht übernommen.** Keine GitHub Actions oder Cloudflare-Deployments.
+**Aktuell: M0 abgeschlossen. 3/70 Aufgaben abgenommen; automatische Gates grün und visuelle Browserabnahme am 26.10.2026 durch den Nutzer bestätigt. Merge und Fortsetzung ausdrücklich autorisiert.** Keine GitHub Actions oder Cloudflare-Deployments.
 
 ## Statusregeln
 
@@ -32,19 +32,15 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 
 **Integration auf `task/TT-001-flutter-shell`:** 71 vorhandene Entwicklungscommits bis `251a788` erhalten, `main` (`0d8cd2d`) in `3bc0000` integriert. Zwei Dokumentkonflikte gelöst; bestehende Appquellen beibehalten. [Aktueller M0-Prüfbeleg](qa/M0.md).
 
-**TT-001 – BLOCKIERT (Browserabnahme).** Android-/Flutter-Gerüst, Metadaten und Lockfile vorhanden. Initialisierer zweimal erfolgreich, `flutter analyze` ohne Befunde, fünf Widgettests grün, JS-Webrelease und Android-Debug-APK lokal gebaut. Chrome-Debuglauf und zwei tatsächliche Hot-Reload-Kompilierungen erfolgreich. Echte Browsernavigation, visuelle 360×800-/1440×900-Prüfung und Screenshot fehlen: Der vorgeschriebene chrome-devtools-Server kann sich nicht mit Chrome verbinden. Aktivierung wurde beim Nutzer angefragt. Nicht als erledigt markieren, bevor diese Gate-Prüfung möglich ist.
+**TT-001–TT-003 – ERLEDIGT.** App-Shell, Windows-Workflow und Zustandsvertrag geprüft; lokale Tests/Builds und Nutzerabnahme siehe [M0](qa/M0.md). chrome-devtools bleibt agentenseitig unerreichbar, deshalb keine automatische visuelle Prüfung behauptet.
 
-**TT-002 – IN ARBEIT, technisch geprüft.** Windows-Skripte unter PowerShell 5.1 korrigiert (UTF-8 mit BOM), Start aus anderem Verzeichnis, alternativer Port, belegter Port, fehlendes SDK und Unterprozess-Fehlercodes mit fünf echten Windowsfällen geprüft. Dokumentenprüfer mit zwölf Positiv-/Negativfällen. Finaler `check.ps1 -Scope All` aus `docs/`: Exitcode 0, alle 40 Node-Tests und fünf Widgettests bestanden, Offline-Lockfile/Format/Analyze grün. Formaler Abschluss wartet auf TT-001; kein Servertest behauptet.
-
-**TT-003 – IN ARBEIT, Vertrag/Fixtures geprüft.** Technischer Vertrag unter `docs/contracts/GAME_STATE.md`, Protokoll-README und 30 fachliche JSON-Fixtures vorhanden; 20 Node-Referenzfälle und drei Projektionsfälle lokal bestanden. Vorleserrotation, Text-/Skalenbindung, D-07-Fallzählung und D-05-Zähler nachvollzogen. Die Beispiele sind keine implementierte Dart-/TypeScript-Engine. Formaler Abschluss wartet auf TT-001 und TT-002.
-
-**Main-Merge:** Nutzer hat die Übernahme nach erfolgreicher Prüfung bereits autorisiert. Bis zur Browserabnahme nicht ausführen; keine weitere fachliche oder Merge-Freigabe erforderlich. Nächste offene Featureaufgabe nach M0 bleibt TT-004. Keine neue App aus einem Standardtemplate erzeugen.
+**Nächste Aufgabe: TT-004.** Katalogschemas, Validator, Assetmanifest und typisierte Flutter-Loader.
 
 ## Meilensteine
 
 | Meilenstein | Aufgaben | Status | Lokales Demo-Gate / späterer Beleg |
 | --- | --- | --- | --- |
-| M0 | TT-001–TT-003 | BLOCKIERT | Automatische lokale Gates grün; tatsächliche Browserabnahme wartet auf chrome-devtools-Zugriff, siehe [M0](qa/M0.md). |
+| M0 | TT-001–TT-003 | ERLEDIGT | Lokale Tests/Builds und manuelle Nutzerabnahme · [M0](qa/M0.md) |
 | M1 | TT-004–TT-012 | OFFEN | Kartenmodus mit drei Fällen und zwei Ereignissen bis Neustart; `docs/qa/M1.md`. |
 | M2 | TT-013–TT-026 | OFFEN | Vier Personen, sechs Fälle, Avatar/Übergabe/Bank/Urteil/Wechsel; `docs/qa/M2.md`. |
 | M3 | TT-027–TT-033 | OFFEN | Wiederaufnahme, kalter Web-Offlinestart, Android-Flugmodus; `docs/qa/M3.md`. |
@@ -62,9 +58,9 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 
 | ID | Aufgabe | Status | Commit / Beleg / Blocker |
 | --- | --- | --- | --- |
-| TT-001 | Flutter-Web-App mit drei Einstiegen starten | BLOCKIERT | Chrome-MCP-Verbindung fehlt; Analyze, fünf Widgettests, Web-/Android-Debugbuild und Hot-Reload-Kompilierung bestanden · [M0](qa/M0.md) |
-| TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | IN ARBEIT | Echte Windows-Skripttests und lokale Checks grün; Abschluss abhängig von TT-001 · [M0](qa/M0.md) |
-| TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | IN ARBEIT | Vertrag, 30 Fixtures, 20 Referenz-/3 Projektionsfälle geprüft; Abschluss abhängig von TT-001/002 · [M0](qa/M0.md) |
+| TT-001 | Flutter-Web-App mit drei Einstiegen starten | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
+| TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
+| TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
 | TT-004 | Beide Katalogformate validieren und bündeln | OFFEN | — |
 | TT-005 | Redaktionelle Konflikte inventarisieren und entscheiden | OFFEN | — |
 | TT-006 | Konfiguration und unveränderliche Spielmodelle | OFFEN | — |
@@ -160,7 +156,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Aktive Aufgabe: TT-001-Browserabnahme ermöglichen und M0 abschließen.** Automatische Prüfungen bestanden; keine neue Implementierung oder Grundsatzplanung nötig. Main-Merge ist nach grünem Gate bereits autorisiert.
+**Nächste Aufgabe: TT-004 – Beide Katalogformate validieren und bündeln.** Keine erneute Grundsatzplanung erforderlich.
 
 Der aktuelle [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) ersetzt die historische Bestandsaufnahme unten als Aussage über den heutigen Entwicklungsstand. Alle 70 TT-Aufgaben bleiben OFFEN; der erfolgreiche Umgebungscheck ist kein bestandener App-Build.
 
@@ -183,14 +179,11 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-001-flutter-shell
+Branch: main (M0-Merge); nächste Implementierung auf task/TT-004-catalogs
 Aktueller Beleg: docs/qa/M0.md
-Naechster Schritt: chrome-devtools-Verbindung nach Aktivierung in Chrome erneut pruefen
-Browser: http://127.0.0.1:7357; 360x800 und 1440x900, alle Einstiege/Zurueck, sichtbarer Hot Reload
-Automatische Checks: scripts/check.ps1 -Scope All; Webrelease und Android-Debugbuild erfolgreich
-Nach Browserabnahme: TT-001/002/003 abschliessen, bereits autorisiert nach main uebernehmen und pushen
-Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden, init-client.ps1 ist idempotent
-Nicht vorziehen: Spiellogik, Backend, GitHub Actions, Deployments
+Naechster Schritt: TT-004 gemaess Plan implementieren und lokal pruefen
+Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
+Keine GitHub Actions oder Cloudflare-Deployments
 ```
 
 ## Vorlage für spätere Übergaben
