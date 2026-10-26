@@ -1,0 +1,30 @@
+{
+  "fixtureId": "TT003-SCHEDULE-50-7",
+  "decisionRefs": [
+    "D-01",
+    "D-10"
+  ],
+  "operation": "validateScheduledGaps",
+  "input": {
+    "targetCases": 50,
+    "requestedRuleEvents": 7,
+    "chosenSlots": [
+      4,
+      11,
+      18,
+      25,
+      32,
+      39,
+      46
+    ]
+  },
+  "expected": {
+    "slotCount": 7,
+    "unique": true,
+    "allBetweenQuestions": true,
+    "nonAdjacent": true,
+    "firstCaseBeforeEvent": true,
+    "lastCaseAfterEvent": true
+  },
+  "notes": "Representative 50-case game, one randomly selected gap per evenly sized segment."
+}
