@@ -1,0 +1,55 @@
+{
+  "fixtureId": "TT003-PERSON-DISTINCT-BINDINGS",
+  "decisionRefs": [
+    "D-05"
+  ],
+  "operation": "bindReferencedPlayers",
+  "input": {
+    "activePlayerIds": [
+      "A",
+      "B",
+      "C"
+    ],
+    "countersBefore": {
+      "A": 0,
+      "B": 0,
+      "C": 1
+    },
+    "roles": {
+      "player1": {
+        "selection": "random"
+      },
+      "player2": {
+        "selection": "random",
+        "differentFrom": [
+          "player1"
+        ]
+      }
+    },
+    "injectedValidBinding": {
+      "player1": "A",
+      "player2": "B"
+    },
+    "placeholderOccurrences": [
+      "player1",
+      "player1",
+      "player2"
+    ]
+  },
+  "expected": {
+    "binding": {
+      "player1": "A",
+      "player2": "B"
+    },
+    "distinctBoundPlayerIds": [
+      "A",
+      "B"
+    ],
+    "countersAfter": {
+      "A": 1,
+      "B": 1,
+      "C": 1
+    }
+  },
+  "notes": "A repeat of a placeholder does not increment a player counter twice."
+}
