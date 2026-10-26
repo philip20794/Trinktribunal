@@ -124,14 +124,14 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 
 ## Entscheidungen und mögliche Blocker
 
-Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschnitt 2 des Plans. D-03 (Kartenmodus ohne personenbezogene Fragen/Regeln) wurde am 26.10.2026 bestätigt. Der implementierende Agent darf technische Umsetzungsdetails eigenständig begründet festlegen; fachliche Abweichungen erfordern Freigabe. Die übrigen D-IDs sind offen, blockieren TT-001 aber nicht. Entscheidungen im Plan, hier und bei Umsetzung im Entscheidungsdokument synchronisieren.
+Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschnitt 2 des Plans. D-03 (Kartenmodus ohne personenbezogene Fragen/Regeln) und D-04 (Regelausschlüsse, Strafschluck, Ausnahmen) wurden am 26.10.2026 bestätigt. Der implementierende Agent darf technische Umsetzungsdetails eigenständig begründet festlegen; fachliche Abweichungen erfordern Freigabe. Die übrigen D-IDs sind offen, blockieren TT-001 aber nicht. Entscheidungen im Plan, hier und bei Umsetzung im Entscheidungsdokument synchronisieren.
 
 | Entscheidung | Status | Nächste verantwortliche Aufgabe |
 | --- | --- | --- |
 | D-01 – Fallzählung und Ereignislücken | OFFEN | TT-003 |
 | D-02 – Grenzen für Spieler, Slider und Namen | OFFEN | TT-003 |
 | D-03 – Personenbezogene Fragen und Regeln im Kartenmodus | ENTSCHIEDEN (26.10.2026) | TT-003 (Umsetzung) |
-| D-04 – Regelkonflikte, Ausnahmen und manuelle Strafen | OFFEN | TT-005 |
+| D-04 – Regelkonflikte, Ausnahmen und manuelle Strafen | ENTSCHIEDEN (26.10.2026) | TT-005 (Validierung); [Beschluss](decisions/D-04-rule-conflicts.md) |
 | D-05 – Fragenredaktion, Bezugspersonen, Nutzungsnachweise | OFFEN | TT-005, Abschluss TT-065 |
 | D-06 – Rotation bei Entfernung und Reorder | OFFEN | TT-003 |
 | D-07 – Fehlende Teilnehmer und neutraler Fallabbruch | OFFEN | TT-043 |
