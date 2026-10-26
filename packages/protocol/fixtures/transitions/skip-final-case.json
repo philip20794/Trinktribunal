@@ -1,0 +1,25 @@
+{
+  "fixtureId": "TT003-SKIP-FINAL",
+  "decisionRefs": [
+    "D-01",
+    "D-07"
+  ],
+  "operation": "completeWithoutVerdict",
+  "input": {
+    "targetCases": 3,
+    "completedCases": 2,
+    "roundId": "round-3",
+    "questionShown": true,
+    "confirmed": true,
+    "actionId": "skip-final"
+  },
+  "expected": {
+    "completedCases": 3,
+    "phase": "finished",
+    "caseCompletion": "completed_without_verdict",
+    "ruleEventAfterLastCase": false,
+    "wrongPositionCount": null,
+    "automaticSipCounts": null
+  },
+  "notes": "The game ends on F completed cases even when one case lacks a verdict."
+}
