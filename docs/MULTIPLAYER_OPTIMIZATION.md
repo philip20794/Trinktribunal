@@ -1,34 +1,36 @@
-# Multiplayer-Optimierung (Cloudflare Free)
+# Multiplayer- und Web-Optimierung
 
-**Ziel:** Spielräume sollen auch bei vielen gleichzeitigen Partien reaktionsschnell bleiben und möglichst wenig Anfragen, Rechenzeit und Datenbankschreibvorgänge verbrauchen.
+**Ziel:** Flutter für Android und Web, mit möglichst vielen Multiplayer-Partien innerhalb der Cloudflare-Free-Limits. Konkrete Kapazitäten müssen Lasttests bestätigen.
 
-## Verbindungs- und Raumkonzept
+## 1. Raum- und Verbindungsarchitektur
 
-- **Ein Durable Object pro Raum**, nicht pro Spieler. Pro Gerät eine WebSocket-Verbindung; kein Polling.
-- **WebSocket Hibernation API** (`ctx.acceptWebSocket()`) verwenden, nicht `webSocket.accept()`: Zwischen Spielaktionen darf der Raum schlafen, ohne die Verbindung zu verlieren.
-- Keine dauernden App-Heartbeats, Countdown-Ticks, Cursor- oder Positionsupdates über den Server. Timer möglichst lokal darstellen; falls nötig serverseitige Zeitmarken übertragen.
-- Verbindungsdaten über WebSocket-Attachments wiederherstellen. **Nach Hibernation ist der Arbeitsspeicher weg** – wichtige Daten müssen im SQLite-Storage liegen.
+- **Ein Durable Object pro Spielraum**, nicht pro Spieler. Jeder Flutter-Client hält genau **eine WebSocket-Verbindung** zum Raum; kein Polling.
+- Cloudflare **WebSocket Hibernation API** über `ctx.acceptWebSocket()` verwenden. Keine dauernden Timer oder Heartbeats auf dem Server, die den Raum unnötig wach halten.
+- Verbindungsbezogene Identität in **WebSocket-Attachments**, dauerhaft benötigten Spielzustand in **SQLite-Storage** halten. Nach Hibernation ist In-Memory-Zustand verloren.
+- Bei Verbindungsabbruch: automatisches Wiederverbinden mit exponentiellem Backoff und geheimem Spieler-Token, anschließend einen autorisierten Raum-Snapshot laden.
 
-## Nachrichten und Speicherung
+## 2. Wenige Nachrichten und Datenbankzugriffe
 
-- Clients senden nur **Aktionen** (`join`, `ready`, `submit_order`, `reveal`, `next_round`); der Server prüft sie und verteilt kleine Zustandsänderungen.
-- Fragen sind bereits als versionierte JSON-Dateien in der PWA: Im Multiplayer **Fragen-ID statt Fragentext** übertragen. Die Raumversion des Fragenkatalogs festhalten.
-- Zahlen niemals an andere Spieler übertragen, bevor die Aufdeckung erlaubt ist. Beim Modus „Alle sind Richter“ fremde Sortierungen bis zum Abschluss verbergen.
-- Datenbank nur bei **relevanten, wiederherstellbaren Änderungen** schreiben (Beitritt, neue Runde, Phase, abgegebene Sortierung, Ergebnis); keine Speicherung bei jeder UI-Aktion.
-- Einen kleinen Raum-Snapshot oder wenige kompakte Datensätze nutzen. Schreibvorgänge und gelesene/geschriebene Zeilen messen, statt pauschal von „einem Save“ auszugehen.
-- Beendete bzw. lange inaktive Räume mit zeitversetztem Alarm bereinigen. Alarme und Löschungen zählen ebenfalls zum Ressourcenverbrauch.
+- Flutter sendet **Aktionen statt ganzer Spielzustände** (z. B. `join`, `ready`, `submit_order`, `reveal`, `next_round`). Server prüft und verteilt nur relevante Änderungen.
+- **Fragen-ID + Katalogversion** statt des ganzen Fragentexts senden; Katalog liegt als Flutter-Asset auch im Client.
+- Keine Drag-Bewegungen, laufenden Countdowns oder Animation-Frames über WebSocket schicken. Drag-and-drop geschieht lokal; erst die **fertige Reihenfolge** übertragen.
+- Geheime Zahlen niemals vor der Aufdeckung an andere Teilnehmer senden. Im Modus „Alle sind Richter“ Sortierungen bis zum Abschluss getrennt halten.
+- Nur bei relevanten Zustandsänderungen in SQLite speichern. Kompakte Raumdaten; keine Datenbankzugriffe für reine UI-Interaktionen. Raumdaten nach Inaktivität/Spielende per Alarm bereinigen.
+- Nachrichten mit `roomId`, `roundId`, `phase` und eindeutiger `actionId` versionieren; ungültige, doppelte und verspätete Aktionen verwerfen.
 
-## Robustheit und Missbrauchsschutz
+## 3. Flutter Web schlank halten
 
-- Nach Netzunterbrechungen **Reconnect mit Backoff**; Spieler-Token lokal vorhalten, um denselben Platz wiederzubekommen.
-- Jede Aktion mit Runden-/Phasen-ID versehen; veraltete und doppelte Nachrichten verwerfen. Server entscheidet bei gleichzeitigen Aktionen.
-- Begrenzte Raumgröße, Nachrichtengröße, Aktionsfrequenz und Raumlebensdauer; Rate-Limit für Raumcode-Versuche und Raumneuanlagen.
-- Fehlerfälle testen: zwei gleichzeitige Aktionen, Reload, Verbindungsabbruch, Hibernation, verspätete Nachrichten und leere Räume.
+- `flutter build web --wasm` prüfen und nutzen, sofern Abhängigkeiten kompatibel sind; Flutter liefert für nicht unterstützte Browser einen JavaScript-Fallback mit.
+- Startbildschirm und Lobby einfach halten; große Animationen, Zusatzassets und Audio erst laden, wenn benötigt. Bilder/SVGs auf mobile Größen und Speicherverbrauch optimieren.
+- Statische Assets über Cloudflare Pages/CDN ausliefern. Versionsgerechte **Cache-Header** einsetzen, damit Nutzer Updates bekommen und Wiederbesuche schnell sind.
+- Für die lokalen Modi im Browser einen **eigenen Service Worker / Precache** konfigurieren und offline testen: Flutter erzeugt standardmäßig keinen funktionalen Caching-Service-Worker mehr. Android kann gebündelte Assets direkt offline verwenden.
+- Erststart und Wiederholungsstart auf Android und mobilen Browsern messen, inklusive langsamer Verbindung.
 
-## Kostenkontrolle
+## 4. Sicherheit, Tests und Limits
 
-Cloudflare Free (Stand Oktober 2026): **100.000 Worker-Anfragen/Tag**, **100.000 Durable-Object-Anfragen/Tag**, **13.000 GB-s DO-Laufzeit/Tag**, **5 Mio. gelesene / 100.000 geschriebene SQLite-Zeilen/Tag** und **5 GB DO-Speicher**. Für eingehende WebSocket-Nachrichten gilt bei der DO-Anfragenabrechnung ein **20:1-Verhältnis**; ausgehende Nachrichten verursachen keine zusätzlichen DO-Anfragen. Bei Überschreiten von Free-Limits können Vorgänge fehlschlagen.
+- Join-/Raumerstellung, Nachrichtengröße, Raumgröße und Aktionsrate begrenzen. Geheim-Token nur privat speichern/übertragen, niemals in öffentlichen Raumsnapshots.
+- Dart-Client und TypeScript-Server nutzen denselben **versionierten JSON-Vertrag**. Gemeinsame Regel-Testfälle verhindern abweichende Bewertungen.
+- Tests: 8 Spieler × 20 Runden, Parallelräume, Abbruch/Reload, Hibernation, Wiederverbindung, doppelte Aktionen, alle sind Richter.
+- **Messen:** Worker-/DO-Anfragen, eingehende WebSocket-Nachrichten, DO-GB-Sekunden, SQLite-Lese-/Schreibzeilen, Speicher, Fehlerraten und Latenz. Vor Veröffentlichung die geltenden [Workers-Limits](https://developers.cloudflare.com/workers/platform/limits/), [DO-Limits](https://developers.cloudflare.com/durable-objects/platform/limits/) und [Preise](https://developers.cloudflare.com/durable-objects/platform/pricing/) kontrollieren. Keine garantierte Zahl kostenloser Spieler ohne Messung.
 
-**Vor Veröffentlichung:** Lasttest mit z. B. 8 Spielern und 20 Runden; pro Partie Worker-/DO-Anfragen, eingehende Nachrichten, aktive Dauer und SQLite-Zeilen messen. Daraus die sichere Zahl gleichzeitiger Räume und Partien pro Tag ableiten. **Keine feste Nutzerzahl ohne Messdaten versprechen.** Cloudflare-Dashboard und Fehlerraten überwachen.
-
-Quellen: [Workers-Limits](https://developers.cloudflare.com/workers/platform/limits/), [Durable-Objects-Preise](https://developers.cloudflare.com/durable-objects/platform/pricing/), [Hibernation-WebSockets](https://developers.cloudflare.com/durable-objects/best-practices/websockets/), [Durable-Objects-Limits](https://developers.cloudflare.com/durable-objects/platform/limits/).
+Referenzen: [Cloudflare WebSocket Hibernation](https://developers.cloudflare.com/durable-objects/best-practices/websockets/), [Flutter Web Deployment](https://docs.flutter.dev/deployment/web), [Flutter Web FAQ](https://docs.flutter.dev/platform-integration/web/faq).
