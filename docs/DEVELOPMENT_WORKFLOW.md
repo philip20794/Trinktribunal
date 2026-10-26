@@ -6,6 +6,25 @@ Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) u
 
 Ziel: Nach TT-001 ist ein Browserfenster jederzeit mit dem aktuellen Stand bedienbar. Jeder kleine Entwicklungsschritt erhält diesen Zustand. Alle Prüfungen und Builds laufen auf dem eigenen PC; eine spätere CI darf dieselben Skripte aufrufen, ist aber keine Voraussetzung.
 
+## TT-001: aktiver Featurebranch (26.10.2026)
+
+Der Branch `task/TT-001-flutter-shell` enthält bereits die Dart-App-Shell mit drei Einstiegen, Profil, Einstellungen, Web-Bootstrap und Widgettests. Die anfangs dokumentierte Konzeptbasis beschreibt den historischen Stand vor diesem ersten Implementierungsschritt. **Die App ist noch nicht lokal gestartet oder abgenommen**; die Remote-Arbeitsumgebung hat kein Flutter-/Dart-SDK. `PROGRESS.md` ist maßgeblich für den offenen Taskstatus.
+
+Nach `git fetch origin` und `git switch task/TT-001-flutter-shell` im eigenen Windows-Checkout zunächst den Gitstatus prüfen. Dann die fehlenden durch Flutter erzeugten Plattformdateien ergänzen:
+
+```powershell
+flutter --version
+flutter doctor -v
+flutter create --platforms=android,web --project-name trinktribunal apps/client
+Set-Location apps/client
+flutter pub get
+flutter analyze
+flutter test test/app_shell_test.dart
+flutter run -d chrome --web-hostname=127.0.0.1 --web-port=7357
+```
+
+**Vorhandene** `lib/`, `test/`, `web/` und `pubspec.yaml` **nicht überschreiben**; falls `flutter create` diese Dateien verändern möchte, erst gezielt vergleichen und nur fehlende generierte Dateien übernehmen. `pubspec.lock`, `.metadata` und Android-Projektdateien nach erfolgreichem Generatorlauf versionieren. Danach 360×800 und 1440×900, Zurücknavigation sowie Hot Reload manuell prüfen und die Exitcodes in `PROGRESS.md` dokumentieren. Erst mit diesen Belegen wird TT-001 abgeschlossen. TT-002 folgt erst danach.
+
 ## 1. Windows-Umgebung einrichten
 
 ### Vorhandenen Zustand zuerst prüfen
