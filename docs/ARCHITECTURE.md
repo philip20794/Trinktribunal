@@ -7,7 +7,7 @@
 - **Client:** Flutter + Dart – ein UI-Codebestand für Android (APK/AAB) und Flutter Web. Responsives Layout für Mobilgeräte und Desktop-Browser; Zustandsverwaltung über Riverpod.
 - **Webhosting:** Cloudflare Pages für den statischen Flutter-Web-Build (`build/web`). Installation als PWA optional; Offline-Caching benötigt einen **eigenen Service Worker**.
 - **Multiplayer:** Cloudflare Worker (TypeScript) als Einstieg; je Spielraum ein SQLite-backed Durable Object mit WebSocket Hibernation.
-- **Inhalte:** Versionierter Fragenkatalog in `data/questions/`, beim Build als Flutter-Assets eingebunden. Anpassbare **menschliche Cartoon-Avatare** aus skalierbaren Grafik-Ebenen; Name, Avatar-Baukasten und Sprache lokal speichern.
+- **Inhalte:** Versionierter Fragenkatalog in `data/questions/`, beim Build als Flutter-Assets eingebunden. Sprachneutrale Karten-/Regel-IDs mit einer auf sechs Stunden begrenzten lokalen Ziehhistorie und internen Nutzungszählern (D-01), die beide lokalen Modi teilen. Anpassbare **menschliche Cartoon-Avatare** aus skalierbaren Grafik-Ebenen; Name, Avatar-Baukasten und Sprache lokal speichern.
 - **Zugang:** Kein Benutzerkonto notwendig. Räume per Link/QR-Code und Code beitreten.
 
 ## Geplante Projektstruktur
@@ -46,7 +46,7 @@ Spielphasen: `Lobby → Fallakte / Regelereignis → Zahlen → Antworten → So
 - Ein Spieler hat eine **stabile playerId**; die Avatar-Konfiguration enthält nur IDs für einzelne Bausteine sowie eine `avatarRevision`. Bei Bearbeitung im Raum werden kleine Änderungen an alle Clients übertragen. Alle Clients verwenden denselben versionierten Asset-Katalog.
 - **Partie-Einstellungen** (Zielzahl der Fälle, Trinkregelanzahl, Schwierigkeitsfaktor, „Alle sind Richter“) werden beim Start eingefroren. Änderungen erfordern einen bestätigten Neustart; Teilnehmer- und Profiländerungen bleiben erlaubt.
 - **Spieleränderungen** werden ab dem nächsten Fall angewendet, damit laufende Geheimzahlen und Auswertungen stabil bleiben. Die Zahlengrenze `X` wird aus der aktuellen Spielerzahl und dem eingefrorenen Faktor neu berechnet.
-- Aktive Trinkregel-IDs samt Ereignisplan werden im Raumzustand gespeichert; Ausschlussbeziehungen werden serverseitig validiert.
+- Aktive Trinkregel-IDs samt einmaligen Spielerrollen-Zuweisungen, Ereignisplan und gezogenen IDs werden im Raumzustand gespeichert; Ausschlussbeziehungen werden serverseitig validiert. D-01: Der Server speichert zusätzlich pro Raum die rollierende sechs Stunden gültige Ziehhistorie, auch über Partieneustarts. Ein optionaler privater Host-Historienimport beim Erstellen des Raums und ein idempotenter Abgleich der gezogenen IDs zurück zum Host-Gerät verbinden mehrere gehostete Räume ohne Benutzerkonten; keine globale geräteübergreifende Historie und keine öffentliche Übertragung dieser Verlaufsdaten.
 
 ## Entwicklung und Veröffentlichung
 
