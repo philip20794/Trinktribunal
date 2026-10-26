@@ -51,4 +51,5 @@ Der deutschsprachige Fragenkatalog mit 500 Aufgaben liegt unter [data/questions/
 - [Multiplayer-Optimierung und Free-Tier-Limits](docs/MULTIPLAYER_OPTIMIZATION.md)
 - [Visuelles Konzept, Avatare und Screens](docs/VISUAL_DESIGN.md)
 - [Spielkonzept, Trinkregeln und Einstellungen](docs/GAME_DESIGN.md)
+- [JSON-Format für Trinkregeln und Spieler-Platzhalter](data/rules/README.md)
 - [Screens und Abläufe der drei Spielvarianten](docs/USER_FLOWS.md)
