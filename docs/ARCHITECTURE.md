@@ -55,7 +55,7 @@ Spielphasen: `Lobby → Fallakte / Regelereignis → Zahlen → Antworten → So
 1. Flutter-Grundgerüst, Fragen-Assets, Designsystem und Dart-Regeln mit Tests.
 2. Lokale Varianten und personalisierbare Figuren.
 3. Worker, Multiplayer-Räume, Wiederverbindung und Integrationstests.
-4. Performance-/Lasttests und Veröffentlichung: `flutter build apk` für Android, `flutter build web --wasm` mit Browser-Fallback für Web. Web-Startzeit und Offline-Modus auf echten Geräten prüfen.
+4. Performance-/Lasttests und Veröffentlichung: `flutter build apk` für Android. Für Web gemäß D-18 zunächst den **normalen Flutter-JavaScript-Build** (`flutter build web`) verwenden; Wasm erst bei TT-062 vergleichend messen und nur bei nachgewiesenem Nutzen sowie geprüfter Browserkompatibilität aktivieren. Web-Startzeit und Offline-Modus auf echten Geräten prüfen.
 
 CI soll `flutter analyze`, `flutter test`, Client-Builds und die Tests des TypeScript-Backends ausführen. Cloudflare-Free-Limits vor dem Livegang überprüfen.
 
