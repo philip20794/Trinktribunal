@@ -37,7 +37,7 @@ Modus 1 und 2 funktionieren **ohne Backend**, auf Android offline und im Web nac
 
 `Flutter-Clients ↔ WebSocket ↔ Worker ↔ Durable Object (Raum)`
 
-Spielphasen: `Lobby → Fallakte / Regelereignis → Zahlen → Antworten → Sortieren → Aufdecken → Auswerten → Richterwechsel`. Regelereignisse umgehen Zahlenvergabe und Sortierung; der aktive Regelbestand gilt bis Partiende.
+Spielphasen: `Lobby → Fallakte / Regelereignis → Zahlen → Antworten → Sortieren → Aufdecken → Auswerten → Richterwechsel`. Regelereignisse umgehen Zahlenvergabe und Sortierung; der aktive Regelbestand gilt bis Partiende. **D-07:** Ein ausdrücklich und autorisiert ohne Urteil abgeschlossener angezeigter Fall zählt einmal zum Fallziel; ohne Urteil werden weder Fehlpositionen noch Schlucke berechnet. Normaler Richterwechsel und nächste geplante Regel folgen einmal, keine Ersatzfrage derselben Fallnummer. Reiner Disconnect löst diesen Abschluss nicht aus.
 
 - Server ist die **maßgebliche Instanz** für Raumzustand, geheime Zahlen, erlaubte Aktionen und Ergebnisse. **Bei „Alle sind Richter“** bewertet er jede private Sortierung separat: persönliche Schluckzahl = Zahl der falsch platzierten Figuren, **keine zusätzliche Trinkpflicht für falsch platzierte Mitspieler**.
 - Zahlen werden nur dem betreffenden Spieler übermittelt; Antworten/Sortierungen im Modus „Alle sind Richter“ bleiben bis zur vorgesehenen Aufdeckung privat.
