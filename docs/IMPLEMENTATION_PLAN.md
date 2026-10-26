@@ -121,12 +121,12 @@ docs/{decisions,qa}/      # Entscheidungs- und lokale Prüfbelege
 
 ## 4. Phasen und lokal prüfbare Meilensteine
 
-Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren Modi unstartbar machen. Abhängigkeiten beziehen sich auf **abgeschlossene** Aufgaben. Unfertige Features erhalten sichtbare, ehrliche Platzhalter, keine tote Navigation. Maßgeblich sind Abhängigkeiten und Reihenfolge im Dokument, nicht allein die Nummer: Die nach Remoteabgleich ergänzte **TT-071** steht bewusst in M1, damit bereits vergebene IDs stabil bleiben.
+Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren Modi unstartbar machen. Abhängigkeiten beziehen sich auf **abgeschlossene** Aufgaben. Unfertige Features erhalten sichtbare, ehrliche Platzhalter, keine tote Navigation. Maßgeblich sind die Abhängigkeiten und die Reihenfolge im Dokument, nicht allein die Nummer. **TT-001 bis TT-070 sind sämtliche 70 definierten Implementierungsaufgaben**; nicht definierte IDs gehören nicht zu einem Meilenstein.
 
 | Meilenstein | Aufgaben | Lokal vorführbares Ergebnis / Gate |
 | --- | --- | --- |
 | M0 – sofort sichtbare Grundlage | TT-001–TT-003 | Start mit drei Varianten, Navigation, responsive Vorschau und Hot Reload; lokale Checks laufen. |
-| M1 – spielbarer Kartenmodus | TT-004–TT-012 sowie TT-071 | Echte Fragen, gültige Platzhalterbehandlung, Einstellungen, Regelereignisse, Fortschritt und Ende ohne Backend; 3-Fälle-Demo. |
+| M1 – spielbarer Kartenmodus | TT-004–TT-012 | Echte Fragen, gültige Platzhalterbehandlung, Einstellungen, Regelereignisse, Fortschritt und Ende ohne Backend; 3-Fälle-Demo. |
 | M2 – vollständiges gemeinsames Handy | TT-013–TT-026 | Menschliche editierbare Figuren, geheime Übergabe, Schlangenbank, korrektes Urteil, laufende Spieleränderungen. |
 | M3 – belastbarer lokaler Alltag | TT-027–TT-033 | Wiederaufnahme, Android-Debug-App und offlinefähiger Web-Release; integrierte lokale Regression. |
 | M4 – zwei Browser in einer Lobby | TT-034–TT-042 | Lokaler Worker, authentifizierte Räume, Join-Link/QR, Profile und Tabs synchron. |
@@ -182,7 +182,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** JSON-Schemas, semantischer Validator und deterministisches Asset-Manifest mit Formatversion, Sprache, IDs und SHA-256. `sync-assets.ps1` kopiert aus `data/`; `-Check` schreibt nichts und erkennt veraltete Kopien. Typisierte Dart-Loader liefern Lade-/Formatfehler.
 - **Dateien:** `packages/protocol/schemas/{questions,rules,catalog-manifest}.schema.json`, `scripts/{validate-data.mjs,sync-assets.ps1}`, `apps/client/lib/data/catalogs/`, `apps/client/assets/catalogs/`, `test/data/catalog_test.dart`, `pubspec.yaml`, `data/questions/README.md` (sprachabhängiger Connector).
 - **Abhängigkeiten:** TT-003.
-- **Akzeptanz:** Je 500 DE-/EN-Fragen und 25 DE-Regeln laden; ID-Parität wird geprüft. Fehlende Texte, ungenutzte Rollen, Selbst-/Fremdreferenzen und doppelte IDs scheitern. Unterschiedliche Skalen bei gleichem Text bleiben erlaubt. Kanonische JSON-Serialisierung fürs Manifest definiert.
+- **Akzeptanz:** Je 491 DE-/EN-Fragen und 25 DE-/EN-Regeln laden; ID-Parität wird geprüft. Fehlende Texte, ungenutzte Rollen, Selbst-/Fremdreferenzen und doppelte IDs scheitern. Unterschiedliche Skalen bei gleichem Text bleiben erlaubt. Kanonische JSON-Serialisierung fürs Manifest definiert.
 - **Auto:** Positive Bestandsprüfung plus negative Fixtures für jeden Validatorzweig; Assetdrift-Test.
 - **Manuell / lokal:** `D`, `C`; im Start-Diagnosebereich Kataloganzahlen/Sprachen anzeigen, ungültigen Fixture-Katalog mit hilfreichem Fehler laden.
 - **Abschluss:** G; nur Quelle editierbar, generierte Assetstrategie dokumentiert.
@@ -423,10 +423,10 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-028 – Sprachsystem und allgemeine Einstellungen
 
-- **Umsetzung:** D-11 entscheiden, alle UI-Texte in DE/EN-ARB; App-Sprache, reduzierte Bewegung und optionale Audioeinstellung getrennt von Partieoptionen. Vorhandene EN-Fragen einbinden; bis TT-061 EN-Partie nur ohne Trinkregelereignisse anbieten, fehlende Regeln transparent erklären. Keine extern geladenen Fonts oder Übersetzungsdienste.
+- **Umsetzung:** D-11 entscheiden, alle UI-Texte in DE/EN-ARB; App-Sprache, reduzierte Bewegung und optionale Audioeinstellung getrennt von Partieoptionen. Bereits vorhandene 491 EN-Fragen und 25 EN-Trinkregeln direkt einbinden; TT-061 bleibt für die inhaltliche Schlussredaktion zuständig. Keine extern geladenen Fonts oder Übersetzungsdienste.
 - **Dateien:** `apps/client/lib/l10n/`, `l10n.yaml`, `lib/features/settings/`, `lib/application/settings_controller.dart`, `test/features/settings_test.dart`.
 - **Abhängigkeiten:** TT-027.
-- **Akzeptanz:** Sprachwechsel erhält Partie/Regel-ID und Profil; EN-Fragen erscheinen korrekt, EN mit Regelanzahl >0 wird vor TT-061 begründet abgelehnt; lange Übersetzungen überlaufen nicht; Audio ist keine Bedienvoraussetzung.
+- **Akzeptanz:** Sprachwechsel erhält Partie/Regel-ID und Profil; EN-Fragen und EN-Trinkregeln sind bereits vor TT-061 nutzbar, sofern die automatischen Schema-/Paritätsprüfungen bestanden sind; lange Übersetzungen überlaufen nicht; Audio ist keine Bedienvoraussetzung.
 - **Auto:** ARB-Schlüssel-/Platzhalterparität, persistierte Sprache, Wechsel während aktiver Partie.
 - **Manuell / lokal:** `W`, beide UI-Sprachen und 200 % Text; `C`.
 - **Abschluss:** G; fehlende Inhaltsübersetzungen bleiben als TT-061 offen sichtbar.
@@ -759,9 +759,9 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Manuell / lokal:** `W` Galerie und `MP` Live-Editor; `C`, `B`, Offlinecache mit finalen Assets.
 - **Abschluss:** G; dokumentierte vollständige Auswahlliste statt unbestimmter „Avatar fertig“-Behauptung.
 
-#### TT-061 – Englische Regeln ergänzen und Fragenübersetzungen prüfen
+#### TT-061 – Deutsche und englische Inhalte redaktionell fertig prüfen
 
-- **Umsetzung:** DE-Inhalte nach TT-005/Provenienzstand finalisieren; vorhandene 500 EN-Fragen/Skalen gegen DE prüfen und nur erforderliche Korrekturen vornehmen. Fehlende 25 EN-Regeln übersetzen; IDs, Rollen und Konflikte sprachübergreifend erhalten. D-11 vollständig anwenden, EN nun mit Regeln freischalten; Sprachwechsel während Raumspiel ändert nicht Host-Inhaltssprache.
+- **Umsetzung:** DE-Inhalte nach TT-005/Provenienzstand finalisieren; vorhandene 491 EN-Fragen/Skalen und 25 EN-Regeln gegen DE prüfen und nur nötige redaktionelle Korrekturen vornehmen. IDs, Rollen und Ausschlüsse sprachübergreifend erhalten. D-11 vollständig anwenden; EN-Fragen und EN-Regeln sind seit TT-028 nutzbar, TT-061 dokumentiert ihre redaktionelle Freigabe. Sprachwechsel während Raumspiel ändert nicht Host-Inhaltssprache.
 - **Dateien:** `data/questions/top-ten/en.json`, `data/rules/en.json`, DE-Kataloge bei Reviewkorrekturen, `scripts/validate-data.mjs`, `docs/qa/content-review.md`.
 - **Abhängigkeiten:** TT-005, TT-028; unabhängig von Backend und finaler Grafik ausführbar.
 - **Akzeptanz:** Für jeden freigegebenen DE-Eintrag eine vollständige EN-Fassung; keine fehlenden Skalen/Platzhalter; kein deutschsprachiger Text als angeblich englische Karte. Falls Ersatzkatalog nötig: gleiche vollständige Sprachabdeckung des Ersatzumfangs.
@@ -897,7 +897,7 @@ Sparmaßnahmen: ein DO/Raum, genau ein Socket/Spieler, Hibernation, IDs/Hashes s
 | Lokale DO-Alarme nach Hot Reload | Wrangler für Alarmtests nach Änderungen neu starten; dokumentiertes Plattformproblem, nicht durch sofortige Cloudtests umgehen. [Cloudflare bekannte Probleme](https://developers.cloudflare.com/durable-objects/platform/known-issues/). |
 | Build-/Paketdrift auf Windows | Versionen und Lockfiles pinnen, `npm.cmd ci`, lokale Gates; keine fortlaufenden unkontrollierten Upgrades. |
 | Freies Kontingent/Room-Code-Spam | frühe Limits, kurze Lebensdauer, kein Persistieren ungültiger Joins; TT-059/063 benennen Grenze rein raumlokaler Limits. |
-| Unvollständige Übersetzungen, unklare Nutzungsrechte | TT-005/061/065; lokale technische Fertigstellung und Veröffentlichungsfähigkeit getrennt ausweisen. |
+| Redaktionell ungeprüfte Übersetzungen, unklare Nutzungsrechte | TT-005/061/065; vorhandene DE/EN-Kataloge prüfen, lokale technische Fertigstellung und Veröffentlichungsfähigkeit getrennt ausweisen. |
 
 ## 7. Abdeckungsmatrix gegen den Bestand und den Auftrag
 
@@ -907,7 +907,7 @@ Sparmaßnahmen: ein DO/Raum, genau ein Socket/Spieler, Hibernation, IDs/Hashes s
 | GAME_DESIGN: 50/7/1,5, ohne Wiederholung innerhalb der Partie, 6h-Nutzungscounter über Partien, X, eingefrorene Optionen, Ereignisse ohne Rotation | TT-003, TT-006–011, TT-027, TT-034, TT-044–046, TT-050/057 | Zählung, Zwischenraumverteilung und 6h-Priorisierung durch D-01 entschieden; Grenzwerte D-02 noch offen. |
 | GAME_DESIGN: Gruppen-/Profilwechsel, Neustart/Ende | TT-015/025/027/041/053/057 | aktuelle Profile von eingefrorener Teilnahme getrennt. |
 | Regelformat: Rollen, einmalige ID-Bindung, differentFrom, beidseitige excludes, Deaktivieren, Übersetzungen | TT-004/005/008/025/044/053/061 | D-03/04 bereits entschieden; D-13 bleibt zu klären. |
-| Fragenformat: 500 Aufgaben, IDs/Sprachen, grün/connector/rot ohne feste Zahlen | TT-004/005/007/009/061/065 | Skalenrichtung und Inhaltsrechte gesondert geprüft. |
+| Fragenformat: 491 Aufgaben je Sprache (9 Materialfragen entfernt), IDs/Sprachen, grün/connector/rot ohne feste Zahlen | TT-004/005/007/009/061/065 | Skalenrichtung und Inhaltsrechte gesondert geprüft. |
 | USER_FLOWS: Start, eigener Avatar, allgemeine Einstellungen | TT-001/013/015/028 | vor Backend erreichbar. |
 | USER_FLOWS: Kartenanzahl, Slider, Fallakte, optionales manuelles Urteil | TT-006/009–012 | keine Namenpflicht, manuelle Wertung sichtbar gekennzeichnet. |
 | USER_FLOWS: Spielerliste, Reihenfolge, zufällige Avatare, Geheimzahlübergabe | TT-014–019/025 | Richter übersprungen, Zahl erst bewusst öffnen. |
