@@ -1,6 +1,6 @@
 # Fortschritt und Übergabe
 
-Stand: 26.10.2026. Geprüfte Planungsbasis nach Remoteabgleich: `e7b420e` (ursprünglich lokal `66eb976`). [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md).
+Stand: 26.10.2026. Zuletzt geprüfte Git-Basis nach vollständigem KI-Abgleich: `e95d541` auf `main`, mit `origin/main` synchron. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Abgleich und Entwicklungsbereitschaft](qa/PLAN_RECONCILIATION.md).
 
 **Aktuell: Fachentscheidungen D-01 bis D-18 vollständig für die erste Version festgelegt, Planung abgeschlossen, App-Entwicklung noch nicht begonnen.** Kein Client-/Servercode, kein neuer Datenkatalog, keine Start-/Testskripte implementiert. Keine GitHub Actions aktiviert, keine Cloudflare-Deployments ausgeführt. Die nächste Entwicklungsaufgabe ist **TT-001** und benötigt einen gesonderten Umsetzungsauftrag.
 
@@ -24,6 +24,7 @@ Statuswechsel mit Datum, Beleg und gegebenenfalls Blocker-ID erfassen. Bei einer
 | PLAN-001 | ERLEDIGT | README, sämtliche fünf Bestandsdokumente, beide Datenformatdokumente und die damaligen Datenkataloge gelesen. 70 Aufgaben mit Abhängigkeiten, Akzeptanz, Tests, lokaler Prüfung und Abschluss; drei Planungsdokumente plus README-Verweise erstellt. Abdeckungsmatrix und technische Quellen stehen im Plan. Dokument-/Datenprüfungen siehe unten. |
 | PLAN-002 | ERLEDIGT | Alle im ersten Plan vorgeschlagenen technischen und fachlichen D-Entscheidungen D-01 bis D-18 verbindlich konsolidiert, fehlende Detailbeschlüsse dokumentiert, D-01-Slot-Widerspruch aufgelöst, D-05/07-Sonderfälle spezifiziert, README und Fachtexte abgeglichen. Rechtsnachweise bleiben externes Release-Gate, nicht offene Spielfachentscheidung. Nur Dokumentation; keine App-Tests/Builds ausgeführt. |
 | PLAN-003 | ERLEDIGT | Dokumentationsabgleich abgeschlossen: D-12-Frist in D-16 aktualisiert, DE/EN-Skalen-Bindewort erläutert, Reaktivierung derselben lokalen ID von Multiplayer-Neu-Join nach Tokenwiderruf abgegrenzt; Implementierungsaufgaben und Tests entsprechend präzisiert. Keine App implementiert und kein Release erfolgt. |
+| PLAN-004 | ERLEDIGT | Neueste KI-Commits bis `e95d541` mit allen 17 Entscheidungsdokumenten, vier Katalogen und 70 Aufgaben abgeglichen; verbliebene Zustands-/Resume-/Prüfablaufwidersprüche korrigiert, gemeinsame Alarmverwaltung und lokale atomare Historie konkretisiert. Flutter Doctor erfolgreich: Chrome und Android-Toolchain vorhanden; ChromeDriver erst TT-012, Androidgerät erst TT-032 nötig. [Prüfbeleg](qa/PLAN_RECONCILIATION.md). Keine App implementiert. |
 
 Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IMPLEMENTATION_PLAN.md` ermitteln; keinen erfundenen oder selbstreferenziellen Commit-Hash eintragen. Ein Gitpush ist kein Anwendungsrelease.
 
@@ -153,6 +154,8 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 
 **Nächster Umsetzungsauftrag: TT-001.** Kein Fachfreigabe-Halt mehr. Nicht erledigte Akzeptanz/Tests und tatsächliche technische Blocker weiterhin ehrlich im Aufgabenregister dokumentieren.
 
+Der aktuelle [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) ersetzt die historische Bestandsaufnahme unten als Aussage über den heutigen Entwicklungsstand. Alle 70 TT-Aufgaben bleiben OFFEN; der erfolgreiche Umgebungscheck ist kein bestandener App-Build.
+
 ## Prüfbeleg PLAN-001
 
 Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001** (damals 500 Fragen je Sprache, vor der Materialbereinigung/Planaktualisierung; inzwischen 491/491 Fragen und 25/25 Regeln). Seit diesem historischen Ausgangsstand wurden schließlich D-01 bis D-18 einschließlich der vollständigen D-05-/D-07-Spielmechanik fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
@@ -175,9 +178,9 @@ Am 26.10.2026 lokal durchgeführt:
 Naechste Aufgabe: TT-001
 Voraussetzung: ausdruecklicher Auftrag zur Implementierung
 Ziel: sichtbare Flutter-Web-App mit drei Einstiegen, Profil/Einstellungen und Zuruecknavigation
-Zuerst: Gitstatus, Workflow und TT-001 lesen; Flutter-Version/doctor pruefen
+Zuerst: Gitstatus, PLAN-004-Pruefbeleg, Workflow und TT-001 lesen; bestaetigte Toolversionen verwenden
 Danach: Flutter-Geruest fuer Android/Web erstellen, Riverpod, einfache navigierbare Screens
-Lokaler Nachweis: Chrome 127.0.0.1:7357, 360x800 und 1440x900, Hot Reload
+Lokaler Nachweis: direkter Flutter-Start in Chrome 127.0.0.1:7357, 360x800 und 1440x900, Hot Reload; W-Skript erst TT-002
 Automatisch: flutter analyze + App-Shell-Widgettest
 Nicht vorziehen: Backend, komplette Spiellogik, Deployments oder GitHub Actions
 Fremde Dateien: vorhandene .idea/ unveraendert lassen

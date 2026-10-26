@@ -43,6 +43,7 @@ Der fachlich beschlossene Entwicklungsplan ist dokumentiert; die App wurde noch 
 - [Entwicklungsplan mit 70 Aufgaben und neun Meilensteinen](docs/IMPLEMENTATION_PLAN.md)
 - [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)
 - [Fortschritt, offene Entscheidungen und Übergabe](docs/PROGRESS.md)
+- [Abgleich der KI-Änderungen und geprüfte lokale Entwicklungsumgebung](docs/qa/PLAN_RECONCILIATION.md)
 - [Beschluss zur Spielverteilung und 6-Stunden-Ziehhistorie](docs/decisions/D-01-game-schedule-and-six-hour-history.md)
 - [Beschluss zu 3–20 Spielern, Schiebereglern und Namenslängen](docs/decisions/D-02-config-bounds.md)
 - [Beschluss zur konto-losen, dauerhaften Multiplayer-Wiederverbindung](docs/decisions/D-16-persistent-accountless-rejoin.md)
