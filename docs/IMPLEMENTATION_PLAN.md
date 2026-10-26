@@ -234,7 +234,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Abhängigkeiten:** TT-006, TT-007, TT-008.
 - **Akzeptanz:** Vom Start in höchstens drei Schritten zur ersten echten Frage; Inhalt auch mit langem Text lesbar; X/Kartenbedarf eindeutig.
 - **Auto:** Standardwerte, Slidergrenzen, invalider Start, Ladefehler und erste Karte als Widgettests.
-- **Manuell / lokal:** `W`, Handy-/Desktopgröße; `C`; Start mit drei und zwölf Personen.
+- **Manuell / lokal:** `W`, Handy-/Desktopgröße; `C`; Start mit drei und zwanzig Personen, N=21 sichtbar abweisen.
 - **Abschluss:** G; erster echter lokaler Spielausschnitt ohne Netzwerk.
 
 #### TT-010 – Kartenpartie bis zum Ende und Neustart
@@ -334,18 +334,18 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** Nach Übergabe Frage und Skala sichtbar halten, mündliche Antworten erklären, Richter oberhalb/außerhalb der Bank. Aktion zur Sortierung erst nach abgeschlossener Übergabe.
 - **Dateien:** `apps/client/lib/features/case_file/answer_screen.dart`, `lib/design/judge_header.dart`, `test/features/answer_phase_test.dart`.
 - **Abhängigkeiten:** TT-018, TT-013.
-- **Akzeptanz:** Keine Zahl fremder Personen sichtbar; Richter-ID unverändert; langer Fragetext und sechs/zwölf Personen passen mit sinnvoller Scrollaufteilung.
+- **Akzeptanz:** Keine Zahl fremder Personen sichtbar; Richter-ID unverändert; langer Fragetext und sechs/zwanzig Personen passen mit sinnvoller Scrollaufteilung.
 - **Auto:** Zulässige Transitionen und Rollen-/Geheimnisdarstellung.
 - **Manuell / lokal:** `W`, `C`; kompletter Weg bis Antwortphase auf 360 px.
 - **Abschluss:** G; Sortieransicht kann anschließend unabhängig ergänzt werden.
 
 #### TT-020 – Schlangenbank mit stabiler Positionsabbildung
 
-- **Umsetzung:** Lineare Ordnungs-IDs auf 2/3 Spalten abbilden; ungerade Reihen rückwärts, Positionsnummern dauerhaft sichtbar. Richter normal ausgeschlossen. Alle-Richter-Layout als reine Komponentenkonfiguration vorbereiten.
+- **Umsetzung:** Lineare Ordnungs-IDs auf 2/3 Spalten abbilden; ungerade Reihen rückwärts, Positionsnummern dauerhaft sichtbar. Richter normal ausgeschlossen. Alle-Richter-Layout als reine Komponentenkonfiguration vorbereiten. Bei 20 Spielern scrollbare Bank mit lesbaren Namen/Touchzielen und später anschließbarem Auto-Scroll.
 - **Dateien:** `apps/client/lib/features/bench/{snake_layout,bench_view}.dart`, `test/features/snake_layout_test.dart`.
 - **Abhängigkeiten:** TT-014, TT-019.
 - **Akzeptanz:** Darstellung 1→2→3 / 6←5←4 / 7→8→9; bei Resize bleibt logische Ordnung gleich; letzte unvollständige Reihe korrekt. Namen lesbar, Bank scrollbar ohne verlorene Aktionen.
-- **Auto:** Index↔Position-Roundtrips für 2–12 Figuren, 2/3 Spalten, unvollständige Reihen und Resize.
+- **Auto:** Index↔Position-Roundtrips für 2–20 Figuren, 2/3 Spalten, unvollständige Reihen, Scrollen und Resize.
 - **Manuell / lokal:** `W`, Galerie/Spiel auf Handy und Desktop; `C`.
 - **Abschluss:** G; Layout hat noch keine eigenen Spielregeln.
 
@@ -518,8 +518,8 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** Codeadressierung nach D-14, atomare Erstellung, Join mit Profilvalidierung und Raumkapazität. Zufällige stabile playerId und kryptografisches Resume-Token nur privat ausgeben; Hash/HMAC-Verifier serverseitig. Wiederaufnahme bestehender Identität gemäß D-16 ohne neuen Spieler, Widerruf beim Verlassen/Entfernen. Minimale Raum-/Join-Ratenlimits schon jetzt.
 - **Dateien:** `apps/server/src/{http/rooms.ts,room/room.ts,security/tokens.ts}`, `test/room/create_join.test.ts`.
 - **Abhängigkeiten:** TT-036.
-- **Akzeptanz:** Kollision überschreibt keinen Raum; voller/abgelaufener Raum verständlich abgelehnt; fremder Code ohne Token verleiht keine Hostrechte; ungültiger Join erzeugt keine persistierte Partie.
-- **Auto:** Gleichzeitige Creates/Joins, Codekollision, Tokenentropie/-Verifier, Namens-/Kapazitäts-/Ratenlimits und keine Token in Responses an andere Spieler.
+- **Akzeptanz:** Kollision überschreibt keinen Raum; ab 20 aktiven Spielern wird ein 21. Beitritt serverseitig verständlich abgelehnt, bis ein Platz durch wirksamen Leave frei ist; abgelaufener Raum verständlich abgelehnt; fremder Code ohne Token verleiht keine Hostrechte; ungültiger Join erzeugt keine persistierte Partie.
+- **Auto:** Gleichzeitige Creates/Joins, Codekollision, Tokenentropie/-Verifier, N=3/20/21, 1/24/25 Unicode-Grapheme in Namen, Namens-/Kapazitäts-/Ratenlimits und keine Token in Responses an andere Spieler.
 - **Manuell / lokal:** `S`; über lokalen HTTP-Test zwei synthetische Teilnehmer beitreten, öffentliche Antwort prüfen.
 - **Abschluss:** G; keine UI-Geheimhaltung als Ersatz für Autorisierung.
 
@@ -682,7 +682,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** Pending roster mit Join/Leave/Host-Entfernen/Reorder; Teilnahme eines Neuzugangs erst nächster Fall, davor nur öffentliche Ansicht. Aktueller Fall und Zahlen eingefroren, sofortige Profilupdates separat. Regeln neu binden/deaktivieren.
 - **Dateien:** `apps/server/src/room/roster.ts`, `src/domain/roster_changes.ts`, `apps/client/lib/features/multiplayer/roster_management.dart`, `test/room/roster_changes.test.ts` (Server).
 - **Abhängigkeiten:** TT-052, TT-025.
-- **Akzeptanz:** X erst nächster Fall neu; ausscheidender Richter nach D-06; entzogene Sitzung bekommt keine weiteren privaten Daten. Disconnect allein ist kein Leave. Unfertiger Fall bleibt wartend oder wird nach D-07 explizit abgebrochen.
+- **Akzeptanz:** X erst nächster Fall neu; maximal 20 aktive Teilnehmer; unter drei wirksamen Spielern pausiert der nächste Fall mit verständlichem Zustand. Ausscheidender Richter nach D-06; entzogene Sitzung bekommt keine weiteren privaten Daten. Disconnect allein ist kein Leave. Unfertiger Fall bleibt wartend oder wird nach D-07 explizit abgebrochen.
 - **Auto:** Beitritt/Austritt in jeder Phase beider Modi, Regelrollen-Mangel, Richterentfernung+Reorder, Min/Max, Entzug von Tokens/Socketrechten.
 - **Manuell / lokal:** `MP`, vierter Browser während Sortierung, einen Spieler entfernen, nächste Grenze kontrollieren; `C`, `S`, Parität.
 - **Abschluss:** G; Änderungen funktionieren ohne rückwirkende Umschreibung des Urteils.
@@ -729,7 +729,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-058 – Gesamten Multiplayer mit Störungen durchspielen
 
-- **Umsetzung:** Lokale Runtime-Langtests beider Modi mit 8 Teilnehmern, 50 Fällen/7 Ereignissen, wechselnden Profilen und Personen; Mehrbrowser-Smokes für reale UI. Getrennte Räume dürfen niemals Daten austauschen.
+- **Umsetzung:** Lokale Runtime-Langtests beider Modi mit 8 Teilnehmern, 50 Fällen/7 Ereignissen, wechselnden Profilen und Personen; zusätzlich D-02-Kapazitätstest mit 20 angemeldeten Teilnehmern und abgelehntem 21. Join sowie 20 unabhängigen Ordnungen bei „Alle sind Richter“. Mehrbrowser-Smokes für reale UI. Getrennte Räume dürfen niemals Daten austauschen.
 - **Dateien:** `apps/server/test/integration/full_game.test.ts`, `apps/client/integration_test/multiplayer_game_test.dart`, `scripts/test-multiplayer.ps1`, `docs/qa/M6.md`.
 - **Abhängigkeiten:** TT-057.
 - **Akzeptanz:** Beide Modi beenden nach korrekter Fallzahl; alle automatischen Orakel prüfen private Projektionen, Idempotenz und Ergebnisse; Störung lässt sich ohne neue Cloudressource beheben.
@@ -774,7 +774,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** D-18 anhand normalem Webrelease und Wasm-Build entscheiden; Abhängigkeiten/Renderer/Fallback/Cache/Headers prüfen. Kleine Profilselektoren, Avatar-Repaintgrenzen und Lazy-Loading nur wo messbar sinnvoll; Offlinepaket vollständig halten.
 - **Dateien:** `scripts/build-web.ps1`, `apps/client/lib/design/`, `apps/client/web/`, `docs/qa/performance.md`, `docs/decisions/008-web-renderer.md`.
 - **Abhängigkeiten:** TT-060, TT-061, TT-031, TT-032, TT-058.
-- **Akzeptanz:** Messgerät/Browser/Netzprofil dokumentiert. Vorläufige Budgets: bedienbar ≤5 s kalt bei festgehaltenem 10-Mbit/s-Profil, ≤2 s warm; p95 Sortierframe ≤32 ms am gewählten Mittelklassegerät; kein stetiges Speicherwachstum über 50 Fälle. Abweichung beheben oder begründet neu entscheiden.
+- **Akzeptanz:** Messgerät/Browser/Netzprofil dokumentiert. Vorläufige Budgets: bedienbar ≤5 s kalt bei festgehaltenem 10-Mbit/s-Profil, ≤2 s warm; p95 Sortierframe ≤32 ms am gewählten Mittelklassegerät; kein stetiges Speicherwachstum über 50 Fälle. D-02-Stresstest mit 20 gleichzeitig sichtbaren Figuren, Scroll-/Drag-Auto-Scroll und 200 % Textskalierung auf mobil und Desktop. Abweichung beheben oder begründet neu entscheiden.
 - **Auto:** Beide Builds kompilieren oder Wasm-Ablehnung mit reproduzierbarem Befund; Bundle-/Precachegrößen und Profil-Smokes.
 - **Manuell / lokal:** `B`, Profilemodus, CPU-/Netzdrosselung; Chrome/Edge und verfügbare Androidbrowser, JS-Fallback explizit testen.
 - **Abschluss:** G; gemessener Rendererentscheid, keine pauschale Wasm-Pflicht oder Geschwindigkeitsschätzung als Ergebnis.
