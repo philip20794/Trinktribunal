@@ -1,0 +1,32 @@
+{
+  "fixtureId": "TT003-PAUSE-D02",
+  "decisionRefs": [
+    "D-02",
+    "D-07"
+  ],
+  "operation": "applyRosterBoundary",
+  "input": {
+    "caseCount": 2,
+    "activeBefore": [
+      "A",
+      "B",
+      "C"
+    ],
+    "departing": [
+      "C"
+    ],
+    "slotAfterCase": 2,
+    "slotStatusBefore": "pending"
+  },
+  "expected": {
+    "activeAfter": [
+      "A",
+      "B"
+    ],
+    "phase": "paused",
+    "error": "INSUFFICIENT_PLAYERS",
+    "slotStatusAfter": "pending",
+    "drawNextCase": false
+  },
+  "notes": "Less than three players pauses before a rule event or the next case."
+}
