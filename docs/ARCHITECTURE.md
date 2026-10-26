@@ -19,6 +19,7 @@ apps/
 packages/
   protocol/           Plattformneutrale JSON-Schemas und Testfälle
 data/questions/       Fragenkatalog (bestehend)
+data/rules/           Regelkataloge und Formatdokumentation
 docs/                 Architektur und Optimierung
 ```
 
