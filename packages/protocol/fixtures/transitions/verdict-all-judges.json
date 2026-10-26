@@ -1,0 +1,59 @@
+{
+  "fixtureId": "TT003-VERDICT-ALL-JUDGES",
+  "decisionRefs": [
+    "D-02",
+    "D-09"
+  ],
+  "operation": "evaluateAllJudges",
+  "input": {
+    "trueAscendingIds": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "privateProposals": {
+      "A": [
+        "B",
+        "A",
+        "C",
+        "D"
+      ],
+      "B": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "C": [
+        "B",
+        "A",
+        "D",
+        "C"
+      ],
+      "D": [
+        "A",
+        "B",
+        "D",
+        "C"
+      ]
+    }
+  },
+  "expected": {
+    "privateErrors": {
+      "A": 2,
+      "B": 0,
+      "C": 4,
+      "D": 2
+    },
+    "privateSipCounts": {
+      "A": 2,
+      "B": 0,
+      "C": 4,
+      "D": 2
+    },
+    "additionalSipsFromOtherPlayers": 0,
+    "publicResultContainsPersonalCounts": false
+  },
+  "notes": "Each player receives only their own result; host sees no other personal counters."
+}
