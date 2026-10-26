@@ -74,6 +74,18 @@ Beispiel für den **gespeicherten Zustand einer aktiven Regel** (nicht Teil des 
 }
 ```
 
+## Bestätigte Konflikte und Sanktionen (D-04, 26.10.2026)
+
+Es gelten genau zwei gegenseitige Ausschlusspaare:
+- `left_hand_drinking` ↔ `two_hands_drinking` (linke Hand versus beide Hände).
+- `two_hands_drinking` ↔ `touch_player_while_drinking` (beide Hände am Glas versus Mitspieler mit einer Hand berühren).
+
+Die beiden Katalogdateien enthalten dieselben reziproken `excludes`. `imaginary_kobold` und `imaginary_fly` dürfen gleichzeitig aktiv sein. Andere Kombinationen sind durch D-04 nicht ausgeschlossen.
+
+Ein eigenständiger Verstoß gegen eine aktive Zusatzregel hat **genau einen Strafschluck** zur Folge, auch wenn die Regel keinen eigenen Straftext enthält. Die Gruppe erkennt und ahndet diese Verstöße manuell; App und Server berechnen nur die eigentliche Fallwertung. **Keine Strafketten:** Die Ausführung eines Strafschlucks kann keine zusätzlichen Strafschlucke auslösen. Unvermeidbare Spielhandlungen wie das notwendige Vorlesen einer Frage oder Regel und das reguläre Ansagen/Aufdecken geheimer Zahlen sind von Sprachverboten bzw. regelbezogenen Ansagestrafen ausgenommen. Sonstige freiwillige Äußerungen bleiben den aktiven Regeln unterworfen.
+
+Diese globalen Festlegungen sind Teil der Spielregeln, nicht zusätzliche Einträge in den 25 Regel-JSONs. Siehe [Beschluss D-04](../../docs/decisions/D-04-rule-conflicts.md).
+
 ## Validierung
 
 - `id` muss im Katalog eindeutig und in allen Sprachen identisch sein.
@@ -84,6 +96,6 @@ Beispiel für den **gespeicherten Zustand einer aktiven Regel** (nicht Teil des 
 - Text, Platzhalter und Rollen-IDs müssen über Sprachversionen konsistent bleiben; grammatische Formulierungen dürfen sich unterscheiden.
 - Gibt es nicht genügend geeignete Spieler oder keine kompatible Regel mehr, wird die Regel nicht erzwungen.
 
-**Offener Sonderfall:** In Modus 1 (Handy + physische Karten) wird keine Spielerliste erfasst. Personenbezogene Regeln benötigen dort eine manuelle Auswahl am Tisch oder müssen aus der automatischen Auslosung ausgeschlossen werden. Die konkrete Bedienung ist noch festzulegen.
+**Festlegung D-03:** Im Modus 1 (Handy + physische Karten) gibt es keine Spielerliste. Die drei personenbezogenen Regeln werden dort aus der automatischen Auslosung ausgeschlossen; die 22 Regeln ohne Spielerrollen bleiben verfügbar.
 
 Siehe auch [Spielkonzept](../../docs/GAME_DESIGN.md) und [Screens und Nutzerabläufe](../../docs/USER_FLOWS.md).
