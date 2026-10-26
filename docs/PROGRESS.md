@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Geprüfte Planungsbasis nach Remoteabgleich: `e7b420e` (ursprünglich lokal `66eb976`). [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell im Featurebranch task/TT-001-flutter-shell: Planung abgeschlossen; TT-001 IN ARBEIT.** Flutter-Dart-App-Shell, drei navigierbare Einstiege, Profil- und Einstellungsansichten, Web-Einstieg und Widgettests sind angelegt. Android-Gerüst, Flutter-Metadaten, Lockfile, lokale SDK-Prüfung und sämtliche Ausführungstests stehen aus. TT-001 ist nicht erledigt. Keine GitHub Actions oder Cloudflare-Deployments.
+**Aktuell im Featurebranch `task/TT-001-flutter-shell`: TT-001 IN ARBEIT, TT-002 vorbereitend IN ARBEIT (Abhängigkeit TT-001 noch offen).** App-Shell, drei navigierbare Einstiege, Profil/Einstellungen, Widgettests, Web-Einstieg und Windows-Skripte sind angelegt. Android-Gerüst, Flutter-Metadaten, Lockfile sowie Flutter-/PowerShell-Prüfungen stehen weiterhin aus. **0/70 Aufgaben vollständig abgenommen.** Keine GitHub Actions oder Cloudflare-Deployments.
 
 ## Statusregeln
 
@@ -38,6 +38,10 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 **Nicht ausgeführt:** Diese Arbeitsumgebung besitzt weder Flutter noch Dart und kann das private Repository nicht lokal klonen. Deshalb keine Build-/Test-/Browser-Ergebnisse behauptet. Das Repository wurde ausschließlich über den verbundenen GitHub-Zugang auf dem Featurebranch verändert.
 
 
+**TT-002 – VORBEREITET / IN ARBEIT (26.10.2026).** Im selben Featurebranch angelegt: `scripts/dev-client.ps1` (konfigurierbarer Chrome/Edge/Webserver-Start mit Portprüfung, SDK-Vorprüfung und Exitcodes), `scripts/check.ps1` (`-Scope Docs|Client|All`, Dart-Format, Flutter-Analyse/Tests, transparenter Server-Skip), `scripts/check-docs.mjs` (Markdown-Links, TT-001 bis TT-070, Plan/Statusparität) und `scripts/tests/check-docs.test.mjs` (vier positive/negative Node-Fälle). Die Dateien wurden direkt in GitHub gespeichert. *Abhängigkeit TT-001 ist noch unerfüllt; TT-002 daher nicht abgeschlossen.*
+
+**Isolierter Node-Test in dieser Arbeitsumgebung:** `node --check scripts/check-docs.mjs` → Exitcode 0; `node --test scripts/tests/check-docs.test.mjs` → 4/4 Tests grün, Exitcode 0. Testgegenstand war eine lokale äquivalente Skriptkopie mit synthetischen 70-Aufgaben-Fixtures, **kein Checkout des privaten Repositories**. Vollständige Repo-Prüfung, PowerShell- und Flutter-Testausführung sowie manuelle Windows-Port-/PATH-Fälle weiterhin **nicht ausgeführt**. Beide Tasks müssen auf Windows abgenommen werden, ehe TT-003 planmäßig begonnen wird.
+
 ## Meilensteine
 
 | Meilenstein | Aufgaben | Status | Lokales Demo-Gate / späterer Beleg |
@@ -61,7 +65,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | ID | Aufgabe | Status | Commit / Beleg / Blocker |
 | --- | --- | --- | --- |
 | TT-001 | Flutter-Web-App mit drei Einstiegen starten | IN ARBEIT | Featurebranch task/TT-001-flutter-shell; Quellen vorhanden, Flutter-Gerüst und lokale Tests offen |
-| TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | OFFEN | — |
+| TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | IN ARBEIT | Skripte und vier Node-Fixturetests im Branch; TT-001-Abhängigkeit und Windows-Abnahme offen |
 | TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | OFFEN | — |
 | TT-004 | Beide Katalogformate validieren und bündeln | OFFEN | — |
 | TT-005 | Redaktionelle Konflikte inventarisieren und entscheiden | OFFEN | — |
