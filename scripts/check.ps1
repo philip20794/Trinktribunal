@@ -17,7 +17,7 @@ function Invoke-Checked {
     Write-Host "> $Command $($Arguments -join ' ')"
     & $Command @Arguments
     if ($LASTEXITCODE -ne 0) {
-        Write-Error "Prüfung fehlgeschlagen (Exitcode $LASTEXITCODE): $Command"
+        [Console]::Error.WriteLine("Prüfung fehlgeschlagen (Exitcode $LASTEXITCODE): $Command")
         exit $LASTEXITCODE
     }
 }
@@ -28,6 +28,7 @@ if ($Scope -in @('Docs', 'All')) {
         exit 1
     }
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'check-docs.mjs'))
+    Invoke-Checked 'node' @('--test', (Join-Path $PSScriptRoot 'tests/check-docs.test.mjs'))
 }
 
 if ($Scope -in @('Client', 'All')) {
