@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Zustand:** Es gibt ausschließlich Dokumentation und drei Datenkataloge: Fragen DE/EN mit je 500 Einträgen und 25 DE-Trinkregeln. Die nachfolgend beschriebenen Appverzeichnisse, Skripte und Tests werden erst durch die angegebenen Aufgaben erstellt. Dieser Planungsauftrag installiert nichts, implementiert keine Anwendung und führt weder GitHub Actions noch Cloudflare-Deployments aus.
+**Aktueller Zustand:** Es gibt ausschließlich Dokumentation und vier Datenkataloge: Fragen DE/EN mit je 491 Einträgen und Trinkregeln DE/EN mit je 25 Einträgen. Die nachfolgend beschriebenen Appverzeichnisse, Skripte und Tests werden erst durch die angegebenen Aufgaben erstellt. Dieser Planungsauftrag installiert nichts, implementiert keine Anwendung und führt weder GitHub Actions noch Cloudflare-Deployments aus.
 
 Ziel: Nach TT-001 ist ein Browserfenster jederzeit mit dem aktuellen Stand bedienbar. Jeder kleine Entwicklungsschritt erhält diesen Zustand. Alle Prüfungen und Builds laufen auf dem eigenen PC; eine spätere CI darf dieselben Skripte aufrufen, ist aber keine Voraussetzung.
 
@@ -319,13 +319,15 @@ Bis die geplanten Skripte vorhanden sind, sind folgende reine Bestandsprüfungen
 $questionsCatalog = Get-Content -Raw -Encoding utf8 .\data\questions\top-ten\de.json | ConvertFrom-Json
 $englishQuestionsCatalog = Get-Content -Raw -Encoding utf8 .\data\questions\top-ten\en.json | ConvertFrom-Json
 $rulesCatalog = Get-Content -Raw -Encoding utf8 .\data\rules\de.json | ConvertFrom-Json
+$englishRulesCatalog = Get-Content -Raw -Encoding utf8 .\data\rules\en.json | ConvertFrom-Json
 $questionsCatalog.questions.Count
 $englishQuestionsCatalog.questions.Count
 $rulesCatalog.rules.Count
+$englishRulesCatalog.rules.Count
 git diff --check
 ```
 
-Erwarteter jetziger Umfang: 500/500/25. Ein erfolgreicher Parse ersetzt nicht die semantische Validierung von TT-004.
+Erwarteter jetziger Umfang: 491/491 Fragen und 25/25 Regeln (DE/EN). Ein erfolgreicher Parse ersetzt nicht die semantische Validierung von TT-004.
 
 ## 7. Lokale Builds und Offlineprüfung
 
