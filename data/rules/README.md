@@ -1,6 +1,6 @@
 # Trinkregeln: JSON-Format
 
-Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepflegt: zuerst `de.json`, später z. B. `en.json`. **Jede neue Regel muss diesem Format entsprechen.** Die Beispiele hier erläutern das Schema; sie sind noch kein fertiger Regelkatalog.
+Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepflegt. `de.json` und `en.json` enthalten jeweils dieselben 25 Regeln mit identischen IDs, Platzhaltern, Auswahlregeln und Ausschlüssen. **Jede neue Regel muss diesem Format entsprechen.** Die Beispiele hier erläutern das Schema und sind keine zusätzlichen Regeln.
 
 ## Struktur
 
