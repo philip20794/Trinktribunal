@@ -1,0 +1,24 @@
+{
+  "fixtureId": "TT003-RULE-SLOT-NOMATCH",
+  "decisionRefs": [
+    "D-01",
+    "D-04"
+  ],
+  "operation": "skipRuleSlotWithoutEligibleRule",
+  "input": {
+    "completedCases": 2,
+    "judgeId": "A",
+    "slotAfterCase": 2,
+    "slotStatus": "pending",
+    "eligibleRuleIds": []
+  },
+  "expected": {
+    "completedCases": 2,
+    "judgeId": "A",
+    "slotStatus": "skipped",
+    "activatedRuleId": null,
+    "additionalCaseCount": 0,
+    "additionalJudgeRotations": 0
+  },
+  "notes": "An empty rule candidate set consumes the slot without inventing a rule, case or rotation."
+}
