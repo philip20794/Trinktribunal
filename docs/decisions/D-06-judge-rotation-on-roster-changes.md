@@ -6,6 +6,6 @@
 - Ist die bisherige Richter-ID weiterhin aktiv, wird ihr **Nachfolger in der dann wirksamen neuen Reihenfolge** Richter; zyklischer Umlauf.
 - Wurde der Richter entfernt, wird in der **für den gerade beendeten Fall eingefrorenen alten Reihenfolge** ab seiner alten Position der erste noch aktive Nachfolger gesucht. Erst wenn keiner existiert, wird der erste Spieler der neuen Reihenfolge genommen.
 - Hinzugefügte Spieler stehen an ihrer gewählten Position in der neuen Liste; es wird weder rückwirkend neu rotiert noch eine Rolle anhand des Namens bestimmt.
-- Unter drei wirksamen Spielern pausiert der nächste reguläre Fall nach D-02. Regelereignisse bewirken keinen zusätzlichen Richterwechsel; „Alle sind Richter“ kennt keinen Richterwechsel.
+- Unter drei wirksamen Spielern pausiert der nächste reguläre Fall nach D-02. Regelereignisse bewirken keinen zusätzlichen Richterwechsel. Bei „Alle sind Richter“ gibt es keinen Richter, aber einen organisatorischen **Vorleser**: Die erste aktive Spieler-ID der Startreihenfolge beginnt. Nach jedem abgeschlossenen regulären Fall (auch ohne Urteil) wechselt der Vorleser zyklisch; bei Rosterwechsel gelten dieselben Nachfolgerregeln wie für den Richter. Regelereignisse bewirken keinen Vorleserwechsel. Vorlesen gibt keine zusätzlichen Host- oder Geheimnisrechte; auch der Vorleser erhält seine eigene Zahl.
 
 **Umsetzung/Tests:** TT-003, TT-024/025 und TT-053. Gleichzeitig entfernte Richter und Reorder, gleiche Namen, mehrere Änderungen in einer Grenze, doppelte Abschlussaktion und Untergrenze testen.
