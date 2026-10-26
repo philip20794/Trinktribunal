@@ -1,0 +1,37 @@
+# D-05 – Teilentscheidung: faire zufällige Spielerbezüge
+
+**Status: TEILWEISE ENTSCHIEDEN am 26.10.2026.** Der Projektverantwortliche hat die Einbeziehung des Richters sowie eine zählergestützte, ausgeglichene Zufallsauswahl der Bezugspersonen einschließlich fairer Behandlung nachträglicher Beitritte bestätigt. **Die übrigen D-05-Themen** (Fragenerschöpfung bei abgebrochenen Fällen, abschließende Inhaltsredaktion und Nutzungsrechte vor Veröffentlichung) bleiben separat offen.
+
+## Wer darf ausgewählt werden?
+
+- In Modus 2 (ein Handy mit Spielernamen) und Modus 3 (Multiplayer) kann **jeder aktive Spieler einschließlich des aktuellen Richters/Vorlesers** für `{player1}`, `{player2}` usw. ausgelost werden. Auch ein Bezug auf die eigene Person ist grundsätzlich erlaubt; keine besondere Vorleser- oder Richter-Ausnahme. Modus 1 ohne Namen zieht gemäß D-03 keine personenabhängigen Fragen oder Regeln.
+- **Keine reine Gleichverteilungs-Zufallsauswahl ohne Gedächtnis.** Die Engine führt pro `playerId` einen **internen Zähler der bisherigen personenbezogenen Ziehungsereignisse der laufenden Partie**. Bezugspersonen in regulären **Fragen und personenbezogenen Trinkregeln teilen sich denselben Zähler**. Die Zähler sollen möglichst ausgeglichen bleiben.
+- Für jede neue Rollen-Zuweisung kommen nur aktuell zulässige Spieler in Frage. Unter ihnen wird **zuerst nach dem kleinsten bisherigen Zähler**, **bei Gleichstand zufällig** ausgewählt. Wenn mehrere Rollen zugleich gebraucht werden, ist eine **gültige Gesamtkombination** der Rollenrestriktionen (`differentFrom` etc.) zu finden; ungültige Paarungen werden nicht erzwungen. Der Constraint-Solver darf begründet von einer einzelnen Minimalentscheidung abweichen, um eine vollständige gültige Zuordnung zu ermöglichen; innerhalb der gültigen Lösungen bevorzugt er faire, selten gezogene Personen.
+- Ein personenbezogener **Inhaltseintrag** zählt pro verschiedenem eingesetzten Spieler **genau einmal** (auch wenn derselbe Platzhalter mehrfach im Text/Skalenende oder dieselbe Person in mehreren Rollen vorkommt). Ein alternatives Vorgehen, das pro Textvorkommen zählt, ist nicht zulässig. Bei mehreren Rollen muss die Fairness auch innerhalb der aktuellen Zuordnung berücksichtigt werden, um unnötige Doppelbezüge zu vermeiden; keine künstliche `differentFrom`-Vorgabe erfinden.
+- Ein **Fragebezug zählt, sobald die Frage tatsächlich ausgespielt/angezeigt und die Rollenverteilung fachlich committed wurde**; eine **Trinkregel-Rollenzuweisung zählt bei ihrer tatsächlichen Aktivierung**. Wird eine aktive Regel später wegen weggegangenem Spieler neu zugewiesen, zählt die **neue** Zuordnung ebenfalls einmal für den neu ausgewählten Spieler (nicht für alle bereits unverändert zugewiesenen Rollen). Tägliche Regelanwendung/Trinken selbst zählt **nicht** als erneute Bezugsauswahl.
+- Die Verbindung zu D-01 ist **nur das Ausgleichsprinzip**, **nicht das 6-Stunden-Fenster**. Spieler-Zähler gelten für die **laufende Partie**, nicht für alle Räume, Geräte und Partien der letzten sechs Stunden. Eine bestätigte **neue Partie setzt die Personen-Zähler zurück**, die separat bestehende sechs Stunden gültige Karten-/Regel-ID-Historie dagegen nicht. Keine personenbezogene dauerhafte Ziehstatistik und keine Kontoabhängigkeit.
+
+## Neue Spieler und Wiederbeitritt ohne Nachhol-Burst
+
+- Bei wirksamem Beitritt ab der **nächsten Fallgrenze** wird die neue `playerId` mit `max(count(p) für aktuell aktive bisherige Spieler)` initialisiert; ist noch niemand vorhanden, mit 0. **Nicht mit 0** starten, wenn andere bereits mehrfach gezogen wurden. Das bedeutet: Ein neuer Spieler bekommt **keine bevorzugten Aufhol-Ziehungen**. Er wird aber bei künftigen Gleichständen wieder normal berücksichtigt.
+- Bei späterem Wiedereintritt **derselben** `playerId` in dieselbe laufende Partie wird der alte Zähler nicht verringert; stattdessen `max(alterZaehler, derzeitigerHoechststandDerAktiven)` verwenden, damit Abwesenheit nicht durch häufige Ziehungen „nachgeholt“ wird. Bloßer Netzwerk-Disconnect oder das D-16-Reconnect ist **kein Join/Leave** und ändert die Zähler nicht.
+- Entfernte Spieler verbleiben nicht in der Menge der wählbaren Personen; ihr Zähler darf für einen Wiederbeitritt mit derselben ID im laufenden Partiezustand verbleiben. Ein neu beigetretener Spieler mit neuer ID darf keinen fremden Verlauf übernehmen.
+- Ein im laufenden Fall bereits gezogener Personenbezug bleibt bis Fallende **unverändert**. Beitritte, Austritte und relevante Regel-Neuzuweisungen werden erst an der vorgesehenen **nächsten Fallgrenze** angewendet. Bei Abbruch gilt die Frage als gesehen; bereits fest zugesicherte Zuweisungen dürfen beim Retry nicht erneut zählen.
+
+## Speicherung, Synchronisierung und Datenschutz
+
+- Zähler im versionierten **Partiezustand** zusammen mit zugewiesenen stabilen `playerId`-Rollen speichern. Lokale Partie: Dart-Rechner; Multiplayer: nur **serverautoritativ** im Raum-Durable-Object. Zufall und Zustandsübergänge sind für Dart/TypeScript mittels gemeinsamer Fixtures reproduzierbar.
+- Jede Zähländerung erfolgt **atomar und idempotent mit der erfolgreichen Rollenzuweisung**. UI-Rebuild, Reload, WebSocket-Replay, Retry, doppelte `actionId` oder Server-Hibernation dürfen nicht mehrfach erhöhen.
+- Für die Anzeige reicht die zugewiesene Person/der Name; **keine öffentliche Statistik über einzelne Spieler, keine Zuordnung von Strafschlucken zu den Bezugsauswahlzählern**. Nach Partieende/Zustandslöschung werden die personenbezogenen Fairness-Zähler nicht dauerhaft fortgeschrieben.
+- Eine Namens- oder Avataränderung verändert keinen Counter, da die Identität ausschließlich an `playerId` gebunden ist.
+
+## Verbindliche Tests
+
+1. Bei A/B/C/D mit Zählern `0/0/0/0` führt die Ziehung eines einzelnen zulässigen Bezugsspielers über vier aufeinanderfolgende Fragen zu **vier unterschiedlichen Personen**, in zufälliger Reihenfolge; danach alle auf 1. Kein Spieler dreimal vor dem ersten Auftreten aller anderen.
+2. Bei `A=4,B=4,C=5` wird bei einem neuen D dessen Zähler auf **5** initialisiert. Zunächst sind A/B mit dem kleinsten Zähler bevorzugt; D wird weder dreimal hintereinander zum „Aufholen“ ausgelost noch dauerhaft ausgeschlossen. Entsprechende Probe bei A/B/C = 8/8/9 und einer späteren Rückkehr von B.
+3. Mehrfaches `{player1}` innerhalb einer Frage zählt nur **einen** Bezug. Bei einer Regel mit `player1` und `player2 differentFrom player1` werden zwei unterschiedliche Spieler ausgewählt und beide genau einmal gezählt; bei mehreren möglichen gültigen Komplettlösungen faire Auswahl. Rollenrestriktionen gehen immer vor Minimierung.
+4. Richter und auch Vorleser/Host sind als Bezugspersonen zulässig; die Auswahl ist pro gesamtem Fall bzw. Regel-Ereignis stabil und auf allen Geräten gleich. Kartenmodus zeichnet keine Personen-Counter auf.
+5. Regelträger verlässt Partie; bestätigte neue Zuweisung zählt nur neu zugewiesene Spieler. Disconnect/Resume, Join/Leave, Änderung von Name/Avatar, wiederholte `actionId`, Neustart der Serverinstanz und kompletter Browser-Neustart lassen Counter konsistent.
+6. Bestätigte neue Partie setzt **Personen-Counter** zurück, aber **nicht** den D-01-6h-Zähler pro Frage/Trinkregel. Kein Rückgriff auf Profilnamen als Identität.
+
+**Implementierung offen:** TT-003/005/006/007/008/025/044/045/053/056/057; dieser Beschluss ist noch kein ausgeführter Code oder Test. D-05 bleibt **TEILWEISE ENTSCHIEDEN**, bis die anderen D-05-Fachthemen geklärt sind.
