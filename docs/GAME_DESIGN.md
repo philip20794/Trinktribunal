@@ -33,6 +33,8 @@ Die beiden lokalen Modi teilen sich ihre Historie auf derselben App-/Browserinst
 5. **Fehler = Zahl der falsch platzierten Spieler** (nicht die Zahl der vertauschten Zahlenpaare). Der Richter trinkt einen Schluck je Fehler; jeder falsch platzierte Spieler trinkt **dieselbe Fehlerzahl**.
 6. Nach dem Urteil wechselt der Richter zur nächsten Person der festgelegten Spielerreihenfolge.
 
+**Fallabschluss ohne Urteil (D-07, Teilbeschluss):** Wird ein bereits angezeigter regulärer Fall ausdrücklich und bestätigt beendet, gilt er als **abgeschlossen und zählt zur Zielfallzahl**, auch ohne vollständige Sortierung. Es wird keine Ersatzfrage für dieselbe Fallnummer gezogen. Ohne gültiges Urteil gibt es keine erfundenen Fehlpositionen oder automatisch zugewiesenen Schlucke; der Zustand ist „abgeschlossen ohne Urteil“, nicht „0 Fehler“. Die Frage bleibt gezogen und die vorhandenen fairen Spielerbindungen/Zähler bleiben unverändert. Die normale Richterrotation, die nächste Fallgrenze und ein dort geplantes Trinkregel-Ereignis laufen jeweils **einmal** weiter. Ein Verbindungsabbruch allein zählt keinen Fall; es braucht eine ausdrückliche, autorisierte Abschlussaktion. Nach F abgeschlossenen Fällen endet die Partie, auch wenn ein Fall ohne Urteil darunter war. Siehe [D-07-Teilbeschluss](decisions/D-07-interrupted-case-completion.md).
+
 Trinkregel-Ereignisse haben **keine geheime Zahl, keine Sortierung und keinen Richterwechsel**; sie werden eingeblendet und anschließend geht es mit dem nächsten Fall weiter. Wenn die eingestellte Zahl der Fälle erreicht ist, endet die Partie; eine neue Partie kann jederzeit manuell gestartet werden.
 
 ## Trinkregeln als JSON
@@ -53,7 +55,7 @@ Für die zufällig zugewiesenen Platzhalter `{player1}`, `{player2}` usw. kommen
 
 **Später hinzukommende Spieler erhalten als Startzähler den höchsten aktuellen Zählerstand der aktiven Gruppe** (bei Rejoin nach echtem Austritt mindestens den bisherigen eigenen Wert). Sie müssen frühere Auslosungen **nicht nachholen** und werden deshalb nicht mehrfach hintereinander bevorzugt. Wirksame Eintritte/Austritte und Regelrollen-Neuzuweisungen erfolgen ab nächster Fallgrenze. Ein bloßer Disconnect/Resume verändert die Zähler nicht. Ein neuer Partie-Start setzt die **Personen-Zähler** zurück; die **sechs Stunden gültige Ziehhistorie für Karten-/Regel-IDs aus D-01 bleibt erhalten**. Zähler und Rollenbindungen werden im laufenden Partiezustand gespeichert; Doppelaktionen, Render-Neuaufbau und Reconnect zählen niemals mehrfach. Kartenmodus ohne Namen hat keine Personen-Zähler.
 
-Dies ist nur der bestätigte Personenauswahl-Teil von D-05. Fragenerschöpfung bei Abbrüchen, die Restredaktion und Nutzungsrechte vor Veröffentlichung bleiben offen. Siehe [D-05-Personenfairness](decisions/D-05-person-selection-fairness.md).
+Dies ist nur der bestätigte Personenauswahl-Teil von D-05. Der Fallabschluss bei ausdrücklich abgebrochenen Fragen ist inzwischen durch D-07 geregelt; die Restredaktion, tatsächliche Katalogerschöpfung und Nutzungsrechte vor Veröffentlichung bleiben offen. Siehe [D-05-Personenfairness](decisions/D-05-person-selection-fairness.md).
 
 Der Fragenkatalog unter `data/questions/` bleibt unabhängig vom Regelkatalog. Im Multiplayer führt der Server die Auslosung durch und synchronisiert die Regel-ID samt Spielerzuweisungen.
 
