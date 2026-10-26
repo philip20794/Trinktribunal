@@ -1,6 +1,6 @@
 # D-05 – Teilentscheidung: faire zufällige Spielerbezüge
 
-**Status: TEILWEISE ENTSCHIEDEN am 26.10.2026.** Der Projektverantwortliche hat die Einbeziehung des Richters sowie eine zählergestützte, ausgeglichene Zufallsauswahl der Bezugspersonen einschließlich fairer Behandlung nachträglicher Beitritte bestätigt. **Die übrigen D-05-Themen** (Fragenerschöpfung bei abgebrochenen Fällen, abschließende Inhaltsredaktion und Nutzungsrechte vor Veröffentlichung) bleiben separat offen.
+**Status: TEILWEISE ENTSCHIEDEN am 26.10.2026.** Der Projektverantwortliche hat die Einbeziehung des Richters sowie eine zählergestützte, ausgeglichene Zufallsauswahl der Bezugspersonen einschließlich fairer Behandlung nachträglicher Beitritte bestätigt. **Die übrigen D-05-Themen** (tatsächliche Katalogerschöpfung, abschließende Inhaltsredaktion und Nutzungsrechte vor Veröffentlichung) bleiben separat offen. Wie ausdrücklich beendete, schon angezeigte Fragen zählen, wurde inzwischen im [D-07-Teilbeschluss](D-07-interrupted-case-completion.md) festgelegt: Sie gelten als abgeschlossene Fälle und werden nicht ersetzt.
 
 ## Wer darf ausgewählt werden?
 
@@ -16,7 +16,7 @@
 - Bei wirksamem Beitritt ab der **nächsten Fallgrenze** wird die neue `playerId` mit `max(count(p) für aktuell aktive bisherige Spieler)` initialisiert; ist noch niemand vorhanden, mit 0. **Nicht mit 0** starten, wenn andere bereits mehrfach gezogen wurden. Das bedeutet: Ein neuer Spieler bekommt **keine bevorzugten Aufhol-Ziehungen**. Er wird aber bei künftigen Gleichständen wieder normal berücksichtigt.
 - Bei späterem Wiedereintritt **derselben** `playerId` in dieselbe laufende Partie wird der alte Zähler nicht verringert; stattdessen `max(alterZaehler, derzeitigerHoechststandDerAktiven)` verwenden, damit Abwesenheit nicht durch häufige Ziehungen „nachgeholt“ wird. Bloßer Netzwerk-Disconnect oder das D-16-Reconnect ist **kein Join/Leave** und ändert die Zähler nicht.
 - Entfernte Spieler verbleiben nicht in der Menge der wählbaren Personen; ihr Zähler darf für einen Wiederbeitritt mit derselben ID im laufenden Partiezustand verbleiben. Ein neu beigetretener Spieler mit neuer ID darf keinen fremden Verlauf übernehmen.
-- Ein im laufenden Fall bereits gezogener Personenbezug bleibt bis Fallende **unverändert**. Beitritte, Austritte und relevante Regel-Neuzuweisungen werden erst an der vorgesehenen **nächsten Fallgrenze** angewendet. Bei Abbruch gilt die Frage als gesehen; bereits fest zugesicherte Zuweisungen dürfen beim Retry nicht erneut zählen.
+- Ein im laufenden Fall bereits gezogener Personenbezug bleibt bis Fallende **unverändert**. Beitritte, Austritte und relevante Regel-Neuzuweisungen werden erst an der vorgesehenen **nächsten Fallgrenze** angewendet. Bei einem ausdrücklich ohne Urteil abgeschlossenen Fall gilt die Frage gemäß D-07 als **abgeschlossen und für den Fallzähler verbraucht**; bereits gebundene Personen dürfen beim anschließenden Wechsel nicht erneut gezählt werden.
 
 ## Speicherung, Synchronisierung und Datenschutz
 
@@ -34,4 +34,4 @@
 5. Regelträger verlässt Partie; bestätigte neue Zuweisung zählt nur neu zugewiesene Spieler. Disconnect/Resume, Join/Leave, Änderung von Name/Avatar, wiederholte `actionId`, Neustart der Serverinstanz und kompletter Browser-Neustart lassen Counter konsistent.
 6. Bestätigte neue Partie setzt **Personen-Counter** zurück, aber **nicht** den D-01-6h-Zähler pro Frage/Trinkregel. Kein Rückgriff auf Profilnamen als Identität.
 
-**Implementierung offen:** TT-003/005/006/007/008/025/044/045/053/056/057; dieser Beschluss ist noch kein ausgeführter Code oder Test. D-05 bleibt **TEILWEISE ENTSCHIEDEN**, bis die anderen D-05-Fachthemen geklärt sind.
+**Implementierung offen:** TT-003/005/006/007/008/025/044/045/053/056/057; dieser Beschluss ist noch kein ausgeführter Code oder Test. D-05 bleibt **TEILWEISE ENTSCHIEDEN**, bis Restredaktion, tatsächliche Katalogerschöpfung und Rechteklärung abgeschlossen sind.
