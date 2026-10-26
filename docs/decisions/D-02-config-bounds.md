@@ -1,6 +1,6 @@
 # D-02 – Spieler-, Namens- und Partiegrenzen
 
-**Status: ENTSCHIEDEN am 26.10.2026.** Der Projektverantwortliche hat die vorgeschlagenen Grenzen bestätigt, mit einer Erweiterung der maximalen Spielerzahl von 12 auf **20**. Die Umsetzung und die Tests bleiben Aufgaben der TT-003/006/009/016/022/034/037/053/058/062.
+**Status: ENTSCHIEDEN am 26.10.2026.** Der Projektverantwortliche hat die vorgeschlagenen Grenzen bestätigt, mit einer Erweiterung der maximalen Spielerzahl von 12 auf **20**. Die Umsetzung und die Tests bleiben Aufgaben der TT-003/006/009/016/020/021/034/037/053/058/062.
 
 ## Verbindliche Grenzen
 
