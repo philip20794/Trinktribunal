@@ -1,0 +1,36 @@
+{
+  "fixtureId": "TT003-SCHEDULE-EDGE",
+  "decisionRefs": [
+    "D-01"
+  ],
+  "operation": "scheduleEdgeCases",
+  "input": {
+    "cases": [
+      {
+        "targetCases": 1,
+        "requestedRuleEvents": 7
+      },
+      {
+        "targetCases": 3,
+        "requestedRuleEvents": 2
+      }
+    ]
+  },
+  "expected": {
+    "cases": [
+      {
+        "slots": [],
+        "effectiveRuleSlots": 0
+      },
+      {
+        "slots": [
+          1,
+          2
+        ],
+        "effectiveRuleSlots": 2,
+        "adjacencyAllowedBecauseUnavoidable": true
+      }
+    ]
+  },
+  "notes": "Only gaps between questions, adjacent when unavoidable."
+}
