@@ -50,16 +50,16 @@ Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepfle
 | `id` | Ja | Eindeutige, **sprachunabhängige** Regel-ID; bleibt über Übersetzungen gleich. |
 | `text` | Ja | Anzeigetext; Spieler-Platzhalter als `{player1}`, `{player2}` usw. |
 | `players` | Nein | Benötigte Spielerrollen, benannt wie die Platzhalter im Text. |
-| `selection` | Ja, je Rolle | Vorerst `random`: wählt beim Ziehen der Regel einen zufälligen aktiven Spieler. |
+| `selection` | Ja, je Rolle | `random` bezeichnet eine server-/lokal durchgeführte Zufallsauswahl **mit D-05-Fairness-Zähler** statt voneinander unabhängiger Gleichverteilungen; umfasst auch den Richter. |
 | `differentFrom` | Nein | Rollen, die nicht denselben Spieler bekommen dürfen; z. B. `["player1"]`. |
 | `excludes` | Nein | Regel-IDs, die nicht gleichzeitig aktiv sein dürfen; fehlend bedeutet `[]`. |
 
 ## Zuweisung und Laufzeit
 
 1. Beim Ziehen prüft die Spiellogik, ob die Regel mit allen aktiven Regeln kompatibel ist und genügend Spieler für `differentFrom` verfügbar sind. Ausschlüsse gelten **in beide Richtungen**.
-2. Sie weist alle Rollen **einmalig** zu. Mehrfach vorkommendes `{player1}` meint immer dieselbe Person. Ohne `differentFrom` kann `player2` auch dieselbe Person sein.
+2. Sie weist alle Rollen **einmalig** und **zählerbasiert fair** zu: pro aktivem Spieler ein gemeinsamer Partie-Zähler für Frage-/Regelbezüge; zuerst unter den am seltensten gezogenen zulässigen Spieler-IDs zufällig auswählen. `differentFrom` geht vor. Mehrfach vorkommendes `{player1}` meint immer dieselbe Person. Ohne `differentFrom` kann `player2` auch dieselbe Person sein. Ein gewählter Spieler wird pro aktivierter Regel nur einmal gezählt.
 3. Die Zuordnung verwendet **stabile Spieler-IDs**, nicht Namen. Die Namen werden erst beim Anzeigen eingesetzt. Damit bleiben Namens- und Avataränderungen möglich.
-4. Die Regel bleibt bis zum **Ende der Partie** aktiv. Regeln werden nicht erneut gezogen. Scheidet eine zugewiesene Person aus, wird die Rolle ab dem nächsten Fall neu zugeteilt; ist keine gültige Zuweisung möglich, wird die Regel deaktiviert.
+4. Die Regel bleibt bis zum **Ende der Partie** aktiv. Regeln werden nicht erneut gezogen. Scheidet eine zugewiesene Person aus, wird die Rolle ab dem nächsten Fall unter Berücksichtigung der D-05-Personen-Zähler neu zugeteilt (nur neu zugewiesene Person einmal zählen); ist keine gültige Zuweisung möglich, wird die Regel deaktiviert. Ein Neuankömmling beginnt beim höchsten Zähler der aktiven Gruppe, nicht bei 0. Bloßes Reconnect verändert keine Zähler.
 5. Im Multiplayer übernimmt **der Server** Auswahl und Zuweisung. Er sendet Regel-ID und zugewiesene Spieler-IDs; alle Clients stellen anhand desselben Regelkatalogs dieselben Namen dar.
 
 Beispiel für den **gespeicherten Zustand einer aktiven Regel** (nicht Teil des Katalogs):
@@ -73,6 +73,10 @@ Beispiel für den **gespeicherten Zustand einer aktiven Regel** (nicht Teil des 
   }
 }
 ```
+
+## Fairness bei Spielerbezügen (D-05, Teilentscheidung)
+
+Die Regel-JSONs behalten das Schema und `"selection": "random"` unverändert. Bei der Auswahl von `{player1}` / `{player2}` berücksichtigt die Spiellogik die **partiebezogenen Personen-Zähler** aus Fragen und Regeln gemeinsam, einschließlich Richter. Der gültige Rollen-Constraintgraph ist vor der Fairness zu erfüllen, anschließend werden die am seltensten ausgewählten zulässigen IDs mit zufälligem Gleichstand bevorzugt. Neue Spieler starten mindestens auf dem größten Zählerstand der aktiven Gruppe; ein erneut beitretender Spieler mit bekannter ID verliert seinen bisherigen Stand nicht. Mehrfaches Auftreten desselben Namens oder Platzhalters erhöht pro erfolgreicher Bindung den Zähler nicht mehrfach. Zähler werden bei neuer Partie zurückgesetzt und nicht als 6-Stunden-Spielerprofil gespeichert. Details in [D-05](../../docs/decisions/D-05-person-selection-fairness.md).
 
 ## Ziehhistorie (D-01)
 
