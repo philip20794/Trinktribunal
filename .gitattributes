@@ -1,0 +1,2 @@
+# Canonical catalog bytes must survive Windows core.autocrlf checkouts.
+apps/client/assets/catalogs/** text eol=lf
