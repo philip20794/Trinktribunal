@@ -5,6 +5,7 @@ Die Fragenpakete liegen nach Thema und Sprache sortiert unter `data/questions/`.
 ## Verfügbare Pakete
 
 - `top-ten/de.json`: 500 deutschsprachige Aufgaben aus 250 Karten, sinngemäß aus dem Französischen übertragen.
+- `top-ten/en.json`: vollständige englische Fassung derselben 500 Aufgaben mit identischen IDs, sinngemäß übersetzt.
 
 ## JSON-Struktur
 
