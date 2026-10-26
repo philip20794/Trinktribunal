@@ -1,0 +1,59 @@
+{
+  "fixtureId": "TT003-SKIP-PERMISSIONS",
+  "decisionRefs": [
+    "D-07",
+    "D-09"
+  ],
+  "operation": "authorizeSkipCases",
+  "input": {
+    "cases": [
+      {
+        "mode": "multiplayer",
+        "actor": "host",
+        "confirmed": true,
+        "questionShown": true
+      },
+      {
+        "mode": "multiplayer",
+        "actor": "judge",
+        "confirmed": true,
+        "questionShown": true
+      },
+      {
+        "mode": "multiplayer",
+        "actor": "host",
+        "confirmed": false,
+        "questionShown": true
+      },
+      {
+        "mode": "shared_phone",
+        "actor": "local",
+        "confirmed": true,
+        "questionShown": false
+      },
+      {
+        "mode": "shared_phone",
+        "actor": "local",
+        "confirmed": true,
+        "questionShown": true
+      }
+    ]
+  },
+  "expected": {
+    "accepted": [
+      true,
+      false,
+      false,
+      false,
+      true
+    ],
+    "errors": [
+      null,
+      "UNAUTHORIZED_ACTION",
+      "INVALID_PHASE",
+      "INVALID_PHASE",
+      null
+    ]
+  },
+  "notes": "The judge does not gain host authority. Skip requires displayed question and explicit confirmation."
+}
