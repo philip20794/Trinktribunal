@@ -212,14 +212,17 @@ Anfänglich zulässige lokale Origins explizit: `http://127.0.0.1:7357` und `htt
 7. Sortierung absichtlich vertauschen, stufenweise aufdecken und Ergebnisse vergleichen. Network-Frames prüfen: verborgene fremde Zahlen dürfen nicht nur optisch verborgen, sondern müssen abwesend sein.
 8. Neue Partie mit „Alle sind Richter“: alle einschließlich eigener Figur sortieren; unterschiedliche private Abgaben und ausschließlich persönliche Schluckwerte prüfen.
 
-Web-Resume-Tokens werden nach D-16 pro Tab gehalten; globales eigenes Profil darf im lokalen Speicher bleiben. Ein duplizierter Tab kann anfänglichen Sessionstorage kopieren: als **Doppelsitzungstest** behandeln, nicht als neue Identität. Für automatisierte Mehrbrowserprüfung isolierte Profile/Kontexte mit separatem Storage verwenden. Das geplante Harness erzeugt synthetische Teilnehmernamen und bereinigt nur eigene Testprofile.
+D-16: Web-Resume-Tokens werden **persistent pro Browser-Origin/-Profil** (vorzugsweise IndexedDB) gespeichert, nicht nur pro Tab in sessionStorage. Gleichzeitige Tabs können dieselbe Identität laden: Zweitverbindung ersetzt die alte, alter Tab meldet den Identitätskonflikt; es sind nicht automatisch zwei Spieler. Bewusstes „Als neuer Spieler beitreten“ erzeugt eine andere Identität. Für automatisierte Mehrbrowserprüfung isolierte Profile/Kontexte mit getrenntem Speicher verwenden. Nach **vollständigem Beenden und erneutem Öffnen des Browsers** muss „Partie fortsetzen“ dieselbe playerId zurückbringen. Android-Credentials sind geschützt zu speichern. Das geplante Harness erzeugt synthetische Teilnehmernamen und bereinigt nur eigene Testprofile.
 
 ### Störungscheck je Meilenstein
 
 | Aktion | Erwartung / Zeitpunkt |
 | --- | --- |
-| Browser reload | gleiche playerId, autorisierter Snapshot, Zahl wieder verdeckt; TT-057 |
+| Browser reload und vollständiges Schließen/erneutes Öffnen | gleiche playerId, autorisierter Snapshot, Zahl wieder verdeckt, kein zusätzlicher Join; TT-039/040/057 |
 | Ein Teilnehmer offline, dann online | begrenzter Backoff, kein doppelter Join/Urteil; TT-039/057 |
+| Android-App schließen und erneut öffnen | Bei gültigem Token denselben Spieler und Raum fortsetzen; TT-039/057 |
+| Browser-Token lokal gelöscht oder Raum abgelaufen | Klarer Neueinstieg ohne unberechtigte Identitätsübernahme; TT-039/055/057 |
+| Zwei Tabs mit derselben playerId | Neuere autorisierte Verbindung ersetzt die alte; kein doppelter Spieler; TT-038/042/057 |
 | Host verschwindet | verständliches Warten, später eindeutige Hostübernahme nach D-08; TT-054 |
 | Join/Leave/Reorder mitten im Fall | aktuelle Zahlen/Urteil unverändert, neue Besetzung erst nächster Fall; TT-053 |
 | Regelträger verlässt Gruppe | erst nächste Grenze neu binden/deaktivieren; TT-053 |
@@ -439,7 +442,7 @@ Empfohlenes Folgeprompt-Muster:
 | PowerShell blockiert npm.ps1 | `npm.cmd`/`npx.cmd` nutzen, keine systemweite Policyänderung. |
 | Browser lädt alten Stand | Debug- versus Releaseorigin prüfen, gezielt lokalen Service Worker/Cache inspizieren; bei Produktions-Updatefehler TT-031 reproduzieren statt stets manuell löschen. |
 | Worker-Alarm nach Codeänderung funktioniert nicht | Runtime kontrolliert neu starten, lokales bekanntes Alarmproblem prüfen; keine Clouddeploys zur Diagnose erzwingen. |
-| Identität in mehreren Fenstern gleich | getrennte Browserprofile/Testkontexte; Token-/sessionStorage-Strategie prüfen. |
+| Identität in mehreren Fenstern gleich | D-16: Browser-Tabs teilen origin-gebundene Credentials; für andere Spieler getrennte Profile/Testkontexte oder bewusst „Als neuer Spieler beitreten“ nutzen. |
 | ChromeDriver passt nicht | Versionen abgleichen, unterstützte lokale Kombination installieren; Ergebnis als Toolblocker dokumentieren. |
 | Android-SDK/Gerät fehlt | Web-/Domainarbeit fortsetzen; Androidtask bleibt BLOCKIERT, bis Geräteprüfung möglich ist. |
 | Inkonsistente Katalogversion | Manifest/Hashes und Asset-Sync prüfen; keine IDs still umdeuten oder Runtime-Fragen aus dem Netz nachladen. |
