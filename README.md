@@ -39,3 +39,8 @@ Das Projekt befindet sich in der Konzeptphase.
 ## Fragenkatalog
 
 Der deutschsprachige Fragenkatalog mit 500 Aufgaben liegt unter [data/questions/top-ten/de.json](data/questions/top-ten/de.json). Das Datenformat ist in [data/questions/README.md](data/questions/README.md) beschrieben.
+
+## Technische Dokumentation
+
+- [Architektur und Projektstruktur](docs/ARCHITECTURE.md)
+- [Multiplayer-Optimierung und Free-Tier-Limits](docs/MULTIPLAYER_OPTIMIZATION.md)
