@@ -1,0 +1,35 @@
+{
+  "fixtureId": "TT003-PERSON-REACTIVATION",
+  "decisionRefs": [
+    "D-05",
+    "D-16"
+  ],
+  "operation": "reactivateOrRejoin",
+  "input": {
+    "activeCounters": {
+      "A": 8,
+      "C": 9
+    },
+    "previousLocalPlayer": {
+      "id": "B",
+      "count": 8
+    },
+    "oldOnlinePlayerId": "B",
+    "newOnlinePlayerId": "B-new"
+  },
+  "expected": {
+    "localSameId": {
+      "playerId": "B",
+      "newCounter": 9
+    },
+    "onlineNewJoin": {
+      "playerId": "B-new",
+      "newCounter": 9
+    },
+    "onlineResume": {
+      "playerId": "B",
+      "counterUnchanged": true
+    }
+  },
+  "notes": "Local explicit reactivation differs from online join after Leave/Kick; resume retains ID."
+}
