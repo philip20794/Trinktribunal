@@ -1,0 +1,26 @@
+{
+  "fixtureId": "TT003-REORDER-D17",
+  "decisionRefs": [
+    "D-17"
+  ],
+  "operation": "reorder",
+  "input": {
+    "before": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "fromIndex": 1,
+    "toIndex": 3
+  },
+  "expected": {
+    "after": [
+      "A",
+      "C",
+      "D",
+      "B"
+    ]
+  },
+  "notes": "Remove and insert at destination, not a swap."
+}
