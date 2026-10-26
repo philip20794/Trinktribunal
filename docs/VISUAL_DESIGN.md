@@ -58,7 +58,7 @@ Die App startet mit **drei Spielvarianten**. Oben rechts auf dem Startbildschirm
 | **Geheimzahl** | Thematisch als **versiegelte/vertrauliche Akte**. Vor dem Aufdecken Spielername und Hinweis; Zahl erst nach bewusstem Tippen groß anzeigen, danach sofort wieder verbergen. |
 | **Antwortphase** | Frage bleibt sichtbar; die Teilnehmer antworten mündlich. Im Multiplayer können Bereitschaft und Wartezustand angezeigt werden. |
 | **Anklagebank / Sortieren** | Schlangenförmiges Raster mit Figuren, Positionsnummern und Drag & Drop; Richter bestätigt die endgültige Reihenfolge. |
-| **Aufdeckung / Urteil** | Echte Zahlen werden in Reihenfolge enthüllt. Fehlplatzierungen, Fehlerzahl und Schlucke erscheinen als „Urteil“, optional mit Richterhammer-/Stempelanimation. |
+| **Aufdeckung / Urteil** | Echte Zahlen werden in Reihenfolge enthüllt. Im normalen Modus werden Richterfehler und mittrinkende falsch platzierte Spieler gezeigt; bei „Alle sind Richter“ erhält jeder eine eigene Auswertung: **eigene Fehler = eigene Schlucke, ohne Mittrinken**. Optional Richterhammer-/Stempelanimation. |
 | **Richterwechsel** | Nächste Richterfigur wird hervorgehoben; Aktion zur nächsten Fallakte. |
 | **Partieende / Neustart** | Nach voreingestellter Fallzahl Abschlussansicht und Aktion für eine neue Partie. |
 
