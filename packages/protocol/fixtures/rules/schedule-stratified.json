@@ -1,0 +1,40 @@
+{
+  "fixtureId": "TT003-SCHEDULE-STRATIFIED",
+  "decisionRefs": [
+    "D-01",
+    "D-10"
+  ],
+  "operation": "chooseRuleEventSlots",
+  "input": {
+    "targetCases": 6,
+    "requestedRuleEvents": 2,
+    "segments": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "injectedChosenSlots": [
+      2,
+      5
+    ]
+  },
+  "expected": {
+    "slots": [
+      2,
+      5
+    ],
+    "effectiveRuleSlots": 2,
+    "adjacent": false,
+    "slotStatus": [
+      "pending",
+      "pending"
+    ]
+  },
+  "notes": "One injected choice per segment, no adjacency."
+}
