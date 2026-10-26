@@ -74,6 +74,10 @@ Beispiel für den **gespeicherten Zustand einer aktiven Regel** (nicht Teil des 
 }
 ```
 
+## Ziehhistorie (D-01)
+
+Aktivierte Regeln zählen als Verwendung der jeweiligen sprachunabhängigen ID. Die Spiellogik führt eine **rollierende 6-Stunden-Historie** pro Regel-ID; innerhalb einer Partie kann jede Regel nur einmal gezogen werden und bleibt aktiv, soweit nicht durch Besetzungsänderungen deaktiviert. Zunächst werden Ausschlüsse, Rollenbedarf und der D-03-Kartenmodusfilter geprüft. Unter den zulässigen Regeln kommen zufällig diejenigen zum Zug, deren 6h-Zähler null ist. Ist keine solche Regel vorhanden, wird zufällig unter den Regeln mit dem kleinsten 6h-Zähler gezogen. Regeln dürfen damit **über verschiedene Partien mehrfach** vorkommen, auch drei- oder viermal innerhalb von sechs Stunden; niemals aber mehrfach innerhalb derselben Partie. Die Historie ist nicht Teil der Katalogdateien und wird durch einen Partieneustart nicht gelöscht. Siehe [D-01](../../docs/decisions/D-01-game-schedule-and-six-hour-history.md).
+
 ## Bestätigte Konflikte und Sanktionen (D-04, 26.10.2026)
 
 Es gelten genau zwei gegenseitige Ausschlusspaare:
