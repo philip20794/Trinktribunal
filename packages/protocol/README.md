@@ -21,6 +21,12 @@ Fixtures geben keine plattformabhängigen PRNG-Seeds an, sondern **explizite gew
 - Vorgeschlagene Ordnung B/A/D/C bei wahrer Ordnung A/B/C/D → E=4; Richter und alle vier betroffenen Spieler je vier Schlucke; im Alle-Richter-Modus nur eigene Fehlerzahl.
 - Bestätigter Fallabschluss ohne Urteil zählt einen Fall, bewahrt Fragebindung/Ziehhistorie, löst planmäßigen Zwischenraum und Richterwechsel **einmal** aus, erzeugt **keine** Fehl-/Schluckwerte.
 
+## Zugriffsspezifische Zustandsprojektion (D-09)
+
+Die zusätzliche Datei [`fixtures/transitions/projection-private.json`](fixtures/transitions/projection-private.json) enthält einen deterministischen Minimalfall für einen Multiplayer-Raum im Modus „Alle sind Richter“: allgemeine Daten wie Frage und Bereitschaft dürfen öffentlich sichtbar sein, geheime Nummer und Sortierung **ausschließlich für die zugehörige `playerId`**. Auch der Host darf keine fremden Zahlen, Ordnungen oder individuellen Schluckwerte abfragen. Ein unbekannter/nicht autorisierter Betrachter erhält keine private Projektion.
+
+Das Testszenario ist mit `node --test scripts/tests/projections.test.mjs` lokal ausführbar. Der enthaltene referenzielle Reducer beweist **nur die Fachbeispiel-Projektion**, nicht die später notwendige serverseitige Redaction sämtlicher WebSocket-Antworten, ACKs, Fehlermeldungen und Resume-Zustände. Diese wird mit echten Worker-Tests bei TT-046–TT-052 und TT-059 überprüft.
+
 ## Geplante Testnutzung
 
 Für Node `node --test scripts/tests/protocol-fixtures.test.mjs` (ohne Netzwerk). Die Tests prüfen JSON, Eindeutigkeit von `fixtureId` sowie fachliche Beispiel-Invarianten, ersetzen aber **keine** spätere Ausführung derselben Beispiele in Dart und TypeScript. Bei einem späteren kanonischen Protokollschema darf nur die Struktur versioniert migriert werden, nicht die beschlossene Semantik.
