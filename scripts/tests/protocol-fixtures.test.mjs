@@ -187,3 +187,71 @@ test('D-07: counted skip, no fabricated result and single case completion', () =
   assert.equal(last.expected.phase, 'finished');
   assert.equal(last.expected.ruleEventAfterLastCase, false);
 });
+
+
+test('D-17: move an item by insertion, never exchange positions', () => {
+  const { input, expected } = get('TT003-REORDER-D17');
+  const next = [...input.before];
+  const [id] = next.splice(input.fromIndex, 1);
+  next.splice(input.toIndex, 0, id);
+  assert.deepEqual(next, expected.after);
+  assert.equal(new Set(next).size, input.before.length);
+  assert.deepEqual([...next].sort(), [...input.before].sort());
+  assert.notDeepEqual(next, ['A', 'D', 'C', 'B'], 'A swap is not a move');
+});
+
+test('D-02/D-07: paused roster retains the planned rule slot', () => {
+  const { input, expected } = get('TT003-PAUSE-D02');
+  const active = input.activeBefore.filter(id => !input.departing.includes(id));
+  assert.deepEqual(active, expected.activeAfter);
+  assert.ok(active.length < 3);
+  assert.equal(expected.phase, 'paused');
+  assert.equal(expected.error, 'INSUFFICIENT_PLAYERS');
+  assert.equal(input.slotStatusBefore, expected.slotStatusAfter);
+  assert.equal(expected.drawNextCase, false);
+});
+
+test('D-07/D-13: duplicate action does not increment any counters twice', () => {
+  const { input, expected } = get('TT003-IDEMPOTENT-D07');
+  const actionIds = new Set(input.appliedActionIds);
+  let completed = input.completedBefore;
+  let successful = 0;
+  for (let i = 0; i < input.repeatCount; i++) {
+    if (actionIds.has(input.actionId)) continue;
+    actionIds.add(input.actionId);
+    completed++;
+    successful++;
+  }
+  assert.equal(completed, expected.completedAfter);
+  assert.equal(successful, expected.successfulApplications);
+  assert.deepEqual([...actionIds], expected.persistedActionIds);
+  assert.equal(expected.judgeRotations, successful);
+  assert.equal(expected.newRoleSelectionEvents, 0);
+  assert.equal(expected.newHistoryEvents, 0);
+});
+
+test('D-04: only decided exclusions, manual penalty and no chain', () => {
+  const { input, expected } = get('TT003-CONFLICTS-D04');
+  assert.equal(input.incompatiblePairs.length, 2);
+  assert.deepEqual(expected.incompatible, [true, true]);
+  for (const [first, second] of input.incompatiblePairs) {
+    assert.notEqual(first, second);
+  }
+  assert.deepEqual(input.compatiblePair, ['imaginary_kobold', 'imaginary_fly']);
+  assert.equal(expected.compatible, true);
+  assert.equal(expected.violationsManuallyEnforced, true);
+  assert.equal(expected.penaltyPerIndependentViolation, 1);
+  assert.equal(expected.penaltyChainsAllowed, false);
+});
+
+test('D-01: 50 cases with seven spaced rule slots', () => {
+  const { input, expected } = get('TT003-SCHEDULE-50-7');
+  const slots = input.chosenSlots;
+  assert.equal(slots.length, expected.slotCount);
+  assert.equal(new Set(slots).size, slots.length);
+  assert.ok(slots.every(index => index >= 1 && index < input.targetCases));
+  assert.ok(slots.every((index, i) => i === 0 || index - slots[i - 1] > 1));
+  assert.ok(slots.every((index, i) => index >= i * 7 + 1 && index <= i * 7 + 7));
+  assert.equal(expected.nonAdjacent, true);
+  assert.equal(expected.allBetweenQuestions, true);
+});
