@@ -6,7 +6,7 @@ Die Hauptnavigation startet mit **drei Spielvarianten**. Alle spielbezogenen Ans
 
 - **Startbildschirm:** „Handy + Karten“, „Ein Handy“, „Jeder ein Handy“. Oben rechts ein **anklickbarer eigener Avatar**.
 - **Eigenes Profil:** Name und menschlicher Cartoon-Avatar frei anpassen; im Baukasten z. B. Haare, Augen, Gesicht, Kleidung und Accessoires wählen. Ausgangsfigur männlich/weiblich oder freie Gestaltung. Wird auf dem Gerät gespeichert und ist die Voreinstellung für neue Multiplayer-Räume.
-- **Allgemeine Einstellungen:** App-Sprache **Deutsch / Englisch** (Fragen und Trinkregeln passend lokalisieren), ggf. Audio/Darstellung. Unabhängig von den gesperrten Partie-Einstellungen.
+- **Allgemeine Einstellungen:** App-Sprache **Deutsch / Englisch** (Fragen und Trinkregeln passend lokalisieren), ggf. Audio/Darstellung. Unabhängig von den gesperrten Partie-Einstellungen. Der 6-Stunden-Zähler je tatsächlich gezogener Frage/Regel läuft automatisch im Hintergrund, ohne zusätzliche Einrichtung.
 
 ## Modus 1 – Ein Handy + physische Zahlenkarten
 
@@ -14,7 +14,7 @@ Die Hauptnavigation startet mit **drei Spielvarianten**. Alle spielbezogenen Ans
 2. **Spiel:** Richter erhält die Fallakte. Die Gruppe mischt Karten `1..X` und verteilt je eine an alle außer dem Richter. Antworten und Sortierung erfolgen mündlich; Zahlen werden in angesagter Reihenfolge aufgedeckt.
 3. **Weiter:** Urteil/Schlucke bei Bedarf in der App erfassen, nächster Richter wird außerhalb der App bestimmt. Trinkregeln erscheinen zwischen den Fällen.
 
-Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**.
+Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**. Gemäß D-03 nur Fragen/Regeln ohne Spielerrollen; die 6-Stunden-Auswahlhistorie wird mit dem Ein-Handy-Modus auf derselben Installation geteilt.
 
 ## Modus 2 – Ein Handy, keine Karten
 
@@ -37,7 +37,7 @@ Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**.
 6. **Alle sind Richter:** Niemand wird aus dem Sortierfeld herausgenommen. Jeder erhält eine geheime Zahl und sortiert **alle einschließlich sich selbst** auf seinem Gerät. Bis zur gemeinsamen Aufdeckung sieht niemand fremde Sortierungen. Im Urteil bekommt **jeder nur seine eigene Fehlerzahl als Schluckzahl** angezeigt (0 oder mindestens 2). Es gibt **kein zusätzliches Mittrinken** für Spieler, die jemand anderes falsch platziert hat.
 7. **Live-Änderungen:** Namens-/Avatar-Änderungen werden an alle übertragen und sofort angezeigt. Beitritte, Austritte und Umstellungen der Spielerreihenfolge wirken für Zahlenvergabe und Richterrotation **ab dem nächsten Fall**.
 
-Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechselt bei normalem Spiel unabhängig davon. Verliert der Host seine Verbindung, kann er mit seinem Spieler-Token zurückkehren; das Verhalten bei dauerhaftem Host-Ausfall wird vor Implementierung festgelegt.
+Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechselt bei normalem Spiel unabhängig davon. Die zufällige Auswahl beachtet die letzten sechs Stunden im Raum und gegebenenfalls die vom Host mitgebrachte gültige lokale Ziehhistorie; der Host gleicht eigene gehostete Partien nach Wiederverbindung lokal ab. Die App behauptet keinen globalen Verlauf anderer Geräte oder Hosts. Verliert der Host seine Verbindung, kann er mit seinem Spieler-Token zurückkehren; das Verhalten bei dauerhaftem Host-Ausfall wird vor Implementierung festgelegt.
 
 ## Weitere Screens in allen Modi
 
