@@ -242,6 +242,10 @@ Erst nach erfolgreichem Loopbacktest und ausdrücklich gewünschtem LAN-Test:
 - Service Worker funktionieren auf localhost als sicherem Entwicklungskontext; gewöhnliches LAN-HTTP ist kein zuverlässiger PWA-/Offlinetest. Dafür localhost am PC oder ein bewusst eingerichtetes vertrauenswürdiges lokales HTTPS verwenden.
 - Android-Debug darf für lokalen Worker gezielt HTTP erlauben; Releasekonfiguration HTTPS/WSS. Keine globale Cleartext-Freigabe für Release.
 
+### Sechs-Stunden-Ziehhistorie prüfen
+
+Ab TT-007/008 deterministische Dart-Fixtures für die D-01-Auswahl mit injizierter UTC-Uhr und Zufallsquelle; ab TT-027 lokal persistierte, rollierende 6h-Historie auch über App-/Partieneustart prüfen. Ab TT-044 laufen dieselben Fixtures unter TypeScript. Ab TT-045/050/057 prüfen, dass Serverraum/Host-Rückabgleich einmalig zählen, auch bei Reconnect, doppeltem ACK und mehrfachem Raumerstellen auf derselben Installation. Keine Frage oder Trinkregel darf innerhalb einer Partie zweimal auftauchen; über Partien hinweg wird bei erschöpftem Vorrat die seltenste in sechs Stunden gezogene gültige ID zufällig gewählt. Wie im [Beschluss D-01](decisions/D-01-game-schedule-and-six-hour-history.md) spezifiziert: Die Historiensynchronisierung ist ohne Konten geräte-/hostbezogen, keine globale Sammlung.
+
 ## 6. Tests ohne GitHub Actions
 
 ### Client: schnell und gezielt
