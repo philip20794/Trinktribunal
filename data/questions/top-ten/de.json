@@ -49,7 +49,12 @@
     },
     {
       "id": "003-b",
-      "text": "Du streitest dich heftig mit der Person rechts von dir. Was wirfst du vor Wut aus dem Fenster?",
+      "text": "Du streitest dich heftig mit {player1}. Was wirfst du vor Wut aus dem Fenster?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Das ist der Person völlig egal",
         "connector": "bis",
@@ -112,7 +117,12 @@
     },
     {
       "id": "007-a",
-      "text": "Auf dem Grabstein des Captains steht: „Hier ruht …“. Ergänze die Inschrift.",
+      "text": "Auf dem Grabstein von {player1} steht: „Hier ruht …“. Ergänze die Inschrift.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Überhaupt nicht schmeichelhaft",
         "connector": "bis",
@@ -138,17 +148,13 @@
       }
     },
     {
-      "id": "008-b",
-      "text": "Stelle pantomimisch dar, wie du die Spieleschachtel hochhebst und trägst.",
-      "scale": {
-        "green": "Federleicht",
-        "connector": "bis",
-        "red": "Unglaublich schwer"
-      }
-    },
-    {
       "id": "009-a",
-      "text": "Auf einer Party stellst du die Person rechts von dir ihrem Schwarm vor. Was sagst du?",
+      "text": "Auf einer Party stellst du {player1} dem eigenen Schwarm vor. Was sagst du?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Garantiert ein Korb",
         "connector": "bis",
@@ -229,7 +235,12 @@
     },
     {
       "id": "013-b",
-      "text": "Der Captain möchte sich bei Kleinanzeigen etwas kaufen. Was ist es?",
+      "text": "{player1} möchte sich bei Kleinanzeigen etwas kaufen. Was ist es?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Für ihn völlig nutzlos",
         "connector": "bis",
@@ -283,7 +294,12 @@
     },
     {
       "id": "016-b",
-      "text": "Der Captain hat ein Tinder-Date bei sich zu Hause eingeladen. Welches Poster hängt über seinem Bett?",
+      "text": "{player1} hat ein Tinder-Date nach Hause eingeladen. Welches Poster hängt über dem Bett?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Das Date ergreift die Flucht",
         "connector": "bis",
@@ -382,7 +398,12 @@
     },
     {
       "id": "022-a",
-      "text": "Der Captain steht auf der Titelseite der Zeitung. Wie lautet die Schlagzeile?",
+      "text": "{player1} steht auf der Titelseite der Zeitung. Wie lautet die Schlagzeile?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Überhaupt nicht schmeichelhaft",
         "connector": "bis",
@@ -396,15 +417,6 @@
         "green": "Davon schlafe ich gleich wieder ein",
         "connector": "bis",
         "red": "Davon bin ich sofort hellwach"
-      }
-    },
-    {
-      "id": "023-a",
-      "text": "Die Spieleschachtel ist ein Spiegel. Du betrachtest darin deine frisch operierte Nase. Spiele deine Reaktion.",
-      "scale": {
-        "green": "Die Operation ist völlig misslungen",
-        "connector": "bis",
-        "red": "Die neue Nase ist wunderschön"
       }
     },
     {
@@ -499,7 +511,12 @@
     },
     {
       "id": "028-b",
-      "text": "Welchen „… für Dummies“-Ratgeber könnte der Captain gebrauchen?",
+      "text": "Welchen „… für Dummies“-Ratgeber könnte {player1} gebrauchen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Den braucht er überhaupt nicht",
         "connector": "bis",
@@ -598,7 +615,12 @@
     },
     {
       "id": "034-a",
-      "text": "Du bist heimlich in eine Person aus der Runde verliebt. Mach ihr mit zwei sich reimenden Sätzen eine Liebeserklärung.",
+      "text": "Du bist heimlich in {player1} verliebt. Mach {player1} mit zwei sich reimenden Sätzen eine Liebeserklärung.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Überhaupt nicht romantisch",
         "connector": "bis",
@@ -696,15 +718,6 @@
       }
     },
     {
-      "id": "039-b",
-      "text": "Stell dir vor, die Spielanleitung ist eine Speisekarte. Lies daraus ein Gericht vor.",
-      "scale": {
-        "green": "Billiges Imbissessen",
-        "connector": "bis",
-        "red": "Gehobene Drei-Sterne-Küche"
-      }
-    },
-    {
       "id": "040-a",
       "text": "Welchen Gegenstand hätte man beim Untergang der Titanic dabeihaben sollen?",
       "scale": {
@@ -715,7 +728,12 @@
     },
     {
       "id": "040-b",
-      "text": "Sieh einer anderen Person tief in die Augen und hypnotisiere sie, damit sie etwas Bestimmtes tut. Was soll sie machen?",
+      "text": "Sieh {player1} tief in die Augen und hypnotisiere die Person. Was soll sie tun?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Eine nette Kleinigkeit",
         "connector": "bis",
@@ -729,15 +747,6 @@
         "green": "Für Menschen völlig harmlos",
         "connector": "bis",
         "red": "Für Menschen extrem gefährlich"
-      }
-    },
-    {
-      "id": "041-b",
-      "text": "Reiche die Spieleschachtel an eine andere Person weiter und sage ihr, was du von dem Spiel hältst.",
-      "scale": {
-        "green": "Du hasst dieses Spiel",
-        "connector": "bis",
-        "red": "Du liebst dieses Spiel"
       }
     },
     {
@@ -765,15 +774,6 @@
         "green": "Ich werde sein Nachmittagssnack",
         "connector": "bis",
         "red": "Ich entkomme mit Leichtigkeit"
-      }
-    },
-    {
-      "id": "043-b",
-      "text": "Reiche die Spieleschachtel an eine andere Person weiter. Wie machst du das?",
-      "scale": {
-        "green": "Äußerst unfreundlich",
-        "connector": "bis",
-        "red": "Besonders herzlich"
       }
     },
     {
@@ -814,7 +814,12 @@
     },
     {
       "id": "046-a",
-      "text": "Heute ist der Tag der Freundlichkeit. Mache einer Person am Tisch ein Kompliment.",
+      "text": "Heute ist der Tag der Freundlichkeit. Mache {player1} ein Kompliment.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ein nettes Kompliment",
         "connector": "bis",
@@ -931,7 +936,12 @@
     },
     {
       "id": "052-b",
-      "text": "Erfinde einen Spitznamen für den Captain, den du den Rest der Runde benutzt.",
+      "text": "Erfinde einen Spitznamen für {player1}, den du den Rest der Partie benutzt.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "So nervig, dass er ihn hasst",
         "connector": "bis",
@@ -1030,7 +1040,12 @@
     },
     {
       "id": "058-a",
-      "text": "Der Captain erfährt durch einen DNA-Test, dass er mit ... verwandt ist. Vervollständige den Satz.",
+      "text": "{player1} erfährt durch einen DNA-Test, mit ... verwandt zu sein. Vervollständige den Satz.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Die schlimmstmögliche Nachricht",
         "connector": "bis",
@@ -1048,7 +1063,12 @@
     },
     {
       "id": "059-a",
-      "text": "Die Person rechts von dir fotografiert dich mit einer unsichtbaren Kamera und zählt: „Eins, zwei, drei, Klick!“ Stell dich in Pose.",
+      "text": "Stell dir vor, {player1} fotografiert dich mit einer unsichtbaren Kamera und zählt: „Eins, zwei, drei, Klick!“ Stell dich in Pose.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Die schlimmste Fotopose",
         "connector": "bis",
@@ -1075,7 +1095,12 @@
     },
     {
       "id": "060-b",
-      "text": "Überraschung! Die Mutter des Captains hat seine Tapeten, Vorhänge und Bettdecke mit demselben Muster versehen. Welches Muster ist das?",
+      "text": "Überraschung! Die Mutter von {player1} hat die Tapeten, Vorhänge und Bettdecke mit demselben Muster versehen. Welches Muster ist das?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Die schlimmste Idee",
         "connector": "bis",
@@ -1102,7 +1127,12 @@
     },
     {
       "id": "062-a",
-      "text": "Sieh einer anderen Person tief in die Augen und erkläre ihr, warum du mit ihr Schluss machst.",
+      "text": "Sieh {player1} tief in die Augen und erkläre, warum du Schluss machst.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ein völlig alberner Grund",
         "connector": "bis",
@@ -1111,7 +1141,12 @@
     },
     {
       "id": "062-b",
-      "text": "Wohin könnte der Captain seine Partnerin oder seinen Partner zum Essen ausführen?",
+      "text": "Wohin könnte {player1} ein Date zum Essen ausführen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Völlig unspektakulär",
         "connector": "bis",
@@ -1165,7 +1200,12 @@
     },
     {
       "id": "065-b",
-      "text": "Welches Geburtstagsgeschenk machst du dem Captain?",
+      "text": "Welches Geburtstagsgeschenk machst du {player1}?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Er ist bitter enttäuscht",
         "connector": "bis",
@@ -1273,7 +1313,12 @@
     },
     {
       "id": "071-b",
-      "text": "Du meldest den Captain bei einer Talentshow an. Was sollte er auf der Bühne vorführen?",
+      "text": "Du meldest {player1} bei einer Talentshow an. Was sollte {player1} auf der Bühne vorführen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Darin ist er furchtbar schlecht",
         "connector": "bis",
@@ -1354,7 +1399,12 @@
     },
     {
       "id": "076-a",
-      "text": "Bei einem Erdbeben trennt dich eine Erdspalte von der Person links von dir. Du musst ihr deinen Autoschlüssel zuwerfen, damit sie Hilfe holen kann. Spiele den Wurf nach.",
+      "text": "Bei einem Erdbeben trennt dich eine Erdspalte von {player1}. Du musst {player1} deinen Autoschlüssel zuwerfen, damit Hilfe geholt werden kann. Spiele den Wurf nach.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ein völlig misslungener Wurf",
         "connector": "bis",
@@ -1390,7 +1440,12 @@
     },
     {
       "id": "078-a",
-      "text": "Du bist eine Hexe und hast einen Verwandlungstrank gebraut. Der Captain trinkt ihn. In welchen Gegenstand verwandelt er sich?",
+      "text": "Du bist eine Hexe und hast einen Verwandlungstrank gebraut. {player1} trinkt ihn. In welchen Gegenstand verwandelt sich {player1}?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Das Schlimmste, was ihm passieren könnte",
         "connector": "bis",
@@ -1453,7 +1508,12 @@
     },
     {
       "id": "081-b",
-      "text": "Steh auf und spiele nach, wie du einer anderen Person ein Glas edlen Wein servierst.",
+      "text": "Steh auf und spiele nach, wie du {player1} ein Glas edlen Wein servierst.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Extrem tollpatschig",
         "connector": "bis",
@@ -1534,7 +1594,12 @@
     },
     {
       "id": "086-a",
-      "text": "Ihr seid mehrere Tage wandern. Was schmuggelst du heimlich in den Rucksack einer anderen Person, damit sie es tragen muss?",
+      "text": "Ihr seid mehrere Tage wandern. Was schmuggelst du heimlich in den Rucksack von {player1}, damit {player1} es tragen muss?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Federleicht",
         "connector": "bis",
@@ -1543,7 +1608,12 @@
     },
     {
       "id": "086-b",
-      "text": "Was könnte der Captain auf Facebook posten?",
+      "text": "Was könnte {player1} auf Facebook posten?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Äußerst unwahrscheinlich",
         "connector": "bis",
@@ -1642,7 +1712,12 @@
     },
     {
       "id": "092-a",
-      "text": "Du schenkst dem Captain eine Eintrittskarte für eine große Messe. Was ist das für eine Messe?",
+      "text": "Du schenkst {player1} eine Eintrittskarte für eine große Messe. Was ist das für eine Messe?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Da würde er lieber sterben, als hinzugehen",
         "connector": "bis",
@@ -1768,7 +1843,12 @@
     },
     {
       "id": "099-a",
-      "text": "Welchen Spitznamen hatte der Captain wohl in der Schule?",
+      "text": "Welchen Spitznamen hatte {player1} wohl in der Schule?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Total unbeliebt",
         "connector": "bis",
@@ -1831,7 +1911,12 @@
     },
     {
       "id": "102-b",
-      "text": "Jemand neben dir am Tisch lässt unbemerkt einen fahren. Wie reagierst du?",
+      "text": "Stell dir vor, {player1} lässt unbemerkt einen fahren. Wie reagierst du?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Kaum zu riechen",
         "connector": "bis",
@@ -1966,7 +2051,12 @@
     },
     {
       "id": "110-a",
-      "text": "Der Captain überlegt, seine Eltern am Wochenende zu besuchen. In ihrem Dorf findet gerade das große Fest der ... statt. Vervollständige den Namen.",
+      "text": "{player1} überlegt, am Wochenende die Eltern zu besuchen. In deren Dorf findet gerade das große Fest der ... statt. Vervollständige den Namen.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Für den Captain überhaupt nicht verlockend",
         "connector": "bis",
@@ -2083,7 +2173,12 @@
     },
     {
       "id": "116-b",
-      "text": "Neben welcher erfundenen Figur würde der Captain am liebsten auf einem zehnstündigen Flug sitzen?",
+      "text": "Neben welcher erfundenen Figur würde {player1} am liebsten auf einem zehnstündigen Flug sitzen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ein furchtbarer Flug",
         "connector": "bis",
@@ -2092,7 +2187,12 @@
     },
     {
       "id": "117-a",
-      "text": "Gib einem anderen Mitspieler pantomimisch ein unsichtbares Ei weiter.",
+      "text": "Gib {player1} pantomimisch ein unsichtbares Ei weiter.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Extrem vorsichtig",
         "connector": "bis",
@@ -2182,7 +2282,12 @@
     },
     {
       "id": "122-a",
-      "text": "Woran denkt der Captain wohl gerade? Ergänze: „Der Captain denkt im Moment an ...“",
+      "text": "Woran denkt {player1} wohl gerade? Ergänze: „{player1} denkt im Moment an ...“",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Völlig unwahrscheinlich",
         "connector": "bis",
@@ -2299,7 +2404,12 @@
     },
     {
       "id": "128-b",
-      "text": "Der Captain ist mitten im Dschungel gestrandet und muss den Rest seines Lebens wie Tarzan leben. Was würde ihm am meisten fehlen?",
+      "text": "{player1} ist mitten im Dschungel gestrandet und muss den Rest des Lebens wie Tarzan leben. Was würde {player1} am meisten fehlen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Das würde er kaum vermissen",
         "connector": "bis",
@@ -2317,7 +2427,12 @@
     },
     {
       "id": "129-b",
-      "text": "Sag zu einer anderen Person am Tisch „Buh!“ und erschrecke sie.",
+      "text": "Sag zu {player1} „Buh!“ und versuche, die Person zu erschrecken.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Süß und freundlich",
         "connector": "bis",
@@ -2335,7 +2450,12 @@
     },
     {
       "id": "130-b",
-      "text": "Du bist Wahrsagerin oder Wahrsager. Lies einer anderen Person die Zukunft aus deiner Kristallkugel vor.",
+      "text": "Du bist Wahrsagerin oder Wahrsager. Lies {player1} die Zukunft aus deiner Kristallkugel vor.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Eine Zukunft voller Pech",
         "connector": "bis",
@@ -2380,7 +2500,12 @@
     },
     {
       "id": "133-a",
-      "text": "Schimpfe mit der Person links von dir, als wäre sie ein Kind, das etwas angestellt hat.",
+      "text": "Schimpfe mit {player1}, als hätte die Person wie ein Kind etwas angestellt.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Eine winzige Dummheit",
         "connector": "bis",
@@ -2398,7 +2523,12 @@
     },
     {
       "id": "134-a",
-      "text": "Welche berühmte Persönlichkeit, lebend oder tot, könnte der Captain überraschend treffen?",
+      "text": "Welche berühmte Persönlichkeit, lebend oder tot, könnte {player1} überraschend treffen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Die schlimmste Überraschung überhaupt",
         "connector": "bis",
@@ -2443,7 +2573,12 @@
     },
     {
       "id": "136-b",
-      "text": "Der Captain kann jemandem eine Traumreise schenken. Was versprichst du ihm, damit er dich auswählt?",
+      "text": "{player1} kann jemandem eine Traumreise schenken. Was versprichst du, damit {player1} dich auswählt?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Überhaupt nicht überzeugend",
         "connector": "bis",
@@ -2497,7 +2632,12 @@
     },
     {
       "id": "139-b",
-      "text": "Die Person links von dir ist ein Superschurke. Schau ihr tief in die Augen und sage: „Ich bin Batman.“",
+      "text": "{player1} ist ein Superschurke. Schau {player1} tief in die Augen und sage: „Ich bin Batman.“",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Überhaupt nicht glaubwürdig",
         "connector": "bis",
@@ -2506,7 +2646,12 @@
     },
     {
       "id": "140-a",
-      "text": "Nimm einen imaginären Zauberstab und belege eine andere Person mit einem selbst erfundenen Zauberspruch.",
+      "text": "Nimm einen imaginären Zauberstab und belege {player1} mit einem selbst erfundenen Zauberspruch.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ein richtig gemeiner Zauber",
         "connector": "bis",
@@ -2650,7 +2795,12 @@
     },
     {
       "id": "148-a",
-      "text": "Der Captain weiß nie, was er am Sonntagmorgen unternehmen soll. Empfiehl ihm eine Beschäftigung.",
+      "text": "{player1} weiß nie, was am Sonntagmorgen unternommen werden soll. Empfiehl eine Beschäftigung.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Überhaupt nicht angenehm",
         "connector": "bis",
@@ -2776,7 +2926,12 @@
     },
     {
       "id": "155-a",
-      "text": "Du schenkst dem Captain ein T-Shirt mit einem Spruch darauf. Was steht auf dem Shirt?",
+      "text": "Du schenkst {player1} ein T-Shirt mit einem Spruch darauf. Was steht auf dem Shirt?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Das würde er niemals anziehen",
         "connector": "bis",
@@ -2902,7 +3057,12 @@
     },
     {
       "id": "162-a",
-      "text": "Für welchen Gegenstand würde sich der Captain am ersten Tag des Schlussverkaufs ins Getümmel stürzen?",
+      "text": "Für welchen Gegenstand würde sich {player1} am ersten Tag des Schlussverkaufs ins Getümmel stürzen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Äußerst unwahrscheinlich",
         "connector": "bis",
@@ -2992,7 +3152,12 @@
     },
     {
       "id": "167-a",
-      "text": "Welches Haustier würdest du dem Captain schenken?",
+      "text": "Welches Haustier würdest du {player1} schenken?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Das würde er am liebsten sofort an der Autobahn aussetzen",
         "connector": "bis",
@@ -3055,7 +3220,12 @@
     },
     {
       "id": "170-b",
-      "text": "Die Person links von dir fragt: „Hast du mich lieb?“ Antworte mit „Ja!“",
+      "text": "{player1} fragt dich: „Hast du mich lieb?“ Antworte mit „Ja!“",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Überhaupt nicht überzeugend",
         "connector": "bis",
@@ -3117,15 +3287,6 @@
       }
     },
     {
-      "id": "174-a",
-      "text": "Du berührst eine imaginäre Spieleschachtel mit der Fingerspitze. Sie steht unter Strom! Spiele deine Reaktion.",
-      "scale": {
-        "green": "Nur ein winziges Kribbeln",
-        "connector": "bis",
-        "red": "Ein gewaltiger Stromschlag"
-      }
-    },
-    {
       "id": "174-b",
       "text": "Ein Paar hat geheiratet. Was schenkst du den Frischvermählten?",
       "scale": {
@@ -3145,7 +3306,12 @@
     },
     {
       "id": "175-b",
-      "text": "Erzähle von einer Situation, die dem Captain Angst machen würde.",
+      "text": "Erzähle von einer Situation, die {player1} Angst machen würde.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ein kleiner Schreck",
         "connector": "bis",
@@ -3334,7 +3500,12 @@
     },
     {
       "id": "186-a",
-      "text": "Im Jenseits lebt der Captain in einer Welt voller ... Ergänze den Satz.",
+      "text": "Im Jenseits lebt {player1} in einer Welt voller ... Ergänze den Satz.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Die reinste Hölle",
         "connector": "bis",
@@ -3369,15 +3540,6 @@
       }
     },
     {
-      "id": "188-a",
-      "text": "Du öffnest die Spieleschachtel. Darunter sitzt eine Vogelspinne! Spiele deine Angst vor.",
-      "scale": {
-        "green": "Nur ein kleiner Schreck",
-        "connector": "bis",
-        "red": "Panik pur"
-      }
-    },
-    {
       "id": "188-b",
       "text": "Welchen Beruf könnte der französische Präsident nach seiner Amtszeit ergreifen?",
       "scale": {
@@ -3388,7 +3550,12 @@
     },
     {
       "id": "189-a",
-      "text": "Welche Disney-Figur würde am besten zum Captain passen?",
+      "text": "Welche Disney-Figur würde am besten zu {player1} passen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Passt überhaupt nicht zu ihm",
         "connector": "bis",
@@ -3424,7 +3591,12 @@
     },
     {
       "id": "191-a",
-      "text": "Gib einem Mitspieler einen Spitznamen aus einem Tiernamen und einem Adjektiv.",
+      "text": "Gib {player1} einen Spitznamen aus einem Tiernamen und einem Adjektiv.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Extrem beleidigend",
         "connector": "bis",
@@ -3505,7 +3677,12 @@
     },
     {
       "id": "195-b",
-      "text": "Der Captain ist jetzt Wrestler und steht im Ring. Rufe seinen Kampfnamen!",
+      "text": "{player1} steht als Wrestling-Star im Ring. Rufe den Kampfnamen!",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Total lächerlich",
         "connector": "bis",
@@ -3675,15 +3852,6 @@
       }
     },
     {
-      "id": "205-a",
-      "text": "Sage „Ich spiele wirklich gern Top Ten“ mit einem Akzent.",
-      "scale": {
-        "green": "Aus dem tiefsten Süden der Welt",
-        "connector": "bis",
-        "red": "Aus dem höchsten Norden der Welt"
-      }
-    },
-    {
       "id": "205-b",
       "text": "Du findest endlich deinen Platz im ICE. Doch direkt hinter dir sitzt … Ergänze.",
       "scale": {
@@ -3703,7 +3871,12 @@
     },
     {
       "id": "206-b",
-      "text": "Ihr entwickelt gemeinsam einen humanoiden Roboter. Welche körperliche oder geistige Eigenschaft eines Mitspielers gebt ihr ihm?",
+      "text": "Ihr entwickelt gemeinsam einen humanoiden Roboter. Welche körperliche oder geistige Eigenschaft von {player1} gebt ihr ihm?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ein völlig unbrauchbarer Roboter",
         "connector": "bis",
@@ -3739,7 +3912,12 @@
     },
     {
       "id": "208-b",
-      "text": "Sage einem Mitspieler schauspielerisch „Ich liebe dich“.",
+      "text": "Sage zu {player1} schauspielerisch „Ich liebe dich“.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Überhaupt nicht überzeugend",
         "connector": "bis",
@@ -3775,7 +3953,12 @@
     },
     {
       "id": "210-b",
-      "text": "Welche Lüge könnte der Kapitän der Runde in seinem Datingprofil stehen haben?",
+      "text": "Welche Lüge könnte im Datingprofil von {player1} stehen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Eine winzige Schummelei",
         "connector": "bis",
@@ -3793,7 +3976,12 @@
     },
     {
       "id": "211-b",
-      "text": "Welches Kostüm würdest du dem Kapitän der Runde für eine Kostümparty empfehlen?",
+      "text": "Welches Kostüm würdest du {player1} für eine Kostümparty empfehlen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Passt überhaupt nicht zu ihm",
         "connector": "bis",
@@ -3928,7 +4116,12 @@
     },
     {
       "id": "219-a",
-      "text": "Der Kapitän der Runde sucht einen neuen Beruf. Welchen würdest du ihm empfehlen?",
+      "text": "{player1} sucht einen neuen Beruf. Welchen würdest du empfehlen?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Dafür wäre er völlig ungeeignet",
         "connector": "bis",
@@ -3960,15 +4153,6 @@
         "green": "Eine furchtbare Idee",
         "connector": "bis",
         "red": "Eine großartige Idee"
-      }
-    },
-    {
-      "id": "221-a",
-      "text": "Die Spieleschachtel ist traurig, weil sie gleich wieder ins Regal kommt. Nimm sie in die Hand und tröste sie.",
-      "scale": {
-        "green": "Überhaupt nicht tröstlich",
-        "connector": "bis",
-        "red": "Unglaublich tröstlich"
       }
     },
     {
@@ -4027,7 +4211,12 @@
     },
     {
       "id": "224-b",
-      "text": "Halte einem Mitspieler stolz etwas hin und behaupte: ‚Das ist mein Ehrenmitgliedsausweis vom Club der ...‘ Ergänze den Satz.",
+      "text": "Halte {player1} stolz etwas hin und behaupte: ‚Das ist mein Ehrenmitgliedsausweis vom Club der ...‘ Ergänze den Satz.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ziemlich peinlicher Club",
         "connector": "bis",
@@ -4045,7 +4234,12 @@
     },
     {
       "id": "225-b",
-      "text": "Wie sieht das Leben des Kapitäns der Runde in zehn Jahren aus? Beschreibe seine Zukunft.",
+      "text": "Wie sieht das Leben von {player1} in zehn Jahren aus? Beschreibe die Zukunft.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Sein schlimmster Albtraum",
         "connector": "bis",
@@ -4126,7 +4320,12 @@
     },
     {
       "id": "230-a",
-      "text": "Du bist für das Marketing bei Robo3000 verantwortlich. Erfinde einen Werbeslogan für einen neuen Saugroboter, der den Vornamen der Person links von dir trägt.",
+      "text": "Du bist für das Marketing bei Robo3000 verantwortlich. Erfinde einen Werbeslogan für einen neuen Saugroboter, der nach {player1} benannt ist.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Am wenigsten verkaufsfördernd",
         "connector": "bis",
@@ -4252,7 +4451,12 @@
     },
     {
       "id": "237-a",
-      "text": "Nenne ein Wort aus dem Wörterbuch. Wie häufig verwendet der Käpt’n es?",
+      "text": "Nenne ein Wort aus dem Wörterbuch. Wie häufig verwendet {player1} es?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Das Wort benutzt er nie",
         "connector": "bis",
@@ -4414,7 +4618,12 @@
     },
     {
       "id": "246-a",
-      "text": "Der Käpt’n zeigt auf einen Mann aus der Runde. Stell dir vor, er steht plötzlich nackt da: Mit welchem Gegenstand verdeckt er sein bestes Stück?",
+      "text": "Stell dir vor, {player1} steht plötzlich nackt da. Mit welchem Gegenstand verdeckt sich {player1}?",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Da gibt es kaum etwas zu verdecken",
         "connector": "bis",
@@ -4450,7 +4659,12 @@
     },
     {
       "id": "248-a",
-      "text": "Geh auf ein Knie oder halte einen imaginären Ring hin und mach einem Mitspieler einen Heiratsantrag.",
+      "text": "Geh auf ein Knie oder halte einen imaginären Ring hin und mach {player1} einen Heiratsantrag.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Damit bekommst du garantiert einen Korb",
         "connector": "bis",
@@ -4495,7 +4709,12 @@
     },
     {
       "id": "250-b",
-      "text": "Einer der Mitspieler ist ein Vampir! Zeige auf ihn und erkläre, woran du ihn erkannt hast.",
+      "text": "{player1} ist ein Vampir! Zeige auf die Person und erkläre, woran du das erkannt hast.",
+      "players": {
+        "player1": {
+          "selection": "random"
+        }
+      },
       "scale": {
         "green": "Ein winziger Hinweis",
         "connector": "bis",
