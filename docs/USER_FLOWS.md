@@ -12,7 +12,7 @@ Die Hauptnavigation startet mit **drei Spielvarianten**. Alle spielbezogenen Ans
 
 1. **Einrichtung:** Nur **Spieleranzahl (3–20)** eingeben; optional Spieldauer (1–431 geeignete Fragen), Trinkregelanzahl (max. 22 geeignete Regeln und höchstens F−1 Ereignisse) und Schwierigkeit (Faktor 1,0–3,0 in 0,1-Schritten) über Schieberegler anpassen. „Spiel starten“ ist direkt verfügbar, sofern die Auswahl gültig ist.
 2. **Spiel:** Richter erhält die Fallakte. Die Gruppe mischt Karten `1..X` und verteilt je eine an alle außer dem Richter. Antworten und Sortierung erfolgen mündlich; Zahlen werden in angesagter Reihenfolge aufgedeckt.
-3. **Weiter:** Urteil/Schlucke bei Bedarf in der App erfassen, nächster Richter wird außerhalb der App bestimmt. Trinkregeln erscheinen zwischen den Fällen.
+3. **Weiter:** Urteil/Schlucke bei Bedarf in der App erfassen, nächster Richter wird außerhalb der App bestimmt. Trinkregeln erscheinen zwischen den Fällen. Eine bereits angezeigte Frage kann ausdrücklich **ohne Urteil abgeschlossen** werden und **zählt dann als ein Fall**; sie wird nicht ersetzt.
 
 Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**. Gemäß D-03 nur Fragen/Regeln ohne Spielerrollen; die 6-Stunden-Auswahlhistorie wird mit dem Ein-Handy-Modus auf derselben Installation geteilt.
 
@@ -24,6 +24,8 @@ Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**. Gemä�
 4. **Geheimzahl:** Das Handy geht in Listenreihenfolge an die Beteiligten **ohne den Richter**. Zuerst „Gerät an [Name]“, dann „Geheime Akte öffnen“, Zahl anzeigen und vor der Weitergabe wieder verbergen.
 5. **Antworten/Sortieren/Urteil:** Anklagebank mit Avatar-Namensschildern; Richter zieht die Figuren in die vermutete Reihenfolge. Zahlen und Fehler erscheinen in der Aufdeckung.
 6. **Während des Spiels:** Namen/Avatare bearbeiten, Spieler hinzufügen/entfernen und Reihenfolge anpassen. Änderungen an der Besetzung werden **ab dem nächsten Fall** wirksam. Der nächste Richter ist jeweils der nächste noch aktive Eintrag nach dem aktuellen Richter in der aktuellen Liste (zyklisch).
+
+Bei einer bereits angezeigten Frage kann der Spielleiter am gemeinsamen Handy den **Fall ohne Urteil abschließen** (bestätigen). Dieser Fall zählt vollständig zum Fortschritt, es gibt ohne Wertung keine automatisch zugewiesenen Schlucke und die übliche Richterrotation greift genau einmal.
 
 Über das Spielmenü jederzeit **neue Partie** starten. Spiel-Einstellungen bleiben während einer Partie gesperrt; Änderung nur nach bestätigtem Neustart.
 
@@ -38,6 +40,8 @@ Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**. Gemä�
 7. **Live-Änderungen:** Namens-/Avatar-Änderungen werden an alle übertragen und sofort angezeigt. Beitritte, Austritte und Umstellungen der Spielerreihenfolge wirken für Zahlenvergabe und Richterrotation **ab dem nächsten Fall**. D-05: Neue Spieler starten beim höchsten aktuellen Personen-Zähler, nicht bei null; sie müssen ausgelassene frühere Ziehungen nicht nachholen. Wiederverbinden ist kein neuer Beitritt.
 
 Über das Spielmenü ist ein **ausdrückliches „Raum verlassen“** möglich; dies widerruft die Sitzung und entfernt nach Bestätigung die gespeicherte Zuordnung. Das Schließen des Browsers oder der App zählt ausdrücklich nicht als Verlassen. Sind mehrere Raumzuordnungen gespeichert, kann die App den gewünschten Raum auswählen lassen. Das Fortsetzen auf einem anderen Gerät ist ohne Account nicht zugesagt; wenn Browserdaten fehlen oder das Token abgelaufen ist, erscheint ein verständlicher neuer Join.
+
+Der Host kann eine bereits angezeigte Frage bei Bedarf ausdrücklich **ohne Urteil abschließen**. Sie zählt zum eingestellten Fragenziel, wird nicht ersetzt und löst keine fingierte Schluckwertung aus. Reiner Verbindungsverlust ist kein automatischer Abschluss. Die nächste Frage, die gegebenenfalls vorgesehene Regel und die normale Richterrotation folgen genau einmal.
 
 Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechselt bei normalem Spiel unabhängig davon. Die zufällige Auswahl beachtet die letzten sechs Stunden im Raum und gegebenenfalls die vom Host mitgebrachte gültige lokale Ziehhistorie; der Host gleicht eigene gehostete Partien nach Wiederverbindung lokal ab. Die App behauptet keinen globalen Verlauf anderer Geräte oder Hosts. Verliert der Host seine Verbindung, kann er mit seinem Spieler-Token zurückkehren; das Verhalten bei dauerhaftem Host-Ausfall wird vor Implementierung festgelegt.
 
