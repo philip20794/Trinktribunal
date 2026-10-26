@@ -30,6 +30,7 @@ if ($Scope -in @('Docs', 'All')) {
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'check-docs.mjs'))
     Invoke-Checked 'node' @('--test', (Join-Path $PSScriptRoot 'tests/check-docs.test.mjs'))
     Invoke-Checked 'node' @('--test', (Join-Path $PSScriptRoot 'tests/protocol-fixtures.test.mjs'))
+    Invoke-Checked 'node' @('--test', (Join-Path $PSScriptRoot 'tests/projections.test.mjs'))
 }
 
 if ($Scope -in @('Client', 'All')) {
