@@ -10,7 +10,7 @@
 4. **Jede falsch platzierte Person zählt als ein Fehler.** Der Richter trinkt **einen Schluck pro Fehler**. Jeder falsch einsortierte Spieler trinkt **genauso viele Schlucke wie der Richter**.
 5. In der nächsten Runde übernimmt ein anderer Spieler die Richterrolle.
 
-Eine Partie umfasst standardmäßig **50 Fragen/Aussagen**, unterbrochen von **7 zusätzlichen Trinkregel-Ereignissen**, die bis zum Partieende gelten. Spieldauer, Regelanzahl und Schwierigkeit (Zahlenbereich standardmäßig bis zum aufgerundeten 1,5-Fachen der Spielerzahl) sind vor dem Start anpassbar.
+Eine Partie umfasst standardmäßig **50 Fragen/Aussagen** und **bis zu 7 zusätzliche Trinkregel-Ereignisse**, die zufällig möglichst gleichmäßig zwischen den Fragen liegen und bis zum Partieende gelten. Spieldauer, Regelanzahl und Schwierigkeit (Zahlenbereich standardmäßig bis zum aufgerundeten 1,5-Fachen der Spielerzahl) sind vor dem Start anpassbar. **Karten und Trinkregeln, die innerhalb der letzten sechs Stunden schon vorkamen, werden möglichst vermieden.** Sind alle zulässigen Inhalte kürzlich gezogen worden, haben die am seltensten verwendeten den Vorrang; innerhalb derselben Partie gibt es keine doppelten Fragen oder Regeln. Die App merkt sich dafür einen internen Zähler mit 6-Stunden-Verlauf je Inhalt.
 
 ## Spielvarianten
 
@@ -43,6 +43,7 @@ Der vollständige Entwicklungsplan ist dokumentiert; die App wurde noch nicht im
 - [Entwicklungsplan mit 70 Aufgaben und neun Meilensteinen](docs/IMPLEMENTATION_PLAN.md)
 - [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)
 - [Fortschritt, offene Entscheidungen und Übergabe](docs/PROGRESS.md)
+- [Beschluss zur Spielverteilung und 6-Stunden-Ziehhistorie](docs/decisions/D-01-game-schedule-and-six-hour-history.md)
 
 ## Fragenkatalog
 
