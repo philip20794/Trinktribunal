@@ -129,7 +129,7 @@ Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschn
 | Entscheidung | Status | Nächste verantwortliche Aufgabe |
 | --- | --- | --- |
 | D-01 – Fallzählung, Regelereignisse, 6h-Auswahlspeicher | ENTSCHIEDEN (26.10.2026) | TT-003/007/008/027/034/044/045/046/050/057; [Beschluss](decisions/D-01-game-schedule-and-six-hour-history.md) |
-| D-02 – Grenzen für Spieler, Slider und Namen | ENTSCHIEDEN (26.10.2026) | TT-003/006/009/016/022/034/037/053/058/062; [Beschluss](decisions/D-02-config-bounds.md) |
+| D-02 – Grenzen für Spieler, Slider und Namen | ENTSCHIEDEN (26.10.2026) | TT-003/006/009/016/020/021/034/037/053/058/062; [Beschluss](decisions/D-02-config-bounds.md) |
 | D-03 – Personenbezogene Fragen und Regeln im Kartenmodus | ENTSCHIEDEN (26.10.2026) | TT-003 (Umsetzung) |
 | D-04 – Regelkonflikte, Ausnahmen und manuelle Strafen | ENTSCHIEDEN (26.10.2026) | TT-005 (Validierung); [Beschluss](decisions/D-04-rule-conflicts.md) |
 | D-05 – Fragenredaktion, Bezugspersonen, Nutzungsnachweise | OFFEN | TT-005, Abschluss TT-065 |
