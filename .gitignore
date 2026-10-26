@@ -1,0 +1,37 @@
+# Flutter / Dart (Projektdateien und Lockfiles bleiben versioniert)
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+.pub-cache/
+build/
+coverage/
+**/ephemeral/
+**/generated_plugin_registrant.dart
+
+# Android / lokale Signaturdaten
+*.jks
+*.keystore
+key.properties
+local.properties
+**/android/.gradle/
+**/android/captures/
+
+# Node / Worker (spätere Meilensteine)
+node_modules/
+.wrangler/
+
+# Lokale IDE-Dateien / Tests
+.idea/
+*.iml
+.vscode/
+*.log
+chromedriver.log
+test-results/
+
+# Geheimnisse / Konfiguration
+.env
+.env.*
+!.env.example
+*.pem
