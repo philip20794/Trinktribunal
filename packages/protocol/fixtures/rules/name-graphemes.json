@@ -1,0 +1,49 @@
+{
+  "fixtureId": "TT003-NAME-GRAPHEMES",
+  "decisionRefs": [
+    "D-02"
+  ],
+  "operation": "validateNameCases",
+  "input": {
+    "cases": [
+      {
+        "raw": "  Ä  ",
+        "expectedTrimmed": "Ä"
+      },
+      {
+        "raw": "👩‍👩‍👧‍👦",
+        "expectedTrimmed": "👩‍👩‍👧‍👦"
+      },
+      {
+        "raw": "ABCDEFGHIJKLMNOPQRSTUVWX",
+        "expectedTrimmed": "ABCDEFGHIJKLMNOPQRSTUVWX"
+      },
+      {
+        "raw": "ABCDEFGHIJKLMNOPQRSTUVWXY",
+        "expectedTrimmed": "ABCDEFGHIJKLMNOPQRSTUVWXY"
+      },
+      {
+        "raw": "   ",
+        "expectedTrimmed": ""
+      }
+    ]
+  },
+  "expected": {
+    "graphemeCounts": [
+      1,
+      1,
+      24,
+      25,
+      0
+    ],
+    "valid": [
+      true,
+      true,
+      true,
+      false,
+      false
+    ],
+    "errorForInvalid": "INVALID_NAME"
+  },
+  "notes": "Trim and count Unicode extended grapheme clusters, not JavaScript string length or UTF-16 units."
+}
