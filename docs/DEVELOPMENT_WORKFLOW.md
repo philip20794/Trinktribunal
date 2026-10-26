@@ -2,9 +2,26 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Zustand:** Fachentscheidungen D-01 bis D-18 sind für die Erstumsetzung verbindlich beschlossen; TT-001 braucht keine weitere Planungsfreigabe. Es gibt ausschließlich Dokumentation und vier Datenkataloge: Fragen DE/EN mit je 491 Einträgen und Trinkregeln DE/EN mit je 25 Einträgen. Die nachfolgend beschriebenen Appverzeichnisse, Skripte und Tests werden erst durch die angegebenen Aufgaben erstellt. Dieser Planungsauftrag installiert nichts, implementiert keine Anwendung und führt weder GitHub Actions noch Cloudflare-Deployments aus.
+**Aktueller Zustand im Featurebranch `task/TT-001-flutter-shell`:** Fachentscheidungen D-01 bis D-18 verbindlich beschlossen; TT-001 ist begonnen, aber ohne Flutter-/Android-Gerüst oder lokale Abnahme noch nicht abgeschlossen. Die ersten Client-Quellen, Widgettests und Webdateien sind versioniert; zusätzlich liegen die **vorbereitenden** TT-002-Skripte im Branch. Die Flutter- und PowerShell-Prüfungen müssen noch auf Windows ausgeführt werden. Vier Kataloge (je 491 Fragen und 25 Regeln in DE/EN) bleiben unverändert. Es wurden weder GitHub Actions noch Cloudflare-Deployments ausgeführt.
 
 Ziel: Nach TT-001 ist ein Browserfenster jederzeit mit dem aktuellen Stand bedienbar. Jeder kleine Entwicklungsschritt erhält diesen Zustand. Alle Prüfungen und Builds laufen auf dem eigenen PC; eine spätere CI darf dieselben Skripte aufrufen, ist aber keine Voraussetzung.
+
+## TT-002: vorbereitete Windows-Befehle (noch nicht abgenommen)
+
+Diese Dateien liegen bereits vor, sind aber **keine abgeschlossene Aufgabe**, solange TT-001 und die lokalen TT-002-Gates fehlen:
+
+```powershell
+# aus beliebigem Verzeichnis über die absoluten Skriptpfade aufrufbar
+powershell -NoProfile -File .\scripts\dev-client.ps1 -Device chrome -Port 7357 -WebHost 127.0.0.1
+powershell -NoProfile -File .\scripts\dev-client.ps1 -Device web-server -Port 7358
+powershell -NoProfile -File .\scripts\check.ps1 -Scope Docs
+powershell -NoProfile -File .\scripts\check.ps1 -Scope Client
+powershell -NoProfile -File .\scripts\check.ps1 -Scope All
+```
+
+`dev-client.ps1` prüft PATH und TCP-Port, startet `flutter pub get` und `flutter run`; optional `-ApiBaseUrl` wird als `--dart-define=API_BASE_URL=…` übergeben. `check.ps1` führt für Docs den reinen Node-Link-/70-ID-Prüfer und dessen vier `node --test`-Tests aus, für Client `flutter pub get`, Dart-Formatcheck, Flutter Analyze und alle Flutter-Tests. Bei `All` wird der noch fehlende Server ausdrücklich als ungetestet gemeldet; es gibt keine Deploymentaktion. Programme müssen im PATH liegen, Exitcodes werden weitergegeben.
+
+**Bereits lokal in einer isolierten Node-22-Kopie geprüft:** `node --check scripts/check-docs.mjs` und `node --test scripts/tests/check-docs.test.mjs` – vier Tests bestanden, darunter fehlender Link, doppelte ID und fehlende Registerzeile. **Nicht geprüft:** vollständiger Repo-Dokumentenlauf nach Checkout, PowerShell-Syntax/Ausführung, Flutter-Befehle, Portkonflikte unter Windows und fehlendes Flutter im isolierten PATH. Diese Nachweise sind vor dem Abschluss zu ergänzen.
 
 ## TT-001: aktiver Featurebranch (26.10.2026)
 
