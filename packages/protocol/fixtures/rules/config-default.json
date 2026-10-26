@@ -1,0 +1,26 @@
+{
+  "fixtureId": "TT003-CONFIG-DEFAULT",
+  "decisionRefs": [
+    "D-02",
+    "D-10"
+  ],
+  "operation": "validateConfig",
+  "input": {
+    "mode": "shared_phone",
+    "playerCount": 8,
+    "targetCases": 50,
+    "requestedRuleEvents": 7,
+    "factorTenths": 15,
+    "allJudges": false,
+    "eligibleQuestions": 491,
+    "eligibleRules": 25
+  },
+  "expected": {
+    "valid": true,
+    "maxSecretNumber": 12,
+    "numberRecipients": 7,
+    "scheduledRuleEventCount": 7,
+    "frozen": true
+  },
+  "notes": "N=8, X=ceil(8*1.5)=12; normaler Richter ist kein Empfänger."
+}
