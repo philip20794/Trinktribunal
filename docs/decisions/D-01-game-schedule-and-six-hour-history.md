@@ -7,7 +7,7 @@
 - **Fälle** sind ausschließlich reguläre Fragen/Aussagen. Standard: **50 Fälle plus 7 zusätzliche Trinkregel-Ereignisse**, im Idealfall insgesamt 57 Karten.
 - Regelereignisse können ausschließlich in den **F−1 Zwischenräumen** zwischen normalen Fragen auftreten, nie vor der ersten oder nach der letzten Frage; höchstens ein Ereignis je Zwischenraum.
 - Für angeforderte `R` Ereignisse gilt zunächst `R_eff = min(R, max(0, F−1))`. Zusätzlich begrenzen geeignete, noch nicht in derselben Partie aktivierte oder gezogene Regeln die tatsächlich erreichbare Anzahl. Nicht verfügbare Ereignisse werden nicht künstlich ersetzt.
-- Für gleichmäßige, dennoch zufällige Abstände werden die F−1 Zwischenräume in `R_eff` möglichst gleich große, zusammenhängende, nichtleere Segmente unterteilt. Pro Segment wird mit injizierbarem Zufall **ein unterschiedlicher Zwischenraum** ausgewählt. Der Ereignisplan wird beim Spielstart einmal erzeugt und gespeichert; Neuzeichnen/Reload ändert ihn nicht. Beispiel F=6, R=2: Zwischenräume 1–3 bzw. 4–5, ein zufälliger Zwischenraum aus jedem Segment.
+- Für gleichmäßige, dennoch zufällige Abstände werden die F−1 Zwischenräume in `R_eff` möglichst gleich große, zusammenhängende, nichtleere Segmente unterteilt; pro Segment wird **genau ein** Zwischenraum gewählt. **Falls `F−1 >= 2*R_eff−1`**, werden ausschließlich Segmentkombinationen zugelassen, in denen die gewählten Regel-Slots **nicht direkt benachbart** sind. Zufall wird dann aus den zulässigen Kombinationen injiziert gezogen; eine Implementierung darf dazu dynamische Programmierung/Gewichtung verwenden statt unbeschränkter Ablehnungsversuche. Ist ein Abstand unmöglich (z. B. F=3, R=2), bleiben benachbarte Slots zulässig. Der Ereignisplan wird einmal erzeugt und gespeichert; Reload/Resume ändert ihn nicht. Beispiel F=6, R=2: Zwischenräume 1–3 bzw. 4–5, genau eine Auswahl pro Segment und ohne direkte Nachbarschaft, sofern möglich.
 - Eine Regel wird **erst beim Erreichen des Ereignisses** unter dann aktiven Teilnehmern/Regeln ausgewählt und aktiviert, nicht beim Erstellen des Zeitplans. Falls keine geeignete Regel existiert, entfällt dieser Slot. Er erhöht weder Fallzähler noch Richterrotation.
 
 ## 6-Stunden-Historie mit Nutzungszählern
@@ -29,7 +29,7 @@
 
 ## Prüffälle für die Implementierung
 
-- F=1, R=7 → ein Fall, null Regelereignisse; F=3, R=2 → beide Zwischenräume belegt; F=50, R=7 → 7 verschiedene Zwischenräume, keine benachbarten Regel-Slots; kurze Partie F=6/R=2 reproduzierbar mit kontrolliertem Zufall.
+- F=1, R=7 → ein Fall, null Regelereignisse; F=3, R=2 → beide Zwischenräume belegt und ausnahmsweise benachbart; F=50, R=7 → 7 verschiedene, nicht benachbarte Slots; kurze Partie F=6/R=2 reproduzierbar mit kontrolliertem Zufall. Bei allen zulässigen F/R deterministische Terminierung und genau eine Auswahl pro Segment prüfen.
 - 0/1/2 kürzliche Ziehungen derselben ID; nach sechs Stunden fällt die einzelne alte Ziehung aus dem Zähler. Werden alle Kandidaten kürzlich verwendet, dominiert der kleinste `recentCount`, unter Gleichstand entscheidet die Zufallsquelle.
 - Vier oder mehr Partien mit nur 25 Regeln zeigen Wiederverwendung über Partien, aber nie innerhalb einer Partie. Kartenmodus berücksichtigt nur seine 431 personenbezugsfreien Fragen und 22 entsprechenden Regeln.
 - Doppeltes Ereignis/ACK, Refresh, Web-Resume, Server-Restart und Host-Rückabgleich dürfen den Zähler nicht doppelt erhöhen.

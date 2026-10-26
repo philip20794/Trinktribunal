@@ -1,6 +1,6 @@
-# D-07 – Teilentscheidung: Einen begonnenen Fall als abgeschlossen zählen
+# D-07 – Unterbrochene Fälle und Abschluss ohne Urteil
 
-**Status: TEILWEISE ENTSCHIEDEN am 26.10.2026.** Der Projektverantwortliche hat für eine bereits angezeigte Frage festgelegt: Wird sie ausdrücklich abgebrochen, soll sie als **abgeschlossen** gelten. Das ersetzt den bisherigen Vorschlag, den Fall bei Abbruch nicht zu zählen und eine neue Frage für dieselbe Fallnummer zu ziehen. Die übrigen Details zu blockierten Fällen (Wartefristen, Abbruchberechtigung, Sonderfälle fehlender Abgaben) bleiben in D-07 offen.
+**Status: ENTSCHIEDEN am 26.10.2026.** Ein bereits angezeigter, ausdrücklich abgeschlossener Fall zählt vollständig zum Fallziel und erhält keine erfundenen Fehler oder Schlucke. Für den bisherigen Restbereich fehlender Teilnehmer/Abgaben gilt der vorgeschlagene konservative Ablauf unten.
 
 ## Verbindliches Spielverhalten
 
@@ -22,8 +22,17 @@
 5. Netzwerk trennen, Spieler neu verbinden → wartender Fall läuft weiter; **kein automatischer Abschluss**. Host kann ihn ausdrücklich abschließen, sofern autorisiert; veraltete Spieleraktionen danach werden abgewiesen.
 6. Nach F abgeschlossen gezählten Fällen endet die Partie auch dann, wenn mindestens einer davon `abgeschlossen_ohne_urteil` war; kein unerreichbarer Fallzähler nach Inhaltserschöpfung.
 
-## Noch offen
+## Fehlende Spieler, Zahlenannahmen, Bereitschaft und Abgaben
 
-D-07 benötigt noch die konkrete Behandlung fehlender Teilnehmer/Abgaben einschließlich Warte- und Hostentscheidungspfaden. D-05 behält die redaktionelle Schlussprüfung und die Frage nach Nutzungsrechten offen. Diese Entscheidung bestimmt **ausschließlich den Zähl- und Ergebnisstatus beim bewussten Abschluss eines bereits angezeigten Falls**.
+- **Keine automatische Beendigung und keine automatische Ersatzabgabe aufgrund einer Wartefrist.** Ein kurzfristiger Disconnect ändert die eingefrorene Teilnehmerliste nicht. Fehlende Geheimzahlbestätigung, Ready-Aktion, Richterordnung oder private Ordnung bei „Alle sind Richter“ halten die betroffene Phase im erklärten Wartezustand; die Benutzer sehen, **wer noch fehlt**, ohne private Zahlen/Ordnungen zu erfahren.
+- Der **Host** darf während einer solchen blockierten Phase einen bereits angezeigten Fall ausdrücklich über „Fall ohne Urteil abschließen“ und einen zusätzlichen Bestätigungsdialog beenden; das ist die **einzige** Abkürzung ohne vollständige gültige Abgaben. Im gemeinsamen Ein-Handy-Modus bestätigt die Gruppe die lokale Aktion. Der normale Richter erhält dadurch **keine** Hostrechte, und der Host darf weder fremde Zahlen noch fremde Sortierungen stellvertretend abgeben.
+- Werden fehlende, eingefrorene Teilnehmer später wieder verbunden, können sie in der ursprünglichen Phase regulär fortfahren, solange noch kein bestätigter Abschluss erfolgt ist. Nach einem solchen Abschluss sind spätere Eingaben der alten `roundId` unwirksam.
+- Ein **echter Austritt/Kick** wird zwar als ausstehende Besetzungsänderung für die nächste Fallgrenze vermerkt, er korrigiert aber eine schon laufende geheime Vergabe oder bestätigte Ordnung **nicht rückwirkend**. Die bestehende Phase wartet daher auf eine zulässige vollständige Abgabe oder den bewussten Hostabschluss ohne Urteil.
+- Fällt der Host selbst aus, greift D-08: zunächst bis zu 90 Sekunden Host-Reconnect und dann eine atomare Hostübernahme. Ein wartender Fall wird deshalb nicht automatisch abgeschlossen. Ist niemand zur Hostübernahme verfügbar, bleibt die Partie bis zum Wiederbeitritt oder D-12-Raumablauf stehen.
+- Fallen an einer Fallgrenze weniger als drei wirksame aktive Spieler an, wird vor einem neu geplanten Regelereignis bzw. nächsten regulären Fall **pausiert**; ein noch ausstehender Regel-Slot bleibt bis zur Fortsetzung erhalten, ohne doppelt ausgelöst zu werden.
 
-**Implementierungsaufgaben offen:** TT-003, TT-007, TT-010, TT-024, TT-026, TT-043, TT-045, TT-050, TT-053, TT-058. Keine App-/Serverlogik wurde hiermit bereits implementiert.
+## Keine weiteren offenen D-07-Fachfragen
+
+Warte-/Abbruchrechte und Verhalten bei fehlenden Abgaben sind hier verbindlich geregelt. Die rein technischen Phasencodes, Fehlermeldungen und Idempotenzfixtures entstehen in TT-043.
+
+**Implementierungsaufgaben offen:** TT-003, TT-007, TT-010, TT-024, TT-026, TT-043, TT-045, TT-047, TT-050, TT-053, TT-058. Keine App-/Serverlogik wurde hiermit bereits implementiert.

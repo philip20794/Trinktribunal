@@ -74,7 +74,7 @@ Beispiel für den **gespeicherten Zustand einer aktiven Regel** (nicht Teil des 
 }
 ```
 
-## Fairness bei Spielerbezügen (D-05, Teilentscheidung)
+## Fairness bei Spielerbezügen (D-05)
 
 Die Regel-JSONs behalten das Schema und `"selection": "random"` unverändert. Bei der Auswahl von `{player1}` / `{player2}` berücksichtigt die Spiellogik die **partiebezogenen Personen-Zähler** aus Fragen und Regeln gemeinsam, einschließlich Richter. Der gültige Rollen-Constraintgraph ist vor der Fairness zu erfüllen, anschließend werden die am seltensten ausgewählten zulässigen IDs mit zufälligem Gleichstand bevorzugt. Neue Spieler starten mindestens auf dem größten Zählerstand der aktiven Gruppe; ein erneut beitretender Spieler mit bekannter ID verliert seinen bisherigen Stand nicht. Mehrfaches Auftreten desselben Namens oder Platzhalters erhöht pro erfolgreicher Bindung den Zähler nicht mehrfach. Zähler werden bei neuer Partie zurückgesetzt und nicht als 6-Stunden-Spielerprofil gespeichert. Details in [D-05](../../docs/decisions/D-05-person-selection-fairness.md).
 

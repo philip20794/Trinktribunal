@@ -1,6 +1,6 @@
-# D-05 – Teilentscheidung: faire zufällige Spielerbezüge
+# D-05 – Faire Personenauswahl und Katalogerschöpfung
 
-**Status: TEILWEISE ENTSCHIEDEN am 26.10.2026.** Der Projektverantwortliche hat die Einbeziehung des Richters sowie eine zählergestützte, ausgeglichene Zufallsauswahl der Bezugspersonen einschließlich fairer Behandlung nachträglicher Beitritte bestätigt. **Die übrigen D-05-Themen** (tatsächliche Katalogerschöpfung, abschließende Inhaltsredaktion und Nutzungsrechte vor Veröffentlichung) bleiben separat offen. Wie ausdrücklich beendete, schon angezeigte Fragen zählen, wurde inzwischen im [D-07-Teilbeschluss](D-07-interrupted-case-completion.md) festgelegt: Sie gelten als abgeschlossene Fälle und werden nicht ersetzt.
+**Status: SPIELMECHANIK ENTSCHIEDEN am 26.10.2026.** Die bereits bestätigte Fairness bleibt verbindlich. Die bisher offene Behandlung einer Katalogerschöpfung wird mit dem Vorschlag des Entwicklungsplans entschieden. **Redaktion und Nutzungsrechte** sind keine ungeklärte Spielregel, bleiben aber ein nachzuweisendes externes **Release-Gate** in TT-061/065. Ein ungesicherter Nutzungsstatus wird nicht als Freigabe ausgelegt. D-07 regelt den ausdrücklich ohne Urteil abgeschlossenen Fall separat.
 
 ## Wer darf ausgewählt werden?
 
@@ -25,6 +25,13 @@
 - Für die Anzeige reicht die zugewiesene Person/der Name; **keine öffentliche Statistik über einzelne Spieler, keine Zuordnung von Strafschlucken zu den Bezugsauswahlzählern**. Nach Partieende/Zustandslöschung werden die personenbezogenen Fairness-Zähler nicht dauerhaft fortgeschrieben.
 - Eine Namens- oder Avataränderung verändert keinen Counter, da die Identität ausschließlich an `playerId` gebunden ist.
 
+## Erschöpfter Fragenkatalog und redaktioneller Freigabevorbehalt
+
+- Bei Partiestart begrenzt der Modusfilter die maximal einstellbare reguläre Fallzahl auf die Zahl der **gültigen unterschiedlichen Frage-IDs** (derzeit 431 im Kartenmodus, 491 mit Spielernamen). Innerhalb der Partie gibt es **keine ID-Wiederholung**. Eine bereits ausgespielte Frage bleibt verbraucht, auch wenn der Fall gemäß D-07 ohne Urteil abgeschlossen wird.
+- Wird der gültige Kandidatenvorrat während einer laufenden Partie durch dynamische Gültigkeitsbedingungen, Katalogfehler oder inkompatible Versionen doch unerwartet leer, **keine alte Frage heimlich wiederholen und keinen fehlenden Fall als abgeschlossen zählen**. Die Partie geht in einen erklärten, sicher angehaltenen Zustand. Lokal beziehungsweise der Host kann bewusst eine neue Partie mit zulässiger Zielzahl beginnen oder die laufende unvollständige Partie beenden. Der tatsächlich erreichte Fallzähler bleibt nachvollziehbar.
+- Ausfallende Regelereignisse folgen D-01: fehlende fachlich kompatible Regeln reduzieren die tatsächliche Ereignisanzahl, nicht den Fallzähler.
+- Restredaktion und Provenienz jeder Frage/Regel werden in TT-005/061 geprüft. **Ohne nachgewiesene Rechte dürfen die übernommenen Fragen nicht öffentlich veröffentlicht werden**. TT-065 bleibt bis zu Freigabe oder ersetztem, nachweislich nutzbarem Katalog blockiert; technische lokale Entwicklung darf fortgesetzt werden.
+
 ## Verbindliche Tests
 
 1. Bei A/B/C/D mit Zählern `0/0/0/0` führt die Ziehung eines einzelnen zulässigen Bezugsspielers über vier aufeinanderfolgende Fragen zu **vier unterschiedlichen Personen**, in zufälliger Reihenfolge; danach alle auf 1. Kein Spieler dreimal vor dem ersten Auftreten aller anderen.
@@ -34,4 +41,4 @@
 5. Regelträger verlässt Partie; bestätigte neue Zuweisung zählt nur neu zugewiesene Spieler. Disconnect/Resume, Join/Leave, Änderung von Name/Avatar, wiederholte `actionId`, Neustart der Serverinstanz und kompletter Browser-Neustart lassen Counter konsistent.
 6. Bestätigte neue Partie setzt **Personen-Counter** zurück, aber **nicht** den D-01-6h-Zähler pro Frage/Trinkregel. Kein Rückgriff auf Profilnamen als Identität.
 
-**Implementierung offen:** TT-003/005/006/007/008/025/044/045/053/056/057; dieser Beschluss ist noch kein ausgeführter Code oder Test. D-05 bleibt **TEILWEISE ENTSCHIEDEN**, bis Restredaktion, tatsächliche Katalogerschöpfung und Rechteklärung abgeschlossen sind.
+**Implementierung offen:** TT-003/005/006/007/008/025/044/045/053/056/057 sowie TT-061/065. Fachliche D-05-Entscheidungen sind vollständig; **öffentliche Auslieferung** bleibt bis zu unabhängig nachgewiesenen Inhaltsrechten gesperrt.

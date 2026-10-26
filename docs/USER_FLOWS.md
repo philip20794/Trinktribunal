@@ -6,7 +6,7 @@ Die Hauptnavigation startet mit **drei Spielvarianten**. Alle spielbezogenen Ans
 
 - **Startbildschirm:** „Handy + Karten“, „Ein Handy“, „Jeder ein Handy“. Oben rechts ein **anklickbarer eigener Avatar**.
 - **Eigenes Profil:** Name und menschlicher Cartoon-Avatar frei anpassen; im Baukasten z. B. Haare, Augen, Gesicht, Kleidung und Accessoires wählen. Ausgangsfigur männlich/weiblich oder freie Gestaltung. Wird auf dem Gerät gespeichert und ist die Voreinstellung für neue Multiplayer-Räume.
-- **Allgemeine Einstellungen:** App-Sprache **Deutsch / Englisch** (Fragen und Trinkregeln passend lokalisieren), ggf. Audio/Darstellung. Unabhängig von den gesperrten Partie-Einstellungen. Der 6-Stunden-Zähler je tatsächlich gezogener Frage/Regel läuft automatisch im Hintergrund, ohne zusätzliche Einrichtung.
+- **Allgemeine Einstellungen:** UI-Sprache **Deutsch / Englisch** je Gerät; die Inhaltssprache der Multiplayer-Partie legt der Host vor dem Start einheitlich für alle fest (D-11), ggf. Audio/Darstellung. Unabhängig von den gesperrten Partie-Einstellungen. Der 6-Stunden-Zähler je tatsächlich gezogener Frage/Regel läuft automatisch im Hintergrund, ohne zusätzliche Einrichtung.
 
 ## Modus 1 – Ein Handy + physische Zahlenkarten
 
@@ -41,9 +41,9 @@ Bei einer bereits angezeigten Frage kann der Spielleiter am gemeinsamen Handy de
 
 Über das Spielmenü ist ein **ausdrückliches „Raum verlassen“** möglich; dies widerruft die Sitzung und entfernt nach Bestätigung die gespeicherte Zuordnung. Das Schließen des Browsers oder der App zählt ausdrücklich nicht als Verlassen. Sind mehrere Raumzuordnungen gespeichert, kann die App den gewünschten Raum auswählen lassen. Das Fortsetzen auf einem anderen Gerät ist ohne Account nicht zugesagt; wenn Browserdaten fehlen oder das Token abgelaufen ist, erscheint ein verständlicher neuer Join.
 
-Der Host kann eine bereits angezeigte Frage bei Bedarf ausdrücklich **ohne Urteil abschließen**. Sie zählt zum eingestellten Fragenziel, wird nicht ersetzt und löst keine fingierte Schluckwertung aus. Reiner Verbindungsverlust ist kein automatischer Abschluss. Die nächste Frage, die gegebenenfalls vorgesehene Regel und die normale Richterrotation folgen genau einmal.
+Fehlt eine Zahlannahme, Bereitschaft oder private Sortierung, wartet die Phase ohne automatischen Timeout. Der Host kann eine bereits angezeigte Frage bei Bedarf ausdrücklich **ohne Urteil abschließen**. Sie zählt zum eingestellten Fragenziel, wird nicht ersetzt und löst keine fingierte Schluckwertung aus. Reiner Verbindungsverlust ist kein automatischer Abschluss. Die nächste Frage, die gegebenenfalls vorgesehene Regel und die normale Richterrotation folgen genau einmal.
 
-Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechselt bei normalem Spiel unabhängig davon. Die zufällige Auswahl beachtet die letzten sechs Stunden im Raum und gegebenenfalls die vom Host mitgebrachte gültige lokale Ziehhistorie; der Host gleicht eigene gehostete Partien nach Wiederverbindung lokal ab. Die App behauptet keinen globalen Verlauf anderer Geräte oder Hosts. Verliert der Host seine Verbindung, kann er mit seinem Spieler-Token zurückkehren; das Verhalten bei dauerhaftem Host-Ausfall wird vor Implementierung festgelegt.
+Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechselt bei normalem Spiel unabhängig davon. Die zufällige Auswahl beachtet die letzten sechs Stunden im Raum und gegebenenfalls die vom Host mitgebrachte gültige lokale Ziehhistorie; der Host gleicht eigene gehostete Partien nach Wiederverbindung lokal ab. Die App behauptet keinen globalen Verlauf anderer Geräte oder Hosts. Nach Host-Disconnect bleibt dessen Rolle 90 Sekunden für Reconnect reserviert; danach übernimmt atomar der frühest beigetretene verbundene geeignete Spieler. Der ehemalige Host erhält die Sonderrechte bei späterem Reconnect nicht automatisch zurück (D-08).
 
 ## Weitere Screens in allen Modi
 
@@ -59,3 +59,7 @@ Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechsel
 - **Klare Zustände:** Bereit, Warten, Antworten, Sortieren, Aufdecken; nur zulässige Aktionen anzeigen.
 - **Stabile Identität:** Jeder Spieler hat eine eigene ID; Name, Position und Avatar dürfen sich ändern, ohne den Spieler im laufenden Spiel zu ersetzen.
 - **Responsiv:** Android zuerst im Hochformat, Web auf Mobilgerät und Desktop; Touch-Drag-and-drop plus alternative Bedienung.
+
+## Raumfristen und Datenschutz beim Urteil
+
+D-12 beendet Multiplayer-Räume nach 24 Stunden fachlicher Inaktivität, spätestens nach 48 Stunden Gesamtdauer. D-07 verlangt bei fehlenden Abgaben ein klares Warten; nur der Host kann einen bereits angezeigten Fall bestätigt ohne Urteil abschließen. D-09 hält im Modus „Alle sind Richter“ fremde persönliche Ordnungen und Fehler-/Schluckzahlen auch vor dem Host geheim.

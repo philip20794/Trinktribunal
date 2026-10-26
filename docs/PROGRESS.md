@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Geprüfte Planungsbasis nach Remoteabgleich: `e7b420e` (ursprünglich lokal `66eb976`). [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: Planung abgeschlossen, App-Entwicklung noch nicht begonnen.** Kein Client-/Servercode, kein neuer Datenkatalog, keine Start-/Testskripte implementiert. Keine GitHub Actions aktiviert, keine Cloudflare-Deployments ausgeführt. Die nächste Entwicklungsaufgabe ist **TT-001** und benötigt einen gesonderten Umsetzungsauftrag.
+**Aktuell: Fachentscheidungen D-01 bis D-18 vollständig für die erste Version festgelegt, Planung abgeschlossen, App-Entwicklung noch nicht begonnen.** Kein Client-/Servercode, kein neuer Datenkatalog, keine Start-/Testskripte implementiert. Keine GitHub Actions aktiviert, keine Cloudflare-Deployments ausgeführt. Die nächste Entwicklungsaufgabe ist **TT-001** und benötigt einen gesonderten Umsetzungsauftrag.
 
 ## Statusregeln
 
@@ -22,6 +22,7 @@ Statuswechsel mit Datum, Beleg und gegebenenfalls Blocker-ID erfassen. Bei einer
 | ID | Status | Ergebnis / Beleg |
 | --- | --- | --- |
 | PLAN-001 | ERLEDIGT | README, sämtliche fünf Bestandsdokumente, beide Datenformatdokumente und die damaligen Datenkataloge gelesen. 70 Aufgaben mit Abhängigkeiten, Akzeptanz, Tests, lokaler Prüfung und Abschluss; drei Planungsdokumente plus README-Verweise erstellt. Abdeckungsmatrix und technische Quellen stehen im Plan. Dokument-/Datenprüfungen siehe unten. |
+| PLAN-002 | ERLEDIGT | Alle im ersten Plan vorgeschlagenen technischen und fachlichen D-Entscheidungen D-01 bis D-18 verbindlich konsolidiert, fehlende Detailbeschlüsse dokumentiert, D-01-Slot-Widerspruch aufgelöst, D-05/07-Sonderfälle spezifiziert, README und Fachtexte abgeglichen. Rechtsnachweise bleiben externes Release-Gate, nicht offene Spielfachentscheidung. Nur Dokumentation; keine App-Tests/Builds ausgeführt. |
 
 Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IMPLEMENTATION_PLAN.md` ermitteln; keinen erfundenen oder selbstreferenziellen Commit-Hash eintragen. Ein Gitpush ist kein Anwendungsrelease.
 
@@ -122,36 +123,38 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-069 | Vollständige lokale Releaseabnahme | OFFEN | — |
 | TT-070 | Manuellen Release- und späteren CI-Prozess übergeben | OFFEN | — |
 
-## Entscheidungen und mögliche Blocker
+## Entscheidungen und verbleibende externe Release-Voraussetzungen
 
-Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschnitt 2 des Plans. D-01 (50+7, verteilte Regelereignisse, sechs Stunden Ziehhistorie), D-02 (3–20 Spieler, Frage-/Regel-/Faktor-/Namensgrenzen), D-03 (Kartenmodus ohne personenbezogene Fragen/Regeln), D-04 (Regelausschlüsse, Strafschluck, Ausnahmen), D-05-Teilbeschluss (Richter darf Referenz sein, faire Personenziehung und Neuzugangs-Zähler) und D-16 (dauerhaftes konto-loses Wiederverbinden nach vollständigem App-/Browser-Neustart) wurden am 26.10.2026 bestätigt. D-07 ist teilweise entschieden: Eine ausdrücklich ohne Urteil beendete, bereits ausgespielte Frage zählt als abgeschlossener Fall. Der implementierende Agent darf technische Umsetzungsdetails eigenständig begründet festlegen; fachliche Abweichungen erfordern Freigabe. Die übrigen D-IDs sind offen, blockieren TT-001 aber nicht. Entscheidungen im Plan, hier und bei Umsetzung im Entscheidungsdokument synchronisieren.
+**Alle D-01 bis D-18 sind für die erste Appversion entschieden.** Der Plan enthält keine offene fachliche Entscheidung, die Codex vor TT-001 oder einer späteren regulären Entwicklungsaufgabe erneut einholen müsste. Wo Messungen/Mockups technische Werte bestimmen (D-15, D-18), ist der **Entscheidungsweg** verbindlich festgelegt. Neue Produktanforderungen oder fachliche Abweichungen benötigen einen neuen Beschluss; die vorgeschlagenen Standardlösungen sind ansonsten verbindlich.
 
-| Entscheidung | Status | Nächste verantwortliche Aufgabe |
+Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die Provenienz/Nutzungsrechte übernommener Top-Ten-Fragen und der Asset-/Fontquellen sind noch nicht belegt** und bleiben ausdrücklich ein *externes Veröffentlichungs-Gate in TT-065*, das kein Codex-Agent als geklärt markieren darf. Lokale Implementierung/Testbetrieb sind davon getrennt. Android-SDK/echtes Gerät, Lizenznachweise sowie spätere Edge-/Kostenprüfungen sind Voraussetzungen der jeweiligen Tests bzw. Veröffentlichung, keine offenen D-Entscheidungen.
+
+| Entscheidung | Fachstatus | Umsetzung / Dokument |
 | --- | --- | --- |
-| D-01 – Fallzählung, Regelereignisse, 6h-Auswahlspeicher | ENTSCHIEDEN (26.10.2026) | TT-003/007/008/027/034/044/045/046/050/057; [Beschluss](decisions/D-01-game-schedule-and-six-hour-history.md) |
-| D-02 – Grenzen für Spieler, Slider und Namen | ENTSCHIEDEN (26.10.2026) | TT-003/006/009/016/020/021/034/037/053/058/062; [Beschluss](decisions/D-02-config-bounds.md) |
-| D-03 – Personenbezogene Fragen und Regeln im Kartenmodus | ENTSCHIEDEN (26.10.2026) | TT-003 (Umsetzung) |
-| D-04 – Regelkonflikte, Ausnahmen und manuelle Strafen | ENTSCHIEDEN (26.10.2026) | TT-005 (Validierung); [Beschluss](decisions/D-04-rule-conflicts.md) |
-| D-05 – Fairness der Bezugspersonen, Fragenerschöpfung, Inhaltsrechte | TEILWEISE ENTSCHIEDEN (26.10.2026; Personen-Fairness); Rest OFFEN | TT-003/005–008/025/044/045/053/056/057, TT-065; [Teilbeschluss](decisions/D-05-person-selection-fairness.md) |
-| D-06 – Rotation bei Entfernung und Reorder | OFFEN | TT-003 |
-| D-07 – Fehlende Teilnehmer und gezählter Fallabschluss ohne Urteil | TEILWEISE ENTSCHIEDEN (26.10.2026; Abschluss zählt); Rest OFFEN | TT-003/007/010/024/026/043/045/050/053/058; [Teilbeschluss](decisions/D-07-interrupted-case-completion.md) |
-| D-08 – Dauerhafter Host-Ausfall | OFFEN | TT-054 |
-| D-09 – Öffentliche und persönliche Aufdeck-/Ergebnisdaten | OFFEN | TT-034 |
-| D-10 – Zufallsvertrag und Ganzzahlrundung | OFFEN | TT-003 |
-| D-11 – UI- versus Inhaltssprache, DE/EN | OFFEN | TT-028 |
-| D-12 – Wiederaufnahme und Speicherfristen | OFFEN | TT-027, TT-055 |
-| D-13 – Vollständiger persistierter Regelzustand | OFFEN | TT-003 |
-| D-14 – Raumcode, Kollisionen, Erstellung | OFFEN | TT-034 |
-| D-15 – Finale Design-/Avatar-Assets | OFFEN | TT-013 |
-| D-16 – Dauerhafter Login-freier Raum-Rejoin, Browser-Auth und Tabs | ENTSCHIEDEN (26.10.2026) | TT-034/037–040/042/055/057/059; [Beschluss](decisions/D-16-persistent-accountless-rejoin.md) |
-| D-17 – Einfügesemantik beim Umordnen | OFFEN | TT-003 |
-| D-18 – Webrenderer/Wasm | OFFEN | TT-062 |
+| D-01 – 50+7, 6h-Historie, Verteilung der Regel-Slots | ENTSCHIEDEN | TT-003/007/008/027/034/044/045/046/050/057 · [D-01](decisions/D-01-game-schedule-and-six-hour-history.md) |
+| D-02 – Grenzen und Sliders | ENTSCHIEDEN | TT-003/006/009/016/020/021/034/037/053/058/062 · [D-02](decisions/D-02-config-bounds.md) |
+| D-03 – Kartenmodus ohne Spielerbezüge | ENTSCHIEDEN | TT-003/004/007–009 |
+| D-04 – Regeln, Konflikte und manuelle Strafen | ENTSCHIEDEN | TT-005/008/044 · [D-04](decisions/D-04-rule-conflicts.md) |
+| D-05 – Faire Personenauswahl und erschöpfter Katalog | ENTSCHIEDEN; Rechte bleiben Release-Gate | TT-003/005–008/025/044/045/053/056/057/061/065 · [D-05](decisions/D-05-person-selection-fairness.md) |
+| D-06 – Richterrotation nach Rosterwechsel | ENTSCHIEDEN | TT-003/024/025/053 · [D-06](decisions/D-06-judge-rotation-on-roster-changes.md) |
+| D-07 – Unterbrochener Fall, Abgaben, Abschluss ohne Urteil | ENTSCHIEDEN | TT-003/010/043/047/050/053/058 · [D-07](decisions/D-07-interrupted-case-completion.md) |
+| D-08 – Host-Failover nach 90 Sekunden | ENTSCHIEDEN | TT-034/043/054–057 · [D-08](decisions/D-08-host-failover.md) |
+| D-09 – Zahlen-/Ergebnis-Sichtbarkeit | ENTSCHIEDEN | TT-034/046–052/059 · [D-09](decisions/D-09-private-reveal-projections.md) |
+| D-10 – Zufall und Rundung | ENTSCHIEDEN | TT-003/006/017/044 · [D-10](decisions/D-10-random-and-rounding.md) |
+| D-11 – UI-Sprache und Host-Inhaltssprache | ENTSCHIEDEN | TT-028/034/046/061 · [D-11](decisions/D-11-language-scope.md) |
+| D-12 – Wiederaufnahme, Aufbewahrung und Raumablauf | ENTSCHIEDEN | TT-027/039/055–057 · [D-12](decisions/D-12-retention-and-resume.md) |
+| D-13 – Persistierter Zustandsvertrag | ENTSCHIEDEN | TT-003/045/056 · [D-13](decisions/D-13-persisted-rule-state.md) |
+| D-14 – Raumcode und atomare Erstellung | ENTSCHIEDEN | TT-034/037 · [D-14](decisions/D-14-room-codes.md) |
+| D-15 – Gerichtssaal-Stil und Assetsystem | ENTSCHIEDEN (Ausarbeitung in Galerie) | TT-013/014/060/065 · [D-15](decisions/D-15-visual-asset-policy.md) |
+| D-16 – Konto-loser dauerhafter Rejoin | ENTSCHIEDEN | TT-034/037–040/055/057/059 · [D-16](decisions/D-16-persistent-accountless-rejoin.md) |
+| D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
+| D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-Derzeit keine begonnene Aufgabe BLOCKIERT. Absehbare Voraussetzungen: Android-Toolchain/echtes Gerät, finale Assetquellen, englische Inhaltsprüfung und Klärung der Fragenherkunft. Authentifizierung für einen Gitpush ist getrennt von der Appfunktion und kein Grund, lokale Arbeit zu verwerfen.
+**Nächster Umsetzungsauftrag: TT-001.** Kein Fachfreigabe-Halt mehr. Nicht erledigte Akzeptanz/Tests und tatsächliche technische Blocker weiterhin ehrlich im Aufgabenregister dokumentieren.
 
 ## Prüfbeleg PLAN-001
 
-Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001** (damals 500 Fragen je Sprache, vor der Materialbereinigung/Planaktualisierung; inzwischen 491/491 Fragen und 25/25 Regeln). Seitdem wurden D-01, D-02, D-03, D-04, D-16 sowie Teile von D-05 (Personen-Fairness) und D-07 (gezählter Fallabschluss ohne Urteil) fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
+Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001** (damals 500 Fragen je Sprache, vor der Materialbereinigung/Planaktualisierung; inzwischen 491/491 Fragen und 25/25 Regeln). Seit diesem historischen Ausgangsstand wurden schließlich D-01 bis D-18 einschließlich der vollständigen D-05-/D-07-Spielmechanik fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
 
 Am 26.10.2026 lokal durchgeführt:
 
@@ -163,7 +166,7 @@ Am 26.10.2026 lokal durchgeführt:
 - Dokumentations-Diff auf Whitespace und unbeabsichtigte Dateiänderungen geprüft. Es werden ausschließlich README und drei Planungsdokumente geändert.
 - Aktuelle offizielle Flutter-/Riverpod-/Cloudflare-Dokumentation geprüft und im Plan/Workflow verlinkt. Firecrawl war ohne Credits; offizielle Quellen wurden über den verfügbaren Webzugriff gelesen.
 
-**Nicht ausgeführt:** Flutter-Analyze/-Tests/-Builds, Worker- oder Integrationstests, Android-Doctor/Builds, Cloudflare-Last-/Onlineprüfungen. Es gibt noch keinen Anwendungscode. Die im Plan genannten Akzeptanztests sind zukünftige Pflichten, keine heutigen Ergebnisse.
+**Nicht ausgeführt:** Flutter-Analyze/-Tests/-Builds, Worker- oder Integrationstests, Android-Doctor/Builds, Cloudflare-Last-/Onlineprüfungen. PLAN-002 umfasst ebenfalls keine Anwendungstests. Es gibt noch keinen Anwendungscode. Die im Plan genannten Akzeptanztests sind zukünftige Pflichten, keine heutigen Ergebnisse.
 
 ## Übergabe an den nächsten Entwicklungsauftrag
 

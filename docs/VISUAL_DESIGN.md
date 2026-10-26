@@ -70,6 +70,6 @@ Details zu Bedienung und Rollen stehen in [Screens und Nutzerabläufe](USER_FLOW
 
 Animationen unterstützen die Handlung und bleiben kurz: Akte aufklappen, Siegel brechen, Figur auf Platz setzen, Hammer fällt, Urteil stempeln. Keine Animation darf das Lesen oder Sortieren verzögern. Touch-Ziele, Kontrast und Schriftgrößen müssen auf kleinen Android-Geräten funktionieren; auf Web auch Maus und Tastatur berücksichtigen.
 
-## 6. Noch offen
+## 6. Verbindliche Designrichtung (D-15)
 
-Exakte Farbwerte/Schriften, finaler Avatar-Baukasten, Art der Bank-Grafik, konkrete Layoutgrößen und detaillierte Übergänge werden anhand erster Flutter-Mockups entschieden. Der **Mugshot-Karikaturstil, menschliche anpassbare Avatare, schlangenförmige Bank, Fallakte und thematische Geheimzahl** sind festgelegt.
+Die Stilrichtung und das lokal gebündelte, skalierbare menschliche Avatar-Ebenensystem sind entschieden. Exakte Farb-/Schriftwerte, Ebenenanker, Bankgrafik, Breakpoints und Animationen werden als **technische Gestaltungsparameter** der bedienbaren Flutter-Galerie in TT-013/014 festgelegt, nicht als offene Produktentscheidung. Schrift-/Grafikquellen erfordern vor Veröffentlichung einen dokumentierten Nutzungsnachweis (TT-065). [D-15](decisions/D-15-visual-asset-policy.md).

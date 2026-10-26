@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Zustand:** Es gibt ausschließlich Dokumentation und vier Datenkataloge: Fragen DE/EN mit je 491 Einträgen und Trinkregeln DE/EN mit je 25 Einträgen. Die nachfolgend beschriebenen Appverzeichnisse, Skripte und Tests werden erst durch die angegebenen Aufgaben erstellt. Dieser Planungsauftrag installiert nichts, implementiert keine Anwendung und führt weder GitHub Actions noch Cloudflare-Deployments aus.
+**Aktueller Zustand:** Fachentscheidungen D-01 bis D-18 sind für die Erstumsetzung verbindlich beschlossen; TT-001 braucht keine weitere Planungsfreigabe. Es gibt ausschließlich Dokumentation und vier Datenkataloge: Fragen DE/EN mit je 491 Einträgen und Trinkregeln DE/EN mit je 25 Einträgen. Die nachfolgend beschriebenen Appverzeichnisse, Skripte und Tests werden erst durch die angegebenen Aufgaben erstellt. Dieser Planungsauftrag installiert nichts, implementiert keine Anwendung und führt weder GitHub Actions noch Cloudflare-Deployments aus.
 
 Ziel: Nach TT-001 ist ein Browserfenster jederzeit mit dem aktuellen Stand bedienbar. Jeder kleine Entwicklungsschritt erhält diesen Zustand. Alle Prüfungen und Builds laufen auf dem eigenen PC; eine spätere CI darf dieselben Skripte aufrufen, ist aber keine Voraussetzung.
 
@@ -436,10 +436,10 @@ Vor dem Push Remoteänderungen vergleichen; bei Auth-/Netzproblemen bleibt der l
 1. **Aktuelle Anweisung prüfen:** Ist Implementierung jetzt beauftragt oder weiterhin nur Planung? Die Existenz dieses Plans ist keine Umsetzungserlaubnis.
 2. Repository-Anweisungen/`AGENTS.md` lesen; für Browserarbeiten `chrome-devtools` beachten. Aktuellen Branch, uncommitted Änderungen und letzte Commits prüfen.
 3. `PROGRESS.md`: IN ARBEIT/BLOCKIERT zuerst lesen, letzten Prüfbeleg und Handoff verstehen. Fertige Aufgaben nicht erneut implementieren.
-4. Im Plan genau die nächste ausgewählte Task-ID und deren Abhängigkeiten/Entscheidungen lesen; relevante Fachquelle/Module hinzunehmen, nicht das ganze Projekt neu planen.
+4. Im finalisierten Plan genau die nächste ausgewählte Task-ID und zugehörigen beschlossenen D-Dokumente lesen; relevante Fachquelle/Module hinzunehmen, nicht das ganze Projekt neu planen.
 5. Tatsächliche Dateien/Tests gegen Status prüfen. Ein grünes Kästchen ohne Code/Beleg ist kein Nachweis. Fehlende Abhängigkeit zuerst lösen oder eine unabhängige offene Aufgabe wählen.
 6. Aufgabe auf IN ARBEIT setzen, kleines Ziel benennen; letzten funktionierenden Stand mit `W` prüfen. Nicht mehrere Tasks heimlich gleichzeitig umsetzen.
-7. Konkrete Akzeptanz implementieren, relevante Tests ausführen, manual/local Gate prüfen. Bei Widerspruch D-ID bzw. neuen klaren Entscheidungseintrag ergänzen; fachliche Abweichungen nicht erfinden.
+7. Konkrete Akzeptanz implementieren, relevante Tests ausführen, manual/local Gate prüfen. Bestehende D-01–D-18-Beschlüsse anwenden; echte Widersprüche als präzisen Blocker dokumentieren, keine fachlichen Abweichungen erfinden.
 8. Bei Abschluss Beleg und Progress aktualisieren, gezielt committen, gemäß Auftrag pushen. Falls unterbrochen: genaue nächste Aktion, geänderte Dateien, offene Tests und Fehlerzustand notieren.
 
 Empfohlenes Folgeprompt-Muster:
@@ -481,3 +481,7 @@ Naechster Schritt:
 ```
 
 Jeder Meilenstein erhält einen kurzen **vom Start aus reproduzierbaren** Demoablauf. Ab M1 bleiben frühere Varianten dabei nutzbar. Bei späterer CI-Nachrüstung dürfen die lokalen Befehle nicht durch ausschließlich cloudgebundene Prüfschritte ersetzt werden.
+
+## 12. Finalisierter Plan und externes Release-Gate
+
+Die Fachentscheidungen D-01 bis D-18 sind für die erste Appversion entschieden. Codex übernimmt die Vorgaben und dokumentiert technische Detailausarbeitungen innerhalb der jeweiligen TT-Aufgabe. **TT-065 darf ohne Nachweis der Nutzungsrechte der übernommenen Fragen und aller final ausgelieferten Assets/Fonts nicht als erledigt markiert werden.** Lokale Implementierung und Tests sind davon getrennt. D-15-Galerieparameter und D-18-Renderer-Auswahl werden aufgrund der bereits beschlossenen technischen Kriterien entwickelt bzw. gemessen.

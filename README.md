@@ -38,7 +38,7 @@ Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erschein
 
 Das Projekt befindet sich in der Konzeptphase.
 
-Der vollständige Entwicklungsplan ist dokumentiert; die App wurde noch nicht implementiert. Die Umsetzung beginnt mit einer früh bedienbaren Flutter-Web-App und erfolgt mit lokalen Tests und Builds unter Windows, ohne GitHub Actions als Voraussetzung.
+Der fachlich beschlossene Entwicklungsplan ist dokumentiert; die App wurde noch nicht implementiert. Alle Spiel- und Technikentscheidungen D-01 bis D-18 sind für die erste Umsetzung festgelegt. Die Nutzungsrechte der übernommenen Inhalte sind weiterhin ein gesondertes Release-Gate und keine angenommene Freigabe. Die Umsetzung beginnt mit einer früh bedienbaren Flutter-Web-App und erfolgt mit lokalen Tests und Builds unter Windows, ohne GitHub Actions als Voraussetzung.
 
 - [Entwicklungsplan mit 70 Aufgaben und neun Meilensteinen](docs/IMPLEMENTATION_PLAN.md)
 - [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)
@@ -46,13 +46,14 @@ Der vollständige Entwicklungsplan ist dokumentiert; die App wurde noch nicht im
 - [Beschluss zur Spielverteilung und 6-Stunden-Ziehhistorie](docs/decisions/D-01-game-schedule-and-six-hour-history.md)
 - [Beschluss zu 3–20 Spielern, Schiebereglern und Namenslängen](docs/decisions/D-02-config-bounds.md)
 - [Beschluss zur konto-losen, dauerhaften Multiplayer-Wiederverbindung](docs/decisions/D-16-persistent-accountless-rejoin.md)
-- [Teilbeschluss zur fairen Auswahl von Spielerbezügen](docs/decisions/D-05-person-selection-fairness.md)
+- [Faire Auswahl von Spielerbezügen und Katalogerschöpfung](docs/decisions/D-05-person-selection-fairness.md)
+- [Beschlossene Detailentscheidungen D-06 bis D-18](docs/PROGRESS.md)
 
 ## Fragenkatalog
 
-Der deutschsprachige Fragenkatalog mit 500 Aufgaben liegt unter [data/questions/top-ten/de.json](data/questions/top-ten/de.json). Das Datenformat ist in [data/questions/README.md](data/questions/README.md) beschrieben.
+Der deutschsprachige Fragenkatalog mit 491 Aufgaben liegt unter [data/questions/top-ten/de.json](data/questions/top-ten/de.json). Das Datenformat ist in [data/questions/README.md](data/questions/README.md) beschrieben.
 
-Die [englische Fassung mit denselben 500 Aufgaben-IDs](data/questions/top-ten/en.json) ist ebenfalls vorhanden.
+Die [englische Fassung mit denselben 491 Aufgaben-IDs](data/questions/top-ten/en.json) ist ebenfalls vorhanden.
 
 ## Technische Dokumentation
 
