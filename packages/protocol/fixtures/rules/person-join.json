@@ -1,0 +1,28 @@
+{
+  "fixtureId": "TT003-PERSON-JOIN-MAX",
+  "decisionRefs": [
+    "D-05",
+    "D-16"
+  ],
+  "operation": "joinPlayerWithFairnessCounter",
+  "input": {
+    "activeCounters": {
+      "A": 4,
+      "B": 4,
+      "C": 5
+    },
+    "newPlayerId": "D",
+    "joinKind": "new",
+    "roundInProgress": true
+  },
+  "expected": {
+    "pendingUntilNextCaseBoundary": true,
+    "newCounter": 5,
+    "subsequentMinimumCandidateIds": [
+      "A",
+      "B"
+    ],
+    "counterScope": "game"
+  },
+  "notes": "A new player does not receive catch-up references."
+}
