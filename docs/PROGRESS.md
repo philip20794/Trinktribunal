@@ -151,6 +151,8 @@ Derzeit keine begonnene Aufgabe BLOCKIERT. Absehbare Voraussetzungen: Android-To
 
 ## Prüfbeleg PLAN-001
 
+Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001**. Seitdem wurden D-03 und D-04 fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
+
 Am 26.10.2026 lokal durchgeführt:
 
 - Gitstatus und versionierte Dateien geprüft: Ausgangsbranch `main`, Commit `66eb976`; bereits unversioniert `.idea/`. Remote enthielt zusätzlich `e7b420e` mit vollständigen englischen Fragen; konfliktfrei per Fast-forward übernommen und im Plan berücksichtigt. Keine neuen Dateninhalte durch diesen Planungsauftrag erstellt.
