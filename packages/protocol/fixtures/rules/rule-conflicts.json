@@ -1,0 +1,34 @@
+{
+  "fixtureId": "TT003-CONFLICTS-D04",
+  "decisionRefs": [
+    "D-04"
+  ],
+  "operation": "validateRuleCompatibility",
+  "input": {
+    "incompatiblePairs": [
+      [
+        "left_hand_drinking",
+        "two_hands_drinking"
+      ],
+      [
+        "two_hands_drinking",
+        "touch_player_while_drinking"
+      ]
+    ],
+    "compatiblePair": [
+      "imaginary_kobold",
+      "imaginary_fly"
+    ]
+  },
+  "expected": {
+    "incompatible": [
+      true,
+      true
+    ],
+    "compatible": true,
+    "violationsManuallyEnforced": true,
+    "penaltyPerIndependentViolation": 1,
+    "penaltyChainsAllowed": false
+  },
+  "notes": "Only the two decided symmetric rule exclusions; kobold and fly may coexist."
+}
