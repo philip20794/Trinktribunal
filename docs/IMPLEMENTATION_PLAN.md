@@ -29,7 +29,7 @@ Durchgeführte Bestandsprüfung: alle vier Dateien als UTF-8-JSON geparst; Frage
 
 ### Bereits durch die Dokumentation festgelegt
 
-- Drei Varianten: Kartenmodus ohne Namenspflicht; ein Gerät mit Spielerregister; Multiplayer ohne Konto. „Alle sind Richter“ ausschließlich im Multiplayer.
+- Drei Varianten: Kartenmodus ohne Namenspflicht; ein Gerät mit Spielerregister; Multiplayer ohne Konto und Login, aber mit gerätegebundenem, dauerhaft gespeichertem Resume-Token zur Wiederaufnahme laufender Räume nach Schließen/Neustart (D-16). „Alle sind Richter“ ausschließlich im Multiplayer.
 - Standard: 50 Fragen, sieben zusätzliche Regelereignisse, Faktor 1,5. `N` ist die gesamte aktive Spielerzahl einschließlich Richter, `X = ceil(N × Faktor)`. Zahlen ohne Wiederholung; normal `N-1` Empfänger, alle Richter `N`. Ungültige Konfigurationen mit zu kleinem `X` ablehnen. **D-01:** Regelereignisse werden zufällig gleichmäßig zwischen den Fällen verteilt; Fragen und Regeln bevorzugen IDs ohne Verwendung in den letzten sechs Stunden, sonst die in diesem Zeitraum am seltensten gezogenen gültigen IDs. Sprachwechsel umgeht die Historie nicht. Unabhängig davon keine Wiederholung einer ID innerhalb derselben Partie.
 - Korrekte Ordnung ist die nach Geheimzahl aufsteigend sortierte Liste der beteiligten IDs, auch bei Lücken im Zahlenbereich. Fehler sind falsche **Positionen**, keine Inversionen und keine Differenz von Zahlenwerten.
 - Normal: Richter erhält `E` Schlucke; jeder der `E` falsch platzierten Spieler ebenfalls `E`; richtig platzierte Spieler null. Alle Richter: je Person ausschließlich Fehler ihrer eigenen vollständigen Ordnung; keine Addition aus fremden Urteilen. Eine gültige Permutation hat null oder mindestens zwei Fehlpositionen.
@@ -99,7 +99,7 @@ docs/{decisions,qa}/      # Entscheidungs- und lokale Prüfbelege
 | `domain` | Unveränderliche `Player`, `AvatarConfig`, `GameConfig`, `GameState`, `RoundState`, `QuestionAssignment` (nur Fall), `RuleActivation` (Partie), `Verdict`. `reduce(state, action, randomChoices)` liefert neuen Zustand oder typisierten Fehler. Uhr/Zufall injizieren, kein IO; 6-Stunden-Historie als Eingabedaten mit testbarer Auswahllogik, ohne IO im Reducer. |
 | `application` | Riverpod `ProviderScope` und getrennte Controller für Profil, lokale Session und Raum. UI sendet Absichten; nur Controller ändern Zustand. Keine Regeln in Widgets, kein Netzwerk in Reducern. |
 | Session-Fassade | Gleiche lesbare `SessionView` und Aktionen für Screens; lokal Dart-Engine, online autorisierte Serveransicht. Client berechnet online nie ein verbindliches Urteil. Kein stiller Online-zu-Lokal-Wechsel bei Abbruch. |
-| Datenadapter | `CatalogRepository`, `ProfileStore`, `LocalGameStore`, `ContentUsageStore` (zeitlich verfallende ID-Ziehungen) und `RoomTransport`. Fakes für Tests; Kataloge unveränderlich/typisiert. Dart-Websocketadapter unterstützt Web und Android ohne `dart:io` im gemeinsamen Code. |
+| Datenadapter | `CatalogRepository`, `ProfileStore`, `LocalGameStore`, `ContentUsageStore` (zeitlich verfallende ID-Ziehungen), `RoomCredentialStore` (dauerhafte raumgebundene Wiederverbindungsdaten, Web IndexedDB und Android geschützter Speicher) und `RoomTransport`. Fakes für Tests; Kataloge unveränderlich/typisiert. Dart-Websocketadapter unterstützt Web und Android ohne `dart:io` im gemeinsamen Code. |
 | Avatar-Katalog | Versionierte erlaubte Baustein-/Farb-IDs, Ebenenreihenfolge und Anker. Keine frei angelieferten URLs/SVGs. `avatarRevision` monoton; alte Änderungen verwerfen. |
 | Worker | Routing, begrenzte HTTP-Eingaben, Origin/CORS, Raumadressierung. Maßgebliche Raumaktionen und Autorisierung im DO, nicht nur an HTTP-Rand. |
 | Raum-DO | Serialisierte Transition, Rechte, Idempotenz, Persistenz, öffentliche/private Projektion. Erfolgreiche Mutation dauerhaft speichern, dann veröffentlichen. Rehydrierung statt ausschließlich RAM-Zustand. |
@@ -485,10 +485,10 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-034 – Multiplayer-Nachrichten und private Projektionen spezifizieren
 
-- **Umsetzung:** D-09/14/16 entscheiden; Schemas für Create/Join/Auth, Aktionen, ACK/Fehler, Snapshot/Deltas. Versions-/Hash-Handshake, Host-/Richter-Rechtematrix und Sichtbarkeit jeder Phase. Resume-Tokenentropie/-speicherung und Mehrfachsocket-Regel festlegen. Gemäß D-01 optional begrenzte/validierte **private 6h-Host-Historie** beim Raumstart und private idempotente Ziehereignis-Rückgabe an denselben Host definieren (IDs, UTC-Zeit, deduplizierende Ereignis-ID; ohne Spielernamen/Antworten). Keine Raumhistorie im öffentlichen Snapshot.
+- **Umsetzung:** D-09/14 entscheiden; D-16 ist beschlossen: HTTP-Join mit privater playerId und hochentropem Resume-Token, gerätegebundene dauerhafte Speicherung, Fortsetzen nach Browser-/App-Neustart, getrennte Raumzuordnungen und bewusstes Beitreten als neuer Spieler. Schemas für Create/Join/Auth/Resume/Leave, Aktionen, ACK/Fehler, Snapshot/Deltas. Versions-/Hash-Handshake, Host-/Richter-Rechtematrix und Sichtbarkeit jeder Phase; Ablauf/Widerruf sowie abgelöste Verbindungen definieren. Gemäß D-01 optional begrenzte/validierte **private 6h-Host-Historie** beim Raumstart und private idempotente Ziehereignis-Rückgabe an denselben Host definieren (IDs, UTC-Zeit, deduplizierende Ereignis-ID; ohne Spielernamen/Antworten). Keine Raumhistorie im öffentlichen Snapshot.
 - **Dateien:** `packages/protocol/schemas/`, `fixtures/messages/`, `docs/decisions/004-room-protocol.md`, `packages/protocol/README.md`.
 - **Abhängigkeiten:** TT-003, TT-033.
-- **Akzeptanz:** Jeder Nachrichtentyp hat Positiv-/Negativbeispiel, Größenbegrenzung, Rolle und Phase; Secret nicht in öffentlichem Snapshot/Link/Fehler. Auth-Handshake löst Browser-Headerproblem ohne URL-Token.
+- **Akzeptanz:** Jeder Nachrichtentyp hat Positiv-/Negativbeispiel, Größenbegrenzung, Rolle und Phase; Secret nicht in öffentlichem Snapshot/Link/Fehler. Auth-Handshake löst Browser-Headerproblem ohne URL-Token. Fortsetzen derselben playerId nach vollständigem Geräte-App-/Browser-Neustart, Widerruf/Leave und zwei Tabs sind als D-16-Fälle spezifiziert.
 - **Auto:** Schemaprüfung aller Fixtures (`D`); Fixtures für unerlaubte Felder und Versionskonflikte.
 - **Manuell / lokal:** Öffentliche/private Nachricht pro Phase gegeneinander lesen; `W` lokale Modi vorführen.
 - **Abschluss:** G; Vertrag hinreichend für unabhängige Dart-/TS-Adapter.
@@ -515,7 +515,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-037 – Raum erstellen und beitreten, atomar und begrenzt
 
-- **Umsetzung:** Codeadressierung nach D-14, atomare Erstellung, Join mit Profilvalidierung und Raumkapazität. Zufällige stabile playerId und kryptografisches Resume-Token nur privat ausgeben; Hash/HMAC-Verifier serverseitig. Minimale Raum-/Join-Ratenlimits schon jetzt.
+- **Umsetzung:** Codeadressierung nach D-14, atomare Erstellung, Join mit Profilvalidierung und Raumkapazität. Zufällige stabile playerId und kryptografisches Resume-Token nur privat ausgeben; Hash/HMAC-Verifier serverseitig. Wiederaufnahme bestehender Identität gemäß D-16 ohne neuen Spieler, Widerruf beim Verlassen/Entfernen. Minimale Raum-/Join-Ratenlimits schon jetzt.
 - **Dateien:** `apps/server/src/{http/rooms.ts,room/room.ts,security/tokens.ts}`, `test/room/create_join.test.ts`.
 - **Abhängigkeiten:** TT-036.
 - **Akzeptanz:** Kollision überschreibt keinen Raum; voller/abgelaufener Raum verständlich abgelehnt; fremder Code ohne Token verleiht keine Hostrechte; ungültiger Join erzeugt keine persistierte Partie.
@@ -525,7 +525,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-038 – Authentifizierten Hibernation-WebSocket anschließen
 
-- **Umsetzung:** Worker leitet Upgrade zum Raum; `ctx.acceptWebSocket`, erste Nachricht authentifiziert; davor keine Raumdaten. Autorisierte Identität/Socketgeneration in Attachments, Timeout/Originprüfung/Connection-Limits; Token nicht loggen. Neue Verbindung derselben ID ersetzt alte nach Vertrag.
+- **Umsetzung:** Worker leitet Upgrade zum Raum; `ctx.acceptWebSocket`, erste Nachricht authentifiziert das D-16-Resume-Token; davor keine Raumdaten. Autorisierte Identität/Socketgeneration in Attachments, Timeout/Originprüfung/Connection-Limits; Token nicht loggen. Neue Verbindung derselben ID ersetzt alte nach Vertrag und informiert den abgelösten Tab.
 - **Dateien:** `apps/server/src/room/{sockets,projection}.ts`, `test/room/socket_auth.test.ts`.
 - **Abhängigkeiten:** TT-037.
 - **Akzeptanz:** Unauthentifizierter/falscher Token erhält keinen Snapshot; Host- und Spieleridentität nicht aus behauptetem playerId-Feld; nur erlaubte Origins, ein aktiver Socket pro Spieler.
@@ -535,10 +535,10 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-039 – Clienttransport mit klaren Verbindungszuständen
 
-- **Umsetzung:** Web/Android-Adapter für HTTP-Join + WS-Auth, `connecting/online/reconnecting/closed/error`; begrenzter Backoff mit Jitter; Credentials pro Sitzung; Serveransichten über Riverpod. Nur sicher wiederholbare Aktionen mit derselben ID erneut senden.
+- **Umsetzung:** Web/Android-Adapter für HTTP-Join + WS-Auth, `connecting/online/reconnecting/closed/error`; begrenzter Backoff mit Jitter. D-16: `RoomCredentialStore` als persistenter raumbezogener Speicher (Web bevorzugt IndexedDB, Android Keystore-gestützt), mehrere Räume verwalten, gültige Tokens bei Neustart für Fortsetzen anbieten, nach Leave/Kick/Expiry bereinigen. Keine Tokens im Profilstore oder Offlinecache. Serveransichten über Riverpod. Nur sicher wiederholbare Aktionen mit derselben ID erneut senden.
 - **Dateien:** `apps/client/lib/data/room_transport.dart`, `lib/application/room_controller.dart`, `test/data/room_transport_test.dart`.
 - **Abhängigkeiten:** TT-038.
-- **Akzeptanz:** Offline lokale Modi funktionieren weiter; Multiplayer zeigt Status und führt keine simulierten Serverergebnisse aus; Netzwerkverlust stoppt autoritative Aktionen verständlich.
+- **Akzeptanz:** Offline lokale Modi funktionieren weiter; Multiplayer zeigt Status und führt keine simulierten Serverergebnisse aus; Netzwerkverlust stoppt autoritative Aktionen verständlich. Vollständiges Schließen und erneutes Öffnen des Browsers/der Android-App findet gültige Raum-Credentials wieder; gesperrter oder gelöschter Speicher führt zu verständlichem Neueinstieg.
 - **Auto:** Fake-Transport für ACK-Verlust, Parserfehler, Reconnectabbruch, Versionsfehler; Timer mittels Testuhr.
 - **Manuell / lokal:** `C`, `MP`; Worker beenden/neustarten, UI darf nicht einfrieren.
 - **Abschluss:** G; erster Client-Raumkontakt lokal nachweisbar.
