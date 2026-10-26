@@ -56,9 +56,9 @@
         }
       },
       "scale": {
-        "green": "They couldn't care less",
+        "green": "{player1} couldn't care less",
         "connector": "to",
-        "red": "It breaks their heart forever"
+        "red": "It breaks {player1}'s heart forever"
       }
     },
     {
@@ -242,9 +242,9 @@
         }
       },
       "scale": {
-        "green": "Completely useless to him",
+        "green": "Completely useless to {player1}",
         "connector": "to",
-        "red": "Incredibly useful to him"
+        "red": "Incredibly useful to {player1}"
       }
     },
     {
@@ -301,9 +301,9 @@
         }
       },
       "scale": {
-        "green": "His date runs for the hills",
+        "green": "The date runs for the hills",
         "connector": "to",
-        "red": "His date thinks they've found true love"
+        "red": "The date thinks they've found true love"
       }
     },
     {
@@ -518,9 +518,9 @@
         }
       },
       "scale": {
-        "green": "He has absolutely no use for it",
+        "green": "{player1} has absolutely no use for it",
         "connector": "to",
-        "red": "He desperately needs it"
+        "red": "{player1} desperately needs it"
       }
     },
     {
@@ -737,7 +737,7 @@
       "scale": {
         "green": "A small favor",
         "connector": "to",
-        "red": "They'll hate you for it"
+        "red": "{player1} will hate you for it"
       }
     },
     {
@@ -943,9 +943,9 @@
         }
       },
       "scale": {
-        "green": "So annoying he'll hate it",
+        "green": "So annoying that {player1} hates it",
         "connector": "to",
-        "red": "So good he'll want to keep it"
+        "red": "So good that {player1} wants to keep it"
       }
     },
     {
@@ -1207,9 +1207,9 @@
         }
       },
       "scale": {
-        "green": "He's bitterly disappointed",
+        "green": "{player1} is bitterly disappointed",
         "connector": "to",
-        "red": "He's jumping for joy"
+        "red": "{player1} is jumping for joy"
       }
     },
     {
@@ -1320,9 +1320,9 @@
         }
       },
       "scale": {
-        "green": "He's terrible at it",
+        "green": "{player1} is terrible at it",
         "connector": "to",
-        "red": "He's brilliant at it"
+        "red": "{player1} is brilliant at it"
       }
     },
     {
@@ -1447,9 +1447,9 @@
         }
       },
       "scale": {
-        "green": "The worst possible fate for him",
+        "green": "The worst possible fate for {player1}",
         "connector": "to",
-        "red": "An amazing transformation for him"
+        "red": "An amazing transformation for {player1}"
       }
     },
     {
@@ -1719,9 +1719,9 @@
         }
       },
       "scale": {
-        "green": "He'd rather die than attend",
+        "green": "{player1} would rather die than attend",
         "connector": "to",
-        "red": "He wouldn't miss it for the world"
+        "red": "{player1} wouldn't miss it for the world"
       }
     },
     {
@@ -2058,9 +2058,9 @@
         }
       },
       "scale": {
-        "green": "Not tempting to the Captain at all",
+        "green": "Not tempting to {player1} at all",
         "connector": "to",
-        "red": "Absolutely irresistible to the Captain"
+        "red": "Absolutely irresistible to {player1}"
       }
     },
     {
@@ -2411,9 +2411,9 @@
         }
       },
       "scale": {
-        "green": "He'd barely miss it",
+        "green": "{player1} would barely miss it",
         "connector": "to",
-        "red": "He'd miss it terribly"
+        "red": "{player1} would miss it terribly"
       }
     },
     {
@@ -2641,7 +2641,7 @@
       "scale": {
         "green": "Not believable at all",
         "connector": "to",
-        "red": "They're shaking in their boots"
+        "red": "{player1} is trembling with fear"
       }
     },
     {
@@ -2933,9 +2933,9 @@
         }
       },
       "scale": {
-        "green": "He'd never wear it",
+        "green": "{player1} would never wear it",
         "connector": "to",
-        "red": "He'd wear it every day"
+        "red": "{player1} would wear it every day"
       }
     },
     {
@@ -3159,9 +3159,9 @@
         }
       },
       "scale": {
-        "green": "He'd want to abandon it by the roadside",
+        "green": "{player1} would want to abandon it by the roadside",
         "connector": "to",
-        "red": "The pet he's always dreamed of"
+        "red": "The pet {player1} has always dreamed of"
       }
     },
     {
@@ -3313,9 +3313,9 @@
         }
       },
       "scale": {
-        "green": "A little scare",
+        "green": "A minor scare for {player1}",
         "connector": "to",
-        "red": "The fright of his life"
+        "red": "The fright of {player1}'s life"
       }
     },
     {
@@ -3557,9 +3557,9 @@
         }
       },
       "scale": {
-        "green": "Nothing like him",
+        "green": "Nothing like {player1}",
         "connector": "to",
-        "red": "Exactly like him"
+        "red": "A perfect match for {player1}"
       }
     },
     {
@@ -3983,9 +3983,9 @@
         }
       },
       "scale": {
-        "green": "Doesn't suit them at all",
+        "green": "Doesn't suit {player1} at all",
         "connector": "to",
-        "red": "Suits them perfectly"
+        "red": "Suits {player1} perfectly"
       }
     },
     {
@@ -4123,9 +4123,9 @@
         }
       },
       "scale": {
-        "green": "Completely unsuited to it",
+        "green": "{player1} would be completely unsuited to the job",
         "connector": "to",
-        "red": "A perfect fit"
+        "red": "A perfect job for {player1}"
       }
     },
     {
@@ -4241,9 +4241,9 @@
         }
       },
       "scale": {
-        "green": "Their worst nightmare",
+        "green": "{player1}'s worst nightmare",
         "connector": "to",
-        "red": "Their absolute dream"
+        "red": "{player1}'s absolute dream"
       }
     },
     {
@@ -4458,9 +4458,9 @@
         }
       },
       "scale": {
-        "green": "Never says it",
+        "green": "{player1} never uses the word",
         "connector": "to",
-        "red": "Says it all the time"
+        "red": "{player1} uses the word all the time"
       }
     },
     {
@@ -4668,7 +4668,7 @@
       "scale": {
         "green": "Guaranteed rejection",
         "connector": "to",
-        "red": "An enthusiastic yes"
+        "red": "{player1} is guaranteed to say yes"
       }
     },
     {
