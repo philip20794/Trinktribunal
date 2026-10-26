@@ -220,6 +220,8 @@ D-16: Web-Resume-Tokens werden **persistent pro Browser-Origin/-Profil** (vorzug
 | --- | --- |
 | Browser reload und vollständiges Schließen/erneutes Öffnen | gleiche playerId, autorisierter Snapshot, Zahl wieder verdeckt, kein zusätzlicher Join; TT-039/040/057 |
 | Ein Teilnehmer offline, dann online | begrenzter Backoff, kein doppelter Join/Urteil; TT-039/057 |
+| Angezeigten Fall ausdrücklich ohne Urteil abschließen (D-07) | Fortschritt +1, keine Ersatzfrage/kein fingiertes Urteil, planmäßiger Regel-Slot und Richterwechsel genau einmal; TT-010/043/050 |
+| Abbruchbestätigung verwerfen oder doppelte Fallabschlussaktion | Kein Fortschritt bei verworfener Bestätigung, ansonsten höchstens ein Abschluss; TT-010/043/045 |
 | Android-App schließen und erneut öffnen | Bei gültigem Token denselben Spieler und Raum fortsetzen; TT-039/057 |
 | Browser-Token lokal gelöscht oder Raum abgelaufen | Klarer Neueinstieg ohne unberechtigte Identitätsübernahme; TT-039/055/057 |
 | Zwei Tabs mit derselben playerId | Neuere autorisierte Verbindung ersetzt die alte; kein doppelter Spieler; TT-038/042/057 |
@@ -249,6 +251,10 @@ Erst nach erfolgreichem Loopbacktest und ausdrücklich gewünschtem LAN-Test:
 - Auf einem echten Handy ist `127.0.0.1` das Handy, nicht der PC. Androidemulator erreicht den PC typischerweise über `10.0.2.2`; Gerätepfad separat dokumentieren.
 - Service Worker funktionieren auf localhost als sicherem Entwicklungskontext; gewöhnliches LAN-HTTP ist kein zuverlässiger PWA-/Offlinetest. Dafür localhost am PC oder ein bewusst eingerichtetes vertrauenswürdiges lokales HTTPS verwenden.
 - Android-Debug darf für lokalen Worker gezielt HTTP erlauben; Releasekonfiguration HTTPS/WSS. Keine globale Cleartext-Freigabe für Release.
+
+### Angezeigte Frage ohne Urteil abschließen (D-07, Teilbeschluss)
+
+Ab TT-010/043/050 mit F=3, R=2 testen: Ein nach Anzeige ausdrücklich ohne Urteil abgeschlossener Fall zählt einmal zum Fortschritt; es wird **keine Ersatzfrage für dieselbe Fallnummer** gezogen und kein künstliches Urteil/Trinken erzeugt. Normaler Richterwechsel genau einmal; nächste Ereignislücke nach D-01 genau einmal; letzter Fall beendet die Partie. Reiner Disconnect bewirkt **keinen** Abschluss, ein verworfener Bestätigungsdialog ebenfalls nicht. Duplicate Action/ACK oder Resume dürfen die Fallzahl nicht doppelt erhöhen. [D-07-Teilbeschluss](decisions/D-07-interrupted-case-completion.md).
 
 ### Personenreferenzen fair auslosen (D-05, Teilbeschluss)
 
