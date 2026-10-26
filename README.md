@@ -30,7 +30,7 @@ Ein Spieler erstellt einen Raum, die anderen treten bei. Alle erhalten ihre Zahl
 
 ## Spielwelt
 
-Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erscheinen als kleine, individualisierbare Getränkefiguren mit Namen, Gesichtern und Accessoires – zum Beispiel als Bierkrug oder Schnapsglas. Beim Sortieren stehen die Figuren auf der Anklagebank.
+Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erscheinen als anpassbare menschliche Karikaturen mit Namen, Gesichtszügen, Frisuren und Accessoires im Stil von Polizeifotos. Zum Sortieren stehen sie auf einer schlangenförmig angeordneten Anklagebank.
 
 ## Status
 
@@ -47,3 +47,4 @@ Der deutschsprachige Fragenkatalog mit 500 Aufgaben liegt unter [data/questions/
 
 - [Architektur und Projektstruktur](docs/ARCHITECTURE.md)
 - [Multiplayer-Optimierung und Free-Tier-Limits](docs/MULTIPLAYER_OPTIMIZATION.md)
+- [Visuelles Konzept, Avatare und Screens](docs/VISUAL_DESIGN.md)
