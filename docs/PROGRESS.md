@@ -124,7 +124,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 
 ## Entscheidungen und mögliche Blocker
 
-Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschnitt 2 des Plans. D-01 (50+7, verteilte Regelereignisse, sechs Stunden Ziehhistorie), D-02 (3–20 Spieler, Frage-/Regel-/Faktor-/Namensgrenzen), D-03 (Kartenmodus ohne personenbezogene Fragen/Regeln), D-04 (Regelausschlüsse, Strafschluck, Ausnahmen) und D-16 (dauerhaftes konto-loses Wiederverbinden nach vollständigem App-/Browser-Neustart) wurden am 26.10.2026 bestätigt. Der implementierende Agent darf technische Umsetzungsdetails eigenständig begründet festlegen; fachliche Abweichungen erfordern Freigabe. Die übrigen D-IDs sind offen, blockieren TT-001 aber nicht. Entscheidungen im Plan, hier und bei Umsetzung im Entscheidungsdokument synchronisieren.
+Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschnitt 2 des Plans. D-01 (50+7, verteilte Regelereignisse, sechs Stunden Ziehhistorie), D-02 (3–20 Spieler, Frage-/Regel-/Faktor-/Namensgrenzen), D-03 (Kartenmodus ohne personenbezogene Fragen/Regeln), D-04 (Regelausschlüsse, Strafschluck, Ausnahmen), D-05-Teilbeschluss (Richter darf Referenz sein, faire Personenziehung und Neuzugangs-Zähler) und D-16 (dauerhaftes konto-loses Wiederverbinden nach vollständigem App-/Browser-Neustart) wurden am 26.10.2026 bestätigt. Der implementierende Agent darf technische Umsetzungsdetails eigenständig begründet festlegen; fachliche Abweichungen erfordern Freigabe. Die übrigen D-IDs sind offen, blockieren TT-001 aber nicht. Entscheidungen im Plan, hier und bei Umsetzung im Entscheidungsdokument synchronisieren.
 
 | Entscheidung | Status | Nächste verantwortliche Aufgabe |
 | --- | --- | --- |
@@ -132,7 +132,7 @@ Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschn
 | D-02 – Grenzen für Spieler, Slider und Namen | ENTSCHIEDEN (26.10.2026) | TT-003/006/009/016/020/021/034/037/053/058/062; [Beschluss](decisions/D-02-config-bounds.md) |
 | D-03 – Personenbezogene Fragen und Regeln im Kartenmodus | ENTSCHIEDEN (26.10.2026) | TT-003 (Umsetzung) |
 | D-04 – Regelkonflikte, Ausnahmen und manuelle Strafen | ENTSCHIEDEN (26.10.2026) | TT-005 (Validierung); [Beschluss](decisions/D-04-rule-conflicts.md) |
-| D-05 – Fragenredaktion, Bezugspersonen, Nutzungsnachweise | OFFEN | TT-005, Abschluss TT-065 |
+| D-05 – Fairness der Bezugspersonen, Fragenerschöpfung, Inhaltsrechte | TEILWEISE ENTSCHIEDEN (26.10.2026; Personen-Fairness); Rest OFFEN | TT-003/005–008/025/044/045/053/056/057, TT-065; [Teilbeschluss](decisions/D-05-person-selection-fairness.md) |
 | D-06 – Rotation bei Entfernung und Reorder | OFFEN | TT-003 |
 | D-07 – Fehlende Teilnehmer und neutraler Fallabbruch | OFFEN | TT-043 |
 | D-08 – Dauerhafter Host-Ausfall | OFFEN | TT-054 |
@@ -151,7 +151,7 @@ Derzeit keine begonnene Aufgabe BLOCKIERT. Absehbare Voraussetzungen: Android-To
 
 ## Prüfbeleg PLAN-001
 
-Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001** (damals 500 Fragen je Sprache, vor der Materialbereinigung/Planaktualisierung; inzwischen 491/491 Fragen und 25/25 Regeln). Seitdem wurden D-01, D-02, D-03, D-04 und D-16 fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
+Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001** (damals 500 Fragen je Sprache, vor der Materialbereinigung/Planaktualisierung; inzwischen 491/491 Fragen und 25/25 Regeln). Seitdem wurden D-01, D-02, D-03, D-04, D-16 und die Personen-Fairness als Teil von D-05 fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
 
 Am 26.10.2026 lokal durchgeführt:
 
