@@ -124,7 +124,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 
 ## Entscheidungen und mögliche Blocker
 
-Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschnitt 2 des Plans. D-01 (50+7, verteilte Regelereignisse, sechs Stunden Ziehhistorie), D-03 (Kartenmodus ohne personenbezogene Fragen/Regeln) und D-04 (Regelausschlüsse, Strafschluck, Ausnahmen) wurden am 26.10.2026 bestätigt. Der implementierende Agent darf technische Umsetzungsdetails eigenständig begründet festlegen; fachliche Abweichungen erfordern Freigabe. Die übrigen D-IDs sind offen, blockieren TT-001 aber nicht. Entscheidungen im Plan, hier und bei Umsetzung im Entscheidungsdokument synchronisieren.
+Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschnitt 2 des Plans. D-01 (50+7, verteilte Regelereignisse, sechs Stunden Ziehhistorie), D-03 (Kartenmodus ohne personenbezogene Fragen/Regeln), D-04 (Regelausschlüsse, Strafschluck, Ausnahmen) und D-16 (dauerhaftes konto-loses Wiederverbinden nach vollständigem App-/Browser-Neustart) wurden am 26.10.2026 bestätigt. Der implementierende Agent darf technische Umsetzungsdetails eigenständig begründet festlegen; fachliche Abweichungen erfordern Freigabe. Die übrigen D-IDs sind offen, blockieren TT-001 aber nicht. Entscheidungen im Plan, hier und bei Umsetzung im Entscheidungsdokument synchronisieren.
 
 | Entscheidung | Status | Nächste verantwortliche Aufgabe |
 | --- | --- | --- |
@@ -143,7 +143,7 @@ Ausführliche Vorschläge, Auswirkungen und Entscheidungspunkte stehen in Abschn
 | D-13 – Vollständiger persistierter Regelzustand | OFFEN | TT-003 |
 | D-14 – Raumcode, Kollisionen, Erstellung | OFFEN | TT-034 |
 | D-15 – Finale Design-/Avatar-Assets | OFFEN | TT-013 |
-| D-16 – Resume-Token, Browser-Auth und mehrere Tabs | OFFEN | TT-034 |
+| D-16 – Dauerhafter Login-freier Raum-Rejoin, Browser-Auth und Tabs | ENTSCHIEDEN (26.10.2026) | TT-034/037–040/042/055/057/059; [Beschluss](decisions/D-16-persistent-accountless-rejoin.md) |
 | D-17 – Einfügesemantik beim Umordnen | OFFEN | TT-003 |
 | D-18 – Webrenderer/Wasm | OFFEN | TT-062 |
 
@@ -151,7 +151,7 @@ Derzeit keine begonnene Aufgabe BLOCKIERT. Absehbare Voraussetzungen: Android-To
 
 ## Prüfbeleg PLAN-001
 
-Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001** (damals 500 Fragen je Sprache, vor der Materialbereinigung/Planaktualisierung; inzwischen 491/491 Fragen und 25/25 Regeln). Seitdem wurden D-01, D-03 und D-04 fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
+Die folgenden Angaben dokumentieren den **historischen Ausgangsstand von PLAN-001** (damals 500 Fragen je Sprache, vor der Materialbereinigung/Planaktualisierung; inzwischen 491/491 Fragen und 25/25 Regeln). Seitdem wurden D-01, D-03, D-04 und D-16 fachlich entschieden; insbesondere sind die damals leeren `excludes`-Listen durch die zwei bestätigten gegenseitigen Ausschlusspaare ersetzt worden. Maßgeblich für den aktuellen Bestand sind die Katalogdateien und die Entscheidungstabelle oben.
 
 Am 26.10.2026 lokal durchgeführt:
 
