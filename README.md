@@ -42,5 +42,8 @@ Der deutschsprachige Fragenkatalog mit 500 Aufgaben liegt unter [data/questions/
 
 ## Technische Dokumentation
 
+**Technik:** Flutter (Dart) für Android und Web; Cloudflare Workers und Durable Objects für Multiplayer. Lokale Spielvarianten benötigen keinen Server.
+
+
 - [Architektur und Projektstruktur](docs/ARCHITECTURE.md)
 - [Multiplayer-Optimierung und Free-Tier-Limits](docs/MULTIPLAYER_OPTIMIZATION.md)
