@@ -1,0 +1,65 @@
+{
+  "fixtureId": "TT003-CONFIG-BOUNDARIES",
+  "decisionRefs": [
+    "D-02",
+    "D-10"
+  ],
+  "operation": "validateConfigCases",
+  "input": {
+    "cases": [
+      {
+        "mode": "physical_cards",
+        "playerCount": 3,
+        "targetCases": 431,
+        "requestedRuleEvents": 22,
+        "factorTenths": 10,
+        "allJudges": false,
+        "eligibleQuestions": 431,
+        "eligibleRules": 22
+      },
+      {
+        "mode": "multiplayer",
+        "playerCount": 20,
+        "targetCases": 491,
+        "requestedRuleEvents": 25,
+        "factorTenths": 30,
+        "allJudges": true,
+        "eligibleQuestions": 491,
+        "eligibleRules": 25
+      },
+      {
+        "mode": "physical_cards",
+        "playerCount": 21,
+        "targetCases": 432,
+        "requestedRuleEvents": 23,
+        "factorTenths": 31,
+        "allJudges": true,
+        "eligibleQuestions": 431,
+        "eligibleRules": 22
+      }
+    ]
+  },
+  "expected": {
+    "cases": [
+      {
+        "valid": true,
+        "maxSecretNumber": 3,
+        "numberRecipients": 2,
+        "scheduledRuleEventCount": 22
+      },
+      {
+        "valid": true,
+        "maxSecretNumber": 60,
+        "numberRecipients": 20,
+        "scheduledRuleEventCount": 25
+      },
+      {
+        "valid": false,
+        "errors": [
+          "INVALID_CONFIG"
+        ]
+      }
+    ]
+  },
+  "notes": "D-02 Modusgrenzen, inkl. 21 Spieler, 432 Kartenmodusfragen und All-Judges im Kartenmodus."
+}
