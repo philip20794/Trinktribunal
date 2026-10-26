@@ -27,11 +27,15 @@ Trinkregel-Ereignisse haben **keine geheime Zahl, keine Sortierung und keinen Ri
 
 ## Trinkregeln als JSON
 
-Die verbindliche Struktur für alle Trinkregeln steht in [data/rules/README.md](../data/rules/README.md). Geplant sind versionierte, übersetzbare JSON-Kataloge wie `data/rules/de.json` und `data/rules/en.json`.
+Die verbindliche Struktur für alle Trinkregeln steht in [data/rules/README.md](../data/rules/README.md). Die versionierten JSON-Kataloge `data/rules/de.json` und `data/rules/en.json` sind vorhanden.
 
 Jede Regel erhält eine eindeutige `id`, einen `text` und optional `players` mit Platzhaltern wie `{player1}` / `{player2}` sowie `excludes` für unverträgliche Regeln. Spieler werden beim Ziehen einmalig ausgewählt und mit stabilen IDs bis zum Partiende zugewiesen. `differentFrom` stellt sicher, dass bestimmte Rollen unterschiedliche Personen erhalten.
 
 Eine Regel wird sofort aktiv und bleibt bis zum Ende der Partie gültig. Vor der Auslosung werden Konflikte in beide Richtungen und die benötigte Spieleranzahl geprüft. Aktive Regeln sind jederzeit einsehbar; derselbe Eintrag wird nicht erneut gezogen. Reichen passende Regeln nicht aus, wird die Zielanzahl reduziert.
+
+**Zusatzregeln und Verstöße (D-04):** Ein eigenständiger Verstoß gegen eine aktive Trinkregel führt zu einem zusätzlichen Strafschluck, auch wenn die Regel das nicht ausdrücklich erwähnt. Die Gruppe stellt Verstöße selbst fest; weder App noch Server erkennen sie automatisch oder rechnen sie ins Urteil ein. Strafschlucke erzeugen keine weiteren Strafschlucke. Die zum Spielen erforderlichen Texte dürfen vorgelesen und die geheimen Zahlen regulär aufgedeckt/angesagt werden, ohne dadurch Sprachverbote oder Ansagestrafen auszulösen. Einander ausschließen sich `left_hand_drinking`/`two_hands_drinking` und `two_hands_drinking`/`touch_player_while_drinking`; Kobold und Fliege dürfen gemeinsam gelten. Siehe [D-04](decisions/D-04-rule-conflicts.md).
+
+**Kartenmodus (D-03):** Da keine Spielernamen erfasst werden, verwendet er ausschließlich die 431 Fragen ohne Spielerrollen und die 22 nicht personenbezogenen Zusatzregeln.
 
 Der Fragenkatalog unter `data/questions/` bleibt unabhängig vom Regelkatalog. Im Multiplayer führt der Server die Auslosung durch und synchronisiert die Regel-ID samt Spielerzuweisungen.
 
