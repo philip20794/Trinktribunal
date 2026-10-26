@@ -30,7 +30,7 @@ Durchgeführte Bestandsprüfung: alle vier Dateien als UTF-8-JSON geparst; Frage
 ### Bereits durch die Dokumentation festgelegt
 
 - Drei Varianten: Kartenmodus ohne Namenspflicht; ein Gerät mit Spielerregister; Multiplayer ohne Konto und Login, aber mit gerätegebundenem, dauerhaft gespeichertem Resume-Token zur Wiederaufnahme laufender Räume nach Schließen/Neustart (D-16). „Alle sind Richter“ ausschließlich im Multiplayer.
-- Standard: 50 Fragen, sieben zusätzliche Regelereignisse, Faktor 1,5. `N` ist die gesamte aktive Spielerzahl einschließlich Richter, `X = ceil(N × Faktor)`. Zahlen ohne Wiederholung; normal `N-1` Empfänger, alle Richter `N`. Ungültige Konfigurationen mit zu kleinem `X` ablehnen. **D-01:** Regelereignisse werden zufällig gleichmäßig zwischen den Fällen verteilt; Fragen und Regeln bevorzugen IDs ohne Verwendung in den letzten sechs Stunden, sonst die in diesem Zeitraum am seltensten gezogenen gültigen IDs. Sprachwechsel umgeht die Historie nicht. Unabhängig davon keine Wiederholung einer ID innerhalb derselben Partie.
+- Standard: 50 Fragen, sieben zusätzliche Regelereignisse, Faktor 1,5. D-02: 3–20 Spieler; Fragen 1–491 bzw. Kartenmodus max. 431; Regeln 0–25 bzw. Kartenmodus max. 22, zusätzlich maximal F−1 Ereignisse; Faktor 1,0–3,0 in 0,1-Schritten; Namen 1–24 sichtbare Unicode-Zeichen. `N` ist die gesamte aktive Spielerzahl einschließlich Richter, `X = ceil(N × Faktor)`. Zahlen ohne Wiederholung; normal `N-1` Empfänger, alle Richter `N`. Ungültige Konfigurationen mit zu kleinem `X` ablehnen. **D-01:** Regelereignisse werden zufällig gleichmäßig zwischen den Fällen verteilt; Fragen und Regeln bevorzugen IDs ohne Verwendung in den letzten sechs Stunden, sonst die in diesem Zeitraum am seltensten gezogenen gültigen IDs. Sprachwechsel umgeht die Historie nicht. Unabhängig davon keine Wiederholung einer ID innerhalb derselben Partie.
 - Korrekte Ordnung ist die nach Geheimzahl aufsteigend sortierte Liste der beteiligten IDs, auch bei Lücken im Zahlenbereich. Fehler sind falsche **Positionen**, keine Inversionen und keine Differenz von Zahlenwerten.
 - Normal: Richter erhält `E` Schlucke; jeder der `E` falsch platzierten Spieler ebenfalls `E`; richtig platzierte Spieler null. Alle Richter: je Person ausschließlich Fehler ihrer eigenen vollständigen Ordnung; keine Addition aus fremden Urteilen. Eine gültige Permutation hat null oder mindestens zwei Fehlpositionen.
 - Antworten werden gesprochen/gespielt; kein Textchat, keine Audioaufnahme und keine automatische Interpretation der Antworten nötig.
@@ -41,12 +41,12 @@ Durchgeführte Bestandsprüfung: alle vier Dateien als UTF-8-JSON geparst; Frage
 
 ### Entscheidungsregister
 
-**Entscheidungsstand: D-01, D-03, D-04 und D-16 am 26.10.2026 bestätigt; D-02, D-05 bis D-15 sowie D-17 und D-18 noch offen.** Die genannte Aufgabe dokumentiert vor abhängiger Implementierung die Entscheidung in `docs/decisions/`. Der implementierende Agent darf technische Umsetzungsdetails selbst begründet festlegen und die Entscheidung in Tests/Dokumentation nachvollziehbar machen. Diese Delegation wurde am 26.10.2026 bestätigt; neue fachliche Regeln und Abweichungen von bestehenden Vorgaben benötigen weiterhin die Freigabe des Projektverantwortlichen. Unbetroffene Aufgaben bleiben ausführbar. Eine offene Freigabe zur Veröffentlichung blockiert nicht den lokalen Prototyp.
+**Entscheidungsstand: D-01, D-02, D-03, D-04 und D-16 am 26.10.2026 bestätigt; D-05 bis D-15 sowie D-17 und D-18 noch offen.** Die genannte Aufgabe dokumentiert vor abhängiger Implementierung die Entscheidung in `docs/decisions/`. Der implementierende Agent darf technische Umsetzungsdetails selbst begründet festlegen und die Entscheidung in Tests/Dokumentation nachvollziehbar machen. Diese Delegation wurde am 26.10.2026 bestätigt; neue fachliche Regeln und Abweichungen von bestehenden Vorgaben benötigen weiterhin die Freigabe des Projektverantwortlichen. Unbetroffene Aufgaben bleiben ausführbar. Eine offene Freigabe zur Veröffentlichung blockiert nicht den lokalen Prototyp.
 
 | ID | Lücke / Widerspruch | Vorgeschlagene Lösung und Auswirkung | Entscheidung spätestens in |
 | --- | --- | --- | --- |
 | D-01 | Fallzählung, verteilte Regelereignisse und 6-Stunden-Ziehhistorie | **ENTSCHIEDEN (26.10.2026):** 50 reguläre Fälle plus maximal 7 zusätzliche, zufällig und stratifiziert auf verschiedene der `F−1` Zwischenräume verteilte Regelereignisse, nie vor dem ersten/nach dem letzten Fall. Bei jeder tatsächlichen Frage-/Regelauswahl zuerst gültige, seit 6 Stunden nicht verwendete IDs zufällig ziehen; falls keine vorhanden, bevorzugt die innerhalb rollierender 6 Stunden am seltensten gezogenen gültigen IDs (zufällig bei Gleichstand). Je Partie keine doppelten Fragen/Regeln. Historie mit zeitlich verfallenden Nutzungszählern, geräteübergreifend nur soweit ohne Konto und über Host/Raum möglich. [Verbindlicher Beschluss](decisions/D-01-game-schedule-and-six-hour-history.md). | TT-003/007/008/027/034/044/045/046/050/057 (Umsetzung) |
-| D-02 | Minima/Maxima der Schieberegler, Spielernamen und Spielerzahl fehlen | Zunächst 3–12 Spieler, 1 bis zur Zahl geeigneter Fragen (aktuell maximal 491), 0–25 Regeln, Faktor 1,0–3,0 in 0,1-Schritten. Namen 1–24 Unicode-Zeichen nach Trim, gleiche Namen erlaubt mit unterscheidbarem Schild. Werte sind Produktvorschläge, keine Plattformlimits. Mit D-03 hat der Kartenmodus maximal 431 Fragen. Unter Mindestbesetzung pausieren, nicht heimlich Fall auswerten. | TT-003 |
+| D-02 | Spielerzahl, Frage-/Regel-Slider, Faktor und Namenslänge | **ENTSCHIEDEN (26.10.2026):** **3–20 Spieler**, 1 bis zur Zahl geeigneter Fragen (**491** mit Namen, **431** im Kartenmodus), 0 bis zur Zahl geeigneter Regeln (25 mit Namen, 22 im Kartenmodus), zugleich maximal **F−1** Regelereignisse. Faktor **1,0–3,0 in 0,1-Schritten**; Namen **1–24 sichtbare Unicode-Zeichen nach Trim** (Graphem-Cluster), Doppel-Namen mit unterscheidbarem Avatar/Kürzel zulässig. Standard 50 Fragen, 7 Regeln, Faktor 1,5; Spieler werden tatsächlich eingegeben, kein erfundener Default-Teilnehmer. Unter 3 wirksamen Spielern pausieren; 21. Spieler ablehnen. Alle Ansichten/Sortierungen für 20 auf Handy und Desktop scrollbar und zugänglich. [Beschluss](decisions/D-02-config-bounds.md). | TT-003/006/009/016/022/034/037/053/058/062 (Umsetzung) |
 | D-03 | Kartenmodus ohne IDs versus personenbezogene Fragen und Regeln | **ENTSCHIEDEN (26.10.2026):** Nur die 431 Fragen ohne Spielerrollen und 22 unpersönlichen Regeln ziehen; Zielzahl an geeigneten Bestand binden, keine versteckte Namenspflicht. Manuelle personenbezogene Zuweisungen allenfalls als späteres Zusatzfeature. Keine rohen Platzhalter anzeigen. | TT-003 (Umsetzung und Testfälle) |
 | D-04 | Regelkonflikte und Strafen für Zusatzregeln | **ENTSCHIEDEN (26.10.2026):** Gegenseitige Ausschlüsse `left_hand_drinking` ↔ `two_hands_drinking` und `two_hands_drinking` ↔ `touch_player_while_drinking`, jeweils in DE/EN-JSON. `imaginary_kobold` und `imaginary_fly` bleiben gleichzeitig möglich. Ein eigenständiger Regelverstoß führt zu genau einem zusätzlichen Strafschluck; Strafschlucke verursachen keine weiteren Strafschlucke (keine Ketten). Beim zum Spiel erforderlichen Vorlesen und beim regulären Aufdecken/Ansagen geheimer Zahlen gelten keine Sprachverbote/Ansagestrafen. Gruppen ahnden solche Verstöße selbst; die App berechnet sie nicht automatisch. Siehe [D-04-Beschluss](decisions/D-04-rule-conflicts.md). | TT-005 (Validierung, keine neue Entscheidung) |
 | D-05 | Fragenerschöpfung, neue Zufallsbezüge und Restredaktion | Ohne Wiederholung nach ID; F auf geeigneten Katalogumfang begrenzen. Erschöpfen Abbrüche den Katalog vor dem Ziel, mit tatsächlichem Zähler und Erschöpfungsgrund beenden. Zufallsrollen aus allen aktiven Spielern einschließlich Richter; auch Selbstbezug kann entstehen, keine implizite Sonderrolle des Vorlesers. `110-a`-Skalen neutral formulieren, bereits entfernte Materialfragen nicht zurückbringen. Nutzungsnachweise oder Ersatzkatalog vor Release. | TT-005, TT-065 |
@@ -167,7 +167,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-003 – Fachentscheidungen und Zustandsvertrag festschreiben
 
-- **Umsetzung:** Bestätigte D-01/03 samt Sechs-Stunden-Präferenz umsetzen und D-02/06/10/13/17 entscheiden; Zustands-/Aktionsliste und Rechte für lokale Varianten dokumentieren. Grenzbeispiele als JSON mit Ein-/Ausgabe, Fehlercodes, injizierter UTC-Uhr und Zufallsentscheidungen festlegen. D-04 ist ebenfalls bestätigt; offene D-05 nicht vorwegnehmen.
+- **Umsetzung:** Bestätigte D-01/02/03 samt Sechs-Stunden-Präferenz und den 3–20 Spieler-/Slider-/Namensgrenzen umsetzen und D-06/10/13/17 entscheiden; Zustands-/Aktionsliste und Rechte für lokale Varianten dokumentieren. Grenzbeispiele als JSON mit Ein-/Ausgabe, Fehlercodes, injizierter UTC-Uhr und Zufallsentscheidungen festlegen. D-04 ist ebenfalls bestätigt; offene D-05 nicht vorwegnehmen.
 - **Dateien:** `docs/decisions/001-game-contract.md`, `packages/protocol/README.md`, `packages/protocol/fixtures/{rules,transitions}/`, Fortschrittsregister.
 - **Abhängigkeiten:** TT-002.
 - **Akzeptanz:** Fallzählung mit R Slots zwischen F Fragen, die wiederverwendete Ziehhistorie und deren Sechs-Stunden-Grenze, Abbruch, Reihenfolgeeinfügen, Zahlenlücken, entfernte Richter und Rollenwechsel ohne Widerspruch beschrieben; Beispiel korrekte Ordnung A/B/C/D, Vorschlag B/A/D/C → E=4; Richter 4, alle vier 4. Alle-Richter-Beispiel unabhängig davon.
@@ -202,7 +202,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** IDs, Konfiguration, Spieler, Phasen, Zähler und validierte Zahlengrenze als reine Dart-Typen; Faktor in Zehnteln. Normal/alle Richter getrennt; Kartenmodus führt Anzahl statt künstlicher Profile.
 - **Dateien:** `apps/client/lib/domain/{models,config}/`, `test/domain/config_test.dart`, `packages/protocol/fixtures/rules/config.json`.
 - **Abhängigkeiten:** TT-003, TT-004.
-- **Akzeptanz:** Standards 50/7/1,5; Grenzwerte nach D-02; N=8 ergibt X=12; keine Änderung eingefrorener Optionen; ungültige Eingaben erzeugen typisierte Fehler.
+- **Akzeptanz:** Standards 50/7/1,5; D-02-Grenzwerte N=3–20, Fragen 1–431/491 abhängig vom Modus, Regelereignisse 0–22/25 und höchstens F−1, Faktor 1,0–3,0 in 0,1-Schritten. N=8 ergibt X=12, N=20 ergibt X=20/30/60 für Faktor 1,0/1,5/3,0; keine Änderung eingefrorener Optionen; ungültige Eingaben erzeugen typisierte Fehler.
 - **Auto:** Min/Max, Rundung, Empfängeranzahl, NaN/fehlende Felder beim DTO-Import und Unveränderlichkeit.
 - **Manuell / lokal:** `C`; Werte anhand D-02-Tabelle nachrechnen; `W` bleibt bedienbar.
 - **Abschluss:** G; Domain importiert weder Flutter noch Riverpod/IO.
@@ -229,7 +229,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-009 – Kartenmodus-Einrichtung und erste Fallakte
 
-- **Umsetzung:** Spieleranzahl, drei Slider, validierte Startaktion und Fallakte mit Aktennummer, Frage, Skala und X. Grobe Papieroptik aus Theme; keine Namens-/Avatarpflicht. Provider verbindet Loader und Domain.
+- **Umsetzung:** Spieleranzahl 3–20, drei Slider mit D-02-Modusgrenzen (Kartenmodus max. 431 Fragen, max. 22 Regeln und max. F−1 Ereignisse), validierte Startaktion und Fallakte mit Aktennummer, Frage, Skala und X. Grobe Papieroptik aus Theme; keine Namens-/Avatarpflicht. Provider verbindet Loader und Domain.
 - **Dateien:** `apps/client/lib/features/{setup,case_file}/`, `lib/application/local_session_controller.dart`, `test/features/card_setup_test.dart`.
 - **Abhängigkeiten:** TT-006, TT-007, TT-008.
 - **Akzeptanz:** Vom Start in höchstens drei Schritten zur ersten echten Frage; Inhalt auch mit langem Text lesbar; X/Kartenbedarf eindeutig.
@@ -301,7 +301,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-016 – Lokales Spielerregister und Sitzreihenfolge
 
-- **Umsetzung:** Spieler mit stabilen IDs hinzufügen/entfernen, zufällige editierbare Avatare, Liste per Drag und alternativen Auf/Ab-Aktionen umsortieren. Register lokal speichern; eigene Profilvorlage optional übernehmen.
+- **Umsetzung:** 3–20 Spieler mit stabilen IDs hinzufügen/entfernen, Namen mit 1–24 Unicode-Graphem-Clustern, auch gleiche Namen mit sichtbarer Unterscheidung, zufällige editierbare Avatare, Liste per Drag und alternativen Auf/Ab-Aktionen umsortieren. Lange 20er-Liste scrollbar und tastaturbedienbar. Register lokal speichern; eigene Profilvorlage optional übernehmen.
 - **Dateien:** `apps/client/lib/features/setup/player_roster.dart`, `lib/application/roster_controller.dart`, `test/features/roster_test.dart`.
 - **Abhängigkeiten:** TT-015, TT-006.
 - **Akzeptanz:** Reihenfolge bestimmt Übergabe und Richter; gleiche Namen bleiben unterscheidbar; Min/Max-Einstellungen eingehalten; kein versehentliches Überschreiben des eigenen Profils.
@@ -356,7 +356,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Abhängigkeiten:** TT-020.
 - **Akzeptanz:** Alle Eingabearten erzeugen dieselbe Permutation, niemals doppelte/fehlende IDs; mehrere Reihen und Resize während Drag bleiben kontrolliert. Zahlen verdeckt.
 - **Auto:** Drag über Reihenwechsel, Abbruch außerhalb, Touch versus Tap/Keyboard, Permutationsinvarianten.
-- **Manuell / lokal:** `W`, Touchsimulation/Maus/Tastatur und zwölf Figuren; `C`.
+- **Manuell / lokal:** `W`, Touchsimulation/Maus/Tastatur und zwanzig Figuren inkl. Auto-Scroll; `C`.
 - **Abschluss:** G; sichtbare Reihenfolge wird einmal explizit bestätigt.
 
 #### TT-022 – Fehlerpositionen und Schlucke berechnen
@@ -404,9 +404,9 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** End-to-End-Test mit Avataränderung, Übergabe, alternativer Sortierung, Urteil, Regelereignis, laufendem Rosterwechsel und Neustart. Fehlernavigation und Back-Schutz einbeziehen.
 - **Dateien:** `apps/client/integration_test/local_game_test.dart`, `docs/qa/M2.md`.
 - **Abhängigkeiten:** TT-025.
-- **Akzeptanz:** 3–12 Spieler bedienbar, sechs Fälle reproduzierbar; keine Geheimzahl auf Back/Tabwechsel; M1-Regression grün.
+- **Akzeptanz:** 3–20 Spieler bedienbar und auch bei zwanzig Teilnehmern scrollbare/lesbare Übergaben und Sortierungen, sechs Fälle reproduzierbar; keine Geheimzahl auf Back/Tabwechsel; M1-Regression grün.
 - **Auto:** `E` lokale Spiele, `C`, gemeinsame Dart-Fixtures.
-- **Manuell / lokal:** `W`; mindestens eine Runde mit echter Geräteweitergabe und zwölf Figuren per Maus/Tastatur.
+- **Manuell / lokal:** `W`; mindestens eine Runde mit echter Geräteweitergabe und zwanzig Figuren per Maus/Tastatur/Touch samt Auto-Scroll.
 - **Abschluss:** G; M2 mit Screens und Fehler-/Grenzbelegen abgenommen.
 
 ### M3 – belastbarer lokaler Alltag
@@ -872,7 +872,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 5. **End-to-End:** Flutter `integration_test` über lokalen ChromeDriver; mehrere echte WS-Testclients für Parallelität/Protokoll, getrennte Browserprofile für sichtbare Synchronität. Ein einzelner Widgettest belegt keine Mehrbrowserfunktion.
 6. **Release-/Geräteprüfung:** Lokaler statischer Webserver für Service Worker/Cache/Headers; Android Debug und Release am eigenen Gerät. Performance am Profil-/Releasebuild statt Debug messen.
 
-Pflicht-Fixtures: D-16 mit vollständigem Browser-/App-Neustart, mehreren Raumzuordnungen, verlorenem/abgelaufenem/widerrufenem Credential und doppeltem Browser-Tab; D-01 mit 6h-Rollfenster, Zähler=0/1/2/3, UTC-Fensterrand, Mehrpartie-Wiederverwendung, Host-Import/-Rückabgleich und idempotenten Ziehereignissen; N=3/8/12; Faktor 1,0/1,5/3,0; Zahlenlücken; ungültiges X; keine/mehrere/alle Fehlpositionen; exakt eine Fehlposition als unmöglich; alle-Richter-Werte 2/4/0; asymmetrische excludes; same-role mehrmals; differentFrom mit zyklischem Constraintgraph (kein rekursiver Endloslauf); ausgeschiedener Regelträger; Richter entfernt/reordered; F=1/R=7; 50+7; leere Kandidaten; Join/Leave jeder Phase; Neustart und alte actionId; Katalog-/Protokollmismatch; Crash vor/nach Commit.
+Pflicht-Fixtures: D-02 mit N=2/3/12/20/21, Nameslängen 0/1/24/25 Graphem-Cluster, 431/432 bzw. 491/492 Fragen, 22/23 bzw. 25/26 Regeln und F=1/R=7; D-16 mit vollständigem Browser-/App-Neustart, mehreren Raumzuordnungen, verlorenem/abgelaufenem/widerrufenem Credential und doppeltem Browser-Tab; D-01 mit 6h-Rollfenster, Zähler=0/1/2/3, UTC-Fensterrand, Mehrpartie-Wiederverwendung, Host-Import/-Rückabgleich und idempotenten Ziehereignissen; N=3/8/12/20; Faktor 1,0/1,5/3,0; Zahlenlücken; ungültiges X; keine/mehrere/alle Fehlpositionen; exakt eine Fehlposition als unmöglich; alle-Richter-Werte 2/4/0; asymmetrische excludes; same-role mehrmals; differentFrom mit zyklischem Constraintgraph (kein rekursiver Endloslauf); ausgeschiedener Regelträger; Richter entfernt/reordered; F=1/R=7; 50+7; leere Kandidaten; Join/Leave jeder Phase; Neustart und alte actionId; Katalog-/Protokollmismatch; Crash vor/nach Commit.
 
 ### Free-Tier-Modell ohne Kostenversprechen
 
@@ -904,7 +904,7 @@ Sparmaßnahmen: ein DO/Raum, genau ein Socket/Spieler, Hibernation, IDs/Hashes s
 | Quelle / Anforderung | Abdeckende Aufgaben | Prüfergebnis der Planung |
 | --- | --- | --- |
 | README: drei Varianten, normale Schluckregel, optional alle Richter | TT-009–012, TT-016–026, TT-046–052 | Alle drei spielbar mit separaten Urteilsregeln geplant. |
-| GAME_DESIGN: 50/7/1,5, ohne Wiederholung innerhalb der Partie, 6h-Nutzungscounter über Partien, X, eingefrorene Optionen, Ereignisse ohne Rotation | TT-003, TT-006–011, TT-027, TT-034, TT-044–046, TT-050/057 | Zählung, Zwischenraumverteilung und 6h-Priorisierung durch D-01 entschieden; Grenzwerte D-02 noch offen. |
+| GAME_DESIGN: 50/7/1,5, ohne Wiederholung innerhalb der Partie, 6h-Nutzungscounter über Partien, X, eingefrorene Optionen, Ereignisse ohne Rotation | TT-003, TT-006–011, TT-027, TT-034, TT-044–046, TT-050/057 | Zählung/Ziehverlauf D-01 und Grenzen D-02 entschieden (3–20 Spieler, 431/491 Fragen, 22/25 Regeln, Faktor 1,0–3,0, Namen 1–24 Zeichen). |
 | GAME_DESIGN: Gruppen-/Profilwechsel, Neustart/Ende | TT-015/025/027/041/053/057 | aktuelle Profile von eingefrorener Teilnahme getrennt. |
 | Regelformat: Rollen, einmalige ID-Bindung, differentFrom, beidseitige excludes, Deaktivieren, Übersetzungen | TT-004/005/008/025/044/053/061 | D-03/04 bereits entschieden; D-13 bleibt zu klären. |
 | Fragenformat: 491 Aufgaben je Sprache (9 Materialfragen entfernt), IDs/Sprachen, grün/connector/rot ohne feste Zahlen | TT-004/005/007/009/061/065 | Skalenrichtung und Inhaltsrechte gesondert geprüft. |
