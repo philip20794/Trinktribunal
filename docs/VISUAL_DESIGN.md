@@ -43,19 +43,28 @@ Die Positionsnummern zeigen die **vermutete Reihenfolge von niedrig nach hoch** 
 
 ## 4. Screens
 
+Die App startet mit **drei Spielvarianten**. Oben rechts auf dem Startbildschirm führt der eigene Avatar zum Profil-Editor; allgemeine Einstellungen (z. B. Deutsch/Englisch) sind unabhängig von den Partie-Optionen erreichbar. Vor dem Spiel werden **Spieldauer, Trinkregeln und Schwierigkeit als Schieberegler** angeboten. Während der Partie zeigt die Oberfläche `Fall N / Ziel` sowie jederzeit abrufbare **aktive Trinkregeln**. Änderungen an Partie-Optionen erfordern einen bestätigten Neustart.
+
 | Screen | Inhalt und Gestaltung |
 | --- | --- |
 | **Start** | Trinktribunal-Logo, großer Einstieg für lokales Spiel, Raum erstellen oder Raum beitreten. |
-| **Spieler / Lobby** | Spielernamen und Avatar-Vorschauen, Spielmodus, Schwierigkeit, Raumcode/QR-Code und Startaktion. |
+| **Einrichtung: Kartenmodus** | Nur Spieleranzahl, optional Partie-Schieberegler und sofortiger Spielstart. |
+| **Einrichtung: Ein Handy** | Namensliste mit Drag & Drop für die Richter- und Geheimzahl-Reihenfolge; zufällige Avatare mit optional männlichem/weiblichem Startprofil, jederzeit editierbar. |
+| **Multiplayer-Lobby** | Raumcode/QR-Code, Teilnehmer, Avatar-Vorschauen, Spielleiter-Einstellungen und Startaktion. |
+| **Multiplayer: „Ich“ / „Gerichtssaal“** | Zwei Tabs für alle Spieler: eigenes Profil live bearbeiten und die gemeinsame Anklagebank sehen; Spielleiter zusätzlich mit Gruppenverwaltung. |
 | **Avatar-Editor** | Große Live-Vorschau, einfache Kategorien für Körper-/Gesichtsmerkmale und Zubehör; Änderungen direkt sichtbar. |
-| **Fallakte / Fragenkarte** | Aktuelle Frage als geöffnete **Gerichtsakte** mit Aktennummer und sehr gut lesbarem Haupttext. |
+| **Fallakte / Fragenkarte** | Aktuelle Frage als geöffnete **Gerichtsakte** mit Aktennummer, Skalenenden und sehr gut lesbarem Haupttext. |
+| **Trinkregel-Akte** | Eigene Gerichtsakte für ein Regelereignis statt der Frage; neu aktivierte Regel markieren, Liste aktiver Regeln abrufbar halten. |
 | **Geheimzahl** | Thematisch als **versiegelte/vertrauliche Akte**. Vor dem Aufdecken Spielername und Hinweis; Zahl erst nach bewusstem Tippen groß anzeigen, danach sofort wieder verbergen. |
 | **Antwortphase** | Frage bleibt sichtbar; die Teilnehmer antworten mündlich. Im Multiplayer können Bereitschaft und Wartezustand angezeigt werden. |
 | **Anklagebank / Sortieren** | Schlangenförmiges Raster mit Figuren, Positionsnummern und Drag & Drop; Richter bestätigt die endgültige Reihenfolge. |
 | **Aufdeckung / Urteil** | Echte Zahlen werden in Reihenfolge enthüllt. Fehlplatzierungen, Fehlerzahl und Schlucke erscheinen als „Urteil“, optional mit Richterhammer-/Stempelanimation. |
 | **Richterwechsel** | Nächste Richterfigur wird hervorgehoben; Aktion zur nächsten Fallakte. |
+| **Partieende / Neustart** | Nach voreingestellter Fallzahl Abschlussansicht und Aktion für eine neue Partie. |
 
-**Modusunterschiede:** Bei physischen Zahlenkarten wird die Zahl außerhalb der App gezogen und bei der Auswertung eingegeben/aufgedeckt. Beim gemeinsamen Handy wird es für die Zahl verdeckt weitergereicht. Im Multiplayer sieht jeder nur seine eigene Zahl; bei „Alle sind Richter“ erstellt jeder seine eigene Reihenfolge.
+**Modusunterschiede:** Im Kartenmodus werden Zahlen physisch verteilt und aufgedeckt, ein digitales Spielerregister ist nicht nötig. Beim gemeinsamen Handy wird die Geheimzahl in Listenreihenfolge verdeckt weitergereicht; Spieler können zwischen Fällen hinzugefügt oder entfernt werden. Im Multiplayer bekommt jeder nur die eigene Zahl. Der aktuelle Richter steht **oberhalb und außerhalb der Anklagebank**, außer bei „Alle sind Richter“: Dann bleiben alle Figuren im Sortierfeld und jeder erstellt seine private Reihenfolge. Änderungen an Avataren sind im Multiplayer live bei allen sichtbar.
+
+Details zu Bedienung und Rollen stehen in [Screens und Nutzerabläufe](USER_FLOWS.md); Einstellungen und Regelkarten in [Spielkonzept](GAME_DESIGN.md).
 
 ## 5. Animationen und Bedienung
 
