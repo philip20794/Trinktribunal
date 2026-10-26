@@ -44,6 +44,7 @@ Der vollständige Entwicklungsplan ist dokumentiert; die App wurde noch nicht im
 - [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)
 - [Fortschritt, offene Entscheidungen und Übergabe](docs/PROGRESS.md)
 - [Beschluss zur Spielverteilung und 6-Stunden-Ziehhistorie](docs/decisions/D-01-game-schedule-and-six-hour-history.md)
+- [Beschluss zur konto-losen, dauerhaften Multiplayer-Wiederverbindung](docs/decisions/D-16-persistent-accountless-rejoin.md)
 
 ## Fragenkatalog
 
