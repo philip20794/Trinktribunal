@@ -3601,6 +3601,906 @@
         "connector": "to",
         "red": "The perfect gift"
       }
+    },
+    {
+      "id": "201-a",
+      "text": "You're accused of committing a murder on New Year's Eve. Make up an alibi.",
+      "scale": {
+        "green": "You're released immediately",
+        "connector": "to",
+        "red": "You're sent straight to prison"
+      }
+    },
+    {
+      "id": "201-b",
+      "text": "A time machine takes you back to the Stone Age. What do you bring?",
+      "scale": {
+        "green": "Completely useless",
+        "connector": "to",
+        "red": "Extremely useful"
+      }
+    },
+    {
+      "id": "202-a",
+      "text": "You're the newest resident of Asterix and Obelix's village. What's your Gaulish name ending in '-ix'?",
+      "scale": {
+        "green": "Totally embarrassing",
+        "connector": "to",
+        "red": "Seriously cool"
+      }
+    },
+    {
+      "id": "202-b",
+      "text": "At speech therapy, you're asked to say the tongue twister 'She sells seashells by the seashore.' Say it out loud.",
+      "scale": {
+        "green": "You stumble over every word",
+        "connector": "to",
+        "red": "Absolutely flawless"
+      }
+    },
+    {
+      "id": "203-a",
+      "text": "Your partner proposed to you. How did it happen?",
+      "scale": {
+        "green": "Not romantic at all",
+        "connector": "to",
+        "red": "Incredibly romantic"
+      }
+    },
+    {
+      "id": "203-b",
+      "text": "What else could you use a toilet brush for, apart from cleaning the toilet?",
+      "scale": {
+        "green": "Completely ridiculous",
+        "connector": "to",
+        "red": "Surprisingly sensible"
+      }
+    },
+    {
+      "id": "204-a",
+      "text": "Someone shouts: 'Watch out! There's a ... behind you!' Finish the sentence.",
+      "scale": {
+        "green": "I couldn't care less",
+        "connector": "to",
+        "red": "I turn around immediately"
+      }
+    },
+    {
+      "id": "204-b",
+      "text": "You've just painted a picture. Describe what's in it.",
+      "scale": {
+        "green": "A dreadful scribble",
+        "connector": "to",
+        "red": "A genuine masterpiece"
+      }
+    },
+    {
+      "id": "205-a",
+      "text": "Say 'I really enjoy playing Top Ten' in an accent.",
+      "scale": {
+        "green": "From the farthest south on Earth",
+        "connector": "to",
+        "red": "From the farthest north on Earth"
+      }
+    },
+    {
+      "id": "205-b",
+      "text": "You finally find your seat on a high-speed train. But sitting right behind you is ... Finish the sentence.",
+      "scale": {
+        "green": "A perfectly peaceful journey",
+        "connector": "to",
+        "red": "An extremely chaotic journey"
+      }
+    },
+    {
+      "id": "206-a",
+      "text": "Name a cartoon character.",
+      "scale": {
+        "green": "Tiny",
+        "connector": "to",
+        "red": "Enormous"
+      }
+    },
+    {
+      "id": "206-b",
+      "text": "You're all building a humanoid robot together. Which physical or mental trait from another player do you give it?",
+      "scale": {
+        "green": "A completely useless robot",
+        "connector": "to",
+        "red": "An absolute super-robot"
+      }
+    },
+    {
+      "id": "207-a",
+      "text": "Dim lighting, a crackling fire and your crush beside you. What song do you play to seduce them?",
+      "scale": {
+        "green": "Doesn't work at all",
+        "connector": "to",
+        "red": "Completely irresistible"
+      }
+    },
+    {
+      "id": "207-b",
+      "text": "You're sitting on the toilet. Act out how hard you have to strain.",
+      "scale": {
+        "green": "No effort at all",
+        "connector": "to",
+        "red": "Terribly constipated"
+      }
+    },
+    {
+      "id": "208-a",
+      "text": "You're a Martian who has just landed on Earth and met a human for the first time. What do you say?",
+      "scale": {
+        "green": "Very hostile",
+        "connector": "to",
+        "red": "Especially friendly"
+      }
+    },
+    {
+      "id": "208-b",
+      "text": "Act out saying 'I love you' to another player.",
+      "scale": {
+        "green": "Not convincing at all",
+        "connector": "to",
+        "red": "Completely convincing"
+      }
+    },
+    {
+      "id": "209-a",
+      "text": "A tabloid cover reads: 'Celebrity found dead drunk in a ditch—full story on page 12!' Which celebrity is it?",
+      "scale": {
+        "green": "Extremely unlikely",
+        "connector": "to",
+        "red": "Very likely"
+      }
+    },
+    {
+      "id": "209-b",
+      "text": "You're speed dating. What line do you use to make the best possible impression?",
+      "scale": {
+        "green": "The worst pickup line",
+        "connector": "to",
+        "red": "The best pickup line"
+      }
+    },
+    {
+      "id": "210-a",
+      "text": "You're launching a new perfume, Chanel No. 13. Finish the slogan: 'The fragrance that smells like ...'",
+      "scale": {
+        "green": "The worst smell imaginable",
+        "connector": "to",
+        "red": "The most wonderful scent"
+      }
+    },
+    {
+      "id": "210-b",
+      "text": "What lie might the Captain have put in their dating profile?",
+      "scale": {
+        "green": "A tiny exaggeration",
+        "connector": "to",
+        "red": "An enormous lie"
+      }
+    },
+    {
+      "id": "211-a",
+      "text": "Which animal has the longest tail? Name an animal.",
+      "scale": {
+        "green": "A very short tail",
+        "connector": "to",
+        "red": "An extremely long tail"
+      }
+    },
+    {
+      "id": "211-b",
+      "text": "What costume would you recommend the Captain wear to a costume party?",
+      "scale": {
+        "green": "Doesn't suit them at all",
+        "connector": "to",
+        "red": "Suits them perfectly"
+      }
+    },
+    {
+      "id": "212-a",
+      "text": "They say you shouldn't push Grandma into a patch of stinging nettles. So where could you push her? Finish the thought.",
+      "scale": {
+        "green": "Really mean",
+        "connector": "to",
+        "red": "Especially kind"
+      }
+    },
+    {
+      "id": "212-b",
+      "text": "'Mr. Bond, if you don't give me the secret code, I'll ...' Finish the threat.",
+      "scale": {
+        "green": "A harmless threat",
+        "connector": "to",
+        "red": "A terrifying threat"
+      }
+    },
+    {
+      "id": "213-a",
+      "text": "You walk into a Wild West saloon. Act out your entrance as a cowboy.",
+      "scale": {
+        "green": "Completely unremarkable",
+        "connector": "to",
+        "red": "Incredibly impressive"
+      }
+    },
+    {
+      "id": "213-b",
+      "text": "A mysterious man hands you a tape recorder. It says: 'Your mission, should you choose to accept it, is to ...' Finish the message.",
+      "scale": {
+        "green": "Child's play",
+        "connector": "to",
+        "red": "Practically impossible"
+      }
+    },
+    {
+      "id": "214-a",
+      "text": "Your phone rings in the middle of an important meeting. What's your ringtone?",
+      "scale": {
+        "green": "Not very embarrassing",
+        "connector": "to",
+        "red": "Mortifying"
+      }
+    },
+    {
+      "id": "214-b",
+      "text": "A scout knocks at your door to sell cookies. What do you say to get rid of them?",
+      "scale": {
+        "green": "Very kind",
+        "connector": "to",
+        "red": "Really mean"
+      }
+    },
+    {
+      "id": "215-a",
+      "text": "Say: 'We're in the final!' Act out your excitement about the French national soccer team reaching the final.",
+      "scale": {
+        "green": "I couldn't care less about soccer",
+        "connector": "to",
+        "red": "I'm their biggest fan"
+      }
+    },
+    {
+      "id": "215-b",
+      "text": "You jump out of a plane, but you've accidentally brought a backpack instead of a parachute! What's inside that could save you?",
+      "scale": {
+        "green": "Completely useless",
+        "connector": "to",
+        "red": "Extremely helpful"
+      }
+    },
+    {
+      "id": "216-a",
+      "text": "You wake up after a wild night of partying and discover what you did last night. Tell everyone about it.",
+      "scale": {
+        "green": "You were a little tipsy",
+        "connector": "to",
+        "red": "You were completely wasted"
+      }
+    },
+    {
+      "id": "216-b",
+      "text": "Name a place where you could be.",
+      "scale": {
+        "green": "I want to leave immediately!",
+        "connector": "to",
+        "red": "I want to stay forever!"
+      }
+    },
+    {
+      "id": "217-a",
+      "text": "You're investigating a crime scene. What clue have you found? Announce your discovery.",
+      "scale": {
+        "green": "A completely useless clue",
+        "connector": "to",
+        "red": "The crucial piece of evidence"
+      }
+    },
+    {
+      "id": "217-b",
+      "text": "Mime pouring mint tea from a pot into a glass with an elaborate flourish.",
+      "scale": {
+        "green": "From just above the glass",
+        "connector": "to",
+        "red": "From an unbelievable height"
+      }
+    },
+    {
+      "id": "218-a",
+      "text": "Pirates board your ship! Mime a sword fight.",
+      "scale": {
+        "green": "A hopeless defeat",
+        "connector": "to",
+        "red": "A master swordsman"
+      }
+    },
+    {
+      "id": "218-b",
+      "text": "You're waiting in the emergency room when someone arrives with an unusual emergency. What happened?",
+      "scale": {
+        "green": "It can wait",
+        "connector": "to",
+        "red": "Needs immediate treatment"
+      }
+    },
+    {
+      "id": "219-a",
+      "text": "The Captain is looking for a new career. What job would you recommend?",
+      "scale": {
+        "green": "Completely unsuited to it",
+        "connector": "to",
+        "red": "A perfect fit"
+      }
+    },
+    {
+      "id": "219-b",
+      "text": "Bob is incredibly successful with women. His secret is ... Finish the sentence.",
+      "scale": {
+        "green": "Not attractive at all",
+        "connector": "to",
+        "red": "Irresistibly attractive"
+      }
+    },
+    {
+      "id": "220-a",
+      "text": "Tell everyone about a romantic weekend away for two.",
+      "scale": {
+        "green": "An absolute disaster",
+        "connector": "to",
+        "red": "A dream weekend"
+      }
+    },
+    {
+      "id": "220-b",
+      "text": "A new app lets you bring a famous person back from the dead. Who do you choose?",
+      "scale": {
+        "green": "A terrible idea",
+        "connector": "to",
+        "red": "A brilliant idea"
+      }
+    },
+    {
+      "id": "221-a",
+      "text": "The game box is sad because it's about to go back on the shelf. Pick it up and comfort it.",
+      "scale": {
+        "green": "Not comforting at all",
+        "connector": "to",
+        "red": "Incredibly comforting"
+      }
+    },
+    {
+      "id": "221-b",
+      "text": "Which country would you want to live in forever?",
+      "scale": {
+        "green": "The worst possible choice",
+        "connector": "to",
+        "red": "The best possible choice"
+      }
+    },
+    {
+      "id": "222-a",
+      "text": "A hidden camera was installed in this room. What did it record yesterday?",
+      "scale": {
+        "green": "Completely uninteresting",
+        "connector": "to",
+        "red": "An incredibly juicy revelation"
+      }
+    },
+    {
+      "id": "222-b",
+      "text": "What would you name your dog?",
+      "scale": {
+        "green": "Not scary in the slightest",
+        "connector": "to",
+        "red": "Scares everyone instantly"
+      }
+    },
+    {
+      "id": "223-a",
+      "text": "You ordered something online, but the seller accidentally sends you 1,000 of them instead of one. What did you order?",
+      "scale": {
+        "green": "A disastrous mistake",
+        "connector": "to",
+        "red": "An amazing surprise"
+      }
+    },
+    {
+      "id": "223-b",
+      "text": "Mime tasting a spicy dish.",
+      "scale": {
+        "green": "Barely spicy",
+        "connector": "to",
+        "red": "Unbelievably spicy"
+      }
+    },
+    {
+      "id": "224-a",
+      "text": "Mime slowly stepping into the sea.",
+      "scale": {
+        "green": "The water is freezing",
+        "connector": "to",
+        "red": "The water is wonderfully warm"
+      }
+    },
+    {
+      "id": "224-b",
+      "text": "Proudly show another player something and announce: 'This is my honorary membership card for the ... Club!' Finish the name.",
+      "scale": {
+        "green": "A pretty embarrassing club",
+        "connector": "to",
+        "red": "An unbelievably exclusive club"
+      }
+    },
+    {
+      "id": "225-a",
+      "text": "Movie night! Name a real tearjerker.",
+      "scale": {
+        "green": "Barely a tear",
+        "connector": "to",
+        "red": "Floods of tears"
+      }
+    },
+    {
+      "id": "225-b",
+      "text": "What will the Captain's life look like in ten years? Describe their future.",
+      "scale": {
+        "green": "Their worst nightmare",
+        "connector": "to",
+        "red": "Their absolute dream"
+      }
+    },
+    {
+      "id": "226-a",
+      "text": "You've bought a scratch card. Act out your reaction when you see how much you've won.",
+      "scale": {
+        "green": "One euro",
+        "connector": "to",
+        "red": "One hundred million euros"
+      }
+    },
+    {
+      "id": "226-b",
+      "text": "Invent a pet name for your partner.",
+      "scale": {
+        "green": "They'd dump you for that",
+        "connector": "to",
+        "red": "They'd love you more every day"
+      }
+    },
+    {
+      "id": "227-a",
+      "text": "Inspector Gadget proudly presents his latest invention: 'Go-Go-Gadget ...!' Finish the catchphrase.",
+      "scale": {
+        "green": "Almost useless",
+        "connector": "to",
+        "red": "Incredibly useful"
+      }
+    },
+    {
+      "id": "227-b",
+      "text": "After a heavy night out, you phone your mother-in-law. What do you say?",
+      "scale": {
+        "green": "Barely any consequences",
+        "connector": "to",
+        "red": "Massive consequences"
+      }
+    },
+    {
+      "id": "228-a",
+      "text": "You can take over the life of any TV series character. Who do you choose?",
+      "scale": {
+        "green": "A living nightmare",
+        "connector": "to",
+        "red": "Your absolute dream life"
+      }
+    },
+    {
+      "id": "228-b",
+      "text": "You're on a plane about to take off. The pilot announces: 'Hello, I'm Kevin, your pilot ...' Finish the announcement.",
+      "scale": {
+        "green": "Not reassuring at all",
+        "connector": "to",
+        "red": "Extremely reassuring"
+      }
+    },
+    {
+      "id": "229-a",
+      "text": "Breaking news: Colonel von Gatow has struck again! This time it was in the kitchen with ... Which kitchen item was the murder weapon?",
+      "scale": {
+        "green": "Completely useless as a weapon",
+        "connector": "to",
+        "red": "Extremely effective"
+      }
+    },
+    {
+      "id": "229-b",
+      "text": "Throw an object, such as a coin.",
+      "scale": {
+        "green": "As close as possible",
+        "connector": "to",
+        "red": "As far as possible"
+      }
+    },
+    {
+      "id": "230-a",
+      "text": "You're in charge of marketing for Robo3000. Invent an advertising slogan for a new robot vacuum named after the player on your left.",
+      "scale": {
+        "green": "The least persuasive ad imaginable",
+        "connector": "to",
+        "red": "The most persuasive ad imaginable"
+      }
+    },
+    {
+      "id": "230-b",
+      "text": "What could you live without?",
+      "scale": {
+        "green": "Easy, no problem",
+        "connector": "to",
+        "red": "Impossible to live without"
+      }
+    },
+    {
+      "id": "231-a",
+      "text": "You're a coach on 'The Voice', sitting in a swivel chair. A contestant is singing. React to the performance.",
+      "scale": {
+        "green": "Painfully out of tune",
+        "connector": "to",
+        "red": "An incredible style!"
+      }
+    },
+    {
+      "id": "231-b",
+      "text": "What might be in your suitcase for a winter vacation?",
+      "scale": {
+        "green": "Completely useless",
+        "connector": "to",
+        "red": "Extremely useful"
+      }
+    },
+    {
+      "id": "232-a",
+      "text": "What new job might the Pope take?",
+      "scale": {
+        "green": "Extremely unlikely",
+        "connector": "to",
+        "red": "Very likely"
+      }
+    },
+    {
+      "id": "232-b",
+      "text": "You're hosting a home-shopping show. Present the Macho3000 kitchen robot and sell its best features.",
+      "scale": {
+        "green": "Nobody would buy it",
+        "connector": "to",
+        "red": "Everyone would want one"
+      }
+    },
+    {
+      "id": "233-a",
+      "text": "Which country would you take someone to for a weekend of amazing food?",
+      "scale": {
+        "green": "The worst destination",
+        "connector": "to",
+        "red": "The best destination"
+      }
+    },
+    {
+      "id": "233-b",
+      "text": "Demonstrate your gang's secret handshake when greeting another member.",
+      "scale": {
+        "green": "Your gang doesn't seem scary at all",
+        "connector": "to",
+        "red": "Your gang is terrifying"
+      }
+    },
+    {
+      "id": "234-a",
+      "text": "Tell everyone a secret someone might be hiding.",
+      "scale": {
+        "green": "A harmless little secret",
+        "connector": "to",
+        "red": "An explosive state secret"
+      }
+    },
+    {
+      "id": "234-b",
+      "text": "Various characters are competing in a hot-dog eating contest. Which real or fictional person do you enter?",
+      "scale": {
+        "green": "Guaranteed to lose",
+        "connector": "to",
+        "red": "Guaranteed to win"
+      }
+    },
+    {
+      "id": "235-a",
+      "text": "You're working out at the gym and want your trainer to notice you. Mime the scene.",
+      "scale": {
+        "green": "Help, this is way too heavy!",
+        "connector": "to",
+        "red": "Look at me, I'm a total muscle machine!"
+      }
+    },
+    {
+      "id": "235-b",
+      "text": "Name a sound you might hear through your window at home.",
+      "scale": {
+        "green": "Horrible to listen to",
+        "connector": "to",
+        "red": "Beautiful to listen to"
+      }
+    },
+    {
+      "id": "236-a",
+      "text": "Mirror, mirror on the wall, who's the fairest actress of them all? Name an actress.",
+      "scale": {
+        "green": "The mirror must be blind",
+        "connector": "to",
+        "red": "Breathtakingly beautiful"
+      }
+    },
+    {
+      "id": "236-b",
+      "text": "You're an international superstar for a day. What do you do?",
+      "scale": {
+        "green": "Extremely generous",
+        "connector": "to",
+        "red": "Extremely selfish"
+      }
+    },
+    {
+      "id": "237-a",
+      "text": "Name a word from the dictionary. How often does the Captain use it?",
+      "scale": {
+        "green": "Never says it",
+        "connector": "to",
+        "red": "Says it all the time"
+      }
+    },
+    {
+      "id": "237-b",
+      "text": "At the annual village fair, a new 'Miss Something' is crowned. Finish the title: 'Miss ...'",
+      "scale": {
+        "green": "Completely tasteless",
+        "connector": "to",
+        "red": "Seriously classy"
+      }
+    },
+    {
+      "id": "238-a",
+      "text": "Mime a typical weekend activity.",
+      "scale": {
+        "green": "I never do this",
+        "connector": "to",
+        "red": "I do this all the time"
+      }
+    },
+    {
+      "id": "238-b",
+      "text": "You're casting contestants for a reality show. Name a selection criterion.",
+      "scale": {
+        "green": "Nobody wants that quality",
+        "connector": "to",
+        "red": "It's highly sought after"
+      }
+    },
+    {
+      "id": "239-a",
+      "text": "You're giving a lecture in a large auditorium. Announce the topic.",
+      "scale": {
+        "green": "Nobody cares",
+        "connector": "to",
+        "red": "The auditorium is packed"
+      }
+    },
+    {
+      "id": "239-b",
+      "text": "Say 'We don't even have proper seasons anymore!' while acting out what the weather feels like.",
+      "scale": {
+        "green": "Bitterly cold",
+        "connector": "to",
+        "red": "Scorching hot"
+      }
+    },
+    {
+      "id": "240-a",
+      "text": "You're in a hot-air balloon that's barely rising. What do you throw overboard?",
+      "scale": {
+        "green": "Light as a feather",
+        "connector": "to",
+        "red": "Extremely heavy"
+      }
+    },
+    {
+      "id": "240-b",
+      "text": "Make up a TripAdvisor review of a restaurant.",
+      "scale": {
+        "green": "Nobody would ever eat there",
+        "connector": "to",
+        "red": "Everyone wants to go immediately"
+      }
+    },
+    {
+      "id": "241-a",
+      "text": "You're sending a birthday cake to a friend in prison. What object do you hide inside to help them escape?",
+      "scale": {
+        "green": "Completely useless",
+        "connector": "to",
+        "red": "Extremely helpful"
+      }
+    },
+    {
+      "id": "241-b",
+      "text": "Mime a gesture or facial expression.",
+      "scale": {
+        "green": "I never do that",
+        "connector": "to",
+        "red": "I do it constantly"
+      }
+    },
+    {
+      "id": "242-a",
+      "text": "You wake up beside someone you never expected to find there. Who is it? Name a real person.",
+      "scale": {
+        "green": "A terrible surprise",
+        "connector": "to",
+        "red": "A wonderful surprise"
+      }
+    },
+    {
+      "id": "242-b",
+      "text": "You're invisible for a day. What do you get up to?",
+      "scale": {
+        "green": "Perfectly sensible",
+        "connector": "to",
+        "red": "Completely crazy"
+      }
+    },
+    {
+      "id": "243-a",
+      "text": "After a shipwreck, you're stranded on a deserted island with just one item. What is it?",
+      "scale": {
+        "green": "Completely useless",
+        "connector": "to",
+        "red": "Absolutely essential"
+      }
+    },
+    {
+      "id": "243-b",
+      "text": "You're playing poker and have a royal flush! Mime your reaction.",
+      "scale": {
+        "green": "A perfect poker face",
+        "connector": "to",
+        "red": "Your excitement is written all over your face"
+      }
+    },
+    {
+      "id": "244-a",
+      "text": "Mime copying answers from the student sitting next to you during a test.",
+      "scale": {
+        "green": "Totally inconspicuous",
+        "connector": "to",
+        "red": "Obvious to everyone"
+      }
+    },
+    {
+      "id": "244-b",
+      "text": "You can make something rain from the sky with a snap of your fingers. What would it be?",
+      "scale": {
+        "green": "The worst thing imaginable",
+        "connector": "to",
+        "red": "An absolute dream"
+      }
+    },
+    {
+      "id": "245-a",
+      "text": "What do students do while the teacher writes on the board?",
+      "scale": {
+        "green": "A perfectly quiet class",
+        "connector": "to",
+        "red": "A class that's totally out of control"
+      }
+    },
+    {
+      "id": "245-b",
+      "text": "A sequel to 'Dances with Wolves' needs a new title: 'Dances with ...' Finish it.",
+      "scale": {
+        "green": "A guaranteed box-office flop",
+        "connector": "to",
+        "red": "A massive box-office hit"
+      }
+    },
+    {
+      "id": "246-a",
+      "text": "The Captain points to a man in the group. Imagine he's suddenly naked. What object does he use to cover his private parts?",
+      "scale": {
+        "green": "Hardly anything to cover",
+        "connector": "to",
+        "red": "A whole lot to cover"
+      }
+    },
+    {
+      "id": "246-b",
+      "text": "What might you say to your mother-in-law?",
+      "scale": {
+        "green": "Really mean",
+        "connector": "to",
+        "red": "Especially nice"
+      }
+    },
+    {
+      "id": "247-a",
+      "text": "Someone tells a joke. Mime laughing at it.",
+      "scale": {
+        "green": "Not funny at all",
+        "connector": "to",
+        "red": "So funny you're crying with laughter"
+      }
+    },
+    {
+      "id": "247-b",
+      "text": "A children's band covers a famous song. Which one? Sing it if you like.",
+      "scale": {
+        "green": "Perfectly suitable for children",
+        "connector": "to",
+        "red": "Totally inappropriate for children"
+      }
+    },
+    {
+      "id": "248-a",
+      "text": "Get down on one knee or hold out an imaginary ring and propose to another player.",
+      "scale": {
+        "green": "Guaranteed rejection",
+        "connector": "to",
+        "red": "An enthusiastic yes"
+      }
+    },
+    {
+      "id": "248-b",
+      "text": "What could be on TV?",
+      "scale": {
+        "green": "Almost nobody would watch it",
+        "connector": "to",
+        "red": "Everyone would tune in"
+      }
+    },
+    {
+      "id": "249-a",
+      "text": "Name a real or imaginary qualification whose certificate you could hang above your fireplace.",
+      "scale": {
+        "green": "Not prestigious at all",
+        "connector": "to",
+        "red": "Extremely prestigious"
+      }
+    },
+    {
+      "id": "249-b",
+      "text": "Disney is looking for a new voice actor. Sing the chorus of 'Let It Go' from 'Frozen'.",
+      "scale": {
+        "green": "In the deepest possible voice",
+        "connector": "to",
+        "red": "In the highest possible voice"
+      }
+    },
+    {
+      "id": "250-a",
+      "text": "You can jump into a swimming pool filled with something other than water. What's inside?",
+      "scale": {
+        "green": "An absolute nightmare",
+        "connector": "to",
+        "red": "A dream come true"
+      }
+    },
+    {
+      "id": "250-b",
+      "text": "One of the players is a vampire! Point at them and explain how you figured it out.",
+      "scale": {
+        "green": "A tiny clue",
+        "connector": "to",
+        "red": "Irrefutable proof"
+      }
     }
   ]
 }
