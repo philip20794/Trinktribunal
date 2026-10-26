@@ -10,21 +10,23 @@
 4. **Jede falsch platzierte Person zählt als ein Fehler.** Der Richter trinkt **einen Schluck pro Fehler**. Jeder falsch einsortierte Spieler trinkt **genauso viele Schlucke wie der Richter**.
 5. In der nächsten Runde übernimmt ein anderer Spieler die Richterrolle.
 
+Eine Partie umfasst standardmäßig **50 Fragen/Aussagen**, unterbrochen von **7 zusätzlichen Trinkregel-Ereignissen**, die bis zum Partieende gelten. Spieldauer, Regelanzahl und Schwierigkeit (Zahlenbereich standardmäßig bis zum aufgerundeten 1,5-Fachen der Spielerzahl) sind vor dem Start anpassbar.
+
 ## Spielvarianten
 
 ### 1. Ein Handy + Zahlenkarten
 
-Der Richter nutzt die App, um die Frage vorzulesen. Die übrigen Spieler ziehen je eine verdeckte Zahlenkarte aus einem gemischten Stapel. Standardmäßig reichen die Karten von **1 bis 10**; der Zahlenbereich richtet sich nach Spieleranzahl und gewählter Schwierigkeit und kann größer oder kleiner sein.
+Der Richter nutzt die App, um die Frage vorzulesen. Die übrigen Spieler ziehen je eine verdeckte Zahlenkarte aus einem gemischten Stapel. Der Zahlenbereich richtet sich nach Spieleranzahl und Schwierigkeit (standardmäßig **1 bis X**, mit **X = ⌈Spielerzahl × 1,5⌉**).
 
 Nach den Antworten nennt der Richter die Reihenfolge, beginnend mit der vermeintlich kleinsten Zahl. Die aufgerufenen Spieler decken ihre Karten nacheinander auf. So werden Fehler direkt sichtbar.
 
 ### 2. Ein Handy, ohne Karten
 
-Die App verteilt die geheimen Zahlen. Das Handy wird herumgereicht und jeder Spieler lässt sich nur seine eigene Zahl anzeigen. Anschließend läuft die Runde wie in Variante 1 ab.
+Spieler werden mit Namen und zufälligen, anpassbaren Avataren angelegt und per Drag & Drop in eine feste Reihenfolge gebracht. Die App verteilt die Zahlen, das Handy wird in dieser Reihenfolge herumgereicht. Spieler können während der Partie hinzugefügt oder entfernt werden.
 
 ### 3. Jeder mit eigenem Handy
 
-Ein Spieler erstellt einen Raum, die anderen treten bei. Alle erhalten ihre Zahlen direkt auf dem eigenen Handy – ohne Herumreichen.
+Ein Spielleiter erstellt einen Raum mit QR-Code/Link; alle treten mit eigenem Handy bei. Jeder bearbeitet Namen und Avatar selbst, die Gruppe sieht dieselben Figuren in einem gemeinsamen Gerichtssaal. Zahlen bleiben geheim und werden auf jedem Gerät einzeln angezeigt.
 
 **Optional: Alle sind Richter.** Dann bekommt auch der sonstige Richter eine Zahl und gibt eine Antwort. Jeder versucht, die Gruppe selbst zu sortieren. So können mehrere Spieler in derselben Runde Schlucke bekommen.
 
@@ -48,3 +50,5 @@ Der deutschsprachige Fragenkatalog mit 500 Aufgaben liegt unter [data/questions/
 - [Architektur und Projektstruktur](docs/ARCHITECTURE.md)
 - [Multiplayer-Optimierung und Free-Tier-Limits](docs/MULTIPLAYER_OPTIMIZATION.md)
 - [Visuelles Konzept, Avatare und Screens](docs/VISUAL_DESIGN.md)
+- [Spielkonzept, Trinkregeln und Einstellungen](docs/GAME_DESIGN.md)
+- [Screens und Abläufe der drei Spielvarianten](docs/USER_FLOWS.md)
