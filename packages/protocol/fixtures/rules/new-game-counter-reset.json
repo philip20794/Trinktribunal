@@ -1,0 +1,43 @@
+{
+  "fixtureId": "TT003-NEW-GAME-COUNTERS",
+  "decisionRefs": [
+    "D-01",
+    "D-05"
+  ],
+  "operation": "startNewGamePreservingHistory",
+  "input": {
+    "oldGameId": "old",
+    "personCounters": {
+      "A": 4,
+      "B": 3,
+      "C": 5
+    },
+    "historyEntries": [
+      {
+        "eventId": "one",
+        "kind": "question",
+        "contentId": "q1",
+        "timestampUtc": "2026-10-26T18:00:00Z"
+      },
+      {
+        "eventId": "two",
+        "kind": "rule",
+        "contentId": "r1",
+        "timestampUtc": "2026-10-26T18:01:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "newPersonCounters": {
+      "A": 0,
+      "B": 0,
+      "C": 0
+    },
+    "retainedHistoryEventIds": [
+      "one",
+      "two"
+    ],
+    "newGameIdDifferent": true
+  },
+  "notes": "A new game resets only person selection counters, not unexpired content history."
+}
