@@ -20,7 +20,9 @@
     {
       "id": "left_hand_drinking",
       "text": "From now on, everyone must drink with their left hand.",
-      "excludes": []
+      "excludes": [
+        "two_hands_drinking"
+      ]
     },
     {
       "id": "imaginary_kobold",
@@ -35,7 +37,10 @@
     {
       "id": "two_hands_drinking",
       "text": "Your glasses have suddenly become so heavy that you have to use both hands whenever you drink.",
-      "excludes": []
+      "excludes": [
+        "left_hand_drinking",
+        "touch_player_while_drinking"
+      ]
     },
     {
       "id": "no_yes_no",
@@ -70,7 +75,9 @@
     {
       "id": "touch_player_while_drinking",
       "text": "Whenever you drink, you must touch another player with one hand.",
-      "excludes": []
+      "excludes": [
+        "two_hands_drinking"
+      ]
     },
     {
       "id": "enjoyment_sound",
