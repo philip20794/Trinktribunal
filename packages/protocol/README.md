@@ -1,0 +1,28 @@
+# Gemeinsamer Fachvertrag und Testvektoren
+
+Status: **TT-003 in Vorbereitung**, noch keine freigegebene Implementierung. Grundlage: [Zustands-/Aktionsvertrag](../../docs/decisions/001-game-contract.md) und D-01/D-02/D-04/D-05/D-06/D-07/D-09/D-10/D-13/D-17. Die Teilverträge sind innerhalb der im [Plan](../../docs/IMPLEMENTATION_PLAN.md) beschriebenen Reihenfolge mit Client- und Serverlogik zu verbinden.
+
+## Verzeichnisstruktur
+
+- [`fixtures/rules/`](fixtures/rules/): Konfiguration, Ereignisplanung, Inhalts- und Personenauswahl sowie Gültigkeitsfälle.
+- [`fixtures/transitions/`](fixtures/transitions/): bestätigte Abschlussaktionen, Permutationen, Richter-/Vorleserrotation und unterschiedliche Urteilsauswertungen.
+
+Jede JSON-Datei enthält eine einzelne **`fixtureId`** (global eindeutig), `decisionRefs`, eine rein fachliche `operation`, `input` und `expected`. `notes` dient nur dem menschlichen Verständnis. `operation` beschreibt den zu testenden Fachvorgang und ist **kein** WebSocket-Endpunkt. Die konkreten Feldnamen sind vorläufige Fixture-DTOs; spätere implementierte DTOs dürfen um technische Metadaten ergänzt werden, **nicht** vom erwarteten fachlichen Ergebnis abweichen.
+
+## Zufall und Zeit
+
+Fixtures geben keine plattformabhängigen PRNG-Seeds an, sondern **explizite gewählte Indizes/Entscheidungen**. `nowUtc` ist injizierte UTC-Zeit. `recentCount` zählt nur Inhaltsereignisse mit Zeitstempel **strikt später** als `nowUtc - 6 Stunden` und je ID. Tests injizieren den Zufall; der Produktionszufall kommt aus einer kryptografisch sicheren Quelle (D-10). `actionId` und `eventId` sind in Tests deterministische IDs, im Produkt opake eindeutige Bezeichner.
+
+## Feste Beispiele
+
+- N=8, Faktor-Zehntel 15 → X=12; N=20 bei 10/15/30 → X=20/30/60.
+- F=1, R=7 → kein Slot; F=3, R=2 → Slots 1 und 2 trotz Nachbarschaft; F=6, R=2 → pro Segment ein nichtbenachbarter Slot.
+- Vier gleich berechtigte Spieler werden vor der nächsten Wiederholung jeweils einmal für **einrollige** Inhalte eingesetzt; neues Mitglied startet am aktiven maximalen Personenzähler.
+- Vorgeschlagene Ordnung B/A/D/C bei wahrer Ordnung A/B/C/D → E=4; Richter und alle vier betroffenen Spieler je vier Schlucke; im Alle-Richter-Modus nur eigene Fehlerzahl.
+- Bestätigter Fallabschluss ohne Urteil zählt einen Fall, bewahrt Fragebindung/Ziehhistorie, löst planmäßigen Zwischenraum und Richterwechsel **einmal** aus, erzeugt **keine** Fehl-/Schluckwerte.
+
+## Geplante Testnutzung
+
+Für Node `node --test scripts/tests/protocol-fixtures.test.mjs` (ohne Netzwerk). Die Tests prüfen JSON, Eindeutigkeit von `fixtureId` sowie fachliche Beispiel-Invarianten, ersetzen aber **keine** spätere Ausführung derselben Beispiele in Dart und TypeScript. Bei einem späteren kanonischen Protokollschema darf nur die Struktur versioniert migriert werden, nicht die beschlossene Semantik.
+
+**Gültigkeitsgrenze:** Eine grüne Fixture-Datei ist kein Nachweis für einen spielbaren Client, eine autoritative Worker-Implementierung oder eine juristische Freigabe des übernommenen Inhalts.
