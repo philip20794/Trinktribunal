@@ -44,7 +44,7 @@ Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechsel
 - **Fallakte:** Gut lesbare Frage/Aussage mit Skalenenden; **Trinkregel-Akte** kann stattdessen als Sonderereignis erscheinen und bleibt über „Aktive Regeln“ abrufbar.
 - **Geheime Akte:** Klarer Privatbildschirm, erst auf Tippen sichtbar; keine versehentliche Anzeige der nächsten Person.
 - **Anklagebank:** 2–3 Figuren je Reihe, **schlangenförmige Reihenfolge**, Drag & Drop, Positionen sichtbar.
-- **Urteil:** Nacheinander aufgedeckte Zahlen, falsch platzierte Figuren, Fehler und Schlucke; danach Richterwechsel (außer im Modus „Alle sind Richter“).
+- **Urteil:** Nacheinander aufgedeckte Zahlen, falsch platzierte Figuren, Fehler und Schlucke. Im normalen Modus: Richter und seine falsch platzierten Spieler trinken die Fehlerzahl. Bei „Alle sind Richter“: persönliche Auswertung pro Spieler, **nur eigene Fehler = eigene Schlucke**, ohne Mittrinken; kein Richterwechsel.
 - **Fortschritt & Ende:** Zähler `Fall 12/50` plus Anzeige aktiver Trinkregeln; am Partieende Abschlussansicht mit Aktion „Neue Partie“.
 
 ## Einheitliche Regeln für die Oberfläche
