@@ -23,6 +23,8 @@ Die `.ps1`-Dateien verwenden UTF-8 **mit BOM**, damit Windows PowerShell 5.1 deu
 
 ## Gemeinsamer Vertrag und Referenztests
 
+TT-004 ergänzt den [Katalogvertrag](contracts/CATALOGS.md): nach Quellenänderungen `powershell -NoProfile -File .\scripts\sync-assets.ps1`, anschließend `-Check`. `check.ps1` prüft die Assets schreibfrei. Neue Katalogtests: 33 Node- und zwölf Flutter-Fälle; Gesamtstand 73 Node-/17 Flutter-Tests. Debugvorschau: auf der Startseite „Katalogdiagnose“ aufklappen. Die versionierten Assetkopien nie von Hand editieren.
+
 [GAME_STATE.md](contracts/GAME_STATE.md) konkretisiert die freigegebenen D-Beschlüsse. Die [Protokoll-Fixtures](../packages/protocol/README.md) umfassen 30 JSON-Beispiele. Die Node-Suite prüft 20 fachliche Referenzfälle, 3 private Projektionen, 12 Dokumentenprüferfälle und 5 Windows-Skriptfälle. Diese Tests laufen im tatsächlichen Checkout; sie sind ausdrücklich **keine** bereits implementierte Dart-/TypeScript-Spielengine oder Worker-Sicherheitsprüfung.
 
 ```powershell

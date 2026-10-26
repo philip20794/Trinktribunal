@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Integration von `task/TT-001-flutter-shell` (`251a788`) mit `main` (`0d8cd2d`), Mergebasis gesichert in `3bc0000`. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Aktuelle M0-Abnahme](qa/M0.md).
 
-**Aktuell: M0 abgeschlossen. 3/70 Aufgaben abgenommen; automatische Gates grün und visuelle Browserabnahme am 26.10.2026 durch den Nutzer bestätigt. Merge und Fortsetzung ausdrücklich autorisiert.** Keine GitHub Actions oder Cloudflare-Deployments.
+**Aktuell: M0 abgeschlossen. 4/70 Aufgaben abgenommen; automatische Gates grün und visuelle Browserabnahme am 26.10.2026 durch den Nutzer bestätigt. Merge und Fortsetzung ausdrücklich autorisiert.** Keine GitHub Actions oder Cloudflare-Deployments.
 
 ## Statusregeln
 
@@ -34,7 +34,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 
 **TT-001–TT-003 – ERLEDIGT.** App-Shell, Windows-Workflow und Zustandsvertrag geprüft; lokale Tests/Builds und Nutzerabnahme siehe [M0](qa/M0.md). chrome-devtools bleibt agentenseitig unerreichbar, deshalb keine automatische visuelle Prüfung behauptet.
 
-**Nächste Aufgabe: TT-004.** Katalogschemas, Validator, Assetmanifest und typisierte Flutter-Loader.
+**TT-004 – ERLEDIGT.** Schemas, semantischer Validator, deterministisches Manifest/Assets, typisierte Flutter-Loader und Debugdiagnose. 73 Node-/17 Flutter-Tests, Analyze und JS-Webbuild erfolgreich. [Prüfbeleg](qa/TT-004.md). Nächste Aufgabe: TT-005.
 
 ## Meilensteine
 
@@ -61,7 +61,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-001 | Flutter-Web-App mit drei Einstiegen starten | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
 | TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
 | TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
-| TT-004 | Beide Katalogformate validieren und bündeln | OFFEN | — |
+| TT-004 | Beide Katalogformate validieren und bündeln | ERLEDIGT | 73 Node-/17 Flutter-Tests, Analyze, Webbuild · [TT-004](qa/TT-004.md) |
 | TT-005 | Redaktionelle Konflikte inventarisieren und entscheiden | OFFEN | — |
 | TT-006 | Konfiguration und unveränderliche Spielmodelle | OFFEN | — |
 | TT-007 | Frage ziehen und Ereignisplan erzeugen | OFFEN | — |
@@ -156,7 +156,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Aufgabe: TT-004 – Beide Katalogformate validieren und bündeln.** Keine erneute Grundsatzplanung erforderlich.
+**Nächste Aufgabe: TT-005 – Redaktionelle Konflikte inventarisieren und entscheiden.**
 
 Der aktuelle [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) ersetzt die historische Bestandsaufnahme unten als Aussage über den heutigen Entwicklungsstand. Alle 70 TT-Aufgaben bleiben OFFEN; der erfolgreiche Umgebungscheck ist kein bestandener App-Build.
 
@@ -179,9 +179,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main (M0-Merge); nächste Implementierung auf task/TT-004-catalogs
+Branch: task/TT-004-catalogs; M0 bereits auf main e45e1b7
 Aktueller Beleg: docs/qa/M0.md
-Naechster Schritt: TT-004 gemaess Plan implementieren und lokal pruefen
+Naechster Schritt: TT-005 gemaess Plan; danach TT-006
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

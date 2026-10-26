@@ -41,6 +41,7 @@ if ($Scope -in @('Docs', 'All')) {
         exit 1
     }
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'check-docs.mjs'))
+    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'validate-data.mjs'), '--check')
     $testFiles = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'tests') -Filter '*.test.mjs' -File |
         Sort-Object Name | ForEach-Object { $_.FullName })
     Invoke-Checked 'node' (@('--test') + $testFiles)
@@ -61,6 +62,7 @@ if ($Scope -in @('Client', 'All')) {
     }
     Push-Location $client
     try {
+        Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'validate-data.mjs'), '--check')
         Invoke-Checked 'flutter' @('pub', 'get', '--offline', '--enforce-lockfile')
         Invoke-Checked 'dart' @('format', '--output=none', '--set-exit-if-changed', 'lib', 'test')
         Invoke-Checked 'flutter' @('analyze')

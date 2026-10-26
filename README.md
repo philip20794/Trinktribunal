@@ -38,7 +38,7 @@ Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erschein
 
 Die App befindet sich im ersten Entwicklungsmeilenstein M0: Startbildschirm, drei Spielvarianten, Profil und Einstellungen sind als navigierbare Vorschauen vorhanden. Die Spiellogik folgt in den nächsten Meilensteinen.
 
-Die Entscheidungen D-01 bis D-18 sind für die Erstumsetzung festgelegt. Die vorhandene App-Shell wurde lokal mit Flutter, Windows-Prüfskripten sowie Web- und Android-Debugbuilds geprüft. Der genaue Abnahmestand einschließlich noch offener Browserprüfung steht in [PROGRESS.md](docs/PROGRESS.md). Die Entwicklung funktioniert ohne GitHub Actions; Inhalts-/Assetrechte bleiben ein späteres Release-Gate.
+Die Entscheidungen D-01 bis D-18 sind für die Erstumsetzung festgelegt. Die vorhandene App-Shell wurde lokal mit Flutter, Windows-Prüfskripten sowie Web- und Android-Debugbuilds geprüft. Der genaue Abnahmestand mit bestätigter manueller Browserabnahme steht in [PROGRESS.md](docs/PROGRESS.md). Die Entwicklung funktioniert ohne GitHub Actions; Inhalts-/Assetrechte bleiben ein späteres Release-Gate.
 
 Lokaler Start vom Repository-Root unter Windows (Flutter 3.47.7 oder neuer):
 

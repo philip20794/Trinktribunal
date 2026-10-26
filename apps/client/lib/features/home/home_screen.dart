@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../data/catalogs/catalog_diagnostics.dart';
+
 import '../profile/profile_screen.dart';
 import '../settings/settings_screen.dart';
 import 'mode_preview_screen.dart';
@@ -108,6 +110,7 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 24),
+                      const CatalogDiagnostics(),
                       const Text(
                         'Entwicklungsvorschau',
                         style: TextStyle(color: Color(0xFF715E50)),
