@@ -1,0 +1,36 @@
+{
+  "fixtureId": "TT003-HISTORY-CUTOFF",
+  "decisionRefs": [
+    "D-01",
+    "D-10"
+  ],
+  "operation": "rollingHistoryCutoff",
+  "input": {
+    "nowUtc": "2026-10-26T18:00:00Z",
+    "previousUtc": [
+      "2026-10-26T12:00:00Z",
+      "2026-10-26T12:00:01Z",
+      "2026-10-26T11:59:59Z"
+    ],
+    "ids": [
+      "q-a",
+      "q-a",
+      "q-b"
+    ]
+  },
+  "expected": {
+    "activeOccurrences": [
+      false,
+      true,
+      false
+    ],
+    "recentCounts": {
+      "q-a": 1,
+      "q-b": 0
+    },
+    "preferredIds": [
+      "q-b"
+    ]
+  },
+  "notes": "At the six-hour boundary an occurrence expires."
+}
