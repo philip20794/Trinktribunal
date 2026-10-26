@@ -12,12 +12,12 @@
 ## 2. Wenige Nachrichten und Datenbankzugriffe
 
 - Flutter sendet **Aktionen statt ganzer Spielzustände** (z. B. `join`, `ready`, `submit_order`, `reveal`, `next_round`). Server prüft und verteilt nur relevante Änderungen.
-- **Fragen- bzw. Trinkregel-ID + jeweilige Katalogversion** statt Volltext senden; Kataloge liegen als Flutter-Assets auch im Client. Aktive Regeln nur als IDs im Raumzustand speichern.
+- **Fragen- bzw. Trinkregel-ID + jeweilige Katalogversion** statt Volltext senden; Kataloge liegen als Flutter-Assets auch im Client. Aktive Regel-IDs mit Spielerrollenzuweisungen und gezogenen IDs im Raumzustand speichern, nicht bloß als Texte.
 - Keine Drag-Bewegungen, laufenden Countdowns oder Animation-Frames über WebSocket schicken. Drag-and-drop geschieht lokal; erst die **fertige Reihenfolge** übertragen.
 - Geheime Zahlen niemals vor der Aufdeckung an andere Teilnehmer senden. Im Modus „Alle sind Richter“ Sortierungen bis zum Abschluss getrennt halten.
 - **Avatare:** Nur Baustein-IDs und geänderte Felder samt `playerId`/`avatarRevision` synchronisieren, keine Bilder oder kompletten Render-Daten. Mit demselben Asset-Katalog sehen Figuren auf allen Geräten gleich aus; veraltete Updates verwerfen.
 - **Spieländerungen:** Während eines Falls die Menge der zu sortierenden Spieler und ihre geheimen Zahlen einfrieren. Beitritte/Austritte ab nächstem Fall anwenden; Schieberegler und sonstige Partie-Optionen nach Start sperren. Neue Partie nur durch bestätigte Host-Aktion starten.
-- Nur bei relevanten Zustandsänderungen in SQLite speichern. Kompakte Raumdaten; keine Datenbankzugriffe für reine UI-Interaktionen. Raumdaten nach Inaktivität/Spielende per Alarm bereinigen.
+- Nur bei relevanten Zustandsänderungen in SQLite speichern. **D-01:** Ausgespielte Frage bzw. aktivierte Regel plus Zeitstempel/ID-Ereignis für den rollierenden 6h-Nutzungszähler atomar mit der fachlichen Aktion speichern; doppelte Aktionen zählen nicht erneut. Historie pro Raum über mehrere Partien, abgelaufene Einträge bereinigen. Validierten und begrenzten Host-Verlauf privat importieren, bestätigte Ziehungen privat und idempotent ans Host-Gerät zurückspielen; nicht an alle Teilnehmer senden. Kompakte Raumdaten; keine Datenbankzugriffe für reine UI-Interaktionen. Raumdaten nach Inaktivität/Spielende per Alarm bereinigen.
 - Nachrichten mit `roomId`, `roundId`, `phase` und eindeutiger `actionId` versionieren; ungültige, doppelte und verspätete Aktionen verwerfen.
 
 ## 3. Flutter Web schlank halten
@@ -32,7 +32,7 @@
 
 - Join-/Raumerstellung, Nachrichtengröße, Raumgröße und Aktionsrate begrenzen. Geheim-Token nur privat speichern/übertragen, niemals in öffentlichen Raumsnapshots.
 - Dart-Client und TypeScript-Server nutzen denselben **versionierten JSON-Vertrag**. Gemeinsame Regel-Testfälle verhindern abweichende Bewertungen.
-- Tests: 8 Spieler × 50 Fälle und 7 Regelereignisse (Standardeinstellungen), Parallelräume, Abbruch/Reload, Hibernation, Wiederverbindung, doppelte Aktionen, Spieleränderungen zwischen Fällen und Avatar-Updates während der Partie. **„Alle sind Richter“:** Jede Sortierung separat bewerten; nur die eigenen Fehlplatzierungen führen zu eigenen Schlucken, keine Mittrink-Effekte; mögliche Fehlerzahlen einer gültigen Permutation: 0 oder mindestens 2.
+- Tests: 8 Spieler × 50 Fälle und 7 Regelereignisse (Standardeinstellungen), getrennte Räume und Partieneustarts mit 6h-Historie, bevorzugt ungezogene IDs und danach minimale 6h-Zähler, keine Doppelzählung bei Reconnect/ACK, Host-Historienimport/Rückabgleich, Abbruch/Reload, Hibernation, Wiederverbindung, doppelte Aktionen, Spieleränderungen zwischen Fällen und Avatar-Updates während der Partie. **„Alle sind Richter“:** Jede Sortierung separat bewerten; nur die eigenen Fehlplatzierungen führen zu eigenen Schlucken, keine Mittrink-Effekte; mögliche Fehlerzahlen einer gültigen Permutation: 0 oder mindestens 2.
 - **Messen:** Worker-/DO-Anfragen, eingehende WebSocket-Nachrichten, DO-GB-Sekunden, SQLite-Lese-/Schreibzeilen, Speicher, Fehlerraten und Latenz. Vor Veröffentlichung die geltenden [Workers-Limits](https://developers.cloudflare.com/workers/platform/limits/), [DO-Limits](https://developers.cloudflare.com/durable-objects/platform/limits/) und [Preise](https://developers.cloudflare.com/durable-objects/platform/pricing/) kontrollieren. Keine garantierte Zahl kostenloser Spieler ohne Messung.
 
 Details zu Regeln und Nutzerabläufen: [Spielkonzept](GAME_DESIGN.md), [Screens](USER_FLOWS.md).
