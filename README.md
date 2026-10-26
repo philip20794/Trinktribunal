@@ -46,6 +46,7 @@ Der vollständige Entwicklungsplan ist dokumentiert; die App wurde noch nicht im
 - [Beschluss zur Spielverteilung und 6-Stunden-Ziehhistorie](docs/decisions/D-01-game-schedule-and-six-hour-history.md)
 - [Beschluss zu 3–20 Spielern, Schiebereglern und Namenslängen](docs/decisions/D-02-config-bounds.md)
 - [Beschluss zur konto-losen, dauerhaften Multiplayer-Wiederverbindung](docs/decisions/D-16-persistent-accountless-rejoin.md)
+- [Teilbeschluss zur fairen Auswahl von Spielerbezügen](docs/decisions/D-05-person-selection-fairness.md)
 
 ## Fragenkatalog
 
