@@ -1,0 +1,28 @@
+{
+  "fixtureId": "TT003-JUDGE-ACTIVE",
+  "decisionRefs": [
+    "D-06"
+  ],
+  "operation": "rotateJudgeAfterRosterBoundary",
+  "input": {
+    "previousRosterIds": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "previousJudgeId": "B",
+    "newEffectiveRosterIds": [
+      "D",
+      "B",
+      "A",
+      "C"
+    ],
+    "previousJudgeRemoved": false
+  },
+  "expected": {
+    "nextJudgeId": "A",
+    "ruleEventCausesAdditionalRotation": false
+  },
+  "notes": "If current judge survives, successor is computed in the new effective order."
+}
