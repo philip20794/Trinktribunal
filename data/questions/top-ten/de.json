@@ -56,9 +56,9 @@
         }
       },
       "scale": {
-        "green": "Das ist der Person völlig egal",
+        "green": "Das ist {player1} völlig egal",
         "connector": "bis",
-        "red": "Das bricht ihr für immer das Herz"
+        "red": "Das bricht {player1} für immer das Herz"
       }
     },
     {
@@ -242,9 +242,9 @@
         }
       },
       "scale": {
-        "green": "Für ihn völlig nutzlos",
+        "green": "Für {player1} völlig nutzlos",
         "connector": "bis",
-        "red": "Für ihn extrem nützlich"
+        "red": "Für {player1} extrem nützlich"
       }
     },
     {
@@ -518,9 +518,9 @@
         }
       },
       "scale": {
-        "green": "Den braucht er überhaupt nicht",
+        "green": "Den braucht {player1} überhaupt nicht",
         "connector": "bis",
-        "red": "Den braucht er dringend"
+        "red": "Den braucht {player1} dringend"
       }
     },
     {
@@ -737,7 +737,7 @@
       "scale": {
         "green": "Eine nette Kleinigkeit",
         "connector": "bis",
-        "red": "Dafür wird sie dich richtig hassen"
+        "red": "Dafür wird {player1} dich richtig hassen"
       }
     },
     {
@@ -943,9 +943,9 @@
         }
       },
       "scale": {
-        "green": "So nervig, dass er ihn hasst",
+        "green": "So nervig, dass {player1} ihn hasst",
         "connector": "bis",
-        "red": "So gut, dass er ihn behalten will"
+        "red": "So gut, dass {player1} ihn behalten will"
       }
     },
     {
@@ -1207,9 +1207,9 @@
         }
       },
       "scale": {
-        "green": "Er ist bitter enttäuscht",
+        "green": "{player1} ist bitter enttäuscht",
         "connector": "bis",
-        "red": "Er springt vor Freude in die Luft"
+        "red": "{player1} springt vor Freude in die Luft"
       }
     },
     {
@@ -1320,9 +1320,9 @@
         }
       },
       "scale": {
-        "green": "Darin ist er furchtbar schlecht",
+        "green": "Darin ist {player1} furchtbar schlecht",
         "connector": "bis",
-        "red": "Darin ist er fantastisch"
+        "red": "Darin ist {player1} fantastisch"
       }
     },
     {
@@ -1447,9 +1447,9 @@
         }
       },
       "scale": {
-        "green": "Das Schlimmste, was ihm passieren könnte",
+        "green": "Das Schlimmste, was {player1} passieren könnte",
         "connector": "bis",
-        "red": "Eine richtig tolle Verwandlung für ihn"
+        "red": "Eine richtig tolle Verwandlung für {player1}"
       }
     },
     {
@@ -1719,9 +1719,9 @@
         }
       },
       "scale": {
-        "green": "Da würde er lieber sterben, als hinzugehen",
+        "green": "Da würde {player1} lieber sterben, als hinzugehen",
         "connector": "bis",
-        "red": "Die würde er auf keinen Fall verpassen"
+        "red": "Die würde {player1} auf keinen Fall verpassen"
       }
     },
     {
@@ -2058,9 +2058,9 @@
         }
       },
       "scale": {
-        "green": "Für den Captain überhaupt nicht verlockend",
+        "green": "Für {player1} überhaupt nicht verlockend",
         "connector": "bis",
-        "red": "Für den Captain absolut unwiderstehlich"
+        "red": "Für {player1} absolut unwiderstehlich"
       }
     },
     {
@@ -2411,9 +2411,9 @@
         }
       },
       "scale": {
-        "green": "Das würde er kaum vermissen",
+        "green": "Das würde {player1} kaum vermissen",
         "connector": "bis",
-        "red": "Das würde er schrecklich vermissen"
+        "red": "Das würde {player1} schrecklich vermissen"
       }
     },
     {
@@ -2641,7 +2641,7 @@
       "scale": {
         "green": "Überhaupt nicht glaubwürdig",
         "connector": "bis",
-        "red": "Der Person schlottern schon die Knie"
+        "red": "{player1} schlottern schon die Knie"
       }
     },
     {
@@ -2933,9 +2933,9 @@
         }
       },
       "scale": {
-        "green": "Das würde er niemals anziehen",
+        "green": "Das würde {player1} niemals anziehen",
         "connector": "bis",
-        "red": "Das würde er jeden Tag tragen"
+        "red": "Das würde {player1} jeden Tag tragen"
       }
     },
     {
@@ -3159,9 +3159,9 @@
         }
       },
       "scale": {
-        "green": "Das würde er am liebsten sofort an der Autobahn aussetzen",
+        "green": "Das würde {player1} am liebsten sofort an der Autobahn aussetzen",
         "connector": "bis",
-        "red": "Davon hat er schon immer geträumt"
+        "red": "Davon hat {player1} schon immer geträumt"
       }
     },
     {
@@ -3313,9 +3313,9 @@
         }
       },
       "scale": {
-        "green": "Ein kleiner Schreck",
+        "green": "Ein kleiner Schreck für {player1}",
         "connector": "bis",
-        "red": "Die Angst seines Lebens"
+        "red": "Der schlimmste Schrecken für {player1}"
       }
     },
     {
@@ -3557,9 +3557,9 @@
         }
       },
       "scale": {
-        "green": "Passt überhaupt nicht zu ihm",
+        "green": "Passt überhaupt nicht zu {player1}",
         "connector": "bis",
-        "red": "Passt perfekt zu ihm"
+        "red": "Passt perfekt zu {player1}"
       }
     },
     {
@@ -3983,9 +3983,9 @@
         }
       },
       "scale": {
-        "green": "Passt überhaupt nicht zu ihm",
+        "green": "Passt überhaupt nicht zu {player1}",
         "connector": "bis",
-        "red": "Steht ihm perfekt"
+        "red": "Steht {player1} perfekt"
       }
     },
     {
@@ -4123,9 +4123,9 @@
         }
       },
       "scale": {
-        "green": "Dafür wäre er völlig ungeeignet",
+        "green": "Für diesen Beruf wäre {player1} völlig ungeeignet",
         "connector": "bis",
-        "red": "Dieser Beruf passt perfekt zu ihm"
+        "red": "Dieser Beruf passt perfekt zu {player1}"
       }
     },
     {
@@ -4241,9 +4241,9 @@
         }
       },
       "scale": {
-        "green": "Sein schlimmster Albtraum",
+        "green": "Der schlimmste Albtraum für {player1}",
         "connector": "bis",
-        "red": "Sein absoluter Traum"
+        "red": "Der absolute Traum für {player1}"
       }
     },
     {
@@ -4458,9 +4458,9 @@
         }
       },
       "scale": {
-        "green": "Das Wort benutzt er nie",
+        "green": "Das Wort benutzt {player1} nie",
         "connector": "bis",
-        "red": "Das Wort benutzt er ständig"
+        "red": "Das Wort benutzt {player1} ständig"
       }
     },
     {
@@ -4668,7 +4668,7 @@
       "scale": {
         "green": "Damit bekommst du garantiert einen Korb",
         "connector": "bis",
-        "red": "Da sagt dein Schwarm garantiert Ja"
+        "red": "Da sagt {player1} garantiert Ja"
       }
     },
     {
