@@ -27,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 12),
               const Text(
                 'Name und menschlichen Cartoon-Avatar kannst du '
-                'ab TT-015 bearbeiten. Diese Ansicht ist eine Vorschau.',
+                'hier später bearbeiten. Diese Ansicht ist eine Vorschau.',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),

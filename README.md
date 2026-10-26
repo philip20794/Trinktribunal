@@ -36,9 +36,18 @@ Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erschein
 
 ## Status
 
-Das Projekt befindet sich in der Konzeptphase.
+Die App befindet sich im ersten Entwicklungsmeilenstein M0: Startbildschirm, drei Spielvarianten, Profil und Einstellungen sind als navigierbare Vorschauen vorhanden. Die Spiellogik folgt in den nächsten Meilensteinen.
 
-Der fachlich beschlossene Entwicklungsplan ist dokumentiert; die App wurde noch nicht implementiert. Alle Spiel- und Technikentscheidungen D-01 bis D-18 sind für die erste Umsetzung festgelegt. Die Nutzungsrechte der übernommenen Inhalte sind weiterhin ein gesondertes Release-Gate und keine angenommene Freigabe. Die Umsetzung beginnt mit einer früh bedienbaren Flutter-Web-App und erfolgt mit lokalen Tests und Builds unter Windows, ohne GitHub Actions als Voraussetzung.
+Die Entscheidungen D-01 bis D-18 sind für die Erstumsetzung festgelegt. Die vorhandene App-Shell wurde lokal mit Flutter, Windows-Prüfskripten sowie Web- und Android-Debugbuilds geprüft. Der genaue Abnahmestand einschließlich noch offener Browserprüfung steht in [PROGRESS.md](docs/PROGRESS.md). Die Entwicklung funktioniert ohne GitHub Actions; Inhalts-/Assetrechte bleiben ein späteres Release-Gate.
+
+Lokaler Start vom Repository-Root unter Windows (Flutter 3.47.7 oder neuer):
+
+```powershell
+powershell -NoProfile -File .\scripts\init-client.ps1
+powershell -NoProfile -File .\scripts\dev-client.ps1
+```
+
+Vorschau: `http://127.0.0.1:7357`. Im Flutter-Terminal lädt `r` UI-Änderungen nach.
 
 - [Entwicklungsplan mit 70 Aufgaben und neun Meilensteinen](docs/IMPLEMENTATION_PLAN.md)
 - [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)

@@ -9,9 +9,7 @@ void main() {
   testWidgets('Flutter-Projektgerüst startet die tatsächliche App-Shell', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      const ProviderScope(child: TrinktribunalApp()),
-    );
+    await tester.pumpWidget(const ProviderScope(child: TrinktribunalApp()));
     expect(find.text('Trinktribunal'), findsOneWidget);
     expect(find.text('Der Gerichtssaal wartet.'), findsOneWidget);
     expect(find.byType(Scaffold), findsOneWidget);

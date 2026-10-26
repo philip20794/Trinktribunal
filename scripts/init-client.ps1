@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param()
 
 Set-StrictMode -Version Latest
@@ -46,10 +46,15 @@ Write-Host 'Flutter-Version:'
 & flutter --version
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "Initialisiere nur noch fehlende Android-/Web-Templatedateien in $client"
-Write-Host 'WICHTIG: bewusst ohne --overwrite; vorhandene App-Shell behalten.'
-& flutter create --platforms=android,web --project-name trinktribunal $client
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+if (-not (Test-Path (Join-Path $client '.metadata')) -or
+    -not (Test-Path (Join-Path $client 'android/app/src/main/AndroidManifest.xml'))) {
+    Write-Host "Initialisiere nur noch fehlende Android-/Web-Templatedateien in $client"
+    Write-Host 'WICHTIG: bewusst ohne --overwrite; vorhandene App-Shell behalten.'
+    & flutter create --platforms=android,web --project-name trinktribunal $client
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+} else {
+    Write-Host 'Flutter-Geruest bereits vorhanden; vorhandene Dateien bleiben erhalten.'
+}
 
 foreach ($relativePath in $sourcePaths) {
     $path = Join-Path $client $relativePath

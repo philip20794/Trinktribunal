@@ -42,6 +42,8 @@ const files = [
   ...markdownFiles(join(root, 'docs')),
   ...markdownFiles(join(root, 'data', 'questions', 'README.md')),
   ...markdownFiles(join(root, 'data', 'rules', 'README.md')),
+  ...['packages/protocol', 'apps/client/README.md'].flatMap(path =>
+    existsSync(join(root, path)) ? markdownFiles(join(root, path)) : []),
 ];
 
 for (const file of files) {

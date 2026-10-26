@@ -9,41 +9,35 @@ enum GameMode {
     title: 'Handy + Karten',
     description: 'Eine digitale Fallakte und echte Zahlenkarten am Tisch.',
     icon: Icons.style_outlined,
-    milestone: 'M1',
   ),
   sharedPhone(
     title: 'Ein Handy',
-    description: 'Geheime Zahlen weiterreichen und Figuren gemeinsam sortieren.',
+    description:
+        'Geheime Zahlen weiterreichen und Figuren gemeinsam sortieren.',
     icon: Icons.phone_android,
-    milestone: 'M2',
   ),
   multiplayer(
     title: 'Jeder ein Handy',
     description: 'Im selben Gerichtssaal auf mehreren Geräten spielen.',
     icon: Icons.groups_outlined,
-    milestone: 'M4–M6',
   );
 
   const GameMode({
     required this.title,
     required this.description,
     required this.icon,
-    required this.milestone,
   });
 
   final String title;
   final String description;
   final IconData icon;
-  final String milestone;
 }
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void _open(BuildContext context, Widget page) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => page),
-    );
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
   }
 
   @override
@@ -75,9 +69,7 @@ class HomeScreen extends StatelessWidget {
               ? 1056.0
               : constraints.maxWidth;
           final innerWidth = contentWidth - 40;
-          final cardWidth = isWide
-              ? (innerWidth - 2 * gap) / 3
-              : innerWidth;
+          final cardWidth = isWide ? (innerWidth - 2 * gap) / 3 : innerWidth;
 
           return SingleChildScrollView(
             child: Center(
@@ -117,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       const Text(
-                        'Entwicklungsvorschau · TT-001',
+                        'Entwicklungsvorschau',
                         style: TextStyle(color: Color(0xFF715E50)),
                       ),
                     ],
@@ -153,10 +145,7 @@ class _ModeCard extends StatelessWidget {
               children: [
                 Icon(mode.icon, size: 36),
                 const SizedBox(height: 18),
-                Text(
-                  mode.title,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+                Text(mode.title, style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 10),
                 Text(mode.description),
                 const SizedBox(height: 14),

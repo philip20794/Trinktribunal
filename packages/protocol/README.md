@@ -1,6 +1,6 @@
 # Gemeinsamer Fachvertrag und Testvektoren
 
-Status: **TT-003 in Vorbereitung**, noch keine freigegebene Implementierung. Grundlage: [Zustands-/Aktionsvertrag](../../docs/decisions/001-game-contract.md) und D-01/D-02/D-04/D-05/D-06/D-07/D-09/D-10/D-13/D-17. Die Teilverträge sind innerhalb der im [Plan](../../docs/IMPLEMENTATION_PLAN.md) beschriebenen Reihenfolge mit Client- und Serverlogik zu verbinden.
+Status: **Technische Verträge und Referenz-Fixtures für TT-003**, keine implementierte Spielengine. Grundlage: [Zustands-/Aktionsvertrag](../../docs/contracts/GAME_STATE.md) und D-01/D-02/D-04/D-05/D-06/D-07/D-09/D-10/D-13/D-17. Die Teilverträge sind innerhalb der im [Plan](../../docs/IMPLEMENTATION_PLAN.md) beschriebenen Reihenfolge mit Client- und Serverlogik zu verbinden.
 
 ## Verzeichnisstruktur
 

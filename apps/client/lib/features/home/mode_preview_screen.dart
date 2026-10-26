@@ -30,7 +30,7 @@ class ModePreviewScreen extends StatelessWidget {
               const SizedBox(height: 28),
               Text(
                 'Diese Spielvariante ist noch nicht verfügbar. '
-                'Der spielbare Ablauf folgt mit ${mode.milestone}.',
+                'Der spielbare Ablauf wird noch entwickelt.',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 28),

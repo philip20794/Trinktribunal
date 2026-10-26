@@ -2,60 +2,37 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Zustand im Featurebranch `task/TT-001-flutter-shell`:** Fachentscheidungen D-01 bis D-18 verbindlich beschlossen; TT-001 ist begonnen, aber ohne Flutter-/Android-Gerüst oder lokale Abnahme noch nicht abgeschlossen. Die ersten Client-Quellen, Widgettests und Webdateien sind versioniert; zusätzlich liegen die **vorbereitenden** TT-002-Skripte im Branch. Die Flutter- und PowerShell-Prüfungen müssen noch auf Windows ausgeführt werden. Vier Kataloge (je 491 Fragen und 25 Regeln in DE/EN) bleiben unverändert. Es wurden weder GitHub Actions noch Cloudflare-Deployments ausgeführt.
+**Aktueller Stand:** Die vorhandene Flutter-/Riverpod-App-Shell wurde aus `task/TT-001-flutter-shell` übernommen und lokal um Android-Gerüst, Flutter-Metadaten und Lockfile ergänzt. Drei Varianten, Profil und Einstellungen sind navigierbare Vorschauen. Es gibt noch keine Spielengine und keinen Worker. Vier Kataloge (je 491 Fragen und 25 Regeln DE/EN) bleiben unverändert. Abnahme und aktueller Merge-Status: [M0-Prüfbeleg](qa/M0.md).
 
-Ziel: Nach TT-001 ist ein Browserfenster jederzeit mit dem aktuellen Stand bedienbar. Jeder kleine Entwicklungsschritt erhält diesen Zustand. Alle Prüfungen und Builds laufen auf dem eigenen PC; eine spätere CI darf dieselben Skripte aufrufen, ist aber keine Voraussetzung.
+## Lokaler Einstieg
 
-## TT-003: vorbereiteter Fachvertrag und Fixtures (noch nicht abgenommen)
+Vom Repository-Root:
 
-Im selben Featurebranch liegen der [TT-003-Fachvertrag](decisions/001-game-contract.md), das [Protokoll-README](../packages/protocol/README.md), 28 fachliche JSON-Beispielfälle, 18 Protokoll- und 3 Datenschutz-Node-Tests und der unabhängige Node-Orakeltest `scripts/tests/protocol-fixtures.test.mjs`.
+```powershell
+# Einmalig Pakete einrichten; bestehende Quellen werden nicht ueberschrieben.
+powershell -NoProfile -File .\scripts\init-client.ps1
+# Laufende Chrome-Vorschau auf http://127.0.0.1:7357, r = Hot Reload, q = Ende
+powershell -NoProfile -File .\scripts\dev-client.ps1
+# Dokumente, Node-/Windows-Tests, Offline-Lockfilecheck, Format, Analyze, Widgettests
+powershell -NoProfile -File .\scripts\check.ps1 -Scope All
+```
+
+Alternativer Port/Browser: `dev-client.ps1 -Device web-server -Port 7358` oder `-Device edge`. Die Skripte lösen Pfade über `$PSScriptRoot` auf und funktionieren auch aus einem anderen Arbeitsverzeichnis. `init-client.ps1` ergänzt nur bei fehlendem Gerüst Plattformdateien, prüft SHA-256 vorhandener Quellen und führt echte Flutter-Analyse/-Tests aus. Es kann gefahrlos erneut gestartet werden. `dev-client.ps1` lädt bei Bedarf Pakete; `check.ps1` verwendet ausschließlich den vorhandenen Paketcache mit `--offline --enforce-lockfile` und verändert das Lockfile nicht.
+
+Die `.ps1`-Dateien verwenden UTF-8 **mit BOM**, damit Windows PowerShell 5.1 deutsche Meldungen korrekt parst. `.editorconfig` hält dies fest; Node-Tests prüfen Syntax, fehlendes Flutter, Portkonflikt, Parameterweitergabe und Fehler-Exitcodes. Ein Node-/Clientcheck ist kein Server- oder vollständiges Releasegate; `All` meldet den noch nicht implementierten Server ausdrücklich.
+
+## Gemeinsamer Vertrag und Referenztests
+
+[GAME_STATE.md](contracts/GAME_STATE.md) konkretisiert die freigegebenen D-Beschlüsse. Die [Protokoll-Fixtures](../packages/protocol/README.md) umfassen 30 JSON-Beispiele. Die Node-Suite prüft 20 fachliche Referenzfälle, 3 private Projektionen, 12 Dokumentenprüferfälle und 5 Windows-Skriptfälle. Diese Tests laufen im tatsächlichen Checkout; sie sind ausdrücklich **keine** bereits implementierte Dart-/TypeScript-Spielengine oder Worker-Sicherheitsprüfung.
 
 ```powershell
 node --test .\scripts\tests\protocol-fixtures.test.mjs
 powershell -NoProfile -File .\scripts\check.ps1 -Scope Docs
 ```
 
-Die ersten 27 JSON-Fixtures wurden unmittelbar aus GitHub gelesen; die fachlichen Grenzbeispiele wurden in JavaScript gruppenweise nachgerechnet. Alle geprüften Fälle waren konsistent. Das ist **kein** Lauf der vollständigen Node-Suite im Repository. Der Dokumentenprüfer wurde in einer isolierten lokalen Node-Kopie mit 4/4 bestandenen Negativ-/Positivtests ausgeführt. **Der Node-Orakeltest selbst wurde noch nicht im vollständigen Windows-Checkout ausgeführt.** Vor TT-003-Abnahme die spätere Dart-/TypeScript-Anbindung prüfen, Einfüge-/Rotation-/Abbruchbeispiele manuell nachspielen und TT-001-/002-Abhängigkeiten schließen. TT-004 bleibt bis dahin unbegonnen.
+Das Android-/Web-Gerüst muss nicht neu erzeugt werden. Vorhandene `lib/`, `test/`, `web/` und `pubspec.yaml` nicht durch ein Standardtemplate ersetzen. `pubspec.lock`, `.metadata` und die Android-Projektdateien bleiben versioniert; Buildausgaben, lokale SDK-Pfade und IDE-Dateien bleiben ignoriert. Verwendete Version: Flutter 3.47.7 / Dart 3.13.5, im Pubspec als Mindestversionen festgehalten.
 
-**Update TT-002/003:** Die Dokumentenchecks bestehen jetzt aus 11 statt vier Testfällen; der zusätzliche D-09-Privatprojektions-Test aus `scripts/tests/projections.test.mjs` umfasst drei Fälle. Auf Node.js 22.16.0 wurden beide Testsuites in einer isolierten lokalen Kopie tatsächlich gestartet (**14/14 bestanden**, Exitcode 0). Ihre Dateien liegen ebenfalls auf dem GitHub-Branch und sind in `check.ps1 -Scope Docs` eingebunden. Die separate Protokollfixturesuite enthält nach Sichtprüfung **18** definierte Testfälle; deren vollständige Ausführung im echten Repository bleibt offen. Nicht mit Worker- oder Flutter-End-to-End-Tests verwechseln.
-
-## TT-002: vorbereitete Windows-Befehle (noch nicht abgenommen)
-
-Diese Dateien liegen bereits vor, sind aber **keine abgeschlossene Aufgabe**, solange TT-001 und die lokalen TT-002-Gates fehlen:
-
-```powershell
-# aus beliebigem Verzeichnis über die absoluten Skriptpfade aufrufbar
-powershell -NoProfile -File .\scripts\dev-client.ps1 -Device chrome -Port 7357 -WebHost 127.0.0.1
-powershell -NoProfile -File .\scripts\dev-client.ps1 -Device web-server -Port 7358
-powershell -NoProfile -File .\scripts\check.ps1 -Scope Docs
-powershell -NoProfile -File .\scripts\check.ps1 -Scope Client
-powershell -NoProfile -File .\scripts\check.ps1 -Scope All
-```
-
-`dev-client.ps1` prüft PATH und TCP-Port, startet `flutter pub get` und `flutter run`; optional `-ApiBaseUrl` wird als `--dart-define=API_BASE_URL=…` übergeben. `check.ps1` führt für Docs den reinen Node-Link-/70-ID-Prüfer, dessen vier `node --test`-Tests und die TT-003-JSON-Orakeltests aus, für Client `flutter pub get`, Dart-Formatcheck, Flutter Analyze und alle Flutter-Tests. Bei `All` wird der noch fehlende Server ausdrücklich als ungetestet gemeldet; es gibt keine Deploymentaktion. Programme müssen im PATH liegen, Exitcodes werden weitergegeben.
-
-**Bereits lokal in einer isolierten Node-22-Kopie geprüft:** `node --check scripts/check-docs.mjs` und `node --test scripts/tests/check-docs.test.mjs` – vier Tests bestanden, darunter fehlender Link, doppelte ID und fehlende Registerzeile. **Nicht geprüft:** vollständiger Repo-Dokumentenlauf nach Checkout, PowerShell-Syntax/Ausführung, Flutter-Befehle, Portkonflikte unter Windows und fehlendes Flutter im isolierten PATH. Diese Nachweise sind vor dem Abschluss zu ergänzen.
-
-## TT-001: aktiver Featurebranch (26.10.2026)
-
-Der Branch `task/TT-001-flutter-shell` enthält bereits die Dart-App-Shell mit drei Einstiegen, Profil, Einstellungen, Web-Bootstrap und Widgettests. Die anfangs dokumentierte Konzeptbasis beschreibt den historischen Stand vor diesem ersten Implementierungsschritt. **Die App ist noch nicht lokal gestartet oder abgenommen**; die Remote-Arbeitsumgebung hat kein Flutter-/Dart-SDK. `PROGRESS.md` ist maßgeblich für den offenen Taskstatus.
-
-Nach `git fetch origin` und `git switch task/TT-001-flutter-shell` im eigenen Windows-Checkout zunächst den Gitstatus prüfen. **Bevorzugt** das neu ergänzte, quellenschonende Skript `powershell -NoProfile -File .\\scripts\\init-client.ps1` ausführen. Es prüft SHA-256 der bereits vorhandenen Client-Quellen, startet `flutter create` ohne `--overwrite`, erwartet Android-/Flutter-Metadaten und führt anschließend `flutter pub get`, `flutter analyze` und `flutter test` aus. Ein generierter Standardtest für die nicht vorhandene `MyApp` wird durch den bereits versionierten echten `test/widget_test.dart` verhindert. Das Skript ist hier mangels Flutter und PowerShell **nicht lokal ausgeführt** worden.
-
-Alternativ zur Fehlersuche die generierten Plattformdateien manuell mit den folgenden Befehlen ergänzen:
-
-```powershell
-flutter --version
-flutter doctor -v
-flutter create --platforms=android,web --project-name trinktribunal apps/client
-Set-Location apps/client
-flutter pub get
-flutter analyze
-flutter test test/app_shell_test.dart
-flutter run -d chrome --web-hostname=127.0.0.1 --web-port=7357
-```
-
-**Vorhandene** `lib/`, `test/`, `web/` und `pubspec.yaml` **nicht überschreiben**; falls `flutter create` diese Dateien verändern möchte, erst gezielt vergleichen und nur fehlende generierte Dateien übernehmen. `pubspec.lock`, `.metadata` und Android-Projektdateien nach erfolgreichem Generatorlauf versionieren. Danach 360×800 und 1440×900, Zurücknavigation sowie Hot Reload manuell prüfen und die Exitcodes in `PROGRESS.md` dokumentieren. Erst mit diesen Belegen wird TT-001 abgeschlossen. TT-002 folgt erst danach.
+Alle Entwicklungsschritte bleiben lokal prüfbar. GitHub Actions und Cloudflare-Deployments werden für Einrichtung, Vorschau, Tests und Builds nicht benötigt und nicht automatisch ausgelöst.
 
 ## 1. Windows-Umgebung einrichten
 
@@ -125,20 +102,17 @@ Lizenzen persönlich lesen/akzeptieren. Für den frühen Webstart sind fehlende 
 - Kein routinemäßiges `flutter upgrade` oder `npm update` vor einer Aufgabe. Updates separat, mit Kompatibilitätsprüfung und kleinem Commit.
 - Keine kostenpflichtigen Tools, Cloudkonten oder Linux-/Dockerumgebung als Voraussetzung einführen. Windows-native Ausführbarkeit in TT-035 tatsächlich prüfen.
 
-## 2. Erster Entwicklungsauftrag: TT-001
+## 2. Vorhandene App starten (TT-001)
 
-Erst nach ausdrücklichem Start der Umsetzung, genau einmal und nicht über eine bestehende App hinweg:
+Das Flutter-Gerüst ist vorhanden. Keine neue Zähler-App darüber generieren; Einrichtung und Start:
 
 ```powershell
 Set-Location C:\Users\Philip\IdeaProjects\Trinktribunal
-flutter create --platforms=android,web --project-name trinktribunal apps/client
-Set-Location apps/client
-flutter pub add flutter_riverpod
-flutter pub get
-flutter run -d chrome --web-hostname=127.0.0.1 --web-port=7357
+powershell -NoProfile -File .\scripts\init-client.ps1
+powershell -NoProfile -File .\scripts\dev-client.ps1
 ```
 
-TT-001 ersetzt den Beispielzähler durch Start mit drei Spielvarianten, Profil und Einstellungen sowie bedienbare Vorschauseiten. Keine Domainengine und kein Backend vor diesem sichtbaren Ergebnis. Das SDK/Package-API gegen die installierte Version prüfen; Riverpod-Container am Einstieg und austauschbare IO-Provider gemäß Architektur.
+Die App startet mit drei Spielvarianten, Profil und Einstellungen als bedienbaren Vorschauseiten; `ProviderScope` ist eingerichtet. Fehlende Spiellogik wird schrittweise nach M1/M2 ergänzt. Der reine direkte Flutter-Start ist ebenfalls möglich: aus `apps/client` `flutter run -d chrome --web-hostname=127.0.0.1 --web-port=7357`.
 
 Im laufenden Flutter-Terminal:
 

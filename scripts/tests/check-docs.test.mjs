@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
@@ -35,6 +35,9 @@ function fixture(run) {
     });
     run({ root, execute });
   } finally {
+    if (dirname(root) !== resolve(tmpdir()) || !basename(root).startsWith('trinktribunal-docs-')) {
+      throw new Error('Refusing cleanup outside this test fixture');
+    }
     rmSync(root, { recursive: true, force: true });
   }
 }
@@ -53,6 +56,18 @@ test('nicht existierender Markdown-Link ergibt Exitcode 1', () => {
     const result = execute();
     assert.equal(result.status, 1);
     assert.match(result.stderr, /Broken local link/);
+  });
+});
+
+test('Auch Protokoll- und Client-README-Links werden geprueft', () => {
+  fixture(({ root, execute }) => {
+    for (const folder of ['packages/protocol', 'apps/client']) {
+      mkdirSync(join(root, folder), { recursive: true });
+      writeFileSync(join(root, folder, 'README.md'), '[Missing](missing.md)\n');
+    }
+    const result = execute();
+    assert.equal(result.status, 1);
+    assert.equal((result.stderr.match(/Broken local link/g) ?? []).length, 2);
   });
 });
 

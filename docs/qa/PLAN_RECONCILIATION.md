@@ -2,6 +2,8 @@
 
 Stand: 26.10.2026. Geprüfte Git-Basis: **`e95d541` auf `main`**, nach `git fetch origin` identisch mit `origin/main`. Ausgangsauftrag: neuere KI-Änderungen einlesen, mit dem Implementierungsplan abgleichen und die Fortsetzung vorbereiten. Es wurde weiterhin kein Anwendungscode erstellt.
 
+**Historischer Main-Abgleich:** Dieser Beleg erfasste noch nicht die bereits separat vorhandene Implementierung in `task/TT-001-flutter-shell`. Die unvollständige Aussage über alle Branches wurde korrigiert; der Entwicklungsbranch wird erhalten und integriert. Maßgeblich für den jetzigen Code-/Abnahmestand sind [M0](M0.md) und [PROGRESS.md](../PROGRESS.md).
+
 ## Ergebnis
 
 Die 70 Aufgaben aus [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md) bleiben gültig. Alle D-01–D-18-Fachentscheidungen sind beschlossen; erneute fachliche Freigaben sind für den regulären Entwicklungsstart nicht erforderlich. **Nächste Aufgabe ist TT-001**, danach TT-002 und TT-003. Es gibt bisher kein Flutter-/Worker-Grundgerüst und keine als umgesetzt zu markierende Appfunktion.

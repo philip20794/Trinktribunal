@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trinktribunal/app/trinktribunal_app.dart';
 
 void main() {
-  Widget createApp() =>
-      const ProviderScope(child: TrinktribunalApp());
+  Widget createApp() => const ProviderScope(child: TrinktribunalApp());
 
   testWidgets('Alle drei Einstiege öffnen Vorschauen und erlauben Zurück', (
     tester,

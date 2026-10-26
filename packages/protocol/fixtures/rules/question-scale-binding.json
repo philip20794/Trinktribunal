@@ -1,0 +1,23 @@
+{
+  "fixtureId": "TT003-QUESTION-SCALE-BINDING",
+  "decisionRefs": ["D-05", "D-11", "D-13"],
+  "operation": "renderStoredQuestionBinding",
+  "input": {
+    "questionId": "003-b",
+    "binding": { "player1": "A" },
+    "playerNames": { "A": "Anna", "B": "Ben", "C": "Carla" },
+    "personCounters": { "A": 1, "B": 0, "C": 0 },
+    "templates": {
+      "de": ["Du streitest dich heftig mit {player1}.", "Das ist {player1} völlig egal", "Das bricht {player1} für immer das Herz"],
+      "en": ["You're having a huge argument with {player1}.", "{player1} couldn't care less", "It breaks {player1}'s heart forever"]
+    }
+  },
+  "expected": {
+    "rendered": {
+      "de": ["Du streitest dich heftig mit Anna.", "Das ist Anna völlig egal", "Das bricht Anna für immer das Herz"],
+      "en": ["You're having a huge argument with Anna.", "Anna couldn't care less", "It breaks Anna's heart forever"]
+    },
+    "personCounters": { "A": 1, "B": 0, "C": 0 },
+    "bindingAfterResume": { "player1": "A" }
+  }
+}

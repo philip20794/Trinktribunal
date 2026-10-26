@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [ValidateSet('Client', 'Docs', 'All')]
     [string]$Scope = 'All'
@@ -8,6 +8,19 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $client = Join-Path $root 'apps/client'
+
+foreach ($script in Get-ChildItem -LiteralPath $PSScriptRoot -Filter '*.ps1' -Recurse -File) {
+    $parseTokens = $null
+    $parseErrors = $null
+    [System.Management.Automation.Language.Parser]::ParseFile(
+        $script.FullName, [ref]$parseTokens, [ref]$parseErrors
+    ) | Out-Null
+    if ($parseErrors.Count -gt 0) {
+        [Console]::Error.WriteLine("PowerShell-Syntaxfehler: $($script.FullName)")
+        $parseErrors | ForEach-Object { [Console]::Error.WriteLine($_.Message) }
+        exit 1
+    }
+}
 
 function Invoke-Checked {
     param(
@@ -28,9 +41,9 @@ if ($Scope -in @('Docs', 'All')) {
         exit 1
     }
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'check-docs.mjs'))
-    Invoke-Checked 'node' @('--test', (Join-Path $PSScriptRoot 'tests/check-docs.test.mjs'))
-    Invoke-Checked 'node' @('--test', (Join-Path $PSScriptRoot 'tests/protocol-fixtures.test.mjs'))
-    Invoke-Checked 'node' @('--test', (Join-Path $PSScriptRoot 'tests/projections.test.mjs'))
+    $testFiles = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'tests') -Filter '*.test.mjs' -File |
+        Sort-Object Name | ForEach-Object { $_.FullName })
+    Invoke-Checked 'node' (@('--test') + $testFiles)
 }
 
 if ($Scope -in @('Client', 'All')) {
@@ -48,7 +61,7 @@ if ($Scope -in @('Client', 'All')) {
     }
     Push-Location $client
     try {
-        Invoke-Checked 'flutter' @('pub', 'get')
+        Invoke-Checked 'flutter' @('pub', 'get', '--offline', '--enforce-lockfile')
         Invoke-Checked 'dart' @('format', '--output=none', '--set-exit-if-changed', 'lib', 'test')
         Invoke-Checked 'flutter' @('analyze')
         Invoke-Checked 'flutter' @('test')

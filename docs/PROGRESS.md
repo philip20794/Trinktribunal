@@ -1,8 +1,8 @@
 # Fortschritt und Übergabe
 
-Stand: 26.10.2026. Zuletzt geprüfte Git-Basis nach vollständigem KI-Abgleich: `e95d541` auf `main`, mit `origin/main` synchron. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Abgleich und Entwicklungsbereitschaft](qa/PLAN_RECONCILIATION.md).
+Stand: 26.10.2026. Integration von `task/TT-001-flutter-shell` (`251a788`) mit `main` (`0d8cd2d`), Mergebasis gesichert in `3bc0000`. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Aktuelle M0-Abnahme](qa/M0.md).
 
-**Aktuell im Featurebranch `task/TT-001-flutter-shell`: TT-001 und TT-002 IN ARBEIT, TT-003 vorbereitend IN ARBEIT (TT-001/TT-002 noch nicht abgenommen).** App-Shell, Widgettests, Web-Einstieg und Windows-Skripte liegen vor. Zusätzlich wurden der TT-003-Zustands-/Aktionsvertrag, das Protokollformat, 28 JSON-Fixtures, 18 Protokoll- und 3 Datenschutz-Node-Tests angelegt. Android-Gerüst, Flutter-Metadaten, Lockfile sowie Flutter-/PowerShell-Prüfungen stehen weiterhin aus. **0/70 Aufgaben vollständig abgenommen.** Keine GitHub Actions oder Cloudflare-Deployments.
+**Aktuell: Vorhandene App-Shell lokal vervollständigt, automatische Prüfungen und Web-/Android-Debugbuilds erfolgreich. TT-001 wartet auf Browserabnahme via chrome-devtools; TT-002/003 sind technisch vorbereitet und geprüft, bleiben abhängig von TT-001. 0/70 Aufgaben final abgenommen; main noch nicht übernommen.** Keine GitHub Actions oder Cloudflare-Deployments.
 
 ## Statusregeln
 
@@ -30,40 +30,21 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 
 ## Laufende Arbeit
 
-**TT-001 – IN ARBEIT (26.10.2026)** auf Branch `task/TT-001-flutter-shell`.
+**Integration auf `task/TT-001-flutter-shell`:** 71 vorhandene Entwicklungscommits bis `251a788` erhalten, `main` (`0d8cd2d`) in `3bc0000` integriert. Zwei Dokumentkonflikte gelöst; bestehende Appquellen beibehalten. [Aktueller M0-Prüfbeleg](qa/M0.md).
 
-Über GitHub angelegt: `apps/client/pubspec.yaml`, `analysis_options.yaml`, `lib/main.dart`, `lib/app/trinktribunal_app.dart`, `lib/features/home/`, `lib/features/profile/`, `lib/features/settings/`, `test/app_shell_test.dart`, `web/` (HTML, Bootstrap, Manifest) und `.gitignore`. Einstiegskarten und Zurücknavigation sind im Dart-Code verdrahtet. Diese Ansichten sind als Vorschau gekennzeichnet; noch keine Spiellogik.
+**TT-001 – BLOCKIERT (Browserabnahme).** Android-/Flutter-Gerüst, Metadaten und Lockfile vorhanden. Initialisierer zweimal erfolgreich, `flutter analyze` ohne Befunde, fünf Widgettests grün, JS-Webrelease und Android-Debug-APK lokal gebaut. Chrome-Debuglauf und zwei tatsächliche Hot-Reload-Kompilierungen erfolgreich. Echte Browsernavigation, visuelle 360×800-/1440×900-Prüfung und Screenshot fehlen: Der vorgeschriebene chrome-devtools-Server kann sich nicht mit Chrome verbinden. Aktivierung wurde beim Nutzer angefragt. Nicht als erledigt markieren, bevor diese Gate-Prüfung möglich ist.
 
-**Ergänzt am 26.10.2026:** `apps/client/test/widget_test.dart` ist ein Smoke-Test für die echte `TrinktribunalApp`. So führt das von Flutter generierte Standardtesttemplate später nicht irrtümlich einen Test für `MyApp` aus. `scripts/init-client.ps1` ermöglicht einen einmaligen Windows-Bootstrap: sicherer `flutter create` ohne `--overwrite`, SHA-256-Gegenprüfung aller bereits versionierten Clientquellen, Prüfung von Android-Manifest und Flutter-Metadaten, dann `flutter pub get`, `flutter analyze`, `flutter test`. Das Skript und dieser neue Flutter-Test sind **nur angelegt, nicht ausgeführt**. Erforderlicher Windows-Einstieg: `powershell -NoProfile -File .\\scripts\\init-client.ps1`.
+**TT-002 – IN ARBEIT, technisch geprüft.** Windows-Skripte unter PowerShell 5.1 korrigiert (UTF-8 mit BOM), Start aus anderem Verzeichnis, alternativer Port, belegter Port, fehlendes SDK und Unterprozess-Fehlercodes mit fünf echten Windowsfällen geprüft. Dokumentenprüfer mit zwölf Positiv-/Negativfällen. Finaler `check.ps1 -Scope All` aus `docs/`: Exitcode 0, alle 40 Node-Tests und fünf Widgettests bestanden, Offline-Lockfile/Format/Analyze grün. Formaler Abschluss wartet auf TT-001; kein Servertest behauptet.
 
-**Noch offen für die Abnahme von TT-001:** Windows-SDK-Version und `flutter doctor -v` prüfen; `flutter create --platforms=android,web --project-name trinktribunal apps/client` ohne Überschreiben vorhandener Quellen ausführen; Android-Gerüst, `.metadata` und `pubspec.lock` ergänzen; `flutter analyze`, `flutter test test/app_shell_test.dart`, Chrome-Start auf 127.0.0.1:7357, 360×800/1440×900, Zurücknavigation und Hot Reload tatsächlich durchführen; Ergebnisse und Screenshot dokumentieren. Erst danach TT-001 als ERLEDIGT markieren.
+**TT-003 – IN ARBEIT, Vertrag/Fixtures geprüft.** Technischer Vertrag unter `docs/contracts/GAME_STATE.md`, Protokoll-README und 30 fachliche JSON-Fixtures vorhanden; 20 Node-Referenzfälle und drei Projektionsfälle lokal bestanden. Vorleserrotation, Text-/Skalenbindung, D-07-Fallzählung und D-05-Zähler nachvollzogen. Die Beispiele sind keine implementierte Dart-/TypeScript-Engine. Formaler Abschluss wartet auf TT-001 und TT-002.
 
-**Nicht ausgeführt:** Diese Arbeitsumgebung besitzt weder Flutter noch Dart und kann das private Repository nicht lokal klonen. Deshalb keine Build-/Test-/Browser-Ergebnisse behauptet. Das Repository wurde ausschließlich über den verbundenen GitHub-Zugang auf dem Featurebranch verändert.
-
-
-**TT-002 – VORBEREITET / IN ARBEIT (26.10.2026).** Im selben Featurebranch angelegt: `scripts/dev-client.ps1` (konfigurierbarer Chrome/Edge/Webserver-Start mit Portprüfung, SDK-Vorprüfung und Exitcodes), `scripts/check.ps1` (`-Scope Docs|Client|All`, Dart-Format, Flutter-Analyse/Tests, transparenter Server-Skip), `scripts/check-docs.mjs` (Markdown-Links, TT-001 bis TT-070, Plan/Statusparität) und `scripts/tests/check-docs.test.mjs` (vier positive/negative Node-Fälle). Die Dateien wurden direkt in GitHub gespeichert. *Abhängigkeit TT-001 ist noch unerfüllt; TT-002 daher nicht abgeschlossen.*
-
-**Isolierter Node-Test in dieser Arbeitsumgebung:** `node --check scripts/check-docs.mjs` → Exitcode 0; `node --test scripts/tests/check-docs.test.mjs` → 4/4 Tests grün, Exitcode 0. Testgegenstand war eine lokale äquivalente Skriptkopie mit synthetischen 70-Aufgaben-Fixtures, **kein Checkout des privaten Repositories**. Vollständige Repo-Prüfung, PowerShell- und Flutter-Testausführung sowie manuelle Windows-Port-/PATH-Fälle weiterhin **nicht ausgeführt**. Beide Tasks müssen auf Windows abgenommen werden, ehe TT-003 planmäßig begonnen wird.
-
-**TT-003 – FACHLICH VORBEREITET / IN ARBEIT (26.10.2026, gleicher Branch).** Vorhanden: `docs/decisions/001-game-contract.md` (Zustände, zulässige Aktionen und Autorisierung, eingefrorene Konfiguration, Auswahl-/Verlaufsinvarianten, D-07-Fallabschluss, D-06-Rotation, D-17-Einfügen, Fehlercodes und Dedupe), `packages/protocol/README.md`, **28 deterministische JSON-Fixtures** in `packages/protocol/fixtures/{rules,transitions}/` sowie `scripts/tests/protocol-fixtures.test.mjs`. `check.ps1 -Scope Docs` ruft den neuen Test zusätzlich auf.
-
-**Tatsächlich geprüft:** Die zunächst 17 Fixture-Dateien aus dem Featurebranch über GitHub gelesen und mit `JSON.parse` auf gültiges JSON geprüft; 17 unterschiedliche `fixtureId`-Werte, `decisionRefs`, `input`/`expected` vorhanden. In einer isolierten JavaScript-Prüfung die vereinbarten Ergebnisse für D-02/10-Konfiguration, D-01-Uhr-/Zählergrenze, D-05-Rollen/Neuzugang, Normal-/Alle-Richter-Urteil, D-06-Rotation und D-07-Fallabschluss nachgerechnet: **ohne gefundenen Widerspruch**. **Nicht als bestanden behauptet:** `node --test scripts/tests/protocol-fixtures.test.mjs` im vollständigen Checkout, Dart-/TypeScript-Engine, manueller Tischdurchlauf, TT-001-/002-Gates. D-17-Einfügen ist im Vertrag spezifiziert; vollständige Fixture-/Engine-Abdeckung bleibt Teil der TT-003-Abnahme.
-
-**Erweiterung vom 26.10.2026:** 10 zusätzliche Protokollfixtures versioniert (von 17 auf **27**) und eine D-09-Privatprojektion hinzugefügt (**28 insgesamt**), darunter D-17-Listeneinfügen, D-07/13-idempotenter Doppelabbruch, Pause vor offenem Regel-Slot, D-04-Regelkonflikte, F=50/R=7-Abstand, Unicode-Graphemnamen, ungültige Permutationen, Host-Abbruchberechtigung, neue Partie mit erhaltenem 6h-Inhaltsverlauf und Slotentfall bei fehlender Regel. Der unter GitHub gespeicherte Node-Orakeltest enthält nun **18 definierte `node:test`-Fälle** sowie **3 separate Datenschutztests**; der vollständige Lauf gegen den privaten Checkout steht noch aus.
-
-**Tatsächlich nachgeprüft:** 22 initiale und ergänzende JSON-Dateien aus dem verbundenen GitHub-Featurebranch in zwei Gruppen geladen und auf mehrere deterministische Fachergebnisse geprüft; zusätzlich die fünf zuletzt ergänzten Dateien geladen und Namen/Permutationen/Berechtigungen/Reset/entfallenden Slot in JavaScript nachgerechnet. In diesen Prüfungen **keine Abweichungen**. In der lokalen isolierten Node-Umgebung wurde zudem der Dokumentenprüfer mit **4/4 grünen Tests** ausgeführt; diese Kopie ist **kein** vollständiger privater Repository-Checkout. **Weder die 19 Repo-Node-Fixturetests noch Flutter/PowerShell wurden ausgeführt**, daher kein TT-003-Abnahmebeleg.
-
-**D-18-Konsistenzkorrektur:** `docs/ARCHITECTURE.md` wurde von einem zu früh festgeschriebenen Wasm-Build auf den beschlossenen JS-Baseline-Build mit späterem optionalen TT-062-Vergleich aktualisiert.
-
-**Zusätzliche geprüfte TT-002-/003-Arbeit am 26.10.2026:** Der Node-Dokumentenprüfer hat nun **11 statt 4** konkrete Positiv-/Negativtests (unter anderem Codefences, fremde Pfade, ungültige TT-ID, doppelter Registereintrag, ungültige URL-Kodierung und fehlendes CLI-Argument). **Lokal auf Node.js 22.16.0 ausgeführt: 11/11 bestanden, Exitcode 0**, in einer isolierten Skriptkopie mit künstlichem Plan-/Fortschrittsregister. Ebenfalls neu: `packages/protocol/fixtures/transitions/projection-private.json` und `scripts/tests/projections.test.mjs` für D-09-Privatsphäre (Host sieht nur eigene Geheimnisse); **3/3 lokal bestanden, Exitcode 0**. Ein kombinierter Lauf dieser beiden Suites in der isolierten Testumgebung zeigte **14/14 grüne Tests**. Dateien danach im GitHub-Featurebranch geschrieben und die Existenz überprüft. `scripts/check.ps1 -Scope Docs` enthält jetzt auch den Aufruf des Projektions-Skripts. **Nicht ausgeführt:** vollständiger Checkout-Run der Protokoll-Fixturesuite mit 18 deklarierten Testfällen, Flutter-, Dart-, PowerShell- oder Chrome-Gates, und tatsächliche Worker-Datenredaktion. Die 28 Fixture-Dateien sind nicht 28 automatisiert bestandene Protokolltests; das getrennt ausweisen.
-
-**Abhängigkeitsgate:** TT-003 wird ausdrücklich **nicht ERLEDIGT**, bevor TT-001 und TT-002 planmäßig abgenommen und TT-003-JSON/Links/Tischbeispiele lokal bestätigt sind. TT-004 beginnt nicht vor TT-003-Abschluss.
+**Main-Merge:** Nutzer hat die Übernahme nach erfolgreicher Prüfung bereits autorisiert. Bis zur Browserabnahme nicht ausführen; keine weitere fachliche oder Merge-Freigabe erforderlich. Nächste offene Featureaufgabe nach M0 bleibt TT-004. Keine neue App aus einem Standardtemplate erzeugen.
 
 ## Meilensteine
 
 | Meilenstein | Aufgaben | Status | Lokales Demo-Gate / späterer Beleg |
 | --- | --- | --- | --- |
-| M0 | TT-001–TT-003 | IN ARBEIT | Drei Einstiege, Zurücknavigation, Hot Reload, Windowschecks; Workflow + Taskbelege. |
+| M0 | TT-001–TT-003 | BLOCKIERT | Automatische lokale Gates grün; tatsächliche Browserabnahme wartet auf chrome-devtools-Zugriff, siehe [M0](qa/M0.md). |
 | M1 | TT-004–TT-012 | OFFEN | Kartenmodus mit drei Fällen und zwei Ereignissen bis Neustart; `docs/qa/M1.md`. |
 | M2 | TT-013–TT-026 | OFFEN | Vier Personen, sechs Fälle, Avatar/Übergabe/Bank/Urteil/Wechsel; `docs/qa/M2.md`. |
 | M3 | TT-027–TT-033 | OFFEN | Wiederaufnahme, kalter Web-Offlinestart, Android-Flugmodus; `docs/qa/M3.md`. |
@@ -81,9 +62,9 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 
 | ID | Aufgabe | Status | Commit / Beleg / Blocker |
 | --- | --- | --- | --- |
-| TT-001 | Flutter-Web-App mit drei Einstiegen starten | IN ARBEIT | Featurebranch task/TT-001-flutter-shell; Quellen vorhanden, Flutter-Gerüst und lokale Tests offen |
-| TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | IN ARBEIT | Skripte und vier Node-Fixturetests im Branch; TT-001-Abhängigkeit und Windows-Abnahme offen |
-| TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | IN ARBEIT | Vertrag, Protokoll-README, 28 JSON-Fixtures und 18+3 Protokoll-/Datenschutztests angelegt; TT-001/002 und lokale Abnahme ausstehend |
+| TT-001 | Flutter-Web-App mit drei Einstiegen starten | BLOCKIERT | Chrome-MCP-Verbindung fehlt; Analyze, fünf Widgettests, Web-/Android-Debugbuild und Hot-Reload-Kompilierung bestanden · [M0](qa/M0.md) |
+| TT-002 | Windows-Start und lokale Prüfroutine vereinheitlichen | IN ARBEIT | Echte Windows-Skripttests und lokale Checks grün; Abschluss abhängig von TT-001 · [M0](qa/M0.md) |
+| TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | IN ARBEIT | Vertrag, 30 Fixtures, 20 Referenz-/3 Projektionsfälle geprüft; Abschluss abhängig von TT-001/002 · [M0](qa/M0.md) |
 | TT-004 | Beide Katalogformate validieren und bündeln | OFFEN | — |
 | TT-005 | Redaktionelle Konflikte inventarisieren und entscheiden | OFFEN | — |
 | TT-006 | Konfiguration und unveränderliche Spielmodelle | OFFEN | — |
@@ -179,7 +160,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Aktive Aufgabe: TT-001 lokal vervollständigen und abnehmen.** Kein Fachfreigabe-Halt mehr. Nicht erledigte Akzeptanz/Tests und tatsächliche technische Blocker weiterhin ehrlich im Aufgabenregister dokumentieren.
+**Aktive Aufgabe: TT-001-Browserabnahme ermöglichen und M0 abschließen.** Automatische Prüfungen bestanden; keine neue Implementierung oder Grundsatzplanung nötig. Main-Merge ist nach grünem Gate bereits autorisiert.
 
 Der aktuelle [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) ersetzt die historische Bestandsaufnahme unten als Aussage über den heutigen Entwicklungsstand. Alle 70 TT-Aufgaben bleiben OFFEN; der erfolgreiche Umgebungscheck ist kein bestandener App-Build.
 
@@ -202,15 +183,14 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Naechste Aufgabe: TT-001
-Voraussetzung: Auftrag liegt vor; Featurebranch auschecken, vorhandene Quellen erhalten
-Ziel: sichtbare Flutter-Web-App mit drei Einstiegen, Profil/Einstellungen und Zuruecknavigation
-Zuerst: Gitstatus, PLAN-004-Pruefbeleg, Workflow und TT-001 lesen; bestaetigte Toolversionen verwenden
-Danach: fehlendes Flutter-/Android-Geruest und pubspec.lock erzeugen; vorhandene Dart- und Webquellen nicht ueberschreiben
-Lokaler Nachweis: direkter Flutter-Start in Chrome 127.0.0.1:7357, 360x800 und 1440x900, Hot Reload; W-Skript erst TT-002
-Automatisch: flutter analyze + App-Shell-Widgettest
-Nicht vorziehen: Backend, komplette Spiellogik, Deployments oder GitHub Actions
-Fremde Dateien: vorhandene .idea/ unveraendert lassen
+Branch: task/TT-001-flutter-shell
+Aktueller Beleg: docs/qa/M0.md
+Naechster Schritt: chrome-devtools-Verbindung nach Aktivierung in Chrome erneut pruefen
+Browser: http://127.0.0.1:7357; 360x800 und 1440x900, alle Einstiege/Zurueck, sichtbarer Hot Reload
+Automatische Checks: scripts/check.ps1 -Scope All; Webrelease und Android-Debugbuild erfolgreich
+Nach Browserabnahme: TT-001/002/003 abschliessen, bereits autorisiert nach main uebernehmen und pushen
+Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden, init-client.ps1 ist idempotent
+Nicht vorziehen: Spiellogik, Backend, GitHub Actions, Deployments
 ```
 
 ## Vorlage für spätere Übergaben

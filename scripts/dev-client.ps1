@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [ValidateSet('chrome', 'edge', 'web-server')]
     [string]$Device = 'chrome',

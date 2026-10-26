@@ -157,6 +157,33 @@ test('D-06: judge successor follows the correct roster order', () => {
   }
 });
 
+test('D-06: narrator rotates after both completion kinds but not rule events', () => {
+  const { input, expected } = get('TT003-NARRATOR-ROTATION');
+  assert.equal(input.startRosterIds[0], expected.firstReaderId);
+  for (const kind of input.completionKinds) {
+    assert.equal(nextJudge(input.startRosterIds, input.previousReaderId,
+      input.newEffectiveRosterIds), expected.nextReaderByCompletion[kind]);
+  }
+  assert.equal(nextJudge(input.startRosterIds, input.previousReaderId,
+    input.afterReaderRemovedRosterIds), expected.readerAfterRemoval);
+  assert.equal(input.previousReaderId, expected.readerAfterRuleEvent);
+  assert.equal(expected.grantsHostRights, false);
+});
+
+test('D-05/D-13: text and scales share one stored binding without recounting', () => {
+  const { input, expected } = get('TT003-QUESTION-SCALE-BINDING');
+  const before = structuredClone(input);
+  for (const [language, templates] of Object.entries(input.templates)) {
+    const rendered = templates.map(text => text.replace(/\{(player\d+)\}/g,
+      (_, role) => input.playerNames[input.binding[role]]));
+    assert.deepEqual(rendered, expected.rendered[language]);
+    assert.ok(rendered.every(text => !text.includes('{player')));
+  }
+  assert.deepEqual(input.binding, expected.bindingAfterResume);
+  assert.deepEqual(input.personCounters, expected.personCounters);
+  assert.deepEqual(input, before);
+});
+
 test('Normal and all-judge verdict: mismatched positions, no extra penalties', () => {
   const normal = get('TT003-VERDICT-NORMAL-FOUR');
   const wrong = errors(normal.input.trueAscendingIds, normal.input.proposedAscendingIds);

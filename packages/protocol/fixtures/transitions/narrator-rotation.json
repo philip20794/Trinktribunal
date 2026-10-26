@@ -1,0 +1,19 @@
+{
+  "fixtureId": "TT003-NARRATOR-ROTATION",
+  "decisionRefs": ["D-06", "D-07"],
+  "operation": "rotateNarratorAtCaseBoundary",
+  "input": {
+    "startRosterIds": ["A", "B", "C", "D"],
+    "previousReaderId": "B",
+    "newEffectiveRosterIds": ["D", "B", "A", "C"],
+    "afterReaderRemovedRosterIds": ["D", "A", "C"],
+    "completionKinds": ["judged", "completed_without_verdict"]
+  },
+  "expected": {
+    "firstReaderId": "A",
+    "nextReaderByCompletion": { "judged": "A", "completed_without_verdict": "A" },
+    "readerAfterRemoval": "C",
+    "readerAfterRuleEvent": "B",
+    "grantsHostRights": false
+  }
+}

@@ -1,4 +1,4 @@
-# 001 – Verbindlicher Zustands- und Aktionsvertrag (TT-003)
+# Technischer Zustands- und Aktionsvertrag (TT-003)
 
 Stand: 26.10.2026 · **Implementierungsvorlage, noch nicht lokal abgenommen**. Dieser Vertrag konkretisiert die bereits beschlossenen D-01 bis D-18, er ersetzt keine dieser Entscheidungen. Änderungen an Zahlen, Rollenrechten oder Ablauf erfordern eine dokumentierte Änderung des entsprechenden D-Beschlusses. Die technische Umsetzung erfolgt nach dem [Implementierungsplan](../IMPLEMENTATION_PLAN.md); konkrete sprachübergreifende Beispiele liegen in [packages/protocol](../../packages/protocol/README.md).
 
@@ -49,9 +49,10 @@ ContentHistory {
 }
 ```
 
-- `completedCases` zählt **nur** ausdrücklich beendete reguläre Fälle (mit oder ohne Urteil). `roundId` ist pro tatsächlichem neuen Fall einzigartig; ein altes `roundId` kann nicht erneut geöffnet werden.
+- `completedCases` zählt **nur** ausdrücklich beendete reguläre Fälle (mit oder ohne Urteil). Das Fixture-Feld entspricht `completedCaseCount` im Implementierungsplan; pro Schema gibt es genau einen Abschlusszähler, keinen zweiten parallel gepflegten Alias. `roundId` ist pro tatsächlichem neuen Fall einzigartig; ein altes `roundId` kann nicht erneut geöffnet werden.
 - `frozenRosterIds` ist der beim Anzeigen des aktuellen Falls wirksame Teilnehmerstand. Ein Disconnect verändert ihn nicht; echte Joins/Leaves/Kicks/Reorders stehen bis zur nächsten Fallgrenze in `pendingRosterChanges`. Namens-/Avataränderungen sind von der Identität getrennt.
-- `personSelectionCounts` und `ContentHistory` sind **verschiedene Datenspeicher**. Erste gelten ausschließlich für die Partie und überleben keine neue Partie; zweite gelten sechs Stunden und überleben Partieneustarts auf demselben Gerät/im selben Raum.
+- `personSelectionCounts` und `ContentHistory` sind **logisch getrennte Zustände**. Erste gelten ausschließlich für die Partie und überleben keine neue Partie; zweite gelten sechs Stunden und überleben Partieneustarts auf demselben Gerät/im selben Raum. Zusammengehörige Fall-/Rollenänderung und Ziehereignis müssen trotzdem in einer atomaren Persistenztransaktion gespeichert werden; kein Crash darf nur eine Hälfte erhalten.
+- `currentQuestionRoleBindings` gelten für Fragetext und beide Skalenenden gemeinsam. Rendering, Umbenennen und Wiederaufnahme lesen diese Bindung nur; sie erzeugen keine neue Zufallsauswahl und keine zusätzliche Zählung.
 - `privateNumberAssignments`, `confirmedOrders`, persönliche Fehlerwerte sowie verarbeitetes Resume-/Spieler-Credential sind intern/privat. Serverantworten entstehen aus **eigens reduzierten Sichtprojektionen** (D-09), nicht durch Ausblenden im Widget.
 - `revision` erhöht sich pro akzeptierter fachlicher Transaktion. Persistierte `actionId`-Resultate erlauben idempotente Wiederholung (begrenzt, versioniert); alte `roundId` oder falsche Revision werden abgewiesen, soweit nicht bereits dieselbe Aktion gespeichert ist.
 - An Partieneuöffnung gebundene IDs/Zähler/Sortierungen/Regeln werden neu gesetzt, die raum-/gerätebezogene Ziehhistorie **nicht**.
@@ -120,11 +121,12 @@ Fehlercodes sind **vorgeschlagene stabile Domänenbezeichner für die Implementi
 | `INVALID_PHASE` | Abgabe/Reveal/Urteil außerhalb Phase | keiner |
 | `STALE_ROUND` | vergangenes oder falsches `roundId` | keiner |
 | `STALE_REVISION` | Konflikt zur aktuellen autoritativen Revision | keiner oder aktueller redigierter Stand |
+| `ACTION_ID_CONFLICT` | bekannte `actionId` mit anderem normalisiertem Aktionsinhalt | keiner, kein altes ACK als vermeintlicher Erfolg |
 | `INVALID_PERMUTATION` | duplizierte/fehlende/fremde ID | keiner |
 | `CONTENT_EXHAUSTED` | trotz Startbegrenzung kein zulässiger Fragenkandidat mehr | kontrollierte Pause; nicht neu zählen |
 | `CREDENTIAL_INVALID` | abgelaufenes/widerrufenes Resume-Token | keine private Datenprojektion |
 
-Verarbeitungsreihenfolge: **(1)** Authentifizierung/Absenderrechte, **(2)** bekannte `actionId` idempotent zurückgeben, **(3)** Runde/Revision/Phase und fachliche Vorbedingungen prüfen, **(4)** neuen Zustand inkl. Zufallsauswahl, Bindungen, Ziehhistorie, Slot/Counter und Resultat **atomar persistieren**, **(5)** berechtigungsspezifische Ansichten erzeugen und senden. Ein Netzwerkwiederholversuch derselben `actionId` darf weder Ziehung noch Richterwechsel, Fallzählung oder Personen-Zähler ein zweites Mal ausführen.
+Verarbeitungsreihenfolge: **(1)** Authentifizierung/Absenderrechte, **(2)** bekannte `actionId` nur bei identischem normalisiertem Aktionsinhalt idempotent zurückgeben, bei anderem Inhalt `ACTION_ID_CONFLICT`, **(3)** Runde/Revision/Phase und fachliche Vorbedingungen prüfen, **(4)** neuen Zustand inkl. Zufallsauswahl, Bindungen, Ziehhistorie, Slot/Counter und Resultat **atomar persistieren**, **(5)** berechtigungsspezifische Ansichten erzeugen und senden. Ein Netzwerkwiederholversuch derselben `actionId` darf weder Ziehung noch Richterwechsel, Fallzählung oder Personen-Zähler ein zweites Mal ausführen.
 
 ## 8. Prüfbasis und noch offene Umsetzung
 

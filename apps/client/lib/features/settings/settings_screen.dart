@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Die App-Sprache und Darstellung werden mit TT-028 '
+                'Die App-Sprache und Darstellung werden später '
                 'einstellbar. Partieoptionen befinden sich später '
                 'in der Einrichtung des jeweiligen Spielmodus.',
               ),
