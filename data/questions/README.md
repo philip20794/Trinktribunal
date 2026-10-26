@@ -20,6 +20,10 @@ Die Datei enthält die Felder `version`, `language` und `questions`. Jeder Eintr
 
 Die konkreten Zahlenwerte legt die Spielkonfiguration fest; die JSON enthält nur die Bedeutung der Skalenenden. Weitere Sprachfassungen können im jeweiligen Themenordner als eigene Dateien abgelegt werden.
 
+## Ziehhistorie (D-01)
+
+Die IDs bleiben über Sprachen hinweg stabil. Die Spiellogik führt pro tatsächlich ausgespielter Frage einen eigenen Zieheintrag mit UTC-Zeit; pro ID wird nur die Anzahl innerhalb der zurückliegenden **sechs Stunden** berücksichtigt. Unter den für den Modus gültigen und in derselben Partie noch nicht gespielten Fragen werden zunächst zufällig diejenigen mit 6h-Zähler 0 gewählt, sonst zufällig die mit dem niedrigsten Zähler. Keine Wiederholung derselben Frage innerhalb einer Partie. Partieneustarts löschen die 6h-Historie nicht, abgelaufene Einträge werden verworfen. DE/EN teilen sich die ID-basierte Historie. Der Verlauf liegt nicht in den redaktionellen JSON-Dateien. Siehe [D-01](../../docs/decisions/D-01-game-schedule-and-six-hour-history.md).
+
 ## Dynamische Spielerbezüge
 
 Statt fester Sitznachbarn oder der Captain-Rolle nutzen betreffende Fragen `{player1}`. Zugehörige Definition:
