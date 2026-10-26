@@ -8,14 +8,14 @@ Ziel: Nach TT-001 ist ein Browserfenster jederzeit mit dem aktuellen Stand bedie
 
 ## TT-003: vorbereiteter Fachvertrag und Fixtures (noch nicht abgenommen)
 
-Im selben Featurebranch liegen der [TT-003-Fachvertrag](decisions/001-game-contract.md), das [Protokoll-README](../packages/protocol/README.md), 17 fachliche JSON-Beispielfälle und der unabhängige Node-Orakeltest `scripts/tests/protocol-fixtures.test.mjs`.
+Im selben Featurebranch liegen der [TT-003-Fachvertrag](decisions/001-game-contract.md), das [Protokoll-README](../packages/protocol/README.md), 27 fachliche JSON-Beispielfälle und 19 definierte Node-Fixturetests und der unabhängige Node-Orakeltest `scripts/tests/protocol-fixtures.test.mjs`.
 
 ```powershell
 node --test .\scripts\tests\protocol-fixtures.test.mjs
 powershell -NoProfile -File .\scripts\check.ps1 -Scope Docs
 ```
 
-Die JSON-Fixtures wurden unmittelbar aus GitHub gelesen und strukturell in JavaScript geprüft; verschiedene fachliche Ergebnisse wurden unabhängig nachgerechnet. **Der Node-Orakeltest selbst wurde noch nicht im vollständigen Windows-Checkout ausgeführt.** Vor TT-003-Abnahme die spätere Dart-/TypeScript-Anbindung prüfen, Einfüge-/Rotation-/Abbruchbeispiele manuell nachspielen und TT-001-/002-Abhängigkeiten schließen. TT-004 bleibt bis dahin unbegonnen.
+Die 27 JSON-Fixtures wurden unmittelbar aus GitHub gelesen; die fachlichen Grenzbeispiele wurden in JavaScript gruppenweise nachgerechnet. Alle geprüften Fälle waren konsistent. Das ist **kein** Lauf der vollständigen Node-Suite im Repository. Der Dokumentenprüfer wurde in einer isolierten lokalen Node-Kopie mit 4/4 bestandenen Negativ-/Positivtests ausgeführt. **Der Node-Orakeltest selbst wurde noch nicht im vollständigen Windows-Checkout ausgeführt.** Vor TT-003-Abnahme die spätere Dart-/TypeScript-Anbindung prüfen, Einfüge-/Rotation-/Abbruchbeispiele manuell nachspielen und TT-001-/002-Abhängigkeiten schließen. TT-004 bleibt bis dahin unbegonnen.
 
 ## TT-002: vorbereitete Windows-Befehle (noch nicht abgenommen)
 
