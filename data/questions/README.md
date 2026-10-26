@@ -15,7 +15,7 @@ Die Datei enthält die Felder `version`, `language` und `questions`. Jeder Eintr
 - `text`: die Aufgabe beziehungsweise Frage, ohne ihre Skalenbeschreibung.
 - `players` (optional): definiert die in `text`, `scale.green` oder `scale.red` verwendeten Spielerrollen, z. B. `"player1": { "selection": "random" }`. Die Auswahl gilt für den jeweiligen Fall; alle Vorkommen von `{player1}` werden durch denselben Spielernamen ersetzt.
 - `scale.green`: niedrigster Wert auf der Skala.
-- `scale.connector`: verbindendes Wort zwischen den Skalenenden, aktuell `bis`.
+- `scale.connector`: sprachabhängiges Bindewort zwischen den Skalenenden: `bis` in `de.json`, `to` in `en.json`.
 - `scale.red`: höchster Wert auf der Skala.
 
 Die konkreten Zahlenwerte legt die Spielkonfiguration fest; die JSON enthält nur die Bedeutung der Skalenenden. Weitere Sprachfassungen können im jeweiligen Themenordner als eigene Dateien abgelegt werden.

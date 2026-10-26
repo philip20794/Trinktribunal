@@ -10,7 +10,7 @@
 - Der Fortsetzen-Einstieg darf die Einladung zu einem fremden Raum nicht verdecken; **„Neuem Raum beitreten“** bleibt möglich. Bei mehreren gültigen lokalen Zuordnungen den Raum eindeutig auswählen lassen. „Raum verlassen“ ist eine explizite Aktion, nicht das Schließen des Tabs.
 - Eigenes geheimes Zahlenblatt nach Wiederaufnahme **zunächst verdeckt** anzeigen, bis der Besitzer es bewusst öffnet. Bereits gesendete Aktionen nicht erneut auswerten.
 - Raumablauf, Kick/Bann, Host-/Spieler-Austritt oder ausdrücklich widerrufenes Token verhindern Wiederaufnahme. Lokaler Verlust des Tokens (Website-Daten gelöscht, privater Modus, App deinstalliert, anderer Browser/anderes Gerät) erfordert einen **neuen Join**, ohne automatische Übernahme der alten `playerId`. Eine Wiederherstellung auf einem anderen Gerät ist ohne Account nicht versprochen.
-- Die serverseitige Raumfrist wird in D-12 festgelegt; die Speicherung auf dem Gerät ist **nicht** unbegrenzt gültig. Ein abgelaufenes/ungültiges Token wird lokal entfernt und verständlich erklärt.
+- Die serverseitige Raumfrist ist in [D-12](D-12-retention-and-resume.md) verbindlich festgelegt: 24 Stunden ohne fachliche Aktivität und höchstens 48 Stunden seit Raumerstellung. Die Speicherung auf dem Gerät ist **nicht** unbegrenzt gültig. Ein abgelaufenes/ungültiges Token wird lokal entfernt und verständlich erklärt.
 
 ## Speicherung und Sicherheitsgrenzen
 
@@ -20,6 +20,11 @@
 - HTTPS-Create/Join liefert das Token **nur an diesen Teilnehmer**. Auf dem WebSocket ist die erste Nachricht `authenticate`; **vor dessen erfolgreicher Prüfung darf kein Raumzustand/Geheimnis** versendet werden. Das Token nicht als URL-Queryparameter/WebSocket-Subprotocol zur vermeintlichen Authentifizierung verwenden.
 - Profildaten (Name/Avatar) bleiben getrennt vom geschützten Raum-Credential; lokales Logout/Verlassen entfernt gezielt die betreffende Raum-Credential-Zuordnung und widerruft sie auf dem Server. Ein bei Netzstörung nicht bestätigter Server-Leave wird als ausstehend behandelt; keine falsche Zusage des sofortigen serverseitigen Widerrufs.
 - **Keine Kontosynchronisation**: Ein Gerät kann mehrere Räume lokal kennen. Die 6-Stunden-Inhaltshistorie aus D-01 ist davon unabhängig, teilt keine Spielersecrets und bleibt bei Raumverlassen erhalten.
+
+## Wiederaufnahme, Austritt und D-05-Fairness
+
+- **Resume mit gültigem Token:** Die bisherige `playerId` und ihr D-05-Fairness-Zähler bleiben erhalten. Ein Browser-/App-Neustart oder Socketwechsel ist kein neuer Join.
+- **Ausdrückliches Raumverlassen oder Kick:** Das bisherige Token wird widerrufen. Ein späterer Join ist eine **neue Identität mit neuer `playerId`**, auch bei gleichem Namen/Avatar. Der D-05-Zähler beginnt bei Wirksamwerden des Beitritts auf dem höchsten Zählerstand der dann aktiven Gruppe; der Zähler der früheren Identität wird nicht übertragen. Nur im lokalen Ein-Handy-Spiel ist eine ausdrücklich vorgenommene Reaktivierung einer alten Spieler-ID möglich. Siehe [D-05](D-05-person-selection-fairness.md).
 
 ## Zwei Tabs oder Fenster
 
@@ -32,7 +37,7 @@
 1. Create/Join → Reload → Browser **vollständig beenden** → dieselbe Origin erneut öffnen → Fortsetzen → exakt dieselbe `playerId`, berechtigter Raumzustand, eigene Zahl verdeckt; analog Android-App beenden/neustarten.
 2. Neuer Raum, zwei gültige gespeicherte Raumzuordnungen, expliziter Beitritt als neuer Spieler, zweite Verbindung derselben Identität und erneuter Hostconnect.
 3. Ungültiges, widerrufenes, abgelaufenes und fremdes Token sowie manipulierte `playerId`, falscher Raum, falsche Origin und WebSocket-Nachricht vor `authenticate` dürfen **keine privaten Daten** liefern.
-4. Logout/Verlassen löscht lokale Raum-Credentials und widerruft sie serverseitig; Raumablauf bereinigt; private Browserfenster, verweigerte Speicherrechte, verlorener Keystore, gelöschte Websitedaten liefern verständlichen neuen Join statt Datenleck oder Absturz.
+4. Logout/Verlassen löscht lokale Raum-Credentials und widerruft sie serverseitig; bei erneutem Join entstehen neue `playerId` und D-05-Neuzugangs-Zähler, bei Resume bleibt beides erhalten. Raumablauf bereinigt; private Browserfenster, verweigerte Speicherrechte, verlorener Keystore und gelöschte Websitedaten führen zu einem verständlichen neuen Join statt Datenleck oder Absturz.
 5. Kein Token in URL/QR, öffentlich gesendeten Snapshots, Logs, Browser-Offlinecache, Testreports oder persistierter Nutzungs-/Analysehistorie.
 
-**Umsetzung:** Nur Dokumentationsbeschluss; kein fertiger Auth-/Wiederaufnahme-Code. Der aktuelle D-12-Vorschlag zu 24h Inaktivität und höchstens 48h Raumalter ist dadurch **nicht** automatisch bestätigt.
+**Umsetzung:** Nur Dokumentationsbeschluss; Auth-/Wiederaufnahme-Code ist noch nicht implementiert. Die verbindlichen Raumfristen sind in [D-12](D-12-retention-and-resume.md) bereits beschlossen.

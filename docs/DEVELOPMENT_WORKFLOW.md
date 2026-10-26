@@ -227,7 +227,7 @@ D-16: Web-Resume-Tokens werden **persistent pro Browser-Origin/-Profil** (vorzug
 | Zwei Tabs mit derselben playerId | Neuere autorisierte Verbindung ersetzt die alte; kein doppelter Spieler; TT-038/042/057 |
 | Host verschwindet | verständliches Warten, später eindeutige Hostübernahme nach D-08; TT-054 |
 | Join/Leave/Reorder mitten im Fall | aktuelle Zahlen/Urteil unverändert, neue Besetzung erst nächster Fall; TT-053 |
-| Neuer Spieler während der laufenden Partie | Personen-Zähler mindestens auf aktuellen Höchststand; keine Aufholserien; TT-025/053 |
+| Neuer Spieler während der laufenden Partie | Personen-Zähler mindestens auf aktuellem Höchststand; keine Aufholserien; lokale Reaktivierung derselben ID berücksichtigt zusätzlich alten Zähler, Multiplayer-Neu-Join nach Leave/Kick erhält neue ID; TT-025/053 |
 | Personenauswahl mit mehreren Rollen | Richter zulässig, Rollen-Constraints vor Fairness und je ausgewählter Person nur eine Zählung pro Eintrag; TT-007/008/044 |
 | Raum 20 Spieler voll | 21. Beitritt klar abgelehnt; keine zusätzliche Identität/Spielerzahländerung, TT-037/053 |
 | Weniger als drei wirksame Teilnehmer | Pause statt stiller Fallfortsetzung oder erfundener Wertung; TT-006/053 |
@@ -258,7 +258,7 @@ Ab TT-010/043/050 mit F=3, R=2 testen: Ein nach Anzeige ausdrücklich ohne Urtei
 
 ### Personenreferenzen fair auslosen (D-05)
 
-Ab TT-007/008/025 mit gemeinsamen Domain-Fixtures prüfen: vier gleich berechtigte Spieler A/B/C/D mit Zählern 0/0/0/0 müssen in vier personenbezogenen Ziehungen alle einmal berücksichtigt werden, bevor jemand ein zweites Mal gezogen wird. Auch Richter und Selbstbezug sind zulässig; `differentFrom` geht vor. Mehrfaches `{player1}` zählt nur einmal pro tatsächlich gebundenem Eintrag. Neuer Spieler D bei A/B/C=4/4/5 beginnt bei 5, nicht bei 0: keine bevorzugten Nachhol-Ziehungen. Rückkehr nach echtem Leave, Neubesetzung von Regelrollen, Profiländerung und bloßer Reconnect getrennt testen. Ab TT-044 Dart/TypeScript-Parität; ab TT-045/053/056/057 atomare Zählung und persistierte/idempotente Counter. Neue Partie: Personen-Zähler zurück auf null; D-01-Inhaltshistorie bleibt sechs Stunden erhalten. [D-05-Beschluss](decisions/D-05-person-selection-fairness.md).
+Ab TT-007/008/025 mit gemeinsamen Domain-Fixtures prüfen: vier gleich berechtigte Spieler A/B/C/D mit Zählern 0/0/0/0 müssen in vier personenbezogenen Ziehungen alle einmal berücksichtigt werden, bevor jemand ein zweites Mal gezogen wird. Auch Richter und Selbstbezug sind zulässig; `differentFrom` geht vor. Mehrfaches `{player1}` zählt nur einmal pro tatsächlich gebundenem Eintrag. Neuer Spieler D bei A/B/C=4/4/5 beginnt bei 5, nicht bei 0: keine bevorzugten Nachhol-Ziehungen. lokale Reaktivierung derselben ID, neuen Multiplayer-Join mit neuer ID nach ausdrücklichem Leave/Kick, Neubesetzung von Regelrollen, Profiländerung und bloßes Resume getrennt testen. Ab TT-044 Dart/TypeScript-Parität; ab TT-045/053/056/057 atomare Zählung und persistierte/idempotente Counter. Neue Partie: Personen-Zähler zurück auf null; D-01-Inhaltshistorie bleibt sechs Stunden erhalten. [D-05-Beschluss](decisions/D-05-person-selection-fairness.md).
 
 ### Sechs-Stunden-Ziehhistorie prüfen
 
