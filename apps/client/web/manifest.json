@@ -1,0 +1,9 @@
+{
+  "name": "Trinktribunal",
+  "short_name": "Trinktribunal",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F7F0E6",
+  "theme_color": "#874B49",
+  "description": "Trinktribunal – Partyspiel für Android und Web"
+}
