@@ -47,6 +47,14 @@ Eine Regel wird sofort aktiv und bleibt bis zum Ende der Partie gültig. Vor der
 
 **Kartenmodus (D-03):** Da keine Spielernamen erfasst werden, verwendet er ausschließlich die 431 Fragen ohne Spielerrollen und die 22 nicht personenbezogenen Zusatzregeln.
 
+### Fair verteilte zufällige Spielerbezüge (D-05, Teilbeschluss)
+
+Für die zufällig zugewiesenen Platzhalter `{player1}`, `{player2}` usw. kommen in den Modi mit Namen **alle aktiven Spieler einschließlich Richter/Vorleser** infrage; auch Eigenbezüge sind zulässig. Statt rein unabhängiger Zufallsentscheidungen führt die Partie einen **Fairness-Zähler je stabiler Spieler-ID**: Frage- und Trinkregelbezüge teilen sich diesen Zähler; die Engine zieht jeweils bevorzugt die **bisher am seltensten zugewiesene zulässige Person**, bei Gleichstand zufällig. Bei mehreren Rollen gelten `differentFrom` und andere Gültigkeitsbedingungen vorrangig. Eine Person zählt pro tatsächlich gezogener Frage/aktivierter Regel nur einmal, auch bei mehrfachen Platzhaltern.
+
+**Später hinzukommende Spieler erhalten als Startzähler den höchsten aktuellen Zählerstand der aktiven Gruppe** (bei Rejoin nach echtem Austritt mindestens den bisherigen eigenen Wert). Sie müssen frühere Auslosungen **nicht nachholen** und werden deshalb nicht mehrfach hintereinander bevorzugt. Wirksame Eintritte/Austritte und Regelrollen-Neuzuweisungen erfolgen ab nächster Fallgrenze. Ein bloßer Disconnect/Resume verändert die Zähler nicht. Ein neuer Partie-Start setzt die **Personen-Zähler** zurück; die **sechs Stunden gültige Ziehhistorie für Karten-/Regel-IDs aus D-01 bleibt erhalten**. Zähler und Rollenbindungen werden im laufenden Partiezustand gespeichert; Doppelaktionen, Render-Neuaufbau und Reconnect zählen niemals mehrfach. Kartenmodus ohne Namen hat keine Personen-Zähler.
+
+Dies ist nur der bestätigte Personenauswahl-Teil von D-05. Fragenerschöpfung bei Abbrüchen, die Restredaktion und Nutzungsrechte vor Veröffentlichung bleiben offen. Siehe [D-05-Personenfairness](decisions/D-05-person-selection-fairness.md).
+
 Der Fragenkatalog unter `data/questions/` bleibt unabhängig vom Regelkatalog. Im Multiplayer führt der Server die Auslosung durch und synchronisiert die Regel-ID samt Spielerzuweisungen.
 
 ## Konfiguration und Änderungen
