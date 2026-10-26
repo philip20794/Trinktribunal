@@ -1,0 +1,39 @@
+{
+  "fixtureId": "TT003-HISTORY-MINIMUM",
+  "decisionRefs": [
+    "D-01"
+  ],
+  "operation": "chooseContentByRecentMinimum",
+  "input": {
+    "kind": "rule",
+    "recentCounts": {
+      "r-a": 2,
+      "r-b": 1,
+      "r-c": 3,
+      "r-d": 0
+    },
+    "candidateIds": [
+      "r-a",
+      "r-b",
+      "r-c",
+      "r-d"
+    ],
+    "alreadyDrawnInGame": [
+      "r-d"
+    ],
+    "injectedTieIndex": 0
+  },
+  "expected": {
+    "validCandidateIds": [
+      "r-a",
+      "r-b",
+      "r-c"
+    ],
+    "leastRecentCount": 1,
+    "eligiblePreferredIds": [
+      "r-b"
+    ],
+    "chosenId": "r-b"
+  },
+  "notes": "Prevent reuse within a game, then select smallest recent count."
+}
