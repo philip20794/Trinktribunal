@@ -38,7 +38,7 @@ Modus 1 und 2 funktionieren **ohne Backend**, auf Android offline und im Web nac
 
 Spielphasen: `Lobby → Fallakte / Regelereignis → Zahlen → Antworten → Sortieren → Aufdecken → Auswerten → Richterwechsel`. Regelereignisse umgehen Zahlenvergabe und Sortierung; der aktive Regelbestand gilt bis Partiende.
 
-- Server ist die **maßgebliche Instanz** für Raumzustand, geheime Zahlen, erlaubte Aktionen und Ergebnisse.
+- Server ist die **maßgebliche Instanz** für Raumzustand, geheime Zahlen, erlaubte Aktionen und Ergebnisse. **Bei „Alle sind Richter“** bewertet er jede private Sortierung separat: persönliche Schluckzahl = Zahl der falsch platzierten Figuren, **keine zusätzliche Trinkpflicht für falsch platzierte Mitspieler**.
 - Zahlen werden nur dem betreffenden Spieler übermittelt; Antworten/Sortierungen im Modus „Alle sind Richter“ bleiben bis zur vorgesehenen Aufdeckung privat.
 - Zufälliger Raumcode und separates geheimes Spieler-Token zur Wiederverbindung; serverseitige Prüfung von Nachrichten, Runde, Phase und Berechtigung.
 - Gemeinsamer, **versionierter JSON-Nachrichtenvertrag** mit DTOs/Schemas; Dart- und TypeScript-Typen werden daran angepasst.
