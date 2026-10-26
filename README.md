@@ -38,9 +38,17 @@ Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erschein
 
 Das Projekt befindet sich in der Konzeptphase.
 
+Der vollständige Entwicklungsplan ist dokumentiert; die App wurde noch nicht implementiert. Die Umsetzung beginnt mit einer früh bedienbaren Flutter-Web-App und erfolgt mit lokalen Tests und Builds unter Windows, ohne GitHub Actions als Voraussetzung.
+
+- [Entwicklungsplan mit 70 Aufgaben und neun Meilensteinen](docs/IMPLEMENTATION_PLAN.md)
+- [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)
+- [Fortschritt, offene Entscheidungen und Übergabe](docs/PROGRESS.md)
+
 ## Fragenkatalog
 
 Der deutschsprachige Fragenkatalog mit 500 Aufgaben liegt unter [data/questions/top-ten/de.json](data/questions/top-ten/de.json). Das Datenformat ist in [data/questions/README.md](data/questions/README.md) beschrieben.
+
+Die [englische Fassung mit denselben 500 Aufgaben-IDs](data/questions/top-ten/en.json) ist ebenfalls vorhanden.
 
 ## Technische Dokumentation
 
