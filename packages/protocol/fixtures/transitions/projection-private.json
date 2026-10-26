@@ -1,0 +1,72 @@
+{
+  "fixtureId": "TT003-PRIVATE-PROJECTION",
+  "decisionRefs": [
+    "D-09",
+    "D-13"
+  ],
+  "operation": "projectRoomStateByViewer",
+  "input": {
+    "roomState": {
+      "gameId": "fixture-game",
+      "phase": "ordering",
+      "questionId": "q-17",
+      "hostId": "A",
+      "readyPlayerIds": [
+        "A"
+      ],
+      "privateNumbers": {
+        "A": 5,
+        "B": 2,
+        "C": 7
+      },
+      "privateOrders": {
+        "A": [
+          "B",
+          "A",
+          "C"
+        ],
+        "B": null,
+        "C": null
+      },
+      "privateSipCounts": {
+        "A": null,
+        "B": null,
+        "C": null
+      }
+    }
+  },
+  "expected": {
+    "publicProjection": {
+      "gameId": "fixture-game",
+      "phase": "ordering",
+      "questionId": "q-17",
+      "readyPlayerIds": [
+        "A"
+      ]
+    },
+    "ownPrivateByPlayer": {
+      "A": {
+        "ownNumber": 5,
+        "ownOrder": [
+          "B",
+          "A",
+          "C"
+        ],
+        "ownSipCount": null
+      },
+      "B": {
+        "ownNumber": 2,
+        "ownOrder": null,
+        "ownSipCount": null
+      },
+      "C": {
+        "ownNumber": 7,
+        "ownOrder": null,
+        "ownSipCount": null
+      }
+    },
+    "hostMayInspectOtherPlayers": false,
+    "unauthenticatedGetsPrivateProjection": false
+  },
+  "notes": "D-09: host can see their own secret number and order, but not anyone else's. Public state reveals readiness, not secrets."
+}
