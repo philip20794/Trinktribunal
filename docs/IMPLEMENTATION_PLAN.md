@@ -545,10 +545,10 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-040 – Erstellen-/Beitreten-Screens und Einladungen
 
-- **Umsetzung:** Raum erstellen, Code eingeben, Link kopieren, QR lokal rendern und Linkroute öffnen; Profilvorlage aus Gerät. Kamerascanner nicht erforderlich: Betriebssystemkamera/Link/Code genügt. Token niemals in Einladung.
+- **Umsetzung:** Raum erstellen, Code eingeben, Link kopieren, QR lokal rendern und Linkroute öffnen; Profilvorlage aus Gerät. D-16: Auf dem Startbildschirm gespeicherte gültige Räume als „Partie fortsetzen“ anbieten, daneben „Neuem Raum beitreten“ und bewusstes Beitreten als anderer Spieler. Mehrere gespeicherte Raumzuordnungen auswählbar, nach Verlassen Credential entfernen. Kamerascanner nicht erforderlich: Betriebssystemkamera/Link/Code genügt. Token niemals in Einladung.
 - **Dateien:** `apps/client/lib/features/multiplayer/{create,join,invite}.dart`, `lib/app/router.dart`, `test/features/room_entry_test.dart`.
 - **Abhängigkeiten:** TT-039, TT-015.
-- **Akzeptanz:** Zwei getrennte Browsersitzungen im selben Raum; falscher/abgelaufener/voller Raum verständlich; Join-Link nach Refresh korrekt. Einladung nutzt öffentliche Clientbasis, nicht Workerbasis.
+- **Akzeptanz:** Zwei getrennte Browsersitzungen im selben Raum; falscher/abgelaufener/voller Raum verständlich; Join-Link nach Refresh korrekt. Einladung nutzt öffentliche Clientbasis, nicht Workerbasis. Fortsetzen nach erneutem Öffnen ohne unbemerkten zusätzlichen Join; mehrere lokale Raumzuordnungen bleiben unterscheidbar.
 - **Auto:** Link-/Code-Normalisierung, untrusted URL-Parameter, Clipboardfehler und QR-Nutzlast ohne Secrets.
 - **Manuell / lokal:** `MP`; Browser A erstellt, B tritt per Link und C per Code bei; QR mit Handy nur im eingerichteten LAN-Test verwenden.
 - **Abschluss:** G; keine Authentifizierung über erratenen Code allein.
@@ -568,7 +568,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 - **Umsetzung:** Skript startet/erklärt isolierte Browserprofile bzw. Testkontexte und hält feste Client-/Serverports; automatisierter Mehrclient-WS-Test plus Browser-Lobby-Smoke. Keine echten Accounts/Cloudverbindungen.
 - **Dateien:** `scripts/dev-multiplayer.ps1`, `scripts/test-multiplayer.ps1`, `apps/server/test/integration/lobby.test.ts`, `apps/client/integration_test/lobby_test.dart`, `docs/qa/M4.md`.
 - **Abhängigkeiten:** TT-041.
-- **Akzeptanz:** Drei unabhängige Identitäten auf einem Windows-PC, dieselbe Raumansicht; doppelter Tab desselben Spielers als eigener Testfall. Alle Fenster schließen beendet Prozesse kontrolliert.
+- **Akzeptanz:** Drei unabhängige Identitäten auf einem Windows-PC, dieselbe Raumansicht; doppelter Tab desselben Spielers als eigener Testfall, erneute Browseröffnung nach vollständigem Schließen und ausdrücklicher Neu-Beitritt als weiterer Spieler als zusätzliche Testfälle. Alle Fenster schließen beendet Prozesse kontrolliert; persistenter Test-Browserspeicher bleibt für gezielten Rejoin erhalten.
 - **Auto:** `S` Lobby-Integration, `E` Lobby; Client-/Serverprüfungen.
 - **Manuell / lokal:** `MP`; 390×844, 360×800 und 1440×900 gleichzeitig, Profilwechsel und Rejoin.
 - **Abschluss:** G; M4 demonstriert UI und Backend zusammen, nicht nur Health-Endpunkt.
@@ -699,7 +699,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-055 – Raumablauf, Löschung und datensparsame Logs
 
-- **Umsetzung:** D-12 für Server entscheiden; letzte Aktivität, Endzeit/Maximalalter, berechtigte Raumschließung und Alarmbereinigung. Nur fachliche Aktivität verlängert Frist; keine endlosen Ping-Verlängerungen. Aufräumen aller privaten Zustände und Aktionshistorien.
+- **Umsetzung:** D-12 für Server entscheiden; letzte Aktivität, Endzeit/Maximalalter, berechtigte Raumschließung und Alarmbereinigung. Nur fachliche Aktivität verlängert Frist; keine endlosen Ping-Verlängerungen. D-16: Tokens bei Leave, Kick und Raumablauf widerrufen; abgelaufene lokale Zuordnungen beim nächsten Appstart bereinigen. Aufräumen aller privaten Zustände und Aktionshistorien.
 - **Dateien:** `apps/server/src/room/{expiry,logging}.ts`, `test/room/expiry.test.ts`, `docs/decisions/007-retention.md`.
 - **Abhängigkeiten:** TT-054.
 - **Akzeptanz:** Abgelaufener Raum liefert definierte Meldung statt leerer Neugründung; Storage/Alarme/Sockets bereinigt. Logs enthalten Fehlercode und technische Revision, keine Namen/Token/Zahlen/Ordnungen oder vollständige Payloads.
@@ -719,12 +719,12 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-057 – Reconnect ohne Identitäts- und Zustandsverlust
 
-- **Umsetzung:** Resume-Pfad vervollständigen, rollenbereinigter Snapshot plus Revision, Entwürfe nur für gleiche roundId wiederherstellen; Tokenverlust → verständlicher neuer Join ohne Identitätsübernahme. Veraltete Sockets/ACKs ignorieren. D-01-Host-Rückabgleich aller noch gültigen Ziehereignisse ohne Doppelzählung nach Reconnect/Reload, andere Rollen ohne privaten Ziehverlauf.
+- **Umsetzung:** D-16-Resume-Pfad nach Reload und vollständigem Schließen/Neustart des Browsers oder der Android-App prüfen: persistente Raum-Credentials laden, autorisieren, rollenbereinigter Snapshot plus Revision, eigene Geheimzahl zunächst verdeckt, Entwürfe nur für gleiche roundId wiederherstellen. Tokenverlust/Expiry/Revocation → verständlicher neuer Join ohne Identitätsübernahme. Veraltete Sockets/ACKs ignorieren. D-01-Host-Rückabgleich aller noch gültigen Ziehereignisse ohne Doppelzählung nach Reconnect/Reload, andere Rollen ohne privaten Ziehverlauf.
 - **Dateien:** `apps/client/lib/{data/room_transport.dart,application/room_controller.dart}`, `apps/server/src/room/resume.ts`, `test/data/reconnect_test.dart`, `test/room/resume.test.ts` (Server).
 - **Abhängigkeiten:** TT-056, TT-039.
-- **Akzeptanz:** Reload behält playerId und eigene erlaubte Daten, Geheimzahl zunächst verborgen; kein zweiter Spieler nach jedem Retry; bereits bestätigte Abgabe nicht nochmals auswerten; abgelaufene/kicked Tokens abgelehnt.
-- **Auto:** Netztrennung vor/nach Commit, Retry-Sturm begrenzt, Spiel fortgeschritten während Offlinezeit, doppelte Tabs und Tokenspeicher verweigert.
-- **Manuell / lokal:** `MP`, Browser offline/online, Reload und Workerrestart in Sortierung/Aufdeckung; `C`, `S`.
+- **Akzeptanz:** Reload und kompletter Browser-/App-Neustart behalten bei gültigem Token dieselbe playerId und erlaubte Daten, Geheimzahl zunächst verborgen; kein zweiter Spieler nach jedem Retry; bereits bestätigte Abgabe nicht nochmals auswerten; abgelaufene/kicked Tokens abgelehnt.
+- **Auto:** Netztrennung vor/nach Commit, Retry-Sturm begrenzt, Spiel fortgeschritten während Offlinezeit, doppelte Tabs mit gemeinsamem Browser-Speicher, persistente Raum-Credentials nach Neustart, Tokenverlust/Widerruf/Ablauf und verweigerter Speicher.
+- **Manuell / lokal:** `MP`, Browser offline/online, Reload, Browser vollständig schließen und erneut öffnen, Android-App beenden und erneut öffnen, Workerrestart in Sortierung/Aufdeckung sowie zweite Tabs und ausdrückliches Verlassen testen; `C`, `S`.
 - **Abschluss:** G; Fehleransichten bieten Wiederholen/Verlassen ohne stillen Zustandsverlust.
 
 #### TT-058 – Gesamten Multiplayer mit Störungen durchspielen
@@ -741,7 +741,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 
 #### TT-059 – Angriffs- und Missbrauchsgrenzen nachweisen
 
-- **Umsetzung:** Früh eingeführte Auth-/Ratenlimits auditieren und vervollständigen: Request-/Framegröße, Joins, aktive Verbindungen, Actions pro Spieler/Raum, ungültige Frames, Origins/CORS, Replay und Tokenwiderruf. Vorschlagswerte zunächst 16 KiB/Frame, 10 Aktionen/s mit Burst 20; anhand TT-063 justieren. Grenzen konfiguriert, nicht verstreut.
+- **Umsetzung:** Früh eingeführte Auth-/Ratenlimits auditieren und vervollständigen: Request-/Framegröße, Joins, aktive Verbindungen, Actions pro Spieler/Raum, ungültige Frames, Origins/CORS, Replay und Tokenwiderruf. D-16: persistentes Browser-Token nicht als gegen Skriptzugriff geschützt behandeln; CSP, Escaping, keine fremden Skripte und sichere Android-Credentials prüfen. Vorschlagswerte zunächst 16 KiB/Frame, 10 Aktionen/s mit Burst 20; anhand TT-063 justieren. Grenzen konfiguriert, nicht verstreut.
 - **Dateien:** `apps/server/src/security/`, `test/security/`, `apps/client/lib/data/protocol/`, `docs/qa/security.md`.
 - **Abhängigkeiten:** TT-058.
 - **Akzeptanz:** Rate-Limit verhindert Speicherwachstum/Write-Sturm im Raum; unbekannte Raumcodes nicht unbegrenzt persistiert; keine Geheimnisse in Fehlern, Offlinecache oder Release-Testschaltern. Verteilter Create-Spam als Restrisiko ohne globalen Limiter dokumentiert.
@@ -872,7 +872,7 @@ Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgefüh
 5. **End-to-End:** Flutter `integration_test` über lokalen ChromeDriver; mehrere echte WS-Testclients für Parallelität/Protokoll, getrennte Browserprofile für sichtbare Synchronität. Ein einzelner Widgettest belegt keine Mehrbrowserfunktion.
 6. **Release-/Geräteprüfung:** Lokaler statischer Webserver für Service Worker/Cache/Headers; Android Debug und Release am eigenen Gerät. Performance am Profil-/Releasebuild statt Debug messen.
 
-Pflicht-Fixtures: D-01 mit 6h-Rollfenster, Zähler=0/1/2/3, UTC-Fensterrand, Mehrpartie-Wiederverwendung, Host-Import/-Rückabgleich und idempotenten Ziehereignissen; N=3/8/12; Faktor 1,0/1,5/3,0; Zahlenlücken; ungültiges X; keine/mehrere/alle Fehlpositionen; exakt eine Fehlposition als unmöglich; alle-Richter-Werte 2/4/0; asymmetrische excludes; same-role mehrmals; differentFrom mit zyklischem Constraintgraph (kein rekursiver Endloslauf); ausgeschiedener Regelträger; Richter entfernt/reordered; F=1/R=7; 50+7; leere Kandidaten; Join/Leave jeder Phase; Neustart und alte actionId; Katalog-/Protokollmismatch; Crash vor/nach Commit.
+Pflicht-Fixtures: D-16 mit vollständigem Browser-/App-Neustart, mehreren Raumzuordnungen, verlorenem/abgelaufenem/widerrufenem Credential und doppeltem Browser-Tab; D-01 mit 6h-Rollfenster, Zähler=0/1/2/3, UTC-Fensterrand, Mehrpartie-Wiederverwendung, Host-Import/-Rückabgleich und idempotenten Ziehereignissen; N=3/8/12; Faktor 1,0/1,5/3,0; Zahlenlücken; ungültiges X; keine/mehrere/alle Fehlpositionen; exakt eine Fehlposition als unmöglich; alle-Richter-Werte 2/4/0; asymmetrische excludes; same-role mehrmals; differentFrom mit zyklischem Constraintgraph (kein rekursiver Endloslauf); ausgeschiedener Regelträger; Richter entfernt/reordered; F=1/R=7; 50+7; leere Kandidaten; Join/Leave jeder Phase; Neustart und alte actionId; Katalog-/Protokollmismatch; Crash vor/nach Commit.
 
 ### Free-Tier-Modell ohne Kostenversprechen
 
