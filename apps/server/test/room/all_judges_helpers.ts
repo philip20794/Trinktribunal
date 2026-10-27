@@ -19,7 +19,7 @@ export async function result(peer: Peer) {
   }
   throw new Error('NO_RESULT');
 }
-export async function allJudgesRoom(count = 3) {
+export async function allJudgesRoom(count = 3, allJudges = true) {
   const room = await socketRoom(),
     host = await authenticated(room.code, room.credential),
     members = [{ ...host, credential: room.credential }];
@@ -59,7 +59,7 @@ export async function allJudgesRoom(count = 3) {
     createRoomMessage('setConfig', {
       actionId: action(),
       expectedRevision: (await read()).revision,
-      config: { ...(await read()).config, allJudges: true, targetCases: 3, requestedRuleEvents: 2 },
+      config: { ...(await read()).config, allJudges, targetCases: 3, requestedRuleEvents: 2 },
     }),
   );
   await send(
@@ -89,7 +89,9 @@ export async function allJudgesRoom(count = 3) {
     throw new Error('NO_SNAPSHOT');
   };
   const ordering = async () => {
-    for (const member of members) await send(member.peer, await command('acknowledgeNumber'));
+    const recipients = (await read()).game!.round!.recipients;
+    for (const member of members.filter((m) => recipients.includes(m.credential.playerId)))
+      await send(member.peer, await command('acknowledgeNumber'));
     for (const member of members) await send(member.peer, await command('readyForOrdering'));
     await send(host.peer, await command('beginOrdering'));
   };

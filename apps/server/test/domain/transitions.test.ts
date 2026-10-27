@@ -114,6 +114,20 @@ function normalize(state: GameState) {
 }
 
 describe('shared Dart/TypeScript transition fixtures', () => {
+  it('new participant uses the maximum of surviving active identities rather than a departed counter', () => {
+    const dependencies = ports();
+    let state = apply(lobby(), 'startGame', dependencies);
+    const changed = structuredClone(state) as MutableGameState;
+    changed.personCounts = [
+      { playerId: ids[0]!, count: 7 },
+      { playerId: ids[1]!, count: 19 },
+      { playerId: ids[2]!, count: 7 },
+    ];
+    state = stageRoster(changed, [ids[0]!, ids[2]!, RoomIds.player('D')], 2000);
+    state = apply(state, 'completeWithoutVerdict', dependencies);
+    expect(state.personCounts.find((p) => p.playerId === 'D')?.count).toBe(7);
+    expect(state.personCounts.find((p) => p.playerId === ids[1])?.count).toBe(19);
+  });
   for (const scenario of suite.scenarios)
     it(scenario.id, () => {
       const dependencies = ports(scenario.ruleSlots, scenario.excludeRules);

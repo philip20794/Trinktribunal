@@ -170,7 +170,10 @@ function applyBoundaryRoster(state: MutableGameState): void {
     maximum = Math.max(
       0,
       ...state.personCounts
-        .filter((entry) => active.includes(entry.playerId))
+        .filter(
+          (entry) =>
+            active.includes(entry.playerId) && state.pendingRoster!.includes(entry.playerId),
+        )
         .map((entry) => entry.count),
     );
   for (const id of state.pendingRoster)
@@ -537,6 +540,19 @@ export function transition(
         requireHost(next, actor);
         requirePhase(next, 'rule_event');
         if (command.afterCase !== next.completedCases) reject('STALE_ROUND');
+        if (next.pendingRoster) {
+          const old = [...next.effectiveRoster],
+            role = next.config.allJudges ? next.readerId : next.judgeId;
+          applyBoundaryRoster(next);
+          if (role && !next.effectiveRoster.includes(role)) {
+            const replacement = nextRole(old, role, next.effectiveRoster);
+            if (next.config.allJudges) next.readerId = replacement;
+            else next.judgeId = replacement;
+          }
+          const rebound = ports.rebindRules(immutable(structuredClone(next)), random(ports));
+          next.activeRules = structuredClone(rebound.activeRules);
+          next.personCounts = structuredClone(rebound.personCounts);
+        }
         beginCase(next, ports, now);
         break;
       case 'resumePaused': {

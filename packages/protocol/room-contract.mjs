@@ -24,7 +24,7 @@ const defs={
   revealed:object({playerId:ref('id'),number:integer(1,60)}),
   binding:{type:'object',propertyNames:text('^player[1-9][0-9]*$',16),maxProperties:20,additionalProperties:ref('id')},
   assignment:object({contentId:text('^[A-Za-z0-9_-]{1,64}$'),bindings:ref('binding')}),
-  participant:object({playerId:ref('id'),profile:ref('profile'),connected:{type:'boolean'},ready:{type:'boolean'},orderSubmitted:{type:'boolean'}}),
+  participant:object({playerId:ref('id'),profile:ref('profile'),connected:{type:'boolean'},ready:{type:'boolean'},orderSubmitted:{type:'boolean'},active:{type:'boolean'}},['active']),
   penalty:object({playerId:ref('id'),sips:integer(0,20)}),
   publicResult:object({errors:integer(0,20),penalties:array(ref('penalty'),20)}),
   ownResult:object({errors:integer(0,20),sips:integer(0,20)}),

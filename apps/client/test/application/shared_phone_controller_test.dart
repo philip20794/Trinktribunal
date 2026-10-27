@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/content_history_store.dart';
 import 'package:trinktribunal/application/local_session_controller.dart';
@@ -44,6 +46,90 @@ void handoff(SharedPhoneController session) {
 }
 
 void main() {
+  test('a roster change during a rule event rebinds its lost role once before the next case', () {
+    final history = ContentHistoryStore(),
+        session = SharedPhoneController(
+          questions: questions([
+            questionJson('001-a'),
+            questionJson('001-b'),
+            questionJson('002-a'),
+          ]),
+          rules: rules([
+            ruleJson(
+              'toast',
+              roles: {
+                'player1': {'selection': 'random'},
+              },
+            ),
+          ]),
+          random: TestRandom(),
+          clock: () => now,
+          newId: () => 'rebind',
+          historyStore: history,
+        );
+    session.start(
+      config: session.configure(
+        playerCount: 4,
+        targetCases: 3,
+        requestedRuleEvents: 1,
+      ),
+      roster: roster(),
+    );
+    session.completeCase(
+      session.view!.roundId,
+      confirmed: true,
+      withoutVerdict: true,
+    );
+    expect(session.view!.phase, GamePhase.ruleEvent);
+    final departed = session.view!.activeRules.single.bindings['player1']!;
+    final keep = roster().where((p) => p.player.id != departed).toList();
+    session.applyRoster(keep);
+    session.continueRule(afterCase: 1);
+    expect(
+      session.view!.activeRules.single.bindings['player1'],
+      isNot(departed),
+    );
+    expect(session.personCounts.values.values.reduce((a, b) => a + b), 2);
+    expect(history.history.entries, hasLength(3));
+    final counts = session.personCounts.values;
+    session.continueRule(afterCase: 1);
+    expect(session.personCounts.values, counts);
+  });
+  test('new local identity does not inherit the high count of a player removed at the same boundary', () {
+    final history = ContentHistoryStore(),
+        session = controller(history: history);
+    session.start(
+      config: session.configure(
+        playerCount: 4,
+        targetCases: 3,
+        requestedRuleEvents: 0,
+      ),
+      roster: roster(),
+    );
+    final snapshot =
+        jsonDecode(jsonEncode(session.toSnapshot())) as Map<String, dynamic>;
+    (snapshot['rules'] as Map)['counts'] = {
+      for (final id in players) id.value: id == players[1] ? 19 : 7,
+    };
+    session.restoreValidated(
+      session.validateSnapshot(snapshot, history.history),
+    );
+    final fresh = UserProfile(
+      player: Player(id: PlayerId('fresh'), name: 'Fresh'),
+      avatar: AvatarConfig(),
+    );
+    session.applyRoster([roster()[0], roster()[2], roster()[3], fresh]);
+    session.completeCase(
+      session.view!.roundId,
+      confirmed: true,
+      withoutVerdict: true,
+    );
+    expect(
+      session.personCounts.countFor(fresh.player.id),
+      inInclusiveRange(7, 8),
+    );
+    expect(session.personCounts.countFor(players[1]), 19);
+  });
   test('six judged cases with avatar/name update, insertion, join, rules and restart', () {
     final session = controller();
     final config = session.configure(

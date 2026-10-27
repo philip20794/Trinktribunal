@@ -128,6 +128,14 @@ test('boundary pauses do not invent a new case; verdicts require a complete reve
   judged.public.revealed=[{playerId:'p2',number:2},{playerId:'p3',number:3}];judged.public.revealCursor=2;assert.doesNotThrow(()=>validateRoomMessage(judged));
 });
 
+test('retired public profiles remain valid frozen references but cannot receive private views or pending seats',()=>{
+  const m=sample('snapshot'),retired=m.public.players.find(p=>p.playerId!==m.you);retired.active=false;
+  assert.doesNotThrow(()=>validateRoomMessage(m));
+  const wrong=structuredClone(m);wrong.you=retired.playerId;assert.throws(()=>validateRoomMessage(wrong),/WRONG_RECIPIENT/);
+  const pending=structuredClone(m);pending.public.pendingRoster=[retired.playerId];assert.throws(()=>validateRoomMessage(pending),/INVALID_ROSTER/);
+  retired.active='false';assert.throws(()=>validateRoomMessage(m));
+});
+
 test('rule and finished boundaries carry no previous or future case secrets in either mode',()=>{
   for(const allJudges of [false,true])for(const phase of ['rule_event','finished']){
     const m=sample('snapshot');Object.assign(m.public,{phase,config:{...m.public.config,allJudges},completedCases:phase==='finished'?50:1,roundId:null,question:null,frozenRoster:[],judgeId:allJudges?null:'p1',readerId:allJudges?'p1':null,activeRules:[{contentId:'swear_penalty',bindings:{}}]});m.private={};

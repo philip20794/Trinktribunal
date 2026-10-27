@@ -239,6 +239,7 @@ final class SharedPhoneController {
           newRoster: _ids,
         );
       }
+      _rules = _ruleEngine.rebind(state: _rules!, activePlayers: _ids);
     }
     if (_roster.length < 3) {
       _phase = GamePhase.paused;
@@ -448,11 +449,14 @@ final class SharedPhoneController {
     if (_pending == null) return;
     var counts = _rules!.selection.counts;
     final activeBefore = _ids;
+    final remaining = activeBefore
+        .where((id) => _pending!.any((p) => p.player.id == id))
+        .toList();
     for (final member in _pending!) {
       if (!activeBefore.contains(member.player.id)) {
         counts = counts.withParticipant(
           member.player.id,
-          previouslyActive: activeBefore,
+          previouslyActive: remaining,
         );
       }
     }

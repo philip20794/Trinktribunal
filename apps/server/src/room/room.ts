@@ -37,6 +37,7 @@ import { lobbySnapshot, playersHash } from './projection';
 import { applyLobbyAction, lobbyFingerprint, type LobbyReceipt } from './profile_actions';
 import { RoomRepository, roomExpiry, type RoomState, type Member } from './repository';
 import { commitGameAction, isGameAction } from './actions';
+import { reservedSeatIds, synchronizeRoster } from './roster';
 import {
   commitHistoryAction,
   isHistoryAction,
@@ -550,6 +551,7 @@ export class Room extends DurableObject<Env> {
     return new RoomRepository(this.ctx.storage).read();
   }
   private write(state: RoomState): void {
+    synchronizeRoster(state, Date.now());
     new RoomRepository(this.ctx.storage).write(state);
   }
   private live(now: number): RoomState | null {
@@ -672,7 +674,7 @@ export class Room extends DurableObject<Env> {
       if (!consumeWindow(this.ctx.storage.sql, 'join', ENTRY_LIMITS.joinsPerRoom, now))
         return { ok: false, code: 'RATE_LIMITED', status: 429 };
       const active = state.members.filter((m) => !m.revoked);
-      if (active.length >= ENTRY_LIMITS.maxMembers)
+      if (reservedSeatIds(state).size >= ENTRY_LIMITS.maxMembers)
         return { ok: false, code: 'ROOM_FULL', status: 409 };
       if (state.members.length >= protocolMetadata.limits.actionJournalEntries)
         return { ok: false, code: 'RATE_LIMITED', status: 429 };
@@ -713,8 +715,7 @@ export class Room extends DurableObject<Env> {
           return { ok: false, code: 'ACTION_ID_CONFLICT', status: 409 };
         member.revoked = true;
         member.leaveActionId = command.actionId;
-        // Profile is no longer needed for a revoked lobby seat; retain only the bounded receipt.
-        delete member.profile;
+        // The transaction retains public profile data while a frozen case still refers to it.
         state.lastDomainActivity = Date.now();
         state.revision++;
         member.leaveRevision = state.revision;

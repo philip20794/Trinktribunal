@@ -30,6 +30,8 @@ final class OnlineGameController extends ChangeNotifier {
       : null;
   int? get visibleNumber => _visible ? snapshot?.private.ownNumber : null;
   bool get ackPending => _ackPending;
+  int get activeCount =>
+      snapshot?.public.players.where((p) => p.active != false).length ?? 0;
   bool get acknowledged =>
       snapshot?.public.players.any(
         (player) => player.playerId == snapshot!.you && player.ready,
@@ -211,7 +213,8 @@ final class OnlineGameController extends ChangeNotifier {
     if (view == null ||
         view.public.gameId != gameId ||
         view.you != view.public.hostId ||
-        view.public.phase != 'paused') {
+        view.public.phase != 'paused' ||
+        view.public.pauseReason == 'insufficient_players' && activeCount < 3) {
       return false;
     }
     return _send(
@@ -230,7 +233,7 @@ final class OnlineGameController extends ChangeNotifier {
         view == null ||
         view.public.gameId != gameId ||
         view.you != view.public.hostId ||
-        view.public.players.length < 3) {
+        activeCount < 3) {
       return false;
     }
     return _send(

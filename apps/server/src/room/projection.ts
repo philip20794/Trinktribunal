@@ -6,6 +6,7 @@ import { readyInPhase } from './readiness';
 import { ownConfirmedOrder } from './orders';
 import { normalRevealFields } from './reveal';
 import { ownPersonalVerdict } from './all_judges';
+import { retainedProfileIds } from './roster';
 import type {
   Config,
   PlayerId,
@@ -36,7 +37,8 @@ export function lobbySnapshot(
   const game = state.game,
     round = game?.round,
     order = ownConfirmedOrder(game, you),
-    result = ownPersonalVerdict(game, you);
+    result = ownPersonalVerdict(game, you),
+    retained = retainedProfileIds(state);
   return createRoomMessage('snapshot', {
     requestId: RoomIds.request(crypto.randomUUID()),
     roomId: state.roomId,
@@ -48,11 +50,12 @@ export function lobbySnapshot(
       hostRevision: game?.hostRevision ?? 0,
       config: state.config,
       players: state.members
-        .filter((m) => !m.revoked && m.profile)
+        .filter((m) => (!m.revoked || retained.has(m.playerId)) && m.profile)
         .map((m) => ({
           playerId: m.playerId,
           profile: m.profile!,
-          connected: connected.has(m.playerId),
+          active: !m.revoked,
+          connected: !m.revoked && connected.has(m.playerId),
           ready: readyInPhase(game, m.playerId),
           orderSubmitted: round?.orders.some((order) => order.playerId === m.playerId) ?? false,
         })),

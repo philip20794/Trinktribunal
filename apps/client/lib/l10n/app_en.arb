@@ -1,5 +1,8 @@
 {
   "@@locale": "en",
+  "onlinePausePlayers": "At least three active participants are needed for the next case.",
+  "onlineRosterJoining": "Participates from the next case",
+  "onlineRosterLeaving": "Left; remains visible in this case file",
   "onlinePersonalErrors": "Your wrong positions: {count}",
   "onlinePersonalSips": "Your sips: {count}",
   "onlinePersonalHelp": "Only your own order counts. You do not drink for anyone else's errors.",

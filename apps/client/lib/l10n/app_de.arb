@@ -1,5 +1,8 @@
 {
   "@@locale": "de",
+  "onlinePausePlayers": "Für den nächsten Fall werden mindestens drei aktive Teilnehmer benötigt.",
+  "onlineRosterJoining": "Ab dem nächsten Fall dabei",
+  "onlineRosterLeaving": "Ausgetreten; bleibt in dieser Fallakte sichtbar",
   "onlinePersonalErrors": "Deine Fehlpositionen: {count}",
   "onlinePersonalSips": "Deine Schlucke: {count}",
   "onlinePersonalHelp": "Es zählt nur deine eigene Ordnung. Du trinkst nicht für die Fehler anderer mit.",

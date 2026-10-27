@@ -14,6 +14,7 @@ import 'game_settings.dart';
 import 'game_screen.dart';
 import 'game_progress.dart';
 import 'order_view.dart';
+import 'roster_management.dart';
 
 class RoomCourtroom extends ConsumerWidget {
   const RoomCourtroom({required this.snapshot, super.key});
@@ -52,7 +53,9 @@ class RoomCourtroom extends ConsumerWidget {
           OnlineGameProgress(snapshot: snapshot),
         const SizedBox(height: 16),
         Text(
-          context.tr('roomJoinedCount', {'count': players.length}),
+          context.tr('roomJoinedCount', {
+            'count': players.where((p) => p.active != false).length,
+          }),
           style: Theme.of(context).textTheme.titleMedium,
         ),
         if (host)
@@ -63,9 +66,15 @@ class RoomCourtroom extends ConsumerWidget {
         const SizedBox(height: 12),
         if (['ordering', 'revealing', 'judged'].contains(snapshot.public.phase))
           OnlineOrderView(snapshot: snapshot)
+        else if (snapshot.public.frozenRoster.any(
+          (id) => !players.any((p) => p.playerId == id),
+        ))
+          const TText('onlineOrderMissing')
         else
           BenchView(
-            order: players.map((player) => player.playerId).toList(),
+            order: snapshot.public.frozenRoster.isNotEmpty
+                ? snapshot.public.frozenRoster
+                : players.map((player) => player.playerId).toList(),
             profiles: {
               for (final player in players)
                 player.playerId: UserProfile(
@@ -79,91 +88,95 @@ class RoomCourtroom extends ConsumerWidget {
             onMove: host && snapshot.public.phase == 'lobby' ? reorder : null,
           ),
         const SizedBox(height: 12),
-        for (var index = 0; index < players.length; index++)
-          Builder(
-            builder: (context) {
-              final player = players[index];
-              return ListTile(
-                key: ValueKey('presence-${player.playerId.value}'),
-                title: Text(player.profile.name),
-                subtitle: Text(
-                  context.tr(
-                    player.connected ? 'roomPresent' : 'roomDisconnected',
+        if (snapshot.public.phase != 'lobby')
+          OnlineRosterManagement(snapshot: snapshot),
+        if (snapshot.public.phase == 'lobby')
+          for (var index = 0; index < players.length; index++)
+            Builder(
+              builder: (context) {
+                final player = players[index];
+                return ListTile(
+                  key: ValueKey('presence-${player.playerId.value}'),
+                  title: Text(player.profile.name),
+                  subtitle: Text(
+                    context.tr(
+                      player.connected ? 'roomPresent' : 'roomDisconnected',
+                    ),
                   ),
-                ),
-                leading: player.playerId == snapshot.public.hostId
-                    ? const Chip(label: TText('roomHost'))
-                    : null,
-                trailing: host && snapshot.public.phase == 'lobby'
-                    ? PopupMenuButton<String>(
-                        tooltip: context.tr('roomManagePlayer', {
-                          'name': player.profile.name,
-                        }),
-                        itemBuilder: (_) => [
-                          if (index > 0)
-                            const PopupMenuItem(
-                              value: 'up',
-                              child: TText('roomMoveUp'),
-                            ),
-                          if (index < players.length - 1)
-                            const PopupMenuItem(
-                              value: 'down',
-                              child: TText('roomMoveDown'),
-                            ),
-                          if (player.playerId != snapshot.public.hostId)
-                            const PopupMenuItem(
-                              value: 'kick',
-                              child: TText('roomKick'),
-                            ),
-                        ],
-                        onSelected: (action) async {
-                          if (action == 'up') {
-                            reorder(index, index - 1);
-                            return;
-                          }
-                          if (action == 'down') {
-                            reorder(index, index + 1);
-                            return;
-                          }
-                          final confirmed = await showDialog<bool>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const TText('roomKickTitle'),
-                              content: Text(
-                                context.tr('roomKickBody', {
-                                  'name': player.profile.name,
-                                }),
+                  leading: player.playerId == snapshot.public.hostId
+                      ? const Chip(label: TText('roomHost'))
+                      : null,
+                  trailing: host && snapshot.public.phase == 'lobby'
+                      ? PopupMenuButton<String>(
+                          tooltip: context.tr('roomManagePlayer', {
+                            'name': player.profile.name,
+                          }),
+                          itemBuilder: (_) => [
+                            if (index > 0)
+                              const PopupMenuItem(
+                                value: 'up',
+                                child: TText('roomMoveUp'),
                               ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, false),
-                                  child: const TText('cancel'),
+                            if (index < players.length - 1)
+                              const PopupMenuItem(
+                                value: 'down',
+                                child: TText('roomMoveDown'),
+                              ),
+                            if (player.playerId != snapshot.public.hostId)
+                              const PopupMenuItem(
+                                value: 'kick',
+                                child: TText('roomKick'),
+                              ),
+                          ],
+                          onSelected: (action) async {
+                            if (action == 'up') {
+                              reorder(index, index - 1);
+                              return;
+                            }
+                            if (action == 'down') {
+                              reorder(index, index + 1);
+                              return;
+                            }
+                            final confirmed = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const TText('roomKickTitle'),
+                                content: Text(
+                                  context.tr('roomKickBody', {
+                                    'name': player.profile.name,
+                                  }),
                                 ),
-                                FilledButton(
-                                  onPressed: () => Navigator.pop(context, true),
-                                  child: const TText('roomKick'),
-                                ),
-                              ],
-                            ),
-                          );
-                          if (confirmed != true) return;
-                          final current = controller.state.snapshot;
-                          if (current == null) return;
-                          controller.sendAction(
-                            KickMessage.create(
-                              actionId: ActionId(newRoomRequestId()),
-                              expectedRevision: current.revision,
-                              targetPlayerId: player.playerId,
-                              confirmed: true,
-                            ),
-                          );
-                        },
-                      )
-                    : null,
-              );
-            },
-          ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, false),
+                                    child: const TText('cancel'),
+                                  ),
+                                  FilledButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, true),
+                                    child: const TText('roomKick'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            if (confirmed != true) return;
+                            final current = controller.state.snapshot;
+                            if (current == null) return;
+                            controller.sendAction(
+                              KickMessage.create(
+                                actionId: ActionId(newRoomRequestId()),
+                                expectedRevision: current.revision,
+                                targetPlayerId: player.playerId,
+                                confirmed: true,
+                              ),
+                            );
+                          },
+                        )
+                      : null,
+                );
+              },
+            ),
       ],
     );
   }

@@ -100,9 +100,14 @@ class OnlineGameProgress extends ConsumerWidget {
             ),
           if (view.phase == 'paused') ...[
             const TText('gamePaused'),
+            if (view.pauseReason == 'insufficient_players')
+              const TText('onlinePausePlayers'),
             if (host)
               FilledButton(
-                onPressed: game.pending('resume')
+                onPressed:
+                    game.pending('resume') ||
+                        view.pauseReason == 'insufficient_players' &&
+                            game.activeCount < 3
                     ? null
                     : () => game.resumePaused(gameId: gameId),
                 child: const TText('roomContinue'),
@@ -110,7 +115,7 @@ class OnlineGameProgress extends ConsumerWidget {
           ],
           if (host)
             OutlinedButton(
-              onPressed: game.pending('restart')
+              onPressed: game.pending('restart') || game.activeCount < 3
                   ? null
                   : () async {
                       game.hideSecret();

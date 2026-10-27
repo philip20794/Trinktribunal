@@ -488,6 +488,9 @@
         },
         "orderSubmitted": {
           "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
         }
       }
     },

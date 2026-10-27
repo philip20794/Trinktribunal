@@ -64,8 +64,6 @@ export function applyLobbyAction(
   if (command.type === 'editOwnProfile') member.profile = command.profile;
   else {
     if (playerId !== state.hostId) return { ok: false, code: 'UNAUTHORIZED_ACTION' };
-    // Mid-game pending roster semantics are implemented in TT-053.
-    if (state.phase !== 'lobby') return { ok: false, code: 'INVALID_PHASE' };
     if (command.type === 'kick') {
       const target = state.members.find(
         (member) => member.playerId === command.targetPlayerId && !member.revoked,
@@ -73,7 +71,6 @@ export function applyLobbyAction(
       if (!target || target.playerId === state.hostId)
         return { ok: false, code: 'INVALID_MESSAGE' };
       target.revoked = true;
-      delete target.profile;
       removedPlayerId = target.playerId;
     } else {
       const active = state.members.filter((member) => !member.revoked);

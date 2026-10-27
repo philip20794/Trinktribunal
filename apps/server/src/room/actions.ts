@@ -3,6 +3,7 @@ import { canonicalJson } from '../../../../packages/protocol/schema-validation.m
 import { initialGameState, stageRoster, transition, gameActions } from '../domain/game_reducer';
 import { gamePorts } from '../domain/game_ports';
 import { scoreRound } from '../domain/verdict';
+import { synchronizeRoster } from './roster';
 import { immutable, type GamePorts, type MutableGameState } from '../domain/game_state';
 import {
   decodeRoomMessage,
@@ -117,6 +118,7 @@ function mutate(
   next.historyOwners = { ...state.historyOwners };
   for (const event of outcome.state.history)
     if (!previousIds.has(event.eventId)) next.historyOwners[event.eventId] = state.hostId;
+  synchronizeRoster(next, now);
   return { state: next, result: { ok: true, revision: receipt.revision, duplicate: false } };
 }
 /** Validate → transition → durable commit. The caller sends ACK/projection only after return. */

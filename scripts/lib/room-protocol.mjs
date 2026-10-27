@@ -47,6 +47,8 @@ function projection(message,recipientId) {
   if(new Set(players).size!==players.length||!players.includes(pub.hostId)||[...roster,...pub.pendingRoster].some(id=>!players.includes(id)))fail('INVALID_ROSTER');
   if(recipientId!==undefined&&message.you!==recipientId)fail('WRONG_RECIPIENT');
   if(!players.includes(message.you))fail('WRONG_RECIPIENT');
+  if(pub.players.find(p=>p.playerId===message.you)?.active===false)fail('WRONG_RECIPIENT');
+  if(pub.pendingRoster.some(id=>pub.players.find(p=>p.playerId===id)?.active===false))fail('INVALID_ROSTER');
   for(const player of pub.players)checkName(player.profile);
   if(pub.completedCases>pub.config.targetCases)fail('INVALID_CASE_COUNT');
   if((phase==='finished')!==(pub.completedCases===pub.config.targetCases))fail('INVALID_CASE_COUNT');

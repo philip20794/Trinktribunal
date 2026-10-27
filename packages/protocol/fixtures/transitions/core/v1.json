@@ -6,6 +6,18 @@
   "rules": ["rule_a", "rule_b"],
   "scenarios": [
     {
+      "id":"rule-event-roster-applies-before-next-case-without-extra-rotation",
+      "targetCases":3,"ruleSlots":[1],"excludeRules":false,
+      "steps":[
+        {"action":"start","expected":{"phase":"numbers","completed":0,"judge":"A","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skip","expected":{"phase":"rule_event","completed":1,"judge":"B","question":"001-a","drawn":1,"rules":1,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"roster","roster":["C","A","D"],"expected":{"phase":"rule_event","completed":1,"judge":"B","question":"001-a","drawn":1,"rules":1,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"continueRule","expected":{"phase":"numbers","completed":1,"judge":"C","question":"001-b","drawn":2,"rules":1,"skippedRules":0,"roster":["C","A","D"]}},
+        {"action":"skip","expected":{"phase":"numbers","completed":2,"judge":"A","question":"002-a","drawn":3,"rules":1,"skippedRules":0,"roster":["C","A","D"]}},
+        {"action":"skip","expected":{"phase":"finished","completed":3,"judge":"D","question":"002-a","drawn":3,"rules":1,"skippedRules":0,"roster":["C","A","D"]}}
+      ]
+    },
+    {
       "id": "counted-skip-rule-slots-and-finish",
       "targetCases": 3,
       "ruleSlots": [1, 2],
