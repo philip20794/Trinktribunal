@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/local_session_controller.dart';
 import '../../data/catalogs/catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
+import '../../design/case_file.dart';
 import '../../domain/local_game_reducer.dart';
 import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
@@ -405,37 +406,35 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  question.text,
-                  style: Theme.of(context).textTheme.headlineSmall,
+        CaseFile(
+          label: 'Fall ${state.caseNumber} / ${config.targetCases}',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                question.text,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 24),
+              Text(
+                '1 · ${question.green}',
+                style: const TextStyle(
+                  color: Color(0xFF276044),
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(height: 24),
-                Text(
-                  '1 · ${question.green}',
-                  style: const TextStyle(
-                    color: Color(0xFF276044),
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(question.connector),
+              ),
+              Text(
+                '${config.maxSecretNumber} · ${question.red}',
+                style: const TextStyle(
+                  color: Color(0xFF874B49),
+                  fontWeight: FontWeight.bold,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text(question.connector),
-                ),
-                Text(
-                  '${config.maxSecretNumber} · ${question.red}',
-                  style: const TextStyle(
-                    color: Color(0xFF874B49),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 16),

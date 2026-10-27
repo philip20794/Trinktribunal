@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "renderer": "original-flutter-vector-v1",
+  "canvas": {"width": 160, "height": 180},
+  "anchors": {"head": [80, 76], "eyes": [80, 70], "torso": [80, 148]},
+  "layers": ["background", "torso", "hairBack", "ears", "face", "eyes", "brows", "nose", "mouth", "beard", "hairFront", "glasses", "hat", "extra"],
+  "options": {
+    "face": ["round", "square", "long"],
+    "skin": ["light", "medium", "brown", "dark"],
+    "eyes": ["open", "sleepy"],
+    "brows": ["calm", "raised"],
+    "nose": ["round", "long"],
+    "mouth": ["smile", "neutral", "surprised"],
+    "hair": ["short", "curly", "long", "bald"],
+    "hairColor": ["brown", "black", "gold", "gray"],
+    "beard": ["none", "stubble", "full"],
+    "top": ["shirt", "jacket"],
+    "topColor": ["blue", "red", "green", "brown"],
+    "glasses": ["none", "round"],
+    "hat": ["none", "cap"],
+    "extra": ["none", "bowtie"]
+  },
+  "provenance": "Original project-native vector geometry in lib/design/avatar_view.dart; no third-party image files."
+}

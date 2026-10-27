@@ -25,6 +25,13 @@ class SettingsScreen extends StatelessWidget {
                 'in der Einrichtung des jeweiligen Spielmodus.',
               ),
               const SizedBox(height: 24),
+              TextButton(
+                onPressed: () => showLicensePage(
+                  context: context,
+                  applicationName: 'Trinktribunal',
+                ),
+                child: const Text('Lizenzen anzeigen'),
+              ),
               OutlinedButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: const Text('Zurück'),
