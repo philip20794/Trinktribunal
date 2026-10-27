@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import '../data/protocol/room_message.dart';
+import '../data/protocol/room_projection.dart';
 import '../data/room_credential_store.dart';
 import '../data/room_transport.dart';
 import '../domain/models/ids.dart';
@@ -252,6 +253,11 @@ final class RoomController {
               errorCode: message.code,
             ),
           );
+          if (message.code == 'STALE_REVISION') {
+            _socket!.send(
+              RequestSnapshotMessage.create(requestId: RequestId(_newId())),
+            );
+          }
         }
         return;
       }
@@ -300,10 +306,22 @@ final class RoomController {
           unawaited(_invalidate('ROOM_UNAVAILABLE'));
         }
       } else if (message is DeltaMessage) {
-        // Atomic delta application is TT-050. Until then request the authoritative full view.
-        _socket!.send(
-          RequestSnapshotMessage.create(requestId: RequestId(_newId())),
-        );
+        try {
+          if (state.snapshot == null) {
+            throw const ProtocolDecodeException('STALE_REVISION');
+          }
+          final next = applyRoomDelta(state.snapshot!, message);
+          _set(
+            RoomSessionState(
+              status: RoomConnectionStatus.online,
+              snapshot: next,
+            ),
+          );
+        } on ProtocolDecodeException {
+          _socket!.send(
+            RequestSnapshotMessage.create(requestId: RequestId(_newId())),
+          );
+        }
       }
     } on Object {
       unawaited(_terminal('INVALID_RESPONSE'));
@@ -419,7 +437,7 @@ final class RoomController {
       return true;
     } on Object {
       unawaited(_lost(_session, _attempt));
-      return false;
+      return true;
     }
   }
 

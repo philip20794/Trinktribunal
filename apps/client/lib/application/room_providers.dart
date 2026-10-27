@@ -6,6 +6,7 @@ import '../data/room_credential_backend.dart';
 import '../data/room_credential_store.dart';
 import '../data/room_transport.dart';
 import 'room_controller.dart';
+import 'online_profile_controller.dart';
 
 final roomCredentialStoreProvider = Provider<RoomCredentialStore>(
   (ref) => RoomCredentialStore(createCredentialBackend()),
@@ -33,3 +34,8 @@ final roomSessionProvider = StreamProvider<RoomSessionState>(
   (ref) => ref.watch(roomControllerProvider).states,
   retry: (count, error) => null,
 );
+final onlineProfileProvider = Provider<OnlineProfileController>((ref) {
+  final controller = OnlineProfileController(ref.watch(roomControllerProvider));
+  ref.onDispose(controller.dispose);
+  return controller;
+});

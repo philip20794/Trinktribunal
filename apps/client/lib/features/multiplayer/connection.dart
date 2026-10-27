@@ -6,6 +6,7 @@ import '../../application/room_providers.dart';
 import '../../l10n/app_strings.dart';
 import 'invitation.dart';
 import 'invite.dart';
+import 'lobby.dart';
 
 class RoomConnectionScreen extends ConsumerWidget {
   const RoomConnectionScreen({super.key});
@@ -21,6 +22,9 @@ class RoomConnectionScreen extends ConsumerWidget {
     final session = ref.watch(roomSessionProvider),
         controller = ref.read(roomControllerProvider);
     final state = session.asData?.value ?? controller.state;
+    if (state.status == RoomConnectionStatus.online && state.snapshot != null) {
+      return RoomLobbyScreen(state: state);
+    }
     return Scaffold(
       appBar: AppBar(title: const TText('roomTitle')),
       body: Center(

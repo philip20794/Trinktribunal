@@ -10,6 +10,37 @@ import 'package:trinktribunal/domain/models/ids.dart';
 import '../data/room_test_support.dart';
 
 void main() {
+  test(
+    'a send/close race retains an accepted intention for the same-ID retry',
+    () {
+      fakeAsync((clock) {
+        final transport = FakeRoomTransport(),
+            room = RoomController(
+              transport: transport,
+              credentials: RoomCredentialStore(MemoryCredentialBackend()),
+              jitter: () => 0.5,
+            );
+        unawaited(room.resume(testCredential()));
+        clock.flushMicrotasks();
+        final socket = transport.sockets.last;
+        socket.accepted();
+        clock.flushMicrotasks();
+        unawaited(socket.disconnect());
+        final action = roomFixture('submitOrder');
+        expect(room.sendAction(action), isTrue);
+        clock.flushMicrotasks();
+        expect(room.state.status, RoomConnectionStatus.reconnecting);
+        clock.elapse(const Duration(milliseconds: 250));
+        clock.flushMicrotasks();
+        transport.sockets.last.accepted();
+        clock.flushMicrotasks();
+        expect(transport.sockets.last.sent.last.toWire(), action.toWire());
+        unawaited(room.dispose());
+        clock.flushMicrotasks();
+        expect(clock.pendingTimers, isEmpty);
+      });
+    },
+  );
   test('resume authenticates existing identity; online requires its own snapshot and numbers stay hidden', () {
     fakeAsync((clock) {
       final transport = FakeRoomTransport(),

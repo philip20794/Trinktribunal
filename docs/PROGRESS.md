@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–040 nach Unit-Gates abgeschlossen, TT-041 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 112 Node-/241 Flutter-/119 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–041 nach Unit-Gates abgeschlossen, TT-042 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 112 Node-/249 Flutter-/125 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -100,7 +100,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-038 | Authentifizierten Hibernation-WebSocket anschließen | ERLEDIGT | 27.10.2026 · echte Hibernation/Eviction, Auth vor Projektion, Generationen und persistierte Fristen · [Beleg](qa/TT-038.md) |
 | TT-039 | Clienttransport mit klaren Verbindungszuständen | ERLEDIGT | 27.10.2026 · Dart-HTTP/WS, Riverpod, Reconnect/ACK-Replay und separater Credential-Speicher · [Beleg](qa/TT-039.md) |
 | TT-040 | Erstellen-/Beitreten-Screens und Einladungen | ERLEDIGT | 27.10.2026 · expliziter Einstieg/Resume, Profile, Linkroute und lokaler QR, 10 neue Entry-Units · [Beleg](qa/TT-040.md) |
-| TT-041 | Lobby, Tabs und Live-Profile synchronisieren | OFFEN | — |
+| TT-041 | Lobby, Tabs und Live-Profile synchronisieren | ERLEDIGT | 27.10.2026 · drei Live-Ansichten, eigene Profile, Host-Lobbyverwaltung, Deltas/Revisionen und gebündelte Änderungen · [Beleg](qa/TT-041.md) |
 | TT-042 | Lokale Mehrbrowser-Harness und Lobby-Abnahme | OFFEN | — |
 | TT-043 | TypeScript-Spielkern und Phasenrechte | OFFEN | — |
 | TT-044 | TS-Zahlen, Fragen und Trinkregeln mit Parität | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-041 – synchronisierte Lobby, eigene Profile und Gerichtssaal.** TT-035 lokal geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-042 – lokale Mehrbrowser-Harness und M4-Abnahme nach Unit-Gate.** TT-035 lokal geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-040-Einstieg-/Einladungsstand
+Branch: main mit geprüftem TT-041-Live-Lobbystand
 Aktueller Beleg: docs/qa/TT-035.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-041 bestätigte Profiländerungen und synchronisierte Lobby.
+Naechster Schritt: TT-042 lokale Mehrbrowser-Harness; Browser-/E2E-Abnahme bleibt übersprungen, später manuell testen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

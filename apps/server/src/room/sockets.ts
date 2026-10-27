@@ -16,6 +16,9 @@ export type SocketAttachment =
       roomId: RoomId;
       playerId: PlayerId;
       generation: number;
+      viewRevision?: number;
+      playersHash?: string;
+      viewExpiry?: number;
     }
   | { formatVersion: 1; kind: 'closed'; socketId: string };
 export function attachment(socket: WebSocket): SocketAttachment | null {
@@ -49,7 +52,25 @@ export function attachment(socket: WebSocket): SocketAttachment | null {
     /^[A-Za-z0-9_-]{1,64}$/.test(value.playerId) &&
     Number.isSafeInteger(value.generation) &&
     Number(value.generation) > 0 &&
-    Object.keys(value).length === 6
+    Object.keys(value).every((key) =>
+      [
+        'formatVersion',
+        'kind',
+        'socketId',
+        'roomId',
+        'playerId',
+        'generation',
+        'viewRevision',
+        'playersHash',
+        'viewExpiry',
+      ].includes(key),
+    ) &&
+    (!('viewRevision' in value) ||
+      (Number.isSafeInteger(value.viewRevision) && Number(value.viewRevision) >= 0)) &&
+    (!('viewExpiry' in value) ||
+      (Number.isSafeInteger(value.viewExpiry) && Number(value.viewExpiry) > 0)) &&
+    (!('playersHash' in value) ||
+      (typeof value.playersHash === 'string' && /^[a-f0-9]{64}$/.test(value.playersHash)))
   )
     return value as SocketAttachment;
   if (value.kind === 'closed' && Object.keys(value).length === 3) return value as SocketAttachment;

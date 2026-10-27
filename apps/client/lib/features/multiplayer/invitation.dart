@@ -33,6 +33,8 @@ Uri invitationUri(Uri publicClientBase, String code) {
 }
 
 String roomErrorKey(String? code) => switch (code) {
+  'STALE_REVISION' => 'roomErrorStale',
+  'UNAUTHORIZED_ACTION' => 'roomErrorAuthority',
   'ROOM_FULL' => 'roomErrorFull',
   'ROOM_UNAVAILABLE' || 'CREDENTIAL_INVALID' => 'roomErrorUnavailable',
   'RATE_LIMITED' => 'roomErrorRate',

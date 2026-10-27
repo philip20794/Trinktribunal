@@ -33,7 +33,8 @@ import {
   type SocketAttachment,
 } from './sockets';
 import { putDeadline, removeDeadline, dueDeadlines, nextDeadline } from './deadlines';
-import { lobbySnapshot } from './projection';
+import { lobbySnapshot, playersHash } from './projection';
+import { applyLobbyAction, lobbyFingerprint, type LobbyReceipt } from './profile_actions';
 
 interface Member {
   playerId: PlayerId;
@@ -58,6 +59,7 @@ interface RoomState {
   config: Config;
   historyOffer?: HistoryOffer;
   members: Member[];
+  lobbyReceipts?: LobbyReceipt[];
 }
 type Result<T> =
   | { ok: true; message: T }
@@ -145,6 +147,8 @@ export class Room extends DurableObject<Env> {
   private socketFailure(socket: WebSocket, code: ProtocolErrorCode, closeCode = 4401): void {
     const info = attachment(socket);
     if (info?.kind === 'closed') return;
+    const state = this.read(),
+      wasCurrent = state && !!this.currentMember(info, state);
     if (info) removeDeadline(this.ctx.storage.sql, info.socketId);
     try {
       sendMessage(
@@ -155,6 +159,10 @@ export class Room extends DurableObject<Env> {
       /* Client may already be gone. */
     }
     closeSocket(socket, closeCode);
+    if (wasCurrent) {
+      state.revision++;
+      this.write(state);
+    }
   }
   private currentMember(info: SocketAttachment | null, state: RoomState): Member | undefined {
     if (info?.kind !== 'authenticated' || info.roomId !== state.roomId) return undefined;
@@ -169,7 +177,73 @@ export class Room extends DurableObject<Env> {
       const member = this.currentMember(attachment(other), state);
       if (member) connected.add(member.playerId);
     }
-    sendMessage(socket, lobbySnapshot(state, info.playerId, connected, roomExpiry(state)));
+    const expiry = roomExpiry(state),
+      view = lobbySnapshot(state, info.playerId, connected, expiry);
+    sendMessage(socket, view);
+    socket.serializeAttachment({
+      ...info,
+      viewRevision: state.revision,
+      playersHash: playersHash(view.public.players),
+      viewExpiry: expiry,
+    });
+  }
+
+  private broadcastLobby(): void {
+    const state = this.read();
+    if (!state) return;
+    const connected = new Set<PlayerId>();
+    let closedAny = false;
+    for (const socket of this.ctx.getWebSockets()) {
+      const member = this.currentMember(attachment(socket), state);
+      if (member) connected.add(member.playerId);
+    }
+    for (const socket of this.ctx.getWebSockets()) {
+      const info = attachment(socket);
+      if (
+        info?.kind !== 'authenticated' ||
+        !this.currentMember(info, state) ||
+        info.viewRevision === state.revision
+      )
+        continue;
+      try {
+        if (
+          info.viewRevision === undefined ||
+          info.playersHash === undefined ||
+          info.viewExpiry === undefined
+        ) {
+          this.sendSnapshot(socket, info, state);
+          continue;
+        }
+        const view = lobbySnapshot(state, info.playerId, connected, roomExpiry(state));
+        const hash = playersHash(view.public.players),
+          expiry = roomExpiry(state);
+        sendMessage(
+          socket,
+          createRoomMessage('delta', {
+            requestId: RoomIds.request(crypto.randomUUID()),
+            roomId: state.roomId,
+            baseRevision: info.viewRevision,
+            revision: state.revision,
+            you: info.playerId,
+            publicChanges: {
+              ...(info.playersHash !== hash ? { players: view.public.players } : {}),
+              ...(info.viewExpiry !== expiry ? { expiresAtUtc: view.public.expiresAtUtc } : {}),
+            },
+            private: {},
+          }),
+        );
+        socket.serializeAttachment({
+          ...info,
+          viewRevision: state.revision,
+          playersHash: hash,
+          viewExpiry: expiry,
+        });
+      } catch {
+        this.socketFailure(socket, 'MESSAGE_TOO_LARGE', 4400);
+        closedAny = true;
+      }
+    }
+    if (closedAny) this.broadcastLobby();
   }
 
   override async webSocketMessage(socket: WebSocket, raw: string | ArrayBuffer): Promise<void> {
@@ -221,6 +295,14 @@ export class Room extends DurableObject<Env> {
             this.socketFailure(socket, result.code);
             return;
           }
+          const wasConnected = this.ctx.getWebSockets().some((other) => {
+            const previous = attachment(other);
+            return (
+              previous?.kind === 'authenticated' &&
+              previous.playerId === result.message.playerId &&
+              !!this.currentMember(previous, state)
+            );
+          });
           const bound: SocketAttachment = {
             formatVersion: 1,
             kind: 'authenticated',
@@ -252,8 +334,27 @@ export class Room extends DurableObject<Env> {
             }
           }
           sendMessage(socket, result.message);
-          const current = this.read();
+          const current = this.ctx.storage.transactionSync(() => {
+            const latest = this.read();
+            if (!latest) return null;
+            // Presence is a revision change, never a room-lifetime extension.
+            const alreadyConnected = this.ctx.getWebSockets().some((other) => {
+              const otherInfo = attachment(other);
+              return (
+                other !== socket &&
+                otherInfo?.kind === 'authenticated' &&
+                otherInfo.playerId === bound.playerId &&
+                otherInfo.generation === bound.generation
+              );
+            });
+            if (!alreadyConnected && !wasConnected) {
+              latest.revision++;
+              this.write(latest);
+            }
+            return latest;
+          });
           if (current) this.sendSnapshot(socket, bound, current);
+          this.broadcastLobby();
           return;
         }
         if (!this.currentMember(info, state)) {
@@ -273,7 +374,57 @@ export class Room extends DurableObject<Env> {
           this.socketFailure(socket, 'RATE_LIMITED', 4429);
           return;
         }
-        if (command.type === 'ping')
+        if (
+          command.type === 'editOwnProfile' ||
+          command.type === 'kick' ||
+          command.type === 'reorderRoster'
+        ) {
+          const fingerprint = await lobbyFingerprint(command);
+          const result = this.ctx.storage.transactionSync(() => {
+            const latest = this.live(Date.now());
+            if (!latest || !this.currentMember(info, latest))
+              return { ok: false as const, code: 'CREDENTIAL_INVALID' as const };
+            const outcome = applyLobbyAction(
+              latest,
+              info.playerId,
+              command,
+              fingerprint,
+              Date.now(),
+            );
+            if (outcome.ok && !outcome.duplicate) this.write(latest);
+            return outcome;
+          });
+          if (!result.ok) {
+            sendMessage(
+              socket,
+              createRoomMessage('error', {
+                requestId: RoomIds.request(crypto.randomUUID()),
+                code: result.code,
+              }),
+            );
+            return;
+          }
+          sendMessage(
+            socket,
+            createRoomMessage('ack', {
+              requestId: RoomIds.request(crypto.randomUUID()),
+              actionId: command.actionId,
+              revision: result.revision,
+              outcome: result.duplicate ? 'duplicate' : 'committed',
+            }),
+          );
+          if ('removedPlayerId' in result && result.removedPlayerId) {
+            for (const other of this.ctx.getWebSockets()) {
+              const previous = attachment(other);
+              if (
+                previous?.kind === 'authenticated' &&
+                previous.playerId === result.removedPlayerId
+              )
+                this.socketFailure(other, 'CREDENTIAL_INVALID');
+            }
+          }
+          if (!result.duplicate) this.broadcastLobby();
+        } else if (command.type === 'ping')
           sendMessage(socket, createRoomMessage('pong', { requestId: command.requestId }));
         else if (command.type === 'requestSnapshot') this.sendSnapshot(socket, info, state);
         else
@@ -293,14 +444,27 @@ export class Room extends DurableObject<Env> {
           4400,
         );
       } finally {
+        this.broadcastLobby();
         await this.planAlarm();
       }
     });
   }
   override async webSocketClose(socket: WebSocket): Promise<void> {
     const info = attachment(socket);
+    const before = this.read(),
+      wasCurrent = before && !!this.currentMember(info, before);
     if (info) removeDeadline(this.ctx.storage.sql, info.socketId);
     closeSocket(socket, 1000);
+    if (wasCurrent) {
+      this.ctx.storage.transactionSync(() => {
+        const state = this.live(Date.now());
+        if (state) {
+          state.revision++;
+          this.write(state);
+        }
+      });
+      this.broadcastLobby();
+    }
     await this.planAlarm();
   }
   override async webSocketError(socket: WebSocket): Promise<void> {
@@ -432,7 +596,7 @@ export class Room extends DurableObject<Env> {
     const playerId = RoomIds.player(crypto.randomUUID()),
       token = newResumeToken();
     const verifier = await resumeVerifier(before.roomId, token);
-    return this.ctx.storage.transactionSync(() => {
+    const result = this.ctx.storage.transactionSync<Result<CredentialMessage>>(() => {
       const now = Date.now(),
         state = this.live(now);
       if (!state) return { ok: false, code: 'ROOM_UNAVAILABLE', status: 410 };
@@ -458,6 +622,8 @@ export class Room extends DurableObject<Env> {
       // An early alarm is harmless: alarm() re-evaluates the current persisted expiry.
       return { ok: true, message: this.credential(state, playerId, token, command.requestId) };
     });
+    if (result.ok) this.broadcastLobby();
+    return result;
   }
 
   async leave(command: LeaveHttpMessage): Promise<Result<AckMessage>> {
@@ -501,6 +667,7 @@ export class Room extends DurableObject<Env> {
         if (info?.kind === 'authenticated' && info.playerId === owner?.playerId)
           this.socketFailure(socket, 'CREDENTIAL_INVALID');
       }
+      this.broadcastLobby();
       await this.planAlarm();
     }
     return result;

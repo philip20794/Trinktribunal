@@ -1,11 +1,17 @@
 import { createRoomMessage, RoomIds } from '../protocol/room_message';
+import { createHash } from 'node:crypto';
+import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
 import type {
   Config,
   PlayerId,
   Profile,
   RoomId,
   SnapshotMessage,
+  Participant,
 } from '../protocol/room_message.generated';
+export function playersHash(players: ReadonlyArray<Participant>): string {
+  return createHash('sha256').update(canonicalJson(players)).digest('hex');
+}
 
 // Explicit lobby allowlist. Never spread persisted members/state into a wire payload.
 export function lobbySnapshot(
