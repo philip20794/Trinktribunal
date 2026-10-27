@@ -76,9 +76,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     CardGameState state,
   ) async {
     final confirmed = await _confirm(
-      'Fall ohne Urteil abschließen?',
-      'Dieser Fall zählt als abgeschlossen. Es werden keine Fehler oder Schlucke berechnet. Danach wechselt ihr den Richter am Tisch.',
-      'Fall abschließen',
+      context.tr('skipCaseTitle'),
+      context.tr('skipCaseHelp'),
+      context.tr('finishCase'),
     );
     if (mounted) {
       _act(
@@ -114,9 +114,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                   const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
                     initialValue: 0,
-                    decoration: const InputDecoration(
-                      labelText: 'Falsche Positionen',
-                    ),
+                    decoration: InputDecoration(labelText: context.tr('incorrectPositions')),
                     items:
                         [
                               0,
@@ -176,9 +174,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     CardGameState state,
   ) async {
     final confirmed = await _confirm(
-      'Partie neu starten?',
-      'Fälle und aktive Regeln werden zurückgesetzt. Die Ziehhistorie der letzten sechs Stunden bleibt erhalten.',
-      'Neu starten',
+      context.tr('restartTitle'),
+      context.tr('restartHelp'),
+      context.tr('restartAction'),
     );
     if (mounted && confirmed) {
       _act(() => controller.start(state.config, confirmedRestart: true));
@@ -187,9 +185,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
 
   Future<void> _abort(LocalSessionController controller) async {
     final confirmed = await _confirm(
-      'Partie beenden?',
-      'Der aktuelle Spielfortschritt wird verworfen. Danach könnt ihr eine neue Partie einrichten.',
-      'Partie beenden',
+      context.tr('endGameTitle'),
+      context.tr('endGameHelp'),
+      context.tr('endGameAction'),
     );
     if (mounted && confirmed) _act(() => controller.abort(confirmed: true));
   }
@@ -318,7 +316,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ),
       const SizedBox(height: 12),
       Text(
-        'Zahlenkarten 1–${(_players * _factor + 9) ~/ 10} bereitlegen. Pro Fall erhalten ${_players - 1} Antwortende je eine Karte; der Richter erhält keine.',
+        context.tr('cardsPrepare', {'max': (_players * _factor + 9) ~/ 10, 'count': _players - 1}),
       ),
       const SizedBox(height: 20),
       FilledButton.icon(
@@ -377,7 +375,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         children: [
           Expanded(
             child: Text(
-              '${state.completedCases} von ${config.targetCases} Fällen abgeschlossen',
+              context.tr('casesCompleted', {'done': state.completedCases, 'total': config.targetCases}),
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
@@ -406,7 +404,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ],
       if (state.phase == GamePhase.casePresented && question != null) ...[
         Text(
-          'Fallakte ${state.caseNumber}',
+          context.tr('caseNumber', {'number': state.caseNumber}),
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
@@ -443,7 +441,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
         const SizedBox(height: 16),
         Text(
-          'Verteilt ${config.numberRecipients} verschiedene Karten aus 1–${config.maxSecretNumber}. Antwortet passend zur eigenen Zahl. Der Richter ordnet eure Antworten von niedrig nach hoch.',
+          context.tr('cardsDistribution', {'count': config.numberRecipients, 'max': config.maxSecretNumber}),
         ),
         const SizedBox(height: 16),
         FilledButton(
@@ -457,7 +455,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ],
       if (state.phase == GamePhase.ruleEvent) ...[
         Text(
-          state.newRule == null ? 'Regelziel reduziert' : 'Neue Trinkregel',
+          context.tr(state.newRule == null ? 'ruleGoalReduced' : 'newDrinkingRule'),
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
@@ -467,7 +465,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             child: Text(
               (state.newRule == null ? null : localizedRule(ref.read(catalogsProvider).requireValue,
                  AppLanguageScope.of(context).language, state.newRule!.entry).text) ??
-                  'Keine weitere passende Regel verfügbar. Geplant sind jetzt höchstens ${state.effectiveRuleTarget} Regeln.',
+                  context.tr('cardNoRule', {'count': state.effectiveRuleTarget}),
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
@@ -487,7 +485,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
         const SizedBox(height: 12),
         Text(
-          'Alle ${config.targetCases} Fälle sind abgeschlossen. ${state.rules.active.length} Regeln wurden aktiviert.',
+          context.tr('cardFinished', {'count': config.targetCases, 'rules': state.rules.active.length}),
         ),
       ],
       if (state.phase == GamePhase.paused)

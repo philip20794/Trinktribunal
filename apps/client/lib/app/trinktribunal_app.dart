@@ -13,14 +13,7 @@ class TrinktribunalApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(settingsProvider).asData?.value;
-    if (controller == null) {
-      return MaterialApp(
-        title: 'Trinktribunal',
-        debugShowCheckedModeBanner: false,
-        theme: courtTheme(),
-        home: const Scaffold(body: Center(child: CircularProgressIndicator())),
-      );
-    }
+    if (controller == null) return _buildApp(const AppSettings());
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) => _buildApp(controller.value),

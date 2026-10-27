@@ -126,8 +126,8 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
 
   Future<void> _restart(SharedGameView view) async {
     final confirmed = await _confirm(
-      'Neue Verhandlung?',
-      'Fallfortschritt, geheime Zahlen, Urteile und aktive Regeln werden verworfen. Gruppe und Ziehhistorie bleiben erhalten.',
+      context.tr('newHearingTitle'),
+      context.tr('newHearingHelp'),
     );
     if (!mounted || !confirmed) return;
     _act(() {
@@ -160,12 +160,12 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
           title: const TText('phoneTitle'),
           actions: [
             IconButton(
-              tooltip: 'Gruppe verwalten',
+              tooltip: context.tr('phoneManageRoster'),
               onPressed: _group,
               icon: const Icon(Icons.groups_outlined),
             ),
             IconButton(
-              tooltip: 'Aktive Regeln',
+              tooltip: context.tr('activeRules'),
               onPressed: () {
                 _act(_controller.hideSecret);
                 showModalBottomSheet<void>(
@@ -178,7 +178,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       padding: const EdgeInsets.all(24),
                       children: [
                         Text(
-                          'Aktive Regeln · ${view.activeRules.length}',
+                          context.tr('activeRulesCount', {'count': view.activeRules.length}),
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         const TText('phoneRuleHelp',
@@ -213,7 +213,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
               padding: const EdgeInsets.all(20),
               children: [
                 Text(
-                  '${view.completedCases} / ${view.config.targetCases} Fälle abgeschlossen',
+                  context.tr('casesCompleted', {'done': view.completedCases, 'total': view.config.targetCases}),
                 ),
                 LinearProgressIndicator(
                   value: view.completedCases / view.config.targetCases,
@@ -243,7 +243,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Richter: ${judge.player.name}',
+                            context.tr('judge', {'name': judge.player.name}),
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
@@ -272,7 +272,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.displayLarge,
                       semanticsLabel:
-                          'Deine geheime Zahl: ${view.visibleSecret}',
+                          context.tr('secretNumber', {'number': view.visibleSecret}),
                     ),
                     FilledButton(
                       onPressed: () => _act(
@@ -375,10 +375,10 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     ),
                   if (view.verdict != null) ...[
                     CourtSeal(
-                      label: '${view.verdict!.errors} falsche Positionen',
+                      label: context.tr('wrongPositionsCount', {'count': view.verdict!.errors}),
                     ),
                     for (final entry in view.verdict!.sips.entries)
-                      Text('${view.name(entry.key)}: ${entry.value} Schlucke'),
+                      Text(context.tr('sips', {'name': view.name(entry.key), 'count': entry.value})),
                     FilledButton(
                       onPressed: () => _act(
                         () => _controller.completeCase(
@@ -393,13 +393,15 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 if (view.phase == GamePhase.ruleEvent) ...[
                   CaseFile(
                     label: view.newRule == null
-                        ? 'Regelziel reduziert'
-                        : 'Neue Regel',
+                        ? context.tr('ruleGoalReduced')
+                        : context.tr('newRule'),
                     child: Text(
                       view.newRule == null
-                          ? 'Keine weitere passende Regel. Höchstens ${view.config.scheduledRuleEventCount - view.skippedRules} Regeln sind jetzt geplant.'
-                          : view.newRule!.entry.render(
-                              view.newRule!.entry.text,
+                          ? context.tr('phoneNoRule', {'count': view.config.scheduledRuleEventCount - view.skippedRules})
+                          : localizedRule(ref.read(catalogsProvider).requireValue,
+                              AppLanguageScope.of(context).language, view.newRule!.entry).render(
+                              localizedRule(ref.read(catalogsProvider).requireValue,
+                                AppLanguageScope.of(context).language, view.newRule!.entry).text,
                               view.newRule!.names(view.names),
                             ),
                     ),

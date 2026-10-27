@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../design/avatar_view.dart';
+import '../../l10n/app_strings.dart';
 import '../../design/case_file.dart';
 import '../../design/court_theme.dart';
 import '../../domain/bench_order.dart';
@@ -176,7 +177,7 @@ class _BenchViewState extends State<BenchView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    'Zahl ${widget.revealedNumbers[id]} · ${widget.incorrect.contains(id) ? '✕ Falsche Position' : '✓ Richtige Position'}',
+                    context.tr(widget.incorrect.contains(id) ? 'wrongPosition' : 'rightPosition', {'number': widget.revealedNumbers[id]}),
                   ),
                 ),
               if (editable) ...[
@@ -201,14 +202,14 @@ class _BenchViewState extends State<BenchView> {
                   alignment: WrapAlignment.center,
                   children: [
                     IconButton(
-                      tooltip: 'Position ${index + 1} nach vorn',
+                      tooltip: context.tr('moveForward', {'position': index + 1}),
                       onPressed: index > 0
                           ? () => widget.onMove!(index, index - 1)
                           : null,
                       icon: const Icon(Icons.arrow_upward),
                     ),
                     IconButton(
-                      tooltip: 'Position ${index + 1} nach hinten',
+                      tooltip: context.tr('moveBack', {'position': index + 1}),
                       onPressed: index < widget.order.length - 1
                           ? () => widget.onMove!(index, index + 1)
                           : null,

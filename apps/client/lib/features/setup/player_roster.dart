@@ -75,7 +75,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      '${controller.members.length} von 20 Personen · mindestens 3 benötigt',
+                      context.tr('rosterCount', {'count': controller.members.length}),
                     ),
                     const TText('rosterOrderHelp',
                     ),
@@ -211,7 +211,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                     if (widget.allowStart && session != null) ...[
                       if (existing == null) ...[
                         const SizedBox(height: 16),
-                        Text('Fälle: $_cases'),
+                        Text(context.tr('casesCount', {'count': _cases})),
                         Slider(
                           value: _cases.toDouble(),
                           min: 1,
@@ -223,7 +223,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                             if (_rules >= _cases) _rules = _cases - 1;
                           }),
                         ),
-                        Text('Zusätzliche Regeln: $_rules'),
+                        Text(context.tr('rulesCount', {'count': _rules})),
                         Slider(
                           value: _rules.toDouble(),
                           min: 0,
@@ -236,7 +236,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                               ? (v) => setState(() => _rules = v.round())
                               : null,
                         ),
-                        Text('Faktor: ${(_factor / 10).toStringAsFixed(1)}'),
+                        Text(context.tr('factor', {'value': (_factor / 10).toStringAsFixed(1)})),
                         Slider(
                           value: _factor.toDouble(),
                           min: 10,
@@ -273,7 +273,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                             : null,
                         child: Text(
                           existing == null
-                              ? 'Verhandlung starten'
+                              ? context.tr('startHearing')
                               : 'Verhandlung fortsetzen',
                         ),
                       ),
@@ -319,7 +319,7 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
   @override
   Widget build(BuildContext context) => AlertDialog(
     title: Text(
-      widget.member == null ? 'Person hinzufügen' : 'Person bearbeiten',
+      context.tr(widget.member == null ? 'rosterAdd' : 'rosterEditPerson'),
     ),
     content: SizedBox(
       width: 480,
@@ -332,7 +332,7 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
             TextField(
               controller: _name,
               maxLength: 24,
-              decoration: InputDecoration(labelText: 'Name', errorText: _error),
+              decoration: InputDecoration(labelText: context.tr('name'), errorText: _error),
             ),
             AvatarOptions(
               config: _avatar,
@@ -350,7 +350,7 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
       FilledButton(
         onPressed: () {
           if (_name.text.trim().isEmpty) {
-            setState(() => _error = 'Bitte einen Namen eingeben.');
+            setState(() => _error = context.tr('nameRequired'));
             return;
           }
           Navigator.pop(context, (name: _name.text, avatar: _avatar));

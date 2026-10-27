@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/avatar_config.dart';
+import '../../l10n/app_strings.dart';
 
 class AvatarOptions extends StatelessWidget {
   const AvatarOptions({
@@ -20,12 +21,12 @@ class AvatarOptions extends StatelessWidget {
             key: ValueKey('${category.key}:${config[category.key]}'),
             initialValue: config[category.key],
             isExpanded: true,
-            decoration: InputDecoration(labelText: _labels[category.key]),
+            decoration: InputDecoration(labelText: context.tr('avatarCategory' + category.key)),
             items: category.value
                 .map(
                   (value) => DropdownMenuItem(
                     value: value,
-                    child: Text(_values[value] ?? value),
+                    child: Text(context.tr('avatarOption' + value)),
                   ),
                 )
                 .toList(),
@@ -39,52 +40,3 @@ class AvatarOptions extends StatelessWidget {
     ],
   );
 }
-
-const _labels = {
-  'face': 'Kopfform',
-  'skin': 'Hautton',
-  'eyes': 'Augen',
-  'brows': 'Brauen',
-  'nose': 'Nase',
-  'mouth': 'Ausdruck',
-  'hair': 'Frisur',
-  'hairColor': 'Haarfarbe',
-  'beard': 'Bart',
-  'top': 'Oberteil',
-  'topColor': 'Kleidungsfarbe',
-  'glasses': 'Brille',
-  'hat': 'Hut',
-  'extra': 'Extra',
-};
-const _values = {
-  'round': 'Rund',
-  'square': 'Kantig',
-  'long': 'Lang',
-  'light': 'Hell',
-  'medium': 'Mittel',
-  'brown': 'Braun',
-  'dark': 'Dunkel',
-  'open': 'Offen',
-  'sleepy': 'Entspannt',
-  'calm': 'Ruhig',
-  'raised': 'Angehoben',
-  'smile': 'Lächeln',
-  'neutral': 'Neutral',
-  'surprised': 'Überrascht',
-  'short': 'Kurz',
-  'curly': 'Lockig',
-  'bald': 'Keine Haare',
-  'black': 'Schwarz',
-  'gold': 'Goldblond',
-  'gray': 'Grau',
-  'none': 'Ohne',
-  'stubble': 'Stoppeln',
-  'full': 'Vollbart',
-  'shirt': 'Shirt',
-  'jacket': 'Jacke',
-  'blue': 'Graublau',
-  'red': 'Rot',
-  'green': 'Grün',
-  'cap': 'Kappe',
-  'bowtie': 'Fliege',
-};

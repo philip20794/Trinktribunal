@@ -30,8 +30,7 @@ class ModePreviewScreen extends StatelessWidget {
               Text(context.tr(switch (mode) { GameMode.cards => 'modeCardsDescription', GameMode.sharedPhone => 'modePhoneDescription', GameMode.multiplayer => 'modeMultiDescription' }), textAlign: TextAlign.center),
               const SizedBox(height: 28),
               Text(
-                'Diese Spielvariante ist noch nicht verfügbar. '
-                'Der spielbare Ablauf wird noch entwickelt.',
+                context.tr('modeUnavailable'),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 28),

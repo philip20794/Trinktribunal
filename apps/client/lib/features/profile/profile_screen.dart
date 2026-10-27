@@ -154,7 +154,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     FilledButton(
                       onPressed: _saving ? null : () => _save(controller),
                       child: Text(
-                        _saving ? 'Wird gespeichert …' : 'Profil speichern',
+                        context.tr(_saving ? 'profileSaving' : 'profileSave'),
                       ),
                     ),
                     TextButton(
@@ -170,52 +170,3 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
   );
 }
-
-const _categoryLabels = {
-  'face': 'Kopfform',
-  'skin': 'Hautton',
-  'eyes': 'Augen',
-  'brows': 'Augenbrauen',
-  'nose': 'Nase',
-  'mouth': 'Mund / Ausdruck',
-  'hair': 'Frisur',
-  'hairColor': 'Haarfarbe',
-  'beard': 'Bart',
-  'top': 'Oberteil',
-  'topColor': 'Kleidungsfarbe',
-  'glasses': 'Brille',
-  'hat': 'Hut',
-  'extra': 'Extra',
-};
-const _optionLabels = {
-  'round': 'Rund',
-  'square': 'Kantig',
-  'long': 'Lang',
-  'light': 'Hell',
-  'medium': 'Mittel',
-  'brown': 'Braun',
-  'dark': 'Dunkel',
-  'open': 'Offen',
-  'sleepy': 'Entspannt',
-  'calm': 'Ruhig',
-  'raised': 'Angehoben',
-  'smile': 'Lächeln',
-  'neutral': 'Neutral',
-  'surprised': 'Überrascht',
-  'short': 'Kurz',
-  'curly': 'Lockig',
-  'bald': 'Keine Haare',
-  'black': 'Schwarz',
-  'gold': 'Goldblond',
-  'gray': 'Grau',
-  'none': 'Ohne',
-  'stubble': 'Stoppeln',
-  'full': 'Vollbart',
-  'shirt': 'Shirt',
-  'jacket': 'Jacke',
-  'blue': 'Graublau',
-  'red': 'Rot',
-  'green': 'Grün',
-  'cap': 'Kappe',
-  'bowtie': 'Fliege',
-};

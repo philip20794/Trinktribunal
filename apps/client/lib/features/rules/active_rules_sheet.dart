@@ -20,7 +20,7 @@ Future<void> showActiveRules(
       padding: const EdgeInsets.all(24),
       children: [
         Text(
-          'Aktive Regeln · ${state.rules.active.length}',
+          context.tr('activeRulesCount', {'count': state.rules.active.length}),
           style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 12),
@@ -39,7 +39,7 @@ Future<void> showActiveRules(
           ),
         if (state.rules.skippedEvents.isNotEmpty)
           Text(
-            'Keine passende Regel in ${state.rules.skippedEvents.length} Ereignissen. Ziel reduziert auf höchstens ${state.effectiveRuleTarget}.',
+            context.tr('ruleSkipping', {'count': state.rules.skippedEvents.length, 'max': state.effectiveRuleTarget}),
           ),
         const SizedBox(height: 16),
         FilledButton(
