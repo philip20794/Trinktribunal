@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../application/local_data_providers.dart';
+import '../../design/avatar_view.dart';
 
 import '../../data/catalogs/catalog_diagnostics.dart';
 
 import '../profile/profile_screen.dart';
 import '../settings/settings_screen.dart';
 import '../setup/card_mode_screen.dart';
+import '../setup/player_roster.dart';
+import '../design_gallery/design_gallery_screen.dart';
 import 'mode_preview_screen.dart';
 
 enum GameMode {
@@ -36,7 +43,7 @@ enum GameMode {
   final IconData icon;
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   void _open(BuildContext context, Widget page) {
@@ -44,11 +51,18 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profile = ref.watch(profileProvider).asData?.value.profile;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trinktribunal'),
         actions: [
+          if (kDebugMode)
+            IconButton(
+              tooltip: 'Designgalerie öffnen',
+              onPressed: () => _open(context, const DesignGalleryScreen()),
+              icon: const Icon(Icons.palette_outlined),
+            ),
           IconButton(
             tooltip: 'Einstellungen öffnen',
             icon: const Icon(Icons.settings_outlined),
@@ -58,7 +72,13 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 12),
             child: IconButton.filledTonal(
               tooltip: 'Profil öffnen',
-              icon: const Icon(Icons.person_outline),
+              icon: profile == null
+                  ? const Icon(Icons.person_outline)
+                  : AvatarView(
+                      config: profile.avatar,
+                      size: 28,
+                      label: profile.player.name,
+                    ),
               onPressed: () => _open(context, const ProfileScreen()),
             ),
           ),
@@ -106,6 +126,8 @@ class HomeScreen extends StatelessWidget {
                                   context,
                                   mode == GameMode.cards
                                       ? const CardModeScreen()
+                                      : mode == GameMode.sharedPhone
+                                      ? const PlayerRosterScreen()
                                       : ModePreviewScreen(mode: mode),
                                 ),
                               ),

@@ -5,10 +5,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trinktribunal/app/trinktribunal_app.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
+import 'package:trinktribunal/application/local_data_providers.dart';
+
+import 'support/memory_string_store.dart';
 
 void main() {
   Widget createApp() => ProviderScope(
     overrides: [
+      stringStoreProvider.overrideWithValue(MemoryStringStore()),
       catalogRepositoryProvider.overrideWithValue(
         CatalogRepository(read: (path) async => File(path).readAsStringSync()),
       ),

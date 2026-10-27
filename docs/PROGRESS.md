@@ -72,12 +72,12 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-010 | Kartenpartie bis zum Ende und Neustart | ERLEDIGT | 27.10.2026 · [M1](qa/M1.md), Reducer-/Controller-Unit-Tests |
 | TT-011 | Regelereignisse und aktive Regeln anzeigen | ERLEDIGT | 27.10.2026 · [M1](qa/M1.md), 3 Fälle/2 Regeln in Unit-Tests |
 | TT-012 | Kartenmodus durch Unit-Tests absichern | ERLEDIGT | 27.10.2026 · [M1](qa/M1.md); keine E2E-Tests gemäß Nutzerauftrag |
-| TT-013 | Gerichtssaal-Designsystem und visuelle Galerie | IN ARBEIT | 27.10.2026 · Nächster Schritt: zentrale Tokens, Galerie und lokale Schrift |
-| TT-014 | Versionierte menschliche Avatar-Ebenen rendern | OFFEN | — |
-| TT-015 | Eigenes Profil und Avatar-Editor | OFFEN | — |
-| TT-016 | Lokales Spielerregister und Sitzreihenfolge | OFFEN | — |
-| TT-017 | Zahlen ohne Wiederholung vergeben | OFFEN | — |
-| TT-018 | Verdeckte Geräteübergabe | OFFEN | — |
+| TT-013 | Gerichtssaal-Designsystem und visuelle Galerie | ERLEDIGT | 27.10.2026 · [Technische Tokens](contracts/VISUAL_SYSTEM.md), lokale Schrift und 3 Unit-Tests; visuelle Abnahme offen |
+| TT-014 | Versionierte menschliche Avatar-Ebenen rendern | ERLEDIGT | 27.10.2026 · [Assetherkunft](qa/asset-sources.md), Manifest und 4 Unit-Tests einschließlich Pixelvergleich aller Optionen |
+| TT-015 | Eigenes Profil und Avatar-Editor | ERLEDIGT | 27.10.2026 · [Beleg](qa/TT-013-017.md); Speicher-/Validierungs-/Fehler-Unit-Tests |
+| TT-016 | Lokales Spielerregister und Sitzreihenfolge | ERLEDIGT | 27.10.2026 · [Beleg](qa/TT-013-017.md); CRUD, Einfügen, Persistenz und 20er-Grenze |
+| TT-017 | Zahlen ohne Wiederholung vergeben | ERLEDIGT | 27.10.2026 · [Beleg](qa/TT-013-017.md); alle N/Faktor/Modus-Kombinationen und Lückenfall |
+| TT-018 | Verdeckte Geräteübergabe | IN ARBEIT | 27.10.2026 · Anschluss des gespeicherten Registers an den Ein-Handy-Ablauf |
 | TT-019 | Antwortphase und Richterdarstellung | OFFEN | — |
 | TT-020 | Schlangenbank mit stabiler Positionsabbildung | OFFEN | — |
 | TT-021 | Drag-and-drop und gleichwertige Alternativbedienung | OFFEN | — |
