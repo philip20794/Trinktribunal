@@ -1,5 +1,7 @@
 # Entwicklungsplan für Trinktribunal
 
+**Testvorgabe vom 27.10.2026:** Auf ausdrücklichen Nutzerwunsch wird die weitere Implementierung mit Unit-Tests abgesichert; E2E-Tests entfallen. Diese Vorgabe hat Vorrang vor den ursprünglichen E2E-/Webdriver-Pflichten im Plan und Workflow. TT-012 beschreibt die entsprechende Unit-Absicherung. Bestehende lokale Widgettests bleiben als Regression nutzbar.
+
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 
 Dieser Plan beschreibt die gesamte erste vollständige Android- und Web-App. Die Umsetzung beginnt erst in einem gesonderten Entwicklungsauftrag. [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) enthält lokale Befehle und Prüfroutinen; [PROGRESS.md](PROGRESS.md) verfolgt jede Aufgabe. GitHub Actions, Cloudflare-Deployments und kostenpflichtige Dienste sind keine Entwicklungsvoraussetzung.
@@ -261,13 +263,13 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 - **Manuell / lokal:** `W`, `C`; kurze Partie komplett mit aktiven Regeln durchspielen.
 - **Abschluss:** G; keine isolierte Engine ohne UI-Nachweis.
 
-#### TT-012 – Kartenmodus als ersten Integrationstest absichern
+#### TT-012 – Kartenmodus durch Unit-Tests absichern
 
-- **Umsetzung:** SDK-`integration_test`, Webdriver-Einstieg und deterministische Testkonfiguration; Test läuft über sichtbare Bedienelemente vom Start bis Neustart. Fixtures/Testschalter nur in Test-/Debug-Builds.
-- **Dateien:** `apps/client/integration_test/card_game_test.dart`, `test_driver/integration_test.dart`, `scripts/test-integration.ps1`, `docs/qa/M1.md`.
+- **Umsetzung:** Gemäß Nutzerauftrag vom 27.10.2026 keine E2E-Tests: deterministische Unit-Tests für Kartenablauf und Controller vom Start bis Neustart, einschließlich abgebrochener Bestätigungen und wiederholter Aktionen. Keine Webdriver-/ChromeDriver-Einrichtung.
+- **Dateien:** `apps/client/test/domain/card_game_test.dart`, `test/application/local_session_controller_test.dart`, `docs/qa/M1.md`.
 - **Abhängigkeiten:** TT-011.
-- **Akzeptanz:** Lokaler Chrome-Test und manuelle 3-Fälle-Demo bestehen; kein Server/Cloudkonto benötigt.
-- **Auto:** `E` mit Karten-Test, `C`; Browser-Back und Bestätigungsabbruch enthalten.
+- **Akzeptanz:** Lokale Unit-Tests des vollständigen 3-Fälle-Ablaufs bestehen; kein Server/Cloudkonto benötigt.
+- **Auto:** `C`; Abschlusszähler, Regeln, Neustart und Bestätigungsabbruch durch Unit-Tests abgesichert. Browser-E2E entfällt laut Nutzerauftrag.
 - **Manuell / lokal:** `W`; Smartphone-Viewport mit Touchsimulation und Maus durchspielen.
 - **Abschluss:** G; M1-Beleg mit Befehlen/Versionen, keine Behauptung bereits getesteter Android-Geräte.
 

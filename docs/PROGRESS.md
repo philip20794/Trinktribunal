@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Integration von `task/TT-001-flutter-shell` (`251a788`) mit `main` (`0d8cd2d`), Mergebasis gesichert in `3bc0000`. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Aktuelle M0-Abnahme](qa/M0.md).
 
-**Aktuell: M0 abgeschlossen. 5/70 Aufgaben abgenommen; automatische Gates grün und visuelle Browserabnahme am 26.10.2026 durch den Nutzer bestätigt. Merge und Fortsetzung ausdrücklich autorisiert.** Keine GitHub Actions oder Cloudflare-Deployments.
+**Aktuell: M0 abgeschlossen, TT-006 umgesetzt. 6/70 Aufgaben abgenommen; automatische Gates grün.** Visuelle M0-Browserabnahme am 26.10.2026 durch den Nutzer bestätigt. Fortsetzung am 27.10.2026 autorisiert; neue Absicherung mit Unit-Tests, keine E2E-Tests. Keine GitHub Actions oder Cloudflare-Deployments.
 
 ## Statusregeln
 
@@ -65,13 +65,13 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-003 | Fachentscheidungen und Zustandsvertrag festschreiben | ERLEDIGT | Tests/Builds und Nutzerabnahme 26.10.2026 · [M0](qa/M0.md) |
 | TT-004 | Beide Katalogformate validieren und bündeln | ERLEDIGT | 73 Node-/17 Flutter-Tests, Analyze, Webbuild · [TT-004](qa/TT-004.md) |
 | TT-005 | Redaktionelle Konflikte inventarisieren und entscheiden | ERLEDIGT | Inhaltsreview, 5 Regressionstests, Rechtegate dokumentiert · [Review](qa/content-review.md) |
-| TT-006 | Konfiguration und unveränderliche Spielmodelle | OFFEN | — |
+| TT-006 | Konfiguration und unveränderliche Spielmodelle | ERLEDIGT | 27.10.2026 · 22 neue Unit-Tests, 78 Node-/39 Flutter-Tests gesamt, Analyze/Format grün · [Beleg](qa/TT-006.md) |
 | TT-007 | Frage ziehen und Ereignisplan erzeugen | OFFEN | — |
 | TT-008 | Trinkregeln auswählen und Rollen binden | OFFEN | — |
 | TT-009 | Kartenmodus-Einrichtung und erste Fallakte | OFFEN | — |
 | TT-010 | Kartenpartie bis zum Ende und Neustart | OFFEN | — |
 | TT-011 | Regelereignisse und aktive Regeln anzeigen | OFFEN | — |
-| TT-012 | Kartenmodus als ersten Integrationstest absichern | OFFEN | — |
+| TT-012 | Kartenmodus durch Unit-Tests absichern | OFFEN | Nutzerauftrag 27.10.2026: keine E2E-Tests |
 | TT-013 | Gerichtssaal-Designsystem und visuelle Galerie | OFFEN | — |
 | TT-014 | Versionierte menschliche Avatar-Ebenen rendern | OFFEN | — |
 | TT-015 | Eigenes Profil und Avatar-Editor | OFFEN | — |
@@ -158,9 +158,9 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Aufgabe: TT-006 – Konfiguration und unveränderliche Spielmodelle.**
+**Nächste Aufgabe: TT-007 – Frage ziehen und Ereignisplan erzeugen.** Testvorgabe vom 27.10.2026: Unit-Tests statt E2E-Tests; TT-012 entsprechend angepasst.
 
-Der aktuelle [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) ersetzt die historische Bestandsaufnahme unten als Aussage über den heutigen Entwicklungsstand. Alle 70 TT-Aufgaben bleiben OFFEN; der erfolgreiche Umgebungscheck ist kein bestandener App-Build.
+Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
 ## Prüfbeleg PLAN-001
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main nach geprüftem TT-004/005-Merge; nächster Featurebranch task/TT-006-game-models
-Aktueller Beleg: docs/qa/M0.md
-Naechster Schritt: TT-006 gemaess Plan, reine Dart-Domain ohne Flutter/Riverpod/IO
+Branch: task/TT-006-game-models
+Aktueller Beleg: docs/qa/TT-006.md
+Naechster Schritt: TT-007 gemaess Plan; Konfiguration und Basismodelle sind vorhanden
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```
