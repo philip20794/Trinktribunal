@@ -1,0 +1,35 @@
+import 'dart:async';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../data/room_credential_backend.dart';
+import '../data/room_credential_store.dart';
+import '../data/room_transport.dart';
+import 'room_controller.dart';
+
+final roomCredentialStoreProvider = Provider<RoomCredentialStore>(
+  (ref) => RoomCredentialStore(createCredentialBackend()),
+);
+final savedRoomsProvider = FutureProvider<CredentialLoad>(
+  (ref) => ref.watch(roomCredentialStoreProvider).load(),
+  retry: (count, error) => null,
+);
+final roomTransportProvider = Provider<RoomTransport>((ref) {
+  const configured = String.fromEnvironment('API_BASE_URL');
+  if (configured.isEmpty) {
+    throw const RoomTransportException('SERVER_NOT_CONFIGURED');
+  }
+  return NetworkRoomTransport(roomServerOrigin(configured));
+});
+final roomControllerProvider = Provider<RoomController>((ref) {
+  final controller = RoomController(
+    transport: ref.watch(roomTransportProvider),
+    credentials: ref.watch(roomCredentialStoreProvider),
+  );
+  ref.onDispose(() => unawaited(controller.dispose()));
+  return controller;
+});
+final roomSessionProvider = StreamProvider<RoomSessionState>(
+  (ref) => ref.watch(roomControllerProvider).states,
+  retry: (count, error) => null,
+);
