@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Stand (27.10.2026):** Lokale Modi samt Sprache/Persistenz und Offline-Implementierung vorhanden, Android am API-35-Emulator geprüft. 109 Node-/126 Flutter-Tests grün. TT-034-Vertrag/Schemas/Referenz-Fixtures technisch fertig; TT-033-Browserabnahme und damit formaler TT-034-Abschluss offen. Keine neuen E2E-Tests. Kein Worker; Codemagic ist separat eingerichtet. [Fortschritt](PROGRESS.md) · [TT-034](qa/TT-034.md) · [M3](qa/M3.md).
+**Aktueller Stand (27.10.2026):** TT-001–035 nach Unit-Gates abgeschlossen; TT-036 folgt. 111 Node-/126 Flutter-/4 Server-Tests grün; lokale Worker-/SQLite-Runtime unter Windows geprüft. Browser-/E2E-Abnahmen: **ÜBERSPRUNGEN – später manuell testen**, kein Folgeaufgabenblocker. [Fortschritt](PROGRESS.md) · [Serverbeleg](qa/TT-035.md).
 
 ## Lokaler Einstieg
 
@@ -19,7 +19,7 @@ powershell -NoProfile -File .\scripts\check.ps1 -Scope All
 
 Alternativer Port/Browser: `dev-client.ps1 -Device web-server -Port 7358` oder `-Device edge`. Die Skripte lösen Pfade über `$PSScriptRoot` auf und funktionieren auch aus einem anderen Arbeitsverzeichnis. `init-client.ps1` ergänzt nur bei fehlendem Gerüst Plattformdateien, prüft SHA-256 vorhandener Quellen und führt echte Flutter-Analyse/-Tests aus. Es kann gefahrlos erneut gestartet werden. `dev-client.ps1` lädt bei Bedarf Pakete; `check.ps1` verwendet ausschließlich den vorhandenen Paketcache mit `--offline --enforce-lockfile` und verändert das Lockfile nicht.
 
-Die `.ps1`-Dateien verwenden UTF-8 **mit BOM**, damit Windows PowerShell 5.1 deutsche Meldungen korrekt parst. `.editorconfig` hält dies fest; Node-Tests prüfen Syntax, fehlendes Flutter, Portkonflikt, Parameterweitergabe und Fehler-Exitcodes. Ein Node-/Clientcheck ist kein Server- oder vollständiges Releasegate; `All` meldet den noch nicht implementierten Server ausdrücklich.
+Die `.ps1`-Dateien verwenden UTF-8 **mit BOM**, damit Windows PowerShell 5.1 deutsche Meldungen korrekt parst. `.editorconfig` hält dies fest; Node-Tests prüfen Syntax, fehlendes Flutter, Portkonflikt, Parameterweitergabe und Fehler-Exitcodes. Ein Node-/Clientcheck ist kein vollständiges Releasegate. `-Scope Server` und `-Scope All` prüfen seit TT-035 den tatsächlichen lokalen Worker mit Format, Typecheck und Unit-Tests.
 
 ## Gemeinsamer Vertrag und Referenztests
 
@@ -200,7 +200,7 @@ Falls Codex eine Webseite oder den Browser bedient, gilt die Repository-Anweisun
 
 ### Voraussetzungen und zwei Terminalprozesse
 
-Ab TT-035 besitzt `apps/server/package.json` mindestens folgende Scripts: `dev` (Wrangler lokal), `typecheck` (`tsc --noEmit`), `format:check`, `test` (`vitest run`). TT-042/058 ergänzt Integrationsziele. Wrangler wird projektlokal gepinnt; Konfiguration enthält kein `remote: true`, keine Produktionsbindung und keine automatischen Uploads.
+Seit TT-035 besitzt `apps/server/package.json` folgende Scripts: `dev` (Wrangler lokal), `typecheck` (`tsc --noEmit`), `format:check`, `test` (`vitest run`). TT-042/058 ergänzt Integrationsziele. Wrangler wird projektlokal gepinnt; Konfiguration enthält kein `remote: true`, keine Produktionsbindung und keine automatischen Uploads.
 
 Terminal A, ab TT-035:
 
@@ -526,3 +526,5 @@ Offline-Release: `scripts/build-web.ps1 -Offline`, danach `scripts/serve-web.ps1
 Android-Debug-APK reproduzieren: `scripts/build-android.ps1 -Offline`. Der Befehl gibt Pfad und SHA-256 aus; Installation und tatsächlich geprüfte Emulatorabläufe stehen im [Android-Beleg](qa/android-debug.md). Der lokale Langlauf ist Teil von `scripts/check.ps1 -Scope All`; [M3](qa/M3.md) nennt die offenen Browser-Gates.
 
 Raumvertrag prüfen: `node scripts/generate-room-protocol.mjs --check`, `node --test scripts/tests/room-protocol.test.mjs` oder gesamtes `scripts/check.ps1 -Scope Docs`. Beide späteren Adapter verwenden die versionierten JSON-Schemas/Fixtures aus [packages/protocol](../packages/protocol/README.md); der Node-Referenzprüfer ersetzt keine Server-Runtimeprüfung.
+
+Server einrichten: in `apps/server` einmal `npm.cmd ci`, danach vom Root `scripts/dev-server.ps1` (Port 8787) und `scripts/check.ps1 -Scope Server` oder `-Scope All`. Gepinnte Tools und tatsächlich geprüfter Umfang: [TT-035](qa/TT-035.md). Die Server-Unit-Tests laufen im lokalen Workerd; Browser-/E2E-Abläufe werden übersprungen und später manuell geprüft.

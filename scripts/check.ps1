@@ -1,6 +1,6 @@
 ﻿[CmdletBinding()]
 param(
-    [ValidateSet('Client', 'Docs', 'All')]
+    [ValidateSet('Client', 'Docs', 'Server', 'All')]
     [string]$Scope = 'All'
 )
 
@@ -73,7 +73,13 @@ if ($Scope -in @('Client', 'All')) {
     }
 }
 
-if ($Scope -eq 'All') {
-    Write-Host 'Server-Prüfungen noch nicht implementiert (geplant ab TT-035); kein Server-Test behauptet.'
+if ($Scope -in @('Server', 'All')) {
+    if (-not (Get-Command npm.cmd -ErrorAction SilentlyContinue)) { throw 'npm.cmd fehlt. Node.js 24 installieren.' }
+    $server = Join-Path $root 'apps/server'
+    if (-not (Test-Path -LiteralPath (Join-Path $server 'node_modules/.bin/wrangler.cmd'))) {
+        throw 'Server-Abhängigkeiten fehlen. In apps/server zuerst npm.cmd ci ausführen.'
+    }
+    Push-Location $server
+    try { Invoke-Checked 'npm.cmd' @('run', 'check') } finally { Pop-Location }
 }
 Write-Host "Prüfumfang $Scope erfolgreich beendet."

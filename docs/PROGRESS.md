@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–029 und TT-032 abgeschlossen.** TT-030/031 funktionell geprüft, TT-033-Langlauf/Android grün; reale Browserabnahme noch offen. TT-034: Vertrag, 41 Nachrichtenschemas/-beispiele und 17 neue Referenztests implementiert; formaler Abschluss wartet planmäßig auf TT-033. Lokal 109 Node-/126 Flutter-Tests grün, keine neuen E2E-Tests. [TT-034-Beleg](qa/TT-034.md).
+**Aktuell: TT-001–035 nach Unit-Gates abgeschlossen, TT-036 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 111 Node-/126 Flutter-/4 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -43,10 +43,10 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | Meilenstein | Aufgaben | Status | Lokales Demo-Gate / späterer Beleg |
 | --- | --- | --- | --- |
 | M0 | TT-001–TT-003 | ERLEDIGT | Lokale Tests/Builds und manuelle Nutzerabnahme · [M0](qa/M0.md) |
-| M1 | TT-004–TT-012 | IN ARBEIT | Funktionell implementiert/Unit-geprüft; visuelles Demo-Gate offen · [M1](qa/M1.md) |
-| M2 | TT-013–TT-026 | IN ARBEIT | Funktionell implementiert/Unit-geprüft; visuelles Demo-Gate offen · [M2](qa/M2.md) |
-| M3 | TT-027–TT-033 | IN ARBEIT | Android und lokale Unit-Basis geprüft; reale Offline-Webabnahme offen · [M3](qa/M3.md) |
-| M4 | TT-034–TT-042 | OFFEN | Drei isolierte Browser in synchroner lokaler Lobby; `docs/qa/M4.md`. |
+| M1 | TT-004–TT-012 | ERLEDIGT | Unit-Gates grün; Browserdemo ÜBERSPRUNGEN – später manuell testen · [M1](qa/M1.md) |
+| M2 | TT-013–TT-026 | ERLEDIGT | Unit-Gates grün; Browserdemo ÜBERSPRUNGEN – später manuell testen · [M2](qa/M2.md) |
+| M3 | TT-027–TT-033 | ERLEDIGT | Nach Unit-Gates freigegeben; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [M3](qa/M3.md) |
+| M4 | TT-034–TT-042 | IN ARBEIT | TT-034 fertig, lokale Worker-Runtime TT-035 in Arbeit; Browserdemo später manuell |
 | M5 | TT-043–TT-050 | OFFEN | Normale Multiplayer-Kurzpartie, Host≠Richter, private Zahlen; `docs/qa/M5.md`. |
 | M6 | TT-051–TT-058 | OFFEN | Alle Richter, laufende Besetzungsänderungen, Hostverlust/Resume; `docs/qa/M6.md`. |
 | M7 | TT-059–TT-064 | OFFEN | Sicherheits-/Kosten-/Performancechecks und DE/EN-/Bedienprüfung; `docs/qa/M7.md`. |
@@ -89,12 +89,12 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-027 | Lokale Partie sicher speichern und wiederaufnehmen | ERLEDIGT | 27.10.2026 · [Prüfbeleg](qa/TT-027.md), 17 neue Unit-Tests, Gesamtcheck und Builds grün |
 | TT-028 | Sprachsystem und allgemeine Einstellungen | ERLEDIGT | 27.10.2026 · PR #5 geprüft/korrigiert, 290 Schlüssel, 79 Node-/121 Flutter-Tests · [Beleg](qa/TT-028.md) |
 | TT-029 | Lokalen Web-Release reproduzierbar ausliefern | ERLEDIGT | 27.10.2026 · 85 Node-/121 Flutter-Tests, Release-Build und HTTP-Smoke · [Beleg](qa/web-build.md) |
-| TT-030 | Eigener Offline-Cache für lokale Webmodi | IN ARBEIT | 27.10.2026 · Implementierung/Unit-Tests fertig; kalte Browserabnahme offen · [Beleg](qa/offline.md) |
-| TT-031 | Offline-Updates, Cachefehler und PWA-Metadaten | IN ARBEIT | 27.10.2026 · A→B/Fehler/Cacheverlust unit-geprüft; reale Browserabnahme offen · [Beleg](qa/offline.md) |
+| TT-030 | Eigener Offline-Cache für lokale Webmodi | ERLEDIGT | Unit-/Buildgate grün; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [Beleg](qa/offline.md) |
+| TT-031 | Offline-Updates, Cachefehler und PWA-Metadaten | ERLEDIGT | Update-/Cachefehler unit-geprüft; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [Beleg](qa/offline.md) |
 | TT-032 | Frühe Android-Debug-App auf eigenem Gerät | ERLEDIGT | 27.10.2026 · API-35-Emulator im Flugmodus: Kaltstart/Resume, beide Modi, Touch-Reorder, Geheimhaltung, Urteil/Rotation/Regel · [Beleg](qa/android-debug.md) |
-| TT-033 | Lokale Modi als stabile Basis abnehmen | IN ARBEIT | 27.10.2026 · Langlauf 8/50/7 und 50 vollständige Wiederaufnahmen grün; Browserabnahme ausstehend · [M3](qa/M3.md) |
-| TT-034 | Multiplayer-Nachrichten und private Projektionen spezifizieren | IN ARBEIT | 27.10.2026 · Technisch implementiert: Vertrag, 41 Schemas/Beispielpaare, 17 Referenztests; Abnahme wegen offener TT-033-Abhängigkeit ausstehend · [Beleg](qa/TT-034.md) |
-| TT-035 | Worker und lokale Runtime mit Health-Endpunkt | OFFEN | — |
+| TT-033 | Lokale Modi als stabile Basis abnehmen | ERLEDIGT | 8/50/7-Langlauf mit 50 Wiederaufnahmen und Android grün; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [M3](qa/M3.md) |
+| TT-034 | Multiplayer-Nachrichten und private Projektionen spezifizieren | ERLEDIGT | Vertrag, 41 Schemas/Beispielpaare und 17 Referenztests grün; Browsergate gemäß Nutzervorgabe übersprungen · [Beleg](qa/TT-034.md) |
+| TT-035 | Worker und lokale Runtime mit Health-Endpunkt | ERLEDIGT | 27.10.2026 · gepinnte Runtime, npm ci, Format/Typecheck, 4 echte Workerd-Units inkl. SQLite; lokaler HTTP-Start grün · [Beleg](qa/TT-035.md) |
 | TT-036 | Nachrichtenvalidierung und Dart/TS-DTOs | OFFEN | — |
 | TT-037 | Raum erstellen und beitreten, atomar und begrenzt | OFFEN | — |
 | TT-038 | Authentifizierten Hibernation-WebSocket anschließen | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Aktiver Abnahmepunkt: TT-033 → TT-034.** Protokollvorbereitung technisch fertig und unit-geprüft. Vor TT-035 gemäß strikter Planabhängigkeit die reale Browser-Offline-/Updateprüfung abschließen; chrome-devtools ist weiterhin nicht verbunden. Größere geprüfte Stände werden nach main gepusht; aktuelle Codemagic-Läufe sind noch nicht nachgewiesen.
+**Nächste Implementierung: TT-036 – Dart-/TS-DTOs und strikte Nachrichtenvalidierung.** TT-035 lokal geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -182,8 +182,8 @@ Am 26.10.2026 lokal durchgeführt:
 
 ```text
 Branch: main mit geprüftem TT-034-Vertragsstand; formaler Taskabschluss bleibt offen
-Aktueller Beleg: docs/qa/TT-034.md; offene Browserabnahme: docs/qa/offline.md
-Naechster Schritt: Chrome-DevTools-Verbindung herstellen, TT-030/031/033 manuell abnehmen; TT-034 formal abschließen, anschließend TT-035. Keine erneute Protokoll-Grundimplementierung nötig.
+Aktueller Beleg: docs/qa/TT-035.md; Browserprüfungen übersprungen, später manuell testen
+Naechster Schritt: TT-036 DTOs und Validierung gegen gemeinsame Fixtures, danach TT-037 Create/Join.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

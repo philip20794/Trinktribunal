@@ -36,9 +36,9 @@ Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erschein
 
 ## Status
 
-Kartenmodus und gemeinsames Handy sind lokal spielbar: Einrichtung, Profile/Avatar-Editor, Spielerregister, Fragen, Regeln, Sortierung, Urteil und Neustart sind verbunden. Lokale Partien und die gemeinsame Sechs-Stunden-Historie werden gespeichert; bei Wiederaufnahme bleiben Geheimzahlen verdeckt. Die DE/EN-Oberfläche ist verfügbar, der Web-Release lässt sich reproduzierbar lokal bauen und ausliefern. Der Multiplayer-Raumvertrag ist mit Schemas und Referenz-Fixtures vorbereitet; die Server-Runtime folgt nach dem offenen lokalen Abnahme-Gate.
+Kartenmodus und gemeinsames Handy sind lokal spielbar: Einrichtung, Profile/Avatar-Editor, Spielerregister, Fragen, Regeln, Sortierung, Urteil und Neustart sind verbunden. Lokale Partien und die gemeinsame Sechs-Stunden-Historie werden gespeichert; bei Wiederaufnahme bleiben Geheimzahlen verdeckt. Die DE/EN-Oberfläche ist verfügbar, der Web-Release lässt sich reproduzierbar lokal bauen und ausliefern. Der Multiplayer-Raumvertrag ist mit Schemas und Referenz-Fixtures vorbereitet; die lokale Worker-/SQLite-Runtime mit Health-Endpunkt ist vorhanden.
 
-Die Entscheidungen D-01 bis D-18 sind festgelegt. TT-001–029 und TT-032 abgeschlossen, TT-034-Vertrag technisch vorbereitet; 109 Node-/126 Flutter-Tests, Web- und Android-Debugbuild grün. Codemagic hat einen erfolgreichen signierten Main-APK-Build nachgewiesen. Neue geprüfte Main-Pushes sollen weitere Builds auslösen; aktuelle Checks werden separat verfolgt. Unit- statt E2E-Absicherung; visuelle Gates und Inhaltsrechte bleiben offen. [Fortschritt](docs/PROGRESS.md).
+Die Entscheidungen D-01 bis D-18 sind festgelegt. TT-001–035 nach Unit-Gates abgeschlossen; 111 Node-/126 Flutter-/4 Server-Tests, Web- und Android-Debugbuild grün. Codemagic hat einen erfolgreichen signierten Main-APK-Build nachgewiesen. Neue geprüfte Main-Pushes sollen weitere Builds auslösen; aktuelle Checks werden separat verfolgt. Unit- statt E2E-Absicherung; Browserabnahmen sind übersprungen und später manuell zu testen; Inhaltsrechte bleiben offen. [Fortschritt](docs/PROGRESS.md).
 
 Lokaler Start vom Repository-Root unter Windows (Flutter 3.47.7 oder neuer):
 

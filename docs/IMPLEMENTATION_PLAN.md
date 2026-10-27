@@ -1,8 +1,8 @@
 # Entwicklungsplan für Trinktribunal
 
-**Testvorgabe vom 27.10.2026:** Auf ausdrücklichen Nutzerwunsch wird die weitere Implementierung mit Unit-Tests abgesichert; E2E-Tests entfallen. Diese Vorgabe hat Vorrang vor den ursprünglichen E2E-/Webdriver-Pflichten im Plan und Workflow. TT-012 beschreibt die entsprechende Unit-Absicherung. Bestehende lokale Widgettests bleiben als Regression nutzbar.
+**Verbindliche Testvorgabe (27.10.2026):** Unit-Tests sind das Implementierungs-/Mergegate. Sämtliche Browser-/E2E-/visuellen Browserabnahmen werden auf ausdrücklichen Nutzerwunsch als **ÜBERSPRUNGEN – später manuell testen** vermerkt und blockieren weder Taskabschluss noch Folgeaufgaben. Bei grünen Unit-Tests wird die Funktion für die weitere Implementierung als funktionsfähig angenommen; ein tatsächlich durchgeführter Browsertest wird daraus nicht behauptet.
 
-**Laufender Stand, 27.10.2026:** TT-001–029 und TT-032 abgeschlossen. TT-030/031 funktionell und unit-geprüft; reale Browserabnahme / TT-033 noch offen. TT-034-Vertrag mit 41 Nachrichtenschemas und Referenz-Fixtures implementiert, formaler Abschluss wartet auf TT-033. Gemäß strikter Abhängigkeit TT-035 erst danach beginnen. Größere geprüfte Stände werden nach main gepusht. Keine neuen E2E-Tests. [Status und Belege](PROGRESS.md).
+**Laufender Stand, 27.10.2026:** TT-001–035 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün; TT-036 folgt. Größere geprüfte Stände werden nach main gepusht. [Status und Belege](PROGRESS.md).
 
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 
@@ -143,7 +143,7 @@ Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren 
 
 ### Gemeinsame Definition of Done (G)
 
-Jede Aufgabe ist erst erledigt, wenn ihre Akzeptanzkriterien und unten aufgeführten automatisierten **und** manuellen Prüfungen erfüllt sind; betroffene lokale Checks mit Exitcode 0 laufen; bisheriger Meilenstein weiter startbar ist; Fehler-/Leer-/Wartezustände des geänderten Pfads verständlich sind; kein Geheimnis in Logs/Snapshots landet; und `PROGRESS.md` Ergebnis, Befehle, Datum und Beleg enthält. Ein kleiner thematisch passender Commit schließt die Aufgabe ab. Unausführbare Prüfungen werden als Blocker angegeben, nicht als bestanden. Keine irrelevanten Testläufe nach bereits grünem Gate.
+Die obige Nutzervorgabe hat Vorrang: Browser-/E2E-Abnahmen werden übersprungen und später manuell getestet. Jede Aufgabe ist nach den verbleibenden Akzeptanzkriterien erledigt; betroffene lokale Checks mit Exitcode 0 laufen; bisheriger Meilenstein weiter startbar ist; Fehler-/Leer-/Wartezustände des geänderten Pfads verständlich sind; kein Geheimnis in Logs/Snapshots landet; und `PROGRESS.md` Ergebnis, Befehle, Datum und Beleg enthält. Ein kleiner thematisch passender Commit schließt die Aufgabe ab. Unausführbare Prüfungen werden als Blocker angegeben, nicht als bestanden. Keine irrelevanten Testläufe nach bereits grünem Gate.
 
 **Leseschlüssel der Aufgaben:** „Auto“ bezeichnet zu erstellende/zu ergänzende Tests, „Manuell“ den konkreten Akzeptanzablauf. „Lokal“ nennt den Einstieg; `W`, `C`, `D`, `S`, `MP`, `E`, `B` sind die eindeutig definierten Befehlsgruppen im Workflow. Testpfade sind jeweils relativ zu Client (`C`) oder Server (`S`), sonst zum Repository. Dokumentationsaufgaben benötigen keine App-Testattrappen.
 

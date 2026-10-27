@@ -39,6 +39,12 @@ workflows:
       - name: Flutter-Abhängigkeiten aus dem Lockfile
         working_directory: apps/client
         script: flutter pub get --enforce-lockfile
+      - name: Lokalen Worker mit Unit-Tests prüfen
+        working_directory: apps/server
+        script: |
+          set -euo pipefail
+          npm ci --no-fund --no-audit
+          npm run check
       - name: Flutter-Format, Analyse und Tests
         working_directory: apps/client
         script: |

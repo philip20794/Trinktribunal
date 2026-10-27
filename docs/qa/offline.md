@@ -1,6 +1,6 @@
 # TT-030/031 – Offline-Download und Versionswechsel
 
-Stand: 27.10.2026. Funktion implementiert und mit Unit-Tests geprüft. Der reale kalte Browserstart und das Browser-Update A→B sind noch nicht abgenommen: chrome-devtools kann Chrome derzeit nicht verbinden. Keine neuen E2E-Tests.
+Stand: 27.10.2026. Funktion implementiert und mit Unit-Tests geprüft. Reale Browserprüfung gemäß ausdrücklicher Nutzervorgabe: **ÜBERSPRUNGEN – später manuell testen**. Unit-Gate gibt die weitere Implementierung frei; keine neuen E2E-Tests.
 
 ## Umsetzung
 
@@ -23,7 +23,7 @@ Nur öffentliche Build-Dateien werden gespeichert. API-, WebSocket-, Raum- und H
 - Unit-Tests führen den echten Worker in einem isolierten JS-Kontext mit kontrolliertem CacheStorage/Fetch aus: Hashprüfung, vollständiger Download, keine Netzanforderung beim Lesen, A→B, defektes B, zwei Tabs, explizites Aktivieren, spätes Bereinigen, Cacheverlust, Reparatur und Erhalt eines bestehenden vollständigen Builds nach fehlgeschlagenem Wiederholungsdownload.
 - Generatorprüfung: deterministische IDs/Hashes, Fonts/Renderer enthalten, Worker/Metadaten ausgeschlossen, verbotene Dateien abgelehnt. Dart prüft alle aktiven/pausierten Spielphasen gegen Versionswechsel und das native Plattformverhalten.
 
-## Noch auszuführende manuelle Abnahme
+## ÜBERSPRUNGEN – später manuell testen
 
 1. `scripts/build-web.ps1 -Offline`, anschließend `scripts/serve-web.ps1`; Release auf localhost öffnen.
 2. Einstellungen → Offline vorbereiten, vollständigen Status abwarten und nötigenfalls neu laden. Netz trennen, Tab schließen, dieselbe URL neu öffnen und beide lokalen Modi spielen.
