@@ -2,7 +2,7 @@
 
 **Testvorgabe vom 27.10.2026:** Auf ausdrücklichen Nutzerwunsch wird die weitere Implementierung mit Unit-Tests abgesichert; E2E-Tests entfallen. Diese Vorgabe hat Vorrang vor den ursprünglichen E2E-/Webdriver-Pflichten im Plan und Workflow. TT-012 beschreibt die entsprechende Unit-Absicherung. Bestehende lokale Widgettests bleiben als Regression nutzbar.
 
-**Laufender Stand, 27.10.2026:** TT-001–029 abgeschlossen; TT-030/031 funktionell implementiert und unit-geprüft, reale Browserabnahme offen. TT-032 am vorhandenen Emulator in Arbeit. Größere geprüfte Stände werden in main integriert/gepusht. Keine neuen E2E-Tests. [Status und Belege](PROGRESS.md).
+**Laufender Stand, 27.10.2026:** TT-001–029 und TT-032 abgeschlossen. TT-030/031 funktionell und unit-geprüft, reale Browserabnahme offen. TT-033-Langlauf beider Modi mit 8/50/7 und 50 Wiederaufnahmen grün; M3 bleibt bis zur Browserabnahme offen. TT-034 wird auf der geprüften lokalen Fachbasis vorbereitet. Größere geprüfte Stände werden nach main gepusht. Keine neuen E2E-Tests. [Status und Belege](PROGRESS.md).
 
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 

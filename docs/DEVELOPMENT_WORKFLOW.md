@@ -522,3 +522,5 @@ Die Fachentscheidungen D-01 bis D-18 sind für die erste Appversion entschieden.
 `powershell -NoProfile -File scripts/build-web.ps1 -Offline` prüft Kataloge/Übersetzungen und Lockfile, baut den normalen Release mit lokalen Renderer-Ressourcen und schreibt Build-/Kataloghashes. `powershell -NoProfile -File scripts/serve-web.ps1 -Port 8080` liefert ihn auf 127.0.0.1 aus. Ohne `-Offline` darf Pub fehlende gelockte Pakete laden. [Prüfbeleg](qa/web-build.md). Größere geprüfte Stände werden für Codemagic nach main gepusht; kein Web-Hosting-Deploy.
 
 Offline-Release: `scripts/build-web.ps1 -Offline`, danach `scripts/serve-web.ps1`. In den Einstellungen den vollständigen Download abwarten und gegebenenfalls neu laden. Status und Updateverfahren: [Offline-Prüfbeleg](qa/offline.md). Der Flutter-Debugserver belegt keine Release-Offlinefähigkeit.
+
+Android-Debug-APK reproduzieren: `scripts/build-android.ps1 -Offline`. Der Befehl gibt Pfad und SHA-256 aus; Installation und tatsächlich geprüfte Emulatorabläufe stehen im [Android-Beleg](qa/android-debug.md). Der lokale Langlauf ist Teil von `scripts/check.ps1 -Scope All`; [M3](qa/M3.md) nennt die offenen Browser-Gates.

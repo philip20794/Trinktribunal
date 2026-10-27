@@ -38,7 +38,7 @@ Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erschein
 
 Kartenmodus und gemeinsames Handy sind lokal spielbar: Einrichtung, Profile/Avatar-Editor, Spielerregister, Fragen, Regeln, Sortierung, Urteil und Neustart sind verbunden. Lokale Partien und die gemeinsame Sechs-Stunden-Historie werden gespeichert; bei Wiederaufnahme bleiben Geheimzahlen verdeckt. Die DE/EN-Oberfläche ist verfügbar, der Web-Release lässt sich reproduzierbar lokal bauen und ausliefern. Multiplayer folgt ab TT-034.
 
-Die Entscheidungen D-01 bis D-18 sind festgelegt. Implementiert bis TT-029; 92 Node-/123 Flutter-Tests, Web- und Android-Debugbuild grün. Codemagic hat einen erfolgreichen signierten Main-APK-Build nachgewiesen. Neue geprüfte Main-Pushes sollen weitere Builds auslösen; aktuelle Checks werden separat verfolgt. Unit- statt E2E-Absicherung; visuelle Gates und Inhaltsrechte bleiben offen. [Fortschritt](docs/PROGRESS.md).
+Die Entscheidungen D-01 bis D-18 sind festgelegt. Implementiert bis TT-029; 92 Node-/126 Flutter-Tests, Web- und Android-Debugbuild grün. Codemagic hat einen erfolgreichen signierten Main-APK-Build nachgewiesen. Neue geprüfte Main-Pushes sollen weitere Builds auslösen; aktuelle Checks werden separat verfolgt. Unit- statt E2E-Absicherung; visuelle Gates und Inhaltsrechte bleiben offen. [Fortschritt](docs/PROGRESS.md).
 
 Lokaler Start vom Repository-Root unter Windows (Flutter 3.47.7 oder neuer):
 

@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
 import '../../design/avatar_view.dart';
+import '../../design/home_layout.dart';
 
 import '../../data/catalogs/catalog_diagnostics.dart';
 
@@ -93,13 +94,9 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final isWide = constraints.maxWidth >= 840;
+          if (constraints.maxWidth <= 40) return const SizedBox.shrink();
           const gap = 16.0;
-          final contentWidth = constraints.maxWidth > 1056
-              ? 1056.0
-              : constraints.maxWidth;
-          final innerWidth = contentWidth - 40;
-          final cardWidth = isWide ? (innerWidth - 2 * gap) / 3 : innerWidth;
+          final cardWidth = homeCardWidth(constraints.maxWidth);
 
           return SingleChildScrollView(
             child: Center(
