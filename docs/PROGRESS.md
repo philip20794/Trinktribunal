@@ -88,8 +88,8 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-026 | Ein-Handy-Ablauf vollständig integrieren | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
 | TT-027 | Lokale Partie sicher speichern und wiederaufnehmen | ERLEDIGT | 27.10.2026 · [Prüfbeleg](qa/TT-027.md), 17 neue Unit-Tests, Gesamtcheck und Builds grün |
 | TT-028 | Sprachsystem und allgemeine Einstellungen | ERLEDIGT | 27.10.2026 ? PR #5 gepr?ft/korrigiert, 290 Schl?ssel, 79 Node-/121 Flutter-Tests ? [Beleg](qa/TT-028.md) |
-| TT-029 | Lokalen Web-Release reproduzierbar ausliefern | IN ARBEIT | 27.10.2026 ? N?chster Schritt nach PR-Merge: reproduzierbarer Build und lokaler Release-Server |
-| TT-030 | Eigener Offline-Cache für lokale Webmodi | OFFEN | — |
+| TT-029 | Lokalen Web-Release reproduzierbar ausliefern | ERLEDIGT | 27.10.2026 ? 85 Node-/121 Flutter-Tests, Release-Build und echter HTTP-Smoke ? [Beleg](qa/web-build.md) |
+| TT-030 | Eigener Offline-Cache f?r lokale Webmodi | IN ARBEIT | 27.10.2026 ? Precache-Manifest, atomare Installation und Ready-Status folgen |
 | TT-031 | Offline-Updates, Cachefehler und PWA-Metadaten | OFFEN | — |
 | TT-032 | Frühe Android-Debug-App auf eigenem Gerät | OFFEN | — |
 | TT-033 | Lokale Modi als stabile Basis abnehmen | OFFEN | — |

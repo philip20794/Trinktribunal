@@ -516,3 +516,7 @@ Jeder Meilenstein erhält einen kurzen **vom Start aus reproduzierbaren** Demoab
 ## 12. Finalisierter Plan und externes Release-Gate
 
 Die Fachentscheidungen D-01 bis D-18 sind für die erste Appversion entschieden. Codex übernimmt die Vorgaben und dokumentiert technische Detailausarbeitungen innerhalb der jeweiligen TT-Aufgabe. **TT-065 darf ohne Nachweis der Nutzungsrechte der übernommenen Fragen und aller final ausgelieferten Assets/Fonts nicht als erledigt markiert werden.** Lokale Implementierung und Tests sind davon getrennt. D-15-Galerieparameter und D-18-Renderer-Auswahl werden aufgrund der bereits beschlossenen technischen Kriterien entwickelt bzw. gemessen.
+
+## Reproduzierbarer Web-Release (TT-029)
+
+`powershell -NoProfile -File scripts/build-web.ps1 -Offline` pr?ft Kataloge/?bersetzungen und das Lockfile, erstellt den normalen Release mit lokalen Renderer-Ressourcen und schreibt Build-/Kataloghashes. `powershell -NoProfile -File scripts/serve-web.ps1 -Port 8080` liefert ihn auf 127.0.0.1 aus. Ohne `-Offline` darf Pub fehlende gelockte Pakete laden. [HTTP-/Buildbeleg](qa/web-build.md). Ein Main-Push ist durch Codemagic f?r die signierte Test-APK autorisiert; es wird kein Web-Hosting-Deploy ausgel?st.
