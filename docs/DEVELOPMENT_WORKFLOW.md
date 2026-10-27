@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Stand (27.10.2026):** TT-001–027 funktionell implementiert. Kartenmodus und Ein-Handy-Partie mit Profilen, Vektoravataren, Register, Regeln, Urteilen und atomarer lokaler Wiederaufnahme sind verbunden. 78 Node-/112 Flutter-Tests, Analyze, JS-Web- und Android-Debugbuild grün. Neue Absicherung auf Nutzerwunsch ausschließlich durch Unit-Tests; E2E-/ChromeDriver-Pflichten entfallen. Kein Worker und kein Deployment. Visuelle M1-/M2-Gates bleiben offen, weil Chrome-DevTools nicht verbunden ist. [Fortschritt](PROGRESS.md) · [M2](qa/M2.md) · [Speicherbeleg](qa/TT-027.md).
+**Aktueller Stand (27.10.2026):** Lokale Modi samt Sprache/Persistenz und Offline-Implementierung vorhanden, Android am API-35-Emulator geprüft. 109 Node-/126 Flutter-Tests grün. TT-034-Vertrag/Schemas/Referenz-Fixtures technisch fertig; TT-033-Browserabnahme und damit formaler TT-034-Abschluss offen. Keine neuen E2E-Tests. Kein Worker; Codemagic ist separat eingerichtet. [Fortschritt](PROGRESS.md) · [TT-034](qa/TT-034.md) · [M3](qa/M3.md).
 
 ## Lokaler Einstieg
 
@@ -524,3 +524,5 @@ Die Fachentscheidungen D-01 bis D-18 sind für die erste Appversion entschieden.
 Offline-Release: `scripts/build-web.ps1 -Offline`, danach `scripts/serve-web.ps1`. In den Einstellungen den vollständigen Download abwarten und gegebenenfalls neu laden. Status und Updateverfahren: [Offline-Prüfbeleg](qa/offline.md). Der Flutter-Debugserver belegt keine Release-Offlinefähigkeit.
 
 Android-Debug-APK reproduzieren: `scripts/build-android.ps1 -Offline`. Der Befehl gibt Pfad und SHA-256 aus; Installation und tatsächlich geprüfte Emulatorabläufe stehen im [Android-Beleg](qa/android-debug.md). Der lokale Langlauf ist Teil von `scripts/check.ps1 -Scope All`; [M3](qa/M3.md) nennt die offenen Browser-Gates.
+
+Raumvertrag prüfen: `node scripts/generate-room-protocol.mjs --check`, `node --test scripts/tests/room-protocol.test.mjs` oder gesamtes `scripts/check.ps1 -Scope Docs`. Beide späteren Adapter verwenden die versionierten JSON-Schemas/Fixtures aus [packages/protocol](../packages/protocol/README.md); der Node-Referenzprüfer ersetzt keine Server-Runtimeprüfung.

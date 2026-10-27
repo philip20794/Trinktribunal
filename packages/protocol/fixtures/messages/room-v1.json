@@ -1,0 +1,1346 @@
+{
+  "formatVersion": 1,
+  "nowUtc": "2026-10-27T12:00:00.000Z",
+  "fixtures": [
+    {
+      "fixtureId": "wire-create",
+      "role": "anonymous",
+      "phase": "none",
+      "valid": {
+        "type": "create",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "profile": {
+          "name": "Anna",
+          "avatar": {
+            "version": 1,
+            "selections": {
+              "face": "round",
+              "skin": "light",
+              "eyes": "open",
+              "brows": "calm",
+              "nose": "round",
+              "mouth": "smile",
+              "hair": "short",
+              "hairColor": "brown",
+              "beard": "none",
+              "top": "shirt",
+              "topColor": "blue",
+              "glasses": "none",
+              "hat": "none",
+              "extra": "none"
+            }
+          }
+        },
+        "handshake": {
+          "protocolVersion": 1,
+          "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
+          "avatarVersion": 1
+        }
+      },
+      "invalid": {
+        "type": "create",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "profile": {
+          "name": "Anna",
+          "avatar": {
+            "version": 1,
+            "selections": {
+              "face": "round",
+              "skin": "light",
+              "eyes": "open",
+              "brows": "calm",
+              "nose": "round",
+              "mouth": "smile",
+              "hair": "short",
+              "hairColor": "brown",
+              "beard": "none",
+              "top": "shirt",
+              "topColor": "blue",
+              "glasses": "none",
+              "hat": "none",
+              "extra": "none"
+            }
+          }
+        },
+        "handshake": {
+          "protocolVersion": 1,
+          "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
+          "avatarVersion": 1
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-join",
+      "role": "anonymous",
+      "phase": "any",
+      "valid": {
+        "type": "join",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "profile": {
+          "name": "Anna",
+          "avatar": {
+            "version": 1,
+            "selections": {
+              "face": "round",
+              "skin": "light",
+              "eyes": "open",
+              "brows": "calm",
+              "nose": "round",
+              "mouth": "smile",
+              "hair": "short",
+              "hairColor": "brown",
+              "beard": "none",
+              "top": "shirt",
+              "topColor": "blue",
+              "glasses": "none",
+              "hat": "none",
+              "extra": "none"
+            }
+          }
+        },
+        "handshake": {
+          "protocolVersion": 1,
+          "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
+          "avatarVersion": 1
+        }
+      },
+      "invalid": {
+        "type": "join",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "profile": {
+          "name": "Anna",
+          "avatar": {
+            "version": 1,
+            "selections": {
+              "face": "round",
+              "skin": "light",
+              "eyes": "open",
+              "brows": "calm",
+              "nose": "round",
+              "mouth": "smile",
+              "hair": "short",
+              "hairColor": "brown",
+              "beard": "none",
+              "top": "shirt",
+              "topColor": "blue",
+              "glasses": "none",
+              "hat": "none",
+              "extra": "none"
+            }
+          }
+        },
+        "handshake": {
+          "protocolVersion": 1,
+          "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
+          "avatarVersion": 1
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-credential",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "credential",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "roomCode": "ABCD2345",
+        "roomId": "room_1",
+        "playerId": "p2",
+        "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "expiresAtUtc": "2026-10-28T12:00:00.000Z"
+      },
+      "invalid": {
+        "type": "credential",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "roomCode": "ABCD2345",
+        "roomId": "room_1",
+        "playerId": "p2",
+        "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "expiresAtUtc": "2026-10-28T12:00:00.000Z",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-authenticate",
+      "role": "unauthenticated",
+      "phase": "any",
+      "valid": {
+        "type": "authenticate",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "handshake": {
+          "protocolVersion": 1,
+          "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
+          "avatarVersion": 1
+        }
+      },
+      "invalid": {
+        "type": "authenticate",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "handshake": {
+          "protocolVersion": 1,
+          "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
+          "avatarVersion": 1
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-authenticated",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "authenticated",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "roomId": "room_1",
+        "playerId": "p2",
+        "generation": 1,
+        "expiresAtUtc": "2026-10-28T12:00:00.000Z",
+        "handshake": {
+          "protocolVersion": 1,
+          "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
+          "avatarVersion": 1
+        }
+      },
+      "invalid": {
+        "type": "authenticated",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "roomId": "room_1",
+        "playerId": "p2",
+        "generation": 1,
+        "expiresAtUtc": "2026-10-28T12:00:00.000Z",
+        "handshake": {
+          "protocolVersion": 1,
+          "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
+          "avatarVersion": 1
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-requestSnapshot",
+      "role": "authenticated",
+      "phase": "any",
+      "valid": {
+        "type": "requestSnapshot",
+        "protocolVersion": 1,
+        "requestId": "request_1"
+      },
+      "invalid": {
+        "type": "requestSnapshot",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-setConfig",
+      "role": "host",
+      "phase": "lobby",
+      "valid": {
+        "type": "setConfig",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "config": {
+          "targetCases": 50,
+          "requestedRuleEvents": 7,
+          "factorTenths": 15,
+          "allJudges": false,
+          "contentLanguage": "de"
+        }
+      },
+      "invalid": {
+        "type": "setConfig",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "config": {
+          "targetCases": 50,
+          "requestedRuleEvents": 7,
+          "factorTenths": 15,
+          "allJudges": false,
+          "contentLanguage": "de"
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-startGame",
+      "role": "host",
+      "phase": "lobby",
+      "valid": {
+        "type": "startGame",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0
+      },
+      "invalid": {
+        "type": "startGame",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-restartGame",
+      "role": "host",
+      "phase": "any",
+      "valid": {
+        "type": "restartGame",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "config": {
+          "targetCases": 50,
+          "requestedRuleEvents": 7,
+          "factorTenths": 15,
+          "allJudges": false,
+          "contentLanguage": "de"
+        },
+        "confirmed": true
+      },
+      "invalid": {
+        "type": "restartGame",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "config": {
+          "targetCases": 50,
+          "requestedRuleEvents": 7,
+          "factorTenths": 15,
+          "allJudges": false,
+          "contentLanguage": "de"
+        },
+        "confirmed": true,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-editOwnProfile",
+      "role": "authenticated",
+      "phase": "any",
+      "valid": {
+        "type": "editOwnProfile",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "profile": {
+          "name": "Anna",
+          "avatar": {
+            "version": 1,
+            "selections": {
+              "face": "round",
+              "skin": "light",
+              "eyes": "open",
+              "brows": "calm",
+              "nose": "round",
+              "mouth": "smile",
+              "hair": "short",
+              "hairColor": "brown",
+              "beard": "none",
+              "top": "shirt",
+              "topColor": "blue",
+              "glasses": "none",
+              "hat": "none",
+              "extra": "none"
+            }
+          }
+        }
+      },
+      "invalid": {
+        "type": "editOwnProfile",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "profile": {
+          "name": "Anna",
+          "avatar": {
+            "version": 1,
+            "selections": {
+              "face": "round",
+              "skin": "light",
+              "eyes": "open",
+              "brows": "calm",
+              "nose": "round",
+              "mouth": "smile",
+              "hair": "short",
+              "hairColor": "brown",
+              "beard": "none",
+              "top": "shirt",
+              "topColor": "blue",
+              "glasses": "none",
+              "hat": "none",
+              "extra": "none"
+            }
+          }
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-reorderRoster",
+      "role": "host",
+      "phase": "any",
+      "valid": {
+        "type": "reorderRoster",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "playerIds": [
+          "p2",
+          "p1",
+          "p3"
+        ]
+      },
+      "invalid": {
+        "type": "reorderRoster",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "playerIds": [
+          "p2",
+          "p1",
+          "p3"
+        ],
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-kick",
+      "role": "host",
+      "phase": "any",
+      "valid": {
+        "type": "kick",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "targetPlayerId": "p3",
+        "confirmed": true
+      },
+      "invalid": {
+        "type": "kick",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "targetPlayerId": "p3",
+        "confirmed": true,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-leave",
+      "role": "authenticated",
+      "phase": "any",
+      "valid": {
+        "type": "leave",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "confirmed": true
+      },
+      "invalid": {
+        "type": "leave",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "confirmed": true,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-closeRoom",
+      "role": "host",
+      "phase": "any",
+      "valid": {
+        "type": "closeRoom",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "confirmed": true
+      },
+      "invalid": {
+        "type": "closeRoom",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "confirmed": true,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-acknowledgeNumber",
+      "role": "numberRecipient",
+      "phase": "numbers",
+      "valid": {
+        "type": "acknowledgeNumber",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1"
+      },
+      "invalid": {
+        "type": "acknowledgeNumber",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-beginOrdering",
+      "role": "host",
+      "phase": "answers",
+      "valid": {
+        "type": "beginOrdering",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1"
+      },
+      "invalid": {
+        "type": "beginOrdering",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-submitOrder",
+      "role": "judge",
+      "phase": "ordering",
+      "valid": {
+        "type": "submitOrder",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "order": [
+          "p2",
+          "p3"
+        ],
+        "confirmed": true
+      },
+      "invalid": {
+        "type": "submitOrder",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "order": [
+          "p2",
+          "p3"
+        ],
+        "confirmed": true,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-revealNext",
+      "role": "host",
+      "phase": "revealing",
+      "valid": {
+        "type": "revealNext",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "expectedCursor": 0
+      },
+      "invalid": {
+        "type": "revealNext",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "expectedCursor": 0,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-completeCase",
+      "role": "host",
+      "phase": "judged",
+      "valid": {
+        "type": "completeCase",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1"
+      },
+      "invalid": {
+        "type": "completeCase",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-completeWithoutVerdict",
+      "role": "host",
+      "phase": "numbers",
+      "valid": {
+        "type": "completeWithoutVerdict",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "confirmed": true
+      },
+      "invalid": {
+        "type": "completeWithoutVerdict",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "confirmed": true,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-continueRule",
+      "role": "host",
+      "phase": "rule_event",
+      "valid": {
+        "type": "continueRule",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "afterCase": 1
+      },
+      "invalid": {
+        "type": "continueRule",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "afterCase": 1,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-resumePaused",
+      "role": "host",
+      "phase": "paused",
+      "valid": {
+        "type": "resumePaused",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1"
+      },
+      "invalid": {
+        "type": "resumePaused",
+        "protocolVersion": 1,
+        "actionId": "action_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-historyImport",
+      "role": "host",
+      "phase": "lobby",
+      "valid": {
+        "type": "historyImport",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "importId": "import_1",
+        "page": 0,
+        "events": [
+          {
+            "eventId": "event_1",
+            "kind": "question",
+            "contentId": "001-a",
+            "timestampUtc": "2026-10-27T11:59:00.000Z"
+          }
+        ]
+      },
+      "invalid": {
+        "type": "historyImport",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "importId": "import_1",
+        "page": 0,
+        "events": [
+          {
+            "eventId": "event_1",
+            "kind": "question",
+            "contentId": "001-a",
+            "timestampUtc": "2026-10-27T11:59:00.000Z"
+          }
+        ],
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-cancelHistoryImport",
+      "role": "host",
+      "phase": "lobby",
+      "valid": {
+        "type": "cancelHistoryImport",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "importId": "import_1"
+      },
+      "invalid": {
+        "type": "cancelHistoryImport",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "importId": "import_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-historyPull",
+      "role": "historyOwner",
+      "phase": "any",
+      "valid": {
+        "type": "historyPull",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "cursor": null
+      },
+      "invalid": {
+        "type": "historyPull",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "cursor": null,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-historyEvents",
+      "role": "historyOwner",
+      "phase": "any",
+      "valid": {
+        "type": "historyEvents",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "cursor": "cursor_1",
+        "hasMore": false,
+        "events": [
+          {
+            "eventId": "event_1",
+            "kind": "question",
+            "contentId": "001-a",
+            "timestampUtc": "2026-10-27T11:59:00.000Z"
+          }
+        ]
+      },
+      "invalid": {
+        "type": "historyEvents",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "cursor": "cursor_1",
+        "hasMore": false,
+        "events": [
+          {
+            "eventId": "event_1",
+            "kind": "question",
+            "contentId": "001-a",
+            "timestampUtc": "2026-10-27T11:59:00.000Z"
+          }
+        ],
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-historyReceipt",
+      "role": "historyOwner",
+      "phase": "any",
+      "valid": {
+        "type": "historyReceipt",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "cursor": "cursor_1"
+      },
+      "invalid": {
+        "type": "historyReceipt",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "cursor": "cursor_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-ack",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "ack",
+        "protocolVersion": 1,
+        "requestId": "action_1",
+        "actionId": "action_1",
+        "revision": 1,
+        "outcome": "committed"
+      },
+      "invalid": {
+        "type": "ack",
+        "protocolVersion": 1,
+        "requestId": "action_1",
+        "actionId": "action_1",
+        "revision": 1,
+        "outcome": "committed",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-error",
+      "role": "requester",
+      "phase": "any",
+      "valid": {
+        "type": "error",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "code": "INVALID_PHASE"
+      },
+      "invalid": {
+        "type": "error",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "code": "INVALID_PHASE",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-sessionReplaced",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "sessionReplaced",
+        "protocolVersion": 1,
+        "requestId": "request_1"
+      },
+      "invalid": {
+        "type": "sessionReplaced",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-roomClosed",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "roomClosed",
+        "protocolVersion": 1,
+        "requestId": "request_1"
+      },
+      "invalid": {
+        "type": "roomClosed",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-ping",
+      "role": "authenticated",
+      "phase": "any",
+      "valid": {
+        "type": "ping",
+        "protocolVersion": 1,
+        "requestId": "request_1"
+      },
+      "invalid": {
+        "type": "ping",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-pong",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "pong",
+        "protocolVersion": 1,
+        "requestId": "request_1"
+      },
+      "invalid": {
+        "type": "pong",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-snapshot",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "snapshot",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "roomId": "room_1",
+        "you": "p2",
+        "revision": 1,
+        "public": {
+          "phase": "numbers",
+          "hostId": "p1",
+          "hostRevision": 1,
+          "config": {
+            "targetCases": 50,
+            "requestedRuleEvents": 7,
+            "factorTenths": 15,
+            "allJudges": false,
+            "contentLanguage": "de"
+          },
+          "players": [
+            {
+              "playerId": "p1",
+              "profile": {
+                "name": "p1",
+                "avatar": {
+                  "version": 1,
+                  "selections": {
+                    "face": "round",
+                    "skin": "light",
+                    "eyes": "open",
+                    "brows": "calm",
+                    "nose": "round",
+                    "mouth": "smile",
+                    "hair": "short",
+                    "hairColor": "brown",
+                    "beard": "none",
+                    "top": "shirt",
+                    "topColor": "blue",
+                    "glasses": "none",
+                    "hat": "none",
+                    "extra": "none"
+                  }
+                }
+              },
+              "connected": true,
+              "ready": false,
+              "orderSubmitted": false
+            },
+            {
+              "playerId": "p2",
+              "profile": {
+                "name": "p2",
+                "avatar": {
+                  "version": 1,
+                  "selections": {
+                    "face": "round",
+                    "skin": "light",
+                    "eyes": "open",
+                    "brows": "calm",
+                    "nose": "round",
+                    "mouth": "smile",
+                    "hair": "short",
+                    "hairColor": "brown",
+                    "beard": "none",
+                    "top": "shirt",
+                    "topColor": "blue",
+                    "glasses": "none",
+                    "hat": "none",
+                    "extra": "none"
+                  }
+                }
+              },
+              "connected": true,
+              "ready": false,
+              "orderSubmitted": false
+            },
+            {
+              "playerId": "p3",
+              "profile": {
+                "name": "p3",
+                "avatar": {
+                  "version": 1,
+                  "selections": {
+                    "face": "round",
+                    "skin": "light",
+                    "eyes": "open",
+                    "brows": "calm",
+                    "nose": "round",
+                    "mouth": "smile",
+                    "hair": "short",
+                    "hairColor": "brown",
+                    "beard": "none",
+                    "top": "shirt",
+                    "topColor": "blue",
+                    "glasses": "none",
+                    "hat": "none",
+                    "extra": "none"
+                  }
+                }
+              },
+              "connected": true,
+              "ready": false,
+              "orderSubmitted": false
+            }
+          ],
+          "frozenRoster": [
+            "p1",
+            "p2",
+            "p3"
+          ],
+          "pendingRoster": [],
+          "gameId": "game_1",
+          "roundId": "round_1",
+          "judgeId": "p1",
+          "readerId": null,
+          "question": {
+            "contentId": "001-a",
+            "bindings": {}
+          },
+          "activeRules": [],
+          "completedCases": 0,
+          "revealCursor": 0,
+          "revealed": [],
+          "expiresAtUtc": "2026-10-28T12:00:00.000Z"
+        },
+        "private": {
+          "ownNumber": 2
+        }
+      },
+      "invalid": {
+        "type": "snapshot",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "roomId": "room_1",
+        "you": "p2",
+        "revision": 1,
+        "public": {
+          "phase": "numbers",
+          "hostId": "p1",
+          "hostRevision": 1,
+          "config": {
+            "targetCases": 50,
+            "requestedRuleEvents": 7,
+            "factorTenths": 15,
+            "allJudges": false,
+            "contentLanguage": "de"
+          },
+          "players": [
+            {
+              "playerId": "p1",
+              "profile": {
+                "name": "p1",
+                "avatar": {
+                  "version": 1,
+                  "selections": {
+                    "face": "round",
+                    "skin": "light",
+                    "eyes": "open",
+                    "brows": "calm",
+                    "nose": "round",
+                    "mouth": "smile",
+                    "hair": "short",
+                    "hairColor": "brown",
+                    "beard": "none",
+                    "top": "shirt",
+                    "topColor": "blue",
+                    "glasses": "none",
+                    "hat": "none",
+                    "extra": "none"
+                  }
+                }
+              },
+              "connected": true,
+              "ready": false,
+              "orderSubmitted": false
+            },
+            {
+              "playerId": "p2",
+              "profile": {
+                "name": "p2",
+                "avatar": {
+                  "version": 1,
+                  "selections": {
+                    "face": "round",
+                    "skin": "light",
+                    "eyes": "open",
+                    "brows": "calm",
+                    "nose": "round",
+                    "mouth": "smile",
+                    "hair": "short",
+                    "hairColor": "brown",
+                    "beard": "none",
+                    "top": "shirt",
+                    "topColor": "blue",
+                    "glasses": "none",
+                    "hat": "none",
+                    "extra": "none"
+                  }
+                }
+              },
+              "connected": true,
+              "ready": false,
+              "orderSubmitted": false
+            },
+            {
+              "playerId": "p3",
+              "profile": {
+                "name": "p3",
+                "avatar": {
+                  "version": 1,
+                  "selections": {
+                    "face": "round",
+                    "skin": "light",
+                    "eyes": "open",
+                    "brows": "calm",
+                    "nose": "round",
+                    "mouth": "smile",
+                    "hair": "short",
+                    "hairColor": "brown",
+                    "beard": "none",
+                    "top": "shirt",
+                    "topColor": "blue",
+                    "glasses": "none",
+                    "hat": "none",
+                    "extra": "none"
+                  }
+                }
+              },
+              "connected": true,
+              "ready": false,
+              "orderSubmitted": false
+            }
+          ],
+          "frozenRoster": [
+            "p1",
+            "p2",
+            "p3"
+          ],
+          "pendingRoster": [],
+          "gameId": "game_1",
+          "roundId": "round_1",
+          "judgeId": "p1",
+          "readerId": null,
+          "question": {
+            "contentId": "001-a",
+            "bindings": {}
+          },
+          "activeRules": [],
+          "completedCases": 0,
+          "revealCursor": 0,
+          "revealed": [],
+          "expiresAtUtc": "2026-10-28T12:00:00.000Z"
+        },
+        "private": {
+          "ownNumber": 2
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-delta",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "delta",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "roomId": "room_1",
+        "you": "p2",
+        "revision": 2,
+        "baseRevision": 1,
+        "publicChanges": {
+          "phase": "answers"
+        },
+        "private": {
+          "ownNumber": 2
+        }
+      },
+      "invalid": {
+        "type": "delta",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "roomId": "room_1",
+        "you": "p2",
+        "revision": 2,
+        "baseRevision": 1,
+        "publicChanges": {
+          "phase": "answers"
+        },
+        "private": {
+          "ownNumber": 2
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-projectionStart",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "projectionStart",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "transferId": "transfer_1",
+        "revision": 1,
+        "chunks": 1,
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      },
+      "invalid": {
+        "type": "projectionStart",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "transferId": "transfer_1",
+        "revision": 1,
+        "chunks": 1,
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-projectionChunk",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "projectionChunk",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "transferId": "transfer_1",
+        "index": 0,
+        "data": "e30"
+      },
+      "invalid": {
+        "type": "projectionChunk",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "transferId": "transfer_1",
+        "index": 0,
+        "data": "e30",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-projectionEnd",
+      "role": "recipient",
+      "phase": "any",
+      "valid": {
+        "type": "projectionEnd",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "transferId": "transfer_1"
+      },
+      "invalid": {
+        "type": "projectionEnd",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "transferId": "transfer_1",
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-leaveHttp",
+      "role": "credentialOwner",
+      "phase": "any",
+      "valid": {
+        "type": "leaveHttp",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "actionId": "action_1",
+        "confirmed": true
+      },
+      "invalid": {
+        "type": "leaveHttp",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "actionId": "action_1",
+        "confirmed": true,
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-historyBegin",
+      "role": "host",
+      "phase": "lobby",
+      "valid": {
+        "type": "historyBegin",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "offer": {
+          "importId": "import_1",
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "invalid": {
+        "type": "historyBegin",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "offer": {
+          "importId": "import_1",
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "actorId": "spoofed"
+      }
+    },
+    {
+      "fixtureId": "wire-historyStatus",
+      "role": "historyOwner",
+      "phase": "lobby",
+      "valid": {
+        "type": "historyStatus",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "importId": "import_1",
+        "status": "receiving",
+        "receivedPages": [
+          0
+        ],
+        "receivedEvents": 1
+      },
+      "invalid": {
+        "type": "historyStatus",
+        "protocolVersion": 1,
+        "requestId": "request_1",
+        "importId": "import_1",
+        "status": "receiving",
+        "receivedPages": [
+          0
+        ],
+        "receivedEvents": 1,
+        "actorId": "spoofed"
+      }
+    }
+  ]
+}

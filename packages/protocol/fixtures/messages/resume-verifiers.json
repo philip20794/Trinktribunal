@@ -1,0 +1,16 @@
+{
+  "formatVersion": 1,
+  "notes": "Public synthetic zero-byte token vectors; never issue these as production credentials.",
+  "vectors": [
+    {
+      "roomId": "room_1",
+      "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "expectedVerifier": "c1c67413031029156ad3831f21170f3d22a5843fdd5a2c6179d98448ce9d440f"
+    },
+    {
+      "roomId": "room_2",
+      "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "expectedVerifier": "45c6cfccefe0afdc9378ae546a62719cadbdf2b4cc6b13e9159a4a7caccbd278"
+    }
+  ]
+}

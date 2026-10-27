@@ -1,6 +1,12 @@
 # Gemeinsamer Fachvertrag und Testvektoren
 
-Status: **Technische Verträge und Referenz-Fixtures für TT-003**, keine implementierte Spielengine. Grundlage: [Zustands-/Aktionsvertrag](../../docs/contracts/GAME_STATE.md) und D-01/D-02/D-04/D-05/D-06/D-07/D-09/D-10/D-13/D-17. Die Teilverträge sind innerhalb der im [Plan](../../docs/IMPLEMENTATION_PLAN.md) beschriebenen Reihenfolge mit Client- und Serverlogik zu verbinden.
+Status: **Fachliche Referenz-Fixtures aus TT-003 und Netzwerkvertrag v1 aus TT-034.** Die lokale Dart-Spielengine ist inzwischen implementiert; ein autoritativer Multiplayer-Server folgt erst ab TT-035. Grundlagen: [Zustands-/Aktionsvertrag](../../docs/contracts/GAME_STATE.md), [Raumprotokoll](../../docs/contracts/ROOM_PROTOCOL.md) und die dort verlinkten D-Beschlüsse. Offene lokale Demo-Gates stehen unverändert im [Fortschritt](../../docs/PROGRESS.md).
+
+## Raumprotokoll v1
+
+[ROOM_PROTOCOL.md](../../docs/contracts/ROOM_PROTOCOL.md) legt HTTP-Create/Join/Leave, WebSocket-Auth/Resume, Rollen, private Ansichten aller Phasen, Idempotenz, Generationen, Ablauf und begrenzte private Host-Historie fest. [Schema](schemas/room-message.schema.json) und [Rollen-/Transport-/Phasenregister](message-policies.json) entstehen deterministisch aus [room-contract.mjs](room-contract.mjs). `node scripts/generate-room-protocol.mjs --check` und die Node-Tests erkennen veraltete Ausgaben.
+
+[41 Positiv-/Negativnachrichten](fixtures/messages/room-v1.json) und [Verifier-Testvektoren](fixtures/messages/resume-verifiers.json) sind die gemeinsame Basis für die späteren Dart-/TS-Adapter. Alle Namen, IDs und Tokens darin sind öffentliche synthetische Testwerte. `node --test scripts/tests/room-protocol.test.mjs` prüft Struktur und semantische Vertragsinvarianten; reale Netzwerk-Authentifizierung, Widerruf, Persistenz und vollständige serverseitige Redaction sind dadurch noch nicht implementiert oder abgenommen.
 
 ## Verzeichnisstruktur
 

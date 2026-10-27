@@ -1,0 +1,607 @@
+{
+  "protocolVersion": 1,
+  "limits": {
+    "frameBytes": 16384,
+    "projectionBytes": 524288,
+    "projectionChunkBytes": 8192,
+    "projectionChunks": 64,
+    "historyPageEntries": 64,
+    "historyEvents": 4096,
+    "historyStagingBytes": 1048576,
+    "historyTimeoutMs": 60000,
+    "historyWindowMs": 21600000,
+    "authTimeoutMs": 5000,
+    "projectionTimeoutMs": 15000,
+    "actionsPerSecond": 10,
+    "actionBurst": 20,
+    "actionJournalEntries": 16384,
+    "createAttempts": 8,
+    "hostGraceMs": 90000,
+    "roomIdleMs": 86400000,
+    "roomHardMs": 172800000
+  },
+  "messages": {
+    "create": {
+      "direction": "client",
+      "transports": [
+        "http"
+      ],
+      "roles": [
+        "anonymous"
+      ],
+      "phases": [
+        "none"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "join": {
+      "direction": "client",
+      "transports": [
+        "http"
+      ],
+      "roles": [
+        "anonymous"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "credential": {
+      "direction": "server",
+      "transports": [
+        "http"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "authenticate": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "unauthenticated"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "leaveHttp": {
+      "direction": "client",
+      "transports": [
+        "http"
+      ],
+      "roles": [
+        "credentialOwner"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "authenticated": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "requestSnapshot": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "authenticated"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "setConfig": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "lobby"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "startGame": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "lobby"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "restartGame": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "editOwnProfile": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "authenticated"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "reorderRoster": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "kick": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "leave": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "authenticated"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "closeRoom": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "acknowledgeNumber": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "numberRecipient"
+      ],
+      "phases": [
+        "numbers"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "beginOrdering": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "answers"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "submitOrder": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "judge",
+        "allJudgesParticipant"
+      ],
+      "phases": [
+        "ordering"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "revealNext": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "revealing"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "completeCase": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "judged"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "completeWithoutVerdict": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "numbers",
+        "answers",
+        "ordering",
+        "revealing",
+        "judged",
+        "paused"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "continueRule": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "rule_event"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "resumePaused": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "paused"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "historyImport": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "lobby"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "historyBegin": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "lobby"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "historyStatus": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "historyOwner"
+      ],
+      "phases": [
+        "lobby"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "cancelHistoryImport": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "host"
+      ],
+      "phases": [
+        "lobby"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "historyPull": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "historyOwner"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "historyEvents": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "historyOwner"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "historyReceipt": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "historyOwner"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "ack": {
+      "direction": "server",
+      "transports": [
+        "http",
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "error": {
+      "direction": "server",
+      "transports": [
+        "http",
+        "websocket"
+      ],
+      "roles": [
+        "requester"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "sessionReplaced": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "roomClosed": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "ping": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "authenticated"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "pong": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "snapshot": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 524288,
+      "action": false
+    },
+    "delta": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 524288,
+      "action": false
+    },
+    "projectionStart": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "projectionChunk": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    },
+    "projectionEnd": {
+      "direction": "server",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "recipient"
+      ],
+      "phases": [
+        "any"
+      ],
+      "maxBytes": 16384,
+      "action": false
+    }
+  }
+}

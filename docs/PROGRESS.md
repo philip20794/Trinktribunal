@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–029 und TT-032 abgeschlossen; TT-030/031 funktionell implementiert und unit-geprüft.** 92 Node-/126 Flutter-Tests, Analyze/Format, Web-Release und Android-Debugbuild grün. Android am API-35-Emulator im Flugmodus bedient, Kaltstartfehler behoben. TT-033: Langlauf beider Modi mit 8 Personen / 50 Fällen / 7 Regeln und 50 Wiederaufnahmen grün. Reale Browser-Offlineabnahme offen, daher M3 noch nicht freigegeben. Keine neuen E2E-Tests.
+**Aktuell: TT-001–029 und TT-032 abgeschlossen.** TT-030/031 funktionell geprüft, TT-033-Langlauf/Android grün; reale Browserabnahme noch offen. TT-034: Vertrag, 41 Nachrichtenschemas/-beispiele und 17 neue Referenztests implementiert; formaler Abschluss wartet planmäßig auf TT-033. Lokal 109 Node-/126 Flutter-Tests grün, keine neuen E2E-Tests. [TT-034-Beleg](qa/TT-034.md).
 
 ## Statusregeln
 
@@ -93,7 +93,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-031 | Offline-Updates, Cachefehler und PWA-Metadaten | IN ARBEIT | 27.10.2026 · A→B/Fehler/Cacheverlust unit-geprüft; reale Browserabnahme offen · [Beleg](qa/offline.md) |
 | TT-032 | Frühe Android-Debug-App auf eigenem Gerät | ERLEDIGT | 27.10.2026 · API-35-Emulator im Flugmodus: Kaltstart/Resume, beide Modi, Touch-Reorder, Geheimhaltung, Urteil/Rotation/Regel · [Beleg](qa/android-debug.md) |
 | TT-033 | Lokale Modi als stabile Basis abnehmen | IN ARBEIT | 27.10.2026 · Langlauf 8/50/7 und 50 vollständige Wiederaufnahmen grün; Browserabnahme ausstehend · [M3](qa/M3.md) |
-| TT-034 | Multiplayer-Nachrichten und private Projektionen spezifizieren | OFFEN | — |
+| TT-034 | Multiplayer-Nachrichten und private Projektionen spezifizieren | IN ARBEIT | 27.10.2026 · Technisch implementiert: Vertrag, 41 Schemas/Beispielpaare, 17 Referenztests; Abnahme wegen offener TT-033-Abhängigkeit ausstehend · [Beleg](qa/TT-034.md) |
 | TT-035 | Worker und lokale Runtime mit Health-Endpunkt | OFFEN | — |
 | TT-036 | Nachrichtenvalidierung und Dart/TS-DTOs | OFFEN | — |
 | TT-037 | Raum erstellen und beitreten, atomar und begrenzt | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-034 – Multiplayer-Vertrag vorbereiten.** Die lokale Basis und Android wurden geprüft, TT-033 bleibt für die reale Browserabnahme offen. Protokollvorbereitung ersetzt dieses Gate nicht. Main wird nach größeren geprüften Ständen gepusht; neuere Codemagic-Checks sind noch nicht nachgewiesen.
+**Aktiver Abnahmepunkt: TT-033 → TT-034.** Protokollvorbereitung technisch fertig und unit-geprüft. Vor TT-035 gemäß strikter Planabhängigkeit die reale Browser-Offline-/Updateprüfung abschließen; chrome-devtools ist weiterhin nicht verbunden. Größere geprüfte Stände werden nach main gepusht; aktuelle Codemagic-Läufe sind noch nicht nachgewiesen.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main nach geprüftem Fast-Forward des Entwicklungszweigs
-Aktueller Beleg: docs/qa/M3.md und docs/qa/android-debug.md
-Naechster Schritt: TT-034-Vertrag; Browserabnahme von TT-030/031/033 bei verfügbarer Chrome-DevTools-Verbindung nachholen.
+Branch: main mit geprüftem TT-034-Vertragsstand; formaler Taskabschluss bleibt offen
+Aktueller Beleg: docs/qa/TT-034.md; offene Browserabnahme: docs/qa/offline.md
+Naechster Schritt: Chrome-DevTools-Verbindung herstellen, TT-030/031/033 manuell abnehmen; TT-034 formal abschließen, anschließend TT-035. Keine erneute Protokoll-Grundimplementierung nötig.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```
