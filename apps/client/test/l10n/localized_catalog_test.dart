@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/local_session_controller.dart';
 import 'package:trinktribunal/application/settings_controller.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
+import 'package:trinktribunal/data/catalogs/catalog.dart';
 import 'package:trinktribunal/data/catalogs/localized_catalog.dart';
 import '../support/memory_string_store.dart';
 
@@ -38,7 +39,7 @@ void main() {
     await settings.load();
     await settings.update(language: 'en');
     final localized = localizedQuestion(
-      catalogs, settings.value.language, game.state!.currentQuestion!.entry,
+      catalogs, settings.value.language, game.state!.currentQuestion!.entry as Question,
     );
     expect(localized.id, questionId);
     expect(game.state!.id.value, id);
