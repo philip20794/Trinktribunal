@@ -35,6 +35,8 @@ Das Testszenario ist mit `node --test scripts/tests/projections.test.mjs` lokal 
 
 ## Geplante Testnutzung
 
+Die zusätzliche versionierte Suite [`fixtures/transitions/core/v1.json`](fixtures/transitions/core/v1.json) enthält vollständige Fallfolgen mit gemeinsamen normalisierten Erwartungen. Seit TT-043 führen `apps/client/test/domain/game_core_parity_test.dart` und `apps/server/test/domain/transitions.test.ts` diese Suite gegen den tatsächlichen Dart-Controller und den TypeScript-Spielkern aus. Sie ergänzt die einzelnen TT-003-Fixtures; ihre Auswahlports sind bis TT-044 deterministische Testadapter.
+
 Für Node `node --test scripts/tests/protocol-fixtures.test.mjs` (ohne Netzwerk). Die Tests prüfen JSON, Eindeutigkeit von `fixtureId` sowie fachliche Beispiel-Invarianten, ersetzen aber **keine** spätere Ausführung derselben Beispiele in Dart und TypeScript. Bei einem späteren kanonischen Protokollschema darf nur die Struktur versioniert migriert werden, nicht die beschlossene Semantik.
 
 **Gültigkeitsgrenze:** Eine grüne Fixture-Datei ist kein Nachweis für einen spielbaren Client, eine autoritative Worker-Implementierung oder eine juristische Freigabe des übernommenen Inhalts.

@@ -79,6 +79,8 @@ Der konkrete Client kann die feingranularen Phasen für Kartenmodus zusammenfass
 
 ## 5. Rechte-/Aktionstabelle
 
+TT-043 implementiert diese Guards im reinen TypeScript-Reducer `apps/server/src/domain/game_reducer.ts`. Gemeinsame mehrstufige Dart-/TS-Fixtures prüfen die Fachübergänge; Auswahlports werden in TT-044 durch die tatsächlichen Algorithmen ergänzt, die atomare Raum-Persistenz folgt TT-045. Host-Fristfunktionen arbeiten mit injizierter Zeit; die Runtime-Alarmanbindung folgt TT-054. Ein übersprungener inkompatibler Regelslot führt ohne leere Regelansicht direkt zum nächsten Fall.
+
 | Aktionsabsicht | Lokal | Multiplayer |
 | --- | --- | --- |
 | `startGame`, `restartGame`, `setFrozenConfig` vor Start | gemeinsame Bedienung | nur Host; mindestens 3 Teilnehmer; Neustart bestätigt |

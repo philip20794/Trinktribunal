@@ -408,6 +408,10 @@ final class SharedPhoneController {
       );
       _historyStore.merge(_rules!.selection.history);
       _processedSlots.add(_completed);
+      if (_rules!.activations[_ruleEventId] == null) {
+        _beginCase();
+        return;
+      }
       _phase = GamePhase.ruleEvent;
       _order = [];
       _revealCursor = 0;

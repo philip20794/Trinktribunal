@@ -1,0 +1,63 @@
+{
+  "formatVersion": 1,
+  "decisionRefs": ["D-01", "D-02", "D-06", "D-07"],
+  "notes": "Independent normalized transition expectations read by the actual Dart shared-phone controller and the TypeScript kernel. Selection/number implementations are injected in TT-043; algorithm parity follows TT-044. Phase, counted completion, rotation and rule-slot behavior are compared here.",
+  "questions": ["001-a", "001-b", "002-a"],
+  "rules": ["rule_a", "rule_b"],
+  "scenarios": [
+    {
+      "id": "counted-skip-rule-slots-and-finish",
+      "targetCases": 3,
+      "ruleSlots": [1, 2],
+      "excludeRules": false,
+      "steps": [
+        {"action":"start", "expected":{"phase":"numbers","completed":0,"judge":"A","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skip", "repeat":true, "expected":{"phase":"rule_event","completed":1,"judge":"B","question":"001-a","drawn":1,"rules":1,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"continueRule", "expected":{"phase":"numbers","completed":1,"judge":"B","question":"001-b","drawn":2,"rules":1,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skip", "repeat":true, "expected":{"phase":"rule_event","completed":2,"judge":"C","question":"001-b","drawn":2,"rules":2,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"continueRule", "expected":{"phase":"numbers","completed":2,"judge":"C","question":"002-a","drawn":3,"rules":2,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skip", "repeat":true, "expected":{"phase":"finished","completed":3,"judge":"A","question":"002-a","drawn":3,"rules":2,"skippedRules":0,"roster":["A","B","C"]}}
+      ]
+    },
+    {
+      "id": "single-case-no-unconfirmed-progress-no-final-rule",
+      "targetCases": 1,
+      "ruleSlots": [],
+      "excludeRules": false,
+      "steps": [
+        {"action":"start", "expected":{"phase":"numbers","completed":0,"judge":"A","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skipUnconfirmed", "expected":{"phase":"numbers","completed":0,"judge":"A","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skip", "repeat":true, "expected":{"phase":"finished","completed":1,"judge":"B","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B","C"]}}
+      ]
+    },
+    {
+      "id": "incompatible-rule-slot-is-consumed-without-empty-rule-view",
+      "targetCases": 3,
+      "ruleSlots": [1, 2],
+      "excludeRules": true,
+      "steps": [
+        {"action":"start", "expected":{"phase":"numbers","completed":0,"judge":"A","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skip", "expected":{"phase":"rule_event","completed":1,"judge":"B","question":"001-a","drawn":1,"rules":1,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"continueRule", "expected":{"phase":"numbers","completed":1,"judge":"B","question":"001-b","drawn":2,"rules":1,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skip", "expected":{"phase":"numbers","completed":2,"judge":"C","question":"002-a","drawn":3,"rules":1,"skippedRules":1,"roster":["A","B","C"]}},
+        {"action":"skip", "repeat":true, "expected":{"phase":"finished","completed":3,"judge":"A","question":"002-a","drawn":3,"rules":1,"skippedRules":1,"roster":["A","B","C"]}}
+      ]
+    },
+    {
+      "id": "boundary-pause-keeps-pending-rule-until-three-members",
+      "targetCases": 3,
+      "ruleSlots": [1],
+      "excludeRules": false,
+      "steps": [
+        {"action":"start", "expected":{"phase":"numbers","completed":0,"judge":"A","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"roster", "roster":["A","B"], "expected":{"phase":"numbers","completed":0,"judge":"A","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B","C"]}},
+        {"action":"skip", "repeat":true, "expected":{"phase":"paused","completed":1,"judge":"B","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B"]}},
+        {"action":"roster", "roster":["A","B","D"], "expected":{"phase":"paused","completed":1,"judge":"B","question":"001-a","drawn":1,"rules":0,"skippedRules":0,"roster":["A","B"]}},
+        {"action":"resume", "expected":{"phase":"rule_event","completed":1,"judge":"B","question":"001-a","drawn":1,"rules":1,"skippedRules":0,"roster":["A","B","D"]}},
+        {"action":"continueRule", "expected":{"phase":"numbers","completed":1,"judge":"B","question":"001-b","drawn":2,"rules":1,"skippedRules":0,"roster":["A","B","D"]}},
+        {"action":"skip", "expected":{"phase":"numbers","completed":2,"judge":"D","question":"002-a","drawn":3,"rules":1,"skippedRules":0,"roster":["A","B","D"]}},
+        {"action":"skip", "repeat":true, "expected":{"phase":"finished","completed":3,"judge":"A","question":"002-a","drawn":3,"rules":1,"skippedRules":0,"roster":["A","B","D"]}}
+      ]
+    }
+  ]
+}

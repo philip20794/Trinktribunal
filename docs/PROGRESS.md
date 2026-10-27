@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–042 nach Unit-Gates abgeschlossen, TT-043 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/249 Flutter-/125 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–043 nach Unit-Gates abgeschlossen, TT-044 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/253 Flutter-/241 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -102,7 +102,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-040 | Erstellen-/Beitreten-Screens und Einladungen | ERLEDIGT | 27.10.2026 · expliziter Einstieg/Resume, Profile, Linkroute und lokaler QR, 10 neue Entry-Units · [Beleg](qa/TT-040.md) |
 | TT-041 | Lobby, Tabs und Live-Profile synchronisieren | ERLEDIGT | 27.10.2026 · drei Live-Ansichten, eigene Profile, Host-Lobbyverwaltung, Deltas/Revisionen und gebündelte Änderungen · [Beleg](qa/TT-041.md) |
 | TT-042 | Lokale Mehrbrowser-Harness und Lobby-Abnahme | ERLEDIGT | 27.10.2026 · isolierte persistente Profile, eigene lokale Prozesse, Start/Stopp geprüft; Browser/E2E übersprungen · [M4](qa/M4.md) |
-| TT-043 | TypeScript-Spielkern und Phasenrechte | OFFEN | — |
+| TT-043 | TypeScript-Spielkern und Phasenrechte | ERLEDIGT | 27.10.2026 · reiner Kern, D-07/D-08, vollständige Phasenmatrix, gemeinsame Dart-/TS-Fallfolgen; leere Dart-Regelansicht korrigiert · [TT-043](qa/TT-043.md) |
 | TT-044 | TS-Zahlen, Fragen und Trinkregeln mit Parität | OFFEN | — |
 | TT-045 | Atomare Aktionen, Revisionen und Idempotenz | OFFEN | — |
 | TT-046 | Start, Einstellungen und Zahlen privat zustellen | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-043 – TypeScript-Spielkern und Phasenrechte.** TT-035 lokal geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-044 – TS-Zahlen, Fragen und Trinkregeln mit Parität.** TT-043 geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem M4-/TT-042-Harnessstand
-Aktueller Beleg: docs/qa/TT-035.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-043 reiner TypeScript-Spielkern gemäß GAME_STATE; bestehende Dart-Verträge und Fixtures wiederverwenden.
+Branch: main mit geprüftem TT-043-Spielkern
+Aktueller Beleg: docs/qa/TT-043.md; Browserprüfungen übersprungen, später manuell testen
+Naechster Schritt: TT-044 Auswahl-/Zahlen-/Regelalgorithmen aus Dart portieren und gemeinsame Paritätsfixtures ausführen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```
