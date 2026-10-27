@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../l10n/app_strings.dart';
 
 import 'home_screen.dart';
@@ -11,7 +12,15 @@ class ModePreviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.tr(switch (mode) { GameMode.cards => 'modeCards', GameMode.sharedPhone => 'modePhone', GameMode.multiplayer => 'modeMulti' }))),
+      appBar: AppBar(
+        title: Text(
+          context.tr(switch (mode) {
+            GameMode.cards => 'modeCards',
+            GameMode.sharedPhone => 'modePhone',
+            GameMode.multiplayer => 'modeMulti',
+          }),
+        ),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 640),
@@ -22,17 +31,25 @@ class ModePreviewScreen extends StatelessWidget {
               Icon(mode.icon, size: 72),
               const SizedBox(height: 24),
               Text(
-                context.tr(switch (mode) { GameMode.cards => 'modeCards', GameMode.sharedPhone => 'modePhone', GameMode.multiplayer => 'modeMulti' }),
+                context.tr(switch (mode) {
+                  GameMode.cards => 'modeCards',
+                  GameMode.sharedPhone => 'modePhone',
+                  GameMode.multiplayer => 'modeMulti',
+                }),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 16),
-              Text(context.tr(switch (mode) { GameMode.cards => 'modeCardsDescription', GameMode.sharedPhone => 'modePhoneDescription', GameMode.multiplayer => 'modeMultiDescription' }), textAlign: TextAlign.center),
-              const SizedBox(height: 28),
               Text(
-                context.tr('modeUnavailable'),
+                context.tr(switch (mode) {
+                  GameMode.cards => 'modeCardsDescription',
+                  GameMode.sharedPhone => 'modePhoneDescription',
+                  GameMode.multiplayer => 'modeMultiDescription',
+                }),
                 textAlign: TextAlign.center,
               ),
+              const SizedBox(height: 28),
+              Text(context.tr('modeUnavailable'), textAlign: TextAlign.center),
               const SizedBox(height: 28),
               OutlinedButton.icon(
                 onPressed: () => Navigator.of(context).pop(),

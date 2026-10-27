@@ -63,6 +63,7 @@ if ($Scope -in @('Client', 'All')) {
     Push-Location $client
     try {
         Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'validate-data.mjs'), '--check')
+        Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'generate-l10n.mjs'), '--check')
         Invoke-Checked 'flutter' @('pub', 'get', '--offline', '--enforce-lockfile')
         Invoke-Checked 'dart' @('format', '--output=none', '--set-exit-if-changed', 'lib', 'test')
         Invoke-Checked 'flutter' @('analyze')

@@ -16,9 +16,11 @@ import 'local_state_transaction.dart';
 final stringStoreProvider = Provider<StringStore>(
   (ref) => PreferencesStringStore(),
 );
-final settingsControllerProvider = Provider<SettingsController>(
-  (ref) => SettingsController(ref.watch(stringStoreProvider)),
-);
+final settingsControllerProvider = Provider<SettingsController>((ref) {
+  final controller = SettingsController(ref.watch(stringStoreProvider));
+  ref.onDispose(controller.dispose);
+  return controller;
+});
 final settingsProvider = FutureProvider<SettingsController>((ref) async {
   final controller = ref.watch(settingsControllerProvider);
   await controller.load();

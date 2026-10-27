@@ -16,8 +16,7 @@ class CatalogDiagnostics extends ConsumerWidget {
         ref
             .watch(catalogsProvider)
             .when(
-              loading: () =>
-                  const ListTile(title: TText('catalogsLoading')),
+              loading: () => const ListTile(title: TText('catalogsLoading')),
               error: (error, stack) => ListTile(
                 title: const TText('catalogError'),
                 subtitle: Text('$error'),
@@ -32,10 +31,18 @@ class CatalogDiagnostics extends ConsumerWidget {
                   for (final language in ['de', 'en'])
                     ListTile(
                       title: Text(
-                        context.tr('catalogCounts', {'language': language.toUpperCase(), 'questions': data.questions[language]!.entries.length, 'rules': data.rules[language]!.entries.length}),
+                        context.tr('catalogCounts', {
+                          'language': language.toUpperCase(),
+                          'questions': data.questions[language]!.entries.length,
+                          'rules': data.rules[language]!.entries.length,
+                        }),
                       ),
                       subtitle: Text(
-                        context.tr('catalogNoNames', {'questions': data.questions[language]!.withoutPlayers.length, 'rules': data.rules[language]!.withoutPlayers.length}),
+                        context.tr('catalogNoNames', {
+                          'questions':
+                              data.questions[language]!.withoutPlayers.length,
+                          'rules': data.rules[language]!.withoutPlayers.length,
+                        }),
                       ),
                     ),
                 ],

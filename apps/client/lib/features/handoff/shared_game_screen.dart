@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../l10n/app_strings.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
@@ -145,11 +147,13 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
   @override
   Widget build(BuildContext context) {
     final view = _controller.view!;
-    final rendered = view.question == null ? null : localizedQuestion(
-      ref.read(catalogsProvider).requireValue,
-      AppLanguageScope.of(context).language,
-      view.question!.entry as Question,
-    ).renderFor(view.question!.names(view.names));
+    final rendered = view.question == null
+        ? null
+        : localizedQuestion(
+            ref.read(catalogsProvider).requireValue,
+            AppLanguageScope.of(context).language,
+            view.question!.entry as Question,
+          ).renderFor(view.question!.names(view.names));
     final judge = view.judge == null ? null : view.profiles[view.judge];
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
@@ -178,19 +182,26 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       padding: const EdgeInsets.all(24),
                       children: [
                         Text(
-                          context.tr('activeRulesCount', {'count': view.activeRules.length}),
+                          context.tr('activeRulesCount', {
+                            'count': view.activeRules.length,
+                          }),
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                        const TText('phoneRuleHelp',
-                        ),
+                        const TText('phoneRuleHelp'),
                         for (final rule in view.activeRules)
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             child: Text(
-                              localizedRule(ref.read(catalogsProvider).requireValue,
-                                AppLanguageScope.of(context).language, rule.entry as DrinkingRule).render(
-                                localizedRule(ref.read(catalogsProvider).requireValue,
-                                  AppLanguageScope.of(context).language, rule.entry as DrinkingRule).text,
+                              localizedRule(
+                                ref.read(catalogsProvider).requireValue,
+                                AppLanguageScope.of(context).language,
+                                rule.entry as DrinkingRule,
+                              ).render(
+                                localizedRule(
+                                  ref.read(catalogsProvider).requireValue,
+                                  AppLanguageScope.of(context).language,
+                                  rule.entry as DrinkingRule,
+                                ).text,
                                 rule.names(view.names),
                               ),
                             ),
@@ -213,7 +224,10 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
               padding: const EdgeInsets.all(20),
               children: [
                 Text(
-                  context.tr('casesCompleted', {'done': view.completedCases, 'total': view.config.targetCases}),
+                  context.tr('casesCompleted', {
+                    'done': view.completedCases,
+                    'total': view.config.targetCases,
+                  }),
                 ),
                 LinearProgressIndicator(
                   value: view.completedCases / view.config.targetCases,
@@ -222,7 +236,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
-                      _error!,
+                      context.feedback(_error!),
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.error,
                       ),
@@ -231,8 +245,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 if (view.pendingRoster != null)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
-                    child: TText('phoneRosterNotice',
-                    ),
+                    child: TText('phoneRosterNotice'),
                   ),
                 if (judge != null)
                   Padding(
@@ -252,7 +265,9 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   ),
                 if (view.phase == GamePhase.numbers) ...[
                   CourtSeal(
-                    label: context.tr('passPhone', {'name': view.name(view.recipient!)}),
+                    label: context.tr('passPhone', {
+                      'name': view.name(view.recipient!),
+                    }),
                     icon: Icons.lock_outline,
                   ),
                   const SizedBox(height: 16),
@@ -271,8 +286,9 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       '${view.visibleSecret}',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.displayLarge,
-                      semanticsLabel:
-                          context.tr('secretNumber', {'number': view.visibleSecret}),
+                      semanticsLabel: context.tr('secretNumber', {
+                        'number': view.visibleSecret,
+                      }),
                     ),
                     FilledButton(
                       onPressed: () => _act(
@@ -297,7 +313,9 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     ].contains(view.phase)) ...[
                   const SizedBox(height: 16),
                   CaseFile(
-                    label: context.tr('caseNumber', {'number': view.completedCases + 1}),
+                    label: context.tr('caseNumber', {
+                      'number': view.completedCases + 1,
+                    }),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -317,8 +335,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 ],
                 if (view.phase == GamePhase.answers) ...[
                   const SizedBox(height: 16),
-                  const TText('phoneAnswersHelp',
-                  ),
+                  const TText('phoneAnswersHelp'),
                   FilledButton(
                     onPressed: () =>
                         _act(() => _controller.beginOrdering(view.roundId)),
@@ -332,8 +349,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 ].contains(view.phase)) ...[
                   const SizedBox(height: 16),
                   if (view.phase == GamePhase.ordering)
-                    const TText('phoneOrderHelp',
-                    ),
+                    const TText('phoneOrderHelp'),
                   BenchView(
                     order: view.order,
                     profiles: view.profiles,
@@ -375,10 +391,17 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     ),
                   if (view.verdict != null) ...[
                     CourtSeal(
-                      label: context.tr('wrongPositionsCount', {'count': view.verdict!.errors}),
+                      label: context.tr('wrongPositionsCount', {
+                        'count': view.verdict!.errors,
+                      }),
                     ),
                     for (final entry in view.verdict!.sips.entries)
-                      Text(context.tr('sips', {'name': view.name(entry.key), 'count': entry.value})),
+                      Text(
+                        context.tr('sips', {
+                          'name': view.name(entry.key),
+                          'count': entry.value,
+                        }),
+                      ),
                     FilledButton(
                       onPressed: () => _act(
                         () => _controller.completeCase(
@@ -397,17 +420,26 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                         : context.tr('newRule'),
                     child: Text(
                       view.newRule == null
-                          ? context.tr('phoneNoRule', {'count': view.config.scheduledRuleEventCount - view.skippedRules})
-                          : localizedRule(ref.read(catalogsProvider).requireValue,
-                              AppLanguageScope.of(context).language, view.newRule!.entry as DrinkingRule).render(
-                              localizedRule(ref.read(catalogsProvider).requireValue,
-                                AppLanguageScope.of(context).language, view.newRule!.entry as DrinkingRule).text,
+                          ? context.tr('phoneNoRule', {
+                              'count':
+                                  view.config.scheduledRuleEventCount -
+                                  view.skippedRules,
+                            })
+                          : localizedRule(
+                              ref.read(catalogsProvider).requireValue,
+                              AppLanguageScope.of(context).language,
+                              view.newRule!.entry as DrinkingRule,
+                            ).render(
+                              localizedRule(
+                                ref.read(catalogsProvider).requireValue,
+                                AppLanguageScope.of(context).language,
+                                view.newRule!.entry as DrinkingRule,
+                              ).text,
                               view.newRule!.names(view.names),
                             ),
                     ),
                   ),
-                  const TText('phoneRuleEventHelp',
-                  ),
+                  const TText('phoneRuleEventHelp'),
                   FilledButton(
                     onPressed: () => _act(
                       () => _controller.continueRule(
@@ -418,14 +450,18 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   ),
                 ],
                 if (view.phase == GamePhase.paused) ...[
-                  Text(view.pauseReason ?? context.tr('gamePaused')),
+                  Text(
+                    view.pauseReason == null
+                        ? context.tr('gamePaused')
+                        : context.feedback(view.pauseReason!),
+                  ),
                   FilledButton(
                     onPressed: () => _act(_controller.resumePaused),
                     child: const TText('phoneContinueRoster'),
                   ),
                 ],
                 if (view.phase == GamePhase.finished)
-                  const CourtSeal(label: context.tr('endHearing')),
+                  CourtSeal(label: context.tr('endHearing')),
                 if (![
                   GamePhase.ruleEvent,
                   GamePhase.finished,

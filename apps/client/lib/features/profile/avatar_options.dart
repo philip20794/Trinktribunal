@@ -21,12 +21,14 @@ class AvatarOptions extends StatelessWidget {
             key: ValueKey('${category.key}:${config[category.key]}'),
             initialValue: config[category.key],
             isExpanded: true,
-            decoration: InputDecoration(labelText: context.tr('avatarCategory' + category.key)),
+            decoration: InputDecoration(
+              labelText: context.tr('avatarCategory${category.key}'),
+            ),
             items: category.value
                 .map(
                   (value) => DropdownMenuItem(
                     value: value,
-                    child: Text(context.tr('avatarOption' + value)),
+                    child: Text(context.tr('avatarOption$value')),
                   ),
                 )
                 .toList(),

@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+
 import '../data/string_store.dart';
 
 @immutable
@@ -14,12 +16,15 @@ class AppSettings {
   final bool reducedMotion;
   final bool audioEnabled;
 
-  AppSettings copyWith({String? language, bool? reducedMotion, bool? audioEnabled}) =>
-      AppSettings(
-        language: language ?? this.language,
-        reducedMotion: reducedMotion ?? this.reducedMotion,
-        audioEnabled: audioEnabled ?? this.audioEnabled,
-      );
+  AppSettings copyWith({
+    String? language,
+    bool? reducedMotion,
+    bool? audioEnabled,
+  }) => AppSettings(
+    language: language ?? this.language,
+    reducedMotion: reducedMotion ?? this.reducedMotion,
+    audioEnabled: audioEnabled ?? this.audioEnabled,
+  );
 
   Map<String, Object> toJson() => {
     'version': 1,
@@ -29,9 +34,12 @@ class AppSettings {
   };
 
   static AppSettings fromJson(Object? value) {
-    if (value is! Map<String, dynamic> || value['version'] != 1 ||
+    if (value is! Map<String, dynamic> ||
+        value['version'] is! int ||
+        value['version'] != 1 ||
         !['de', 'en'].contains(value['language']) ||
-        value['reducedMotion'] is! bool || value['audioEnabled'] is! bool) {
+        value['reducedMotion'] is! bool ||
+        value['audioEnabled'] is! bool) {
       throw const FormatException('Invalid app settings');
     }
     return AppSettings(
@@ -50,11 +58,25 @@ class SettingsController extends ChangeNotifier {
   AppSettings value = const AppSettings();
   String? error;
   Future<void> _pending = Future.value();
+  int _revision = 0;
+  bool _disposed = false;
+
+  void _notify() {
+    if (!_disposed) notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 
   Future<void> load() async {
     try {
       final raw = await _store.read(storageKey);
-      value = raw == null ? const AppSettings() : AppSettings.fromJson(jsonDecode(raw));
+      value = raw == null
+          ? const AppSettings()
+          : AppSettings.fromJson(jsonDecode(raw));
       error = null;
     } on FormatException {
       value = const AppSettings();
@@ -63,25 +85,38 @@ class SettingsController extends ChangeNotifier {
       value = const AppSettings();
       error = 'settingsUnavailable';
     }
-    notifyListeners();
+    _notify();
   }
 
-  Future<void> update({String? language, bool? reducedMotion, bool? audioEnabled}) {
+  Future<void> update({
+    String? language,
+    bool? reducedMotion,
+    bool? audioEnabled,
+  }) {
     if (language != null && language != 'de' && language != 'en') {
       throw ArgumentError.value(language, 'language');
     }
     value = value.copyWith(
-      language: language, reducedMotion: reducedMotion, audioEnabled: audioEnabled,
+      language: language,
+      reducedMotion: reducedMotion,
+      audioEnabled: audioEnabled,
     );
     error = null;
-    notifyListeners();
+    _notify();
+    final revision = ++_revision;
     final snapshot = jsonEncode(value.toJson());
     final write = _pending.then((_) async {
       try {
         await _store.write(storageKey, snapshot);
+        if (revision == _revision) {
+          error = null;
+          _notify();
+        }
       } on Object {
-        error = 'settingsSaveFailed';
-        notifyListeners();
+        if (revision == _revision) {
+          error = 'settingsSaveFailed';
+          _notify();
+        }
       }
     });
     _pending = write;

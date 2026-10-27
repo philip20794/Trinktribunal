@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../application/local_data_providers.dart';
 import '../application/settings_controller.dart';
@@ -12,8 +13,8 @@ class TrinktribunalApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(settingsProvider).asData?.value;
-    if (controller == null) return _buildApp(const AppSettings());
+    final controller = ref.watch(settingsControllerProvider);
+    ref.watch(settingsProvider);
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) => _buildApp(controller.value),
@@ -23,11 +24,17 @@ class TrinktribunalApp extends ConsumerWidget {
   Widget _buildApp(AppSettings settings) => MaterialApp(
     title: 'Trinktribunal',
     debugShowCheckedModeBanner: false,
+    locale: Locale(settings.language),
+    supportedLocales: const [Locale('de'), Locale('en')],
+    localizationsDelegates: GlobalMaterialLocalizations.delegates,
     theme: courtTheme(),
     builder: (context, child) => AppLanguageScope(
       language: settings.language,
       child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(disableAnimations: settings.reducedMotion),
+        data: MediaQuery.of(context).copyWith(
+          disableAnimations:
+              MediaQuery.disableAnimationsOf(context) || settings.reducedMotion,
+        ),
         child: child ?? const SizedBox.shrink(),
       ),
     ),

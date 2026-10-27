@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../l10n/app_strings.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -108,7 +110,8 @@ class HomeScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TText('homeWelcome',
+                      TText(
+                        'homeWelcome',
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       const SizedBox(height: 10),
@@ -122,7 +125,7 @@ class HomeScreen extends ConsumerWidget {
                       if (transaction?.error != null)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text(transaction!.error!),
+                          child: Text(context.feedback(transaction!.error!)),
                         ),
                       if (transaction?.needsReset == true)
                         TextButton(
@@ -130,10 +133,8 @@ class HomeScreen extends ConsumerWidget {
                             final confirmed = await showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: const TText('homeDiscardTitle',
-                                ),
-                                content: const TText('homeKeepProfile',
-                                ),
+                                title: const TText('homeDiscardTitle'),
+                                content: const TText('homeKeepProfile'),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
@@ -190,7 +191,8 @@ class HomeScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 24),
                       const CatalogDiagnostics(),
-                      const TText('homeDevPreview',
+                      const TText(
+                        'homeDevPreview',
                         style: TextStyle(color: Color(0xFF715E50)),
                       ),
                     ],
@@ -226,9 +228,22 @@ class _ModeCard extends StatelessWidget {
               children: [
                 Icon(mode.icon, size: 36),
                 const SizedBox(height: 18),
-                Text(context.tr(switch (mode) { GameMode.cards => 'modeCards', GameMode.sharedPhone => 'modePhone', GameMode.multiplayer => 'modeMulti' }), style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  context.tr(switch (mode) {
+                    GameMode.cards => 'modeCards',
+                    GameMode.sharedPhone => 'modePhone',
+                    GameMode.multiplayer => 'modeMulti',
+                  }),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 const SizedBox(height: 10),
-                Text(context.tr(switch (mode) { GameMode.cards => 'modeCardsDescription', GameMode.sharedPhone => 'modePhoneDescription', GameMode.multiplayer => 'modeMultiDescription' })),
+                Text(
+                  context.tr(switch (mode) {
+                    GameMode.cards => 'modeCardsDescription',
+                    GameMode.sharedPhone => 'modePhoneDescription',
+                    GameMode.multiplayer => 'modeMultiDescription',
+                  }),
+                ),
                 const SizedBox(height: 14),
                 Align(
                   alignment: Alignment.centerRight,

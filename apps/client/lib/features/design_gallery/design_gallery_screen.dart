@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../l10n/app_strings.dart';
 
 import '../../design/case_file.dart';
@@ -36,17 +37,20 @@ class _DesignGalleryScreenState extends State<DesignGalleryScreen> {
                 onChanged: (value) => setState(() => _largeText = value),
               ),
               const SizedBox(height: 16),
-              TText('galleryCase',
+              TText(
+                'galleryCase',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 16),
-              const CaseFile(
+              CaseFile(
                 label: context.tr('cardCaseLabel'),
-                child: TText('galleryPrompt',
-                ),
+                child: TText('galleryPrompt'),
               ),
               const SizedBox(height: 16),
-              const CourtSeal(label: context.tr('galleryConfidential'), icon: Icons.lock_outline),
+              CourtSeal(
+                label: context.tr('galleryConfidential'),
+                icon: Icons.lock_outline,
+              ),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 12,
@@ -69,18 +73,17 @@ class _DesignGalleryScreenState extends State<DesignGalleryScreen> {
                 child: const TText('backToCase'),
               ),
               const SizedBox(height: 16),
-              const TText('galleryHelp',
-              ),
+              const TText('galleryHelp'),
               const SizedBox(height: 16),
               const Wrap(
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  _Swatch('Papier', CourtTokens.paper),
-                  _Swatch('Tinte', CourtTokens.ink),
-                  _Swatch('Holz', CourtTokens.wood),
-                  _Swatch('Siegel', CourtTokens.red),
-                  _Swatch('Graublau', CourtTokens.blue),
+                  _Swatch('galleryPaper', CourtTokens.paper),
+                  _Swatch('galleryInk', CourtTokens.ink),
+                  _Swatch('galleryWood', CourtTokens.wood),
+                  _Swatch('gallerySeal', CourtTokens.red),
+                  _Swatch('galleryBlue', CourtTokens.blue),
                 ],
               ),
             ],
@@ -108,7 +111,7 @@ class _Swatch extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      Text(label),
+      TText(label),
     ],
   );
 }

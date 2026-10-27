@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../l10n/app_strings.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
@@ -72,7 +74,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     const SizedBox(height: 16),
                     TextField(
                       controller: _name,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: context.tr('profileName'),
                         helperText: context.tr('profileLength'),
                       ),
@@ -106,8 +108,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    const TText('profileHelp',
-                    ),
+                    const TText('profileHelp'),
                     const SizedBox(height: 16),
                     for (final category in AvatarCatalog.options.entries)
                       Padding(
@@ -119,13 +120,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           initialValue: _avatar[category.key],
                           isExpanded: true,
                           decoration: InputDecoration(
-                            labelText: context.tr('avatarCategory' + category.key),
+                            labelText: context.tr(
+                              'avatarCategory${category.key}',
+                            ),
                           ),
                           items: category.value
                               .map(
                                 (option) => DropdownMenuItem(
                                   value: option,
-                                  child: Text(context.tr('avatarOption' + option)),
+                                  child: Text(
+                                    context.tr('avatarOption$option'),
+                                  ),
                                 ),
                               )
                               .toList(),
@@ -145,7 +150,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: Text(
-                          controller.error!,
+                          context.feedback(controller.error!),
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.error,
                           ),
@@ -159,8 +164,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const TText('profileBack',
-                      ),
+                      child: const TText('profileBack'),
                     ),
                   ],
                 ),

@@ -37,7 +37,7 @@ void main() {
       if (title == 'Handy + Karten') {
         expect(find.text('Eure nächste Verhandlung'), findsOneWidget);
       }
-      await tester.pageBack();
+      await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       expect(find.text('Der Gerichtssaal wartet.'), findsOneWidget);
     }
@@ -49,13 +49,13 @@ void main() {
     await tester.tap(find.byTooltip('Profil öffnen'));
     await tester.pumpAndSettle();
     expect(find.text('Mein Profil'), findsOneWidget);
-    await tester.pageBack();
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byTooltip('Einstellungen öffnen'));
     await tester.pumpAndSettle();
     expect(find.text('Allgemeine Einstellungen'), findsOneWidget);
-    await tester.pageBack();
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     expect(find.text('Handy + Karten'), findsOneWidget);
   });

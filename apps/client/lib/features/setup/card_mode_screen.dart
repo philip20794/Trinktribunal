@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import '../../l10n/app_strings.dart';
 
 import 'package:flutter/material.dart';
@@ -109,12 +110,13 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const TText('manualVerdictHelp',
-                  ),
+                  const TText('manualVerdictHelp'),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
                     initialValue: 0,
-                    decoration: InputDecoration(labelText: context.tr('incorrectPositions')),
+                    decoration: InputDecoration(
+                      labelText: context.tr('incorrectPositions'),
+                    ),
                     items:
                         [
                               0,
@@ -133,8 +135,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                     value: checked,
                     onChanged: (value) =>
                         update(() => checked = value ?? false),
-                    title: const TText('correctOrderChecked',
-                    ),
+                    title: const TText('correctOrderChecked'),
                   ),
                 ],
               ),
@@ -209,8 +210,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const TText('cardLoadError',
-                ),
+                const TText('cardLoadError'),
                 const SizedBox(height: 16),
                 FilledButton(
                   onPressed: () => ref.invalidate(catalogsProvider),
@@ -238,16 +238,19 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(24),
                 children: [
-                  if (_storageWarning != null) Text(_storageWarning!),
+                  if (_storageWarning != null)
+                    Text(context.feedback(_storageWarning!)),
                   if (_error != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
                       child: Text(
-                        _error!,
+                        context.feedback(_error!),
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.error,
                         ),
-                        semanticsLabel: context.tr('errorText', {'text': _error}),
+                        semanticsLabel: context.tr('errorText', {
+                          'text': _error,
+                        }),
                       ),
                     ),
                   if (state == null)
@@ -280,19 +283,14 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       math.min(_cases, maxCases) - 1,
     );
     if (maxCases < 1) {
-      return [
-        const TText('cardNoQuestions'),
-      ];
+      return [const TText('cardNoQuestions')];
     }
     final cases = math.min(_cases, maxCases);
     final rules = math.min(_rules, maxRules);
     return [
-      TText('nextHearing',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
+      TText('nextHearing', style: Theme.of(context).textTheme.headlineMedium),
       const SizedBox(height: 12),
-      const TText('cardIntro',
-      ),
+      const TText('cardIntro'),
       const SizedBox(height: 24),
       _slider('Spieler', _players, 3, 20, (n) => _players = n),
       _slider(context.tr('cases'), cases, 1, maxCases, (n) {
@@ -316,7 +314,10 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ),
       const SizedBox(height: 12),
       Text(
-        context.tr('cardsPrepare', {'max': (_players * _factor + 9) ~/ 10, 'count': _players - 1}),
+        context.tr('cardsPrepare', {
+          'max': (_players * _factor + 9) ~/ 10,
+          'count': _players - 1,
+        }),
       ),
       const SizedBox(height: 20),
       FilledButton.icon(
@@ -366,22 +367,32 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
   List<Widget> _game(LocalSessionController controller, CardGameState state) {
     final config = state.config;
     final originalQuestion = state.currentQuestion?.entry as Question?;
-    final question = originalQuestion == null ? null : localizedQuestion(
-      ref.read(catalogsProvider).requireValue,
-      AppLanguageScope.of(context).language, originalQuestion,
-    );
+    final question = originalQuestion == null
+        ? null
+        : localizedQuestion(
+            ref.read(catalogsProvider).requireValue,
+            AppLanguageScope.of(context).language,
+            originalQuestion,
+          );
     return [
       Row(
         children: [
           Expanded(
             child: Text(
-              context.tr('casesCompleted', {'done': state.completedCases, 'total': config.targetCases}),
+              context.tr('casesCompleted', {
+                'done': state.completedCases,
+                'total': config.targetCases,
+              }),
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           IconButton(
             tooltip: context.tr('activeRules'),
-            onPressed: () => showActiveRules(context, state, ref.read(catalogsProvider).requireValue),
+            onPressed: () => showActiveRules(
+              context,
+              state,
+              ref.read(catalogsProvider).requireValue,
+            ),
             icon: Badge(
               label: Text('${state.rules.active.length}'),
               child: const Icon(Icons.menu_book_outlined),
@@ -398,7 +409,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         Text(
           state.lastCompletion == CaseCompletion.withoutVerdict
               ? context.tr('lastNoVerdict')
-              : context.tr('manualVerdictSummary', {'count': state.manualErrors}),
+              : context.tr('manualVerdictSummary', {
+                  'count': state.manualErrors,
+                }),
         ),
         const SizedBox(height: 16),
       ],
@@ -409,7 +422,10 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
         const SizedBox(height: 16),
         CaseFile(
-          label: context.tr('caseProgress', {'number': state.caseNumber, 'total': config.targetCases}),
+          label: context.tr('caseProgress', {
+            'number': state.caseNumber,
+            'total': config.targetCases,
+          }),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -441,7 +457,10 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
         const SizedBox(height: 16),
         Text(
-          context.tr('cardsDistribution', {'count': config.numberRecipients, 'max': config.maxSecretNumber}),
+          context.tr('cardsDistribution', {
+            'count': config.numberRecipients,
+            'max': config.maxSecretNumber,
+          }),
         ),
         const SizedBox(height: 16),
         FilledButton(
@@ -455,7 +474,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ],
       if (state.phase == GamePhase.ruleEvent) ...[
         Text(
-          context.tr(state.newRule == null ? 'ruleGoalReduced' : 'newDrinkingRule'),
+          context.tr(
+            state.newRule == null ? 'ruleGoalReduced' : 'newDrinkingRule',
+          ),
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
@@ -463,16 +484,22 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Text(
-              (state.newRule == null ? null : localizedRule(ref.read(catalogsProvider).requireValue,
-                 AppLanguageScope.of(context).language, state.newRule!.entry as DrinkingRule).text) ??
-                  context.tr('cardNoRule', {'count': state.effectiveRuleTarget}),
+              (state.newRule == null
+                      ? null
+                      : localizedRule(
+                          ref.read(catalogsProvider).requireValue,
+                          AppLanguageScope.of(context).language,
+                          state.newRule!.entry as DrinkingRule,
+                        ).text) ??
+                  context.tr('cardNoRule', {
+                    'count': state.effectiveRuleTarget,
+                  }),
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),
         const SizedBox(height: 16),
-        const TText('ruleEventHelp',
-        ),
+        const TText('ruleEventHelp'),
         FilledButton(
           onPressed: () =>
               _act(() => controller.continueAfterRule(state.currentEventId)),
@@ -480,20 +507,24 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
       ],
       if (state.phase == GamePhase.finished) ...[
-        TText('endHearing',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
+        TText('endHearing', style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 12),
         Text(
-          context.tr('cardFinished', {'count': config.targetCases, 'rules': state.rules.active.length}),
+          context.tr('cardFinished', {
+            'count': config.targetCases,
+            'rules': state.rules.active.length,
+          }),
         ),
       ],
       if (state.phase == GamePhase.paused)
-        Text(state.pauseReason ?? context.tr('gamePaused')),
+        Text(
+          state.pauseReason == null
+              ? context.tr('gamePaused')
+              : context.feedback(state.pauseReason!),
+        ),
       if (state.completedCases > 0 && state.phase != GamePhase.finished) ...[
         const SizedBox(height: 16),
-        const TText('cardRotateHelp',
-        ),
+        const TText('cardRotateHelp'),
       ],
       const SizedBox(height: 24),
       OutlinedButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../domain/avatar_config.dart';
 import 'court_theme.dart';
+import '../l10n/app_strings.dart';
 
 class AvatarView extends StatelessWidget {
   const AvatarView({
@@ -15,15 +16,22 @@ class AvatarView extends StatelessWidget {
   final String label;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    label: config.isFallback ? '$label, Ersatzfigur' : label,
-    image: true,
-    child: SizedBox(
-      width: size,
-      height: size * 1.125,
-      child: CustomPaint(painter: AvatarPainter(config)),
-    ),
-  );
+  Widget build(BuildContext context) {
+    final name = label == 'Menschliche Spielfigur'
+        ? context.tr('humanCharacter')
+        : label;
+    return Semantics(
+      label: config.isFallback
+          ? context.tr('avatarFallback', {'name': name})
+          : name,
+      image: true,
+      child: SizedBox(
+        width: size,
+        height: size * 1.125,
+        child: CustomPaint(painter: AvatarPainter(config)),
+      ),
+    );
+  }
 }
 
 /// Original vector geometry on a 160×180 canvas. Layer order matches manifest.

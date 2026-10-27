@@ -210,5 +210,360 @@
   "skipPhoneCaseHelp": "Dieser Fall zählt einmal als abgeschlossen. Es werden keine Fehler oder Schlucke berechnet. Der Richter wechselt.",
   "playerUp": "Person nach oben",
   "playerDown": "Person nach unten",
-  "fallaktenLoading": "Fallakten werden geladen"
+  "fallaktenLoading": "Fallakten werden geladen",
+  "feedbackProfileDamaged": "Das gespeicherte Profil war beschädigt. Bitte prüfen und erneut speichern.",
+  "@feedbackProfileDamaged": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Das gespeicherte Profil war beschädigt. Bitte prüfen und erneut speichern."
+  },
+  "feedbackProfileLoadFailed": "Das Profil konnte nicht geladen werden. Du kannst es erneut versuchen oder neu anlegen.",
+  "@feedbackProfileLoadFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Das Profil konnte nicht geladen werden. Du kannst es erneut versuchen oder neu anlegen."
+  },
+  "feedbackProfileWriteFailed": "Das Profil konnte nicht gespeichert werden. Deine Änderungen bleiben im Editor erhalten.",
+  "@feedbackProfileWriteFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Das Profil konnte nicht gespeichert werden. Deine Änderungen bleiben im Editor erhalten."
+  },
+  "feedbackAvatarReplaced": "Eine unbekannte Figur wurde durch eine Ersatzfigur dargestellt.",
+  "@feedbackAvatarReplaced": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Eine unbekannte Figur wurde durch eine Ersatzfigur dargestellt."
+  },
+  "feedbackRosterLoadFailed": "Die Gruppe konnte nicht geladen werden. Bitte erneut versuchen oder neu anlegen.",
+  "@feedbackRosterLoadFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Gruppe konnte nicht geladen werden. Bitte erneut versuchen oder neu anlegen."
+  },
+  "feedbackRosterWriteFailed": "Die Gruppe konnte nicht gespeichert werden. Die bisherige Gruppe bleibt erhalten.",
+  "@feedbackRosterWriteFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Gruppe konnte nicht gespeichert werden. Die bisherige Gruppe bleibt erhalten."
+  },
+  "feedbackRosterFull": "Die Gruppe ist mit 20 Personen vollständig.",
+  "@feedbackRosterFull": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Gruppe ist mit 20 Personen vollständig."
+  },
+  "feedbackPlayerIdTaken": "Die neue Spieler-ID ist bereits vergeben. Bitte erneut versuchen.",
+  "@feedbackPlayerIdTaken": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die neue Spieler-ID ist bereits vergeben. Bitte erneut versuchen."
+  },
+  "feedbackUnknownPlayer": "Unbekannte Person.",
+  "@feedbackUnknownPlayer": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Unbekannte Person."
+  },
+  "feedbackInvalidSeat": "Ungültige Sitzposition.",
+  "@feedbackInvalidSeat": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültige Sitzposition."
+  },
+  "feedbackCatalogIncompatible": "Die gespeicherte Partie passt nicht zum aktuellen Fragen-/Regelkatalog. Bitte verwerfen und neu starten.",
+  "@feedbackCatalogIncompatible": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die gespeicherte Partie passt nicht zum aktuellen Fragen-/Regelkatalog. Bitte verwerfen und neu starten."
+  },
+  "feedbackBackupRestored": "Der letzte Schreibstand war beschädigt. Der vorherige gültige Stand wurde wiederhergestellt.",
+  "@feedbackBackupRestored": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der letzte Schreibstand war beschädigt. Der vorherige gültige Stand wurde wiederhergestellt."
+  },
+  "feedbackGameDamaged": "Die gespeicherte Partie ist beschädigt. Verwirf sie, um neu anzufangen.",
+  "@feedbackGameDamaged": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die gespeicherte Partie ist beschädigt. Verwirf sie, um neu anzufangen."
+  },
+  "feedbackStorageUnavailable": "Lokaler Speicher ist nicht verfügbar. Spielen ist möglich, Wiederaufnahme nach Schließen jedoch nicht gesichert.",
+  "@feedbackStorageUnavailable": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Lokaler Speicher ist nicht verfügbar. Spielen ist möglich, Wiederaufnahme nach Schließen jedoch nicht gesichert."
+  },
+  "feedbackGameWriteFailed": "Der Spielstand konnte nicht gespeichert werden. Du kannst weiterspielen; nach Schließen kann Fortschritt fehlen.",
+  "@feedbackGameWriteFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Spielstand konnte nicht gespeichert werden. Du kannst weiterspielen; nach Schließen kann Fortschritt fehlen."
+  },
+  "feedbackRestartNeedsConfirmation": "Neustart muss bestätigt werden.",
+  "@feedbackRestartNeedsConfirmation": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Neustart muss bestätigt werden."
+  },
+  "feedbackRosterMismatch": "Konfiguration und Gruppe stimmen nicht überein.",
+  "@feedbackRosterMismatch": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Konfiguration und Gruppe stimmen nicht überein."
+  },
+  "feedbackHandoffInactive": "Diese Zahlenübergabe ist nicht aktiv.",
+  "@feedbackHandoffInactive": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Diese Zahlenübergabe ist nicht aktiv."
+  },
+  "feedbackOpenNumberFirst": "Zahl zuerst bewusst öffnen und bestätigen.",
+  "@feedbackOpenNumberFirst": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Zahl zuerst bewusst öffnen und bestätigen."
+  },
+  "feedbackAnswersIncomplete": "Antwortphase ist nicht abgeschlossen.",
+  "@feedbackAnswersIncomplete": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Antwortphase ist nicht abgeschlossen."
+  },
+  "feedbackOrderLocked": "Die Ordnung ist bereits gesperrt.",
+  "@feedbackOrderLocked": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Ordnung ist bereits gesperrt."
+  },
+  "feedbackNoOrder": "Keine bestätigbare Ordnung.",
+  "@feedbackNoOrder": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine bestätigbare Ordnung."
+  },
+  "feedbackInvalidReveal": "Ungültiger Aufdeckschritt.",
+  "@feedbackInvalidReveal": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültiger Aufdeckschritt."
+  },
+  "feedbackCaseNotReady": "Der Fall kann noch nicht abgeschlossen werden.",
+  "@feedbackCaseNotReady": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Fall kann noch nicht abgeschlossen werden."
+  },
+  "feedbackInvalidRoster": "Ungültige Gruppe.",
+  "@feedbackInvalidRoster": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültige Gruppe."
+  },
+  "feedbackStaleRound": "Dieser Fall ist nicht mehr aktiv.",
+  "@feedbackStaleRound": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Dieser Fall ist nicht mehr aktiv."
+  },
+  "feedbackInsufficientPlayers": "Mindestens drei Personen werden für den nächsten Fall benötigt.",
+  "@feedbackInsufficientPlayers": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Mindestens drei Personen werden für den nächsten Fall benötigt."
+  },
+  "feedbackQuestionsExhausted": "Keine weitere geeignete Frage verfügbar. Es wird kein Fall erfunden.",
+  "@feedbackQuestionsExhausted": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine weitere geeignete Frage verfügbar. Es wird kein Fall erfunden."
+  },
+  "feedbackCardsExhausted": "Keine weitere geeignete Frage verfügbar. Der Fallzähler bleibt erhalten.",
+  "@feedbackCardsExhausted": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine weitere geeignete Frage verfügbar. Der Fallzähler bleibt erhalten."
+  },
+  "feedbackInvalidName": "Ein Name muss nach dem Trimmen 1 bis 24 sichtbare Zeichen enthalten.",
+  "@feedbackInvalidName": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ein Name muss nach dem Trimmen 1 bis 24 sichtbare Zeichen enthalten."
+  },
+  "feedbackPlayerBounds": "Es werden 3 bis 20 Spieler benötigt.",
+  "@feedbackPlayerBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Es werden 3 bis 20 Spieler benötigt."
+  },
+  "feedbackQuestionBounds": "Fallziel außerhalb des geeigneten Fragenbestands.",
+  "@feedbackQuestionBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Fallziel außerhalb des geeigneten Fragenbestands."
+  },
+  "feedbackRuleBounds": "Regelziel außerhalb des geeigneten Regelbestands.",
+  "@feedbackRuleBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Regelziel außerhalb des geeigneten Regelbestands."
+  },
+  "feedbackFactorBounds": "Der Faktor muss in Zehnteln zwischen 10 und 30 liegen.",
+  "@feedbackFactorBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Faktor muss in Zehnteln zwischen 10 und 30 liegen."
+  },
+  "feedbackAllJudgesMode": "Alle sind Richter ist nur im Multiplayer verfügbar.",
+  "@feedbackAllJudgesMode": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Alle sind Richter ist nur im Multiplayer verfügbar."
+  },
+  "feedbackUnsupportedLanguage": "Nicht unterstützte Inhaltssprache.",
+  "@feedbackUnsupportedLanguage": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Nicht unterstützte Inhaltssprache."
+  },
+  "feedbackNumberBounds": "Der Zahlenbereich reicht nicht für alle Empfänger.",
+  "@feedbackNumberBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Zahlenbereich reicht nicht für alle Empfänger."
+  },
+  "feedbackNegativeCapacity": "Kataloggrößen dürfen nicht negativ sein.",
+  "@feedbackNegativeCapacity": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Kataloggrößen dürfen nicht negativ sein."
+  },
+  "feedbackConfigFields": "Konfiguration enthält fehlende oder unbekannte Felder.",
+  "@feedbackConfigFields": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Konfiguration enthält fehlende oder unbekannte Felder."
+  },
+  "feedbackConfigTypes": "Ungültiger Modus, Richteroption oder Inhaltssprache.",
+  "@feedbackConfigTypes": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültiger Modus, Richteroption oder Inhaltssprache."
+  },
+  "feedbackRestartConfirm": "Eine neue Partie benötigt eine bestätigte Neustartaktion.",
+  "@feedbackRestartConfirm": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Eine neue Partie benötigt eine bestätigte Neustartaktion."
+  },
+  "feedbackLanguageMismatch": "Inhaltssprache und geladener Katalog stimmen nicht überein.",
+  "@feedbackLanguageMismatch": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Inhaltssprache und geladener Katalog stimmen nicht überein."
+  },
+  "feedbackNoGame": "Keine aktive Partie.",
+  "@feedbackNoGame": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine aktive Partie."
+  },
+  "feedbackCardsOnly": "Dieser Ablauf benötigt den Kartenmodus.",
+  "@feedbackCardsOnly": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Dieser Ablauf benötigt den Kartenmodus."
+  },
+  "feedbackCaseInactive": "Der Fall ist nicht aktiv.",
+  "@feedbackCaseInactive": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Fall ist nicht aktiv."
+  },
+  "feedbackManualScore": "Manuelle Wertung benötigt eine vollständige Ordnung und 0 oder 2 bis N−1 Fehler.",
+  "@feedbackManualScore": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Manuelle Wertung benötigt eine vollständige Ordnung und 0 oder 2 bis N−1 Fehler."
+  },
+  "feedbackRuleInactive": "Dieses Regelereignis ist nicht aktiv.",
+  "@feedbackRuleInactive": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Dieses Regelereignis ist nicht aktiv."
+  },
+  "feedbackInvalidOrder": "Die Ordnung muss jede beteiligte ID genau einmal enthalten.",
+  "@feedbackInvalidOrder": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Ordnung muss jede beteiligte ID genau einmal enthalten."
+  },
+  "feedbackInvalidNumbers": "Geheimzahlen müssen eindeutig im gültigen Bereich liegen.",
+  "@feedbackInvalidNumbers": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Geheimzahlen müssen eindeutig im gültigen Bereich liegen."
+  },
+  "feedbackJudgeNumber": "Der Richter erhält im Normalmodus keine Zahl.",
+  "@feedbackJudgeNumber": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Richter erhält im Normalmodus keine Zahl."
+  },
+  "feedbackMissingOrders": "Jede Person benötigt genau ein eigenes Urteil.",
+  "@feedbackMissingOrders": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Jede Person benötigt genau ein eigenes Urteil."
+  },
+  "feedbackInvalidNumberRoster": "Ungültiger Teilnehmerstand oder Richter.",
+  "@feedbackInvalidNumberRoster": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültiger Teilnehmerstand oder Richter."
+  },
+  "feedbackInvalidInsertion": "Ungültige Sortierposition.",
+  "@feedbackInvalidInsertion": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültige Sortierposition."
+  },
+  "feedbackInvalidAvatar": "Unbekannte Avatar-Ebene oder Auswahl.",
+  "@feedbackInvalidAvatar": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Unbekannte Avatar-Ebene oder Auswahl."
+  },
+  "feedbackInvalidSchedule": "Ungültige Ereignisplanung.",
+  "@feedbackInvalidSchedule": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültige Ereignisplanung."
+  },
+  "feedbackNoContent": "Keine geeigneten Inhalte verfügbar.",
+  "@feedbackNoContent": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine geeigneten Inhalte verfügbar."
+  },
+  "feedbackCatalogExhausted": "Der geeignete Katalog ist erschöpft.",
+  "@feedbackCatalogExhausted": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der geeignete Katalog ist erschöpft."
+  },
+  "feedbackMissingBinding": "Gebundenes Spielerprofil fehlt.",
+  "@feedbackMissingBinding": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Gebundenes Spielerprofil fehlt."
+  },
+  "feedbackContentUsed": "Inhalt oder Ereignis bereits gezogen.",
+  "@feedbackContentUsed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Inhalt oder Ereignis bereits gezogen."
+  },
+  "feedbackEventConflict": "Ereignis-ID für anderen Aktionstyp verwendet.",
+  "@feedbackEventConflict": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ereignis-ID für anderen Aktionstyp verwendet."
+  },
+  "feedbackUnknownRule": "Unbekannte aktive Regel.",
+  "@feedbackUnknownRule": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Unbekannte aktive Regel."
+  },
+  "feedbackNegativeCounts": "Personenzähler dürfen nicht negativ sein.",
+  "@feedbackNegativeCounts": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Personenzähler dürfen nicht negativ sein."
+  },
+  "feedbackUnknownCount": "Unbekannte Spieler-ID im Personenzähler.",
+  "@feedbackUnknownCount": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Unbekannte Spieler-ID im Personenzähler."
+  },
+  "feedbackInvalidIdentifier": "Eine ID muss nichtleer sein und darf keine äußeren Leerzeichen haben.",
+  "@feedbackInvalidIdentifier": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Eine ID muss nichtleer sein und darf keine äußeren Leerzeichen haben."
+  },
+  "feedbackHistoryIds": "Historieneinträge brauchen Ereignis- und Inhalts-ID.",
+  "@feedbackHistoryIds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Historieneinträge brauchen Ereignis- und Inhalts-ID."
+  },
+  "feedbackDuplicateHistory": "Doppelte Ereignis-ID in der Inhaltshistorie.",
+  "@feedbackDuplicateHistory": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Doppelte Ereignis-ID in der Inhaltshistorie."
+  },
+  "feedbackHistoryConflict": "Ereignis-ID mit abweichendem Inhalt wiederverwendet.",
+  "@feedbackHistoryConflict": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ereignis-ID mit abweichendem Inhalt wiederverwendet."
+  },
+  "feedbackInvalidRegistry": "Spielerregister passt nicht zur Konfiguration.",
+  "@feedbackInvalidRegistry": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Spielerregister passt nicht zur Konfiguration."
+  },
+  "feedbackInvalidRandom": "Ungültiger injizierter Zufallsindex.",
+  "@feedbackInvalidRandom": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültiger injizierter Zufallsindex."
+  },
+  "errorInteger": "{field} muss eine Ganzzahl sein.",
+  "positionName": "Position {position}, {name}",
+  "avatarFallback": "{name}, Ersatzfigur",
+  "rosterSeatName": "{name} · Platz {position}",
+  "galleryPaper": "Papier",
+  "galleryInk": "Tinte",
+  "galleryWood": "Holz",
+  "gallerySeal": "Siegel",
+  "galleryBlue": "Graublau",
+  "humanCharacter": "Menschliche Spielfigur"
 }

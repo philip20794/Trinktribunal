@@ -177,7 +177,12 @@ class _BenchViewState extends State<BenchView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    context.tr(widget.incorrect.contains(id) ? 'wrongPosition' : 'rightPosition', {'number': widget.revealedNumbers[id]}),
+                    context.tr(
+                      widget.incorrect.contains(id)
+                          ? 'wrongPosition'
+                          : 'rightPosition',
+                      {'number': widget.revealedNumbers[id]},
+                    ),
                   ),
                 ),
               if (editable) ...[
@@ -202,7 +207,9 @@ class _BenchViewState extends State<BenchView> {
                   alignment: WrapAlignment.center,
                   children: [
                     IconButton(
-                      tooltip: context.tr('moveForward', {'position': index + 1}),
+                      tooltip: context.tr('moveForward', {
+                        'position': index + 1,
+                      }),
                       onPressed: index > 0
                           ? () => widget.onMove!(index, index - 1)
                           : null,
