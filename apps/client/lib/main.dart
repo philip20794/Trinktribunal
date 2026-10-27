@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'app/trinktribunal_app.dart';
+import 'app/url_strategy.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  configureAppUrls();
   LicenseRegistry.addLicense(() async* {
     yield LicenseEntryWithLineBreaks([
       'CourtRoboto',

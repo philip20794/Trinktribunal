@@ -16,7 +16,8 @@ import '../settings/settings_screen.dart';
 import '../setup/card_mode_screen.dart';
 import '../setup/player_roster.dart';
 import '../design_gallery/design_gallery_screen.dart';
-import 'mode_preview_screen.dart';
+import '../multiplayer/create.dart';
+import '../multiplayer/saved_rooms.dart';
 
 enum GameMode {
   cards(
@@ -179,7 +180,7 @@ class HomeScreen extends ConsumerWidget {
                                         ? const CardModeScreen()
                                         : mode == GameMode.sharedPhone
                                         ? const PlayerRosterScreen()
-                                        : ModePreviewScreen(mode: mode),
+                                        : const MultiplayerEntryScreen(),
                                   );
                                 },
                               ),
@@ -187,6 +188,7 @@ class HomeScreen extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 24),
+                      const SavedRooms(),
                       const CatalogDiagnostics(),
                       const TText(
                         'homeDevPreview',

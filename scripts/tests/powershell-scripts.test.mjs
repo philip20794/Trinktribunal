@@ -75,11 +75,12 @@ test('Client startup works outside the repo and forwards its options', { skip: !
   const port = server.address().port;
   await new Promise(done => server.close(done));
   const result = run('dev-client.ps1', ['-Device', 'web-server', '-Port', String(port),
-    '-ApiBaseUrl', 'http://127.0.0.1:8787'], setup);
+    '-ApiBaseUrl', 'http://127.0.0.1:8787', '-PublicClientBaseUrl', 'http://127.0.0.1:7357'], setup);
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /FLUTTER_STUB run -d web-server/);
   assert.ok(result.stdout.includes(`--web-port ${port}`));
   assert.match(result.stdout, /--dart-define=API_BASE_URL=http:\/\/127\.0\.0\.1:8787/);
+  assert.match(result.stdout, /--dart-define=PUBLIC_CLIENT_BASE_URL=http:\/\/127\.0\.0\.1:7357/);
 });
 
 test('The check wrapper preserves a failed child exit code', { skip: !windows }, context => {

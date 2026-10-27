@@ -89,12 +89,16 @@ final class FakeRoomTransport implements RoomTransport {
   int creates = 0, joins = 0, leaves = 0, connections = 0;
   final leaveIds = <ActionId>[];
   bool failConnect = false, failLeave = false;
+  String? entryError;
+  Profile? lastProfile;
   Completer<CredentialMessage>? deferredCreate;
   @override
   Uri get serverOrigin => Uri.parse('http://localhost:8787');
   @override
   Future<CredentialMessage> create(Profile profile) async {
     creates++;
+    lastProfile = profile;
+    if (entryError != null) throw RoomTransportException(entryError!);
     return deferredCreate == null
         ? testCredential().message
         : await deferredCreate!.future;
@@ -103,6 +107,8 @@ final class FakeRoomTransport implements RoomTransport {
   @override
   Future<CredentialMessage> join(String code, Profile profile) async {
     joins++;
+    lastProfile = profile;
+    if (entryError != null) throw RoomTransportException(entryError!);
     return testCredential().message;
   }
 

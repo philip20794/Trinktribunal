@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../application/local_data_providers.dart';
 import '../application/settings_controller.dart';
-import '../features/home/home_screen.dart';
+import 'router.dart';
 import '../design/court_theme.dart';
 import '../l10n/app_strings.dart';
 
@@ -38,6 +38,6 @@ class TrinktribunalApp extends ConsumerWidget {
         child: child ?? const SizedBox.shrink(),
       ),
     ),
-    home: const HomeScreen(),
+    onGenerateRoute: generateAppRoute,
   );
 }

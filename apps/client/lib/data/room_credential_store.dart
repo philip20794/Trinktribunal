@@ -125,7 +125,10 @@ final class RoomCredentialStore {
 
   Future<CredentialLoad> load() async {
     try {
-      final records = await backend.readAll(), credentials = <RoomCredential>[];
+      final records = await backend.readAll().timeout(
+            const Duration(seconds: 5),
+          ),
+          credentials = <RoomCredential>[];
       var invalid = false;
       for (final entry in records.entries) {
         try {
@@ -145,7 +148,9 @@ final class RoomCredentialStore {
 
   Future<void> save(RoomCredential credential) async {
     try {
-      await backend.write(credential.key, _encode(credential));
+      await backend
+          .write(credential.key, _encode(credential))
+          .timeout(const Duration(seconds: 5));
     } on Object {
       throw const CredentialStorageException();
     }
@@ -153,7 +158,7 @@ final class RoomCredentialStore {
 
   Future<void> remove(RoomCredential credential) async {
     try {
-      await backend.remove(credential.key);
+      await backend.remove(credential.key).timeout(const Duration(seconds: 5));
     } on Object {
       throw const CredentialStorageException();
     }

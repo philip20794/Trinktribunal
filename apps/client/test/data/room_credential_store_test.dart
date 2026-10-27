@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:async';
+
+import 'package:fake_async/fake_async.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/data/protocol/room_message.dart';
@@ -8,6 +11,19 @@ import 'package:trinktribunal/domain/models/ids.dart';
 import 'room_test_support.dart';
 
 void main() {
+  test('an unresponsive secure backend cannot keep the entry screen loading forever', () {
+    fakeAsync((clock) {
+      final store = RoomCredentialStore(_BlockedBackend());
+      CredentialLoad? result;
+      unawaited(store.load().then((value) => result = value));
+      clock.flushMicrotasks();
+      expect(result, isNull);
+      clock.elapse(const Duration(seconds: 5));
+      clock.flushMicrotasks();
+      expect(result!.unavailable, isTrue);
+      expect(clock.pendingTimers, isEmpty);
+    });
+  });
   test('reopening retains multiple room/player/origin keys and removes just the selected identity', () async {
     final backend = MemoryCredentialBackend(),
         store = RoomCredentialStore(backend),
@@ -119,4 +135,14 @@ void main() {
     );
     expect(roomServerOrigin('http://10.0.2.2:8787').host, '10.0.2.2');
   });
+}
+
+final class _BlockedBackend implements CredentialBackend {
+  @override
+  Future<Map<String, String>> readAll() =>
+      Completer<Map<String, String>>().future;
+  @override
+  Future<void> write(String key, String value) async {}
+  @override
+  Future<void> remove(String key) async {}
 }

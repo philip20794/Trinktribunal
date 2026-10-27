@@ -1,5 +1,5 @@
 ﻿[CmdletBinding()]
-param([switch]$Offline)
+param([switch]$Offline, [string]$ApiBaseUrl = '', [string]$PublicClientBaseUrl = '')
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -19,7 +19,10 @@ try {
     $pubArgs = @('pub','get','--enforce-lockfile')
     if ($Offline) { $pubArgs += '--offline' }
     Invoke-Checked 'flutter' $pubArgs
-    Invoke-Checked 'flutter' @('build','apk','--debug','--no-pub')
+    $buildArgs = @('build','apk','--debug','--no-pub')
+    if ($ApiBaseUrl) { $buildArgs += "--dart-define=API_BASE_URL=$ApiBaseUrl" }
+    if ($PublicClientBaseUrl) { $buildArgs += "--dart-define=PUBLIC_CLIENT_BASE_URL=$PublicClientBaseUrl" }
+    Invoke-Checked 'flutter' $buildArgs
     $apk = Join-Path $client 'build/app/outputs/flutter-apk/app-debug.apk'
     if (-not (Test-Path -LiteralPath $apk -PathType Leaf)) { throw 'Debug-APK fehlt.' }
     Write-Host "Debug-APK: $apk"

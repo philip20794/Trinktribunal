@@ -41,6 +41,7 @@ final class RoomController {
     sink.onCancel = subscription.cancel;
   });
   RoomCredential? _credential;
+  String? get roomCode => _credential?.message.roomCode;
   RoomSocket? _socket;
   StreamSubscription<Object?>? _subscription;
   Timer? _retry, _authTimeout;

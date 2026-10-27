@@ -6,6 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trinktribunal/app/trinktribunal_app.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/application/local_data_providers.dart';
+import 'package:trinktribunal/application/room_providers.dart';
+import 'package:trinktribunal/data/room_credential_store.dart';
+
+import 'data/room_test_support.dart';
 
 import 'support/memory_string_store.dart';
 import 'support/memory_atomic_state_storage.dart';
@@ -13,6 +17,9 @@ import 'support/memory_atomic_state_storage.dart';
 void main() {
   Widget createApp() => ProviderScope(
     overrides: [
+      roomCredentialStoreProvider.overrideWithValue(
+        RoomCredentialStore(MemoryCredentialBackend()),
+      ),
       stringStoreProvider.overrideWithValue(MemoryStringStore()),
       atomicStateStorageProvider.overrideWithValue(MemoryAtomicStateStorage()),
       catalogRepositoryProvider.overrideWithValue(

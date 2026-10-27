@@ -5,6 +5,7 @@ param(
     [ValidateRange(1, 65535)]
     [int]$Port = 7357,
     [string]$ApiBaseUrl = '',
+    [string]$PublicClientBaseUrl = '',
     [string]$WebHost = '127.0.0.1'
 )
 
@@ -63,6 +64,7 @@ try {
 
     $runArgs = @('run', '-d', $Device, '--web-hostname', $WebHost, '--web-port', "$Port")
     if ($ApiBaseUrl) { $runArgs += "--dart-define=API_BASE_URL=$ApiBaseUrl" }
+    if ($PublicClientBaseUrl) { $runArgs += "--dart-define=PUBLIC_CLIENT_BASE_URL=$PublicClientBaseUrl" }
     Write-Host "Flutter lokal auf http://${WebHost}:${Port}/ (Gerät: $Device)"
     & flutter @runArgs
     exit $LASTEXITCODE
