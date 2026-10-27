@@ -34,12 +34,14 @@ final class OnlineOrderController extends ChangeNotifier {
     return view != null &&
         view.public.gameId == _gameId &&
         view.public.roundId == _roundId &&
-        !view.public.config.allJudges &&
-        view.you == view.public.judgeId &&
+        view.public.frozenRoster.contains(view.you) &&
+        (view.public.config.allJudges || view.you == view.public.judgeId) &&
         view.public.phase == 'ordering' &&
         !_pending &&
         !_confirmed &&
-        _draft.length == view.public.frozenRoster.length - 1;
+        _draft.length ==
+            view.public.frozenRoster.length -
+                (view.public.config.allJudges ? 0 : 1);
   }
 
   void _receive(RoomSessionState state) {
@@ -47,8 +49,8 @@ final class OnlineOrderController extends ChangeNotifier {
         ? state.snapshot
         : null;
     if (view == null ||
-        view.public.config.allJudges ||
-        view.you != view.public.judgeId ||
+        !view.public.frozenRoster.contains(view.you) ||
+        (!view.public.config.allJudges && view.you != view.public.judgeId) ||
         !['ordering', 'revealing', 'judged'].contains(view.public.phase)) {
       _gameId = null;
       _roundId = null;
@@ -62,7 +64,9 @@ final class OnlineOrderController extends ChangeNotifier {
       _gameId = view.public.gameId;
       _roundId = view.public.roundId;
       _draft = view.public.frozenRoster
-          .where((id) => id != view.public.judgeId)
+          .where(
+            (id) => view.public.config.allJudges || id != view.public.judgeId,
+          )
           .toList();
       _pending = false;
       _confirmed = false;

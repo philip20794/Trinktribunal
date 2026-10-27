@@ -15,7 +15,9 @@ class OnlineOrderView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(onlineOrderProvider), view = snapshot.public;
-    final judge = snapshot.you == view.judgeId;
+    final ownsOrder =
+        view.frozenRoster.contains(snapshot.you) &&
+        (view.config.allJudges || snapshot.you == view.judgeId);
     final profiles = {
       for (final player in view.players)
         player.playerId: UserProfile(
@@ -26,7 +28,7 @@ class OnlineOrderView extends ConsumerWidget {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
-        final order = judge
+        final order = ownsOrder
             ? controller.order
             : view.judgeOrder ??
                   view.frozenRoster.where((id) => id != view.judgeId).toList();
@@ -36,8 +38,23 @@ class OnlineOrderView extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (judge && controller.canEdit) const TText('phoneOrderHelp'),
-            if (!judge)
+            if (ownsOrder && controller.canEdit) const TText('phoneOrderHelp'),
+            if (view.config.allJudges)
+              for (final id in view.frozenRoster)
+                ListTile(
+                  title: Text(
+                    profiles[id]?.player.name ??
+                        context.tr('onlineRemovedParticipant'),
+                  ),
+                  subtitle: TText(
+                    view.players.any(
+                          (p) => p.playerId == id && p.orderSubmitted,
+                        )
+                        ? 'onlineOrderSubmitted'
+                        : 'onlineOrderNotSubmitted',
+                  ),
+                ),
+            if (!ownsOrder && !view.config.allJudges)
               TText(
                 view.players.any(
                       (player) =>
@@ -48,7 +65,7 @@ class OnlineOrderView extends ConsumerWidget {
                     : 'onlineOrderWaiting',
               ),
             if (controller.pending) const TText('onlineOrderSending'),
-            if (judge && controller.confirmed)
+            if (ownsOrder && controller.confirmed)
               const TText('onlineOrderConfirmed'),
             BenchView(
               order: order,
@@ -62,9 +79,9 @@ class OnlineOrderView extends ConsumerWidget {
                     if (penalty.sips > 0 && penalty.playerId != view.judgeId)
                       penalty.playerId,
               },
-              onMove: judge && controller.canEdit ? controller.move : null,
+              onMove: ownsOrder && controller.canEdit ? controller.move : null,
             ),
-            if (judge && view.phase == 'ordering')
+            if (ownsOrder && view.phase == 'ordering')
               FilledButton(
                 onPressed: controller.canEdit
                     ? () async {

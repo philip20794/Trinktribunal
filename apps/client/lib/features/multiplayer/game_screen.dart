@@ -68,6 +68,7 @@ class RoomGameScreen extends ConsumerWidget {
         };
         final rendered = question?.renderFor(names);
         final judge = profiles[view.judgeId];
+        final reader = profiles[view.readerId];
         return ListenableBuilder(
           listenable: game,
           builder: (context, _) => Column(
@@ -82,6 +83,8 @@ class RoomGameScreen extends ConsumerWidget {
               ),
               if (judge != null)
                 Text(context.tr('onlineJudge', {'name': judge})),
+              if (reader != null)
+                Text(context.tr('onlineReader', {'name': reader})),
               const TText('rosterFrozen'),
               if (rendered != null)
                 CaseFile(

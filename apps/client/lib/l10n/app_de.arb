@@ -1,5 +1,8 @@
 {
   "@@locale": "de",
+  "onlineReader": "Vorleser: {name}",
+  "onlineOrderSubmitted": "Ordnung verbindlich abgegeben",
+  "onlineOrderNotSubmitted": "Ordnung noch nicht abgegeben",
   "onlineRevealProgress": "Öffentlich aufgedeckt: {count} von {total}",
   "onlineOrderMissing": "Die eingefrorene Besetzung ist noch nicht vollständig verfügbar. Die Phase wartet; der Host kann den Fall ausdrücklich ohne Urteil abschließen.",
   "onlineOrderWaiting": "Der Richter bestätigt seine Ordnung. Du kannst die Bank in diesem Fall nicht verändern.",

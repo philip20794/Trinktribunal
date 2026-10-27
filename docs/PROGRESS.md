@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–050 nach Unit-Gates abgeschlossen, TT-051 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 116 Node-/304 Flutter-/312 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–051 nach Unit-Gates abgeschlossen, TT-052 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 116 Node-/307 Flutter-/314 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -48,7 +48,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M3 | TT-027–TT-033 | ERLEDIGT | Nach Unit-Gates freigegeben; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [M3](qa/M3.md) |
 | M4 | TT-034–TT-042 | ERLEDIGT | Unit-Gate grün; drei lokale Clients und Harness geprüft; Browser/E2E ÜBERSPRUNGEN – später manuell testen · [M4](qa/M4.md) |
 | M5 | TT-043–TT-050 | ERLEDIGT | Normales Online-Spiel mit 3 Fällen + 2 Regeln, D-07, Neustart, privater eigener Historie und Unit-Gates geprüft; Browser/E2E übersprungen, später manuell testen · [M5](qa/M5.md) |
-| M6 | TT-051–TT-058 | OFFEN | Alle Richter, laufende Besetzungsänderungen, Hostverlust/Resume; `docs/qa/M6.md`. |
+| M6 | TT-051–TT-058 | IN ARBEIT | Private eigene Zahlen/Ordnungen für alle Richter geprüft; persönliche Wertung folgt TT-052, dann Besetzung/Hostverlust/Resume · [TT-051](qa/TT-051.md) |
 | M7 | TT-059–TT-064 | OFFEN | Sicherheits-/Kosten-/Performancechecks und DE/EN-/Bedienprüfung; `docs/qa/M7.md`. |
 | M8 | TT-065–TT-070 | OFFEN | Lokal geprüfte Web/APK/AAB-Artefakte und Releaseanleitung; `docs/qa/RELEASE_CHECKLIST.md`. |
 
@@ -110,7 +110,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-048 | Private Richterordnung einmal bestätigen | ERLEDIGT | 27.10.2026 · 100 Bewegungen ohne Frames, einmalige Bestätigung, private Ordnung, Host≠Richter und Eviction geprüft · [TT-048](qa/TT-048.md) |
 | TT-049 | Serverurteil und schrittweise Aufdeckung | ERLEDIGT | TS-/Dart-Urteilparität, feste Richterordnung, Leaktests aller Rollen je Cursor, Retry nach Eviction und unverändertes Urteil bei Profiländerung · [TT-049](qa/TT-049.md) |
 | TT-050 | Multiplayer-Partieende, Regeln und normaler Gesamttest | ERLEDIGT | 3 Fälle + 2 Regeln, D-07 und Rotation genau einmal, Ende/Neustart nach Eviction, eigene Historie erst nach lokalem Commit bestätigt · [TT-050](qa/TT-050.md), [M5](qa/M5.md) |
-| TT-051 | Alle Richter: eigene Zahlen und private Ordnungen | OFFEN | — |
+| TT-051 | Alle Richter: eigene Zahlen und private Ordnungen | ERLEDIGT | Vollständige eigene Bank, 100 lokale Bewegungen ohne Frames, private versiegelte Abgaben nach Eviction/Resume und Vorleser ohne Zusatzrechte · [TT-051](qa/TT-051.md) |
 | TT-052 | Alle Richter: gemeinsame Aufdeckung, persönliche Ergebnisse | OFFEN | — |
 | TT-053 | Multiplayer-Besetzung und Reihenfolge während Partie | OFFEN | — |
 | TT-054 | Host dauerhaft verlieren und neu zuweisen | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-051 – Alle Richter: eigene Zahlen und private Ordnungen.** M5 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-052 – Alle Richter: gemeinsame Aufdeckung, persönliche Ergebnisse.** TT-051 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. TT-051/052 werden als zusammenhängender geprüfter Modus nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-050-/M5-Stand
-Aktueller Beleg: docs/qa/TT-050.md und M5.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-051 private eigene Ordnungen für alle Richter anschließen und je Empfänger prüfen; anschließend TT-052 persönliche Wertung.
+Branch: task/TT-051-all-judges-orders; main enthält TT-050/M5
+Aktueller Beleg: docs/qa/TT-051.md; Browserprüfungen übersprungen, später manuell testen
+Naechster Schritt: TT-052 persönliche Wertung, gemeinsamer Reveal und Vorleserrotation prüfen; TT-051/052 danach gemeinsam nach main pushen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

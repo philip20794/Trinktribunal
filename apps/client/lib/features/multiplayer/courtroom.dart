@@ -61,8 +61,7 @@ class RoomCourtroom extends ConsumerWidget {
             child: TText('roomHostControls'),
           ),
         const SizedBox(height: 12),
-        if (!snapshot.public.config.allJudges &&
-            ['ordering', 'revealing', 'judged'].contains(snapshot.public.phase))
+        if (['ordering', 'revealing', 'judged'].contains(snapshot.public.phase))
           OnlineOrderView(snapshot: snapshot)
         else
           BenchView(

@@ -1,5 +1,8 @@
 {
   "@@locale": "en",
+  "onlineReader": "Reader: {name}",
+  "onlineOrderSubmitted": "Order confirmed and locked",
+  "onlineOrderNotSubmitted": "Order not submitted yet",
   "onlineRevealProgress": "Publicly revealed: {count} of {total}",
   "onlineOrderMissing": "The frozen participants are not fully available yet. This phase waits; the host can explicitly complete the case without a verdict.",
   "onlineOrderWaiting": "The judge is confirming their order. You cannot change the bench in this case.",
