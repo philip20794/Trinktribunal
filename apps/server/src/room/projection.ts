@@ -5,6 +5,7 @@ import type { GameState } from '../domain/game_state';
 import { readyInPhase } from './readiness';
 import { ownConfirmedOrder } from './orders';
 import { normalRevealFields } from './reveal';
+import { ownPersonalVerdict } from './all_judges';
 import type {
   Config,
   PlayerId,
@@ -34,7 +35,8 @@ export function lobbySnapshot(
 ): SnapshotMessage {
   const game = state.game,
     round = game?.round,
-    order = ownConfirmedOrder(game, you);
+    order = ownConfirmedOrder(game, you),
+    result = ownPersonalVerdict(game, you);
   return createRoomMessage('snapshot', {
     requestId: RoomIds.request(crypto.randomUUID()),
     roomId: state.roomId,
@@ -80,6 +82,7 @@ export function lobbySnapshot(
             return {
               ...(own ? { ownNumber: own.number } : {}),
               ...(order ? { ownOrder: order } : {}),
+              ...(result ? { ownResult: result } : {}),
             };
           })()
         : {},

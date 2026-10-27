@@ -70,13 +70,15 @@ export async function allJudgesRoom(count = 3) {
     }),
   );
   const initial = (await read()).game!;
-  const command = async (type: 'acknowledgeNumber' | 'readyForOrdering' | 'beginOrdering') =>
-    createRoomMessage(type, {
+  const command = async (type: 'acknowledgeNumber' | 'readyForOrdering' | 'beginOrdering') => {
+    const current = await read();
+    return createRoomMessage(type, {
       actionId: action(),
-      expectedRevision: (await read()).revision,
-      gameId: initial.gameId!,
-      roundId: initial.round!.id,
+      expectedRevision: current.revision,
+      gameId: current.game!.gameId!,
+      roundId: current.game!.round!.id,
     });
+  };
   const snapshot = async (peer: Peer) => {
     const revision = (await read()).revision;
     peer.send(createRoomMessage('requestSnapshot', { requestId: requestId() }));
@@ -91,14 +93,16 @@ export async function allJudgesRoom(count = 3) {
     for (const member of members) await send(member.peer, await command('readyForOrdering'));
     await send(host.peer, await command('beginOrdering'));
   };
-  const order = async (ids: readonly (typeof initial.effectiveRoster)[number][]) =>
-    createRoomMessage('submitOrder', {
+  const order = async (ids: readonly (typeof initial.effectiveRoster)[number][]) => {
+    const current = await read();
+    return createRoomMessage('submitOrder', {
       actionId: action(),
-      expectedRevision: (await read()).revision,
-      gameId: initial.gameId!,
-      roundId: initial.round!.id,
+      expectedRevision: current.revision,
+      gameId: current.game!.gameId!,
+      roundId: current.game!.round!.id,
       order: ids,
       confirmed: true,
     });
+  };
   return { room, host, members, read, action, command, snapshot, ordering, order, initial, send };
 }

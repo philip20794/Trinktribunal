@@ -47,6 +47,12 @@ try {
   writeFileSync(wrongVerdict, JSON.stringify(alteredVerdict), 'utf8');
   run('Dart', wrongVerdict, true, 'normal-verdict-correct');
   run('TypeScript', wrongVerdict, true, 'normal-verdict-correct');
+  const personal = JSON.parse(readFileSync(fixture, 'utf8'));
+  personal.cases.find(c=>c.id==='all-judges-verdict-2-4-0-0').expected.A++;
+  const wrongPersonal = resolve(temporary, 'altered-personal.json');
+  writeFileSync(wrongPersonal, JSON.stringify(personal), 'utf8');
+  run('Dart', wrongPersonal, true, 'all-judges-verdict-2-4-0-0');
+  run('TypeScript', wrongPersonal, true, 'all-judges-verdict-2-4-0-0');
   console.log('Dart/TypeScript parity and mutation checks passed; original fixtures unchanged.');
 } finally {
   const parent = resolve(tmpdir());

@@ -5,6 +5,7 @@ import '../../application/room_providers.dart';
 import '../../data/protocol/room_message.dart';
 import '../../design/case_file.dart';
 import '../../l10n/app_strings.dart';
+import 'personal_verdict.dart';
 
 /// Displays only committed server fields; it never calculates truth or sips locally.
 class OnlineReveal extends ConsumerWidget {
@@ -16,8 +17,7 @@ class OnlineReveal extends ConsumerWidget {
         game = ref.watch(onlineGameProvider),
         gameId = view.gameId,
         roundId = view.roundId;
-    if (view.config.allJudges ||
-        !['revealing', 'judged'].contains(view.phase) ||
+    if (!['revealing', 'judged'].contains(view.phase) ||
         gameId == null ||
         roundId == null) {
       return const SizedBox.shrink();
@@ -35,7 +35,8 @@ class OnlineReveal extends ConsumerWidget {
           Text(
             context.tr('onlineRevealProgress', {
               'count': view.revealCursor,
-              'total': view.frozenRoster.length - 1,
+              'total':
+                  view.frozenRoster.length - (view.config.allJudges ? 0 : 1),
             }),
           ),
           if (view.phase == 'revealing' && snapshot.you == view.hostId)
@@ -65,6 +66,7 @@ class OnlineReveal extends ConsumerWidget {
                 }),
               ),
           ],
+          if (view.config.allJudges) PersonalVerdict(snapshot: snapshot),
         ],
       ),
     );

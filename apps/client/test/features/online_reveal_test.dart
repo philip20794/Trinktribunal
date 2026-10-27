@@ -102,6 +102,7 @@ class _Surface extends ConsumerWidget {
 Future<({RoomController room, FakeRoomSocket socket})> pump(
   WidgetTester tester, {
   bool host = true,
+  SnapshotMessage? snapshot,
 }) async {
   final transport = FakeRoomTransport(),
       store = RoomCredentialStore(MemoryCredentialBackend()),
@@ -120,7 +121,7 @@ Future<({RoomController room, FakeRoomSocket socket})> pump(
   );
   final socket = transport.sockets.single;
   socket.receive(roomFixture('authenticated'));
-  socket.receive(revealView(host: host));
+  socket.receive(snapshot ?? revealView(host: host));
   await tester.pumpAndSettle();
   return (room: room, socket: socket);
 }

@@ -1,5 +1,8 @@
 {
   "@@locale": "de",
+  "onlinePersonalErrors": "Deine Fehlpositionen: {count}",
+  "onlinePersonalSips": "Deine Schlucke: {count}",
+  "onlinePersonalHelp": "Es zählt nur deine eigene Ordnung. Du trinkst nicht für die Fehler anderer mit.",
   "onlineReader": "Vorleser: {name}",
   "onlineOrderSubmitted": "Ordnung verbindlich abgegeben",
   "onlineOrderNotSubmitted": "Ordnung noch nicht abgegeben",

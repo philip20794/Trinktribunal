@@ -1,7 +1,9 @@
 {
   "formatVersion": 1,
-  "decisionRefs": ["D-01", "D-02", "D-05", "D-10", "D-17"],
+  "decisionRefs": ["D-01", "D-02", "D-05", "D-09", "D-10", "D-17"],
   "cases": [
+    {"id":"all-judges-verdict-2-4-0-0","operation":"allJudgesVerdict","numbers":{"D":12,"C":9,"A":1,"B":4},"orders":{"A":["B","A","C","D"],"B":["B","A","D","C"],"C":["A","B","C","D"],"D":["A","B","C","D"]},"expected":{"A":2,"B":4,"C":0,"D":0}},
+    {"id":"all-judges-verdict-legacy-TT003","operation":"allJudgesVerdict","numbers":{"A":1,"B":2,"C":3,"D":4},"orders":{"A":["B","A","C","D"],"B":["A","B","C","D"],"C":["B","A","D","C"],"D":["A","B","D","C"]},"expected":{"A":2,"B":0,"C":4,"D":2}},
     {"id":"normal-verdict-correct","operation":"normalVerdict","judge":"J","numbers":{"A":2,"B":5,"C":9},"proposed":["A","B","C"],"expected":{"errors":0,"incorrect":[],"sipCounts":{"J":0,"A":0,"B":0,"C":0}}},
     {"id":"normal-verdict-mixed-correct","operation":"normalVerdict","judge":"J","numbers":{"A":2,"B":5,"C":9},"proposed":["B","A","C"],"expected":{"errors":2,"incorrect":["B","A"],"sipCounts":{"J":2,"A":2,"B":2,"C":0}}},
     {"id":"normal-verdict-gap-range-and-position-count","operation":"normalVerdict","judge":"J","numbers":{"D":15,"C":9,"A":1,"B":4},"proposed":["B","A","D","C"],"expected":{"errors":4,"incorrect":["B","A","D","C"],"sipCounts":{"J":4,"A":4,"B":4,"C":4,"D":4}}},

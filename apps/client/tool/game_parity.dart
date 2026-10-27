@@ -90,6 +90,20 @@ Object? evaluateParity(Map<String, dynamic> c) {
   final random = _Indices((c['indices'] as List<dynamic>?) ?? []);
   final players = _players(c['players'] ?? []);
   switch (c['operation']) {
+    case 'allJudgesVerdict':
+      return {
+        for (final entry in allJudgesVerdict(
+          numbers: {
+            for (final n in (c['numbers'] as Map<String, dynamic>).entries)
+              PlayerId(n.key): n.value as int,
+          },
+          orders: {
+            for (final o in (c['orders'] as Map<String, dynamic>).entries)
+              PlayerId(o.key): _players(o.value),
+          },
+        ).entries)
+          entry.key.value: entry.value,
+      };
     case 'normalVerdict':
       final verdict = normalVerdict(
         judge: PlayerId(c['judge'] as String),

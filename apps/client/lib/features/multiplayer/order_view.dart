@@ -28,7 +28,9 @@ class OnlineOrderView extends ConsumerWidget {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
-        final order = ownsOrder
+        final order = view.config.allJudges && view.phase != 'ordering'
+            ? view.frozenRoster
+            : ownsOrder
             ? controller.order
             : view.judgeOrder ??
                   view.frozenRoster.where((id) => id != view.judgeId).toList();

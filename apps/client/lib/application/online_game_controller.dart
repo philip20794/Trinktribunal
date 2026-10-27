@@ -150,7 +150,6 @@ final class OnlineGameController extends ChangeNotifier {
     final view = snapshot;
     if (view == null ||
         !_sameRound(gameId, roundId) ||
-        view.public.config.allJudges ||
         view.public.phase != 'revealing' ||
         view.you != view.public.hostId ||
         view.public.revealCursor != expectedCursor) {

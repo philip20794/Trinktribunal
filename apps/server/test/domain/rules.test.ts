@@ -18,7 +18,7 @@ import { secureRandomIndex } from '../../src/domain/selection/random';
 import type { Assignment, PlayerId } from '../../src/protocol/room_message.generated';
 import type { UsageEvent } from '../../src/domain/game_state';
 import { gamePorts } from '../../src/domain/game_ports';
-import { normalVerdict } from '../../src/domain/verdict';
+import { normalVerdict, allJudgesVerdict } from '../../src/domain/verdict';
 import { initialGameState, transition } from '../../src/domain/game_reducer';
 import { RoomIds, currentProtocolCatalogHash } from '../../src/protocol/room_message';
 
@@ -41,6 +41,17 @@ function evaluate(c: Record<string, any>): unknown {
       excludes: entry.excludes ?? [],
     }));
   switch (c.operation) {
+    case 'allJudgesVerdict':
+      return allJudgesVerdict(
+        Object.entries(c.numbers).map(([id, number]) => ({
+          playerId: RoomIds.player(id),
+          number: number as number,
+        })),
+        Object.entries(c.orders).map(([id, order]) => ({
+          playerId: RoomIds.player(id),
+          order: (order as string[]).map(RoomIds.player),
+        })),
+      );
     case 'normalVerdict': {
       const value = normalVerdict(
         RoomIds.player(c.judge),

@@ -22,6 +22,31 @@ Iterable<List<T>> permutations<T>(List<T> items) sync* {
 }
 
 void main() {
+  test('executes the preserved shared TT-003 personal verdict fixture', () {
+    final fixture = jsonDecode(
+          File(
+            '../../packages/protocol/fixtures/transitions/verdict-all-judges.json',
+          ).readAsStringSync(),
+        ) as Map<String, dynamic>,
+        input = fixture['input'] as Map<String, dynamic>,
+        expected = fixture['expected'] as Map<String, dynamic>,
+        truth = (input['trueAscendingIds'] as List).cast<String>();
+    final verdict = allJudgesVerdict(
+      numbers: {
+        for (var i = 0; i < truth.length; i++) PlayerId(truth[i]): i + 1,
+      },
+      orders: {
+        for (final e
+            in (input['privateProposals'] as Map<String, dynamic>).entries)
+          PlayerId(e.key): (e.value as List)
+              .map((id) => PlayerId(id as String))
+              .toList(),
+      },
+    );
+    final counts = {for (final e in verdict.entries) e.key.value: e.value};
+    expect(counts, expected['privateErrors']);
+    expect(counts, expected['privateSipCounts']);
+  });
   test('executes the existing shared TT-003 normal verdict fixture', () {
     final fixture = jsonDecode(
       File('../../packages/protocol/fixtures/transitions/verdict-normal.json')

@@ -1,5 +1,8 @@
 {
   "@@locale": "en",
+  "onlinePersonalErrors": "Your wrong positions: {count}",
+  "onlinePersonalSips": "Your sips: {count}",
+  "onlinePersonalHelp": "Only your own order counts. You do not drink for anyone else's errors.",
   "onlineReader": "Reader: {name}",
   "onlineOrderSubmitted": "Order confirmed and locked",
   "onlineOrderNotSubmitted": "Order not submitted yet",

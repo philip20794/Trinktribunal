@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
 import { initialGameState, stageRoster, transition, gameActions } from '../domain/game_reducer';
 import { gamePorts } from '../domain/game_ports';
-import { scoreNormalRound } from '../domain/verdict';
+import { scoreRound } from '../domain/verdict';
 import { immutable, type GamePorts, type MutableGameState } from '../domain/game_state';
 import {
   decodeRoomMessage,
@@ -21,7 +21,7 @@ export function isGameAction(command: RoomMessage): command is GameCommand {
 export type GameActionResult =
   | { ok: true; revision: number; duplicate: boolean }
   | { ok: false; code: ProtocolErrorCode; retryable?: boolean };
-export const productionGamePorts = () => gamePorts(scoreNormalRound);
+export const productionGamePorts = () => gamePorts(scoreRound);
 
 export function synchronizedGame(
   state: RoomState,
