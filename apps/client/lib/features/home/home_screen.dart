@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../l10n/app_strings.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -63,19 +66,19 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           if (kDebugMode)
             IconButton(
-              tooltip: 'Designgalerie öffnen',
+              tooltip: context.tr('openDesign'),
               onPressed: () => _open(context, const DesignGalleryScreen()),
               icon: const Icon(Icons.palette_outlined),
             ),
           IconButton(
-            tooltip: 'Einstellungen öffnen',
+            tooltip: context.tr('openSettings'),
             icon: const Icon(Icons.settings_outlined),
             onPressed: () => _open(context, const SettingsScreen()),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: IconButton.filledTonal(
-              tooltip: 'Profil öffnen',
+              tooltip: context.tr('openProfile'),
               icon: profile == null
                   ? const Icon(Icons.person_outline)
                   : AvatarView(
@@ -107,27 +110,22 @@ class HomeScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Der Gerichtssaal wartet.',
+                      TText(
+                        'homeWelcome',
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'Wähle, wie ihr spielen möchtet. '
-                        'Die Spielabläufe werden schrittweise freigeschaltet.',
-                      ),
+                      Text(context.tr('homeIntro')),
                       const SizedBox(height: 28),
                       if (transaction?.restored == true)
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 16),
-                          child: Text(
-                            'Eine gespeicherte Partie ist wieder verfügbar. Öffne die zugehörige Spielvariante; Geheimzahlen bleiben zunächst verdeckt.',
-                          ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: const TText('homeResume'),
                         ),
                       if (transaction?.error != null)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text(transaction!.error!),
+                          child: Text(context.feedback(transaction!.error!)),
                         ),
                       if (transaction?.needsReset == true)
                         TextButton(
@@ -135,22 +133,18 @@ class HomeScreen extends ConsumerWidget {
                             final confirmed = await showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: const Text(
-                                  'Gespeicherte Partien verwerfen?',
-                                ),
-                                content: const Text(
-                                  'Profile und Ziehhistorie bleiben erhalten.',
-                                ),
+                                title: const TText('homeDiscardTitle'),
+                                content: const TText('homeKeepProfile'),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(context, false),
-                                    child: const Text('Abbrechen'),
+                                    child: const TText('cancel'),
                                   ),
                                   FilledButton(
                                     onPressed: () =>
                                         Navigator.pop(context, true),
-                                    child: const Text('Verwerfen'),
+                                    child: const TText('discard'),
                                   ),
                                 ],
                               ),
@@ -160,7 +154,7 @@ class HomeScreen extends ConsumerWidget {
                               ref.invalidate(localResumeProvider);
                             }
                           },
-                          child: const Text('Gespeicherte Partien verwerfen'),
+                          child: const TText('homeDiscardAction'),
                         ),
                       Wrap(
                         spacing: gap,
@@ -197,8 +191,8 @@ class HomeScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 24),
                       const CatalogDiagnostics(),
-                      const Text(
-                        'Entwicklungsvorschau',
+                      const TText(
+                        'homeDevPreview',
                         style: TextStyle(color: Color(0xFF715E50)),
                       ),
                     ],
@@ -234,9 +228,22 @@ class _ModeCard extends StatelessWidget {
               children: [
                 Icon(mode.icon, size: 36),
                 const SizedBox(height: 18),
-                Text(mode.title, style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  context.tr(switch (mode) {
+                    GameMode.cards => 'modeCards',
+                    GameMode.sharedPhone => 'modePhone',
+                    GameMode.multiplayer => 'modeMulti',
+                  }),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 const SizedBox(height: 10),
-                Text(mode.description),
+                Text(
+                  context.tr(switch (mode) {
+                    GameMode.cards => 'modeCardsDescription',
+                    GameMode.sharedPhone => 'modePhoneDescription',
+                    GameMode.multiplayer => 'modeMultiDescription',
+                  }),
+                ),
                 const SizedBox(height: 14),
                 Align(
                   alignment: Alignment.centerRight,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'catalog_repository.dart';
+import '../../l10n/app_strings.dart';
 
 class CatalogDiagnostics extends ConsumerWidget {
   const CatalogDiagnostics({super.key});
@@ -10,18 +11,17 @@ class CatalogDiagnostics extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (!kDebugMode) return const SizedBox.shrink();
     return ExpansionTile(
-      title: const Text('Katalogdiagnose'),
+      title: const TText('catalogDiagnostics'),
       children: [
         ref
             .watch(catalogsProvider)
             .when(
-              loading: () =>
-                  const ListTile(title: Text('Kataloge werden geladen …')),
+              loading: () => const ListTile(title: TText('catalogsLoading')),
               error: (error, stack) => ListTile(
-                title: const Text('Katalogfehler'),
+                title: const TText('catalogError'),
                 subtitle: Text('$error'),
                 trailing: IconButton(
-                  tooltip: 'Erneut laden',
+                  tooltip: context.tr('reload'),
                   onPressed: () => ref.invalidate(catalogsProvider),
                   icon: const Icon(Icons.refresh),
                 ),
@@ -31,10 +31,18 @@ class CatalogDiagnostics extends ConsumerWidget {
                   for (final language in ['de', 'en'])
                     ListTile(
                       title: Text(
-                        '${language.toUpperCase()}: ${data.questions[language]!.entries.length} Fragen · ${data.rules[language]!.entries.length} Regeln',
+                        context.tr('catalogCounts', {
+                          'language': language.toUpperCase(),
+                          'questions': data.questions[language]!.entries.length,
+                          'rules': data.rules[language]!.entries.length,
+                        }),
                       ),
                       subtitle: Text(
-                        'Ohne Namen: ${data.questions[language]!.withoutPlayers.length} Fragen · ${data.rules[language]!.withoutPlayers.length} Regeln',
+                        context.tr('catalogNoNames', {
+                          'questions':
+                              data.questions[language]!.withoutPlayers.length,
+                          'rules': data.rules[language]!.withoutPlayers.length,
+                        }),
                       ),
                     ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'court_theme.dart';
+import '../l10n/app_strings.dart';
 
 class CaseFile extends StatelessWidget {
   const CaseFile({required this.label, required this.child, super.key});
@@ -69,7 +70,7 @@ class NamePlate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-    label: 'Position $position, $name',
+    label: context.tr('positionName', {'position': position, 'name': name}),
     child: ExcludeSemantics(
       child: Container(
         width: double.infinity,

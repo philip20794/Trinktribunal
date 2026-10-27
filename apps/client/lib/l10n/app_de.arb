@@ -1,0 +1,569 @@
+{
+  "@@locale": "de",
+  "settings": "Einstellungen",
+  "generalSettings": "Allgemeine Einstellungen",
+  "appLanguage": "App-Sprache",
+  "german": "Deutsch",
+  "english": "Englisch",
+  "reducedMotion": "Bewegungen reduzieren",
+  "reducedMotionHelp": "Weniger Animationen und Übergänge anzeigen.",
+  "audio": "Audio erlauben",
+  "audioHelp": "Option für spätere Soundeffekte. Das Spiel bleibt ohne Ton bedienbar.",
+  "localContentLanguageHelp": "Lokale Fragen und Trinkregeln werden in der gewählten Sprache angezeigt. Die Partie und ihre Ziehungen bleiben erhalten.",
+  "settingsInvalid": "Gespeicherte Einstellungen sind ungültig. Standardwerte werden verwendet.",
+  "settingsUnavailable": "Einstellungen konnten nicht geladen werden. Standardwerte werden verwendet.",
+  "settingsSaveFailed": "Einstellungen konnten nicht gespeichert werden.",
+  "licenses": "Lizenzen anzeigen",
+  "back": "Zurück",
+  "homeWelcome": "Der Gerichtssaal wartet.",
+  "homeIntro": "Wähle, wie ihr spielen möchtet. Die Spielabläufe werden schrittweise freigeschaltet.",
+  "homeResume": "Eine gespeicherte Partie ist wieder verfügbar. Öffne die zugehörige Spielvariante; Geheimzahlen bleiben zunächst verdeckt.",
+  "homeDiscardTitle": "Gespeicherte Partien verwerfen?",
+  "homeKeepProfile": "Profile und Ziehhistorie bleiben erhalten.",
+  "cancel": "Abbrechen",
+  "discard": "Verwerfen",
+  "homeDiscardAction": "Gespeicherte Partien verwerfen",
+  "homeDevPreview": "Entwicklungsvorschau",
+  "modeCards": "Handy + Karten",
+  "modeCardsDescription": "Eine digitale Fallakte und echte Zahlenkarten am Tisch.",
+  "modePhone": "Ein Handy",
+  "modePhoneDescription": "Geheime Zahlen weiterreichen und Figuren gemeinsam sortieren.",
+  "modeMulti": "Jeder ein Handy",
+  "modeMultiDescription": "Im selben Gerichtssaal auf mehreren Geräten spielen.",
+  "openDesign": "Designgalerie öffnen",
+  "openSettings": "Einstellungen öffnen",
+  "openProfile": "Profil öffnen",
+  "startHearing": "Verhandlung starten",
+  "backToSelection": "Zurück zur Auswahl",
+  "reload": "Erneut laden",
+  "backToCase": "Zurück zur Fallakte",
+  "activeRules": "Aktive Regeln",
+  "newRule": "Neue Regel",
+  "newDrinkingRule": "Neue Trinkregel",
+  "ruleGoalReduced": "Regelziel reduziert",
+  "endHearing": "Verhandlung beendet",
+  "retryCases": "Fallakten erneut laden",
+  "nextCase": "Weiter zur nächsten Fallakte",
+  "restartGame": "Partie neu starten",
+  "withoutVerdict": "Fall ohne Urteil abschließen",
+  "confirm": "Bestätigen",
+  "confirmVerdict": "Urteil bestätigen",
+  "manualVerdict": "Manuelles Urteil eintragen",
+  "manualVerdictTitle": "Urteil manuell eintragen",
+  "correctOrderChecked": "Die vollständige Ordnung wurde geprüft.",
+  "manualVerdictHelp": "Vergleicht die vollständige Reihenfolge mit euren echten Zahlenkarten. Zählt falsch besetzte Positionen, keine vertauschten Paare.",
+  "cardLoadError": "Die Fallakten konnten nicht geladen werden. Bitte erneut versuchen.",
+  "cardNoQuestions": "Keine geeigneten Fragen für den Kartenmodus verfügbar.",
+  "nextHearing": "Eure nächste Verhandlung",
+  "cardIntro": "Ihr braucht echte Zahlenkarten. Keine Namen und keine Profile nötig. Eine Person richtet, die anderen antworten mündlich.",
+  "ruleEventHelp": "Regeln gelten sofort bis Partieende. Dieses Ereignis ist kein Fall: keine Zahlenkarten, kein Urteil und kein zusätzlicher Richterwechsel.",
+  "cardRotateHelp": "Richterwechsel am Tisch: Nach jedem abgeschlossenen Fall richtet die nächste Person in eurer Sitzreihenfolge.",
+  "cardRestartSetup": "Partie beenden und neu einrichten",
+  "phoneTitle": "Ein Handy · Verhandlung",
+  "phoneRuleHelp": "Ein Regelverstoß: ein manueller Strafschluck, keine Strafketten. Notwendiges Vorlesen und reguläres Zahlenaufdecken sind ausgenommen.",
+  "phoneNoRules": "Noch keine aktiven Regeln.",
+  "phoneRosterNotice": "Besetzung und Sitzreihenfolge ändern sich ab dem nächsten Fall. Namen und Aussehen sind bereits aktualisiert.",
+  "phoneReveal": "Meine Zahl bewusst öffnen",
+  "phoneHideNext": "Zahl merken · verbergen und weiter",
+  "phoneHide": "Zahl wieder verbergen",
+  "phoneAnswersHelp": "Antwortet mündlich passend zu eurer Zahl. Der Richter hört zu und ordnet danach die Antworten von niedrig nach hoch.",
+  "phoneBeginOrder": "Alle haben geantwortet · sortieren",
+  "phoneOrderHelp": "Figur lange greifen, Quelle und Ziel antippen oder mit den Pfeilen verschieben. Tastatur: Alt + Auf/Ab. Positionsnummern zeigen die vermutete Reihenfolge.",
+  "phoneConfirmOrder": "Ordnung bestätigen",
+  "phoneRevealNext": "Nächste Zahl aufdecken",
+  "phoneComplete": "Fall abschließen · Richterwechsel",
+  "phoneRuleEventHelp": "Gilt sofort bis Partieende. Dieses Ereignis zählt keinen Fall und wechselt den Richter nicht erneut.",
+  "phoneContinueRoster": "Mit aktueller Gruppe fortsetzen",
+  "phoneManageRoster": "Gruppe verwalten",
+  "rosterReload": "Gruppe erneut laden",
+  "rosterOrder": "Eure Sitzreihenfolge",
+  "rosterOrderHelp": "Die erste Person richtet zuerst. Verschiebt die Gruppe mit dem Griff oder den Pfeilen. Gleiche Namen werden durch den Sitzplatz unterschieden.",
+  "rosterEmpty": "Noch keine Personen. Fügt eure Gruppe hinzu.",
+  "rosterEdit": "Bearbeiten",
+  "rosterRemove": "Entfernen",
+  "rosterAdd": "Person hinzufügen",
+  "rosterImport": "Eigenes Profil als neue Person übernehmen",
+  "rosterReady": "Die Gruppe ist bereit. Name und Aussehen können weiter angepasst werden.",
+  "rosterFrozen": "Partieoptionen bleiben bis zum bestätigten Neustart gesperrt.",
+  "rosterApply": "Übernehmen",
+  "rulesHelp": "Ein eigenständiger Regelverstoß: ein zusätzlicher Strafschluck. Keine Strafketten. Erforderliches Vorlesen und reguläres Zahlenaufdecken sind von Sprachverboten ausgenommen.",
+  "rulesNone": "Es sind noch keine Regeln aktiv.",
+  "galleryTitle": "Gerichtssaal · Galerie",
+  "galleryScale": "Text mit 200 % anzeigen",
+  "galleryCase": "Eine Akte für jeden Fall.",
+  "galleryPrompt": "Stelle dir vor, du stehst vor Gericht. Wie überzeugend ist deine allerbeste Ausrede?",
+  "galleryHelp": "Papier, Holz, gedämpftes Rot und Graublau. Alle Schriften sind lokal gebündelt. Hinweise bleiben zusätzlich durch Text und Symbole verständlich.",
+  "profileTitle": "Mein Profil",
+  "profileReload": "Profil erneut laden",
+  "profileSaved": "Profil gespeichert.",
+  "profilePreview": "Vorschau deiner Figur",
+  "profileName": "Dein Name",
+  "profileLength": "1 bis 24 sichtbare Zeichen",
+  "profileMale": "Männlicher Start",
+  "profileFemale": "Weiblicher Start",
+  "profileRandom": "Zufällige Figur",
+  "profileHelp": "Jeder Start bleibt frei veränderbar. Gespeichert wird erst mit „Profil speichern“.",
+  "profileSave": "Profil speichern",
+  "profileSaving": "Wird gespeichert …",
+  "profileBack": "Zurück ohne weitere Änderungen zu speichern",
+  "galleryConfidential": "Vertraulich",
+  "cardCaseLabel": "Fallakte 07 / 50",
+  "rosterEditPerson": "Person bearbeiten",
+  "phoneRulesEmpty": "Noch keine aktiven Regeln.",
+  "modeUnavailable": "Diese Spielvariante ist noch nicht verfügbar. Der spielbare Ablauf wird noch entwickelt.",
+  "skipCaseTitle": "Fall ohne Urteil abschließen?",
+  "skipCaseHelp": "Dieser Fall zählt als abgeschlossen. Es werden keine Fehler oder Schlucke berechnet. Danach wechselt ihr den Richter am Tisch.",
+  "finishCase": "Fall abschließen",
+  "restartTitle": "Partie neu starten?",
+  "restartHelp": "Fälle und aktive Regeln werden zurückgesetzt. Die Ziehhistorie der letzten sechs Stunden bleibt erhalten.",
+  "restartAction": "Neu starten",
+  "endGameTitle": "Partie beenden?",
+  "endGameHelp": "Der aktuelle Spielfortschritt wird verworfen. Danach könnt ihr eine neue Partie einrichten.",
+  "endGameAction": "Partie beenden",
+  "incorrectPositions": "Falsche Positionen",
+  "cardsPrepare": "Zahlenkarten 1–{max} bereitlegen. Pro Fall erhalten {count} Antwortende je eine Karte; der Richter erhält keine.",
+  "cardsDistribution": "Verteilt {count} verschiedene Karten aus 1–{max}. Antwortet passend zur eigenen Zahl. Der Richter ordnet eure Antworten von niedrig nach hoch.",
+  "cardNoRule": "Keine weitere passende Regel verfügbar. Geplant sind jetzt höchstens {count} Regeln.",
+  "cardFinished": "Alle {count} Fälle sind abgeschlossen. {rules} Regeln wurden aktiviert.",
+  "casesCompleted": "{done} von {total} Fällen abgeschlossen",
+  "caseNumber": "Fallakte {number}",
+  "newHearingTitle": "Neue Verhandlung?",
+  "newHearingHelp": "Fallfortschritt, geheime Zahlen, Urteile und aktive Regeln werden verworfen. Gruppe und Ziehhistorie bleiben erhalten.",
+  "activeRulesCount": "Aktive Regeln · {count}",
+  "judge": "Richter: {name}",
+  "secretNumber": "Deine geheime Zahl: {number}",
+  "sips": "{name}: {count} Schlucke",
+  "wrongPositionsCount": "{count} falsche Positionen",
+  "phoneNoRule": "Keine weitere passende Regel. Höchstens {count} Regeln sind jetzt geplant.",
+  "rosterCount": "{count} von 20 Personen · mindestens 3 benötigt",
+  "casesCount": "Fälle: {count}",
+  "rulesCount": "Zusätzliche Regeln: {count}",
+  "factor": "Faktor: {value}",
+  "name": "Name",
+  "nameRequired": "Bitte einen Namen eingeben.",
+  "ruleSkipping": "Keine passende Regel in {count} Ereignissen. Ziel reduziert auf höchstens {max}.",
+  "moveForward": "Position {position} nach vorn",
+  "moveBack": "Position {position} nach hinten",
+  "wrongPosition": "Zahl {number} · ✕ Falsche Position",
+  "rightPosition": "Zahl {number} · ✓ Richtige Position",
+  "catalogDiagnostics": "Katalogdiagnose",
+  "catalogsLoading": "Kataloge werden geladen …",
+  "catalogError": "Katalogfehler",
+  "catalogCounts": "{language}: {questions} Fragen · {rules} Regeln",
+  "catalogNoNames": "Ohne Namen: {questions} Fragen · {rules} Regeln",
+  "avatarCategoryface": "Kopfform",
+  "avatarCategoryskin": "Hautton",
+  "avatarCategoryeyes": "Augen",
+  "avatarCategorybrows": "Augenbrauen",
+  "avatarCategorynose": "Nase",
+  "avatarCategorymouth": "Mund / Ausdruck",
+  "avatarCategoryhair": "Frisur",
+  "avatarCategoryhairColor": "Haarfarbe",
+  "avatarCategorybeard": "Bart",
+  "avatarCategorytop": "Oberteil",
+  "avatarCategorytopColor": "Kleidungsfarbe",
+  "avatarCategoryglasses": "Brille",
+  "avatarCategoryhat": "Hut",
+  "avatarCategoryextra": "Extra",
+  "avatarOptionround": "Rund",
+  "avatarOptionsquare": "Kantig",
+  "avatarOptionlong": "Lang",
+  "avatarOptionlight": "Hell",
+  "avatarOptionmedium": "Mittel",
+  "avatarOptionbrown": "Braun",
+  "avatarOptiondark": "Dunkel",
+  "avatarOptionopen": "Offen",
+  "avatarOptionsleepy": "Entspannt",
+  "avatarOptioncalm": "Ruhig",
+  "avatarOptionraised": "Angehoben",
+  "avatarOptionsmile": "Lächeln",
+  "avatarOptionneutral": "Neutral",
+  "avatarOptionsurprised": "Überrascht",
+  "avatarOptionshort": "Kurz",
+  "avatarOptioncurly": "Lockig",
+  "avatarOptionbald": "Keine Haare",
+  "avatarOptionblack": "Schwarz",
+  "avatarOptiongold": "Goldblond",
+  "avatarOptiongray": "Grau",
+  "avatarOptionnone": "Ohne",
+  "avatarOptionstubble": "Stoppeln",
+  "avatarOptionfull": "Vollbart",
+  "avatarOptionshirt": "Shirt",
+  "avatarOptionjacket": "Jacke",
+  "avatarOptionblue": "Graublau",
+  "avatarOptionred": "Rot",
+  "avatarOptiongreen": "Grün",
+  "avatarOptioncap": "Kappe",
+  "avatarOptionbowtie": "Fliege",
+  "backToSelectionKeepGame": "Zur Auswahl · Partie bleibt geöffnet",
+  "cases": "Fälle",
+  "additionalRules": "Zusätzliche Regeln",
+  "completedCases": "Abgeschlossene Fälle",
+  "errorText": "Fehler: {text}",
+  "lastNoVerdict": "Letzter Fall: ohne Urteil abgeschlossen. Keine Wertung.",
+  "manualVerdictSummary": "Manuelles Urteil: {count} falsche Positionen. Richter und jede falsch platzierte Person: je {count} Schlucke; richtig Platzierte: 0.",
+  "caseProgress": "Fall {number} / {total}",
+  "gamePaused": "Die Partie ist pausiert.",
+  "passPhone": "Gerät an {name}",
+  "confirmOrderTitle": "Ordnung verbindlich bestätigen?",
+  "confirmOrderHelp": "Danach ist die Reihenfolge gesperrt. Die Zahlen werden Schritt für Schritt aufgedeckt.",
+  "skipPhoneCaseHelp": "Dieser Fall zählt einmal als abgeschlossen. Es werden keine Fehler oder Schlucke berechnet. Der Richter wechselt.",
+  "playerUp": "Person nach oben",
+  "playerDown": "Person nach unten",
+  "fallaktenLoading": "Fallakten werden geladen",
+  "feedbackProfileDamaged": "Das gespeicherte Profil war beschädigt. Bitte prüfen und erneut speichern.",
+  "@feedbackProfileDamaged": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Das gespeicherte Profil war beschädigt. Bitte prüfen und erneut speichern."
+  },
+  "feedbackProfileLoadFailed": "Das Profil konnte nicht geladen werden. Du kannst es erneut versuchen oder neu anlegen.",
+  "@feedbackProfileLoadFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Das Profil konnte nicht geladen werden. Du kannst es erneut versuchen oder neu anlegen."
+  },
+  "feedbackProfileWriteFailed": "Das Profil konnte nicht gespeichert werden. Deine Änderungen bleiben im Editor erhalten.",
+  "@feedbackProfileWriteFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Das Profil konnte nicht gespeichert werden. Deine Änderungen bleiben im Editor erhalten."
+  },
+  "feedbackAvatarReplaced": "Eine unbekannte Figur wurde durch eine Ersatzfigur dargestellt.",
+  "@feedbackAvatarReplaced": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Eine unbekannte Figur wurde durch eine Ersatzfigur dargestellt."
+  },
+  "feedbackRosterLoadFailed": "Die Gruppe konnte nicht geladen werden. Bitte erneut versuchen oder neu anlegen.",
+  "@feedbackRosterLoadFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Gruppe konnte nicht geladen werden. Bitte erneut versuchen oder neu anlegen."
+  },
+  "feedbackRosterWriteFailed": "Die Gruppe konnte nicht gespeichert werden. Die bisherige Gruppe bleibt erhalten.",
+  "@feedbackRosterWriteFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Gruppe konnte nicht gespeichert werden. Die bisherige Gruppe bleibt erhalten."
+  },
+  "feedbackRosterFull": "Die Gruppe ist mit 20 Personen vollständig.",
+  "@feedbackRosterFull": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Gruppe ist mit 20 Personen vollständig."
+  },
+  "feedbackPlayerIdTaken": "Die neue Spieler-ID ist bereits vergeben. Bitte erneut versuchen.",
+  "@feedbackPlayerIdTaken": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die neue Spieler-ID ist bereits vergeben. Bitte erneut versuchen."
+  },
+  "feedbackUnknownPlayer": "Unbekannte Person.",
+  "@feedbackUnknownPlayer": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Unbekannte Person."
+  },
+  "feedbackInvalidSeat": "Ungültige Sitzposition.",
+  "@feedbackInvalidSeat": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültige Sitzposition."
+  },
+  "feedbackCatalogIncompatible": "Die gespeicherte Partie passt nicht zum aktuellen Fragen-/Regelkatalog. Bitte verwerfen und neu starten.",
+  "@feedbackCatalogIncompatible": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die gespeicherte Partie passt nicht zum aktuellen Fragen-/Regelkatalog. Bitte verwerfen und neu starten."
+  },
+  "feedbackBackupRestored": "Der letzte Schreibstand war beschädigt. Der vorherige gültige Stand wurde wiederhergestellt.",
+  "@feedbackBackupRestored": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der letzte Schreibstand war beschädigt. Der vorherige gültige Stand wurde wiederhergestellt."
+  },
+  "feedbackGameDamaged": "Die gespeicherte Partie ist beschädigt. Verwirf sie, um neu anzufangen.",
+  "@feedbackGameDamaged": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die gespeicherte Partie ist beschädigt. Verwirf sie, um neu anzufangen."
+  },
+  "feedbackStorageUnavailable": "Lokaler Speicher ist nicht verfügbar. Spielen ist möglich, Wiederaufnahme nach Schließen jedoch nicht gesichert.",
+  "@feedbackStorageUnavailable": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Lokaler Speicher ist nicht verfügbar. Spielen ist möglich, Wiederaufnahme nach Schließen jedoch nicht gesichert."
+  },
+  "feedbackGameWriteFailed": "Der Spielstand konnte nicht gespeichert werden. Du kannst weiterspielen; nach Schließen kann Fortschritt fehlen.",
+  "@feedbackGameWriteFailed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Spielstand konnte nicht gespeichert werden. Du kannst weiterspielen; nach Schließen kann Fortschritt fehlen."
+  },
+  "feedbackRestartNeedsConfirmation": "Neustart muss bestätigt werden.",
+  "@feedbackRestartNeedsConfirmation": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Neustart muss bestätigt werden."
+  },
+  "feedbackRosterMismatch": "Konfiguration und Gruppe stimmen nicht überein.",
+  "@feedbackRosterMismatch": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Konfiguration und Gruppe stimmen nicht überein."
+  },
+  "feedbackHandoffInactive": "Diese Zahlenübergabe ist nicht aktiv.",
+  "@feedbackHandoffInactive": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Diese Zahlenübergabe ist nicht aktiv."
+  },
+  "feedbackOpenNumberFirst": "Zahl zuerst bewusst öffnen und bestätigen.",
+  "@feedbackOpenNumberFirst": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Zahl zuerst bewusst öffnen und bestätigen."
+  },
+  "feedbackAnswersIncomplete": "Antwortphase ist nicht abgeschlossen.",
+  "@feedbackAnswersIncomplete": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Antwortphase ist nicht abgeschlossen."
+  },
+  "feedbackOrderLocked": "Die Ordnung ist bereits gesperrt.",
+  "@feedbackOrderLocked": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Ordnung ist bereits gesperrt."
+  },
+  "feedbackNoOrder": "Keine bestätigbare Ordnung.",
+  "@feedbackNoOrder": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine bestätigbare Ordnung."
+  },
+  "feedbackInvalidReveal": "Ungültiger Aufdeckschritt.",
+  "@feedbackInvalidReveal": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültiger Aufdeckschritt."
+  },
+  "feedbackCaseNotReady": "Der Fall kann noch nicht abgeschlossen werden.",
+  "@feedbackCaseNotReady": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Fall kann noch nicht abgeschlossen werden."
+  },
+  "feedbackInvalidRoster": "Ungültige Gruppe.",
+  "@feedbackInvalidRoster": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültige Gruppe."
+  },
+  "feedbackStaleRound": "Dieser Fall ist nicht mehr aktiv.",
+  "@feedbackStaleRound": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Dieser Fall ist nicht mehr aktiv."
+  },
+  "feedbackInsufficientPlayers": "Mindestens drei Personen werden für den nächsten Fall benötigt.",
+  "@feedbackInsufficientPlayers": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Mindestens drei Personen werden für den nächsten Fall benötigt."
+  },
+  "feedbackQuestionsExhausted": "Keine weitere geeignete Frage verfügbar. Es wird kein Fall erfunden.",
+  "@feedbackQuestionsExhausted": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine weitere geeignete Frage verfügbar. Es wird kein Fall erfunden."
+  },
+  "feedbackCardsExhausted": "Keine weitere geeignete Frage verfügbar. Der Fallzähler bleibt erhalten.",
+  "@feedbackCardsExhausted": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine weitere geeignete Frage verfügbar. Der Fallzähler bleibt erhalten."
+  },
+  "feedbackInvalidName": "Ein Name muss nach dem Trimmen 1 bis 24 sichtbare Zeichen enthalten.",
+  "@feedbackInvalidName": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ein Name muss nach dem Trimmen 1 bis 24 sichtbare Zeichen enthalten."
+  },
+  "feedbackPlayerBounds": "Es werden 3 bis 20 Spieler benötigt.",
+  "@feedbackPlayerBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Es werden 3 bis 20 Spieler benötigt."
+  },
+  "feedbackQuestionBounds": "Fallziel außerhalb des geeigneten Fragenbestands.",
+  "@feedbackQuestionBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Fallziel außerhalb des geeigneten Fragenbestands."
+  },
+  "feedbackRuleBounds": "Regelziel außerhalb des geeigneten Regelbestands.",
+  "@feedbackRuleBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Regelziel außerhalb des geeigneten Regelbestands."
+  },
+  "feedbackFactorBounds": "Der Faktor muss in Zehnteln zwischen 10 und 30 liegen.",
+  "@feedbackFactorBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Faktor muss in Zehnteln zwischen 10 und 30 liegen."
+  },
+  "feedbackAllJudgesMode": "Alle sind Richter ist nur im Multiplayer verfügbar.",
+  "@feedbackAllJudgesMode": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Alle sind Richter ist nur im Multiplayer verfügbar."
+  },
+  "feedbackUnsupportedLanguage": "Nicht unterstützte Inhaltssprache.",
+  "@feedbackUnsupportedLanguage": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Nicht unterstützte Inhaltssprache."
+  },
+  "feedbackNumberBounds": "Der Zahlenbereich reicht nicht für alle Empfänger.",
+  "@feedbackNumberBounds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Zahlenbereich reicht nicht für alle Empfänger."
+  },
+  "feedbackNegativeCapacity": "Kataloggrößen dürfen nicht negativ sein.",
+  "@feedbackNegativeCapacity": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Kataloggrößen dürfen nicht negativ sein."
+  },
+  "feedbackConfigFields": "Konfiguration enthält fehlende oder unbekannte Felder.",
+  "@feedbackConfigFields": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Konfiguration enthält fehlende oder unbekannte Felder."
+  },
+  "feedbackConfigTypes": "Ungültiger Modus, Richteroption oder Inhaltssprache.",
+  "@feedbackConfigTypes": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültiger Modus, Richteroption oder Inhaltssprache."
+  },
+  "feedbackRestartConfirm": "Eine neue Partie benötigt eine bestätigte Neustartaktion.",
+  "@feedbackRestartConfirm": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Eine neue Partie benötigt eine bestätigte Neustartaktion."
+  },
+  "feedbackLanguageMismatch": "Inhaltssprache und geladener Katalog stimmen nicht überein.",
+  "@feedbackLanguageMismatch": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Inhaltssprache und geladener Katalog stimmen nicht überein."
+  },
+  "feedbackNoGame": "Keine aktive Partie.",
+  "@feedbackNoGame": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine aktive Partie."
+  },
+  "feedbackCardsOnly": "Dieser Ablauf benötigt den Kartenmodus.",
+  "@feedbackCardsOnly": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Dieser Ablauf benötigt den Kartenmodus."
+  },
+  "feedbackCaseInactive": "Der Fall ist nicht aktiv.",
+  "@feedbackCaseInactive": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Fall ist nicht aktiv."
+  },
+  "feedbackManualScore": "Manuelle Wertung benötigt eine vollständige Ordnung und 0 oder 2 bis N−1 Fehler.",
+  "@feedbackManualScore": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Manuelle Wertung benötigt eine vollständige Ordnung und 0 oder 2 bis N−1 Fehler."
+  },
+  "feedbackRuleInactive": "Dieses Regelereignis ist nicht aktiv.",
+  "@feedbackRuleInactive": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Dieses Regelereignis ist nicht aktiv."
+  },
+  "feedbackInvalidOrder": "Die Ordnung muss jede beteiligte ID genau einmal enthalten.",
+  "@feedbackInvalidOrder": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Die Ordnung muss jede beteiligte ID genau einmal enthalten."
+  },
+  "feedbackInvalidNumbers": "Geheimzahlen müssen eindeutig im gültigen Bereich liegen.",
+  "@feedbackInvalidNumbers": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Geheimzahlen müssen eindeutig im gültigen Bereich liegen."
+  },
+  "feedbackJudgeNumber": "Der Richter erhält im Normalmodus keine Zahl.",
+  "@feedbackJudgeNumber": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der Richter erhält im Normalmodus keine Zahl."
+  },
+  "feedbackMissingOrders": "Jede Person benötigt genau ein eigenes Urteil.",
+  "@feedbackMissingOrders": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Jede Person benötigt genau ein eigenes Urteil."
+  },
+  "feedbackInvalidNumberRoster": "Ungültiger Teilnehmerstand oder Richter.",
+  "@feedbackInvalidNumberRoster": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültiger Teilnehmerstand oder Richter."
+  },
+  "feedbackInvalidInsertion": "Ungültige Sortierposition.",
+  "@feedbackInvalidInsertion": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültige Sortierposition."
+  },
+  "feedbackInvalidAvatar": "Unbekannte Avatar-Ebene oder Auswahl.",
+  "@feedbackInvalidAvatar": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Unbekannte Avatar-Ebene oder Auswahl."
+  },
+  "feedbackInvalidSchedule": "Ungültige Ereignisplanung.",
+  "@feedbackInvalidSchedule": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültige Ereignisplanung."
+  },
+  "feedbackNoContent": "Keine geeigneten Inhalte verfügbar.",
+  "@feedbackNoContent": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Keine geeigneten Inhalte verfügbar."
+  },
+  "feedbackCatalogExhausted": "Der geeignete Katalog ist erschöpft.",
+  "@feedbackCatalogExhausted": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Der geeignete Katalog ist erschöpft."
+  },
+  "feedbackMissingBinding": "Gebundenes Spielerprofil fehlt.",
+  "@feedbackMissingBinding": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Gebundenes Spielerprofil fehlt."
+  },
+  "feedbackContentUsed": "Inhalt oder Ereignis bereits gezogen.",
+  "@feedbackContentUsed": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Inhalt oder Ereignis bereits gezogen."
+  },
+  "feedbackEventConflict": "Ereignis-ID für anderen Aktionstyp verwendet.",
+  "@feedbackEventConflict": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ereignis-ID für anderen Aktionstyp verwendet."
+  },
+  "feedbackUnknownRule": "Unbekannte aktive Regel.",
+  "@feedbackUnknownRule": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Unbekannte aktive Regel."
+  },
+  "feedbackNegativeCounts": "Personenzähler dürfen nicht negativ sein.",
+  "@feedbackNegativeCounts": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Personenzähler dürfen nicht negativ sein."
+  },
+  "feedbackUnknownCount": "Unbekannte Spieler-ID im Personenzähler.",
+  "@feedbackUnknownCount": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Unbekannte Spieler-ID im Personenzähler."
+  },
+  "feedbackInvalidIdentifier": "Eine ID muss nichtleer sein und darf keine äußeren Leerzeichen haben.",
+  "@feedbackInvalidIdentifier": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Eine ID muss nichtleer sein und darf keine äußeren Leerzeichen haben."
+  },
+  "feedbackHistoryIds": "Historieneinträge brauchen Ereignis- und Inhalts-ID.",
+  "@feedbackHistoryIds": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Historieneinträge brauchen Ereignis- und Inhalts-ID."
+  },
+  "feedbackDuplicateHistory": "Doppelte Ereignis-ID in der Inhaltshistorie.",
+  "@feedbackDuplicateHistory": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Doppelte Ereignis-ID in der Inhaltshistorie."
+  },
+  "feedbackHistoryConflict": "Ereignis-ID mit abweichendem Inhalt wiederverwendet.",
+  "@feedbackHistoryConflict": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ereignis-ID mit abweichendem Inhalt wiederverwendet."
+  },
+  "feedbackInvalidRegistry": "Spielerregister passt nicht zur Konfiguration.",
+  "@feedbackInvalidRegistry": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Spielerregister passt nicht zur Konfiguration."
+  },
+  "feedbackInvalidRandom": "Ungültiger injizierter Zufallsindex.",
+  "@feedbackInvalidRandom": {
+    "description": "Localized application feedback; the domain retains its stable original message.",
+    "source": "Ungültiger injizierter Zufallsindex."
+  },
+  "errorInteger": "{field} muss eine Ganzzahl sein.",
+  "positionName": "Position {position}, {name}",
+  "avatarFallback": "{name}, Ersatzfigur",
+  "rosterSeatName": "{name} · Platz {position}",
+  "galleryPaper": "Papier",
+  "galleryInk": "Tinte",
+  "galleryWood": "Holz",
+  "gallerySeal": "Siegel",
+  "galleryBlue": "Graublau",
+  "humanCharacter": "Menschliche Spielfigur"
+}

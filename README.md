@@ -36,9 +36,9 @@ Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erschein
 
 ## Status
 
-Kartenmodus und gemeinsames Handy sind lokal spielbar: Einrichtung, Profile/Avatar-Editor, Spielerregister, Fragen, Regeln, Sortierung, Urteil und Neustart sind verbunden. Lokale Partien und die gemeinsame Sechs-Stunden-Historie werden gespeichert; bei Wiederaufnahme bleiben Geheimzahlen verdeckt. Multiplayer und die DE/EN-Oberfläche folgen in den nächsten Aufgaben.
+Kartenmodus und gemeinsames Handy sind lokal spielbar: Einrichtung, Profile/Avatar-Editor, Spielerregister, Fragen, Regeln, Sortierung, Urteil und Neustart sind verbunden. Lokale Partien und die gemeinsame Sechs-Stunden-Historie werden gespeichert; bei Wiederaufnahme bleiben Geheimzahlen verdeckt. Multiplayer folgt in den nächsten Aufgaben. Die DE/EN-Oberfläche und Geräteeinstellungen befinden sich auf dem TT-028-Entwicklungsbranch; die technische Abnahme steht noch aus.
 
-Die Entscheidungen D-01 bis D-18 sind für die Erstumsetzung festgelegt. Implementiert bis TT-027; 78 Node-/112 Flutter-Tests sowie Web- und Android-Debugbuild geprüft. Auf Nutzerwunsch Unit- statt E2E-Absicherung. Der genaue Abnahmestand und die noch offenen visuellen Meilenstein-Gates stehen in [PROGRESS.md](docs/PROGRESS.md). Die Entwicklung funktioniert ohne GitHub Actions; Inhalts-/Assetrechte bleiben ein späteres Release-Gate.
+Die Entscheidungen D-01 bis D-18 sind für die Erstumsetzung festgelegt. Bis TT-027 auf main implementiert und geprüft (78 Node-/112 Flutter-Tests sowie Web- und Android-Debugbuild). TT-028 befindet sich in einem separaten Branch und ist noch nicht abgenommen. Auf Nutzerwunsch Unit- statt E2E-Absicherung. Der genaue Abnahmestand und die noch offenen visuellen Meilenstein-Gates stehen in [PROGRESS.md](docs/PROGRESS.md). Die Entwicklung funktioniert ohne GitHub Actions; Inhalts-/Assetrechte bleiben ein späteres Release-Gate.
 
 Lokaler Start vom Repository-Root unter Windows (Flutter 3.47.7 oder neuer):
 

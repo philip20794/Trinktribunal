@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_strings.dart';
+
 import '../../design/case_file.dart';
 import '../../design/court_theme.dart';
 import '../../design/avatar_view.dart';
@@ -15,7 +17,7 @@ class _DesignGalleryScreenState extends State<DesignGalleryScreen> {
   bool _largeText = false;
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Gerichtssaal · Galerie')),
+    appBar: AppBar(title: const TText('galleryTitle')),
     body: MediaQuery(
       data: MediaQuery.of(context).copyWith(
         textScaler: _largeText
@@ -30,24 +32,25 @@ class _DesignGalleryScreenState extends State<DesignGalleryScreen> {
             children: [
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Text mit 200 % anzeigen'),
+                title: const TText('galleryScale'),
                 value: _largeText,
                 onChanged: (value) => setState(() => _largeText = value),
               ),
               const SizedBox(height: 16),
-              Text(
-                'Eine Akte für jeden Fall.',
+              TText(
+                'galleryCase',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 16),
-              const CaseFile(
-                label: 'Fallakte 07 / 50',
-                child: Text(
-                  'Stelle dir vor, du stehst vor Gericht. Wie überzeugend ist deine allerbeste Ausrede?',
-                ),
+              CaseFile(
+                label: context.tr('cardCaseLabel'),
+                child: TText('galleryPrompt'),
               ),
               const SizedBox(height: 16),
-              const CourtSeal(label: 'Vertraulich', icon: Icons.lock_outline),
+              CourtSeal(
+                label: context.tr('galleryConfidential'),
+                icon: Icons.lock_outline,
+              ),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 12,
@@ -62,27 +65,25 @@ class _DesignGalleryScreenState extends State<DesignGalleryScreen> {
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: () {},
-                child: const Text('Urteil bestätigen'),
+                child: const TText('confirmVerdict'),
               ),
               const SizedBox(height: 8),
               OutlinedButton(
                 onPressed: () {},
-                child: const Text('Zurück zur Fallakte'),
+                child: const TText('backToCase'),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Papier, Holz, gedämpftes Rot und Graublau. Alle Schriften sind lokal gebündelt. Hinweise bleiben zusätzlich durch Text und Symbole verständlich.',
-              ),
+              const TText('galleryHelp'),
               const SizedBox(height: 16),
               const Wrap(
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  _Swatch('Papier', CourtTokens.paper),
-                  _Swatch('Tinte', CourtTokens.ink),
-                  _Swatch('Holz', CourtTokens.wood),
-                  _Swatch('Siegel', CourtTokens.red),
-                  _Swatch('Graublau', CourtTokens.blue),
+                  _Swatch('galleryPaper', CourtTokens.paper),
+                  _Swatch('galleryInk', CourtTokens.ink),
+                  _Swatch('galleryWood', CourtTokens.wood),
+                  _Swatch('gallerySeal', CourtTokens.red),
+                  _Swatch('galleryBlue', CourtTokens.blue),
                 ],
               ),
             ],
@@ -110,7 +111,7 @@ class _Swatch extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      Text(label),
+      TText(label),
     ],
   );
 }

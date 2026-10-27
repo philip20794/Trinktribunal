@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import '../../l10n/app_strings.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,6 +9,7 @@ import '../../application/local_session_controller.dart';
 import '../../application/local_data_providers.dart';
 import '../../data/catalogs/catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
+import '../../data/catalogs/localized_catalog.dart';
 import '../../design/case_file.dart';
 import '../../domain/local_game_reducer.dart';
 import '../../domain/models/domain_error.dart';
@@ -54,7 +57,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Abbrechen'),
+                  child: const TText('cancel'),
                 ),
                 FilledButton(
                   onPressed: () => Navigator.pop(context, true),
@@ -74,9 +77,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     CardGameState state,
   ) async {
     final confirmed = await _confirm(
-      'Fall ohne Urteil abschließen?',
-      'Dieser Fall zählt als abgeschlossen. Es werden keine Fehler oder Schlucke berechnet. Danach wechselt ihr den Richter am Tisch.',
-      'Fall abschließen',
+      context.tr('skipCaseTitle'),
+      context.tr('skipCaseHelp'),
+      context.tr('finishCase'),
     );
     if (mounted) {
       _act(
@@ -102,19 +105,17 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         context: context,
         builder: (context) => StatefulBuilder(
           builder: (context, update) => AlertDialog(
-            title: const Text('Urteil manuell eintragen'),
+            title: const TText('manualVerdictTitle'),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'Vergleicht die vollständige Reihenfolge mit euren echten Zahlenkarten. Zählt falsch besetzte Positionen, keine vertauschten Paare.',
-                  ),
+                  const TText('manualVerdictHelp'),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
                     initialValue: 0,
-                    decoration: const InputDecoration(
-                      labelText: 'Falsche Positionen',
+                    decoration: InputDecoration(
+                      labelText: context.tr('incorrectPositions'),
                     ),
                     items:
                         [
@@ -134,9 +135,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                     value: checked,
                     onChanged: (value) =>
                         update(() => checked = value ?? false),
-                    title: const Text(
-                      'Die vollständige Ordnung wurde geprüft.',
-                    ),
+                    title: const TText('correctOrderChecked'),
                   ),
                 ],
               ),
@@ -144,13 +143,13 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Abbrechen'),
+                child: const TText('cancel'),
               ),
               FilledButton(
                 onPressed: checked
                     ? () => Navigator.pop(context, errors)
                     : null,
-                child: const Text('Urteil bestätigen'),
+                child: const TText('confirmVerdict'),
               ),
             ],
           ),
@@ -176,9 +175,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     CardGameState state,
   ) async {
     final confirmed = await _confirm(
-      'Partie neu starten?',
-      'Fälle und aktive Regeln werden zurückgesetzt. Die Ziehhistorie der letzten sechs Stunden bleibt erhalten.',
-      'Neu starten',
+      context.tr('restartTitle'),
+      context.tr('restartHelp'),
+      context.tr('restartAction'),
     );
     if (mounted && confirmed) {
       _act(() => controller.start(state.config, confirmedRestart: true));
@@ -187,9 +186,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
 
   Future<void> _abort(LocalSessionController controller) async {
     final confirmed = await _confirm(
-      'Partie beenden?',
-      'Der aktuelle Spielfortschritt wird verworfen. Danach könnt ihr eine neue Partie einrichten.',
-      'Partie beenden',
+      context.tr('endGameTitle'),
+      context.tr('endGameHelp'),
+      context.tr('endGameAction'),
     );
     if (mounted && confirmed) _act(() => controller.abort(confirmed: true));
   }
@@ -198,7 +197,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
   Widget build(BuildContext context) {
     final catalogs = ref.watch(catalogsProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Handy + Karten')),
+      appBar: AppBar(title: const TText('modeCards')),
       body: catalogs.when(
         loading: () => const Center(
           child: CircularProgressIndicator(
@@ -211,17 +210,15 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Die Fallakten konnten nicht geladen werden. Bitte erneut versuchen.',
-                ),
+                const TText('cardLoadError'),
                 const SizedBox(height: 16),
                 FilledButton(
                   onPressed: () => ref.invalidate(catalogsProvider),
-                  child: const Text('Erneut laden'),
+                  child: const TText('reload'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Zurück zur Auswahl'),
+                  child: const TText('backToSelection'),
                 ),
               ],
             ),
@@ -241,16 +238,19 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(24),
                 children: [
-                  if (_storageWarning != null) Text(_storageWarning!),
+                  if (_storageWarning != null)
+                    Text(context.feedback(_storageWarning!)),
                   if (_error != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
                       child: Text(
-                        _error!,
+                        context.feedback(_error!),
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.error,
                         ),
-                        semanticsLabel: 'Fehler: $_error',
+                        semanticsLabel: context.tr('errorText', {
+                          'text': _error,
+                        }),
                       ),
                     ),
                   if (state == null)
@@ -263,8 +263,8 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                     icon: const Icon(Icons.arrow_back),
                     label: Text(
                       state == null
-                          ? 'Zurück zur Auswahl'
-                          : 'Zur Auswahl · Partie bleibt geöffnet',
+                          ? context.tr('backToSelection')
+                          : context.tr('backToSelectionKeepGame'),
                     ),
                   ),
                 ],
@@ -283,29 +283,22 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       math.min(_cases, maxCases) - 1,
     );
     if (maxCases < 1) {
-      return [
-        const Text('Keine geeigneten Fragen für den Kartenmodus verfügbar.'),
-      ];
+      return [const TText('cardNoQuestions')];
     }
     final cases = math.min(_cases, maxCases);
     final rules = math.min(_rules, maxRules);
     return [
-      Text(
-        'Eure nächste Verhandlung',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
+      TText('nextHearing', style: Theme.of(context).textTheme.headlineMedium),
       const SizedBox(height: 12),
-      const Text(
-        'Ihr braucht echte Zahlenkarten. Keine Namen und keine Profile nötig. Eine Person richtet, die anderen antworten mündlich.',
-      ),
+      const TText('cardIntro'),
       const SizedBox(height: 24),
       _slider('Spieler', _players, 3, 20, (n) => _players = n),
-      _slider('Fälle', cases, 1, maxCases, (n) {
+      _slider(context.tr('cases'), cases, 1, maxCases, (n) {
         _cases = n;
         _rules = math.min(_rules, n - 1);
       }),
       _slider(
-        'Zusätzliche Regeln',
+        context.tr('additionalRules'),
         rules,
         0,
         math.max(0, maxRules),
@@ -321,7 +314,10 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ),
       const SizedBox(height: 12),
       Text(
-        'Zahlenkarten 1–${(_players * _factor + 9) ~/ 10} bereitlegen. Pro Fall erhalten ${_players - 1} Antwortende je eine Karte; der Richter erhält keine.',
+        context.tr('cardsPrepare', {
+          'max': (_players * _factor + 9) ~/ 10,
+          'count': _players - 1,
+        }),
       ),
       const SizedBox(height: 20),
       FilledButton.icon(
@@ -336,7 +332,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           ),
         ),
         icon: const Icon(Icons.gavel),
-        label: const Text('Verhandlung starten'),
+        label: const TText('startHearing'),
       ),
     ];
   }
@@ -370,19 +366,33 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
 
   List<Widget> _game(LocalSessionController controller, CardGameState state) {
     final config = state.config;
-    final question = state.currentQuestion?.entry as Question?;
+    final originalQuestion = state.currentQuestion?.entry as Question?;
+    final question = originalQuestion == null
+        ? null
+        : localizedQuestion(
+            ref.read(catalogsProvider).requireValue,
+            AppLanguageScope.of(context).language,
+            originalQuestion,
+          );
     return [
       Row(
         children: [
           Expanded(
             child: Text(
-              '${state.completedCases} von ${config.targetCases} Fällen abgeschlossen',
+              context.tr('casesCompleted', {
+                'done': state.completedCases,
+                'total': config.targetCases,
+              }),
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           IconButton(
-            tooltip: 'Aktive Regeln',
-            onPressed: () => showActiveRules(context, state),
+            tooltip: context.tr('activeRules'),
+            onPressed: () => showActiveRules(
+              context,
+              state,
+              ref.read(catalogsProvider).requireValue,
+            ),
             icon: Badge(
               label: Text('${state.rules.active.length}'),
               child: const Icon(Icons.menu_book_outlined),
@@ -392,25 +402,30 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ),
       LinearProgressIndicator(
         value: state.completedCases / config.targetCases,
-        semanticsLabel: 'Abgeschlossene Fälle',
+        semanticsLabel: context.tr('completedCases'),
       ),
       const SizedBox(height: 24),
       if (state.lastCompletion != null) ...[
         Text(
           state.lastCompletion == CaseCompletion.withoutVerdict
-              ? 'Letzter Fall: ohne Urteil abgeschlossen. Keine Wertung.'
-              : 'Manuelles Urteil: ${state.manualErrors} falsche Positionen. Richter und jede falsch platzierte Person: je ${state.manualErrors} Schlucke; richtig Platzierte: 0.',
+              ? context.tr('lastNoVerdict')
+              : context.tr('manualVerdictSummary', {
+                  'count': state.manualErrors,
+                }),
         ),
         const SizedBox(height: 16),
       ],
       if (state.phase == GamePhase.casePresented && question != null) ...[
         Text(
-          'Fallakte ${state.caseNumber}',
+          context.tr('caseNumber', {'number': state.caseNumber}),
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
         CaseFile(
-          label: 'Fall ${state.caseNumber} / ${config.targetCases}',
+          label: context.tr('caseProgress', {
+            'number': state.caseNumber,
+            'total': config.targetCases,
+          }),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -442,21 +457,26 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
         const SizedBox(height: 16),
         Text(
-          'Verteilt ${config.numberRecipients} verschiedene Karten aus 1–${config.maxSecretNumber}. Antwortet passend zur eigenen Zahl. Der Richter ordnet eure Antworten von niedrig nach hoch.',
+          context.tr('cardsDistribution', {
+            'count': config.numberRecipients,
+            'max': config.maxSecretNumber,
+          }),
         ),
         const SizedBox(height: 16),
         FilledButton(
           onPressed: () => _manual(controller, state),
-          child: const Text('Manuelles Urteil eintragen'),
+          child: const TText('manualVerdict'),
         ),
         OutlinedButton(
           onPressed: () => _skip(controller, state),
-          child: const Text('Fall ohne Urteil abschließen'),
+          child: const TText('withoutVerdict'),
         ),
       ],
       if (state.phase == GamePhase.ruleEvent) ...[
         Text(
-          state.newRule == null ? 'Regelziel reduziert' : 'Neue Trinkregel',
+          context.tr(
+            state.newRule == null ? 'ruleGoalReduced' : 'newDrinkingRule',
+          ),
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
@@ -464,48 +484,56 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Text(
-              state.newRule?.entry.text ??
-                  'Keine weitere passende Regel verfügbar. Geplant sind jetzt höchstens ${state.effectiveRuleTarget} Regeln.',
+              (state.newRule == null
+                      ? null
+                      : localizedRule(
+                          ref.read(catalogsProvider).requireValue,
+                          AppLanguageScope.of(context).language,
+                          state.newRule!.entry as DrinkingRule,
+                        ).text) ??
+                  context.tr('cardNoRule', {
+                    'count': state.effectiveRuleTarget,
+                  }),
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),
         const SizedBox(height: 16),
-        const Text(
-          'Regeln gelten sofort bis Partieende. Dieses Ereignis ist kein Fall: keine Zahlenkarten, kein Urteil und kein zusätzlicher Richterwechsel.',
-        ),
+        const TText('ruleEventHelp'),
         FilledButton(
           onPressed: () =>
               _act(() => controller.continueAfterRule(state.currentEventId)),
-          child: const Text('Weiter zur nächsten Fallakte'),
+          child: const TText('nextCase'),
         ),
       ],
       if (state.phase == GamePhase.finished) ...[
-        Text(
-          'Verhandlung beendet',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
+        TText('endHearing', style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 12),
         Text(
-          'Alle ${config.targetCases} Fälle sind abgeschlossen. ${state.rules.active.length} Regeln wurden aktiviert.',
+          context.tr('cardFinished', {
+            'count': config.targetCases,
+            'rules': state.rules.active.length,
+          }),
         ),
       ],
       if (state.phase == GamePhase.paused)
-        Text(state.pauseReason ?? 'Die Partie ist pausiert.'),
+        Text(
+          state.pauseReason == null
+              ? context.tr('gamePaused')
+              : context.feedback(state.pauseReason!),
+        ),
       if (state.completedCases > 0 && state.phase != GamePhase.finished) ...[
         const SizedBox(height: 16),
-        const Text(
-          'Richterwechsel am Tisch: Nach jedem abgeschlossenen Fall richtet die nächste Person in eurer Sitzreihenfolge.',
-        ),
+        const TText('cardRotateHelp'),
       ],
       const SizedBox(height: 24),
       OutlinedButton(
         onPressed: () => _restart(controller, state),
-        child: const Text('Partie neu starten'),
+        child: const TText('restartGame'),
       ),
       TextButton(
         onPressed: () => _abort(controller),
-        child: const Text('Partie beenden und neu einrichten'),
+        child: const TText('cardRestartSetup'),
       ),
     ];
   }
