@@ -438,6 +438,7 @@ export function transition(
     if (receipt) {
       if (receipt.actorId !== actor || receipt.fingerprint !== fingerprint)
         reject('ACTION_ID_CONFLICT');
+      if (receipt.gameId !== state.gameId) reject('STALE_ROUND');
       return { ok: true, state, duplicate: true };
     }
     if (command.expectedRevision !== state.revision) reject('STALE_REVISION');
@@ -550,6 +551,7 @@ export function transition(
       actorId: actor,
       fingerprint,
       revision: next.revision,
+      gameId: next.gameId,
     });
     return { ok: true, state: immutable(next), duplicate: false };
   } catch (error) {

@@ -1,6 +1,7 @@
 import { createRoomMessage, RoomIds } from '../protocol/room_message';
 import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
+import type { GameState } from '../domain/game_state';
 import type {
   Config,
   PlayerId,
@@ -13,7 +14,8 @@ export function playersHash(players: ReadonlyArray<Participant>): string {
   return createHash('sha256').update(canonicalJson(players)).digest('hex');
 }
 
-// Explicit lobby allowlist. Never spread persisted members/state into a wire payload.
+// Explicit public allowlist. Never spread persisted members/state into a wire payload.
+// Own-number delivery is attached in TT-046; an internal assignment is never a public field.
 export function lobbySnapshot(
   state: {
     roomId: RoomId;
@@ -21,20 +23,23 @@ export function lobbySnapshot(
     hostId: PlayerId;
     config: Config;
     members: ReadonlyArray<{ playerId: PlayerId; profile?: Profile; revoked: boolean }>;
+    game?: GameState;
   },
   you: PlayerId,
   connected: ReadonlySet<PlayerId>,
   expiresAt: number,
 ): SnapshotMessage {
+  const game = state.game,
+    round = game?.round;
   return createRoomMessage('snapshot', {
     requestId: RoomIds.request(crypto.randomUUID()),
     roomId: state.roomId,
     revision: state.revision,
     you,
     public: {
-      phase: 'lobby',
+      phase: game?.phase ?? 'lobby',
       hostId: state.hostId,
-      hostRevision: 0,
+      hostRevision: game?.hostRevision ?? 0,
       config: state.config,
       players: state.members
         .filter((m) => !m.revoked && m.profile)
@@ -42,20 +47,25 @@ export function lobbySnapshot(
           playerId: m.playerId,
           profile: m.profile!,
           connected: connected.has(m.playerId),
-          ready: false,
-          orderSubmitted: false,
+          ready: round?.acknowledged.includes(m.playerId) ?? false,
+          orderSubmitted: round?.orders.some((order) => order.playerId === m.playerId) ?? false,
         })),
-      frozenRoster: [],
-      pendingRoster: [],
-      gameId: null,
-      roundId: null,
-      judgeId: null,
-      readerId: null,
-      question: null,
-      activeRules: [],
-      completedCases: 0,
-      revealCursor: 0,
-      revealed: [],
+      frozenRoster: round?.roster ?? [],
+      pendingRoster: game?.pendingRoster ?? [],
+      gameId: game?.gameId ?? null,
+      roundId: round?.id ?? null,
+      judgeId: game?.judgeId ?? null,
+      readerId: game?.readerId ?? null,
+      question: round?.question ?? null,
+      activeRules: game?.activeRules ?? [],
+      completedCases: game?.completedCases ?? 0,
+      revealCursor: round?.revealCursor ?? 0,
+      revealed: (round?.revealOrder ?? []).slice(0, round?.revealCursor ?? 0).map((playerId) => ({
+        playerId,
+        number: round!.numbers.find((entry) => entry.playerId === playerId)!.number,
+      })),
+      ...(game?.pauseReason ? { pauseReason: game.pauseReason } : {}),
+      ...(game?.pausedFrom ? { pausedFrom: game.pausedFrom } : {}),
       expiresAtUtc: new Date(expiresAt).toISOString(),
     },
     private: {},

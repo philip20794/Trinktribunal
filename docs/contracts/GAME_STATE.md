@@ -79,6 +79,8 @@ Der konkrete Client kann die feingranularen Phasen für Kartenmodus zusammenfass
 
 ## 5. Rechte-/Aktionstabelle
 
+Seit TT-045 persistiert die Runtime Fachzustand, raumbezogene Nutzung, aktuelle Personen-Zähler und Aktionsbeleg in einer SQLite-Transaktion. Ein Beleg bindet zusätzlich die resultierende Partie, damit ein verlorenes Neustart-ACK wiederholbar bleibt, alte Partienaktionen nach einem weiteren Neustart aber nicht wieder wirken. Der reine Kern bleibt testbar; die Runtime sendet erst nach Commit. Siehe [TT-045](../qa/TT-045.md).
+
 TT-043 implementiert diese Guards im reinen TypeScript-Reducer `apps/server/src/domain/game_reducer.ts`. Gemeinsame mehrstufige Dart-/TS-Fixtures prüfen die Fachübergänge; Auswahlports werden in TT-044 durch die tatsächlichen Algorithmen ergänzt, die atomare Raum-Persistenz folgt TT-045. Host-Fristfunktionen arbeiten mit injizierter Zeit; die Runtime-Alarmanbindung folgt TT-054. Ein übersprungener inkompatibler Regelslot führt ohne leere Regelansicht direkt zum nächsten Fall.
 
 | Aktionsabsicht | Lokal | Multiplayer |

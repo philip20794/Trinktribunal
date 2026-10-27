@@ -35,32 +35,16 @@ import {
 import { putDeadline, removeDeadline, dueDeadlines, nextDeadline } from './deadlines';
 import { lobbySnapshot, playersHash } from './projection';
 import { applyLobbyAction, lobbyFingerprint, type LobbyReceipt } from './profile_actions';
-
-interface Member {
-  playerId: PlayerId;
-  profile?: Profile;
-  verifier: string;
-  joinedAt: number;
-  generation: number;
-  selectionCount: number;
-  revoked: boolean;
-  leaveActionId?: string;
-  leaveRevision?: number;
-}
-interface RoomState {
-  formatVersion: 1;
-  roomId: RoomId;
-  code: string;
-  hostId: PlayerId;
-  revision: number;
-  createdAt: number;
-  lastDomainActivity: number;
-  phase: 'lobby';
-  config: Config;
-  historyOffer?: HistoryOffer;
-  members: Member[];
-  lobbyReceipts?: LobbyReceipt[];
-}
+import { RoomRepository, roomExpiry, type RoomState, type Member } from './repository';
+import { commitGameAction, isGameAction } from './actions';
+import {
+  commitHistoryAction,
+  isHistoryAction,
+  initialHistoryImport,
+  ownHistoryStatus,
+  expireHistory,
+} from './history';
+export { roomExpiry } from './repository';
 type Result<T> =
   | { ok: true; message: T }
   | {
@@ -87,13 +71,6 @@ function invalidCommand(
     };
   }
 }
-export function roomExpiry(state: Pick<RoomState, 'createdAt' | 'lastDomainActivity'>): number {
-  return Math.min(
-    state.createdAt + protocolMetadata.limits.roomHardMs,
-    state.lastDomainActivity + protocolMetadata.limits.roomIdleMs,
-  );
-}
-
 export class Room extends DurableObject<Env> {
   override async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
@@ -140,7 +117,12 @@ export class Room extends DurableObject<Env> {
 
   private async planAlarm(): Promise<void> {
     const state = this.read();
-    const next = nextDeadline(this.ctx.storage.sql, state ? roomExpiry(state) : null);
+    let next = nextDeadline(this.ctx.storage.sql, state ? roomExpiry(state) : null);
+    if (state?.historyImport?.status === 'receiving')
+      next = Math.min(
+        next ?? Infinity,
+        state.historyImport.createdAt + protocolMetadata.limits.historyTimeoutMs,
+      );
     if (next !== null) await this.ctx.storage.setAlarm(next);
     else await this.ctx.storage.deleteAlarm();
   }
@@ -207,6 +189,7 @@ export class Room extends DurableObject<Env> {
         continue;
       try {
         if (
+          state.game ||
           info.viewRevision === undefined ||
           info.playersHash === undefined ||
           info.viewExpiry === undefined
@@ -354,6 +337,14 @@ export class Room extends DurableObject<Env> {
             return latest;
           });
           if (current) this.sendSnapshot(socket, bound, current);
+          if (current) {
+            const history = ownHistoryStatus(
+              current,
+              bound.playerId,
+              RoomIds.request(crypto.randomUUID()),
+            );
+            if (history) sendMessage(socket, history);
+          }
           this.broadcastLobby();
           return;
         }
@@ -374,6 +365,75 @@ export class Room extends DurableObject<Env> {
           this.socketFailure(socket, 'RATE_LIMITED', 4429);
           return;
         }
+        if (isHistoryAction(command)) {
+          const connected = new Set<PlayerId>();
+          for (const other of this.ctx.getWebSockets()) {
+            const member = this.currentMember(attachment(other), state);
+            if (member) connected.add(member.playerId);
+          }
+          const result = commitHistoryAction(
+            new RoomRepository(this.ctx.storage),
+            info,
+            command,
+            connected,
+          );
+          if (!result.ok && result.retryable) {
+            closeSocket(socket, 1011);
+            return;
+          }
+          sendMessage(
+            socket,
+            result.ok
+              ? result.message
+              : createRoomMessage('error', { requestId: command.requestId, code: result.code }),
+          );
+          return;
+        }
+        if (isGameAction(command)) {
+          const connected = new Set<PlayerId>();
+          for (const other of this.ctx.getWebSockets()) {
+            const member = this.currentMember(attachment(other), state);
+            if (member) connected.add(member.playerId);
+          }
+          const result = commitGameAction(
+            new RoomRepository(this.ctx.storage),
+            info,
+            command,
+            connected,
+          );
+          if (!result.ok) {
+            if (result.retryable) {
+              closeSocket(socket, 1011);
+              return;
+            }
+            sendMessage(
+              socket,
+              createRoomMessage('error', {
+                requestId: RoomIds.request(crypto.randomUUID()),
+                code: result.code,
+              }),
+            );
+            if (result.code === 'STALE_REVISION') {
+              const latest = this.read();
+              if (latest) this.sendSnapshot(socket, info, latest);
+            }
+          } else {
+            sendMessage(
+              socket,
+              createRoomMessage('ack', {
+                requestId: RoomIds.request(crypto.randomUUID()),
+                actionId: command.actionId,
+                revision: result.revision,
+                outcome: result.duplicate ? 'duplicate' : 'committed',
+              }),
+            );
+            if (result.duplicate) {
+              const latest = this.read();
+              if (latest) this.sendSnapshot(socket, info, latest);
+            }
+          }
+          return;
+        }
         if (
           command.type === 'editOwnProfile' ||
           command.type === 'kick' ||
@@ -384,6 +444,14 @@ export class Room extends DurableObject<Env> {
             const latest = this.live(Date.now());
             if (!latest || !this.currentMember(info, latest))
               return { ok: false as const, code: 'CREDENTIAL_INVALID' as const };
+            if (latest.game?.receipts.some((receipt) => receipt.actionId === command.actionId))
+              return { ok: false as const, code: 'ACTION_ID_CONFLICT' as const };
+            if (
+              (latest.game?.receipts.length ?? 0) + (latest.lobbyReceipts?.length ?? 0) >=
+                protocolMetadata.limits.actionJournalEntries &&
+              !latest.lobbyReceipts?.some((receipt) => receipt.actionId === command.actionId)
+            )
+              return { ok: false as const, code: 'RATE_LIMITED' as const };
             const outcome = applyLobbyAction(
               latest,
               info.playerId,
@@ -479,17 +547,10 @@ export class Room extends DurableObject<Env> {
     );
   }
   private read(): RoomState | null {
-    if (!this.hasTable('room_record')) return null;
-    const row = this.ctx.storage.sql
-      .exec<{ state: string | null }>('SELECT state FROM room_record WHERE singleton = 1')
-      .toArray()[0];
-    return row?.state ? (JSON.parse(row.state) as RoomState) : null;
+    return new RoomRepository(this.ctx.storage).read();
   }
   private write(state: RoomState): void {
-    this.ctx.storage.sql.exec(
-      'INSERT OR REPLACE INTO room_record (singleton, state) VALUES (1, ?)',
-      JSON.stringify(state),
-    );
+    new RoomRepository(this.ctx.storage).write(state);
   }
   private live(now: number): RoomState | null {
     const state = this.read();
@@ -501,6 +562,7 @@ export class Room extends DurableObject<Env> {
       for (const socket of this.ctx.getWebSockets()) this.socketFailure(socket, 'ROOM_UNAVAILABLE');
       return null;
     }
+    if (state && expireHistory(state, now)) this.write(state);
     return state;
   }
   private credential(
@@ -571,16 +633,23 @@ export class Room extends DurableObject<Env> {
             profile: command.profile,
             verifier,
             joinedAt: now,
+            joinedSequence: 0,
             generation: 0,
             selectionCount: 0,
             revoked: false,
           },
         ],
-        ...(command.historyOffer ? { historyOffer: command.historyOffer } : {}),
+        ...(command.historyOffer
+          ? {
+              historyOffer: command.historyOffer,
+              historyImport: initialHistoryImport(playerId, command.historyOffer, now),
+            }
+          : {}),
       };
       this.ctx.storage.sql.exec(
         'CREATE TABLE room_record (singleton INTEGER PRIMARY KEY CHECK (singleton = 1), state TEXT)',
       );
+      if (state.historyImport?.status === 'committed') delete state.historyOffer;
       this.write(state);
       return { ok: true, message: this.credential(state, playerId, token, command.requestId) };
     });
@@ -612,6 +681,7 @@ export class Room extends DurableObject<Env> {
         profile: command.profile,
         verifier,
         joinedAt: now,
+        joinedSequence: state.members.length,
         generation: 0,
         selectionCount: Math.max(0, ...active.map((m) => m.selectionCount)),
         revoked: false,

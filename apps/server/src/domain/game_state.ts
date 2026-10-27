@@ -61,6 +61,7 @@ export interface CoreReceipt {
   actorId: PlayerId;
   fingerprint: string;
   revision: number;
+  gameId: GameId | null;
 }
 export interface MutableGameState {
   formatVersion: 1;

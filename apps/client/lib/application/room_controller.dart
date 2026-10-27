@@ -253,7 +253,7 @@ final class RoomController {
               errorCode: message.code,
             ),
           );
-          if (message.code == 'STALE_REVISION') {
+          if (['STALE_REVISION', 'STALE_ROUND'].contains(message.code)) {
             _socket!.send(
               RequestSnapshotMessage.create(requestId: RequestId(_newId())),
             );

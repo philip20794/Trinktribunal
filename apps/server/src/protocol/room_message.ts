@@ -12,6 +12,8 @@ import type {
   RoundId,
   RoomId,
   PlayerId,
+  EventId,
+  HistoryCursor,
   ErrorMessage,
 } from './room_message.generated';
 export type * from './room_message.generated';
@@ -203,4 +205,6 @@ export const RoomIds = Object.freeze({
   round: (value: string): RoundId => identifier<RoundId>(value),
   room: (value: string): RoomId => identifier<RoomId>(value),
   player: (value: string): PlayerId => identifier<PlayerId>(value),
+  event: (value: string): EventId => identifier<EventId>(value),
+  historyCursor: (value: string): HistoryCursor => identifier<HistoryCursor>(value),
 });

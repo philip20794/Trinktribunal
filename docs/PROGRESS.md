@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–044 nach Unit-Gates abgeschlossen, TT-045 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/271 Flutter-/266 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–045 nach Unit-Gates abgeschlossen, TT-046 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/272 Flutter-/280 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -104,7 +104,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-042 | Lokale Mehrbrowser-Harness und Lobby-Abnahme | ERLEDIGT | 27.10.2026 · isolierte persistente Profile, eigene lokale Prozesse, Start/Stopp geprüft; Browser/E2E übersprungen · [M4](qa/M4.md) |
 | TT-043 | TypeScript-Spielkern und Phasenrechte | ERLEDIGT | 27.10.2026 · reiner Kern, D-07/D-08, vollständige Phasenmatrix, gemeinsame Dart-/TS-Fallfolgen; leere Dart-Regelansicht korrigiert · [TT-043](qa/TT-043.md) |
 | TT-044 | TS-Zahlen, Fragen und Trinkregeln mit Parität | ERLEDIGT | 27.10.2026 · echte Auswahlports, 16 gemeinsame Fixtures, Mutationsnachweis beider Runner, einmal validierter Serverkatalog · [TT-044](qa/TT-044.md) |
-| TT-045 | Atomare Aktionen, Revisionen und Idempotenz | OFFEN | — |
+| TT-045 | Atomare Aktionen, Revisionen und Idempotenz | ERLEDIGT | 27.10.2026 · Commit vor ACK, persistierte Dedupe, echte SQLite-Fehler/Eviction, private Serverhistorie und Alarm · [TT-045](qa/TT-045.md) |
 | TT-046 | Start, Einstellungen und Zahlen privat zustellen | OFFEN | — |
 | TT-047 | Antworten, Bereitschaft und Warten | OFFEN | — |
 | TT-048 | Private Richterordnung einmal bestätigen | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-045 – Atomare Aktionen, Revisionen und Idempotenz.** TT-044 geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-046 – Start, Einstellungen und Zahlen privat zustellen.** TT-045 geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-044-Auswahlkern
-Aktueller Beleg: docs/qa/TT-044.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-045 atomare Spielaktionen, Revisionen und persistierte Idempotenz an die SQLite-Runtime anschließen.
+Branch: main mit geprüftem TT-045-SQLite-Aktionsstand
+Aktueller Beleg: docs/qa/TT-045.md; Browserprüfungen übersprungen, später manuell testen
+Naechster Schritt: TT-046 Start-/Konfiguration und private Zahlprojektion samt bestehender Geheimzahlwidgets anschließen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

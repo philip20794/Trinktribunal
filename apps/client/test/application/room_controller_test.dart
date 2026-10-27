@@ -11,6 +11,46 @@ import '../data/room_test_support.dart';
 
 void main() {
   test(
+    'stale round requests current snapshot and drops obsolete pending actions',
+    () {
+      fakeAsync((clock) {
+        final transport = FakeRoomTransport(),
+            room = RoomController(
+              transport: transport,
+              credentials: RoomCredentialStore(MemoryCredentialBackend()),
+              jitter: () => 0.5,
+            );
+        unawaited(room.resume(testCredential()));
+        clock.flushMicrotasks();
+        final socket = transport.sockets.single;
+        socket.accepted();
+        clock.flushMicrotasks();
+        expect(room.sendAction(roomFixture('submitOrder')), isTrue);
+        socket.receive(
+          ErrorMessage.create(
+            requestId: RequestId('stale'),
+            code: 'STALE_ROUND',
+          ),
+        );
+        clock.flushMicrotasks();
+        expect(socket.sent.last, isA<RequestSnapshotMessage>());
+        expect(room.state.errorCode, 'STALE_ROUND');
+        unawaited(socket.disconnect());
+        clock.flushMicrotasks();
+        clock.elapse(const Duration(milliseconds: 250));
+        clock.flushMicrotasks();
+        transport.sockets.last.accepted();
+        clock.flushMicrotasks();
+        expect(transport.sockets.last.sent.map((m) => m.type), [
+          'authenticate',
+        ]);
+        unawaited(room.dispose());
+        clock.flushMicrotasks();
+        expect(clock.pendingTimers, isEmpty);
+      });
+    },
+  );
+  test(
     'a send/close race retains an accepted intention for the same-ID retry',
     () {
       fakeAsync((clock) {
@@ -83,7 +123,7 @@ void main() {
       final action = roomFixture('submitOrder');
       expect(room.sendAction(action), isTrue);
       final original = action.toWire();
-      unawaited(transport.sockets.last.disconnect());
+      unawaited(transport.sockets.last.disconnect(1011));
       clock.flushMicrotasks();
       expect(room.state.status, RoomConnectionStatus.reconnecting);
       expect(room.state.snapshot, isNull);
