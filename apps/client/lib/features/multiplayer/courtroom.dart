@@ -12,6 +12,7 @@ import '../../l10n/app_strings.dart';
 import '../bench/bench_view.dart';
 import 'game_settings.dart';
 import 'game_screen.dart';
+import 'order_view.dart';
 
 class RoomCourtroom extends ConsumerWidget {
   const RoomCourtroom({required this.snapshot, super.key});
@@ -56,17 +57,24 @@ class RoomCourtroom extends ConsumerWidget {
             child: TText('roomHostControls'),
           ),
         const SizedBox(height: 12),
-        BenchView(
-          order: players.map((player) => player.playerId).toList(),
-          profiles: {
-            for (final player in players)
-              player.playerId: UserProfile(
-                player: Player(id: player.playerId, name: player.profile.name),
-                avatar: AvatarConfig.fromJson(player.profile.avatar.toJson()),
-              ),
-          },
-          onMove: host && snapshot.public.phase == 'lobby' ? reorder : null,
-        ),
+        if (!snapshot.public.config.allJudges &&
+            ['ordering', 'revealing', 'judged'].contains(snapshot.public.phase))
+          OnlineOrderView(snapshot: snapshot)
+        else
+          BenchView(
+            order: players.map((player) => player.playerId).toList(),
+            profiles: {
+              for (final player in players)
+                player.playerId: UserProfile(
+                  player: Player(
+                    id: player.playerId,
+                    name: player.profile.name,
+                  ),
+                  avatar: AvatarConfig.fromJson(player.profile.avatar.toJson()),
+                ),
+            },
+            onMove: host && snapshot.public.phase == 'lobby' ? reorder : null,
+          ),
         const SizedBox(height: 12),
         for (var index = 0; index < players.length; index++)
           Builder(

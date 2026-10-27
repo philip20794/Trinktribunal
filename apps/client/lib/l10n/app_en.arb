@@ -1,5 +1,10 @@
 {
   "@@locale": "en",
+  "onlineOrderMissing": "The frozen participants are not fully available yet. This phase waits; the host can explicitly complete the case without a verdict.",
+  "onlineOrderWaiting": "The judge is confirming their order. You cannot change the bench in this case.",
+  "onlineOrderSending": "Confirming your order …",
+  "onlineOrderConfirmed": "Your order is confirmed and locked.",
+  "onlineJudgeOrderConfirmed": "The judge's order is confirmed and locked.",
   "onlineReadyAnswers": "Readiness to order",
   "onlineReadyNumbers": "Number acknowledgements",
   "onlineRemovedParticipant": "Participant who left",

@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
 import type { GameState } from '../domain/game_state';
 import { readyInPhase } from './readiness';
+import { ownConfirmedOrder } from './orders';
 import type {
   Config,
   PlayerId,
@@ -31,7 +32,8 @@ export function lobbySnapshot(
   expiresAt: number,
 ): SnapshotMessage {
   const game = state.game,
-    round = game?.round;
+    round = game?.round,
+    order = ownConfirmedOrder(game, you);
   return createRoomMessage('snapshot', {
     requestId: RoomIds.request(crypto.randomUUID()),
     roomId: state.roomId,
@@ -73,7 +75,10 @@ export function lobbySnapshot(
       round && ['numbers', 'answers', 'ordering', 'revealing', 'judged'].includes(game!.phase)
         ? (() => {
             const own = round.numbers.find((entry) => entry.playerId === you);
-            return own ? { ownNumber: own.number } : {};
+            return {
+              ...(own ? { ownNumber: own.number } : {}),
+              ...(order ? { ownOrder: order } : {}),
+            };
           })()
         : {},
   });

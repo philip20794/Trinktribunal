@@ -8,6 +8,7 @@ import '../data/room_transport.dart';
 import 'room_controller.dart';
 import 'online_profile_controller.dart';
 import 'online_game_controller.dart';
+import 'online_order_controller.dart';
 
 final roomCredentialStoreProvider = Provider<RoomCredentialStore>(
   (ref) => RoomCredentialStore(createCredentialBackend()),
@@ -43,6 +44,12 @@ final onlineProfileProvider = Provider<OnlineProfileController>((ref) {
 
 final onlineGameProvider = Provider<OnlineGameController>((ref) {
   final controller = OnlineGameController(ref.watch(roomControllerProvider));
+  ref.onDispose(controller.dispose);
+  return controller;
+});
+
+final onlineOrderProvider = Provider<OnlineOrderController>((ref) {
+  final controller = OnlineOrderController(ref.watch(roomControllerProvider));
   ref.onDispose(controller.dispose);
   return controller;
 });

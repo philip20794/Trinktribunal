@@ -91,6 +91,8 @@ Journalbelege speichern den SHA-256 des normalisierten kanonischen Aktionsinhalt
 
 Seit TT-047 bezeichnet `Participant.ready` in `numbers` die eigene Zahlenannahme und in `answers` die separate eigene Antwortbereitschaft. Beim Wechsel nach `answers` ist diese zunächst leer; sonst ist `ready` false. Stimmen anderer Teilnehmer werden nicht stellvertretend gesetzt. Alte gespeicherte Runden ohne `answerReady` erhalten beim Lesen eine leere Liste ohne Neuziehung oder Revisionsänderung. Prüfbeleg: [TT-047](../qa/TT-047.md).
 
+Seit TT-048 erhält der normale Richter seine tatsächlich bestätigte Ordnung als `private.ownOrder`, auch nach Resume/Eviction. Die Hostrolle allein bekommt sie nicht. Entwürfe bleiben lokal ohne Drag-/UI-Schreibaktionen; ein Serverecho versiegelt die Ordnung. Öffentliche Richterordnung, Aufdeckpräfix und Wertung werden in TT-049 angeschlossen. Prüfbeleg: [TT-048](../qa/TT-048.md).
+
 Alle Serverzustände entstehen aus expliziten Allowlist-Projektionen, niemals durch Serialisieren des internen Objekts mit nachträglichem Widget-Verbergen. `snapshot` enthält `you`, eine vollständig geschlossene `public`-Ansicht und **genau die `private`-Ansicht dieser Sitzung**. `delta` enthält nur geänderte öffentliche Felder plus die vollständige eigene Privatansicht. Nicht zugewiesene private Felder werden weggelassen, keine Maps aller Spielernummern/-ordnungen/-ergebnisse. Die Hostrolle ändert diese Regel nicht.
 
 | Phase | Öffentlich | Privat pro Empfänger |
