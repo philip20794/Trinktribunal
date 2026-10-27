@@ -25,6 +25,10 @@ function ports(slots: number[] = [], exclude = false): GamePorts {
     now: () => 1000,
     newId: (kind) => `${kind}_${serial++}`,
     randomIndex: () => 0,
+    rebindRules: (state) => ({
+      activeRules: structuredClone(state.activeRules) as MutableGameState['activeRules'],
+      personCounts: structuredClone(state.personCounts) as MutableGameState['personCounts'],
+    }),
     planSlots: () => slots,
     prepareCase: (state) => {
       const contentId = suite.questions.find((id) => !state.drawnQuestionIds.includes(id));

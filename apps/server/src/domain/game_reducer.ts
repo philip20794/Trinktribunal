@@ -235,6 +235,9 @@ function boundary(state: MutableGameState, ports: GamePorts, now: number): void 
     pauseBoundary(state, 'insufficient_players');
     return;
   }
+  const rebound = ports.rebindRules(immutable(structuredClone(state)), random(ports));
+  state.activeRules = structuredClone(rebound.activeRules);
+  state.personCounts = structuredClone(rebound.personCounts);
   const slot = state.ruleSlots.find(
     (slot) => slot.afterCase === state.completedCases && slot.status === 'pending',
   );

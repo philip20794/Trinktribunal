@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–043 nach Unit-Gates abgeschlossen, TT-044 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/253 Flutter-/241 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–044 nach Unit-Gates abgeschlossen, TT-045 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/271 Flutter-/266 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -47,7 +47,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M2 | TT-013–TT-026 | ERLEDIGT | Unit-Gates grün; Browserdemo ÜBERSPRUNGEN – später manuell testen · [M2](qa/M2.md) |
 | M3 | TT-027–TT-033 | ERLEDIGT | Nach Unit-Gates freigegeben; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [M3](qa/M3.md) |
 | M4 | TT-034–TT-042 | ERLEDIGT | Unit-Gate grün; drei lokale Clients und Harness geprüft; Browser/E2E ÜBERSPRUNGEN – später manuell testen · [M4](qa/M4.md) |
-| M5 | TT-043–TT-050 | OFFEN | Normale Multiplayer-Kurzpartie, Host≠Richter, private Zahlen; `docs/qa/M5.md`. |
+| M5 | TT-043–TT-050 | IN ARBEIT | TT-043/044 mit Parität geprüft; atomare Runtime-Aktionen folgen · [TT-044](qa/TT-044.md) |
 | M6 | TT-051–TT-058 | OFFEN | Alle Richter, laufende Besetzungsänderungen, Hostverlust/Resume; `docs/qa/M6.md`. |
 | M7 | TT-059–TT-064 | OFFEN | Sicherheits-/Kosten-/Performancechecks und DE/EN-/Bedienprüfung; `docs/qa/M7.md`. |
 | M8 | TT-065–TT-070 | OFFEN | Lokal geprüfte Web/APK/AAB-Artefakte und Releaseanleitung; `docs/qa/RELEASE_CHECKLIST.md`. |
@@ -103,7 +103,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-041 | Lobby, Tabs und Live-Profile synchronisieren | ERLEDIGT | 27.10.2026 · drei Live-Ansichten, eigene Profile, Host-Lobbyverwaltung, Deltas/Revisionen und gebündelte Änderungen · [Beleg](qa/TT-041.md) |
 | TT-042 | Lokale Mehrbrowser-Harness und Lobby-Abnahme | ERLEDIGT | 27.10.2026 · isolierte persistente Profile, eigene lokale Prozesse, Start/Stopp geprüft; Browser/E2E übersprungen · [M4](qa/M4.md) |
 | TT-043 | TypeScript-Spielkern und Phasenrechte | ERLEDIGT | 27.10.2026 · reiner Kern, D-07/D-08, vollständige Phasenmatrix, gemeinsame Dart-/TS-Fallfolgen; leere Dart-Regelansicht korrigiert · [TT-043](qa/TT-043.md) |
-| TT-044 | TS-Zahlen, Fragen und Trinkregeln mit Parität | OFFEN | — |
+| TT-044 | TS-Zahlen, Fragen und Trinkregeln mit Parität | ERLEDIGT | 27.10.2026 · echte Auswahlports, 16 gemeinsame Fixtures, Mutationsnachweis beider Runner, einmal validierter Serverkatalog · [TT-044](qa/TT-044.md) |
 | TT-045 | Atomare Aktionen, Revisionen und Idempotenz | OFFEN | — |
 | TT-046 | Start, Einstellungen und Zahlen privat zustellen | OFFEN | — |
 | TT-047 | Antworten, Bereitschaft und Warten | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-044 – TS-Zahlen, Fragen und Trinkregeln mit Parität.** TT-043 geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-045 – Atomare Aktionen, Revisionen und Idempotenz.** TT-044 geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-043-Spielkern
-Aktueller Beleg: docs/qa/TT-043.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-044 Auswahl-/Zahlen-/Regelalgorithmen aus Dart portieren und gemeinsame Paritätsfixtures ausführen.
+Branch: main mit geprüftem TT-044-Auswahlkern
+Aktueller Beleg: docs/qa/TT-044.md; Browserprüfungen übersprungen, später manuell testen
+Naechster Schritt: TT-045 atomare Spielaktionen, Revisionen und persistierte Idempotenz an die SQLite-Runtime anschließen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

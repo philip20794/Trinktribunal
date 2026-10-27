@@ -126,6 +126,10 @@ export interface GamePorts {
     randomIndex: (bound: number) => number,
     now: number,
   ): Assignment | null;
+  rebindRules(
+    state: GameState,
+    randomIndex: (bound: number) => number,
+  ): { activeRules: Assignment[]; personCounts: Array<{ playerId: PlayerId; count: number }> };
   /** The scoring implementation is attached in TT-049/052, outside client authority. */
   scoreRound(state: GameState): Score;
 }

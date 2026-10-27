@@ -17,6 +17,14 @@ export function syncAssets({ root = repositoryRoot, check = true } = {}) {
       mkdirSync(dirname(destination), { recursive: true }); writeFileSync(destination, content, 'utf8');
     }
   }
+  const serverManifest = resolve(root, 'data/manifest.json');
+  const manifestContent = files.get('manifest.json');
+  if (check) {
+    if (!existsSync(serverManifest) || readFileSync(serverManifest, 'utf8') !== manifestContent) throw new Error('Server catalog manifest drift: data/manifest.json; run scripts/sync-assets.ps1');
+  } else {
+    mkdirSync(dirname(serverManifest), { recursive: true });
+    writeFileSync(serverManifest, manifestContent, 'utf8');
+  }
   return files.size;
 }
 

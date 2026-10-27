@@ -1,5 +1,7 @@
 # Katalogvertrag und generierte Assets (TT-004)
 
+Seit TT-044 erzeugt derselbe Sync-Schritt zusätzlich `data/manifest.json` für den Server und prüft beide Manifestkopien auf Drift. `apps/server/src/domain/catalogs.ts` importiert die redaktionellen Quellen, prüft Schemas und kanonische SHA-256-Hashes einmal pro Isolate gegen dieses Manifest sowie dessen Hash gegen den gemeinsamen DTO-Vertrag und hält die Kataloge unveränderlich im Speicher. Es gibt keinen Katalogparse pro Spielaktion.
+
 Einzige redaktionelle Quelle sind `data/questions/top-ten/{de,en}.json` und `data/rules/{de,en}.json`. Die Kopien unter `apps/client/assets/catalogs/` einschließlich `manifest.json` sind generiert und werden versioniert, damit ein frischer Checkout sofort startbar bleibt. Kopien niemals von Hand bearbeiten.
 
 ```powershell

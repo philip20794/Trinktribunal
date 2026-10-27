@@ -84,6 +84,10 @@ test('asset check is read-only and detects missing, changed and extra assets', (
     for (const { source } of loadSources()) { const path = resolve(root, source); mkdirSync(dirname(path), { recursive: true }); copyFileSync(resolve(repositoryRoot, source), path); }
     assert.throws(() => syncAssets({ root }), /drift/);
     syncAssets({ root, check: false }); assert.equal(syncAssets({ root }), 5);
+    const serverManifest = resolve(root, 'data/manifest.json');
+    writeFileSync(serverManifest, '{}');
+    assert.throws(() => syncAssets({ root }), /Server catalog manifest drift/);
+    syncAssets({ root, check: false });
     const path = resolve(root, 'apps/client/assets/catalogs/questions/de.json');
     writeFileSync(path, '{}'); assert.throws(() => syncAssets({ root }), /drift/); assert.equal(readFileSync(path, 'utf8'), '{}');
     syncAssets({ root, check: false }); writeFileSync(resolve(root, 'apps/client/assets/catalogs/extra.json'), '{}');

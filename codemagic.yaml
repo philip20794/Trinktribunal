@@ -49,9 +49,11 @@ workflows:
         working_directory: apps/client
         script: |
           set -euo pipefail
-          dart format --output=none --set-exit-if-changed lib test
+          dart format --output=none --set-exit-if-changed lib test tool
           flutter analyze
           flutter test
+      - name: Dart-TypeScript-Paritaet und Mutationsnachweis
+        script: node scripts/check-parity.mjs
       - name: Signierte Release-APK bauen
         working_directory: apps/client
         script: |

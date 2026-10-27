@@ -66,7 +66,7 @@ if ($Scope -in @('Client', 'All')) {
         Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'generate-l10n.mjs'), '--check')
         Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'generate-room-dtos.mjs'), '--check')
         Invoke-Checked 'flutter' @('pub', 'get', '--offline', '--enforce-lockfile')
-        Invoke-Checked 'dart' @('format', '--output=none', '--set-exit-if-changed', 'lib', 'test')
+        Invoke-Checked 'dart' @('format', '--output=none', '--set-exit-if-changed', 'lib', 'test', 'tool')
         Invoke-Checked 'flutter' @('analyze')
         Invoke-Checked 'flutter' @('test')
     } finally {
@@ -86,4 +86,5 @@ if ($Scope -in @('Server', 'All')) {
         Invoke-Checked 'npm.cmd' @('run', 'check')
     } finally { Pop-Location }
 }
+if ($Scope -eq 'All') { Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'check-parity.mjs')) }
 Write-Host "Prüfumfang $Scope erfolgreich beendet."
