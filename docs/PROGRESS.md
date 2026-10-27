@@ -45,7 +45,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M0 | TT-001–TT-003 | ERLEDIGT | Lokale Tests/Builds und manuelle Nutzerabnahme · [M0](qa/M0.md) |
 | M1 | TT-004–TT-012 | IN ARBEIT | Funktionell implementiert/Unit-geprüft; visuelles Demo-Gate offen · [M1](qa/M1.md) |
 | M2 | TT-013–TT-026 | IN ARBEIT | Funktionell implementiert/Unit-geprüft; visuelles Demo-Gate offen · [M2](qa/M2.md) |
-| M3 | TT-027–TT-033 | IN ARBEIT | TT-027 abgeschlossen; Offline-/Sprach-/Geräteaufgaben folgen · [TT-027](qa/TT-027.md) |
+| M3 | TT-027–TT-033 | IN ARBEIT | TT-027 abgeschlossen, TT-028 in Implementierung; Offline-/Geräteaufgaben folgen · [TT-027](qa/TT-027.md) |
 | M4 | TT-034–TT-042 | OFFEN | Drei isolierte Browser in synchroner lokaler Lobby; `docs/qa/M4.md`. |
 | M5 | TT-043–TT-050 | OFFEN | Normale Multiplayer-Kurzpartie, Host≠Richter, private Zahlen; `docs/qa/M5.md`. |
 | M6 | TT-051–TT-058 | OFFEN | Alle Richter, laufende Besetzungsänderungen, Hostverlust/Resume; `docs/qa/M6.md`. |
@@ -87,7 +87,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-025 | Spieler während lokaler Partie ändern | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
 | TT-026 | Ein-Handy-Ablauf vollständig integrieren | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
 | TT-027 | Lokale Partie sicher speichern und wiederaufnehmen | ERLEDIGT | 27.10.2026 · [Prüfbeleg](qa/TT-027.md), 17 neue Unit-Tests, Gesamtcheck und Builds grün |
-| TT-028 | Sprachsystem und allgemeine Einstellungen | OFFEN | — |
+| TT-028 | Sprachsystem und allgemeine Einstellungen | IN ARBEIT | 27.10.2026 · Implementierung auf `task/TT-028-language-settings`; ARB, Einstellungen, Sprachansichten und Tests angelegt, Flutter-/visuelle Abnahme ausstehend · [Prüfumfang](qa/TT-028.md) |
 | TT-029 | Lokalen Web-Release reproduzierbar ausliefern | OFFEN | — |
 | TT-030 | Eigener Offline-Cache für lokale Webmodi | OFFEN | — |
 | TT-031 | Offline-Updates, Cachefehler und PWA-Metadaten | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Übergabepunkt: TT-027 abgeschlossen; Main-Push und anschließender Stopp auf Nutzerauftrag.** Nächste Implementierungsaufgabe bei Fortsetzung: TT-028 – Sprachsystem und allgemeine Einstellungen.
+**Übergabepunkt: TT-028 in Bearbeitung auf eigenem Featurebranch.** Offen sind Flutter-/Node-Prüfungen, Formatierung, Layoutkontrolle und Merge nach `main`; TT-029 erst nach TT-028-Abnahme beginnen.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
