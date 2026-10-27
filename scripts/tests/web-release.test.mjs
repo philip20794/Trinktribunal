@@ -6,6 +6,7 @@ import {join,dirname,resolve,basename} from 'node:path';
 import {request} from 'node:http';
 import {createReleaseServer} from '../serve-web.mjs';
 import {prepareWeb} from '../prepare-web.mjs';
+import {buildPrecache} from '../build-precache.mjs';
 
 function fixture(t) {
   const root=mkdtempSync(join(tmpdir(),'trinktribunal-web-test-'));
@@ -65,4 +66,15 @@ test('unexpanded templates, remote-default bootstraps and missing fonts fail pre
   const {root,put}=fixture(t);put('index.html','<base href="$FLUTTER_BASE_HREF">');assert.throws(()=>prepareWeb(root),/Unexpanded/);
   put('index.html','html');put('flutter_bootstrap.js','_flutter.loader.load();');assert.throws(()=>prepareWeb(root),/origin-local/);
   put('flutter_bootstrap.js','canvasKitBaseUrl:new URL("canvaskit/",document.baseURI),fontFallbackBaseUrl:new URL("assets/font-fallback/",document.baseURI)');put('assets/FontManifest.json','[{"fonts":[{"asset":"missing.ttf"}]}]');assert.throws(()=>prepareWeb(root),/ENOENT|Missing/);
+});
+
+test('precache is deterministic, integrity-complete and excludes workers/metadata',t=>{
+  const {root,put}=fixture(t);put('offline.js','placeholder');
+  const first=buildPrecache(root),second=buildPrecache(root);
+  assert.deepEqual(first,second);
+  for(const path of ['index.html','main.dart.js','offline.js','assets/test.ttf','canvaskit/canvaskit.wasm']) assert.ok(first.files.some(f=>f.path===path),path);
+  assert.ok(!first.files.some(f=>['service-worker.js','build-info.json','precache-manifest.json'].includes(f.path)));
+  assert.ok(readFileSync(join(root,'service-worker.js'),'utf8').includes(first.version));
+  put('main.dart.js','next release');assert.notEqual(buildPrecache(root).version,first.version);
+  put('api/secret.json','private');assert.throws(()=>buildPrecache(root),/Non-public/);
 });

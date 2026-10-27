@@ -289,5 +289,19 @@
   "galleryWood": "Wood",
   "gallerySeal": "Seal",
   "galleryBlue": "Blue-gray",
-  "humanCharacter": "Human character"
+  "humanCharacter": "Human character",
+  "offlineTitle": "Play offline",
+  "offlineHelp": "Download all game files before first offline use. Browser data may be removed; check the status before playing. Installing as an app is optional.",
+  "offline_loading": "Checking status …",
+  "offline_empty": "Not ready for offline use.",
+  "offline_ready": "This version is ready for offline use.",
+  "offline_update": "A complete new version is waiting.",
+  "offline_reload": "Download complete. Reload to switch safely.",
+  "offline_failed": "Download or verification failed. Reconnect and try again.",
+  "offline_closeTabs": "Close other Trinktribunal tabs first.",
+  "offlineGame": "Switch versions or clear the cache after finishing the game.",
+  "offlinePrepare": "Prepare offline / download update",
+  "offlineApply": "Apply version and reload",
+  "offlineCheck": "Check status",
+  "offlineClear": "Delete offline files"
 }

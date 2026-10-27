@@ -565,5 +565,19 @@
   "galleryWood": "Holz",
   "gallerySeal": "Siegel",
   "galleryBlue": "Graublau",
-  "humanCharacter": "Menschliche Spielfigur"
+  "humanCharacter": "Menschliche Spielfigur",
+  "offlineTitle": "Offline spielen",
+  "offlineHelp": "Vor der ersten Offline-Nutzung alle Spieldateien herunterladen. Browserdaten können gelöscht werden; vor dem Spielen den Status prüfen. Installation als App ist optional.",
+  "offline_loading": "Status wird geprüft …",
+  "offline_empty": "Noch nicht offline bereit.",
+  "offline_ready": "Diese Version ist offline bereit.",
+  "offline_update": "Eine vollständige neue Version wartet.",
+  "offline_reload": "Download vollständig. Zum sicheren Wechsel neu laden.",
+  "offline_failed": "Download oder Prüfung fehlgeschlagen. Mit Netz erneut versuchen.",
+  "offline_closeTabs": "Andere Trinktribunal-Tabs zuerst schließen.",
+  "offlineGame": "Versionswechsel und Cache-Löschen erst nach Ende der Partie.",
+  "offlinePrepare": "Offline vorbereiten / Update laden",
+  "offlineApply": "Version übernehmen und neu laden",
+  "offlineCheck": "Status prüfen",
+  "offlineClear": "Offline-Dateien löschen"
 }

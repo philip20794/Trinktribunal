@@ -519,4 +519,6 @@ Die Fachentscheidungen D-01 bis D-18 sind für die erste Appversion entschieden.
 
 ## Reproduzierbarer Web-Release (TT-029)
 
-`powershell -NoProfile -File scripts/build-web.ps1 -Offline` pr?ft Kataloge/?bersetzungen und das Lockfile, erstellt den normalen Release mit lokalen Renderer-Ressourcen und schreibt Build-/Kataloghashes. `powershell -NoProfile -File scripts/serve-web.ps1 -Port 8080` liefert ihn auf 127.0.0.1 aus. Ohne `-Offline` darf Pub fehlende gelockte Pakete laden. [HTTP-/Buildbeleg](qa/web-build.md). Ein Main-Push ist durch Codemagic f?r die signierte Test-APK autorisiert; es wird kein Web-Hosting-Deploy ausgel?st.
+`powershell -NoProfile -File scripts/build-web.ps1 -Offline` prüft Kataloge/Übersetzungen und Lockfile, baut den normalen Release mit lokalen Renderer-Ressourcen und schreibt Build-/Kataloghashes. `powershell -NoProfile -File scripts/serve-web.ps1 -Port 8080` liefert ihn auf 127.0.0.1 aus. Ohne `-Offline` darf Pub fehlende gelockte Pakete laden. [Prüfbeleg](qa/web-build.md). Größere geprüfte Stände werden für Codemagic nach main gepusht; kein Web-Hosting-Deploy.
+
+Offline-Release: `scripts/build-web.ps1 -Offline`, danach `scripts/serve-web.ps1`. In den Einstellungen den vollständigen Download abwarten und gegebenenfalls neu laden. Status und Updateverfahren: [Offline-Prüfbeleg](qa/offline.md). Der Flutter-Debugserver belegt keine Release-Offlinefähigkeit.

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
 import '../../l10n/app_strings.dart';
+import 'offline_settings.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -80,6 +81,7 @@ class SettingsScreen extends ConsumerWidget {
                             ),
                           ),
                         const SizedBox(height: 24),
+                        const OfflineSettings(),
                         TextButton(
                           onPressed: () => showLicensePage(
                             context: context,

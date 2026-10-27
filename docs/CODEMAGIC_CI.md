@@ -25,7 +25,7 @@ Die CI-Konfiguration steht im Repository-Root in `codemagic.yaml`. Codemagic bau
 
 ## Wichtige Grenzen
 
-Die Pipeline ist vorbereitet, aber **erst nach Codemagic-Verbindung, Keystore-Upload, Token und Webhook tatsächlich aktiv**. Bis zum ersten Codemagic-Lauf ist kein Cloud-Build nachgewiesen. Keine GitHub Actions, kein Cloudflare-Deployment und keine Veröffentlichung im Play Store.
+Für Main-Commit `9e6b176` meldet der GitHub-Check „Android APK (main und Versions-Tags)“ Erfolg: [Codemagic-Lauf](https://codemagic.io/app/6ae050b402a1af3f59928ac3/build/6ae057d9206ce93970c66072). Die Einrichtung oben beschreibt Voraussetzungen und Wiederherstellung. Für neuere Main-Pushes wird der automatische Lauf separat beobachtet; noch kein neuer Check nachgewiesen. Keine GitHub Actions, kein Cloudflare-Deploy und keine Veröffentlichung im Play Store.
 
 Die Android-App-ID steht derzeit noch auf `com.example.trinktribunal`. Vor einer dauerhaft verteilten Version die endgültige ID festlegen. Android-Installationen mit altem Debug-Schlüssel lassen sich nicht als Update mit dem neuen Release-Key ersetzen; bei Bedarf zuerst deinstallieren (lokale Spieldaten gehen dabei verloren). Die im Entwicklungsplan dokumentierte Rechteprüfung für Inhalte und Assets bleibt vor einer öffentlichen Veröffentlichung erforderlich.
 

@@ -33,4 +33,6 @@ try {
     Invoke-Checked 'flutter' $pubArgs
     Invoke-Checked 'flutter' @('build','web','--release','--no-pub','--no-wasm-dry-run','--no-web-resources-cdn')
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'prepare-web.mjs'), $output)
+    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'build-precache.mjs'), $output)
+    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'prepare-web.mjs'), $output)
 } finally { Pop-Location }
