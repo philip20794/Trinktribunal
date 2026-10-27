@@ -64,6 +64,7 @@ if ($Scope -in @('Client', 'All')) {
     try {
         Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'validate-data.mjs'), '--check')
         Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'generate-l10n.mjs'), '--check')
+        Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'generate-room-dtos.mjs'), '--check')
         Invoke-Checked 'flutter' @('pub', 'get', '--offline', '--enforce-lockfile')
         Invoke-Checked 'dart' @('format', '--output=none', '--set-exit-if-changed', 'lib', 'test')
         Invoke-Checked 'flutter' @('analyze')
@@ -80,6 +81,9 @@ if ($Scope -in @('Server', 'All')) {
         throw 'Server-Abhängigkeiten fehlen. In apps/server zuerst npm.cmd ci ausführen.'
     }
     Push-Location $server
-    try { Invoke-Checked 'npm.cmd' @('run', 'check') } finally { Pop-Location }
+    try {
+        Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'generate-room-dtos.mjs'), '--check')
+        Invoke-Checked 'npm.cmd' @('run', 'check')
+    } finally { Pop-Location }
 }
 Write-Host "Prüfumfang $Scope erfolgreich beendet."

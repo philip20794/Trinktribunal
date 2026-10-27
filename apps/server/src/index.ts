@@ -1,4 +1,6 @@
 import { DurableObject } from 'cloudflare:workers';
+import { readRoomMessage, roomError } from './protocol/http';
+import { ProtocolDecodeException } from './protocol/room_message';
 
 // Deliberately no public room creation/lookup route before TT-037.
 export class Room extends DurableObject<Env> {
@@ -10,6 +12,19 @@ export class Room extends DurableObject<Env> {
 export default {
   async fetch(request: Request): Promise<Response> {
     const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
+    if (request.method === 'POST' && new URL(request.url).pathname === '/api/rooms') {
+      try {
+        await readRoomMessage(request, { direction: 'client', allowedTypes: ['create'] });
+        // Validation is live; atomic creation is added in TT-037.
+        return roomError('ROOM_UNAVAILABLE', 503);
+      } catch (error) {
+        if (!(error instanceof ProtocolDecodeException)) throw error;
+        return roomError(
+          error.code === 'INVALID_JSON' ? 'INVALID_MESSAGE' : error.code,
+          error.code === 'MESSAGE_TOO_LARGE' ? 413 : 400,
+        );
+      }
+    }
     if (new URL(request.url).pathname !== '/health') {
       return Response.json({ error: 'NOT_FOUND' }, { status: 404, headers });
     }

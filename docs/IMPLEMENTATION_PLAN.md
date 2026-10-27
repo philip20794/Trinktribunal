@@ -2,7 +2,7 @@
 
 **Verbindliche Testvorgabe (27.10.2026):** Unit-Tests sind das Implementierungs-/Mergegate. Sämtliche Browser-/E2E-/visuellen Browserabnahmen werden auf ausdrücklichen Nutzerwunsch als **ÜBERSPRUNGEN – später manuell testen** vermerkt und blockieren weder Taskabschluss noch Folgeaufgaben. Bei grünen Unit-Tests wird die Funktion für die weitere Implementierung als funktionsfähig angenommen; ein tatsächlich durchgeführter Browsertest wird daraus nicht behauptet.
 
-**Laufender Stand, 27.10.2026:** TT-001–035 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün; TT-036 folgt. Größere geprüfte Stände werden nach main gepusht. [Status und Belege](PROGRESS.md).
+**Laufender Stand, 27.10.2026:** TT-001–036 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün; TT-037 folgt. Größere geprüfte Stände werden nach main gepusht. [Status und Belege](PROGRESS.md).
 
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 

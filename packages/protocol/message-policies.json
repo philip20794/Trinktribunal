@@ -2,6 +2,7 @@
   "protocolVersion": 1,
   "limits": {
     "frameBytes": 16384,
+    "jsonDepth": 32,
     "projectionBytes": 524288,
     "projectionChunkBytes": 8192,
     "projectionChunks": 64,

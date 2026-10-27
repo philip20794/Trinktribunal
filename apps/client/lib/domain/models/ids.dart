@@ -36,3 +36,31 @@ final class PlayerId extends Identifier {
 final class RoundId extends Identifier {
   RoundId(super.value);
 }
+
+final class ActionId extends Identifier {
+  ActionId(super.value);
+}
+
+final class RequestId extends Identifier {
+  RequestId(super.value);
+}
+
+final class RoomId extends Identifier {
+  RoomId(super.value);
+}
+
+final class EventId extends Identifier {
+  EventId(super.value);
+}
+
+final class ImportId extends Identifier {
+  ImportId(super.value);
+}
+
+final class TransferId extends Identifier {
+  TransferId(super.value);
+}
+
+final class HistoryCursor extends Identifier {
+  HistoryCursor(super.value);
+}

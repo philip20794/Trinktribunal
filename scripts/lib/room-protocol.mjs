@@ -2,6 +2,7 @@ import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import {canonicalJson,validateSchema} from './catalogs.mjs';
 import {roomMessageSchema,messagePolicies,ROOM_LIMITS} from '../../packages/protocol/room-contract.mjs';
+import {assertJsonDepth} from '../../packages/protocol/schema-validation.mjs';
 
 const catalog=kind=>JSON.parse(readFileSync(new URL(kind==='question'?'../../data/questions/top-ten/de.json':'../../data/rules/de.json',import.meta.url),'utf8'))[kind==='question'?'questions':'rules'];
 const ids={question:new Set(catalog('question').map(e=>e.id)),rule:new Set(catalog('rule').map(e=>e.id))};
@@ -131,6 +132,7 @@ export function validateRoomMessage(message,{nowUtc=new Date().toISOString(),han
 export function parseRoomFrame(raw,context={}) {
   if(typeof raw!=='string')fail('UNSUPPORTED_FRAME');
   if(Buffer.byteLength(raw)>ROOM_LIMITS.frameBytes)fail('MESSAGE_TOO_LARGE');
+  try {assertJsonDepth(raw,ROOM_LIMITS.jsonDepth);} catch {fail('INVALID_MESSAGE');}
   let message;
   try {message=JSON.parse(raw);} catch {fail('INVALID_JSON');}
   return validateRoomMessage(message,context);

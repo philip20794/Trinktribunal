@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–035 nach Unit-Gates abgeschlossen, TT-036 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 111 Node-/126 Flutter-/4 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–036 nach Unit-Gates abgeschlossen, TT-037 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 112 Node-/211 Flutter-/91 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -95,7 +95,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-033 | Lokale Modi als stabile Basis abnehmen | ERLEDIGT | 8/50/7-Langlauf mit 50 Wiederaufnahmen und Android grün; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [M3](qa/M3.md) |
 | TT-034 | Multiplayer-Nachrichten und private Projektionen spezifizieren | ERLEDIGT | Vertrag, 41 Schemas/Beispielpaare und 17 Referenztests grün; Browsergate gemäß Nutzervorgabe übersprungen · [Beleg](qa/TT-034.md) |
 | TT-035 | Worker und lokale Runtime mit Health-Endpunkt | ERLEDIGT | 27.10.2026 · gepinnte Runtime, npm ci, Format/Typecheck, 4 echte Workerd-Units inkl. SQLite; lokaler HTTP-Start grün · [Beleg](qa/TT-035.md) |
-| TT-036 | Nachrichtenvalidierung und Dart/TS-DTOs | OFFEN | — |
+| TT-036 | Nachrichtenvalidierung und Dart/TS-DTOs | ERLEDIGT | 27.10.2026 · typisierte Decoder/Konstruktoren, 41 gemeinsame Grenzfälle, HTTP-Validierung · [Beleg](qa/TT-036.md) |
 | TT-037 | Raum erstellen und beitreten, atomar und begrenzt | OFFEN | — |
 | TT-038 | Authentifizierten Hibernation-WebSocket anschließen | OFFEN | — |
 | TT-039 | Clienttransport mit klaren Verbindungszuständen | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-036 – Dart-/TS-DTOs und strikte Nachrichtenvalidierung.** TT-035 lokal geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-037 – atomare Raumerstellung und begrenzter Beitritt.** TT-035 lokal geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-034-Vertragsstand; formaler Taskabschluss bleibt offen
+Branch: main mit geprüftem TT-036-DTO-/Validierungsstand
 Aktueller Beleg: docs/qa/TT-035.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-036 DTOs und Validierung gegen gemeinsame Fixtures, danach TT-037 Create/Join.
+Naechster Schritt: TT-037 Create/Join, Resume-Verifier, Kapazität und Ratenlimits.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

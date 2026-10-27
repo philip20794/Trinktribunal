@@ -5,7 +5,7 @@ const array=(items,maxItems,minItems=0)=>({type:'array',items,minItems,maxItems,
 const integer=(minimum,maximum=Number.MAX_SAFE_INTEGER)=>({type:'integer',minimum,maximum});
 const text=(pattern,maxLength=64)=>({type:'string',pattern,maxLength});
 const nullable=schema=>({oneOf:[schema,{const:null}]});
-export const ROOM_LIMITS=Object.freeze({frameBytes:16384,projectionBytes:524288,projectionChunkBytes:8192,projectionChunks:64,historyPageEntries:64,historyEvents:4096,historyStagingBytes:1048576,historyTimeoutMs:60000,historyWindowMs:21600000,authTimeoutMs:5000,projectionTimeoutMs:15000,actionsPerSecond:10,actionBurst:20,actionJournalEntries:16384,createAttempts:8,hostGraceMs:90000,roomIdleMs:86400000,roomHardMs:172800000});
+export const ROOM_LIMITS=Object.freeze({frameBytes:16384,jsonDepth:32,projectionBytes:524288,projectionChunkBytes:8192,projectionChunks:64,historyPageEntries:64,historyEvents:4096,historyStagingBytes:1048576,historyTimeoutMs:60000,historyWindowMs:21600000,authTimeoutMs:5000,projectionTimeoutMs:15000,actionsPerSecond:10,actionBurst:20,actionJournalEntries:16384,createAttempts:8,hostGraceMs:90000,roomIdleMs:86400000,roomHardMs:172800000});
 const defs={
   id:text('^[A-Za-z0-9_-]{1,64}$'),
   hash:text('^[a-f0-9]{64}$',64),

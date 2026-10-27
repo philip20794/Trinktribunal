@@ -2,3 +2,4 @@
 apps/client/assets/catalogs/** text eol=lf
 # Server formatting must also stay stable after Windows checkouts.
 apps/server/** text eol=lf
+apps/client/lib/data/protocol/** text eol=lf
