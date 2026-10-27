@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_strings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
 import '../../application/shared_phone_controller.dart';
 import '../../data/catalogs/catalog.dart';
+import '../../data/catalogs/localized_catalog.dart';
+import '../../data/catalogs/catalog_repository.dart';
 import '../../design/avatar_view.dart';
 import '../../design/case_file.dart';
 import '../../domain/config/game_config.dart';
@@ -90,11 +93,11 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Abbrechen'),
+                  child: const TText('cancel'),
                 ),
                 FilledButton(
                   onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Bestätigen'),
+                  child: const TText('confirm'),
                 ),
               ],
             ),
@@ -142,9 +145,11 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
   @override
   Widget build(BuildContext context) {
     final view = _controller.view!;
-    final rendered = (view.question?.entry as Question?)?.renderFor(
-      view.question!.names(view.names),
-    );
+    final rendered = view.question == null ? null : localizedQuestion(
+      ref.read(catalogsProvider).requireValue,
+      AppLanguageScope.of(context).language,
+      view.question!.entry as Question,
+    ).renderFor(view.question!.names(view.names));
     final judge = view.judge == null ? null : view.profiles[view.judge];
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
@@ -152,7 +157,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Ein Handy · Verhandlung'),
+          title: const TText('phoneTitle'),
           actions: [
             IconButton(
               tooltip: 'Gruppe verwalten',
@@ -176,21 +181,22 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                           'Aktive Regeln · ${view.activeRules.length}',
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                        const Text(
-                          'Ein Regelverstoß: ein manueller Strafschluck, keine Strafketten. Notwendiges Vorlesen und reguläres Zahlenaufdecken sind ausgenommen.',
+                        const TText('phoneRuleHelp',
                         ),
                         for (final rule in view.activeRules)
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             child: Text(
-                              rule.entry.render(
-                                rule.entry.text,
+                              localizedRule(ref.read(catalogsProvider).requireValue,
+                                AppLanguageScope.of(context).language, rule.entry).render(
+                                localizedRule(ref.read(catalogsProvider).requireValue,
+                                  AppLanguageScope.of(context).language, rule.entry).text,
                                 rule.names(view.names),
                               ),
                             ),
                           ),
                         if (view.activeRules.isEmpty)
-                          const Text('Noch keine aktiven Regeln.'),
+                          const TText('phoneRulesEmpty'),
                       ],
                     ),
                   ),
@@ -225,8 +231,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 if (view.pendingRoster != null)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      'Besetzung und Sitzreihenfolge ändern sich ab dem nächsten Fall. Namen und Aussehen sind bereits aktualisiert.',
+                    child: TText('phoneRosterNotice',
                     ),
                   ),
                 if (judge != null)
@@ -259,7 +264,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                           player: view.recipient!,
                         ),
                       ),
-                      child: const Text('Meine Zahl bewusst öffnen'),
+                      child: const TText('phoneReveal'),
                     )
                   else ...[
                     Text(
@@ -276,11 +281,11 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                           player: view.recipient!,
                         ),
                       ),
-                      child: const Text('Zahl merken · verbergen und weiter'),
+                      child: const TText('phoneHideNext'),
                     ),
                     TextButton(
                       onPressed: () => _act(_controller.hideSecret),
-                      child: const Text('Zahl wieder verbergen'),
+                      child: const TText('phoneHide'),
                     ),
                   ],
                 ],
@@ -312,13 +317,12 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 ],
                 if (view.phase == GamePhase.answers) ...[
                   const SizedBox(height: 16),
-                  const Text(
-                    'Antwortet mündlich passend zu eurer Zahl. Der Richter hört zu und ordnet danach die Antworten von niedrig nach hoch.',
+                  const TText('phoneAnswersHelp',
                   ),
                   FilledButton(
                     onPressed: () =>
                         _act(() => _controller.beginOrdering(view.roundId)),
-                    child: const Text('Alle haben geantwortet · sortieren'),
+                    child: const TText('phoneBeginOrder'),
                   ),
                 ],
                 if ([
@@ -328,8 +332,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 ].contains(view.phase)) ...[
                   const SizedBox(height: 16),
                   if (view.phase == GamePhase.ordering)
-                    const Text(
-                      'Figur lange greifen, Quelle und Ziel antippen oder mit den Pfeilen verschieben. Tastatur: Alt + Auf/Ab. Positionsnummern zeigen die vermutete Reihenfolge.',
+                    const TText('phoneOrderHelp',
                     ),
                   BenchView(
                     order: view.order,
@@ -358,7 +361,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                           );
                         }
                       },
-                      child: const Text('Ordnung bestätigen'),
+                      child: const TText('phoneConfirmOrder'),
                     ),
                   if (view.phase == GamePhase.revealing)
                     FilledButton(
@@ -368,7 +371,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                           expectedCursor: view.revealCursor,
                         ),
                       ),
-                      child: const Text('Nächste Zahl aufdecken'),
+                      child: const TText('phoneRevealNext'),
                     ),
                   if (view.verdict != null) ...[
                     CourtSeal(
@@ -383,7 +386,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                           confirmed: true,
                         ),
                       ),
-                      child: const Text('Fall abschließen · Richterwechsel'),
+                      child: const TText('phoneComplete'),
                     ),
                   ],
                 ],
@@ -401,8 +404,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                             ),
                     ),
                   ),
-                  const Text(
-                    'Gilt sofort bis Partieende. Dieses Ereignis zählt keinen Fall und wechselt den Richter nicht erneut.',
+                  const TText('phoneRuleEventHelp',
                   ),
                   FilledButton(
                     onPressed: () => _act(
@@ -410,14 +412,14 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                         afterCase: view.completedCases,
                       ),
                     ),
-                    child: const Text('Weiter zur nächsten Fallakte'),
+                    child: const TText('nextCase'),
                   ),
                 ],
                 if (view.phase == GamePhase.paused) ...[
                   Text(view.pauseReason ?? 'Die Verhandlung ist pausiert.'),
                   FilledButton(
                     onPressed: () => _act(_controller.resumePaused),
-                    child: const Text('Mit aktueller Gruppe fortsetzen'),
+                    child: const TText('phoneContinueRoster'),
                   ),
                 ],
                 if (view.phase == GamePhase.finished)
@@ -443,12 +445,12 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                         );
                       }
                     },
-                    child: const Text('Fall ohne Urteil abschließen'),
+                    child: const TText('withoutVerdict'),
                   ),
                 const SizedBox(height: 24),
                 OutlinedButton(
                   onPressed: () => _restart(view),
-                  child: const Text('Partie neu starten'),
+                  child: const TText('restartGame'),
                 ),
               ],
             ),

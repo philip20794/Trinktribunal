@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_strings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
@@ -32,13 +33,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     if (saved) {
       ref.invalidate(profileProvider);
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Profil gespeichert.')));
+          .showSnackBar(const SnackBar(content: TText('profileSaved')));
     }
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Mein Profil')),
+    appBar: AppBar(title: const TText('profileTitle')),
     body: ref
         .watch(profileProvider)
         .when(
@@ -46,7 +47,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           error: (error, stack) => Center(
             child: FilledButton(
               onPressed: () => ref.invalidate(profileProvider),
-              child: const Text('Profil erneut laden'),
+              child: const TText('profileReload'),
             ),
           ),
           data: (controller) {
@@ -65,15 +66,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       child: AvatarView(
                         config: _avatar,
                         size: 160,
-                        label: 'Vorschau deiner Figur',
+                        label: context.tr('profilePreview'),
                       ),
                     ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: _name,
                       decoration: const InputDecoration(
-                        labelText: 'Dein Name',
-                        helperText: '1 bis 24 sichtbare Zeichen',
+                        labelText: context.tr('profileName'),
+                        helperText: context.tr('profileLength'),
                       ),
                       maxLength: 24,
                       textCapitalization: TextCapitalization.words,
@@ -87,12 +88,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           onPressed: () => setState(
                             () => _avatar = AvatarConfig.masculine(),
                           ),
-                          child: const Text('Männlicher Start'),
+                          child: const TText('profileMale'),
                         ),
                         OutlinedButton(
                           onPressed: () =>
                               setState(() => _avatar = AvatarConfig.feminine()),
-                          child: const Text('Weiblicher Start'),
+                          child: const TText('profileFemale'),
                         ),
                         OutlinedButton(
                           onPressed: () => setState(
@@ -100,13 +101,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               SecureRandomSource(),
                             ),
                           ),
-                          child: const Text('Zufällige Figur'),
+                          child: const TText('profileRandom'),
                         ),
                       ],
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Jeder Start bleibt frei veränderbar. Gespeichert wird erst mit „Profil speichern“.',
+                    const TText('profileHelp',
                     ),
                     const SizedBox(height: 16),
                     for (final category in AvatarCatalog.options.entries)
@@ -119,13 +119,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           initialValue: _avatar[category.key],
                           isExpanded: true,
                           decoration: InputDecoration(
-                            labelText: _categoryLabels[category.key],
+                            labelText: context.tr('avatarCategory' + category.key),
                           ),
                           items: category.value
                               .map(
                                 (option) => DropdownMenuItem(
                                   value: option,
-                                  child: Text(_optionLabels[option] ?? option),
+                                  child: Text(context.tr('avatarOption' + option)),
                                 ),
                               )
                               .toList(),
@@ -159,8 +159,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text(
-                        'Zurück ohne weitere Änderungen zu speichern',
+                      child: const TText('profileBack',
                       ),
                     ),
                   ],

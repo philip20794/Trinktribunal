@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_strings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
@@ -45,7 +46,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Ein Handy')),
+    appBar: AppBar(title: const TText('modePhone')),
     body: ref
         .watch(rosterProvider)
         .when(
@@ -53,7 +54,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
           error: (error, stack) => Center(
             child: FilledButton(
               onPressed: () => ref.invalidate(rosterProvider),
-              child: const Text('Gruppe erneut laden'),
+              child: const TText('rosterReload'),
             ),
           ),
           data: (controller) {
@@ -69,16 +70,14 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(24),
                   children: [
-                    Text(
-                      'Eure Sitzreihenfolge',
+                    TText('rosterOrder',
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const SizedBox(height: 12),
                     Text(
                       '${controller.members.length} von 20 Personen · mindestens 3 benötigt',
                     ),
-                    const Text(
-                      'Die erste Person richtet zuerst. Verschiebt die Gruppe mit dem Griff oder den Pfeilen. Gleiche Namen werden durch den Sitzplatz unterschieden.',
+                    const TText('rosterOrderHelp',
                     ),
                     const SizedBox(height: 16),
                     if (controller.error != null)
@@ -91,8 +90,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                     if (controller.members.isEmpty)
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 24),
-                        child: Text(
-                          'Noch keine Personen. Fügt eure Gruppe hinzu.',
+                        child: TText('rosterEmpty',
                         ),
                       ),
                     ReorderableListView.builder(
@@ -166,7 +164,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                                       onPressed: _busy
                                           ? null
                                           : () => _edit(controller, member),
-                                      child: const Text('Bearbeiten'),
+                                      child: const TText('rosterEdit'),
                                     ),
                                     TextButton(
                                       onPressed: _busy
@@ -176,7 +174,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                                                 member.player.id,
                                               ),
                                             ),
-                                      child: const Text('Entfernen'),
+                                      child: const TText('rosterRemove'),
                                     ),
                                   ],
                                 ),
@@ -191,7 +189,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                       onPressed: !_busy && controller.members.length < 20
                           ? () => _edit(controller)
                           : null,
-                      child: const Text('Person hinzufügen'),
+                      child: const TText('rosterAdd'),
                     ),
                     if (own != null)
                       OutlinedButton(
@@ -203,14 +201,12 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                                 ),
                               )
                             : null,
-                        child: const Text(
-                          'Eigenes Profil als neue Person übernehmen',
+                        child: const TText('rosterImport',
                         ),
                       ),
                     const SizedBox(height: 12),
                     if (controller.canStart)
-                      const Text(
-                        'Die Gruppe ist bereit. Name und Aussehen können weiter angepasst werden.',
+                      const TText('rosterReady',
                       ),
                     if (widget.allowStart && session != null) ...[
                       if (existing == null) ...[
@@ -250,8 +246,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                           onChanged: (v) => setState(() => _factor = v.round()),
                         ),
                       ] else
-                        const Text(
-                          'Partieoptionen bleiben bis zum bestätigten Neustart gesperrt.',
+                        const TText('rosterFrozen',
                         ),
                       FilledButton(
                         onPressed:
@@ -286,11 +281,11 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                     if (widget.allowStart && catalogs.hasError)
                       TextButton(
                         onPressed: () => ref.invalidate(catalogsProvider),
-                        child: const Text('Fallakten erneut laden'),
+                        child: const TText('retryCases'),
                       ),
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Zurück zur Auswahl'),
+                      child: const TText('backToSelection'),
                     ),
                   ],
                 ),
@@ -350,7 +345,7 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
     actions: [
       TextButton(
         onPressed: () => Navigator.pop(context),
-        child: const Text('Abbrechen'),
+        child: const TText('cancel'),
       ),
       FilledButton(
         onPressed: () {
@@ -360,7 +355,7 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
           }
           Navigator.pop(context, (name: _name.text, avatar: _avatar));
         },
-        child: const Text('Übernehmen'),
+        child: const TText('rosterApply'),
       ),
     ],
   );
