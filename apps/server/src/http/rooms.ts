@@ -55,6 +55,29 @@ function withCors(response: Response, origin: string | null): Response {
 }
 export async function routeRooms(request: Request, env?: Env): Promise<Response | null> {
   const url = new URL(request.url);
+  const socketMatch = /^\/api\/rooms\/([^/]+)\/socket$/.exec(url.pathname);
+  if (socketMatch) {
+    if (request.method !== 'GET') return roomError('INVALID_MESSAGE', 405);
+    if (url.search || request.headers.has('Sec-WebSocket-Protocol'))
+      return roomError('INVALID_MESSAGE', 400);
+    if (request.headers.get('Upgrade')?.toLowerCase() !== 'websocket')
+      return roomError('INVALID_MESSAGE', 426);
+    if (!env) return roomError('ROOM_UNAVAILABLE', 503);
+    if (request.headers.has('Origin') && !allowedOrigin(request, env))
+      return roomError('UNAUTHORIZED_ACTION', 403);
+    let code: string | null;
+    try {
+      code = normalizeRoomCode(decodeURIComponent(socketMatch[1]!));
+    } catch {
+      return roomError('INVALID_MESSAGE', 400);
+    }
+    if (!code) return roomError('INVALID_MESSAGE', 400);
+    const address = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+    if (address.length > 64) return roomError('INVALID_MESSAGE', 400);
+    if (!(await env.ROOMS.getByName(`entry-rate:${address}`).consumeEntryAttempt('socket')))
+      return roomError('RATE_LIMITED', 429);
+    return env.ROOMS.getByName(code).fetch(request);
+  }
   const match = /^\/api\/rooms\/([^/]+)\/(join|leave)$/.exec(url.pathname);
   const create = url.pathname === '/api/rooms';
   if (!create && !match) return null;

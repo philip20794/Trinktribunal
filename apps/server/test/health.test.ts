@@ -24,7 +24,7 @@ describe('local worker health', () => {
     expect(response.headers.get('Allow')).toBe('GET, HEAD');
   });
   it('keeps unknown and future room routes closed', async () => {
-    for (const path of ['/', '/health/extra', '/api/rooms', '/api/rooms/ABCD2345/socket']) {
+    for (const path of ['/', '/health/extra', '/api/rooms']) {
       const response = await worker.fetch(new Request('http://localhost' + path));
       expect(response.status).toBe(404);
       expect(await response.json()).toEqual({ error: 'NOT_FOUND' });

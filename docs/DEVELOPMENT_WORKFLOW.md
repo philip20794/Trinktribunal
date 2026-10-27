@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Stand (27.10.2026):** TT-001–037 nach Unit-Gates abgeschlossen; TT-038 folgt. 112 Node-/211 Flutter-/105 Server-Tests grün; lokale Worker-/SQLite-Runtime unter Windows geprüft. Browser-/E2E-Abnahmen: **ÜBERSPRUNGEN – später manuell testen**, kein Folgeaufgabenblocker. [Fortschritt](PROGRESS.md) · [Serverbeleg](qa/TT-035.md).
+**Aktueller Stand (27.10.2026):** TT-001–038 nach Unit-Gates abgeschlossen; TT-039 folgt. 112 Node-/211 Flutter-/119 Server-Tests grün; lokale Worker-/SQLite-Runtime unter Windows geprüft. Browser-/E2E-Abnahmen: **ÜBERSPRUNGEN – später manuell testen**, kein Folgeaufgabenblocker. [Fortschritt](PROGRESS.md) · [Serverbeleg](qa/TT-035.md).
 
 ## Lokaler Einstieg
 

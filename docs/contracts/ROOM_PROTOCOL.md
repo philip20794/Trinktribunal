@@ -1,6 +1,6 @@
 # Raumprotokoll v1 – TT-034
 
-Stand: 27.10.2026. **Vertrag, Referenz-Fixtures und strikte Dart-/TS-DTOs implementiert; autoritative Räume folgen ab TT-037.** Grundlage sind [GAME_STATE](GAME_STATE.md), [D-08](../decisions/D-08-host-failover.md), [D-09](../decisions/D-09-private-reveal-projections.md), [D-12](../decisions/D-12-retention-and-resume.md), [D-14](../decisions/D-14-room-codes.md) und [D-16](../decisions/D-16-persistent-accountless-rejoin.md). Die lokale Fachbasis und Android sind geprüft; Browser-/E2E-Abnahmen sind gemäß Nutzervorgabe übersprungen und später manuell zu testen; sie blockieren Folgeaufgaben nicht.
+Stand: 27.10.2026. **Vertrag, strikte Dart-/TS-DTOs, atomare Raumaufnahme und authentifizierte Hibernation-WebSockets implementiert (TT-034–038); Clientanschluss folgt ab TT-039.** Grundlage sind [GAME_STATE](GAME_STATE.md), [D-08](../decisions/D-08-host-failover.md), [D-09](../decisions/D-09-private-reveal-projections.md), [D-12](../decisions/D-12-retention-and-resume.md), [D-14](../decisions/D-14-room-codes.md) und [D-16](../decisions/D-16-persistent-accountless-rejoin.md). Die lokale Fachbasis und Android sind geprüft; Browser-/E2E-Abnahmen sind gemäß Nutzervorgabe übersprungen und später manuell zu testen; sie blockieren Folgeaufgaben nicht.
 
 ## Verbindliche Artefakte
 
