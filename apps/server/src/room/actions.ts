@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
-import { initialGameState, stageRoster, transition } from '../domain/game_reducer';
+import { initialGameState, stageRoster, transition, gameActions } from '../domain/game_reducer';
 import { gamePorts } from '../domain/game_ports';
 import { immutable, type GamePorts, type MutableGameState } from '../domain/game_state';
 import {
@@ -12,19 +12,7 @@ import type { PlayerId, RoomMessage } from '../protocol/room_message.generated';
 import { protocolMetadata } from '../protocol/room_message.generated';
 import { RoomRepository, roomExpiry, type RoomState } from './repository';
 
-const types = [
-  'setConfig',
-  'startGame',
-  'restartGame',
-  'acknowledgeNumber',
-  'beginOrdering',
-  'submitOrder',
-  'revealNext',
-  'completeCase',
-  'completeWithoutVerdict',
-  'continueRule',
-  'resumePaused',
-] as const;
+const types = gameActions;
 type GameCommand = Extract<RoomMessage, { type: (typeof types)[number] }>;
 export function isGameAction(command: RoomMessage): command is GameCommand {
   return (types as readonly string[]).includes(command.type);

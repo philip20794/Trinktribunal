@@ -246,6 +246,20 @@
       "maxBytes": 16384,
       "action": true
     },
+    "readyForOrdering": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "roundParticipant"
+      ],
+      "phases": [
+        "answers"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
     "beginOrdering": {
       "direction": "client",
       "transports": [

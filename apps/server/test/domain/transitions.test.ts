@@ -71,6 +71,7 @@ function command(state: GameState, type: string, extra: Record<string, unknown> 
     ...(!['startGame', 'setConfig'].includes(type) ? { gameId: state.gameId } : {}),
     ...([
       'acknowledgeNumber',
+      'readyForOrdering',
       'beginOrdering',
       'submitOrder',
       'revealNext',
@@ -182,6 +183,7 @@ describe('authority, phase rights and atomic rejection', () => {
     startGame: ['lobby'],
     restartGame: phases,
     acknowledgeNumber: ['numbers'],
+    readyForOrdering: ['answers'],
     beginOrdering: ['answers'],
     submitOrder: ['ordering'],
     revealNext: ['revealing'],
@@ -199,6 +201,7 @@ describe('authority, phase rights and atomic rejection', () => {
         mutable.phase = phase;
         if (phase === 'rule_event') mutable.completedCases = 1;
         mutable.pausedFrom = 'numbers';
+        mutable.round!.answerReady = type === 'readyForOrdering' ? [] : [...mutable.round!.roster];
         mutable.round!.acknowledged = phase === 'numbers' ? [] : [...mutable.round!.recipients];
         if (phase === 'judged') {
           mutable.round!.revealCursor = mutable.round!.recipients.length;
@@ -221,9 +224,17 @@ describe('authority, phase rights and atomic rejection', () => {
         expect(result.ok).toBe(allowed.includes(phase));
         if (!result.ok) expect(result.state).toBe(state);
         if (allowed.includes(phase)) {
-          const unauthorized = type === 'acknowledgeNumber' ? ids[0]! : ids[1]!;
+          const unauthorized =
+            type === 'readyForOrdering'
+              ? RoomIds.player('outsider')
+              : type === 'acknowledgeNumber'
+                ? ids[0]!
+                : ids[1]!;
           const denied = transition(state, unauthorized, command(state, type, extra), dependencies);
-          expect(denied).toMatchObject({ ok: false, code: 'UNAUTHORIZED_ACTION' });
+          expect(denied).toMatchObject({
+            ok: false,
+            code: type === 'readyForOrdering' ? 'CREDENTIAL_INVALID' : 'UNAUTHORIZED_ACTION',
+          });
           expect(denied.state).toBe(state);
         }
       });
@@ -261,6 +272,8 @@ describe('authority, phase rights and atomic rejection', () => {
     let state = apply(lobby({}, ids[2]!), 'startGame', dependencies);
     for (const actor of state.round!.recipients)
       state = apply(state, 'acknowledgeNumber', dependencies, {}, actor);
+    for (const actor of state.round!.roster)
+      state = apply(state, 'readyForOrdering', dependencies, {}, actor);
     state = apply(state, 'beginOrdering', dependencies);
     state = apply(state, 'submitOrder', dependencies, { order: state.round!.recipients }, ids[0]!);
     state = apply(state, 'revealNext', dependencies, { expectedCursor: 0 });
@@ -282,6 +295,8 @@ describe('authority, phase rights and atomic rejection', () => {
     expect(state.readerId).toBe(ids[0]);
     for (const actor of state.round!.recipients)
       state = apply(state, 'acknowledgeNumber', dependencies, {}, actor);
+    for (const actor of state.round!.roster)
+      state = apply(state, 'readyForOrdering', dependencies, {}, actor);
     state = apply(state, 'beginOrdering', dependencies);
     for (const actor of ids.slice(0, 2))
       state = apply(state, 'submitOrder', dependencies, { order: ids }, actor);

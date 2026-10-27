@@ -67,6 +67,7 @@ message('leave',{confirmed:{const:true}},{...any,action:true});
 message('closeRoom',{confirmed:{const:true}},{...host,...any,action:true});
 const round={gameId:ref('id'),roundId:ref('id')};
 message('acknowledgeNumber',round,{roles:['numberRecipient'],phases:['numbers'],action:true});
+message('readyForOrdering',round,{roles:['roundParticipant'],phases:['answers'],action:true});
 message('beginOrdering',round,{...host,phases:['answers'],action:true});
 message('submitOrder',{...round,order:array(ref('id'),20,2),confirmed:{const:true}},{roles:['judge','allJudgesParticipant'],phases:['ordering'],action:true});
 message('revealNext',{...round,expectedCursor:integer(0,19)},{...host,phases:['revealing'],action:true});

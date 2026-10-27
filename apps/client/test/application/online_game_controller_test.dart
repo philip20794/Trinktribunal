@@ -29,6 +29,11 @@ void main() {
       transport.sockets.last.receive(roomFixture('snapshot'));
       clock.flushMicrotasks();
       expect(game.visibleNumber, isNull);
+      expect(game.acknowledgeNumber(), isFalse);
+      expect(
+        transport.sockets.last.sent.whereType<AcknowledgeNumberMessage>(),
+        isEmpty,
+      );
       game.revealOwnNumber();
       expect(game.acknowledgeNumber(), isTrue);
       expect(game.visibleNumber, isNull);

@@ -6,7 +6,7 @@ import type {
   RoomId,
 } from '../protocol/room_message.generated';
 import { protocolMetadata } from '../protocol/room_message.generated';
-import type { GameState, Phase } from '../domain/game_state';
+import { immutable, type GameState, type Phase, type MutableGameState } from '../domain/game_state';
 import type { LobbyReceipt } from './profile_actions';
 import type { HistoryImportState, HistoryExport } from './history';
 
@@ -60,7 +60,15 @@ export class RoomRepository {
     const row = this.storage.sql
       .exec<{ state: string | null }>('SELECT state FROM room_record WHERE singleton = 1')
       .toArray()[0];
-    return row?.state ? (JSON.parse(row.state) as RoomState) : null;
+    if (!row?.state) return null;
+    const state = JSON.parse(row.state) as RoomState;
+    // Additive TT-047 upgrade: older committed rounds have no answer readiness.
+    if (state.game?.round && state.game.round.answerReady === undefined) {
+      const game = structuredClone(state.game) as MutableGameState;
+      game.round!.answerReady = [];
+      state.game = immutable(game);
+    }
+    return state;
   }
   write(state: RoomState): void {
     this.storage.sql.exec(

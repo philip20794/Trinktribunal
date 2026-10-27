@@ -1,12 +1,12 @@
 # Gemeinsamer Fachvertrag und Testvektoren
 
-Status: **Fachliche Referenz-Fixtures aus TT-003 und Netzwerkvertrag v1 aus TT-034.** Die lokale Dart-Spielengine ist inzwischen implementiert; ein autoritativer Multiplayer-Server folgt erst ab TT-035. Grundlagen: [Zustands-/Aktionsvertrag](../../docs/contracts/GAME_STATE.md), [Raumprotokoll](../../docs/contracts/ROOM_PROTOCOL.md) und die dort verlinkten D-Beschlüsse. Offene lokale Demo-Gates stehen unverändert im [Fortschritt](../../docs/PROGRESS.md).
+Status: **Fachliche Referenz-Fixtures aus TT-003 und Netzwerkvertrag v1 aus TT-034, ergänzt bis TT-047.** Lokale Dart-Engine, sichere Raumaufnahme/Lobby, atomarer Serverkern mit Parität, Hoststart/private Zahlen und Antwortbereitschaft sind nach Unit-Gates implementiert. Grundlagen: [Zustands-/Aktionsvertrag](../../docs/contracts/GAME_STATE.md), [Raumprotokoll](../../docs/contracts/ROOM_PROTOCOL.md) und die D-Beschlüsse. Weitere Phasen und übersprungene manuelle Browserabnahmen stehen im [Fortschritt](../../docs/PROGRESS.md).
 
 ## Raumprotokoll v1
 
 [ROOM_PROTOCOL.md](../../docs/contracts/ROOM_PROTOCOL.md) legt HTTP-Create/Join/Leave, WebSocket-Auth/Resume, Rollen, private Ansichten aller Phasen, Idempotenz, Generationen, Ablauf und begrenzte private Host-Historie fest. [Schema](schemas/room-message.schema.json) und [Rollen-/Transport-/Phasenregister](message-policies.json) entstehen deterministisch aus [room-contract.mjs](room-contract.mjs). `node scripts/generate-room-protocol.mjs --check` und die Node-Tests erkennen veraltete Ausgaben.
 
-[41 Positiv-/Negativnachrichten](fixtures/messages/room-v1.json) und [Verifier-Testvektoren](fixtures/messages/resume-verifiers.json) sind die gemeinsame Basis für die späteren Dart-/TS-Adapter. Alle Namen, IDs und Tokens darin sind öffentliche synthetische Testwerte. `node --test scripts/tests/room-protocol.test.mjs` prüft Struktur und semantische Vertragsinvarianten; reale Netzwerk-Authentifizierung, Widerruf, Persistenz und vollständige serverseitige Redaction sind dadurch noch nicht implementiert oder abgenommen.
+[42 Positiv-/Negativnachrichten](fixtures/messages/room-v1.json) und [Verifier-Testvektoren](fixtures/messages/resume-verifiers.json) sind die gemeinsame Basis der typisierten Dart-/TS-Adapter. TT-047 ergänzt `readyForOrdering` getrennt von der Zahlenannahme. Alle Namen, IDs und Tokens darin sind öffentliche synthetische Testwerte. `node --test scripts/tests/room-protocol.test.mjs` prüft Struktur und semantische Vertragsinvarianten; tatsächliche Authentifizierung, Widerruf, Persistenz und phasenspezifische Projektionen werden zusätzlich in Worker-Units belegt. Der vollständige Sichtbarkeitsaudit folgt TT-059.
 
 ## Verzeichnisstruktur
 

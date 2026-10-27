@@ -415,6 +415,7 @@ final class RoomController {
       'kick',
       'closeRoom',
       'acknowledgeNumber',
+      'readyForOrdering',
       'beginOrdering',
       'submitOrder',
       'revealNext',

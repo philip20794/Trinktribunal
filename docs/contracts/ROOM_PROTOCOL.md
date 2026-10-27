@@ -1,6 +1,6 @@
 # Raumprotokoll v1 – TT-034
 
-Stand: 27.10.2026. **TT-034–046 implementiert: strikte DTOs, sichere Aufnahme/Resume, Client/Lobby, Spielkern mit Parität, atomare SQLite-Aktionen/private Serverhistorie und Hoststart mit eigener privater Zahl. Antwortbereitschaft folgt TT-047, Wertung TT-049/052, persistierter Hostalarm TT-054 und Historien-Client TT-056.** Grundlage sind [GAME_STATE](GAME_STATE.md), [D-08](../decisions/D-08-host-failover.md), [D-09](../decisions/D-09-private-reveal-projections.md), [D-12](../decisions/D-12-retention-and-resume.md), [D-14](../decisions/D-14-room-codes.md) und [D-16](../decisions/D-16-persistent-accountless-rejoin.md). Browser-/E2E-Abnahmen sind gemäß Nutzervorgabe übersprungen und später manuell zu testen; sie blockieren Folgeaufgaben nicht.
+Stand: 27.10.2026. **TT-034–047 implementiert: strikte DTOs, sichere Aufnahme/Resume, Client/Lobby, Spielkern mit Parität, atomare SQLite-Aktionen/private Serverhistorie, Hoststart/private Zahlen und eigene Antwortbereitschaft. Private Ordnung folgt TT-048, Wertung TT-049/052, persistierter Hostalarm TT-054 und Historien-Client TT-056.** Grundlage sind [GAME_STATE](GAME_STATE.md), [D-08](../decisions/D-08-host-failover.md), [D-09](../decisions/D-09-private-reveal-projections.md), [D-12](../decisions/D-12-retention-and-resume.md), [D-14](../decisions/D-14-room-codes.md) und [D-16](../decisions/D-16-persistent-accountless-rejoin.md). Browser-/E2E-Abnahmen sind gemäß Nutzervorgabe übersprungen und später manuell zu testen; sie blockieren Folgeaufgaben nicht.
 
 ## Verbindliche Artefakte
 
@@ -67,7 +67,8 @@ Hostverlust bleibt getrennt vom Richter: nach 90 Sekunden ohne Host atomar an de
 | `leave`, `leaveHttp` | eigene Sitzung / Credential | bestätigt; eigene Identität, kein Richter-/Hostsonderrecht |
 | `closeRoom` | Host | bestätigt; Raum beenden |
 | `acknowledgeNumber` | eigener Nummernempfänger | `numbers`, aktuelle `gameId` und `roundId` |
-| `beginOrdering` | Host | `answers`, aktueller Fall |
+| `readyForOrdering` | eigene eingefrorene Identität einschließlich Richter | `answers`, aktuelle `gameId`/`roundId`; keine Antwortinhalte oder fremde Spieler-ID |
+| `beginOrdering` | Host | `answers`, aktueller Fall; alle eingefrorenen Teilnehmer bereit und verbunden |
 | `submitOrder` | aktueller Richter oder eigener Alle-Richter-Teilnehmer | `ordering`; vollständige eindeutige Permutation der eingefrorenen Empfänger, bestätigt und danach gesperrt |
 | `revealNext` | Host | `revealing`, erwarteter Cursor; bei Alle-Richter erst nach allen gültigen Abgaben |
 | `completeCase` | Host | `judged`; regulärer einmaliger Abschluss |
@@ -87,6 +88,8 @@ Jede fachliche Aktion enthält `actionId` und `expectedRevision`, fallbezogene z
 Journalbelege speichern den SHA-256 des normalisierten kanonischen Aktionsinhalts sowie nichtprivate ACK-Metadaten; keine zusätzlich archivierten alten Geheimzahlen, Ordnungen oder Token-Nutzlasten. Neue fachliche Revisionen und Belege müssen gemeinsam committed sein.
 
 ## Öffentliche und private Projektion pro Phase
+
+Seit TT-047 bezeichnet `Participant.ready` in `numbers` die eigene Zahlenannahme und in `answers` die separate eigene Antwortbereitschaft. Beim Wechsel nach `answers` ist diese zunächst leer; sonst ist `ready` false. Stimmen anderer Teilnehmer werden nicht stellvertretend gesetzt. Alte gespeicherte Runden ohne `answerReady` erhalten beim Lesen eine leere Liste ohne Neuziehung oder Revisionsänderung. Prüfbeleg: [TT-047](../qa/TT-047.md).
 
 Alle Serverzustände entstehen aus expliziten Allowlist-Projektionen, niemals durch Serialisieren des internen Objekts mit nachträglichem Widget-Verbergen. `snapshot` enthält `you`, eine vollständig geschlossene `public`-Ansicht und **genau die `private`-Ansicht dieser Sitzung**. `delta` enthält nur geänderte öffentliche Felder plus die vollständige eigene Privatansicht. Nicht zugewiesene private Felder werden weggelassen, keine Maps aller Spielernummern/-ordnungen/-ergebnisse. Die Hostrolle ändert diese Regel nicht.
 

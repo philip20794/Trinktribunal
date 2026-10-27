@@ -14,6 +14,7 @@ final class OnlineGameController extends ChangeNotifier {
     _subscription = room.states.listen((_) {
       _visible = false;
       _ackPending = false;
+      _pending.clear();
       notifyListeners();
     });
   }
@@ -21,6 +22,8 @@ final class OnlineGameController extends ChangeNotifier {
   final String Function() _newId;
   late final StreamSubscription<RoomSessionState> _subscription;
   bool _visible = false, _ackPending = false;
+  final Set<String> _pending = {};
+  bool pending(String action) => _pending.contains(action);
   SnapshotMessage? get snapshot =>
       room.state.status == RoomConnectionStatus.online
       ? room.state.snapshot
@@ -46,8 +49,10 @@ final class OnlineGameController extends ChangeNotifier {
 
   bool acknowledgeNumber() {
     final view = snapshot;
+    final wasVisible = _visible;
     hideSecret();
-    if (view == null ||
+    if (!wasVisible ||
+        view == null ||
         view.public.phase != 'numbers' ||
         view.private.ownNumber == null ||
         view.public.gameId == null ||
@@ -69,6 +74,104 @@ final class OnlineGameController extends ChangeNotifier {
       notifyListeners();
     }
     return sent;
+  }
+
+  bool _sameRound(GameId gameId, RoundId roundId) =>
+      snapshot?.public.gameId == gameId && snapshot?.public.roundId == roundId;
+  bool _send(String action, RoomMessage command) {
+    hideSecret();
+    if (pending(action)) return false;
+    final sent = room.sendAction(command);
+    if (sent) {
+      _pending.add(action);
+      notifyListeners();
+    }
+    return sent;
+  }
+
+  bool readyForOrdering({required GameId gameId, required RoundId roundId}) {
+    final view = snapshot;
+    if (view == null ||
+        !_sameRound(gameId, roundId) ||
+        view.public.phase != 'answers' ||
+        !view.public.frozenRoster.contains(view.you) ||
+        view.public.players.any(
+          (player) => player.playerId == view.you && player.ready,
+        )) {
+      return false;
+    }
+    return _send(
+      'ready',
+      ReadyForOrderingMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        roundId: roundId,
+      ),
+    );
+  }
+
+  bool get canBeginOrdering {
+    final view = snapshot;
+    if (view == null ||
+        view.public.phase != 'answers' ||
+        view.you != view.public.hostId ||
+        view.public.frozenRoster.length < 3) {
+      return false;
+    }
+    return view.public.frozenRoster.every(
+      (id) => view.public.players.any(
+        (player) => player.playerId == id && player.ready && player.connected,
+      ),
+    );
+  }
+
+  bool beginOrdering({required GameId gameId, required RoundId roundId}) {
+    final view = snapshot;
+    if (view == null || !_sameRound(gameId, roundId) || !canBeginOrdering) {
+      return false;
+    }
+    return _send(
+      'begin',
+      BeginOrderingMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        roundId: roundId,
+      ),
+    );
+  }
+
+  bool completeWithoutVerdict({
+    required GameId gameId,
+    required RoundId roundId,
+    bool confirmed = false,
+  }) {
+    final view = snapshot;
+    if (!confirmed ||
+        view == null ||
+        !_sameRound(gameId, roundId) ||
+        view.you != view.public.hostId ||
+        ![
+          'numbers',
+          'answers',
+          'ordering',
+          'revealing',
+          'judged',
+          'paused',
+        ].contains(view.public.phase)) {
+      return false;
+    }
+    return _send(
+      'complete',
+      CompleteWithoutVerdictMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        roundId: roundId,
+        confirmed: true,
+      ),
+    );
   }
 
   @override

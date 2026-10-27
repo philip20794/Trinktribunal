@@ -45,6 +45,7 @@ export interface RoundState {
   recipients: PlayerId[];
   numbers: Array<{ playerId: PlayerId; number: number }>;
   acknowledged: PlayerId[];
+  answerReady: PlayerId[];
   orders: Array<{ playerId: PlayerId; order: PlayerId[] }>;
   revealOrder: PlayerId[];
   revealCursor: number;

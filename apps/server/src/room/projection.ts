@@ -2,6 +2,7 @@ import { createRoomMessage, RoomIds } from '../protocol/room_message';
 import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
 import type { GameState } from '../domain/game_state';
+import { readyInPhase } from './readiness';
 import type {
   Config,
   PlayerId,
@@ -47,7 +48,7 @@ export function lobbySnapshot(
           playerId: m.playerId,
           profile: m.profile!,
           connected: connected.has(m.playerId),
-          ready: round?.acknowledged.includes(m.playerId) ?? false,
+          ready: readyInPhase(game, m.playerId),
           orderSubmitted: round?.orders.some((order) => order.playerId === m.playerId) ?? false,
         })),
       frozenRoster: round?.roster ?? [],

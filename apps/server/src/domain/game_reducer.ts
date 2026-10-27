@@ -22,11 +22,12 @@ import {
   type Score,
 } from './game_state';
 
-const gameActions = [
+export const gameActions = [
   'setConfig',
   'startGame',
   'restartGame',
   'acknowledgeNumber',
+  'readyForOrdering',
   'beginOrdering',
   'submitOrder',
   'revealNext',
@@ -218,6 +219,7 @@ function beginCase(state: MutableGameState, ports: GamePorts, now: number): void
     recipients,
     numbers: structuredClone(prepared.numbers),
     acknowledged: [],
+    answerReady: [],
     orders: [],
     revealOrder: [],
     revealCursor: 0,
@@ -473,11 +475,24 @@ export function transition(
         if (round.acknowledged.length === round.recipients.length) next.phase = 'answers';
         break;
       }
+      case 'readyForOrdering': {
+        requirePhase(next, 'answers');
+        const round = next.round!;
+        if (!round.roster.includes(actor)) reject('UNAUTHORIZED_ACTION');
+        if (round.answerReady.includes(actor)) reject('INVALID_PHASE');
+        round.answerReady.push(actor);
+        break;
+      }
       case 'beginOrdering':
         requireHost(next, actor);
         requirePhase(next, 'answers');
         if (
-          next.round!.roster.some((id) => !next.roster.includes(id) || !next.connected.includes(id))
+          next.round!.roster.some(
+            (id) =>
+              !next.roster.includes(id) ||
+              !next.connected.includes(id) ||
+              !next.round!.answerReady.includes(id),
+          )
         )
           reject('INVALID_PHASE');
         next.phase = 'ordering';

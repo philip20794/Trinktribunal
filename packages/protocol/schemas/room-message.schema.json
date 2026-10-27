@@ -51,6 +51,9 @@
       "$ref": "#/$defs/acknowledgeNumber"
     },
     {
+      "$ref": "#/$defs/readyForOrdering"
+    },
+    {
       "$ref": "#/$defs/beginOrdering"
     },
     {
@@ -1401,6 +1404,38 @@
       "properties": {
         "type": {
           "const": "acknowledgeNumber"
+        },
+        "protocolVersion": {
+          "const": 1
+        },
+        "actionId": {
+          "$ref": "#/$defs/id"
+        },
+        "expectedRevision": {
+          "$ref": "#/$defs/revision"
+        },
+        "gameId": {
+          "$ref": "#/$defs/id"
+        },
+        "roundId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "readyForOrdering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "protocolVersion",
+        "actionId",
+        "expectedRevision",
+        "gameId",
+        "roundId"
+      ],
+      "properties": {
+        "type": {
+          "const": "readyForOrdering"
         },
         "protocolVersion": {
           "const": 1

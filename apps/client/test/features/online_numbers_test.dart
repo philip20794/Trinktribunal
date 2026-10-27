@@ -101,6 +101,40 @@ Future<void> tapText(WidgetTester tester, String text) async {
 
 void main() {
   testWidgets(
+    'host completion stays reachable when a departed question reference cannot render',
+    (tester) async {
+      final fixture = await pump(tester, host: true, own: false),
+          socket = fixture.transport.sockets.last,
+          base = fixture.room.state.snapshot!;
+      socket.receive(
+        SnapshotMessage.fromJson({
+          ...base.toJson(),
+          'revision': 2,
+          'public': {
+            ...base.public.toJson(),
+            'players': base.public.players
+                .where((player) => player.playerId.value != 'p2')
+                .map((player) => player.toJson())
+                .toList(),
+          },
+        }),
+      );
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Fall ohne Urteil abschließen'));
+      await tester.tap(find.text('Fall ohne Urteil abschließen'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(FilledButton, 'Fall abschließen'));
+      await tester.pumpAndSettle();
+      expect(
+        socket.sent
+            .whereType<CompleteWithoutVerdictMessage>()
+            .single
+            .expectedRevision,
+        2,
+      );
+    },
+  );
+  testWidgets(
     'a rejected settings save releases the pending control for a deliberate retry',
     (tester) async {
       final fixture = await pump(tester, lobby: true, host: true),

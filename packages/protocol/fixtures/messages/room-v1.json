@@ -3,6 +3,13 @@
   "nowUtc": "2026-10-27T12:00:00.000Z",
   "fixtures": [
     {
+      "fixtureId":"wire-readyForOrdering",
+      "role":"roundParticipant",
+      "phase":"answers",
+      "valid":{"type":"readyForOrdering","protocolVersion":1,"actionId":"ready_1","expectedRevision":0,"gameId":"game_1","roundId":"round_1"},
+      "invalid":{"type":"readyForOrdering","protocolVersion":1,"actionId":"ready_1","expectedRevision":0,"gameId":"game_1","roundId":"round_1","targetPlayerId":"p3"}
+    },
+    {
       "fixtureId": "wire-create",
       "role": "anonymous",
       "phase": "none",

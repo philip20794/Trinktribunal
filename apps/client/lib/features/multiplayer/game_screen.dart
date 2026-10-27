@@ -8,6 +8,7 @@ import '../../data/protocol/room_message.dart';
 import '../../design/case_file.dart';
 import '../../design/private_number.dart';
 import '../../l10n/app_strings.dart';
+import 'readiness_view.dart';
 
 /// Game section inside the existing courtroom tab; profiles remain on Me.
 class RoomGameScreen extends ConsumerWidget {
@@ -20,7 +21,12 @@ class RoomGameScreen extends ConsumerWidget {
         view = snapshot.public;
     return catalogs.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (_, _) => const TText('roomErrorGeneric'),
+      error: (_, _) => Column(
+        children: [
+          const TText('roomErrorGeneric'),
+          ReadinessView(snapshot: snapshot),
+        ],
+      ),
       data: (catalogs) {
         final assignment = view.question;
         Question? question;
@@ -46,7 +52,12 @@ class RoomGameScreen extends ConsumerWidget {
                 assignment.bindings.values.values.any(
                   (id) => !profiles.containsKey(id),
                 ))) {
-          return const TText('roomErrorGeneric');
+          return Column(
+            children: [
+              const TText('roomErrorGeneric'),
+              ReadinessView(snapshot: snapshot),
+            ],
+          );
         }
         final names = {
           if (assignment != null)
@@ -105,27 +116,13 @@ class RoomGameScreen extends ConsumerWidget {
                       : null,
                   confirmKey: 'onlineConfirmNumber',
                 ),
-                if (game.acknowledged || game.ackPending)
+                if (view.phase == 'numbers' &&
+                    (game.acknowledged || game.ackPending))
                   const TText('onlineNumberConfirmed'),
               ] else if (view.phase == 'numbers' &&
                   view.judgeId == snapshot.you)
                 const TText('onlineJudgeNoNumber'),
-              if (view.phase == 'numbers')
-                Text(
-                  context.tr('onlineWaitingNumbers', {
-                    'names': view.players
-                        .where(
-                          (player) =>
-                              view.frozenRoster.contains(player.playerId) &&
-                              (view.config.allJudges ||
-                                  player.playerId != view.judgeId) &&
-                              !player.ready,
-                        )
-                        .map((player) => player.profile.name)
-                        .join(', '),
-                  }),
-                ),
-              if (view.phase == 'answers') const TText('phoneAnswersHelp'),
+              ReadinessView(snapshot: snapshot),
             ],
           ),
         );
