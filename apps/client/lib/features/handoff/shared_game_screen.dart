@@ -252,7 +252,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   ),
                 if (view.phase == GamePhase.numbers) ...[
                   CourtSeal(
-                    label: 'Gerät an ${view.name(view.recipient!)}',
+                    label: context.tr('passPhone', {'name': view.name(view.recipient!)}),
                     icon: Icons.lock_outline,
                   ),
                   const SizedBox(height: 16),
@@ -297,7 +297,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     ].contains(view.phase)) ...[
                   const SizedBox(height: 16),
                   CaseFile(
-                    label: 'Fall ${view.completedCases + 1}',
+                    label: context.tr('caseNumber', {'number': view.completedCases + 1}),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -349,8 +349,8 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     FilledButton(
                       onPressed: () async {
                         final confirmed = await _confirm(
-                          'Ordnung verbindlich bestätigen?',
-                          'Danach ist die Reihenfolge gesperrt. Die Zahlen werden Schritt für Schritt aufgedeckt.',
+                          context.tr('confirmOrderTitle'),
+                          context.tr('confirmOrderHelp'),
                         );
                         if (mounted) {
                           _act(
@@ -418,14 +418,14 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   ),
                 ],
                 if (view.phase == GamePhase.paused) ...[
-                  Text(view.pauseReason ?? 'Die Verhandlung ist pausiert.'),
+                  Text(view.pauseReason ?? context.tr('gamePaused')),
                   FilledButton(
                     onPressed: () => _act(_controller.resumePaused),
                     child: const TText('phoneContinueRoster'),
                   ),
                 ],
                 if (view.phase == GamePhase.finished)
-                  const CourtSeal(label: 'Verhandlung beendet'),
+                  const CourtSeal(label: context.tr('endHearing')),
                 if (![
                   GamePhase.ruleEvent,
                   GamePhase.finished,
@@ -434,8 +434,8 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   OutlinedButton(
                     onPressed: () async {
                       final confirmed = await _confirm(
-                        'Fall ohne Urteil abschließen?',
-                        'Dieser Fall zählt einmal als abgeschlossen. Es werden keine Fehler oder Schlucke berechnet. Der Richter wechselt.',
+                        context.tr('skipCaseTitle'),
+                        context.tr('skipPhoneCaseHelp'),
                       );
                       if (mounted) {
                         _act(

@@ -41,12 +41,12 @@ class _DesignGalleryScreenState extends State<DesignGalleryScreen> {
               ),
               const SizedBox(height: 16),
               const CaseFile(
-                label: 'Fallakte 07 / 50',
+                label: context.tr('cardCaseLabel'),
                 child: TText('galleryPrompt',
                 ),
               ),
               const SizedBox(height: 16),
-              const CourtSeal(label: 'Vertraulich', icon: Icons.lock_outline),
+              const CourtSeal(label: context.tr('galleryConfidential'), icon: Icons.lock_outline),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 12,

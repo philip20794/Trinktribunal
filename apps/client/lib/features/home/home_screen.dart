@@ -116,9 +116,8 @@ class HomeScreen extends ConsumerWidget {
                       const SizedBox(height: 28),
                       if (transaction?.restored == true)
                         Padding(
-                          padding: EdgeInsets.only(bottom: 16),
-                          child: TText('homeResume',
-                          ),
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: const TText('homeResume'),
                         ),
                       if (transaction?.error != null)
                         Padding(

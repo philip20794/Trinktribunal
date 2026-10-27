@@ -247,7 +247,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.error,
                         ),
-                        semanticsLabel: 'Fehler: $_error',
+                        semanticsLabel: context.tr('errorText', {'text': _error}),
                       ),
                     ),
                   if (state == null)
@@ -260,8 +260,8 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                     icon: const Icon(Icons.arrow_back),
                     label: Text(
                       state == null
-                          ? 'Zurück zur Auswahl'
-                          : 'Zur Auswahl · Partie bleibt geöffnet',
+                          ? context.tr('backToSelection')
+                          : context.tr('backToSelectionKeepGame'),
                     ),
                   ),
                 ],
@@ -295,12 +295,12 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ),
       const SizedBox(height: 24),
       _slider('Spieler', _players, 3, 20, (n) => _players = n),
-      _slider('Fälle', cases, 1, maxCases, (n) {
+      _slider(context.tr('cases'), cases, 1, maxCases, (n) {
         _cases = n;
         _rules = math.min(_rules, n - 1);
       }),
       _slider(
-        'Zusätzliche Regeln',
+        context.tr('additionalRules'),
         rules,
         0,
         math.max(0, maxRules),
@@ -380,7 +380,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             ),
           ),
           IconButton(
-            tooltip: 'Aktive Regeln',
+            tooltip: context.tr('activeRules'),
             onPressed: () => showActiveRules(context, state, ref.read(catalogsProvider).requireValue),
             icon: Badge(
               label: Text('${state.rules.active.length}'),
@@ -391,14 +391,14 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ),
       LinearProgressIndicator(
         value: state.completedCases / config.targetCases,
-        semanticsLabel: 'Abgeschlossene Fälle',
+        semanticsLabel: context.tr('completedCases'),
       ),
       const SizedBox(height: 24),
       if (state.lastCompletion != null) ...[
         Text(
           state.lastCompletion == CaseCompletion.withoutVerdict
-              ? 'Letzter Fall: ohne Urteil abgeschlossen. Keine Wertung.'
-              : 'Manuelles Urteil: ${state.manualErrors} falsche Positionen. Richter und jede falsch platzierte Person: je ${state.manualErrors} Schlucke; richtig Platzierte: 0.',
+              ? context.tr('lastNoVerdict')
+              : context.tr('manualVerdictSummary', {'count': state.manualErrors}),
         ),
         const SizedBox(height: 16),
       ],
@@ -409,7 +409,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
         const SizedBox(height: 16),
         CaseFile(
-          label: 'Fall ${state.caseNumber} / ${config.targetCases}',
+          label: context.tr('caseProgress', {'number': state.caseNumber, 'total': config.targetCases}),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -489,7 +489,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
       ],
       if (state.phase == GamePhase.paused)
-        Text(state.pauseReason ?? 'Die Partie ist pausiert.'),
+        Text(state.pauseReason ?? context.tr('gamePaused')),
       if (state.completedCases > 0 && state.phase != GamePhase.finished) ...[
         const SizedBox(height: 16),
         const TText('cardRotateHelp',

@@ -194,5 +194,21 @@
   "avatarOptionred": "Rot",
   "avatarOptiongreen": "Grün",
   "avatarOptioncap": "Kappe",
-  "avatarOptionbowtie": "Fliege"
+  "avatarOptionbowtie": "Fliege",
+  "backToSelectionKeepGame": "Zur Auswahl · Partie bleibt geöffnet",
+  "cases": "Fälle",
+  "additionalRules": "Zusätzliche Regeln",
+  "completedCases": "Abgeschlossene Fälle",
+  "errorText": "Fehler: {text}",
+  "lastNoVerdict": "Letzter Fall: ohne Urteil abgeschlossen. Keine Wertung.",
+  "manualVerdictSummary": "Manuelles Urteil: {count} falsche Positionen. Richter und jede falsch platzierte Person: je {count} Schlucke; richtig Platzierte: 0.",
+  "caseProgress": "Fall {number} / {total}",
+  "gamePaused": "Die Partie ist pausiert.",
+  "passPhone": "Gerät an {name}",
+  "confirmOrderTitle": "Ordnung verbindlich bestätigen?",
+  "confirmOrderHelp": "Danach ist die Reihenfolge gesperrt. Die Zahlen werden Schritt für Schritt aufgedeckt.",
+  "skipPhoneCaseHelp": "Dieser Fall zählt einmal als abgeschlossen. Es werden keine Fehler oder Schlucke berechnet. Der Richter wechselt.",
+  "playerUp": "Person nach oben",
+  "playerDown": "Person nach unten",
+  "fallaktenLoading": "Fallakten werden geladen"
 }

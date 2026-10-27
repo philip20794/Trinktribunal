@@ -194,5 +194,21 @@
   "avatarOptionred": "Red",
   "avatarOptiongreen": "Green",
   "avatarOptioncap": "Cap",
-  "avatarOptionbowtie": "Bow tie"
+  "avatarOptionbowtie": "Bow tie",
+  "backToSelectionKeepGame": "Back to modes · game stays open",
+  "cases": "Cases",
+  "additionalRules": "Additional rules",
+  "completedCases": "Completed cases",
+  "errorText": "Error: {text}",
+  "lastNoVerdict": "Last case: completed without verdict. No score.",
+  "manualVerdictSummary": "Manual verdict: {count} incorrect positions. The judge and each misplaced player: {count} sips each; correctly placed players: 0.",
+  "caseProgress": "Case {number} / {total}",
+  "gamePaused": "The game is paused.",
+  "passPhone": "Pass the phone to {name}",
+  "confirmOrderTitle": "Confirm the final order?",
+  "confirmOrderHelp": "The order will be locked. Numbers will be revealed one by one.",
+  "skipPhoneCaseHelp": "This case is completed once, without errors or sips. The judge rotates.",
+  "playerUp": "Move player up",
+  "playerDown": "Move player down",
+  "fallaktenLoading": "Loading case files"
 }

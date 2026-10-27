@@ -134,7 +134,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                                   spacing: 8,
                                   children: [
                                     IconButton(
-                                      tooltip: 'Person nach oben',
+                                      tooltip: context.tr('playerUp'),
                                       onPressed: !_busy && index > 0
                                           ? () => _act(
                                               () => controller.move(
@@ -146,7 +146,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                                       icon: const Icon(Icons.arrow_upward),
                                     ),
                                     IconButton(
-                                      tooltip: 'Person nach unten',
+                                      tooltip: context.tr('playerDown'),
                                       onPressed:
                                           !_busy &&
                                               index <
