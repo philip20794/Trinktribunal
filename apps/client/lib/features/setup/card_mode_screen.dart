@@ -464,7 +464,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             padding: const EdgeInsets.all(24),
             child: Text(
               (state.newRule == null ? null : localizedRule(ref.read(catalogsProvider).requireValue,
-                 AppLanguageScope.of(context).language, state.newRule!.entry).text) ??
+                 AppLanguageScope.of(context).language, state.newRule!.entry as DrinkingRule).text) ??
                   context.tr('cardNoRule', {'count': state.effectiveRuleTarget}),
               style: Theme.of(context).textTheme.titleLarge,
             ),

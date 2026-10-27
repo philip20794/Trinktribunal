@@ -188,9 +188,9 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             child: Text(
                               localizedRule(ref.read(catalogsProvider).requireValue,
-                                AppLanguageScope.of(context).language, rule.entry).render(
+                                AppLanguageScope.of(context).language, rule.entry as DrinkingRule).render(
                                 localizedRule(ref.read(catalogsProvider).requireValue,
-                                  AppLanguageScope.of(context).language, rule.entry).text,
+                                  AppLanguageScope.of(context).language, rule.entry as DrinkingRule).text,
                                 rule.names(view.names),
                               ),
                             ),
@@ -399,9 +399,9 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       view.newRule == null
                           ? context.tr('phoneNoRule', {'count': view.config.scheduledRuleEventCount - view.skippedRules})
                           : localizedRule(ref.read(catalogsProvider).requireValue,
-                              AppLanguageScope.of(context).language, view.newRule!.entry).render(
+                              AppLanguageScope.of(context).language, view.newRule!.entry as DrinkingRule).render(
                               localizedRule(ref.read(catalogsProvider).requireValue,
-                                AppLanguageScope.of(context).language, view.newRule!.entry).text,
+                                AppLanguageScope.of(context).language, view.newRule!.entry as DrinkingRule).text,
                               view.newRule!.names(view.names),
                             ),
                     ),

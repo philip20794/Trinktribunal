@@ -4,6 +4,7 @@ import '../../l10n/app_strings.dart';
 import '../../domain/local_game_reducer.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../../data/catalogs/localized_catalog.dart';
+import '../../data/catalogs/catalog.dart';
 
 Future<void> showActiveRules(
   BuildContext context,
@@ -34,7 +35,7 @@ Future<void> showActiveRules(
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Text(localizedRule(catalogs,
-                AppLanguageScope.of(context).language, rule.entry).text),
+                AppLanguageScope.of(context).language, rule.entry as DrinkingRule).text),
             ),
           ),
         if (state.rules.skippedEvents.isNotEmpty)
