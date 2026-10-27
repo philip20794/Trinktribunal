@@ -13,6 +13,7 @@ import 'package:trinktribunal/domain/rules/drinking_rules.dart';
 import 'package:trinktribunal/domain/selection/content_selection.dart';
 import 'package:trinktribunal/domain/selection/person_assignment.dart';
 import 'package:trinktribunal/domain/selection/random_source.dart';
+import 'package:trinktribunal/domain/verdict.dart';
 
 const parityPath = '../../packages/protocol/fixtures/rules/parity/v1.json';
 
@@ -89,6 +90,23 @@ Object? evaluateParity(Map<String, dynamic> c) {
   final random = _Indices((c['indices'] as List<dynamic>?) ?? []);
   final players = _players(c['players'] ?? []);
   switch (c['operation']) {
+    case 'normalVerdict':
+      final verdict = normalVerdict(
+        judge: PlayerId(c['judge'] as String),
+        numbers: {
+          for (final entry in (c['numbers'] as Map<String, dynamic>).entries)
+            PlayerId(entry.key): entry.value as int,
+        },
+        proposed: _players(c['proposed']),
+      );
+      return {
+        'errors': verdict.errors,
+        'incorrect': verdict.incorrect.map((id) => id.value).toList(),
+        'sipCounts': {
+          for (final entry in verdict.sips.entries)
+            entry.key.value: entry.value,
+        },
+      };
     case 'cycle':
       final roles = _questions([
         {
@@ -287,7 +305,5 @@ void main(List<String> args) {
   for (final c in cases) {
     verifyParity(c);
   }
-  stdout.writeln(
-    'Dart parity: ${cases.length} shared selection fixtures passed.',
-  );
+  stdout.writeln('Dart parity: ${cases.length} shared domain fixtures passed.');
 }

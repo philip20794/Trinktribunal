@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const fixture = resolve(root, 'packages/protocol/fixtures/rules/parity/v1.json');
 const temporary = mkdtempSync(resolve(tmpdir(), 'trinktribunal-parity-'));
-function run(language, path, shouldFail) {
+function run(language, path, shouldFail, changedCase = 'normal-number-gaps') {
   const windows = process.platform === 'win32';
   const command = language === 'Dart' ? 'dart' : (windows ? 'npm.cmd' : 'npm');
   const args = language === 'Dart' ? ['run', 'tool/game_parity.dart', path] : ['test', '--', 'test/domain/rules.test.ts'];
@@ -26,7 +26,7 @@ function run(language, path, shouldFail) {
     maxBuffer: 8 * 1024 * 1024, windowsVerbatimArguments: windows,
   });
   const output = (result.stdout || '') + (result.stderr || '');
-  if (result.error || result.status === null || (shouldFail ? result.status === 0 || !output.includes('normal-number-gaps') : result.status !== 0)) {
+  if (result.error || result.status === null || (shouldFail ? result.status === 0 || !output.includes(changedCase) : result.status !== 0)) {
     throw new Error(`${language} ${shouldFail ? 'mutation detection' : 'parity'} failed:\n${output}\n${result.error ?? ''}`);
   }
   console.log(`${language}: ${shouldFail ? 'changed expected value rejected' : 'shared fixtures passed'}.`);
@@ -41,6 +41,12 @@ try {
   writeFileSync(altered, JSON.stringify(modified), 'utf8');
   run('Dart', altered, true);
   run('TypeScript', altered, true);
+  const alteredVerdict = JSON.parse(readFileSync(fixture, 'utf8'));
+  alteredVerdict.cases.find(c => c.id === 'normal-verdict-correct').expected.errors++;
+  const wrongVerdict = resolve(temporary, 'altered-verdict.json');
+  writeFileSync(wrongVerdict, JSON.stringify(alteredVerdict), 'utf8');
+  run('Dart', wrongVerdict, true, 'normal-verdict-correct');
+  run('TypeScript', wrongVerdict, true, 'normal-verdict-correct');
   console.log('Dart/TypeScript parity and mutation checks passed; original fixtures unchanged.');
 } finally {
   const parent = resolve(tmpdir());

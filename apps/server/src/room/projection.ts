@@ -4,6 +4,7 @@ import { canonicalJson } from '../../../../packages/protocol/schema-validation.m
 import type { GameState } from '../domain/game_state';
 import { readyInPhase } from './readiness';
 import { ownConfirmedOrder } from './orders';
+import { normalRevealFields } from './reveal';
 import type {
   Config,
   PlayerId,
@@ -63,6 +64,7 @@ export function lobbySnapshot(
       activeRules: game?.activeRules ?? [],
       completedCases: game?.completedCases ?? 0,
       revealCursor: round?.revealCursor ?? 0,
+      ...normalRevealFields(game),
       revealed: (round?.revealOrder ?? []).slice(0, round?.revealCursor ?? 0).map((playerId) => ({
         playerId,
         number: round!.numbers.find((entry) => entry.playerId === playerId)!.number,

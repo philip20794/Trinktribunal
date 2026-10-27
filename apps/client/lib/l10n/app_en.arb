@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+  "onlineRevealProgress": "Publicly revealed: {count} of {total}",
   "onlineOrderMissing": "The frozen participants are not fully available yet. This phase waits; the host can explicitly complete the case without a verdict.",
   "onlineOrderWaiting": "The judge is confirming their order. You cannot change the bench in this case.",
   "onlineOrderSending": "Confirming your order …",
@@ -23,7 +24,7 @@
   "onlineHostStarts": "The host sets up and starts the game.",
   "onlineLanguageValue": "Content language: {language}",
   "onlineJudge": "Judge: {name}",
-  "onlineOwnNumber": "Your number stays hidden until you choose to open it.",
+  "onlineOwnNumber": "Open your own number here when you choose.",
   "onlineConfirmNumber": "Remember and confirm number",
   "onlineNumberConfirmed": "Number acknowledgement sent. Waiting for the other participants.",
   "onlineJudgeNoNumber": "As the judge, you receive no secret number in this case.",

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/domain/models/domain_error.dart';
 import 'package:trinktribunal/domain/models/ids.dart';
@@ -19,6 +22,33 @@ Iterable<List<T>> permutations<T>(List<T> items) sync* {
 }
 
 void main() {
+  test('executes the existing shared TT-003 normal verdict fixture', () {
+    final fixture = jsonDecode(
+      File('../../packages/protocol/fixtures/transitions/verdict-normal.json')
+          .readAsStringSync(),
+    ) as Map<String, dynamic>;
+    final input = fixture['input'] as Map<String, dynamic>,
+        expected = fixture['expected'] as Map<String, dynamic>,
+        truth = (input['trueAscendingIds'] as List<dynamic>).cast<String>();
+    final result = normalVerdict(
+      judge: PlayerId(input['judgeId'] as String),
+      numbers: {
+        for (var index = 0; index < truth.length; index++)
+          PlayerId(truth[index]): index + 1,
+      },
+      proposed: (input['proposedAscendingIds'] as List<dynamic>)
+          .map((id) => PlayerId(id as String))
+          .toList(),
+    );
+    expect(result.errors, expected['wrongPositionCount']);
+    expect(
+      result.incorrect.map((id) => id.value).toList(),
+      expected['misplacedPlayerIds'],
+    );
+    expect({
+      for (final entry in result.sips.entries) entry.key.value: entry.value,
+    }, expected['sipCounts']);
+  });
   test(
     'normal verdict counts wrong positions, including gaps and all rotations',
     () {

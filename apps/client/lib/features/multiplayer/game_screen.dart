@@ -9,6 +9,7 @@ import '../../design/case_file.dart';
 import '../../design/private_number.dart';
 import '../../l10n/app_strings.dart';
 import 'readiness_view.dart';
+import '../verdict/online_reveal.dart';
 
 /// Game section inside the existing courtroom tab; profiles remain on Me.
 class RoomGameScreen extends ConsumerWidget {
@@ -56,6 +57,7 @@ class RoomGameScreen extends ConsumerWidget {
             children: [
               const TText('roomErrorGeneric'),
               ReadinessView(snapshot: snapshot),
+              OnlineReveal(snapshot: snapshot),
             ],
           );
         }
@@ -123,6 +125,7 @@ class RoomGameScreen extends ConsumerWidget {
                   view.judgeId == snapshot.you)
                 const TText('onlineJudgeNoNumber'),
               ReadinessView(snapshot: snapshot),
+              OnlineReveal(snapshot: snapshot),
             ],
           ),
         );

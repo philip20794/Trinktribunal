@@ -142,6 +142,32 @@ final class OnlineGameController extends ChangeNotifier {
     );
   }
 
+  bool revealNext({
+    required GameId gameId,
+    required RoundId roundId,
+    required int expectedCursor,
+  }) {
+    final view = snapshot;
+    if (view == null ||
+        !_sameRound(gameId, roundId) ||
+        view.public.config.allJudges ||
+        view.public.phase != 'revealing' ||
+        view.you != view.public.hostId ||
+        view.public.revealCursor != expectedCursor) {
+      return false;
+    }
+    return _send(
+      'reveal',
+      RevealNextMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        roundId: roundId,
+        expectedCursor: expectedCursor,
+      ),
+    );
+  }
+
   bool completeWithoutVerdict({
     required GameId gameId,
     required RoundId roundId,

@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–048 nach Unit-Gates abgeschlossen, TT-049 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/292 Flutter-/304 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–049 nach Unit-Gates abgeschlossen, TT-050 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/298 Flutter-/311 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -47,7 +47,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M2 | TT-013–TT-026 | ERLEDIGT | Unit-Gates grün; Browserdemo ÜBERSPRUNGEN – später manuell testen · [M2](qa/M2.md) |
 | M3 | TT-027–TT-033 | ERLEDIGT | Nach Unit-Gates freigegeben; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [M3](qa/M3.md) |
 | M4 | TT-034–TT-042 | ERLEDIGT | Unit-Gate grün; drei lokale Clients und Harness geprüft; Browser/E2E ÜBERSPRUNGEN – später manuell testen · [M4](qa/M4.md) |
-| M5 | TT-043–TT-050 | IN ARBEIT | TT-043–048 geprüft: atomarer Kern/Parität, Hoststart/Zahlen, Bereitschaft/D-07, lokale Richterordnung und privater Commit · [TT-048](qa/TT-048.md) |
+| M5 | TT-043–TT-050 | IN ARBEIT | TT-043–049 geprüft: atomarer Kern/Parität, Hoststart/Zahlen, Bereitschaft/D-07, Richterordnung, autorisierte Aufdeckung und Serverurteil · [TT-049](qa/TT-049.md) |
 | M6 | TT-051–TT-058 | OFFEN | Alle Richter, laufende Besetzungsänderungen, Hostverlust/Resume; `docs/qa/M6.md`. |
 | M7 | TT-059–TT-064 | OFFEN | Sicherheits-/Kosten-/Performancechecks und DE/EN-/Bedienprüfung; `docs/qa/M7.md`. |
 | M8 | TT-065–TT-070 | OFFEN | Lokal geprüfte Web/APK/AAB-Artefakte und Releaseanleitung; `docs/qa/RELEASE_CHECKLIST.md`. |
@@ -108,7 +108,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-046 | Start, Einstellungen und Zahlen privat zustellen | ERLEDIGT | 27.10.2026 · Hoststart/eingefrorene Optionen, eigene Zahl, DE/EN-Rollen/Skala, Lifecycle und Semantik geprüft · [TT-046](qa/TT-046.md) |
 | TT-047 | Antworten, Bereitschaft und Warten | ERLEDIGT | 27.10.2026 · eigene Antwortbereitschaft, konservatives Warten, Host≠Richter, bestätigter gezählter Abschluss und alte SQLite-Runden geprüft · [TT-047](qa/TT-047.md) |
 | TT-048 | Private Richterordnung einmal bestätigen | ERLEDIGT | 27.10.2026 · 100 Bewegungen ohne Frames, einmalige Bestätigung, private Ordnung, Host≠Richter und Eviction geprüft · [TT-048](qa/TT-048.md) |
-| TT-049 | Serverurteil und schrittweise Aufdeckung | OFFEN | — |
+| TT-049 | Serverurteil und schrittweise Aufdeckung | ERLEDIGT | TS-/Dart-Urteilparität, feste Richterordnung, Leaktests aller Rollen je Cursor, Retry nach Eviction und unverändertes Urteil bei Profiländerung · [TT-049](qa/TT-049.md) |
 | TT-050 | Multiplayer-Partieende, Regeln und normaler Gesamttest | OFFEN | Regel-/Endprojektionen samt Semantikprüfung angleichen: `rule_event` enthält derzeit keine offene Runde; der bisherige Referenzprüfer erwartet noch Falldaten. |
 | TT-051 | Alle Richter: eigene Zahlen und private Ordnungen | OFFEN | — |
 | TT-052 | Alle Richter: gemeinsame Aufdeckung, persönliche Ergebnisse | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-049 – Serverurteil und schrittweise Aufdeckung.** TT-048 geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-050 – Multiplayer-Partieende, Regeln und normaler Gesamttest.** TT-049 geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-048-Ordnungsstand
-Aktueller Beleg: docs/qa/TT-048.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-049 TS-Urteil nach Dart-/gemeinsamen Fixtures, öffentliche feste Richterordnung und ausschließlich freigegebener Zahlenpräfix; keine vorzeitige Wertung.
+Branch: main mit geprüftem TT-049-Aufdeck-/Urteilsstand
+Aktueller Beleg: docs/qa/TT-049.md; Browserprüfungen übersprungen, später manuell testen
+Naechster Schritt: TT-050 Regel-/Endprojektionen angleichen, Online-Regelakten/Fortschritt/Neustart und private eigene Ziehhistorie anschließen; 3 Fälle + 2 Regeln als Unit-Szenario.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

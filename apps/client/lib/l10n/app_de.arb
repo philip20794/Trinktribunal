@@ -1,5 +1,6 @@
 {
   "@@locale": "de",
+  "onlineRevealProgress": "Öffentlich aufgedeckt: {count} von {total}",
   "onlineOrderMissing": "Die eingefrorene Besetzung ist noch nicht vollständig verfügbar. Die Phase wartet; der Host kann den Fall ausdrücklich ohne Urteil abschließen.",
   "onlineOrderWaiting": "Der Richter bestätigt seine Ordnung. Du kannst die Bank in diesem Fall nicht verändern.",
   "onlineOrderSending": "Deine Ordnung wird bestätigt …",
@@ -23,7 +24,7 @@
   "onlineHostStarts": "Der Host richtet die Partie ein und startet sie.",
   "onlineLanguageValue": "Inhaltssprache: {language}",
   "onlineJudge": "Richter: {name}",
-  "onlineOwnNumber": "Deine Zahl bleibt verborgen, bis du sie bewusst öffnest.",
+  "onlineOwnNumber": "Deine eigene Zahl öffnest du hier bewusst.",
   "onlineConfirmNumber": "Zahl merken und bestätigen",
   "onlineNumberConfirmed": "Zahlannahme gesendet. Wir warten auf die übrigen Teilnehmer.",
   "onlineJudgeNoNumber": "Als Richter bekommst du in diesem Fall keine Geheimzahl.",

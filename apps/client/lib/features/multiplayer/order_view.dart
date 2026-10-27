@@ -53,6 +53,15 @@ class OnlineOrderView extends ConsumerWidget {
             BenchView(
               order: order,
               profiles: profiles,
+              revealedNumbers: {
+                for (final entry in view.revealed) entry.playerId: entry.number,
+              },
+              incorrect: {
+                if (view.phase == 'judged' && view.result != null)
+                  for (final penalty in view.result!.penalties)
+                    if (penalty.sips > 0 && penalty.playerId != view.judgeId)
+                      penalty.playerId,
+              },
               onMove: judge && controller.canEdit ? controller.move : null,
             ),
             if (judge && view.phase == 'ordering')
