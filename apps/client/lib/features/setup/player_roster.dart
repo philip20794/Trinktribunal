@@ -7,15 +7,21 @@ import '../../design/avatar_view.dart';
 import '../../domain/avatar_config.dart';
 import '../../domain/user_profile.dart';
 import '../profile/avatar_options.dart';
+import '../../data/catalogs/catalog_repository.dart';
+import '../handoff/shared_game_screen.dart';
 
 class PlayerRosterScreen extends ConsumerStatefulWidget {
-  const PlayerRosterScreen({super.key});
+  const PlayerRosterScreen({this.allowStart = true, super.key});
+  final bool allowStart;
   @override
   ConsumerState<PlayerRosterScreen> createState() => _PlayerRosterScreenState();
 }
 
 class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
   bool _busy = false;
+  int _cases = 50;
+  int _rules = 7;
+  int _factor = 15;
   Future<void> _act(Future<bool> Function() action) async {
     if (_busy) return;
     setState(() => _busy = true);
@@ -51,6 +57,11 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
           ),
           data: (controller) {
             final own = ref.watch(profileProvider).asData?.value.profile;
+            final catalogs = ref.watch(catalogsProvider);
+            final session = catalogs.hasValue
+                ? ref.watch(sharedPhoneControllerProvider)
+                : null;
+            final existing = session?.view;
             return Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 760),
@@ -199,6 +210,82 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                     if (controller.canStart)
                       const Text(
                         'Die Gruppe ist bereit. Name und Aussehen können weiter angepasst werden.',
+                      ),
+                    if (widget.allowStart && session != null) ...[
+                      if (existing == null) ...[
+                        const SizedBox(height: 16),
+                        Text('Fälle: $_cases'),
+                        Slider(
+                          value: _cases.toDouble(),
+                          min: 1,
+                          max: 491,
+                          divisions: 490,
+                          label: '$_cases',
+                          onChanged: (v) => setState(() {
+                            _cases = v.round();
+                            if (_rules >= _cases) _rules = _cases - 1;
+                          }),
+                        ),
+                        Text('Zusätzliche Regeln: $_rules'),
+                        Slider(
+                          value: _rules.toDouble(),
+                          min: 0,
+                          max: (_cases - 1).clamp(0, 25).toDouble(),
+                          divisions: _cases > 1
+                              ? (_cases - 1).clamp(1, 25)
+                              : null,
+                          label: '$_rules',
+                          onChanged: _cases > 1
+                              ? (v) => setState(() => _rules = v.round())
+                              : null,
+                        ),
+                        Text('Faktor: ${(_factor / 10).toStringAsFixed(1)}'),
+                        Slider(
+                          value: _factor.toDouble(),
+                          min: 10,
+                          max: 30,
+                          divisions: 20,
+                          label: (_factor / 10).toStringAsFixed(1),
+                          onChanged: (v) => setState(() => _factor = v.round()),
+                        ),
+                      ] else
+                        const Text(
+                          'Partieoptionen bleiben bis zum bestätigten Neustart gesperrt.',
+                        ),
+                      FilledButton(
+                        onPressed:
+                            !_busy && (existing != null || controller.canStart)
+                            ? () {
+                                final config =
+                                    existing?.config ??
+                                    session.configure(
+                                      playerCount: controller.members.length,
+                                      targetCases: _cases,
+                                      requestedRuleEvents: _rules,
+                                      factorTenths: _factor,
+                                    );
+                                Navigator.push<void>(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => SharedGameScreen(
+                                      config: config,
+                                      roster: controller.members,
+                                    ),
+                                  ),
+                                );
+                              }
+                            : null,
+                        child: Text(
+                          existing == null
+                              ? 'Verhandlung starten'
+                              : 'Verhandlung fortsetzen',
+                        ),
+                      ),
+                    ],
+                    if (widget.allowStart && catalogs.hasError)
+                      TextButton(
+                        onPressed: () => ref.invalidate(catalogsProvider),
+                        child: const Text('Fallakten erneut laden'),
                       ),
                     TextButton(
                       onPressed: () => Navigator.pop(context),

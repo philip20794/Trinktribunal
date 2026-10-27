@@ -74,6 +74,20 @@ final class LocalGameReducer {
     clock: clock,
   );
 
+  CardGameState withHistory(CardGameState state, ContentHistory history) {
+    if (identical(state.rules.selection.history, history)) return state;
+    return _copy(
+      state,
+      rules: state.rules.withSelection(
+        SelectionState(
+          history: history,
+          counts: state.rules.selection.counts,
+          assignments: state.rules.selection.assignments,
+        ),
+      ),
+    );
+  }
+
   CardGameState start({
     required GameId id,
     required GameConfig config,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_session_controller.dart';
+import '../../application/local_data_providers.dart';
 import '../../data/catalogs/catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../../design/case_file.dart';
@@ -15,6 +16,7 @@ import '../rules/active_rules_sheet.dart';
 final localSessionProvider = Provider<LocalSessionController>((ref) {
   final catalogs = ref.watch(catalogsProvider).requireValue;
   return LocalSessionController(
+    historyStore: ref.watch(contentHistoryStoreProvider),
     questions: catalogs.questions['de']!.entries,
     rules: catalogs.rules['de']!.entries,
   );

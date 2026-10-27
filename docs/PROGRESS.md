@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Integration von `task/TT-001-flutter-shell` (`251a788`) mit `main` (`0d8cd2d`), Mergebasis gesichert in `3bc0000`. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Aktuelle M0-Abnahme](qa/M0.md).
 
-**Aktuell: TT-001–012 implementiert und lokal geprüft; TT-013 in Arbeit.** 78 Node-/65 Flutter-Tests grün. M0 visuell bestätigt; das visuelle M1-Demo-Gate bleibt mangels DevTools-Verbindung offen. Fortlaufende Umsetzung und Unit-Absicherung am 27.10.2026 autorisiert; keine E2E-Tests. Keine GitHub Actions oder Cloudflare-Deployments.
+**Aktuell: TT-001–026 funktionell implementiert; TT-027 in Arbeit.** 78 Node-/95 Flutter-Tests und JS-Webbuild grün. Visuelle M1-/M2-Demo-Gates bleiben mangels DevTools-Verbindung offen. Fortlaufende Umsetzung mit Unit-Tests, keine E2E-Tests, kein Deployment.
 
 ## Statusregeln
 
@@ -77,16 +77,16 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-015 | Eigenes Profil und Avatar-Editor | ERLEDIGT | 27.10.2026 · [Beleg](qa/TT-013-017.md); Speicher-/Validierungs-/Fehler-Unit-Tests |
 | TT-016 | Lokales Spielerregister und Sitzreihenfolge | ERLEDIGT | 27.10.2026 · [Beleg](qa/TT-013-017.md); CRUD, Einfügen, Persistenz und 20er-Grenze |
 | TT-017 | Zahlen ohne Wiederholung vergeben | ERLEDIGT | 27.10.2026 · [Beleg](qa/TT-013-017.md); alle N/Faktor/Modus-Kombinationen und Lückenfall |
-| TT-018 | Verdeckte Geräteübergabe | IN ARBEIT | 27.10.2026 · Anschluss des gespeicherten Registers an den Ein-Handy-Ablauf |
-| TT-019 | Antwortphase und Richterdarstellung | OFFEN | — |
-| TT-020 | Schlangenbank mit stabiler Positionsabbildung | OFFEN | — |
-| TT-021 | Drag-and-drop und gleichwertige Alternativbedienung | OFFEN | — |
-| TT-022 | Fehlerpositionen und Schlucke berechnen | OFFEN | — |
-| TT-023 | Schrittweise Aufdeckung und Urteilsscreen | OFFEN | — |
-| TT-024 | Richterrotation, Fortschritt und Partieende verbinden | OFFEN | — |
-| TT-025 | Spieler während lokaler Partie ändern | OFFEN | — |
-| TT-026 | Ein-Handy-Ablauf vollständig integrieren | OFFEN | — |
-| TT-027 | Lokale Partie sicher speichern und wiederaufnehmen | OFFEN | — |
+| TT-018 | Verdeckte Geräteübergabe | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-019 | Antwortphase und Richterdarstellung | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-020 | Schlangenbank mit stabiler Positionsabbildung | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-021 | Drag-and-drop und gleichwertige Alternativbedienung | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-022 | Fehlerpositionen und Schlucke berechnen | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-023 | Schrittweise Aufdeckung und Urteilsscreen | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-024 | Richterrotation, Fortschritt und Partieende verbinden | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-025 | Spieler während lokaler Partie ändern | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-026 | Ein-Handy-Ablauf vollständig integrieren | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
+| TT-027 | Lokale Partie sicher speichern und wiederaufnehmen | IN ARBEIT | 27.10.2026 · Snapshot-/Historien-Transaktion, Restore und Speicherfehler |
 | TT-028 | Sprachsystem und allgemeine Einstellungen | OFFEN | — |
 | TT-029 | Lokalen Web-Release reproduzierbar ausliefern | OFFEN | — |
 | TT-030 | Eigener Offline-Cache für lokale Webmodi | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Aktive Aufgabe: TT-013 – Gerichtssaal-Designsystem und visuelle Galerie.** TT-007–012 implementiert; M1-Demo-Gate visuell noch offen, weil Chrome nicht über DevTools erreichbar ist. Testvorgabe vom 27.10.2026: Unit-Tests statt E2E-Tests. Aufgaben werden ohne Zwischenstopp nacheinander bearbeitet.
+**Aktive Aufgabe: TT-027 – lokale Partiepersistenz und Wiederaufnahme.** Alle vorherigen Implementierungsschritte sind dokumentiert. Weiterarbeit erfolgt automatisch; visuelle Gates bleiben gesondert offen.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -183,7 +183,7 @@ Am 26.10.2026 lokal durchgeführt:
 ```text
 Branch: task/TT-006-game-models
 Aktueller Beleg: docs/qa/TT-006.md
-Naechster Schritt: TT-013 fortsetzen; TT-007–012 implementiert, 78 Node-/65 Flutter-Tests gruen
+Naechster Schritt: TT-027; Snapshot und gemeinsame 6h-Historie atomar speichern, Restore ohne sichtbare Geheimzahl
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

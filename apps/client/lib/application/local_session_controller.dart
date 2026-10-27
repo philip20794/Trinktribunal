@@ -6,6 +6,7 @@ import '../domain/models/domain_error.dart';
 import '../domain/models/game_mode.dart';
 import '../domain/models/ids.dart';
 import '../domain/selection/random_source.dart';
+import 'content_history_store.dart';
 
 /// IO-free coordinator. Device history survives navigation and new games.
 final class LocalSessionController {
@@ -16,6 +17,7 @@ final class LocalSessionController {
     RandomSource? random,
     UtcClock? clock,
     String Function()? newId,
+    ContentHistoryStore? historyStore,
   }) : _questions = List.unmodifiable(questions),
        _rules = List.unmodifiable(rules),
        _reducer = LocalGameReducer(
@@ -24,17 +26,18 @@ final class LocalSessionController {
          random: random ?? SecureRandomSource(),
          clock: clock ?? (() => DateTime.now().toUtc()),
        ),
-       _newId = newId ?? _secureId;
+       _newId = newId ?? _secureId,
+       _historyStore = historyStore ?? ContentHistoryStore();
 
   final List<Question> _questions;
   final String contentLanguage;
   final List<DrinkingRule> _rules;
   final LocalGameReducer _reducer;
   final String Function() _newId;
-  ContentHistory _history = ContentHistory([]);
+  final ContentHistoryStore _historyStore;
   CardGameState? _state;
   CardGameState? get state => _state;
-  ContentHistory get history => _history;
+  ContentHistory get history => _historyStore.history;
   CatalogCapacity get capacity => CatalogCapacity(
     questions: _questions.where((q) => q.players.isEmpty).length,
     rules: _rules.where((r) => r.players.isEmpty).length,
@@ -71,11 +74,7 @@ final class LocalSessionController {
       );
     }
     _accept(
-      _reducer.start(
-        id: GameId(_newId()),
-        config: validated,
-        history: _history,
-      ),
+      _reducer.start(id: GameId(_newId()), config: validated, history: history),
     );
   }
 
@@ -87,7 +86,7 @@ final class LocalSessionController {
   }) {
     _accept(
       _reducer.completeCase(
-        _requireState(),
+        _reducer.withHistory(_requireState(), history),
         roundId: roundId,
         confirmed: confirmed,
         manualErrors: manualErrors,
@@ -96,8 +95,12 @@ final class LocalSessionController {
     );
   }
 
-  void continueAfterRule(String eventId) =>
-      _accept(_reducer.continueAfterRule(_requireState(), eventId: eventId));
+  void continueAfterRule(String eventId) => _accept(
+    _reducer.continueAfterRule(
+      _reducer.withHistory(_requireState(), history),
+      eventId: eventId,
+    ),
+  );
 
   void abort({required bool confirmed}) {
     if (confirmed) _state = null;
@@ -111,7 +114,7 @@ final class LocalSessionController {
       ));
   void _accept(CardGameState next) {
     _state = next;
-    _history = next.rules.selection.history;
+    _historyStore.merge(next.rules.selection.history);
   }
 
   static String _secureId() {
