@@ -89,3 +89,35 @@ test('The check wrapper preserves a failed child exit code', { skip: !windows },
   assert.equal(result.status, 23, result.stderr || result.stdout);
   assert.doesNotMatch(result.stdout, /erfolgreich beendet/);
 });
+
+test('Multiplayer plan is read-only, works outside the repo and separates three persistent profiles', {skip:!windows}, context=>{
+  const setup=fixture(context);
+  const result=run('dev-multiplayer.ps1',['-PlanOnly','-AsJson'],setup);
+  assert.equal(result.status,0,result.stderr);
+  const plan=JSON.parse(result.stdout);
+  assert.equal(plan.clientUrl,'http://127.0.0.1:7357');
+  assert.equal(plan.serverUrl,'http://127.0.0.1:8787');
+  assert.equal(plan.browserAcceptance,'SKIPPED_MANUAL_LATER');
+  assert.equal(plan.automaticGate,'unit');
+  assert.deepEqual(plan.profiles.map(profile=>profile.viewport),['390,844','360,800','1440,900']);
+  assert.equal(new Set(plan.profiles.map(profile=>profile.directory)).size,3);
+  for(const profile of plan.profiles)assert.ok(profile.directory.startsWith(resolve(scripts,'..','.local','multiplayer')));
+  assert.doesNotMatch(result.stdout,/FLUTTER_STUB/);
+});
+test('Multiplayer rejects conflicting or non-allowlisted ports before starting anything', {skip:!windows},context=>{
+  const setup=fixture(context);
+  for(const args of [['-ClientPort','7357','-ServerPort','7357'],['-ClientPort','9000'],['-AsJson'],['-PlanOnly','-OpenBrowsers']]){
+    const result=run('dev-multiplayer.ps1',args,setup);
+    assert.notEqual(result.status,0);
+    assert.doesNotMatch(result.stdout,/FLUTTER_STUB/);
+  }
+});
+test('Multiplayer alternate supported origin keeps stable profile locations and prints no credential payloads', {skip:!windows},context=>{
+  const setup=fixture(context);
+  const result=run('dev-multiplayer.ps1',['-PlanOnly','-AsJson','-ClientPort','8080','-ServerPort','8790','-Browser','edge'],setup);
+  assert.equal(result.status,0,result.stderr);
+  const plan=JSON.parse(result.stdout);
+  assert.equal(plan.clientUrl,'http://127.0.0.1:8080');assert.equal(plan.serverUrl,'http://127.0.0.1:8790');
+  assert.equal(plan.browser,'edge');assert.equal(plan.persistentProfiles,true);
+  assert.doesNotMatch(result.stdout,/resumeToken|requestId|roomId|playerId/);
+});

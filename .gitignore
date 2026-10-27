@@ -29,6 +29,7 @@ node_modules/
 *.log
 chromedriver.log
 test-results/
+/.local/multiplayer/
 
 # Geheimnisse / Konfiguration
 .env

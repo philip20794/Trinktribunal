@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–041 nach Unit-Gates abgeschlossen, TT-042 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 112 Node-/249 Flutter-/125 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–042 nach Unit-Gates abgeschlossen, TT-043 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 115 Node-/249 Flutter-/125 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -46,7 +46,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M1 | TT-004–TT-012 | ERLEDIGT | Unit-Gates grün; Browserdemo ÜBERSPRUNGEN – später manuell testen · [M1](qa/M1.md) |
 | M2 | TT-013–TT-026 | ERLEDIGT | Unit-Gates grün; Browserdemo ÜBERSPRUNGEN – später manuell testen · [M2](qa/M2.md) |
 | M3 | TT-027–TT-033 | ERLEDIGT | Nach Unit-Gates freigegeben; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [M3](qa/M3.md) |
-| M4 | TT-034–TT-042 | IN ARBEIT | TT-034 fertig, lokale Worker-Runtime TT-035 in Arbeit; Browserdemo später manuell |
+| M4 | TT-034–TT-042 | ERLEDIGT | Unit-Gate grün; drei lokale Clients und Harness geprüft; Browser/E2E ÜBERSPRUNGEN – später manuell testen · [M4](qa/M4.md) |
 | M5 | TT-043–TT-050 | OFFEN | Normale Multiplayer-Kurzpartie, Host≠Richter, private Zahlen; `docs/qa/M5.md`. |
 | M6 | TT-051–TT-058 | OFFEN | Alle Richter, laufende Besetzungsänderungen, Hostverlust/Resume; `docs/qa/M6.md`. |
 | M7 | TT-059–TT-064 | OFFEN | Sicherheits-/Kosten-/Performancechecks und DE/EN-/Bedienprüfung; `docs/qa/M7.md`. |
@@ -101,7 +101,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-039 | Clienttransport mit klaren Verbindungszuständen | ERLEDIGT | 27.10.2026 · Dart-HTTP/WS, Riverpod, Reconnect/ACK-Replay und separater Credential-Speicher · [Beleg](qa/TT-039.md) |
 | TT-040 | Erstellen-/Beitreten-Screens und Einladungen | ERLEDIGT | 27.10.2026 · expliziter Einstieg/Resume, Profile, Linkroute und lokaler QR, 10 neue Entry-Units · [Beleg](qa/TT-040.md) |
 | TT-041 | Lobby, Tabs und Live-Profile synchronisieren | ERLEDIGT | 27.10.2026 · drei Live-Ansichten, eigene Profile, Host-Lobbyverwaltung, Deltas/Revisionen und gebündelte Änderungen · [Beleg](qa/TT-041.md) |
-| TT-042 | Lokale Mehrbrowser-Harness und Lobby-Abnahme | OFFEN | — |
+| TT-042 | Lokale Mehrbrowser-Harness und Lobby-Abnahme | ERLEDIGT | 27.10.2026 · isolierte persistente Profile, eigene lokale Prozesse, Start/Stopp geprüft; Browser/E2E übersprungen · [M4](qa/M4.md) |
 | TT-043 | TypeScript-Spielkern und Phasenrechte | OFFEN | — |
 | TT-044 | TS-Zahlen, Fragen und Trinkregeln mit Parität | OFFEN | — |
 | TT-045 | Atomare Aktionen, Revisionen und Idempotenz | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-042 – lokale Mehrbrowser-Harness und M4-Abnahme nach Unit-Gate.** TT-035 lokal geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-043 – TypeScript-Spielkern und Phasenrechte.** TT-035 lokal geprüft, Unit-Gates geben die nächste Aufgabe frei. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-041-Live-Lobbystand
+Branch: main mit geprüftem M4-/TT-042-Harnessstand
 Aktueller Beleg: docs/qa/TT-035.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-042 lokale Mehrbrowser-Harness; Browser-/E2E-Abnahme bleibt übersprungen, später manuell testen.
+Naechster Schritt: TT-043 reiner TypeScript-Spielkern gemäß GAME_STATE; bestehende Dart-Verträge und Fixtures wiederverwenden.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

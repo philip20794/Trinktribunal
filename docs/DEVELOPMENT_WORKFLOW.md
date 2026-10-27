@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Stand (27.10.2026):** TT-001–041 nach Unit-Gates abgeschlossen; TT-042 folgt. 112 Node-/249 Flutter-/125 Server-Tests grün; lokale Worker-/SQLite-Runtime unter Windows geprüft. Browser-/E2E-Abnahmen: **ÜBERSPRUNGEN – später manuell testen**, kein Folgeaufgabenblocker. [Fortschritt](PROGRESS.md) · [Serverbeleg](qa/TT-035.md).
+**Aktueller Stand (27.10.2026):** TT-001–042 nach Unit-Gates abgeschlossen; TT-043 folgt. 115 Node-/249 Flutter-/125 Server-Tests grün; lokale Worker-/SQLite-Runtime unter Windows geprüft. Browser-/E2E-Abnahmen: **ÜBERSPRUNGEN – später manuell testen**, kein Folgeaufgabenblocker. [Fortschritt](PROGRESS.md) · [Serverbeleg](qa/TT-035.md).
 
 ## Lokaler Einstieg
 
@@ -137,6 +137,7 @@ Alle folgenden Skriptaufrufe vom **Repository-Root**. Die Skripte selbst müssen
 | `D` | `powershell -NoProfile -File .\scripts\check.ps1 -Scope Docs` | TT-002; Links, eindeutige Aufgaben-IDs und Referenzen; ab TT-004 zusätzlich JSON-/Manifestvalidierung, ohne kanonische Daten umzuschreiben. |
 | `S` | `powershell -NoProfile -File .\scripts\check.ps1 -Scope Server` | TT-035; npm-Formatcheck, Typecheck, lokale Worker-Vitesttests, keine Deploys. |
 | `MP` | `powershell -NoProfile -File .\scripts\dev-multiplayer.ps1` | TT-042; lokale Runtime 8787, Client 7357, Anleitung/Start isolierter Browser; beide Endpunkte sichtbar ausgeben, kein Remotezugriff. |
+| `MP-U` | `powershell -NoProfile -File .\scripts\test-multiplayer.ps1` | TT-042; bestehendes Unit-/Widget-/Workerd-Gate, Browser/E2E gemäß Nutzervorgabe übersprungen. |
 | `E` | `powershell -NoProfile -File .\scripts\test-integration.ps1 -Platform Web -Target integration_test/card_game_test.dart` | TT-012; lokaler Driver/Chrome, Ziel explizit; `-Platform Android -DeviceId <ID>` ab TT-032. |
 | `B` Web | `powershell -NoProfile -File .\scripts\build-web.ps1` | TT-029; Assets synchronisieren/validieren, Release bauen; ab TT-030 Offlinepaket erzeugen. `-Wasm` erst nach TT-062. |
 | `B` Android | `powershell -NoProfile -File .\scripts\build-android.ps1 -Mode Debug -Format apk` | TT-032; `-Mode Release -Format apk|appbundle` erst TT-066 mit Signierung. |
