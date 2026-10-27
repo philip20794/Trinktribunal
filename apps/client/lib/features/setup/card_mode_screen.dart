@@ -13,15 +13,6 @@ import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
 import '../rules/active_rules_sheet.dart';
 
-final localSessionProvider = Provider<LocalSessionController>((ref) {
-  final catalogs = ref.watch(catalogsProvider).requireValue;
-  return LocalSessionController(
-    historyStore: ref.watch(contentHistoryStoreProvider),
-    questions: catalogs.questions['de']!.entries,
-    rules: catalogs.rules['de']!.entries,
-  );
-});
-
 class CardModeScreen extends ConsumerStatefulWidget {
   const CardModeScreen({super.key});
 
@@ -36,11 +27,16 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
   int _factor = 15;
   bool _dialogOpen = false;
   String? _error;
+  String? _storageWarning;
 
   void _act(VoidCallback action) {
     try {
       action();
       setState(() => _error = null);
+      final transaction = ref.read(localStateTransactionProvider);
+      transaction.save().then((_) {
+        if (mounted) setState(() => _storageWarning = transaction.error);
+      });
     } on DomainException catch (error) {
       setState(() => _error = error.message);
     }
@@ -232,6 +228,10 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           ),
         ),
         data: (_) {
+          final resume = ref.watch(localResumeProvider);
+          if (resume.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
           final controller = ref.watch(localSessionProvider);
           final state = controller.state;
           return Align(
@@ -241,6 +241,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(24),
                 children: [
+                  if (_storageWarning != null) Text(_storageWarning!),
                   if (_error != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),

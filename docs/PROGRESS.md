@@ -1,8 +1,8 @@
 # Fortschritt und Übergabe
 
-Stand: 26.10.2026. Integration von `task/TT-001-flutter-shell` (`251a788`) mit `main` (`0d8cd2d`), Mergebasis gesichert in `3bc0000`. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md) · [Aktuelle M0-Abnahme](qa/M0.md).
+Stand: 27.10.2026. Fortsetzung bis TT-027; Abschluss und Push auf main auf Nutzerauftrag, danach anhalten. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Lokaler Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–026 funktionell implementiert; TT-027 in Arbeit.** 78 Node-/95 Flutter-Tests und JS-Webbuild grün. Visuelle M1-/M2-Demo-Gates bleiben mangels DevTools-Verbindung offen. Fortlaufende Umsetzung mit Unit-Tests, keine E2E-Tests, kein Deployment.
+**Aktuell: TT-001–027 funktionell implementiert und lokal geprüft.** 78 Node-/112 Flutter-Tests, JS-Webbuild und Android-Debug-APK grün. Visuelle M1-/M2-Gates bleiben mangels DevTools-Verbindung offen. Nutzerauftrag: diesen sinnvollen Stand in main integrieren und pushen, danach stoppen. Keine E2E-Tests und kein Deployment.
 
 ## Statusregeln
 
@@ -43,16 +43,16 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | Meilenstein | Aufgaben | Status | Lokales Demo-Gate / späterer Beleg |
 | --- | --- | --- | --- |
 | M0 | TT-001–TT-003 | ERLEDIGT | Lokale Tests/Builds und manuelle Nutzerabnahme · [M0](qa/M0.md) |
-| M1 | TT-004–TT-012 | IN ARBEIT | Kartenmodus mit drei Fällen und zwei Ereignissen bis Neustart; `docs/qa/M1.md`. |
-| M2 | TT-013–TT-026 | OFFEN | Vier Personen, sechs Fälle, Avatar/Übergabe/Bank/Urteil/Wechsel; `docs/qa/M2.md`. |
-| M3 | TT-027–TT-033 | OFFEN | Wiederaufnahme, kalter Web-Offlinestart, Android-Flugmodus; `docs/qa/M3.md`. |
+| M1 | TT-004–TT-012 | IN ARBEIT | Funktionell implementiert/Unit-geprüft; visuelles Demo-Gate offen · [M1](qa/M1.md) |
+| M2 | TT-013–TT-026 | IN ARBEIT | Funktionell implementiert/Unit-geprüft; visuelles Demo-Gate offen · [M2](qa/M2.md) |
+| M3 | TT-027–TT-033 | IN ARBEIT | TT-027 abgeschlossen; Offline-/Sprach-/Geräteaufgaben folgen · [TT-027](qa/TT-027.md) |
 | M4 | TT-034–TT-042 | OFFEN | Drei isolierte Browser in synchroner lokaler Lobby; `docs/qa/M4.md`. |
 | M5 | TT-043–TT-050 | OFFEN | Normale Multiplayer-Kurzpartie, Host≠Richter, private Zahlen; `docs/qa/M5.md`. |
 | M6 | TT-051–TT-058 | OFFEN | Alle Richter, laufende Besetzungsänderungen, Hostverlust/Resume; `docs/qa/M6.md`. |
 | M7 | TT-059–TT-064 | OFFEN | Sicherheits-/Kosten-/Performancechecks und DE/EN-/Bedienprüfung; `docs/qa/M7.md`. |
 | M8 | TT-065–TT-070 | OFFEN | Lokal geprüfte Web/APK/AAB-Artefakte und Releaseanleitung; `docs/qa/RELEASE_CHECKLIST.md`. |
 
-Die QA-Dateien in dieser Tabelle sind **geplante** Pfade und noch nicht vorhanden. Release/Cloudtests dürfen nicht aus lokalen Simulationen als erledigt abgeleitet werden.
+M0/M1/M2 und TT-027 haben Prüfbelege. Die weiteren QA-Dateien sind geplante Pfade. Release-/Cloud- und visuelle Prüfungen werden nicht aus lokalen Unit-Tests als erledigt abgeleitet.
 
 ## Aufgabenregister
 
@@ -86,7 +86,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-024 | Richterrotation, Fortschritt und Partieende verbinden | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
 | TT-025 | Spieler während lokaler Partie ändern | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
 | TT-026 | Ein-Handy-Ablauf vollständig integrieren | ERLEDIGT | 27.10.2026 · [M2](qa/M2.md), 78 Node-/95 Flutter-Tests und JS-Webbuild; visuelles Gate offen |
-| TT-027 | Lokale Partie sicher speichern und wiederaufnehmen | IN ARBEIT | 27.10.2026 · Snapshot-/Historien-Transaktion, Restore und Speicherfehler |
+| TT-027 | Lokale Partie sicher speichern und wiederaufnehmen | ERLEDIGT | 27.10.2026 · [Prüfbeleg](qa/TT-027.md), 17 neue Unit-Tests, Gesamtcheck und Builds grün |
 | TT-028 | Sprachsystem und allgemeine Einstellungen | OFFEN | — |
 | TT-029 | Lokalen Web-Release reproduzierbar ausliefern | OFFEN | — |
 | TT-030 | Eigener Offline-Cache für lokale Webmodi | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Aktive Aufgabe: TT-027 – lokale Partiepersistenz und Wiederaufnahme.** Alle vorherigen Implementierungsschritte sind dokumentiert. Weiterarbeit erfolgt automatisch; visuelle Gates bleiben gesondert offen.
+**Übergabepunkt: TT-027 abgeschlossen; Main-Push und anschließender Stopp auf Nutzerauftrag.** Nächste Implementierungsaufgabe bei Fortsetzung: TT-028 – Sprachsystem und allgemeine Einstellungen.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-006-game-models
-Aktueller Beleg: docs/qa/TT-006.md
-Naechster Schritt: TT-027; Snapshot und gemeinsame 6h-Historie atomar speichern, Restore ohne sichtbare Geheimzahl
+Branch: main nach geprüftem Fast-Forward des Entwicklungszweigs
+Aktueller Beleg: docs/qa/TT-027.md
+Naechster Schritt bei Fortsetzung: TT-028 (DE/EN-Oberfläche und allgemeine Einstellungen). Aktuell auf Nutzerauftrag nach Push stoppen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

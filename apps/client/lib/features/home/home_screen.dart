@@ -53,6 +53,10 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileProvider).asData?.value.profile;
+    final resume = ref.watch(localResumeProvider);
+    final transaction = resume.hasValue
+        ? ref.read(localStateTransactionProvider)
+        : null;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trinktribunal'),
@@ -113,6 +117,51 @@ class HomeScreen extends ConsumerWidget {
                         'Die Spielabläufe werden schrittweise freigeschaltet.',
                       ),
                       const SizedBox(height: 28),
+                      if (transaction?.restored == true)
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 16),
+                          child: Text(
+                            'Eine gespeicherte Partie ist wieder verfügbar. Öffne die zugehörige Spielvariante; Geheimzahlen bleiben zunächst verdeckt.',
+                          ),
+                        ),
+                      if (transaction?.error != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Text(transaction!.error!),
+                        ),
+                      if (transaction?.needsReset == true)
+                        TextButton(
+                          onPressed: () async {
+                            final confirmed = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text(
+                                  'Gespeicherte Partien verwerfen?',
+                                ),
+                                content: const Text(
+                                  'Profile und Ziehhistorie bleiben erhalten.',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, false),
+                                    child: const Text('Abbrechen'),
+                                  ),
+                                  FilledButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, true),
+                                    child: const Text('Verwerfen'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            if (confirmed == true) {
+                              await transaction!.discardGames();
+                              ref.invalidate(localResumeProvider);
+                            }
+                          },
+                          child: const Text('Gespeicherte Partien verwerfen'),
+                        ),
                       Wrap(
                         spacing: gap,
                         runSpacing: gap,
@@ -122,14 +171,26 @@ class HomeScreen extends ConsumerWidget {
                               width: cardWidth,
                               child: _ModeCard(
                                 mode: mode,
-                                onTap: () => _open(
-                                  context,
-                                  mode == GameMode.cards
-                                      ? const CardModeScreen()
-                                      : mode == GameMode.sharedPhone
-                                      ? const PlayerRosterScreen()
-                                      : ModePreviewScreen(mode: mode),
-                                ),
+                                onTap: () async {
+                                  try {
+                                    await ref.read(localResumeProvider.future);
+                                  } on Object {
+                                    /* The destination shows catalog/load errors. */
+                                  }
+                                  if (!context.mounted ||
+                                      ModalRoute.of(context)?.isCurrent !=
+                                          true) {
+                                    return;
+                                  }
+                                  _open(
+                                    context,
+                                    mode == GameMode.cards
+                                        ? const CardModeScreen()
+                                        : mode == GameMode.sharedPhone
+                                        ? const PlayerRosterScreen()
+                                        : ModePreviewScreen(mode: mode),
+                                  );
+                                },
                               ),
                             ),
                         ],

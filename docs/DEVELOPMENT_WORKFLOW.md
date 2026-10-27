@@ -2,7 +2,7 @@
 
 Stand: 26.10.2026. Gehört zu [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) und [PROGRESS.md](PROGRESS.md).
 
-**Aktueller Stand:** Die vorhandene Flutter-/Riverpod-App-Shell wurde aus `task/TT-001-flutter-shell` übernommen und lokal um Android-Gerüst, Flutter-Metadaten und Lockfile ergänzt. Drei Varianten, Profil und Einstellungen sind navigierbare Vorschauen. Es gibt noch keine Spielengine und keinen Worker. Vier Kataloge (je 491 Fragen und 25 Regeln DE/EN) bleiben unverändert. Abnahme und aktueller Merge-Status: [M0-Prüfbeleg](qa/M0.md).
+**Aktueller Stand (27.10.2026):** TT-001–027 funktionell implementiert. Kartenmodus und Ein-Handy-Partie mit Profilen, Vektoravataren, Register, Regeln, Urteilen und atomarer lokaler Wiederaufnahme sind verbunden. 78 Node-/112 Flutter-Tests, Analyze, JS-Web- und Android-Debugbuild grün. Neue Absicherung auf Nutzerwunsch ausschließlich durch Unit-Tests; E2E-/ChromeDriver-Pflichten entfallen. Kein Worker und kein Deployment. Visuelle M1-/M2-Gates bleiben offen, weil Chrome-DevTools nicht verbunden ist. [Fortschritt](PROGRESS.md) · [M2](qa/M2.md) · [Speicherbeleg](qa/TT-027.md).
 
 ## Lokaler Einstieg
 

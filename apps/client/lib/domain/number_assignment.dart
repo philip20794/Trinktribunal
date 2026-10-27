@@ -9,6 +9,25 @@ final class NumberAssignment {
   final RoundId roundId;
   final Map<PlayerId, int> numbers;
 
+  factory NumberAssignment.restore({
+    required RoundId roundId,
+    required Map<PlayerId, int> numbers,
+    required List<PlayerId> roster,
+    required PlayerId judgeId,
+    required int maxSecretNumber,
+  }) {
+    final expected = roster.where((id) => id != judgeId).toSet();
+    if (!roster.contains(judgeId) ||
+        expected.length != roster.length - 1 ||
+        numbers.length != expected.length ||
+        !numbers.keys.toSet().containsAll(expected) ||
+        numbers.values.toSet().length != numbers.length ||
+        numbers.values.any((n) => n < 1 || n > maxSecretNumber)) {
+      throw const FormatException('Ungültige gespeicherte Geheimzahlen');
+    }
+    return NumberAssignment._(roundId, numbers);
+  }
+
   factory NumberAssignment.draw({
     required RoundId roundId,
     required List<PlayerId> roster,

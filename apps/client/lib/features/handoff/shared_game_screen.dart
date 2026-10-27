@@ -41,6 +41,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
       _controller.hideSecret();
       _controller.applyRoster(widget.roster);
     }
+    _persist();
   }
 
   @override
@@ -61,9 +62,19 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     try {
       action();
       setState(() => _error = null);
+      _persist();
     } on DomainException catch (error) {
       setState(() => _error = error.message);
     }
+  }
+
+  void _persist() {
+    final transaction = ref.read(localStateTransactionProvider);
+    transaction.save().then((_) {
+      if (mounted && transaction.error != null) {
+        setState(() => _error = transaction.error);
+      }
+    });
   }
 
   Future<bool> _confirm(String title, String description) async {

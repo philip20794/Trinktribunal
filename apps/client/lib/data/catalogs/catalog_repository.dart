@@ -16,11 +16,18 @@ class CatalogLoadException implements Exception {
 class Catalogs {
   Catalogs(
     Map<String, Catalog<Question>> questions,
-    Map<String, Catalog<DrinkingRule>> rules,
-  ) : questions = Map.unmodifiable(questions),
-      rules = Map.unmodifiable(rules);
+    Map<String, Catalog<DrinkingRule>> rules, {
+    Map<String, String> contentHashes = const {},
+  }) : questions = Map.unmodifiable(questions),
+       rules = Map.unmodifiable(rules),
+       contentHashes = Map.unmodifiable(contentHashes);
   final Map<String, Catalog<Question>> questions;
   final Map<String, Catalog<DrinkingRule>> rules;
+  final Map<String, String> contentHashes;
+  String get signature => jsonEncode([
+    for (final key in (contentHashes.keys.toList()..sort()))
+      [key, contentHashes[key]],
+  ]);
 }
 
 class CatalogRepository {
@@ -45,6 +52,7 @@ class CatalogRepository {
   Future<Catalogs> load() async {
     final questions = <String, Catalog<Question>>{};
     final rules = <String, Catalog<DrinkingRule>>{};
+    final hashes = <String, String>{};
     String path = 'assets/catalogs/manifest.json';
     try {
       final manifest = jsonDecode(await _read(path)) as Map<String, dynamic>;
@@ -72,6 +80,7 @@ class CatalogRepository {
           throw const CatalogFormatException('Ungültiger Manifest-Eintrag');
         }
         path = 'assets/catalogs/${descriptor['path']}';
+        hashes['$kind:$language'] = descriptor['sha256'] as String;
         final source = await _read(path);
         final Catalog catalog;
         if (kind == 'questions') {
@@ -97,7 +106,7 @@ class CatalogRepository {
           'Sprachen haben unterschiedliche IDs, Rollen oder Ausschlüsse',
         );
       }
-      return Catalogs(questions, rules);
+      return Catalogs(questions, rules, contentHashes: hashes);
     } on CatalogFormatException {
       rethrow;
     } catch (error) {

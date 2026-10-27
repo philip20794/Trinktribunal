@@ -8,6 +8,9 @@ import 'roster_controller.dart';
 import 'content_history_store.dart';
 import 'shared_phone_controller.dart';
 import '../data/catalogs/catalog_repository.dart';
+import '../data/local_state_storage.dart';
+import 'local_session_controller.dart';
+import 'local_state_transaction.dart';
 
 final stringStoreProvider = Provider<StringStore>(
   (ref) => PreferencesStringStore(),
@@ -15,6 +18,30 @@ final stringStoreProvider = Provider<StringStore>(
 final contentHistoryStoreProvider = Provider<ContentHistoryStore>(
   (ref) => ContentHistoryStore(),
 );
+final localSessionProvider = Provider<LocalSessionController>((ref) {
+  final catalogs = ref.watch(catalogsProvider).requireValue;
+  return LocalSessionController(
+    questions: catalogs.questions['de']!.entries,
+    rules: catalogs.rules['de']!.entries,
+    historyStore: ref.watch(contentHistoryStoreProvider),
+  );
+});
+final atomicStateStorageProvider = Provider<AtomicStateStorage>(
+  (ref) => createAtomicStateStorage(),
+);
+final localStateTransactionProvider = Provider<LocalStateTransaction>(
+  (ref) => LocalStateTransaction(
+    storage: ref.watch(atomicStateStorageProvider),
+    cards: ref.watch(localSessionProvider),
+    shared: ref.watch(sharedPhoneControllerProvider),
+    history: ref.watch(contentHistoryStoreProvider),
+    catalogSignature: ref.watch(catalogsProvider).requireValue.signature,
+  ),
+);
+final localResumeProvider = FutureProvider<void>((ref) async {
+  await ref.watch(catalogsProvider.future);
+  await ref.read(localStateTransactionProvider).load();
+}, retry: (count, error) => null);
 final sharedPhoneControllerProvider = Provider<SharedPhoneController>((ref) {
   final catalogs = ref.watch(catalogsProvider).requireValue;
   return SharedPhoneController(

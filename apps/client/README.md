@@ -1,7 +1,9 @@
 # Trinktribunal-Client
 
-Flutter-/Riverpod-Grundgerüst für Android und Web. Drei Spielvarianten, Profil
-und Einstellungen sind navigierbare Vorschauen; Spiellogik folgt in M1/M2.
+Flutter-/Riverpod-App für Android und Web. Kartenmodus und Ein-Handy-Partie
+sind spielbar, mit Profilen, menschlichen Vektoravataren, Spielerregister,
+Regeln, Urteil und lokaler Wiederaufnahme. Multiplayer folgt ab TT-034;
+allgemeine Sprach-/Darstellungseinstellungen ab TT-028.
 
 Vom Repository-Root unter Windows:
 

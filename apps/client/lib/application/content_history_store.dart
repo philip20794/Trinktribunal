@@ -4,6 +4,10 @@ import '../domain/models/content_history.dart';
 final class ContentHistoryStore {
   ContentHistory _history = ContentHistory([]);
   ContentHistory get history => _history;
+  void restore(ContentHistory history) {
+    _history = history;
+  }
+
   void merge(ContentHistory incoming) {
     var merged = _history;
     for (final entry in incoming.entries) {

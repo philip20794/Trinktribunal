@@ -10,6 +10,7 @@ import 'question_deck.dart';
 import 'rules/drinking_rules.dart';
 import 'selection/content_selection.dart';
 import 'selection/random_source.dart';
+import 'snapshot_codec.dart';
 
 enum CaseCompletion { judged, withoutVerdict }
 
@@ -46,6 +47,21 @@ final class CardGameState {
   int get effectiveRuleTarget =>
       schedule.slots.length - rules.skippedEvents.length;
   ContentAssignment? get newRule => rules.activations[currentEventId];
+
+  Map<String, Object?> toSnapshot() => {
+    'id': id.value,
+    'config': config.toJson(),
+    'slots': schedule.slots,
+    'rules': encodeRuleState(rules),
+    'phase': phase.name,
+    'completedCases': completedCases,
+    'currentEventId': currentEventId,
+    'questionEventId': currentQuestion?.event.eventId,
+    'completedEventIds': completedEventIds.toList(),
+    'lastCompletion': lastCompletion?.name,
+    'manualErrors': manualErrors,
+    'pauseReason': pauseReason,
+  };
 }
 
 /// Physical cards stay outside the app: every verdict is explicitly manual.
@@ -85,6 +101,101 @@ final class LocalGameReducer {
           assignments: state.rules.selection.assignments,
         ),
       ),
+    );
+  }
+
+  CardGameState restore(Map<String, dynamic> json, ContentHistory history) {
+    final config = GameConfig.fromJson(
+      (json['config'] as Map<String, dynamic>).cast<String, Object?>(),
+      capacity: CatalogCapacity(
+        questions: questions.where((q) => q.players.isEmpty).length,
+        rules: drinkingRules.where((r) => r.players.isEmpty).length,
+      ),
+    );
+    if (config.mode != GameMode.physicalCards) {
+      throw const FormatException('Falscher Modus');
+    }
+    final id = GameId(json['id'] as String);
+    final schedule = EventSchedule.restore(
+      slots: (json['slots'] as List).cast<int>(),
+      targetCases: config.targetCases,
+      requestedRuleEvents: config.requestedRuleEvents,
+    );
+    final rules = decodeRuleState(
+      json['rules'] as Map<String, dynamic>,
+      questions: questions,
+      rules: drinkingRules,
+      history: history,
+    );
+    final completed = json['completedCases'] as int;
+    final phase = GamePhase.values.byName(json['phase'] as String);
+    final events = (json['completedEventIds'] as List).cast<String>().toSet();
+    if (completed < 0 ||
+        completed > config.targetCases ||
+        (phase == GamePhase.finished) != (completed == config.targetCases) ||
+        ![
+          GamePhase.casePresented,
+          GamePhase.ruleEvent,
+          GamePhase.paused,
+          GamePhase.finished,
+        ].contains(phase) ||
+        rules.selection.counts.values.isNotEmpty) {
+      throw const FormatException('Ungültiger Fallzustand');
+    }
+    for (var i = 1; i <= completed; i++) {
+      if (!events.contains('${id.value}:case:$i')) {
+        throw const FormatException('Abschlussmarker fehlt');
+      }
+    }
+    final question = rules.selection.assignments[json['questionEventId']];
+    if (rules.selection.drawnIds(ContentKind.question).length !=
+        completed + (phase == GamePhase.casePresented ? 1 : 0)) {
+      throw const FormatException(
+        'Fragenverbrauch und Fallzähler widersprechen sich',
+      );
+    }
+    final currentEvent = json['currentEventId'] as String;
+    if (question == null ||
+        question.event.kind != ContentKind.question ||
+        (phase == GamePhase.casePresented &&
+            (currentEvent != question.event.eventId ||
+                events.contains(currentEvent)))) {
+      throw const FormatException('Fallakte fehlt');
+    }
+    if (rules.selection.assignments.values.any((a) => a.bindings.isNotEmpty)) {
+      throw const FormatException('Rollen im Kartenmodus');
+    }
+    if (phase == GamePhase.ruleEvent &&
+        (!schedule.slots.contains(completed) ||
+            (!rules.activations.containsKey(currentEvent) &&
+                !rules.skippedEvents.contains(currentEvent)))) {
+      throw const FormatException('Regelslot fehlt');
+    }
+    final completion = json['lastCompletion'] == null
+        ? null
+        : CaseCompletion.values.byName(json['lastCompletion'] as String);
+    final errors = json['manualErrors'] as int?;
+    if ((completion != CaseCompletion.judged && errors != null) ||
+        (completion == CaseCompletion.judged &&
+            (errors == null ||
+                errors < 0 ||
+                errors == 1 ||
+                errors > config.playerCount - 1))) {
+      throw const FormatException('Ungültige manuelle Wertung');
+    }
+    return CardGameState._(
+      id: id,
+      config: config,
+      schedule: schedule,
+      rules: rules,
+      phase: phase,
+      completedCases: completed,
+      currentEventId: currentEvent,
+      currentQuestion: question,
+      completedEventIds: events,
+      lastCompletion: completion,
+      manualErrors: errors,
+      pauseReason: json['pauseReason'] as String?,
     );
   }
 

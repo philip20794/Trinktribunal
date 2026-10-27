@@ -38,6 +38,15 @@ final class LocalSessionController {
   CardGameState? _state;
   CardGameState? get state => _state;
   ContentHistory get history => _historyStore.history;
+  Map<String, Object?>? toSnapshot() => _state?.toSnapshot();
+  CardGameState? validateSnapshot(
+    Map<String, dynamic>? json,
+    ContentHistory history,
+  ) => json == null ? null : _reducer.restore(json, history);
+  void restoreValidated(CardGameState? state) {
+    _state = state;
+  }
+
   CatalogCapacity get capacity => CatalogCapacity(
     questions: _questions.where((q) => q.players.isEmpty).length,
     rules: _rules.where((r) => r.players.isEmpty).length,

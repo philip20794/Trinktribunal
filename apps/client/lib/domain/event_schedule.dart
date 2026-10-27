@@ -58,4 +58,28 @@ final class EventSchedule {
   }
 
   final List<int> slots;
+
+  factory EventSchedule.restore({
+    required List<int> slots,
+    required int targetCases,
+    required int requestedRuleEvents,
+  }) {
+    final gaps = targetCases - 1;
+    final count = math.min(requestedRuleEvents, gaps);
+    if (slots.length != count || slots.toSet().length != slots.length) {
+      throw const FormatException('Ungültige gespeicherte Slots');
+    }
+    var start = 1;
+    for (var i = 0; i < count; i++) {
+      final size = gaps ~/ count + (i < gaps % count ? 1 : 0);
+      if (slots[i] < start ||
+          slots[i] >= start + size ||
+          (i > 0 &&
+              slots[i] - slots[i - 1] < (gaps >= 2 * count - 1 ? 2 : 1))) {
+        throw const FormatException('Ungültige Slotposition');
+      }
+      start += size;
+    }
+    return EventSchedule._(slots);
+  }
 }

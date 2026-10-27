@@ -8,11 +8,13 @@ import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/application/local_data_providers.dart';
 
 import 'support/memory_string_store.dart';
+import 'support/memory_atomic_state_storage.dart';
 
 void main() {
   Widget createApp() => ProviderScope(
     overrides: [
       stringStoreProvider.overrideWithValue(MemoryStringStore()),
+      atomicStateStorageProvider.overrideWithValue(MemoryAtomicStateStorage()),
       catalogRepositoryProvider.overrideWithValue(
         CatalogRepository(read: (path) async => File(path).readAsStringSync()),
       ),

@@ -5,6 +5,7 @@ import '../../application/local_data_providers.dart';
 import '../../application/roster_controller.dart';
 import '../../design/avatar_view.dart';
 import '../../domain/avatar_config.dart';
+import '../../domain/selection/random_source.dart';
 import '../../domain/user_profile.dart';
 import '../profile/avatar_options.dart';
 import '../../data/catalogs/catalog_repository.dart';
@@ -311,7 +312,8 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
   late final TextEditingController _name = TextEditingController(
     text: widget.member?.player.name ?? '',
   );
-  late AvatarConfig _avatar = widget.member?.avatar ?? AvatarConfig();
+  late AvatarConfig _avatar =
+      widget.member?.avatar ?? AvatarConfig.random(SecureRandomSource());
   String? _error;
   @override
   void dispose() {

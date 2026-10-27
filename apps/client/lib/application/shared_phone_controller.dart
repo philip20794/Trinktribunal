@@ -4,6 +4,7 @@ import '../domain/config/game_config.dart';
 import '../domain/event_schedule.dart';
 import '../domain/judge_rotation.dart';
 import '../domain/models/domain_error.dart';
+import '../domain/models/content_history.dart';
 import '../domain/models/game_mode.dart';
 import '../domain/models/ids.dart';
 import '../domain/models/person_selection_counts.dart';
@@ -14,6 +15,7 @@ import '../domain/selection/content_selection.dart';
 import '../domain/selection/random_source.dart';
 import '../domain/user_profile.dart';
 import '../domain/verdict.dart';
+import '../domain/snapshot_codec.dart';
 import 'content_history_store.dart';
 
 /// UI projection deliberately excludes concealed numbers and future verdicts.
@@ -366,6 +368,12 @@ final class SharedPhoneController {
     hideSecret();
     _completedRounds.add(roundId);
     _completed++;
+    _numbers = null;
+    _recipients = [];
+    _handoffIndex = 0;
+    _order = [];
+    _revealCursor = 0;
+    _verdict = null;
     final oldIds = _ids;
     final oldJudge = _judge;
     _applyPending();
@@ -423,7 +431,13 @@ final class SharedPhoneController {
     final profiles = {for (final p in roster) p.player.id: p};
     _profiles.addAll(profiles);
     _roster = [for (final old in _roster) profiles[old.player.id] ?? old];
-    _pending = List.of(roster);
+    final sameIds =
+        roster.length == _roster.length &&
+        List.generate(
+          roster.length,
+          (i) => roster[i].player.id == _roster[i].player.id,
+        ).every((same) => same);
+    _pending = sameIds ? null : List.of(roster);
   }
 
   void _applyPending() {
@@ -468,6 +482,270 @@ final class SharedPhoneController {
 
   void _checkRound(String roundId) {
     if (_roundId != roundId) _invalid('Dieser Fall ist nicht mehr aktiv.');
+  }
+
+  Map<String, Object?>? toSnapshot() => _config == null
+      ? null
+      : {
+          'id': _gameId!.value,
+          'config': _config!.toJson(),
+          'phase': _phase.name,
+          'profiles': _profiles.values.map((p) => p.toJson()).toList(),
+          'roster': _ids.map((id) => id.value).toList(),
+          'pending': _pending?.map((p) => p.player.id.value).toList(),
+          'judge': _judge?.value,
+          'rules': encodeRuleState(_rules!),
+          'slots': _schedule!.slots,
+          'completed': _completed,
+          'roundId': _roundId,
+          'ruleEventId': _ruleEventId,
+          'questionEventId': _question?.event.eventId,
+          'numbers': _numbers == null
+              ? null
+              : {
+                  for (final entry in _numbers!.numbers.entries)
+                    entry.key.value: entry.value,
+                },
+          'recipients': _recipients.map((id) => id.value).toList(),
+          'handoffIndex': _handoffIndex,
+          'order': _order.map((id) => id.value).toList(),
+          'revealCursor': _revealCursor,
+          'completedRounds': _completedRounds.toList(),
+          'processedSlots': _processedSlots.toList(),
+          'pauseReason': _pauseReason,
+        };
+
+  /// Builds/validates a separate candidate; no active session is modified here.
+  SharedPhoneController? validateSnapshot(
+    Map<String, dynamic>? json,
+    ContentHistory history,
+  ) {
+    if (json == null) return null;
+    final candidate = SharedPhoneController(
+      questions: _questions,
+      rules: _catalogRules,
+      random: _random,
+      clock: _clock,
+      newId: newId,
+    );
+    candidate._config = GameConfig.fromJson(
+      (json['config'] as Map<String, dynamic>).cast<String, Object?>(),
+      capacity: CatalogCapacity(
+        questions: _questions.length,
+        rules: _catalogRules.length,
+      ),
+    );
+    if (candidate._config!.mode != GameMode.sharedPhone ||
+        candidate._config!.contentLanguage != 'de') {
+      throw const FormatException('Falscher lokaler Modus');
+    }
+    candidate._gameId = GameId(json['id'] as String);
+    candidate._phase = GamePhase.values.byName(json['phase'] as String);
+    final profiles = (json['profiles'] as List)
+        .map((p) => UserProfile.fromJson(p as Map<String, dynamic>))
+        .toList();
+    candidate._profiles = {for (final p in profiles) p.player.id: p};
+    if (profiles.length != candidate._profiles.length) {
+      throw const FormatException('Doppelte Profile');
+    }
+    List<UserProfile> roster(Object? raw) {
+      final ids = (raw as List).cast<String>().map(PlayerId.new).toList();
+      if (ids.length > 20 ||
+          ids.toSet().length != ids.length ||
+          !candidate._profiles.keys.toSet().containsAll(ids)) {
+        throw const FormatException('Ungültige gespeicherte Besetzung');
+      }
+      return ids.map((id) => candidate._profiles[id]!).toList();
+    }
+
+    candidate._roster = roster(json['roster']);
+    candidate._pending = json['pending'] == null
+        ? null
+        : roster(json['pending']);
+    candidate._judge = json['judge'] == null
+        ? null
+        : PlayerId(json['judge'] as String);
+    candidate._rules = decodeRuleState(
+      json['rules'] as Map<String, dynamic>,
+      questions: _questions,
+      rules: _catalogRules,
+      history: history,
+    );
+    candidate._schedule = EventSchedule.restore(
+      slots: (json['slots'] as List).cast<int>(),
+      targetCases: candidate._config!.targetCases,
+      requestedRuleEvents: candidate._config!.requestedRuleEvents,
+    );
+    candidate._completed = json['completed'] as int;
+    candidate._roundId = json['roundId'] as String;
+    candidate._ruleEventId = json['ruleEventId'] as String;
+    candidate._question =
+        candidate._rules!.selection.assignments[json['questionEventId']];
+    candidate._order = (json['order'] as List)
+        .cast<String>()
+        .map(PlayerId.new)
+        .toList();
+    candidate._recipients = (json['recipients'] as List)
+        .cast<String>()
+        .map(PlayerId.new)
+        .toList();
+    candidate._handoffIndex = json['handoffIndex'] as int;
+    candidate._revealCursor = json['revealCursor'] as int;
+    candidate._completedRounds.addAll(
+      (json['completedRounds'] as List).cast<String>(),
+    );
+    candidate._processedSlots.addAll(
+      (json['processedSlots'] as List).cast<int>(),
+    );
+    candidate._pauseReason = json['pauseReason'] as String?;
+    candidate._visible = false;
+    final completed = candidate._completed;
+    final phase = candidate._phase;
+    final activeCase = [
+      GamePhase.numbers,
+      GamePhase.answers,
+      GamePhase.ordering,
+      GamePhase.revealing,
+      GamePhase.judged,
+    ].contains(phase);
+    if (completed < 0 ||
+        completed > candidate._config!.targetCases ||
+        (phase == GamePhase.finished) !=
+            (completed == candidate._config!.targetCases) ||
+        (!activeCase &&
+            ![
+              GamePhase.ruleEvent,
+              GamePhase.paused,
+              GamePhase.finished,
+            ].contains(phase))) {
+      throw const FormatException('Ungültige gespeicherte Phase');
+    }
+    if (!candidate._rules!.selection.counts.values.keys.toSet().containsAll(
+      candidate._ids,
+    )) {
+      throw const FormatException('Personenzähler fehlt');
+    }
+    final expectedRounds = {
+      for (var i = 1; i <= completed; i++)
+        '${candidate._gameId!.value}:case:$i',
+    };
+    if (candidate._completedRounds.length != completed ||
+        !candidate._completedRounds.containsAll(expectedRounds)) {
+      throw const FormatException('Abschlussmarker fehlen');
+    }
+    if (candidate._processedSlots.any(
+      (s) => s > completed || !candidate._schedule!.slots.contains(s),
+    )) {
+      throw const FormatException('Ungültiger verbrauchter Slot');
+    }
+    if (candidate._rules!.selection.drawnIds(ContentKind.question).length !=
+        completed + (activeCase ? 1 : 0)) {
+      throw const FormatException(
+        'Fragenverbrauch und Fallzähler widersprechen sich',
+      );
+    }
+    if (activeCase) {
+      if (candidate._roster.length < 3 ||
+          candidate._judge == null ||
+          candidate._question == null ||
+          candidate._question!.event.eventId != candidate._roundId ||
+          candidate._question!.event.kind != ContentKind.question) {
+        throw const FormatException('Aktiver Fall unvollständig');
+      }
+      candidate._numbers = NumberAssignment.restore(
+        roundId: RoundId(candidate._roundId),
+        numbers: (json['numbers'] as Map<String, dynamic>).map(
+          (k, v) => MapEntry(PlayerId(k), v as int),
+        ),
+        roster: candidate._ids,
+        judgeId: candidate._judge!,
+        maxSecretNumber:
+            (candidate._roster.length * candidate._config!.factorTenths + 9) ~/
+            10,
+      );
+      final recipients = candidate._ids
+          .where((id) => id != candidate._judge)
+          .toList();
+      if (candidate._recipients.length != recipients.length ||
+          List.generate(
+            recipients.length,
+            (i) => candidate._recipients[i] != recipients[i],
+          ).any((v) => v)) {
+        throw const FormatException('Ungültige Übergabereihenfolge');
+      }
+      if (phase == GamePhase.numbers) {
+        if (candidate._handoffIndex < 0 ||
+            candidate._handoffIndex >= recipients.length) {
+          throw const FormatException('Ungültiger Übergabecursor');
+        }
+      } else if (candidate._handoffIndex != recipients.length) {
+        throw const FormatException('Zahlenübergabe unvollständig');
+      }
+      if ([
+        GamePhase.ordering,
+        GamePhase.revealing,
+        GamePhase.judged,
+      ].contains(phase)) {
+        validateOrder(candidate._order, recipients);
+      } else if (candidate._order.isNotEmpty) {
+        throw const FormatException('Vorzeitige Ordnung');
+      }
+      if (phase == GamePhase.revealing || phase == GamePhase.judged) {
+        if (candidate._revealCursor < 0 ||
+            candidate._revealCursor > recipients.length ||
+            (phase == GamePhase.judged) !=
+                (candidate._revealCursor == recipients.length)) {
+          throw const FormatException('Ungültiger Aufdeckcursor');
+        }
+        candidate._verdict = normalVerdict(
+          judge: candidate._judge!,
+          numbers: candidate._numbers!.numbers,
+          proposed: candidate._order,
+        );
+      } else if (candidate._revealCursor != 0) {
+        throw const FormatException('Vorzeitige Aufdeckung');
+      }
+    } else if (json['numbers'] != null ||
+        candidate._order.isNotEmpty ||
+        candidate._revealCursor != 0) {
+      throw const FormatException('Überfällige Fallgeheimnisse');
+    }
+    return candidate;
+  }
+
+  void restoreValidated(SharedPhoneController? candidate) {
+    if (candidate == null) {
+      _config = null;
+      _numbers = null;
+      return;
+    }
+    _config = candidate._config;
+    _gameId = candidate._gameId;
+    _roster = candidate._roster;
+    _profiles = candidate._profiles;
+    _pending = candidate._pending;
+    _phase = candidate._phase;
+    _rules = candidate._rules;
+    _schedule = candidate._schedule;
+    _judge = candidate._judge;
+    _question = candidate._question;
+    _numbers = candidate._numbers;
+    _recipients = candidate._recipients;
+    _handoffIndex = candidate._handoffIndex;
+    _visible = false;
+    _completed = candidate._completed;
+    _roundId = candidate._roundId;
+    _ruleEventId = candidate._ruleEventId;
+    _order = candidate._order;
+    _revealCursor = candidate._revealCursor;
+    _verdict = candidate._verdict;
+    _completedRounds
+      ..clear()
+      ..addAll(candidate._completedRounds);
+    _processedSlots
+      ..clear()
+      ..addAll(candidate._processedSlots);
+    _pauseReason = candidate._pauseReason;
   }
 }
 
