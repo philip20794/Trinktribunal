@@ -1,0 +1,100 @@
+# Trinktribunal: kostenlose macOS-M2-CI ohne GitHub Actions.
+# Vor dem ersten Build: Codemagic-Keystore trinktribunal_release und
+# Environment-Group github_release_credentials (GITHUB_TOKEN) anlegen.
+workflows:
+  android-apk:
+    name: Android APK (main und Versions-Tags)
+    max_build_duration: 90
+    instance_type: mac_mini_m2
+    environment:
+      flutter: 3.47.7
+      node: v24.20.0
+      java: 17
+      android_signing:
+        - trinktribunal_release
+      groups:
+        - github_release_credentials
+    triggering:
+      events:
+        - push
+        - tag
+      branch_patterns:
+        - pattern: main
+          include: true
+      tag_patterns:
+        - pattern: "v*"
+          include: true
+      cancel_previous_builds: true
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+        - $HOME/.gradle/caches
+    scripts:
+      - name: Dokumentation, Kataloge und Node-Tests
+        script: |
+          set -euo pipefail
+          node scripts/check-docs.mjs
+          node scripts/validate-data.mjs --check
+          node --test scripts/tests/*.test.mjs
+      - name: Flutter-Abhängigkeiten aus dem Lockfile
+        working_directory: apps/client
+        script: flutter pub get --enforce-lockfile
+      - name: Flutter-Format, Analyse und Tests
+        working_directory: apps/client
+        script: |
+          set -euo pipefail
+          dart format --output=none --set-exit-if-changed lib test
+          flutter analyze
+          flutter test
+      - name: Signierte Release-APK bauen
+        working_directory: apps/client
+        script: |
+          set -euo pipefail
+          : "${CM_KEYSTORE_PATH:?Codemagic-Keystore trinktribunal_release fehlt}"
+          : "${CM_KEYSTORE_PASSWORD:?Keystore-Passwort fehlt}"
+          : "${CM_KEY_ALIAS:?Key-Alias fehlt}"
+          : "${CM_KEY_PASSWORD:?Key-Passwort fehlt}"
+          : "${BUILD_NUMBER:?Codemagic-Buildnummer fehlt}"
+          case "$BUILD_NUMBER" in
+            ''|*[!0-9]*) echo "Ungueltige BUILD_NUMBER" >&2; exit 1 ;;
+          esac
+          version="$(awk '/^version:/ {print $2; exit}' pubspec.yaml)"
+          version="${version%%+*}"
+          test -n "$version"
+          if [ -n "${CM_TAG:-}" ] && [ "$CM_TAG" != "v$version" ]; then
+            echo "Tag $CM_TAG passt nicht zu pubspec-Version v$version" >&2
+            exit 1
+          fi
+          flutter build apk --release --build-name="$version" --build-number="$BUILD_NUMBER"
+          apk=build/app/outputs/flutter-apk/app-release.apk
+          test -s "$apk"
+          if [ -n "${CM_TAG:-}" ]; then
+            filename="trinktribunal-${CM_TAG}.apk"
+          else
+            filename="trinktribunal-main-${BUILD_NUMBER}.apk"
+          fi
+          mkdir -p "$CM_BUILD_DIR/dist"
+          cp "$apk" "$CM_BUILD_DIR/dist/$filename"
+      - name: GitHub Release nur bei Versions-Tag
+        script: |
+          set -euo pipefail
+          if [ -z "${CM_TAG:-}" ]; then
+            echo "Push-Build: APK nur als Codemagic-Artefakt"
+            exit 0
+          fi
+          : "${GITHUB_TOKEN:?GITHUB_TOKEN in github_release_credentials fehlt}"
+          command -v gh >/dev/null 2>&1 || { echo "GitHub CLI (gh) fehlt" >&2; exit 1; }
+          asset="dist/trinktribunal-${CM_TAG}.apk"
+          test -s "$asset"
+          if gh release view "$CM_TAG" --repo philip20794/Trinktribunal >/dev/null 2>&1; then
+            gh release upload "$CM_TAG" "$asset" --repo philip20794/Trinktribunal --clobber
+          else
+            gh release create "$CM_TAG" "$asset" \
+              --repo philip20794/Trinktribunal \
+              --verify-tag \
+              --title "Trinktribunal $CM_TAG" \
+              --notes "Automatisch getestete, signierte Android-APK (interner Teststand)." \
+              --prerelease
+          fi
+    artifacts:
+      - dist/*.apk

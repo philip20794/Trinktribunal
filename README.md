@@ -50,6 +50,7 @@ powershell -NoProfile -File .\scripts\dev-client.ps1
 Vorschau: `http://127.0.0.1:7357`. Im Flutter-Terminal lädt `r` UI-Änderungen nach.
 
 - [Entwicklungsplan mit 70 Aufgaben und neun Meilensteinen](docs/IMPLEMENTATION_PLAN.md)
+- [Android-APK-CI mit Codemagic ohne GitHub Actions](docs/CODEMAGIC_CI.md)
 - [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)
 - [Fortschritt, offene Entscheidungen und Übergabe](docs/PROGRESS.md)
 - [Abgleich der KI-Änderungen und geprüfte lokale Entwicklungsumgebung](docs/qa/PLAN_RECONCILIATION.md)
