@@ -15,7 +15,7 @@ export function playersHash(players: ReadonlyArray<Participant>): string {
 }
 
 // Explicit public allowlist. Never spread persisted members/state into a wire payload.
-// Own-number delivery is attached in TT-046; an internal assignment is never a public field.
+// Only the recipient's own number crosses the private boundary (TT-046).
 export function lobbySnapshot(
   state: {
     roomId: RoomId;
@@ -68,6 +68,12 @@ export function lobbySnapshot(
       ...(game?.pausedFrom ? { pausedFrom: game.pausedFrom } : {}),
       expiresAtUtc: new Date(expiresAt).toISOString(),
     },
-    private: {},
+    private:
+      round && ['numbers', 'answers', 'ordering', 'revealing', 'judged'].includes(game!.phase)
+        ? (() => {
+            const own = round.numbers.find((entry) => entry.playerId === you);
+            return own ? { ownNumber: own.number } : {};
+          })()
+        : {},
   });
 }

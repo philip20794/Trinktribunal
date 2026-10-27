@@ -11,6 +11,7 @@ import '../../data/catalogs/localized_catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../../design/avatar_view.dart';
 import '../../design/case_file.dart';
+import '../../design/private_number.dart';
 import '../../domain/config/game_config.dart';
 import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
@@ -271,39 +272,22 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     icon: Icons.lock_outline,
                   ),
                   const SizedBox(height: 16),
-                  if (view.visibleSecret == null)
-                    FilledButton(
-                      onPressed: () => _act(
-                        () => _controller.revealOwnNumber(
-                          roundId: view.roundId,
-                          player: view.recipient!,
-                        ),
+                  PrivateNumber(
+                    number: view.visibleSecret,
+                    onReveal: () => _act(
+                      () => _controller.revealOwnNumber(
+                        roundId: view.roundId,
+                        player: view.recipient!,
                       ),
-                      child: const TText('phoneReveal'),
-                    )
-                  else ...[
-                    Text(
-                      '${view.visibleSecret}',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.displayLarge,
-                      semanticsLabel: context.tr('secretNumber', {
-                        'number': view.visibleSecret,
-                      }),
                     ),
-                    FilledButton(
-                      onPressed: () => _act(
-                        () => _controller.acknowledgeNumber(
-                          roundId: view.roundId,
-                          player: view.recipient!,
-                        ),
+                    onConfirm: () => _act(
+                      () => _controller.acknowledgeNumber(
+                        roundId: view.roundId,
+                        player: view.recipient!,
                       ),
-                      child: const TText('phoneHideNext'),
                     ),
-                    TextButton(
-                      onPressed: () => _act(_controller.hideSecret),
-                      child: const TText('phoneHide'),
-                    ),
-                  ],
+                    onHide: () => _act(_controller.hideSecret),
+                  ),
                 ],
                 if (rendered != null &&
                     ![

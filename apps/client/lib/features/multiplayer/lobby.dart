@@ -9,6 +9,7 @@ import 'me.dart';
 import 'invite.dart';
 import 'invitation.dart';
 import 'room_actions.dart';
+import 'game_privacy.dart';
 
 class RoomLobbyScreen extends ConsumerWidget {
   const RoomLobbyScreen({required this.state, super.key});
@@ -17,62 +18,73 @@ class RoomLobbyScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => DefaultTabController(
     length: 2,
     initialIndex: 1,
-    child: Scaffold(
-      appBar: AppBar(
-        title: const TText('roomTitle'),
-        actions: [
-          IconButton(
-            tooltip: context.tr('roomInviteTitle'),
-            icon: const Icon(Icons.qr_code),
-            onPressed: () {
-              final code = ref.read(roomControllerProvider).roomCode;
-              if (code == null) return;
-              showDialog<void>(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: const TText('roomInviteTitle'),
-                  content: SingleChildScrollView(child: RoomInvite(code: code)),
-                ),
-              );
+    child: RoomGamePrivacy(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const TText('roomTitle'),
+          actions: [
+            IconButton(
+              tooltip: context.tr('roomInviteTitle'),
+              icon: const Icon(Icons.qr_code),
+              onPressed: () {
+                ref.read(onlineGameProvider).hideSecret();
+                final code = ref.read(roomControllerProvider).roomCode;
+                if (code == null) return;
+                showDialog<void>(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const TText('roomInviteTitle'),
+                    content: SingleChildScrollView(
+                      child: RoomInvite(code: code),
+                    ),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              tooltip: context.tr('roomLeave'),
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                ref.read(onlineGameProvider).hideSecret();
+                confirmRoomLeave(context, ref);
+              },
+            ),
+          ],
+          bottom: TabBar(
+            onTap: (_) {
+              ref.read(onlineGameProvider).hideSecret();
+              ref.read(onlineProfileProvider).flush();
             },
+            tabs: [
+              Tab(text: context.tr('roomMeTab')),
+              Tab(text: context.tr('roomTitle')),
+            ],
           ),
-          IconButton(
-            tooltip: context.tr('roomLeave'),
-            icon: const Icon(Icons.logout),
-            onPressed: () => confirmRoomLeave(context, ref),
-          ),
-        ],
-        bottom: TabBar(
-          onTap: (_) => ref.read(onlineProfileProvider).flush(),
-          tabs: [
-            Tab(text: context.tr('roomMeTab')),
-            Tab(text: context.tr('roomTitle')),
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: TText(
+                'roomOnline',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ),
+            if (state.errorCode != null)
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: TText(roomErrorKey(state.errorCode)),
+              ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  const RoomMe(),
+                  RoomCourtroom(snapshot: state.snapshot!),
+                ],
+              ),
+            ),
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: TText(
-              'roomOnline',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ),
-          if (state.errorCode != null)
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: TText(roomErrorKey(state.errorCode)),
-            ),
-          Expanded(
-            child: TabBarView(
-              children: [
-                const RoomMe(),
-                RoomCourtroom(snapshot: state.snapshot!),
-              ],
-            ),
-          ),
-        ],
       ),
     ),
   );

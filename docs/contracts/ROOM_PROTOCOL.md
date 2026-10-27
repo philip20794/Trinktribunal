@@ -1,6 +1,6 @@
 # Raumprotokoll v1 – TT-034
 
-Stand: 27.10.2026. **TT-034–045 implementiert: strikte DTOs, sichere Aufnahme/Resume, Client/Lobby, Spielkern mit Parität und atomare SQLite-Spielaktionen samt privater Serverhistorie. Start-/Zahlen-UI folgt TT-046, Wertung TT-049/052, persistierter Hostalarm TT-054 und Historien-Client TT-056.** Grundlage sind [GAME_STATE](GAME_STATE.md), [D-08](../decisions/D-08-host-failover.md), [D-09](../decisions/D-09-private-reveal-projections.md), [D-12](../decisions/D-12-retention-and-resume.md), [D-14](../decisions/D-14-room-codes.md) und [D-16](../decisions/D-16-persistent-accountless-rejoin.md). Browser-/E2E-Abnahmen sind gemäß Nutzervorgabe übersprungen und später manuell zu testen; sie blockieren Folgeaufgaben nicht.
+Stand: 27.10.2026. **TT-034–046 implementiert: strikte DTOs, sichere Aufnahme/Resume, Client/Lobby, Spielkern mit Parität, atomare SQLite-Aktionen/private Serverhistorie und Hoststart mit eigener privater Zahl. Antwortbereitschaft folgt TT-047, Wertung TT-049/052, persistierter Hostalarm TT-054 und Historien-Client TT-056.** Grundlage sind [GAME_STATE](GAME_STATE.md), [D-08](../decisions/D-08-host-failover.md), [D-09](../decisions/D-09-private-reveal-projections.md), [D-12](../decisions/D-12-retention-and-resume.md), [D-14](../decisions/D-14-room-codes.md) und [D-16](../decisions/D-16-persistent-accountless-rejoin.md). Browser-/E2E-Abnahmen sind gemäß Nutzervorgabe übersprungen und später manuell zu testen; sie blockieren Folgeaufgaben nicht.
 
 ## Verbindliche Artefakte
 
@@ -110,7 +110,7 @@ Pause an der Fallgrenze vor einer neuen Frage verwendet `pausedFrom=case_boundar
 
 `finished` setzt exakt die konfigurierte Zahl abgeschlossener Fälle voraus. `activeRules` steht in Aktivierungsreihenfolge; in `rule_event` bezeichnet der letzte Eintrag die gerade neu aktivierte Regel. Ein übersprungener inkompatibler Slot erzeugt keine blockierende leere Regelansicht, sondern geht nach atomarer Skip-Markierung zum nächsten Fall über. Nach dem letzten Fall folgt kein Regelereignis.
 
-Seit TT-045 sind Spielaktionen mit dem TT-043/044-Kern atomar an SQLite und authentifizierte WebSockets angeschlossen. ACK/Projektion folgen erst nach Commit; vorübergehende Speicherfehler schließen ohne Credential-Widerruf mit 1011. Eigene Zahl und Startoberfläche folgen TT-046, Host-Failover über den Runtime-Alarm TT-054. Prüfbelege: [TT-043](../qa/TT-043.md), [TT-045](../qa/TT-045.md).
+Seit TT-045 sind Spielaktionen mit dem TT-043/044-Kern atomar an SQLite und authentifizierte WebSockets angeschlossen. ACK/Projektion folgen erst nach Commit; vorübergehende Speicherfehler schließen ohne Credential-Widerruf mit 1011. TT-046 liefert ausschließlich die eigene Zahl und verbindet die Startoberfläche; Host-Failover über den Runtime-Alarm folgt TT-054. Prüfbelege: [TT-043](../qa/TT-043.md), [TT-045](../qa/TT-045.md), [TT-046](../qa/TT-046.md).
 
 Öffentliche Aufdeckung: `revealCursor == revealed.length`, eindeutige Zahlen im berechneten Bereich und exakt der autorisierte Präfix. Bei normaler Wertung gehört die feste Richterordnung erst zur Revealphase. Bei Alle-Richter sind `public.judgeOrder` und `public.result` immer verboten. Das individuelle Ergebnis enthält `errors == sips`, niemals fremde Strafzeilen. ACK, Fehler, Resume, Delta und Chunk-Reassembly haben dieselben Sichtbarkeitsregeln.
 

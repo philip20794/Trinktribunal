@@ -10,6 +10,8 @@ import '../../domain/models/player.dart';
 import '../../domain/user_profile.dart';
 import '../../l10n/app_strings.dart';
 import '../bench/bench_view.dart';
+import 'game_settings.dart';
+import 'game_screen.dart';
 
 class RoomCourtroom extends ConsumerWidget {
   const RoomCourtroom({required this.snapshot, super.key});
@@ -39,6 +41,11 @@ class RoomCourtroom extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        if (snapshot.public.phase == 'lobby')
+          RoomGameSettings(snapshot: snapshot)
+        else
+          RoomGameScreen(snapshot: snapshot),
+        const SizedBox(height: 16),
         Text(
           context.tr('roomJoinedCount', {'count': players.length}),
           style: Theme.of(context).textTheme.titleMedium,
