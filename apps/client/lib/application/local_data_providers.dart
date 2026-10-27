@@ -4,6 +4,7 @@ import '../data/preferences_string_store.dart';
 import '../data/profile_store.dart';
 import '../data/string_store.dart';
 import 'profile_controller.dart';
+import 'settings_controller.dart';
 import 'roster_controller.dart';
 import 'content_history_store.dart';
 import 'shared_phone_controller.dart';
@@ -15,6 +16,14 @@ import 'local_state_transaction.dart';
 final stringStoreProvider = Provider<StringStore>(
   (ref) => PreferencesStringStore(),
 );
+final settingsControllerProvider = Provider<SettingsController>(
+  (ref) => SettingsController(ref.watch(stringStoreProvider)),
+);
+final settingsProvider = FutureProvider<SettingsController>((ref) async {
+  final controller = ref.watch(settingsControllerProvider);
+  await controller.load();
+  return controller;
+}, retry: (count, error) => null);
 final contentHistoryStoreProvider = Provider<ContentHistoryStore>(
   (ref) => ContentHistoryStore(),
 );
