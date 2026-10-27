@@ -2,6 +2,8 @@
 
 **Testvorgabe vom 27.10.2026:** Auf ausdrücklichen Nutzerwunsch wird die weitere Implementierung mit Unit-Tests abgesichert; E2E-Tests entfallen. Diese Vorgabe hat Vorrang vor den ursprünglichen E2E-/Webdriver-Pflichten im Plan und Workflow. TT-012 beschreibt die entsprechende Unit-Absicherung. Bestehende lokale Widgettests bleiben als Regression nutzbar.
 
+**Laufende Umsetzung, 27.10.2026:** TT-001–012 implementiert und lokal geprüft; TT-013 in Arbeit (Designsystem/Galerie). Das visuelle M1-Demo-Gate bleibt offen, weil Chrome über DevTools nicht erreichbar ist; die Unit-geprüfte Implementierung wird fortgesetzt. Detailstatus und Prüfbelege stehen in [PROGRESS.md](PROGRESS.md). Nach Abschluss einer Aufgabe wird automatisch die nächste bearbeitet (Nutzerauftrag vom 27.10.2026).
+
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 
 Dieser Plan beschreibt die gesamte erste vollständige Android- und Web-App. Die Umsetzung beginnt erst in einem gesonderten Entwicklungsauftrag. [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) enthält lokale Befehle und Prüfroutinen; [PROGRESS.md](PROGRESS.md) verfolgt jede Aufgabe. GitHub Actions, Cloudflare-Deployments und kostenpflichtige Dienste sind keine Entwicklungsvoraussetzung.

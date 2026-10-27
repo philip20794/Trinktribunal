@@ -4,6 +4,7 @@ import '../../data/catalogs/catalog_diagnostics.dart';
 
 import '../profile/profile_screen.dart';
 import '../settings/settings_screen.dart';
+import '../setup/card_mode_screen.dart';
 import 'mode_preview_screen.dart';
 
 enum GameMode {
@@ -103,7 +104,9 @@ class HomeScreen extends StatelessWidget {
                                 mode: mode,
                                 onTap: () => _open(
                                   context,
-                                  ModePreviewScreen(mode: mode),
+                                  mode == GameMode.cards
+                                      ? const CardModeScreen()
+                                      : ModePreviewScreen(mode: mode),
                                 ),
                               ),
                             ),

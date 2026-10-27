@@ -1,12 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trinktribunal/app/trinktribunal_app.dart';
+import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 
 void main() {
-  Widget createApp() => const ProviderScope(child: TrinktribunalApp());
+  Widget createApp() => ProviderScope(
+    overrides: [
+      catalogRepositoryProvider.overrideWithValue(
+        CatalogRepository(read: (path) async => File(path).readAsStringSync()),
+      ),
+    ],
+    child: const TrinktribunalApp(),
+  );
 
-  testWidgets('Alle drei Einstiege öffnen Vorschauen und erlauben Zurück', (
+  testWidgets('Alle drei Einstiege erlauben Zurück zur Auswahl', (
     tester,
   ) async {
     await tester.pumpWidget(createApp());
@@ -17,8 +27,11 @@ void main() {
       await tester.ensureVisible(entry);
       await tester.tap(entry);
       await tester.pumpAndSettle();
-      expect(find.text('Zurück zur Auswahl'), findsOneWidget);
-      await tester.tap(find.text('Zurück zur Auswahl'));
+      expect(find.text(title), findsAtLeastNWidgets(1));
+      if (title == 'Handy + Karten') {
+        expect(find.text('Eure nächste Verhandlung'), findsOneWidget);
+      }
+      await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.text('Der Gerichtssaal wartet.'), findsOneWidget);
     }
