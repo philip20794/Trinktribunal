@@ -91,7 +91,7 @@ test('all-judge private orders/results cannot become host/public data in any pha
   for(const phase of ['numbers','answers','ordering','revealing','judged','rule_event','paused','finished']) {
     const m=structuredClone(base);m.public.phase=phase;
     if(phase==='finished')m.public.completedCases=m.public.config.targetCases;
-    if(phase==='rule_event'){m.public.completedCases=1;m.public.activeRules=[{contentId:'swear_penalty',bindings:{}}];}
+    if(phase==='rule_event'){Object.assign(m.public,{completedCases:1,activeRules:[{contentId:'swear_penalty',bindings:{}}],roundId:null,question:null,frozenRoster:[]});m.private={};}
     if(phase==='paused')Object.assign(m.public,{pausedFrom:'numbers',pauseReason:'host_unavailable'});
     if(['ordering','revealing','judged','finished'].includes(phase))m.private.ownOrder=['p1','p3','p2'];
     if(['judged','finished'].includes(phase)) {
@@ -100,7 +100,7 @@ test('all-judge private orders/results cannot become host/public data in any pha
     }
     assert.doesNotThrow(()=>validateRoomMessage(m),phase);
     for(const key of ['privateNumberAssignments','confirmedOrders','resumeToken','history']) {const bad=structuredClone(m);bad.public[key]={p1:2};assert.throws(()=>validateRoomMessage(bad),undefined,`${phase}/${key}`);}
-    m.public.result={errors:0,penalties:[]};assert.throws(()=>validateRoomMessage(m),/PUBLIC_PRIVATE/);
+    m.public.result={errors:0,penalties:[]};assert.throws(()=>validateRoomMessage(m),/PUBLIC_PRIVATE|BOUNDARY_HAS_CASE/);
   }
   const lobby=structuredClone(base);Object.assign(lobby.public,{phase:'lobby',gameId:null,roundId:null,question:null,frozenRoster:[],readerId:null});lobby.private={};assert.doesNotThrow(()=>validateRoomMessage(lobby));
   const pending=structuredClone(base);pending.public.phase='ordering';pending.public.players.push({...pending.public.players[0],playerId:'p4'});pending.you='p4';pending.private={ownOrder:['p1','p2','p3']};assert.throws(()=>validateRoomMessage(pending),/FOREIGN_ORDER/);
@@ -110,7 +110,7 @@ test('normal mode preserves only the same authorized fields throughout every wir
     const m=sample('snapshot');m.public.phase=phase;
     if(phase==='lobby'){Object.assign(m.public,{gameId:null,roundId:null,question:null,frozenRoster:[],judgeId:null});m.private={};}
     if(phase==='paused')Object.assign(m.public,{pausedFrom:'numbers',pauseReason:'host_unavailable'});
-    if(phase==='rule_event'){m.public.completedCases=1;m.public.activeRules=[{contentId:'swear_penalty',bindings:{}}];}
+    if(phase==='rule_event'){Object.assign(m.public,{completedCases:1,activeRules:[{contentId:'swear_penalty',bindings:{}}],roundId:null,question:null,frozenRoster:[]});m.private={};}
     if(phase==='finished')m.public.completedCases=50;
     if(['revealing','judged'].includes(phase))m.public.judgeOrder=['p2','p3'];
     if(phase==='judged')Object.assign(m.public,{revealCursor:2,revealed:[{playerId:'p2',number:2},{playerId:'p3',number:3}],result:{errors:0,penalties:['p1','p2','p3'].map(playerId=>({playerId,sips:0}))}});
@@ -126,6 +126,17 @@ test('boundary pauses do not invent a new case; verdicts require a complete reve
   const judged=sample('snapshot');Object.assign(judged.public,{phase:'judged',judgeOrder:['p2','p3'],result:{errors:0,penalties:['p1','p2','p3'].map(playerId=>({playerId,sips:0}))}});
   assert.throws(()=>validateRoomMessage(judged),/INCOMPLETE_VERDICT/);
   judged.public.revealed=[{playerId:'p2',number:2},{playerId:'p3',number:3}];judged.public.revealCursor=2;assert.doesNotThrow(()=>validateRoomMessage(judged));
+});
+
+test('rule and finished boundaries carry no previous or future case secrets in either mode',()=>{
+  for(const allJudges of [false,true])for(const phase of ['rule_event','finished']){
+    const m=sample('snapshot');Object.assign(m.public,{phase,config:{...m.public.config,allJudges},completedCases:phase==='finished'?50:1,roundId:null,question:null,frozenRoster:[],judgeId:allJudges?null:'p1',readerId:allJudges?'p1':null,activeRules:[{contentId:'swear_penalty',bindings:{}}]});m.private={};
+    assert.doesNotThrow(()=>validateRoomMessage(m));
+    for(const changes of [{question:sample('snapshot').public.question},{roundId:'future_round'},{frozenRoster:['p1','p2','p3']},{judgeOrder:[]},{result:{errors:0,penalties:[]}}]){
+      const bad=structuredClone(m);Object.assign(bad.public,changes);assert.throws(()=>validateRoomMessage(bad));
+    }
+    const secret=structuredClone(m);secret.private.ownNumber=2;assert.throws(()=>validateRoomMessage(secret),/BOUNDARY_HAS_CASE/);
+  }
 });
 test('history validates IDs, real UTC, strict six-hour boundary and idempotent page replay',()=>{
   const page=sample('historyImport');const offer={importId:page.importId,count:1,sha256:hash(canonicalJson(page.events))};

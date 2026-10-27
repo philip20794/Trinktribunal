@@ -168,6 +168,84 @@ final class OnlineGameController extends ChangeNotifier {
     );
   }
 
+  bool completeCase({required GameId gameId, required RoundId roundId}) {
+    final view = snapshot;
+    if (view == null ||
+        !_sameRound(gameId, roundId) ||
+        view.you != view.public.hostId ||
+        view.public.phase != 'judged') {
+      return false;
+    }
+    return _send(
+      'complete',
+      CompleteCaseMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        roundId: roundId,
+      ),
+    );
+  }
+
+  bool continueRule({required GameId gameId, required int afterCase}) {
+    final view = snapshot;
+    if (view == null ||
+        view.public.gameId != gameId ||
+        view.you != view.public.hostId ||
+        view.public.phase != 'rule_event' ||
+        view.public.completedCases != afterCase) {
+      return false;
+    }
+    return _send(
+      'continue',
+      ContinueRuleMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        afterCase: afterCase,
+      ),
+    );
+  }
+
+  bool resumePaused({required GameId gameId}) {
+    final view = snapshot;
+    if (view == null ||
+        view.public.gameId != gameId ||
+        view.you != view.public.hostId ||
+        view.public.phase != 'paused') {
+      return false;
+    }
+    return _send(
+      'resume',
+      ResumePausedMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+      ),
+    );
+  }
+
+  bool restartGame({required GameId gameId, bool confirmed = false}) {
+    final view = snapshot;
+    if (!confirmed ||
+        view == null ||
+        view.public.gameId != gameId ||
+        view.you != view.public.hostId ||
+        view.public.players.length < 3) {
+      return false;
+    }
+    return _send(
+      'restart',
+      RestartGameMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        config: view.public.config,
+        confirmed: true,
+      ),
+    );
+  }
+
   bool completeWithoutVerdict({
     required GameId gameId,
     required RoundId roundId,

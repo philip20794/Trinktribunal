@@ -52,16 +52,18 @@ function projection(message,recipientId) {
   if((phase==='finished')!==(pub.completedCases===pub.config.targetCases))fail('INVALID_CASE_COUNT');
   if(phase==='rule_event'&&(pub.completedCases===0||pub.activeRules.length===0))fail('INVALID_RULE_EVENT');
   if(phase==='lobby'&&(pub.gameId!==null||pub.roundId!==null||pub.question!==null||roster.length||pub.completedCases!==0||pub.activeRules.length||Object.keys(own).length))fail('LOBBY_HAS_GAME_DATA');
-  if(phase==='case_boundary'&&(pub.gameId===null||pub.roundId!==null||pub.question!==null||roster.length||Object.keys(own).length))fail('BOUNDARY_HAS_CASE_DATA');
-  if(!['lobby','case_boundary','finished'].includes(phase)&&(roster.length<3||pub.gameId===null||pub.roundId===null||pub.question===null))fail('MISSING_ACTIVE_GAME');
+  const boundary=['case_boundary','rule_event'].includes(phase)||(phase==='finished'&&pub.roundId===null);
+  if(boundary&&(pub.gameId===null||pub.roundId!==null||pub.question!==null||roster.length||Object.keys(own).length||pub.revealCursor||pub.revealed.length||pub.judgeOrder!==undefined||pub.result!==undefined))fail('BOUNDARY_HAS_CASE_DATA');
+  if(phase!=='lobby'&&!boundary&&(roster.length<3||pub.gameId===null||pub.roundId===null||pub.question===null))fail('MISSING_ACTIVE_GAME');
   if(pub.question&&!ids.question.has(pub.question.contentId))fail('UNKNOWN_CONTENT');
   for(const rule of pub.activeRules)if(!ids.rule.has(rule.contentId))fail('UNKNOWN_CONTENT');
   const revealing=['revealing','judged','finished'].includes(phase);
   if(!revealing&&(pub.revealCursor!==0||pub.revealed.length))fail('EARLY_PUBLIC_NUMBER');
   if(pub.revealCursor!==pub.revealed.length)fail('INVALID_REVEAL_CURSOR');
   if(all&&(pub.judgeId!==null||pub.judgeOrder!==undefined||pub.result!==undefined))fail('PUBLIC_PRIVATE_DATA');
-  if(all&&!['lobby','case_boundary'].includes(phase)&&!roster.includes(pub.readerId))fail('INVALID_READER');
+  if(all&&!['lobby','case_boundary'].includes(phase)&&!(boundary?players:roster).includes(pub.readerId))fail('INVALID_READER');
   if(!all&&pub.readerId!==null)fail('INVALID_READER');
+  if(!all&&['rule_event','finished'].includes(phase)&&boundary&&!players.includes(pub.judgeId))fail('INVALID_JUDGE');
   if(!all&&!['lobby','case_boundary'].includes(phase)&&roster.length&&!roster.includes(pub.judgeId))fail('INVALID_JUDGE');
   if(pub.judgeOrder!==undefined) {
     if(!revealing)fail('EARLY_JUDGE_ORDER');

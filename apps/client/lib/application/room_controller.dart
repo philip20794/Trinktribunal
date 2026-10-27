@@ -35,6 +35,11 @@ final class RoomController {
   final double Function() _jitter;
   final String Function() _newId;
   final _changes = StreamController<RoomSessionState>.broadcast(sync: true);
+  final _historyPages = StreamController<HistoryEventsMessage>.broadcast(
+    sync: true,
+  );
+  Stream<HistoryEventsMessage> get historyPages => _historyPages.stream;
+  int get connectionEpoch => _attempt;
   RoomSessionState state = const RoomSessionState();
   Stream<RoomSessionState> get states => Stream.multi((sink) {
     final subscription = _changes.stream.listen(sink.add, onDone: sink.close);
@@ -300,6 +305,8 @@ final class RoomController {
             }
           }
         }
+      } else if (message is HistoryEventsMessage) {
+        _historyPages.add(message);
       } else if (message is AckMessage) {
         _pending.remove(message.actionId.value);
         if (['left', 'closed'].contains(message.outcome)) {
@@ -398,6 +405,24 @@ final class RoomController {
           );
         }
       }
+    }
+  }
+
+  bool sendHistory(RoomMessage message, {required int expectedEpoch}) {
+    if (_disposed ||
+        !_authenticated ||
+        state.status != RoomConnectionStatus.online ||
+        _socket == null ||
+        expectedEpoch != connectionEpoch ||
+        message is! HistoryPullMessage && message is! HistoryReceiptMessage) {
+      return false;
+    }
+    try {
+      _socket!.send(message);
+      return true;
+    } on Object {
+      unawaited(_lost(_session, _attempt));
+      return false;
     }
   }
 
@@ -505,5 +530,6 @@ final class RoomController {
     await _closeNetwork();
     transport.dispose();
     await _changes.close();
+    await _historyPages.close();
   }
 }

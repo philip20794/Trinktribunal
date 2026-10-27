@@ -12,6 +12,7 @@ import '../../l10n/app_strings.dart';
 import '../bench/bench_view.dart';
 import 'game_settings.dart';
 import 'game_screen.dart';
+import 'game_progress.dart';
 import 'order_view.dart';
 
 class RoomCourtroom extends ConsumerWidget {
@@ -19,6 +20,7 @@ class RoomCourtroom extends ConsumerWidget {
   final SnapshotMessage snapshot;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(onlineHistoryProvider);
     final host = snapshot.you == snapshot.public.hostId,
         players = snapshot.public.players;
     final controller = ref.read(roomControllerProvider);
@@ -46,6 +48,8 @@ class RoomCourtroom extends ConsumerWidget {
           RoomGameSettings(snapshot: snapshot)
         else
           RoomGameScreen(snapshot: snapshot),
+        if (snapshot.public.phase != 'lobby')
+          OnlineGameProgress(snapshot: snapshot),
         const SizedBox(height: 16),
         Text(
           context.tr('roomJoinedCount', {'count': players.length}),

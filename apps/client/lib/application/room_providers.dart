@@ -9,6 +9,9 @@ import 'room_controller.dart';
 import 'online_profile_controller.dart';
 import 'online_game_controller.dart';
 import 'online_order_controller.dart';
+import 'online_history_controller.dart';
+import 'local_data_providers.dart';
+import '../domain/models/content_history.dart';
 
 final roomCredentialStoreProvider = Provider<RoomCredentialStore>(
   (ref) => RoomCredentialStore(createCredentialBackend()),
@@ -52,4 +55,32 @@ final onlineOrderProvider = Provider<OnlineOrderController>((ref) {
   final controller = OnlineOrderController(ref.watch(roomControllerProvider));
   ref.onDispose(controller.dispose);
   return controller;
+});
+
+final onlineHistoryProvider = Provider<OnlineHistoryController>((ref) {
+  final history = OnlineHistoryController(
+    ref.watch(roomControllerProvider),
+    persist: (events) async {
+      await ref.read(localResumeProvider.future);
+      ref
+          .read(contentHistoryStoreProvider)
+          .merge(
+            ContentHistory(
+              events.map(
+                (event) => ContentHistoryEntry(
+                  eventId: event.eventId.value,
+                  kind: ContentKind.values.byName(event.kind),
+                  contentId: event.contentId,
+                  timestampUtc: DateTime.parse(event.timestampUtc),
+                ),
+              ),
+            ),
+          );
+      final transaction = ref.read(localStateTransactionProvider);
+      await transaction.save();
+      return transaction.error == null;
+    },
+  );
+  ref.onDispose(history.dispose);
+  return history;
 });
