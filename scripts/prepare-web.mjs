@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {resolve, join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {secureReleaseHtml} from './web-security.mjs';
 
 export const webRoot = fileURLToPath(new URL('../apps/client/build/web/',import.meta.url));
 const hash = content => createHash('sha256').update(content).digest('hex');
@@ -18,7 +19,7 @@ export function listBundleFiles(root, directory='') {
   return result;
 }
 
-export function prepareWeb(root=webRoot,{sourceRevision='unknown',sourceDirty=false}={}) {
+export function prepareWeb(root=webRoot,{sourceRevision='unknown',sourceDirty=false,apiBaseUrl=''}={}) {
   const required=['index.html','flutter_bootstrap.js','main.dart.js','version.json','manifest.json','assets/AssetManifest.bin','assets/FontManifest.json','assets/assets/catalogs/manifest.json','assets/assets/avatars/manifest.json','canvaskit/canvaskit.js','canvaskit/canvaskit.wasm'];
   for(const path of required) if(!statSync(join(root,path)).isFile()) throw new Error('Missing release asset: '+path);
   const html=readFileSync(join(root,'index.html'),'utf8'); const bootstrap=readFileSync(join(root,'flutter_bootstrap.js'),'utf8');
@@ -28,6 +29,8 @@ export function prepareWeb(root=webRoot,{sourceRevision='unknown',sourceDirty=fa
   for(const family of fonts) for(const font of family.fonts) if(!statSync(join(root,'assets',font.asset)).isFile()) throw new Error('Missing bundled font');
   const manifest=JSON.parse(readFileSync(join(root,'assets/assets/catalogs/manifest.json'),'utf8'));
   const version=JSON.parse(readFileSync(join(root,'version.json'),'utf8'));
+  const secured = secureReleaseHtml(html, apiBaseUrl);
+  if (secured !== html) writeFileSync(join(root,'index.html'), secured);
   const files=listBundleFiles(root);
   const info={formatVersion:1,renderer:'canvaskit',compileTarget:'dart2js',version:version.version,buildNumber:version.build_number,sourceRevision,sourceDirty,
     catalogHashes:manifest.catalogs.map(({kind,language,sha256})=>({kind,language,sha256})),
@@ -38,6 +41,6 @@ export function prepareWeb(root=webRoot,{sourceRevision='unknown',sourceDirty=fa
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const repo=fileURLToPath(new URL('../',import.meta.url)); let sourceRevision='unknown',sourceDirty=false;
   try { sourceRevision=execFileSync('git',['rev-parse','HEAD'],{cwd:repo,encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim(); sourceDirty=execFileSync('git',['status','--porcelain'],{cwd:repo,encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim().length>0; } catch {}
-  const info=prepareWeb(process.argv[2]?resolve(process.argv[2]):webRoot,{sourceRevision,sourceDirty});
+  const info=prepareWeb(process.argv[2]?resolve(process.argv[2]):webRoot,{sourceRevision,sourceDirty,apiBaseUrl:process.argv[3]??''});
   process.stdout.write(`Web release ${info.version}+${info.buildNumber}: ${info.files.length} files, ${info.bundleHash}\n`);
 }

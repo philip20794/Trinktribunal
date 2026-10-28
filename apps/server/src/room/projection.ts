@@ -40,55 +40,59 @@ export function lobbySnapshot(
     result = ownPersonalVerdict(game, you),
     retained = retainedProfileIds(state),
     phase = game?.phase === 'paused' ? game.pausedFrom : game?.phase;
-  return createRoomMessage('snapshot', {
-    requestId: RoomIds.request(crypto.randomUUID()),
-    roomId: state.roomId,
-    revision: state.revision,
-    you,
-    public: {
-      phase: game?.phase ?? 'lobby',
-      hostId: state.hostId,
-      hostRevision: game?.hostRevision ?? 0,
-      config: state.config,
-      players: state.members
-        .filter((m) => (!m.revoked || retained.has(m.playerId)) && m.profile)
-        .map((m) => ({
-          playerId: m.playerId,
-          profile: m.profile!,
-          active: !m.revoked,
-          connected: !m.revoked && connected.has(m.playerId),
-          ready: readyInPhase(game, m.playerId),
-          orderSubmitted: round?.orders.some((order) => order.playerId === m.playerId) ?? false,
+  return createRoomMessage(
+    'snapshot',
+    {
+      requestId: RoomIds.request(crypto.randomUUID()),
+      roomId: state.roomId,
+      revision: state.revision,
+      you,
+      public: {
+        phase: game?.phase ?? 'lobby',
+        hostId: state.hostId,
+        hostRevision: game?.hostRevision ?? 0,
+        config: state.config,
+        players: state.members
+          .filter((m) => (!m.revoked || retained.has(m.playerId)) && m.profile)
+          .map((m) => ({
+            playerId: m.playerId,
+            profile: m.profile!,
+            active: !m.revoked,
+            connected: !m.revoked && connected.has(m.playerId),
+            ready: readyInPhase(game, m.playerId),
+            orderSubmitted: round?.orders.some((order) => order.playerId === m.playerId) ?? false,
+          })),
+        frozenRoster: round?.roster ?? [],
+        pendingRoster: game?.pendingRoster ?? [],
+        gameId: game?.gameId ?? null,
+        roundId: round?.id ?? null,
+        judgeId: game?.judgeId ?? null,
+        readerId: game?.readerId ?? null,
+        question: round?.question ?? null,
+        activeRules: game?.activeRules ?? [],
+        completedCases: game?.completedCases ?? 0,
+        revealCursor: round?.revealCursor ?? 0,
+        ...normalRevealFields(game),
+        revealed: (round?.revealOrder ?? []).slice(0, round?.revealCursor ?? 0).map((playerId) => ({
+          playerId,
+          number: round!.numbers.find((entry) => entry.playerId === playerId)!.number,
         })),
-      frozenRoster: round?.roster ?? [],
-      pendingRoster: game?.pendingRoster ?? [],
-      gameId: game?.gameId ?? null,
-      roundId: round?.id ?? null,
-      judgeId: game?.judgeId ?? null,
-      readerId: game?.readerId ?? null,
-      question: round?.question ?? null,
-      activeRules: game?.activeRules ?? [],
-      completedCases: game?.completedCases ?? 0,
-      revealCursor: round?.revealCursor ?? 0,
-      ...normalRevealFields(game),
-      revealed: (round?.revealOrder ?? []).slice(0, round?.revealCursor ?? 0).map((playerId) => ({
-        playerId,
-        number: round!.numbers.find((entry) => entry.playerId === playerId)!.number,
-      })),
-      ...(game?.pauseReason ? { pauseReason: game.pauseReason } : {}),
-      ...(game?.pausedFrom ? { pausedFrom: game.pausedFrom } : {}),
-      expiresAtUtc: new Date(expiresAt).toISOString(),
+        ...(game?.pauseReason ? { pauseReason: game.pauseReason } : {}),
+        ...(game?.pausedFrom ? { pausedFrom: game.pausedFrom } : {}),
+        expiresAtUtc: new Date(expiresAt).toISOString(),
+      },
+      private:
+        round && ['numbers', 'answers', 'ordering', 'revealing', 'judged'].includes(phase ?? '')
+          ? (() => {
+              const own = round.numbers.find((entry) => entry.playerId === you);
+              return {
+                ...(own ? { ownNumber: own.number } : {}),
+                ...(order ? { ownOrder: order } : {}),
+                ...(result ? { ownResult: result } : {}),
+              };
+            })()
+          : {},
     },
-    private:
-      round && ['numbers', 'answers', 'ordering', 'revealing', 'judged'].includes(phase ?? '')
-        ? (() => {
-            const own = round.numbers.find((entry) => entry.playerId === you);
-            return {
-              ...(own ? { ownNumber: own.number } : {}),
-              ...(order ? { ownOrder: order } : {}),
-              ...(result ? { ownResult: result } : {}),
-            };
-          })()
-        : {},
-  });
+    { logical: true },
+  );
 }

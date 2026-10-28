@@ -1,8 +1,9 @@
 import {createServer} from 'node:http';
 import {createReadStream} from 'node:fs';
-import {stat, realpath} from 'node:fs/promises';
+import {stat, realpath, readFile} from 'node:fs/promises';
 import {resolve, relative, isAbsolute, extname, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {releasePolicy,webSecurityPolicy} from './web-security.mjs';
 
 const defaultRoot = fileURLToPath(new URL('../apps/client/build/web/', import.meta.url));
 const mimeTypes = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.webmanifest':'application/manifest+json','.wasm':'application/wasm','.bin':'application/octet-stream','.ttf':'font/ttf','.otf':'font/otf','.woff2':'font/woff2','.png':'image/png','.ico':'image/x-icon','.svg':'image/svg+xml','.css':'text/css; charset=utf-8','.txt':'text/plain; charset=utf-8'};
@@ -11,8 +12,13 @@ const isInside = (root, path) => { const r=relative(root,path); return r!== '..'
 export async function createReleaseServer({root=defaultRoot}={}) {
   const directory = await realpath(root);
   if (!(await stat(resolve(directory,'index.html'))).isFile()) throw new Error('Missing release index.html; run build-web.ps1 first.');
+  const policy = releasePolicy(await readFile(resolve(directory,'index.html'),'utf8')) ?? webSecurityPolicy();
   return createServer(async (request,response) => {
     response.setHeader('X-Content-Type-Options','nosniff');
+    response.setHeader('Content-Security-Policy',policy+"; frame-ancestors 'none'");
+    response.setHeader('X-Frame-Options','DENY');
+    response.setHeader('Referrer-Policy','no-referrer');
+    response.setHeader('Permissions-Policy','camera=(), microphone=(), geolocation=()');
     response.setHeader('Cache-Control','no-store');
     const fail = (code) => { response.writeHead(code,{'Content-Type':'text/plain; charset=utf-8'}); response.end(code===404?'Not found':'Request rejected'); };
     if (!['GET','HEAD'].includes(request.method)) { response.setHeader('Allow','GET, HEAD'); fail(405); return; }

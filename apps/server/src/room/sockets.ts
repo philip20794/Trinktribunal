@@ -1,5 +1,7 @@
 import type { PlayerId, RoomId, RoomMessage } from '../protocol/room_message.generated';
-import { encodeRoomMessage } from '../protocol/room_message';
+import { createRoomMessage, encodeRoomMessage, RoomIds } from '../protocol/room_message';
+import { protocolMetadata } from '../protocol/room_message.generated';
+import { createHash } from 'node:crypto';
 
 export const SOCKET_LIMITS = Object.freeze({
   pendingPerRoom: 10,
@@ -82,7 +84,46 @@ export function attachment(socket: WebSocket): SocketAttachment | null {
   return null;
 }
 export function sendMessage(socket: WebSocket, message: RoomMessage): void {
-  socket.send(encodeRoomMessage(message, { direction: 'server' }));
+  if (message.type !== 'snapshot' && message.type !== 'delta') {
+    socket.send(encodeRoomMessage(message, { direction: 'server' }));
+    return;
+  }
+  const raw = encodeRoomMessage(message, { direction: 'server', logical: true });
+  const bytes = new TextEncoder().encode(raw);
+  if (bytes.length <= protocolMetadata.limits.frameBytes) {
+    socket.send(raw);
+    return;
+  }
+  const size = protocolMetadata.limits.projectionChunkBytes;
+  const transferId = RoomIds.transfer(crypto.randomUUID());
+  const requestId = message.requestId;
+  sendMessage(
+    socket,
+    createRoomMessage('projectionStart', {
+      requestId,
+      transferId,
+      revision: message.revision,
+      chunks: Math.ceil(bytes.length / size),
+      bytes: bytes.length,
+      sha256: createHash('sha256').update(bytes).digest('hex'),
+    }),
+  );
+  for (let offset = 0; offset < bytes.length; offset += size) {
+    const data = btoa(String.fromCharCode(...bytes.subarray(offset, offset + size)))
+      .replaceAll('+', '-')
+      .replaceAll('/', '_')
+      .replaceAll('=', '');
+    sendMessage(
+      socket,
+      createRoomMessage('projectionChunk', {
+        requestId,
+        transferId,
+        index: offset / size,
+        data,
+      }),
+    );
+  }
+  sendMessage(socket, createRoomMessage('projectionEnd', { requestId, transferId }));
 }
 export function closeSocket(socket: WebSocket, code: number): void {
   const info = attachment(socket);

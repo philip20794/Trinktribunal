@@ -23,7 +23,7 @@ import {
 } from '../protocol/room_message.generated';
 import { roomError } from '../protocol/http';
 import { newResumeToken, resumeVerifier, sameVerifier } from '../security/tokens';
-import { consumeWindow, consumeAction, ENTRY_LIMITS } from '../security/entry-limits';
+import { consumeWindow, consumeAuthenticatedAction, ENTRY_LIMITS } from '../security/entry-limits';
 import { allowedOrigin } from '../http/rooms';
 import {
   attachment,
@@ -139,8 +139,9 @@ export class Room extends DurableObject<Env> {
         next ?? Infinity,
         state.historyImport.createdAt + protocolMetadata.limits.historyTimeoutMs,
       );
-    if (next !== null) await this.ctx.storage.setAlarm(next);
-    else await this.ctx.storage.deleteAlarm();
+    const scheduled = await this.ctx.storage.getAlarm();
+    if (next !== null && scheduled !== next) await this.ctx.storage.setAlarm(next);
+    else if (next === null && scheduled !== null) await this.ctx.storage.deleteAlarm();
   }
   private socketFailure(socket: WebSocket, code: ProtocolErrorCode, closeCode = 4401): void {
     const info = attachment(socket);
@@ -234,18 +235,22 @@ export class Room extends DurableObject<Env> {
           expiry = roomExpiry(state);
         sendMessage(
           socket,
-          createRoomMessage('delta', {
-            requestId: RoomIds.request(crypto.randomUUID()),
-            roomId: state.roomId,
-            baseRevision: info.viewRevision,
-            revision: state.revision,
-            you: info.playerId,
-            publicChanges: {
-              ...(info.playersHash !== hash ? { players: view.public.players } : {}),
-              ...(info.viewExpiry !== expiry ? { expiresAtUtc: view.public.expiresAtUtc } : {}),
+          createRoomMessage(
+            'delta',
+            {
+              requestId: RoomIds.request(crypto.randomUUID()),
+              roomId: state.roomId,
+              baseRevision: info.viewRevision,
+              revision: state.revision,
+              you: info.playerId,
+              publicChanges: {
+                ...(info.playersHash !== hash ? { players: view.public.players } : {}),
+                ...(info.viewExpiry !== expiry ? { expiresAtUtc: view.public.expiresAtUtc } : {}),
+              },
+              private: {},
             },
-            private: {},
-          }),
+            { logical: true },
+          ),
         );
         socket.serializeAttachment({
           ...info,
@@ -395,7 +400,7 @@ export class Room extends DurableObject<Env> {
         const command = decodeRoomMessage(raw, { direction: 'client' });
         if (
           !this.ctx.storage.transactionSync(() =>
-            consumeAction(this.ctx.storage.sql, info.playerId, Date.now()),
+            consumeAuthenticatedAction(this.ctx.storage.sql, info.playerId, Date.now()),
           )
         ) {
           this.socketFailure(socket, 'RATE_LIMITED', 4429);

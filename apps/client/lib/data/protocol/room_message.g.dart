@@ -988,7 +988,7 @@ final class PongMessage extends RoomMessage {
 final class SnapshotMessage extends RoomMessage {
   SnapshotMessage._(super.json) : super._();
   factory SnapshotMessage.fromJson(Map<String, Object?> json) {
-    final result = decodeRoomMessage(_dtoWire(json));
+    final result = decodeRoomMessage(_dtoWire(json), logical: true);
     if (result is! SnapshotMessage) throw const ProtocolDecodeException('INVALID_MESSAGE');
     return result;
   }
@@ -1015,7 +1015,7 @@ final class SnapshotMessage extends RoomMessage {
 final class DeltaMessage extends RoomMessage {
   DeltaMessage._(super.json) : super._();
   factory DeltaMessage.fromJson(Map<String, Object?> json) {
-    final result = decodeRoomMessage(_dtoWire(json));
+    final result = decodeRoomMessage(_dtoWire(json), logical: true);
     if (result is! DeltaMessage) throw const ProtocolDecodeException('INVALID_MESSAGE');
     return result;
   }

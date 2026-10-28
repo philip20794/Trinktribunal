@@ -11,7 +11,8 @@ final class SecureCredentialBackend implements CredentialBackend {
           const FlutterSecureStorage(
             aOptions: AndroidOptions(
               storageNamespace: 'trinktribunal_room_credentials_v1',
-              resetOnError: true,
+              // Surface a recoverable storage error; never silently erase identities.
+              resetOnError: false,
               migrateWithBackup: false,
             ),
           );

@@ -7,6 +7,7 @@ import {request} from 'node:http';
 import {createReleaseServer} from '../serve-web.mjs';
 import {prepareWeb} from '../prepare-web.mjs';
 import {buildPrecache} from '../build-precache.mjs';
+import {secureReleaseHtml,webSecurityPolicy,releasePolicy} from '../web-security.mjs';
 
 function fixture(t) {
   const root=mkdtempSync(join(tmpdir(),'trinktribunal-web-test-'));
@@ -77,4 +78,49 @@ test('precache is deterministic, integrity-complete and excludes workers/metadat
   assert.ok(readFileSync(join(root,'service-worker.js'),'utf8').includes(first.version));
   put('main.dart.js','next release');assert.notEqual(buildPrecache(root).version,first.version);
   put('api/secret.json','private');assert.throws(()=>buildPrecache(root),/Non-public/);
+});
+
+test('release CSP pins HTTPS and websocket origins without remote scripts or JavaScript eval',()=>{
+  const policy=webSecurityPolicy('https://api.example.test:8443/');
+  assert.ok(policy.includes("script-src 'self' 'wasm-unsafe-eval'"));
+  assert.ok(policy.includes("connect-src 'self' https://api.example.test:8443 wss://api.example.test:8443"));
+  assert.ok(!policy.includes("'unsafe-eval'"));
+  assert.ok(!policy.includes('https:;'));
+  assert.ok(webSecurityPolicy('http://localhost:8787').includes('ws://localhost:8787'));
+  for(const api of ['http://remote.example','https://user:PRIVATE_MARKER@example.test','https://example.test/path','https://example.test/?PRIVATE_MARKER','https://example.test/#PRIVATE_MARKER','javascript:PRIVATE_MARKER']) {
+    assert.throws(()=>webSecurityPolicy(api),error=>error.message==='Invalid API origin for web release');
+  }
+});
+
+test('HTML hardening is idempotent and rejects injected entry scripts and handlers',()=>{
+  const html='<!doctype html><html><head><base href="/"></head><body><script src="offline.js"></script><script src="flutter_bootstrap.js" async></script></body></html>';
+  const secured=secureReleaseHtml(html,'https://api.example.test');
+  assert.equal(secureReleaseHtml(secured,'https://api.example.test'),secured);
+  assert.ok(secured.indexOf('Content-Security-Policy')<secured.indexOf('<base'));
+  assert.equal(releasePolicy(secured),webSecurityPolicy('https://api.example.test'));
+  const updated=secureReleaseHtml(secured,'https://new.example.test');
+  assert.ok(!updated.includes('api.example.test'));
+  for(const bad of ['<script>alert(1)</script>','<script src="https://foreign.test/script.js"></script>','<script src="offline.js">alert(1)</script>','<img src="x" onerror="alert(1)">']) {
+    assert.throws(()=>secureReleaseHtml(html.replace('</body>',bad+'</body>')),/Release/);
+  }
+});
+
+test('prepared HTML and release responses use the same API policy and preserve offline integrity',async t=>{
+  const {root}=fixture(t);
+  const apiBaseUrl='https://api.example.test';
+  prepareWeb(root,{apiBaseUrl});
+  const manifest=buildPrecache(root);
+  const first=readFileSync(join(root,'index.html'),'utf8');
+  prepareWeb(root,{apiBaseUrl});
+  assert.equal(readFileSync(join(root,'index.html'),'utf8'),first);
+  const get=await serve(t,root);
+  for(const path of ['/','/game/session','/service-worker.js']) {
+    const response=await get(path,{accept:'text/html'});
+    assert.equal(response.code,200);
+    assert.equal(response.headers['content-security-policy'],webSecurityPolicy(apiBaseUrl)+"; frame-ancestors 'none'");
+    assert.equal(response.headers['referrer-policy'],'no-referrer');
+    assert.equal(response.headers['x-frame-options'],'DENY');
+    assert.equal(response.headers['permissions-policy'],'camera=(), microphone=(), geolocation=()');
+  }
+  assert.deepEqual(buildPrecache(root),manifest);
 });

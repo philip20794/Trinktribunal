@@ -73,7 +73,7 @@ for(const [name,value] of Object.entries(defs).filter(([,s])=>s.type==='object')
   const klass=className(name),message=names.includes(name);
   dartOutput+=`final class ${klass} extends ${message?'RoomMessage':'JsonDto'} {\n  ${klass}._(super.json) : super._();\n`;
   dartOutput+=`  factory ${klass}.fromJson(Map<String, Object?> json) {\n`;
-  if(message)dartOutput+=`    final result = decodeRoomMessage(_dtoWire(json));\n    if (result is! ${klass}) throw const ProtocolDecodeException('INVALID_MESSAGE');\n    return result;\n`;
+  if(message)dartOutput+=`    final result = decodeRoomMessage(_dtoWire(json)${['snapshot','delta'].includes(name)?', logical: true':''});\n    if (result is! ${klass}) throw const ProtocolDecodeException('INVALID_MESSAGE');\n    return result;\n`;
   else dartOutput+=`    return ${klass}._(_validateDto('${name}', json));\n`;
   dartOutput+='  }\n';
   if(message) {

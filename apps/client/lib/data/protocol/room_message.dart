@@ -5,6 +5,10 @@ import 'package:characters/characters.dart';
 import '../../domain/models/ids.dart';
 part 'room_message.g.dart';
 
+final Map<String, int> roomProtocolLimits = Map.unmodifiable(
+  (_protocolMetadata['limits'] as Map).cast<String, int>(),
+);
+
 final class ProtocolDecodeException implements Exception {
   const ProtocolDecodeException(this.code);
   final String code;

@@ -403,6 +403,8 @@ Offline-Check ab TT-030/031:
 
 Ein eigener Service Worker ist erforderlich; der [Flutter-Web-FAQ](https://docs.flutter.dev/platform-integration/web/faq) zufolge wird kein funktionaler Caching-Service-Worker mehr automatisch gepflegt. Falsche Cache-/CSP-Header kann der Flutter-Debugserver verdecken: Release immer zusätzlich statisch ausliefern.
 
+Seit TT-059 verwendet `build-web.ps1` den Flutter-Schalter `--csp` und setzt vor dem Offline-Hashlauf eine Release-CSP. `-ApiBaseUrl` muss den tatsächlich verwendeten API-Ursprung enthalten; die Policy erlaubt genau dessen HTTP(S)- und WS(S)-Variante. Zugangsdaten, Pfade, Query und Fragment sind unzulässig. Ein direktes `flutter build web` ersetzt diese Releasevorbereitung nicht. Der lokale `serve-web` ergänzt Schutzheader; ein späterer statischer Produktionshost muss diese ebenfalls übernehmen. [Sicherheitsnachweis und Restgrenzen](qa/security.md).
+
 ### Android
 
 Ab TT-032 aus `apps/client`:

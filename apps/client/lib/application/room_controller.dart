@@ -3,6 +3,7 @@ import 'dart:math';
 
 import '../data/protocol/room_message.dart';
 import '../data/protocol/room_projection.dart';
+import '../data/protocol/room_projection_transfer.dart';
 import '../data/room_credential_store.dart';
 import '../data/room_transport.dart';
 import '../domain/models/ids.dart';
@@ -51,6 +52,8 @@ final class RoomController {
   RoomSocket? _socket;
   StreamSubscription<Object?>? _subscription;
   Timer? _retry, _authTimeout;
+  Timer? _projectionTimeout;
+  final _projection = RoomProjectionTransfer();
   int _session = 0, _attempt = 0, _retries = 0;
   bool _authenticated = false, _busy = false, _disposed = false;
   String? _serverError;
@@ -66,6 +69,9 @@ final class RoomController {
     _attempt++;
     _retry?.cancel();
     _authTimeout?.cancel();
+    _projectionTimeout?.cancel();
+    _projectionTimeout = null;
+    _projection.clear();
     _retry = null;
     _authTimeout = null;
     final socket = _socket;
@@ -218,7 +224,7 @@ final class RoomController {
       if (raw is! String) {
         throw const ProtocolDecodeException('INVALID_MESSAGE');
       }
-      final message = decodeRoomMessage(raw, direction: 'server');
+      var message = decodeRoomMessage(raw, direction: 'server');
       final credential = _credential!;
       if (message is CredentialMessage ||
           (!_authenticated &&
@@ -277,6 +283,26 @@ final class RoomController {
       if (!_authenticated) {
         throw const ProtocolDecodeException('INVALID_MESSAGE');
       }
+      final complete = _projection.accept(message);
+      if (complete == null) {
+        if (message is ProjectionStartMessage) {
+          _authTimeout?.cancel();
+          _projectionTimeout = Timer(
+            Duration(milliseconds: roomProtocolLimits['projectionTimeoutMs']!),
+            () {
+              if (session == _session &&
+                  attempt == _attempt &&
+                  _projection.pending) {
+                unawaited(_terminal('INVALID_RESPONSE'));
+              }
+            },
+          );
+        }
+        return;
+      }
+      _projectionTimeout?.cancel();
+      _projectionTimeout = null;
+      message = complete;
       if (message is SnapshotMessage) {
         if (message.roomId != credential.message.roomId ||
             message.you != credential.message.playerId) {

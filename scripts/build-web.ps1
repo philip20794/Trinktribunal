@@ -31,11 +31,11 @@ try {
     $pubArgs = @('pub','get','--enforce-lockfile')
     if ($Offline) { $pubArgs += '--offline' }
     Invoke-Checked 'flutter' $pubArgs
-    $buildArgs = @('build','web','--release','--no-pub','--no-wasm-dry-run','--no-web-resources-cdn')
+    $buildArgs = @('build','web','--release','--csp','--no-pub','--no-wasm-dry-run','--no-web-resources-cdn')
     if ($ApiBaseUrl) { $buildArgs += "--dart-define=API_BASE_URL=$ApiBaseUrl" }
     if ($PublicClientBaseUrl) { $buildArgs += "--dart-define=PUBLIC_CLIENT_BASE_URL=$PublicClientBaseUrl" }
     Invoke-Checked 'flutter' $buildArgs
-    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'prepare-web.mjs'), $output)
+    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'prepare-web.mjs'), $output, $ApiBaseUrl)
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'build-precache.mjs'), $output)
-    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'prepare-web.mjs'), $output)
+    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'prepare-web.mjs'), $output, $ApiBaseUrl)
 } finally { Pop-Location }

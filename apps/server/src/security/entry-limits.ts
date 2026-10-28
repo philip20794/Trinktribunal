@@ -1,4 +1,4 @@
-// Persisted fixed windows, intentionally conservative until the TT-059 abuse audit.
+// Persisted limits; the room bucket also bounds aggregate load across identities.
 import { protocolMetadata } from '../protocol/room_message.generated';
 export const ENTRY_LIMITS = Object.freeze({
   windowMs: 60_000,
@@ -8,8 +8,19 @@ export const ENTRY_LIMITS = Object.freeze({
   joinsPerRoom: 60,
   maxMembers: 20,
 });
+export const ROOM_ACTION_LIMITS = Object.freeze({ perSecond: 50, burst: 200 });
+const roomActionKey = '@room'; // Cannot collide with a protocol-valid playerId.
+type Budget = { key: string; tokens: number; updated: number };
 
-export function consumeAction(sql: SqlStorage, key: string, now: number): boolean {
+function actionBudget(
+  sql: SqlStorage,
+  key: string,
+  now: number,
+  limits = {
+    perSecond: protocolMetadata.limits.actionsPerSecond as number,
+    burst: protocolMetadata.limits.actionBurst as number,
+  },
+): Budget {
   sql.exec(
     'CREATE TABLE IF NOT EXISTS action_limits (key TEXT PRIMARY KEY, tokens REAL NOT NULL, updated INTEGER NOT NULL)',
   );
@@ -20,17 +31,37 @@ export function consumeAction(sql: SqlStorage, key: string, now: number): boolea
     )
     .toArray()[0];
   const tokens = Math.min(
-    protocolMetadata.limits.actionBurst,
-    (row?.tokens ?? protocolMetadata.limits.actionBurst) +
-      (Math.max(0, now - (row?.updated ?? now)) * protocolMetadata.limits.actionsPerSecond) / 1000,
+    limits.burst,
+    (row?.tokens ?? limits.burst) +
+      (Math.max(0, now - (row?.updated ?? now)) * limits.perSecond) / 1000,
   );
-  if (tokens < 1) return false;
+  return { key, tokens, updated: Math.max(now, row?.updated ?? now) };
+}
+function spend(sql: SqlStorage, budget: Budget): void {
   sql.exec(
     'INSERT OR REPLACE INTO action_limits (key, tokens, updated) VALUES (?, ?, ?)',
-    key,
-    tokens - 1,
-    now,
+    budget.key,
+    budget.tokens - 1,
+    budget.updated,
   );
+}
+export function consumeAction(sql: SqlStorage, key: string, now: number): boolean {
+  const budget = actionBudget(sql, key, now);
+  if (budget.tokens < 1) return false;
+  spend(sql, budget);
+  return true;
+}
+/** Caller owns the storage transaction; a rejected pair spends neither bucket. */
+export function consumeAuthenticatedAction(
+  sql: SqlStorage,
+  playerId: string,
+  now: number,
+): boolean {
+  const player = actionBudget(sql, playerId, now);
+  const room = actionBudget(sql, roomActionKey, now, ROOM_ACTION_LIMITS);
+  if (player.tokens < 1 || room.tokens < 1) return false;
+  spend(sql, player);
+  spend(sql, room);
   return true;
 }
 
