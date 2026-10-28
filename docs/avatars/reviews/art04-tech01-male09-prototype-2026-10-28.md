@@ -59,7 +59,7 @@ python -m pip install Pillow CairoSVG
 python artwork/avatars/v3/prototypes/male_09/build_prototype.py
 ```
 
-Das Skript legt PNG-Proberenderings, eine Farbübersicht `ART04_TECH01_color_review.png`, kleine Vorschaubilder und `prototype_metrics.json` im selben Prototyp-Ordner ab. Python und die erforderlichen SVG-Rasterisierungsbibliotheken müssen lokal vorhanden sein; die im Vorschaucode verwendete DejaVu-Sans-Schrift muss ggf. für andere Betriebssysteme angepasst werden.
+Das Skript legt PNG-Proberenderings, eine Farbübersicht `ART04_TECH01_color_review.png`, kleine Vorschaubilder und `prototype_metrics.json` im selben Prototyp-Ordner ab. Python und die erforderlichen SVG-Rasterisierungsbibliotheken müssen lokal vorhanden sein; das Skript sucht für die Vorschau automatisch nach DejaVu Sans (Linux), Arial (Windows/macOS) und nutzt andernfalls eine Pillow-Ersatzschrift.
 
 ## Grenzen, Review und nächste konkrete Schritte
 
