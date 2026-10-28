@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+ <!-- torso and sleeves can be replaced without recoloring the skin -->
+ <path data-palette="cloth.shadow" fill="#422a50" stroke="#392d42" stroke-width="9" d="M415 755 Q360 752 270 779 Q205 799 149 854 L106 968 Q175 1002 243 1019 L266 1250 746 1250 776 1024 Q829 1015 905 975 L865 850 Q811 797 676 763 L608 741 Q589 782 514 802 Q447 794 415 755Z"/>
+ <path data-palette="cloth.base" fill="#6a416f" d="M411 760 Q348 769 268 798 L173 853 Q163 888 145 958 L235 989 258 888 271 1247 751 1247 763 882 795 991 874 959 848 852 Q790 806 673 781 L605 748 Q564 816 513 818 Q445 814 411 760Z"/>
+ <path data-palette="cloth.light" fill="#90649a" opacity=".46" d="M284 808 Q241 821 187 863L162 933 216 944Q235 877 284 808ZM304 910Q289 1023 301 1234L341 1242Q335 1101 304 910Z"/>
+ <path data-palette="cloth.shadow" fill="#422a50" opacity=".67" d="M735 858Q704 1030 707 1235L746 1235 763 902ZM671 813 Q613 839 577 850 Q657 827 673 781 Z"/>
+ <path fill="none" stroke="#3c2c44" stroke-width="6" d="M250 987 Q241 1007 237 1026M774 989Q782 1012 787 1026"/>
+ <!-- large soft neckline, neck layer remains underneath -->
+ <path data-palette="cloth.shadow" fill="#422a50" stroke="#3a2b40" stroke-width="6" d="M413 752 Q450 797 515 804 Q582 804 614 748 L650 774 Q592 860 511 862 Q441 853 386 784Z"/>
+ <path data-palette="cloth.light" fill="#90649a" opacity=".7" d="M405 776 Q441 838 510 841 Q577 841 629 779" stroke="#b58db7" stroke-width="3"/>
+ <!-- small drawn fabric wrinkles -->
+ <path fill="none" stroke="#3c2b42" stroke-width="4" opacity=".66" d="M274 884 Q309 922 323 976 M719 941 Q745 906 753 882 M358 1197Q402 1220 465 1223 M684 1055 Q664 1107 691 1154"/>
+ <path fill="none" stroke="#b28eb8" stroke-width="3" opacity=".45" d="M264 873Q249 901 244 936M373 1058Q399 1080 412 1115"/>
+</g></svg>

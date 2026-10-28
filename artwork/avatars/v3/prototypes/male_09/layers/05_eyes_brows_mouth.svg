@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+ <!-- Cartoon eyes and severe off-centre stare. These elements remain independent of skin-tone changes. -->
+ <path fill="#4c2e2b" d="M395 380Q433 355 471 375Q475 388 469 393Q441 381 400 394Z"/>
+ <path fill="#4c2e2b" d="M558 369Q595 343 637 370L643 383Q608 371 566 387Z"/>
+ <path fill="#f6ebdb" stroke="#713b32" stroke-width="6" d="M397 420Q430 395 466 411Q479 422 469 445Q441 463 408 451Q393 440 397 420Z"/>
+ <path fill="#f6ebdb" stroke="#713b32" stroke-width="6" d="M555 410Q590 385 625 401Q642 412 635 433Q613 457 578 443Q557 433 555 410Z"/>
+ <path fill="#492f29" d="M444 405Q462 424 451 451Q440 453 432 448Q426 423 438 406Z"/>
+ <path fill="#492f29" d="M599 396Q615 410 608 443Q595 449 587 438Q582 418 592 399Z"/>
+ <circle fill="#f3e6d7" cx="442" cy="415" r="5"/><circle fill="#f3e6d7" cx="599" cy="406" r="5"/>
+ <path fill="none" stroke="#432e2d" stroke-width="8" d="M392 418Q429 399 470 411M553 409Q596 381 632 402"/>
+ <!-- Lower-lid and eye bags for a tired, grumpy expression -->
+ <path fill="none" stroke="#97534c" opacity=".76" stroke-width="4" d="M404 462Q441 478 470 457M562 453Q598 466 638 441M411 472Q438 488 458 473"/>
+ <path fill="none" stroke="#a66155" stroke-width="3" opacity=".56" d="M392 453Q399 470 401 477M641 438Q644 452 639 461"/>
+ <!-- twisted frowning mouth, intentionally asymmetric -->
+ <path fill="#743f3d" stroke="#68352f" stroke-width="5" d="M465 603Q509 585 551 593Q564 591 573 584Q567 617 532 628Q492 639 465 603Z"/>
+ <path fill="#4c2c30" d="M472 604Q515 600 555 603Q547 615 514 618Q494 618 472 604Z"/>
+ <path fill="#f4e2d3" d="M523 603Q542 606 554 603Q546 611 525 611Z"/>
+ <path fill="none" stroke="#6e3c35" stroke-width="4" d="M456 604Q464 603 472 606 M568 589Q577 579 584 580"/>
+ <path fill="none" stroke="#a56355" stroke-width="3" opacity=".65" d="M482 650Q516 665 538 650"/>
+</g></svg>

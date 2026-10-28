@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+ <!-- Arms behind the plaque; hands will be completed on top of the plaque -->
+ <path data-palette="skin.deep" fill="#81423a" stroke="#683e35" stroke-width="7" d="M149 887 Q111 924 103 980 Q96 1024 124 1096 L163 1143 Q212 1174 249 1119 L259 1007 Q244 944 205 905Z"/>
+ <path data-palette="skin.base" fill="#edb08d" d="M156 907Q119 954 124 1003Q125 1066 170 1126Q210 1149 232 1102L238 1010Q225 957 196 919Z"/>
+ <path data-palette="skin.shadow" fill="#bb6b56" opacity=".55" d="M127 1015Q139 1099 184 1130L216 1113Q157 1070 156 1007Z"/>
+ <path data-palette="skin.deep" fill="#81423a" stroke="#683e35" stroke-width="7" d="M872 889Q913 932 921 983Q923 1061 883 1124Q834 1170 797 1123L775 1016Q789 933 826 904Z"/>
+ <path data-palette="skin.base" fill="#edb08d" d="M861 912Q904 969 902 1020Q885 1109 848 1131Q809 1138 791 1092L791 1010Q809 943 832 920Z"/>
+ <path data-palette="skin.shadow" fill="#bb6b56" opacity=".56" d="M885 1016Q882 1071 841 1128L808 1110Q856 1062 856 1022Z"/>
+ <path fill="none" stroke="#a36355" opacity=".7" stroke-width="3" d="M135 1046Q151 1065 164 1070M889 1035Q877 1063 865 1073"/>
+</g></svg>

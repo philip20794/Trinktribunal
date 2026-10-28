@@ -107,9 +107,9 @@ Das bestehende v2-Manifest enthält 5 Hautton-IDs (`light`, `medium`, `brown`, `
 | --- | --- | ---: | --- | --- |
 | ART-00 | Stilbibel, No-Gos, Referenz-Workflow | 1 | **ENTWURF** – Konzeptstil bestätigt | – |
 | ART-01 | vollständige Masterfiguren, davon 4 männlich / 4 weiblich | 8 | **REVIEW** – alle ursprünglichen 8 visuell akzeptiert und alle 10 Masterbilder (5 männlich / 5 weiblich) in Git archiviert; gemeinsame Galeriefreigabe, Leinwand-/Schildangleichung und Alpha-Layer-Technik noch offen | ART-00 |
-| ART-02 | eine feste Messwand | 1 | **ENTWURF** – gemeinsame Messwand als SVG-Quelle erstellt; visuelle Nutzerfreigabe und TECH-01-Check ausstehend | ART-01 |
-| ART-03 | ein festes Namensschild, Text-Safe-Area | 1 | **ENTWURF** – transparentes SVG-Schild mit vorläufiger Textzone; Name/Greiffinger/Renderer noch nicht geprüft | ART-01 |
-| ART-04 | Griffsystem: Handrücken/Finger, ggf. Körperfamilien | 1 Basis-Set + nötige Varianten | OFFEN | ART-03 |
+| ART-02 | eine feste Messwand | 1 | **REVIEW** – SVG-Entwurf vom Nutzer visuell akzeptiert; technischer Render-/Rechtecheck im fertigen Avatar noch offen | ART-01 |
+| ART-03 | ein festes Namensschild, Text-Safe-Area | 1 | **REVIEW** – SVG-Schild vom Nutzer visuell akzeptiert; Name, Griffvarianten, App-Renderer und Safe-Area-Abnahme offen | ART-01 |
+| ART-04 | Griffsystem: Handrücken/Finger, ggf. Körperfamilien | 1 Basis-Set + nötige Varianten | **IN_ARBEIT** – erste getrennte SVG-Hand-/Fingerebenen für eine schmale Testfigur; Stil und weitere Körperfamilien nicht abgenommen | ART-03 |
 | ART-05 | sehr verschiedene männliche Körperbasen | 6 | OFFEN | ART-01 |
 | ART-06 | sehr verschiedene weibliche Körperbasen | 6 | OFFEN | ART-01 |
 | ART-07 | überzeichnete Kopfgrundformen, beide Profile | 12 | OFFEN | ART-01 |
@@ -125,7 +125,7 @@ Das bestehende v2-Manifest enthält 5 Hautton-IDs (`light`, `medium`, `brown`, `
 | ART-17 | Brillen, Hüte, Schmuck, Piercings, Tattoos, Extras | 18 | OFFEN | ART-07/16 |
 | ART-18 | Kontaktbögen/Regressionsreferenzen aller Optionen | fortlaufend | OFFEN | ab ART-01 |
 | ART-19 | finaler visueller Gesamtreview + Assetrechte | 1 Gate | OFFEN | alle |
-| TECH-01 | Canvas-/Anker-/Kompatibilitäts-Prototyp | 1 | OFFEN | ART-01–04 |
+| TECH-01 | Canvas-/Anker-/Kompatibilitäts-Prototyp | 1 | **IN_ARBEIT** – acht separate Alpha-SVG-Ebenen und semantische Farbrollen; erste Raster-/Farbtests bestanden, künstlerischer Stil und Körperkombinationen offen | ART-01–04 |
 | TECH-02 | v3-Manifest, Registry-Validator, Exportpipeline | 1 | OFFEN | TECH-01 |
 | TECH-03 | Flutter-Kompositor/Editor/Galerie inkl. Namensschild | 1 | OFFEN | TECH-02 |
 | TECH-04 | Speichern, Versionierung, v2→v3-Migration und Multiplayer | 1 | OFFEN | TECH-03 |
@@ -202,6 +202,8 @@ Nächster Schritt: ...
 | 28.10.2026 | Zusätzliche Master 09 und 10 auf Nutzerwunsch; ursprünglicher Acht-Figuren-Sollumfang bleibt Initialgate | FEST |
 | 28.10.2026 | Alle zehn Master-Kompositionsbilder im Git archiviert; nächster Schritt Gesamtreview/Layer-Prototyp, nicht weitere Figurenproduktion | FEST |
 | 28.10.2026 | v3-Haut-/Haar-/Stofffarben über maskengestützte Farbvarianten oder qualitätsgesicherte Farbexports erproben; exaktes Verfahren noch offen | VORSCHLAG – TECH-01 |
+| 28.10.2026 | Ein gemeinsamer Messwand-/Schildentwurf wurde vom Nutzer visuell akzeptiert; technische Abnahme bleibt offen | FEST – ART-02/03 nur visuell |
+| 28.10.2026 | Technische Alpha-Layer-/Farbrollen-Probe mit schmaler männlicher SVG-Figur: Grundtechnik funktioniert, Zeichenstil erreicht Mastervorlagen noch nicht | OFFEN – ART-04/TECH-01 |
 
 ## 10. Aktueller ART-01-Fortschritt und nächster Auftrag
 
@@ -223,12 +225,12 @@ Nächster Schritt: ...
 ### Nächste Produktionsaufgaben
 
 1. **ART-01-Gesamtreview (nächster Schritt):** Kontaktbogen aus den **tatsächlich vorhandenen zehn Git-Dateien** erzeugen und gemeinsam prüfen: Konsistenz von Stil, Format, Kopfgröße, Bildausschnitt, Messwand, Schildposition/-größe sowie markante unterschiedliche Silhouetten. Bei Bedarf einzelne Master auf denselben Canvas vereinheitlichen. Keine weiteren Einzelmaster als Voraussetzung.
-2. **ART-02/03 – Entwurf erstellt, Review offen:** separate, unveränderliche Messwand unter `artwork/avatars/v3/background/mugshot_wall.svg` und transparentes gemeinsames Schild unter `artwork/avatars/v3/frame/nameplate.svg`. Geometrie, Safe-Area, Alpha-Vorprüfung und offene Punkte in [ART-02/03-Review](reviews/art02-art03-foundation-2026-10-28.md). Beide Entwürfe brauchen noch explizite visuelle Freigabe und TECH-01; die in Referenzbildern gezeichnete Messwand/Schild sind **nicht** produktiv als Teil jeder Körpergrafik zu verwenden.
-3. **ART-04 + TECH-01-Prototyp:** genau **eine** ausgewählte Figur exemplarisch in Haut, Kopf, Haare, Körper, Kleidung, Griffhände und Schild-Vorderfinger zerlegen bzw. **neu als kompatible transparente Ebenen zeichnen**. Feste Anker testen. Dazu den Farb-/Maskenprototyp aus §4.1 durchführen; am Anfang **keine** Massenproduktion.
+2. **ART-02/03 – visuell freigegeben, technische Abnahme offen:** gemeinsame Messwand unter `artwork/avatars/v3/background/mugshot_wall.svg` und transparentes Schild unter `artwork/avatars/v3/frame/nameplate.svg`. Der Nutzer hat die beiden Entwürfe im Projektgespräch akzeptiert. Geometrie, Safe-Area, Alpha-Vorprüfung und technische Restpunkte in [ART-02/03-Review](reviews/art02-art03-foundation-2026-10-28.md). Die in Referenzbildern gezeichnete Messwand/Schild sind **nicht** produktiv als Teil jeder Körpergrafik zu verwenden.
+3. **ART-04 + TECH-01 – erster Technikprototyp erstellt, Stilkorrektur offen:** Die schmale männliche Testfigur wurde **neu als acht echte transparente SVG-Layer gezeichnet**, nicht aus einem Masterbild ausgeschnitten. Haut/Haar/Kleidung mit semantischen Farbrollen sowie einheitlicher Schildgriff sind testweise komponierbar; 3 Haut-, 6 Haar- und 3 Stoffoptionen geprüft. **Die neue Zeichnung ist noch zu flächig und nicht im malerischen Masterstil; deshalb keine künstlerische Abnahme.** Quellen und Grenzen: [ART-04/TECH-01-Review](reviews/art04-tech01-male09-prototype-2026-10-28.md), [Prototyp-Ordner](../../artwork/avatars/v3/prototypes/male_09/). Nächster Schritt ist die stilgerechte Neuzeichnung und der reale Körperfamilien-/Ankertest, weiterhin **keine Massenproduktion**.
 4. **Review des Prototyps:** 320/96/48 px, verschiedene Haut-/Haarfarben, mindestens drei verschiedene Kopf-/Körperkombinationen und 20 deterministische Kombinationen auf technische Artefakte prüfen. Erst danach TECH-02-Manifest/Exportpipeline festlegen und weitere Assets (ART-05–17) seriell produzieren.
 5. Bestehende v2-App nicht bei der Grafikproduktion ersetzen; v3-Renderer, Editor, Datenmigration und Multiplayer erst in TECH-03/04 integrieren.
 
-**Zählweise:** **10/10 Git-Referenzen archiviert** (ursprüngliches 8er-Set plus 2 Zusatzfiguren). **2 SVG-Entwürfe (Messwand/Schild) im Git, 0 technisch freigegebene v3-Einzelassets**; gemeinsame 10er-Galerie und Farbrecoloring noch nicht abgenommen. Die Bildreferenzen dienen dem Stil/Design und müssen vor späterem Split-/Masken-Export visuell verglichen werden.
+**Zählweise:** **10/10 Git-Referenzen archiviert** (ursprüngliches 8er-Set plus 2 Zusatzfiguren). **2 visuell freigegebene, aber noch nicht technisch abgenommene SVG-Grundlagen (Messwand/Schild), 8 neue technische Testebenen im Git, 0 technisch freigegebene v3-Einzelassets**; gemeinsame 10er-Galerie, künstlerisch passende Layer, echte 20 Körperkombinationen und finale Farbrecoloring-Methode noch nicht abgenommen. Die Bildreferenzen dienen dem Stil/Design und müssen vor späterem Split-/Masken-Export visuell verglichen werden.
 
 **Produktionsregel:** Neue Baukastenteile einzeln reviewen und Quelle, Anker, Alpha, Kompatibilität sowie Farbtests im Register dokumentieren. Kein Eingriff in den produktiven Flutter-v2-Code vor bestandenem v3-Prototyp.
 
@@ -246,3 +248,17 @@ Nächster Schritt: ...
 - **Probleme/Korrekturen:** finale Linien-/Schild-Stilkohärenz erst mit echter transparenter Figur prüfbar; exakte Fingergriffpunkte und Namenstext-Ausgabe noch offen.
 - **Review:** [ART-02/03-Protokoll](reviews/art02-art03-foundation-2026-10-28.md).
 - **Nächster Schritt:** Entwürfe visuell freigeben/überarbeiten; anschließend ART-04 + TECH-01-Modul- und Farbprototyp. Das bestehende v2-System bleibt unangetastet.
+
+
+### Charge 2026-10-28-02 – ART-04 / TECH-01 erster SVG-Ebenen- und Farbtest
+
+- **Status:** `IN_ARBEIT`; technischer Alpha-/Farbtest bestanden, zeichnerischer Masterstil **nicht** abgenommen.
+- **Ziel-Test-IDs:** `head_male_long_01`, `body_male_slim_01`, `clothes_tshirt_slim_01`, `hair_spiky_01`, `beard_goatee_01`, `grip_slim_01`. Keine manifestierten Produktions-IDs.
+- **Referenzen:** zehn vom Nutzer bereitgestellte Master-PNGs in `docs/avatars/references/`; schmaler Mann im lila T-Shirt als Formanstoß, Original wurde nicht freigestellt.
+- **Erstellung:** programmatische Neuzeichnung als **acht editierbare SVG-Ebenen** auf gemeinsamem Canvas. Quell-/Testskript [build_prototype.py](../../artwork/avatars/v3/prototypes/male_09/build_prototype.py); Einzel-SVGs in `artwork/avatars/v3/prototypes/male_09/layers/`.
+- **Ergebnisse:** transparente Körper-/Kleidungs-/Kopf-/Gesichts-/Haar-/Bart-/Handrücken-/Vorderfinger-Layer; zusammengesetzte [SVG-Vorschau](../../artwork/avatars/v3/prototypes/male_09/male_09_composite_preview.svg). 1024 × 1280 Raster, PNG-Reviewansichten 320/96/48 lokal erzeugt, keine Runtime-Assets.
+- **Kompatibilität:** Wand/Schild aus ART-02/03 unverändert; vorläufige Anker beibehalten. Semantische Farbrollen für 3 Haut-, 6 Haar-, 3 Stoffpaletten. 20 deterministische **Farb**kombinationen getestet, **keine** 20 unterschiedlichen Kopf-/Körperkombinationen.
+- **Visueller Check:** kompositorisch prüfbar, aber **zu saubere/vereinfachte Vektor-Optik** im Vergleich zu den malerischen Referenzen; keine Künstlerfreigabe; Performance, richtige Kleidungs-Schnittanpassung und 48/96/320-Sichtprüfung im Flutter-Renderer fehlen.
+- **Nutzerentscheidung:** ART-02/03 visuell akzeptiert; ART-04-Prototyp noch nicht abgenommen.
+- **Review-/Quellenprotokoll:** [ART-04/TECH-01](reviews/art04-tech01-male09-prototype-2026-10-28.md).
+- **Nächster Schritt:** Malerische Layers erneuern und eine zweite, deutlich anders gebaute Figur zum Kompatibilitätstest hinzufügen; TECH-01 erst nach echten Formkombinationen abschließen. v2 bleibt unverändert.

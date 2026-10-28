@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+ <!-- All fingers OVER the plaque; grip anchor remains fixed x≈172,852 -->
+ <path data-palette="skin.deep" fill="#81423a" stroke="#633a32" stroke-width="6" d="M200 952 Q169 949 159 968 Q147 983 166 994 L198 1014 Q142 1009 146 1032 Q144 1047 162 1053 L204 1071 Q150 1064 155 1085 Q161 1103 209 1115 L238 1102 Q249 1079 234 1044 L226 975Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#744337" stroke-width="4" d="M200 954Q173 951 166 968Q160 981 177 988L219 1005Q235 1007 237 992Q239 980 222 973Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#744337" stroke-width="4" d="M185 1009Q160 999 153 1017Q148 1032 170 1039L219 1055Q239 1059 244 1043Q245 1030 224 1024Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#744337" stroke-width="4" d="M184 1056Q160 1047 157 1067Q155 1082 177 1090L218 1107Q239 1114 245 1096Q248 1080 229 1073Z"/>
+ <path data-palette="skin.highlight" fill="#ffcfaa" opacity=".65" d="M176 966Q190 962 210 975L184 978ZM166 1016Q182 1011 204 1025L176 1027ZM170 1067Q185 1062 203 1078L177 1078Z"/>
+ <path fill="none" stroke="#b66c54" stroke-width="3" opacity=".8" d="M178 986L193 993M177 1038L191 1044M178 1088L195 1095"/>
+ <path data-palette="skin.deep" fill="#81423a" stroke="#633a32" stroke-width="6" d="M825 951Q859 946 873 966Q886 983 871 995L842 1014Q883 1007 883 1028Q885 1042 861 1054L834 1069Q879 1060 875 1080Q876 1099 821 1118L789 1102Q778 1080 790 1048L801 968Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#744337" stroke-width="4" d="M827 957Q850 950 862 963Q874 979 856 988L813 1005Q792 1007 789 993Q786 980 805 972Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#744337" stroke-width="4" d="M841 1007Q863 999 875 1015Q883 1030 861 1040L815 1056Q792 1061 787 1045Q784 1028 802 1024Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#744337" stroke-width="4" d="M842 1055Q864 1046 870 1065Q875 1082 847 1093L808 1109Q790 1111 782 1096Q778 1080 802 1073Z"/>
+ <path data-palette="skin.highlight" fill="#ffcfaa" opacity=".65" d="M855 965Q837 961 819 976L848 977ZM858 1017Q840 1011 820 1026L854 1027ZM860 1067Q841 1061 821 1078L850 1078Z"/>
+ <path fill="none" stroke="#ad6858" opacity=".7" stroke-width="3" d="M847 987L832 992M849 1039L833 1044M850 1088L829 1095"/>
+</g></svg>
