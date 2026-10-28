@@ -1,0 +1,16 @@
+{
+  "formatVersion": 1,
+  "decisionRefs": ["D-05", "D-08", "D-09", "D-13", "D-16"],
+  "phases": ["lobby", "numbers", "answers", "ordering", "revealing", "judged", "rule_event", "paused", "finished"],
+  "invalidCases": [
+    {"id":"unknown-room-version","path":["formatVersion"],"value":2},
+    {"id":"unknown-game-version","path":["game","formatVersion"],"value":2},
+    {"id":"unknown-private-root-field","path":["debugSecrets"],"value":"PRIVATE_MARKER"},
+    {"id":"missing-resume-verifier","path":["members",0,"verifier"],"delete":true},
+    {"id":"wrong-scalar-type","path":["revision"],"value":"PRIVATE_MARKER"},
+    {"id":"foreign-bound-person","path":["game","round","question","bindings"],"value":{"player1":"unknown_person"}},
+    {"id":"duplicate-secret-number","path":["game","round","numbers"],"value":[{"playerId":"A","number":1},{"playerId":"A","number":1}]},
+    {"id":"out-of-range-cursor","path":["game","round","revealCursor"],"value":21},
+    {"id":"empty-members","path":["members"],"value":[]}
+  ]
+}

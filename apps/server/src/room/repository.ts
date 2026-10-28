@@ -5,7 +5,9 @@ import type {
   Profile,
   RoomId,
 } from '../protocol/room_message.generated';
-import { immutable, type GameState, type Phase, type MutableGameState } from '../domain/game_state';
+import type { GameState, Phase } from '../domain/game_state';
+import { migrateRoomState, StoredStateInvalid } from './migrations';
+import { purgeRoom } from './expiry';
 import type { LobbyReceipt } from './profile_actions';
 import type { HistoryImportState, HistoryExport } from './history';
 
@@ -41,28 +43,44 @@ export interface RoomState {
   historyPageHashes?: Record<number, string>;
 }
 export { roomExpiry } from './expiry';
+export class RoomStorageUnavailable extends Error {
+  constructor() {
+    super('ROOM_UNAVAILABLE');
+  }
+}
 /** One canonical SQLite row; game, usage, counters and action receipts share its transaction. */
 export class RoomRepository {
   constructor(readonly storage: DurableObjectStorage) {}
   read(): RoomState | null {
+    try {
+      return this.load();
+    } catch {
+      throw new RoomStorageUnavailable();
+    }
+  }
+  private load(): RoomState | null {
     if (
       !this.storage.sql
         .exec('SELECT name FROM sqlite_master WHERE type = ? AND name = ?', 'table', 'room_record')
         .toArray().length
     )
       return null;
-    const row = this.storage.sql
-      .exec<{ state: string | null }>('SELECT state FROM room_record WHERE singleton = 1')
-      .toArray()[0];
-    if (!row?.state) return null;
-    const state = JSON.parse(row.state) as RoomState;
-    // Additive TT-047 upgrade: older committed rounds have no answer readiness.
-    if (state.game?.round && state.game.round.answerReady === undefined) {
-      const game = structuredClone(state.game) as MutableGameState;
-      game.round!.answerReady = [];
-      state.game = immutable(game);
-    }
-    return state;
+    return this.storage.transactionSync(() => {
+      const row = this.storage.sql
+        .exec<{ state: string | null }>('SELECT state FROM room_record WHERE singleton = 1')
+        .toArray()[0];
+      if (!row?.state) return null;
+      let loaded: ReturnType<typeof migrateRoomState>;
+      try {
+        loaded = migrateRoomState(row.state);
+      } catch (error) {
+        if (!(error instanceof StoredStateInvalid)) throw error;
+        purgeRoom(this.storage);
+        return null;
+      }
+      if (loaded.migrated) this.write(loaded.state);
+      return loaded.state;
+    });
   }
   write(state: RoomState): void {
     this.storage.sql.exec(

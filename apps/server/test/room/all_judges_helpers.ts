@@ -19,7 +19,7 @@ export async function result(peer: Peer) {
   }
   throw new Error('NO_RESULT');
 }
-export async function allJudgesRoom(count = 3, allJudges = true) {
+export async function allJudgesRoom(count = 3, allJudges = true, startGame = true) {
   const room = await socketRoom(),
     host = await authenticated(room.code, room.credential),
     members = [{ ...host, credential: room.credential }];
@@ -62,13 +62,14 @@ export async function allJudgesRoom(count = 3, allJudges = true) {
       config: { ...(await read()).config, allJudges, targetCases: 3, requestedRuleEvents: 2 },
     }),
   );
-  await send(
-    host.peer,
-    createRoomMessage('startGame', {
-      actionId: action(),
-      expectedRevision: (await read()).revision,
-    }),
-  );
+  if (startGame)
+    await send(
+      host.peer,
+      createRoomMessage('startGame', {
+        actionId: action(),
+        expectedRevision: (await read()).revision,
+      }),
+    );
   const initial = (await read()).game!;
   const command = async (type: 'acknowledgeNumber' | 'readyForOrdering' | 'beginOrdering') => {
     const current = await read();

@@ -22,7 +22,12 @@ export type SocketAttachment =
     }
   | { formatVersion: 1; kind: 'closed'; socketId: string };
 export function attachment(socket: WebSocket): SocketAttachment | null {
-  const value: unknown = socket.deserializeAttachment();
+  let value: unknown;
+  try {
+    value = socket.deserializeAttachment();
+  } catch {
+    return null;
+  }
   if (
     !value ||
     typeof value !== 'object' ||
@@ -81,12 +86,11 @@ export function sendMessage(socket: WebSocket, message: RoomMessage): void {
 }
 export function closeSocket(socket: WebSocket, code: number): void {
   const info = attachment(socket);
-  if (info)
-    socket.serializeAttachment({
-      formatVersion: 1,
-      kind: 'closed',
-      socketId: info.socketId,
-    } satisfies SocketAttachment);
+  socket.serializeAttachment({
+    formatVersion: 1,
+    kind: 'closed',
+    socketId: info?.socketId ?? 'invalid_attachment',
+  } satisfies SocketAttachment);
   try {
     socket.close(code, '');
   } catch {

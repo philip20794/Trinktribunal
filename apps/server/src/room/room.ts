@@ -35,7 +35,13 @@ import {
 import { putDeadline, removeDeadline, dueDeadlines, nextDeadline } from './deadlines';
 import { lobbySnapshot, playersHash } from './projection';
 import { applyLobbyAction, lobbyFingerprint, type LobbyReceipt } from './profile_actions';
-import { RoomRepository, roomExpiry, type RoomState, type Member } from './repository';
+import {
+  RoomRepository,
+  RoomStorageUnavailable,
+  roomExpiry,
+  type RoomState,
+  type Member,
+} from './repository';
 import { commitGameAction, isGameAction } from './actions';
 import { reservedSeatIds, synchronizeRoster } from './roster';
 import { reconcileHost, nextHostDeadline } from './host_lifecycle';
@@ -120,7 +126,8 @@ export class Room extends DurableObject<Env> {
   }
 
   private async planAlarm(): Promise<void> {
-    const state = this.read();
+    const state = this.readIfAvailable();
+    if (state === undefined) return;
     const hostDue = state ? nextHostDeadline(state) : null;
     let next = nextDeadline(
       this.ctx.storage.sql,
@@ -138,8 +145,12 @@ export class Room extends DurableObject<Env> {
   private socketFailure(socket: WebSocket, code: ProtocolErrorCode, closeCode = 4401): void {
     const info = attachment(socket);
     if (info?.kind === 'closed') return;
-    const state = this.read(),
-      wasCurrent = state && !!this.currentMember(info, state);
+    const state = this.readIfAvailable();
+    if (state === undefined) {
+      closeSocket(socket, 1011);
+      return;
+    }
+    const wasCurrent = state && !!this.currentMember(info, state);
     if (info) removeDeadline(this.ctx.storage.sql, info.socketId);
     try {
       sendMessage(
@@ -192,7 +203,7 @@ export class Room extends DurableObject<Env> {
   }
 
   private broadcastLobby(): void {
-    const state = this.read();
+    const state = this.readIfAvailable();
     if (!state) return;
     const connected = new Set<PlayerId>();
     let closedAny = false;
@@ -589,6 +600,10 @@ export class Room extends DurableObject<Env> {
             }),
           );
       } catch (error) {
+        if (error instanceof RoomStorageUnavailable) {
+          closeSocket(socket, 1011);
+          return;
+        }
         this.socketFailure(
           socket,
           error instanceof ProtocolDecodeException && error.code !== 'INVALID_JSON'
@@ -604,8 +619,12 @@ export class Room extends DurableObject<Env> {
   }
   override async webSocketClose(socket: WebSocket): Promise<void> {
     const info = attachment(socket);
-    const before = this.read(),
-      wasCurrent = before && !!this.currentMember(info, before);
+    const before = this.readIfAvailable();
+    if (before === undefined) {
+      closeSocket(socket, 1011);
+      return;
+    }
+    const wasCurrent = before && !!this.currentMember(info, before);
     if (info) removeDeadline(this.ctx.storage.sql, info.socketId);
     closeSocket(socket, 1000);
     if (wasCurrent) {
@@ -638,12 +657,24 @@ export class Room extends DurableObject<Env> {
   private read(): RoomState | null {
     return new RoomRepository(this.ctx.storage).read();
   }
+  private readIfAvailable(): RoomState | null | undefined {
+    try {
+      return this.read();
+    } catch (error) {
+      if (error instanceof RoomStorageUnavailable) return undefined;
+      throw error;
+    }
+  }
   private write(state: RoomState): void {
     synchronizeRoster(state, Date.now());
     new RoomRepository(this.ctx.storage).write(state);
   }
   private live(now: number, refreshHost = true): RoomState | null {
     const state = this.read();
+    if (!state) {
+      for (const socket of this.ctx.getWebSockets()) this.socketFailure(socket, 'ROOM_UNAVAILABLE');
+      return null;
+    }
     if (state && now >= roomExpiry(state)) {
       // Retain only an empty reservation: old codes can never address a different party.
       purgeRoom(this.ctx.storage);

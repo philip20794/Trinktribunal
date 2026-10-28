@@ -5,6 +5,7 @@ import { RoomRepository } from '../../src/room/repository';
 import { immutable, type MutableGameState } from '../../src/domain/game_state';
 import { cleanupPeers, authenticated, profile, handshake, requestId } from './socket_helpers';
 import { allJudgesRoom } from './all_judges_helpers';
+import { roomInPhase as setup } from './game_phase_helpers';
 
 afterEach(cleanupPeers);
 type Fixture = Awaited<ReturnType<typeof allJudgesRoom>>;
@@ -54,50 +55,6 @@ async function continueRule(f: Fixture) {
     }),
   );
 }
-async function setup(allJudges: boolean, phase: string) {
-  const f = await allJudgesRoom(3, allJudges);
-  if (phase === 'rule_event' || phase === 'finished') {
-    do {
-      await complete(f);
-      if ((await f.read()).phase === 'rule_event' && phase === 'finished') await continueRule(f);
-    } while (phase === 'finished' && (await f.read()).phase !== 'finished');
-  } else if (phase === 'paused') {
-    await leave(f, f.members[1]!);
-    await complete(f);
-  } else if (phase !== 'numbers') {
-    const recipients = f.initial.round!.recipients;
-    for (const member of f.members.filter((m) => recipients.includes(m.credential.playerId)))
-      await f.send(member.peer, await f.command('acknowledgeNumber'));
-    if (phase !== 'answers') {
-      for (const member of f.members)
-        await f.send(member.peer, await f.command('readyForOrdering'));
-      await f.send(f.host.peer, await f.command('beginOrdering'));
-      if (phase !== 'ordering') {
-        for (const member of f.members.filter(
-          (m) => allJudges || m.credential.playerId === f.initial.judgeId,
-        ))
-          await f.send(member.peer, await f.order(recipients));
-        if (phase === 'judged')
-          for (let cursor = 0; cursor < recipients.length; cursor++) {
-            const state = await f.read();
-            await f.send(
-              f.host.peer,
-              createRoomMessage('revealNext', {
-                actionId: f.action(),
-                expectedRevision: state.revision,
-                gameId: state.game!.gameId!,
-                roundId: state.game!.round!.id,
-                expectedCursor: cursor,
-              }),
-            );
-          }
-      }
-    }
-  }
-  expect((await f.read()).phase).toBe(phase);
-  return f;
-}
-
 for (const allJudges of [false, true])
   for (const phase of [
     'numbers',
