@@ -1,4 +1,6 @@
 import { env } from 'cloudflare:workers';
+import { runInDurableObject } from 'cloudflare:test';
+import { attachment } from '../../src/room/sockets';
 import fixtures from '../../../../packages/protocol/fixtures/messages/room-v1.json';
 import worker from '../../src/index';
 import { createRoomMessage, decodeRoomMessage, RoomIds } from '../../src/protocol/room_message';
@@ -12,6 +14,31 @@ if (initial.type !== 'create') throw Error('create fixture');
 export const profile = initial.profile,
   handshake = initial.handshake;
 export const requestId = () => RoomIds.request(crypto.randomUUID());
+/** Capture server output at the invalidated connection, excluding earlier in-flight frames. */
+export async function framesFromServerMessage(
+  stub: DurableObjectStub<import('../../src/room/room').Room>,
+  playerId: CredentialMessage['playerId'],
+  command: unknown,
+): Promise<string[]> {
+  return runInDurableObject(stub, async (room, ctx) => {
+    const socket = ctx.getWebSockets().find((peer) => {
+      const info = attachment(peer);
+      return info?.kind === 'authenticated' && info.playerId === playerId;
+    })!;
+    const frames: string[] = [];
+    const send = socket.send.bind(socket);
+    socket.send = (data) => {
+      frames.push(String(data));
+      send(data);
+    };
+    try {
+      await room.webSocketMessage(socket, JSON.stringify(command));
+    } finally {
+      socket.send = send;
+    }
+    return frames;
+  });
+}
 export async function socketRoom() {
   const code = randomRoomCode(),
     stub = env.ROOMS.getByName(code);

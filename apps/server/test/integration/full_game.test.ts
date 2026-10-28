@@ -3,6 +3,7 @@ import { afterEach, expect, it } from 'vitest';
 import { createRoomMessage } from '../../src/protocol/room_message';
 import { immutable, type MutableGameState } from '../../src/domain/game_state';
 import { RoomRepository } from '../../src/room/repository';
+import { enableLocalMetrics, localMetrics, type RoomMetrics } from '../../src/room/metrics';
 import { attachment } from '../../src/room/sockets';
 import { allJudgesRoom } from '../room/all_judges_helpers';
 import { authenticated, cleanupPeers, handshake, profile, requestId } from '../room/socket_helpers';
@@ -11,6 +12,9 @@ afterEach(cleanupPeers);
 
 async function configured(count: number, allJudges: boolean, cases: number, rules: number) {
   const f = await allJudgesRoom(count, allJudges, false);
+  await runInDurableObject(f.room.stub, (_room, ctx) =>
+    enableLocalMetrics(ctx.storage, ctx.getWebSockets()),
+  );
   await f.send(
     f.host.peer,
     createRoomMessage('setConfig', {
@@ -30,8 +34,9 @@ async function configured(count: number, allJudges: boolean, cases: number, rule
 }
 
 for (const allJudges of [false, true]) {
-  it(`${allJudges ? 'all judges' : 'normal'}: eight clients finish 50 cases/seven rules with deterministic interruptions`, async () => {
+  it(`${allJudges ? 'all judges' : 'normal'}: eight clients finish 50 cases/seven rules with deterministic interruptions`, async (context) => {
     const f = await configured(8, allJudges, 50, 7);
+    const segments: RoomMetrics[] = [];
     const isolated = await configured(3, !allJudges, 1, 0);
     const isolatedBefore = await isolated.read();
     async function host() {
@@ -108,7 +113,13 @@ for (const allJudges of [false, true]) {
         await f.send(member.peer, await f.order(order));
         if (index === 39 && (!allJudges || position === 3)) {
           const before = await f.read();
+          segments.push(
+            await runInDurableObject(f.room.stub, (_room, ctx) => localMetrics(ctx.storage)!),
+          );
           await evictDurableObject(f.room.stub);
+          await runInDurableObject(f.room.stub, (_room, ctx) =>
+            enableLocalMetrics(ctx.storage, ctx.getWebSockets()),
+          );
           expect(await f.read()).toEqual(before);
         }
       }
@@ -237,6 +248,30 @@ for (const allJudges of [false, true]) {
     expect(finished.game!.history.filter((event) => event.kind === 'question')).toHaveLength(50);
     expect(finished.game!.history.filter((event) => event.kind === 'rule')).toHaveLength(7);
     expect(await isolated.read()).toEqual(isolatedBefore);
+    segments.push(
+      await runInDurableObject(f.room.stub, (_room, ctx) => localMetrics(ctx.storage)!),
+    );
+    const metrics = { ...segments[0]! };
+    for (const key of Object.keys(metrics) as (keyof RoomMetrics)[]) {
+      metrics[key] = key.startsWith('max')
+        ? Math.max(...segments.map((m) => m[key]))
+        : segments.reduce((sum, m) => sum + m[key], 0);
+    }
+    expect(metrics.maxFrameBytes).toBeLessThanOrEqual(16384);
+    expect(metrics.maxProjectionBytes).toBeLessThanOrEqual(524288);
+    expect(metrics.maxStateBytes).toBeLessThan(4 * 1024 * 1024);
+    expect(metrics.sqlFailures).toBe(0);
+    expect(finished.game!.receipts.length).toBeLessThanOrEqual(16384);
+    await context.annotate(
+      'TT_LOCAL_METRICS ' +
+        JSON.stringify({
+          scenario: allJudges
+            ? 'all-judges-eight-person-50-cases-7-rules'
+            : 'normal-eight-person-50-cases-7-rules',
+          metrics,
+          receipts: finished.game!.receipts.length,
+        }),
+    );
   }, 300000);
 }
 

@@ -1,3 +1,4 @@
+import { roomSql, bindLocalSocket, incomingLocal, countLocal } from './metrics';
 import { DurableObject } from 'cloudflare:workers';
 import {
   createRoomMessage,
@@ -105,7 +106,12 @@ export class Room extends DurableObject<Env> {
       return roomError('RATE_LIMITED', 429);
     if (
       !this.ctx.storage.transactionSync(() =>
-        consumeWindow(this.ctx.storage.sql, 'socketUpgrade', SOCKET_LIMITS.authPerRoom, Date.now()),
+        consumeWindow(
+          roomSql(this.ctx.storage),
+          'socketUpgrade',
+          SOCKET_LIMITS.authPerRoom,
+          Date.now(),
+        ),
       )
     )
       return roomError('RATE_LIMITED', 429);
@@ -119,8 +125,13 @@ export class Room extends DurableObject<Env> {
       authDeadline: Date.now() + protocolMetadata.limits.authTimeoutMs,
     };
     this.ctx.acceptWebSocket(server);
+    bindLocalSocket(server, this.ctx.storage);
     server.serializeAttachment(info);
-    putDeadline(this.ctx.storage.sql, { id: info.socketId, kind: 'auth', due: info.authDeadline });
+    putDeadline(roomSql(this.ctx.storage), {
+      id: info.socketId,
+      kind: 'auth',
+      due: info.authDeadline,
+    });
     await this.planAlarm();
     return new Response(null, { status: 101, webSocket: client });
   }
@@ -130,7 +141,7 @@ export class Room extends DurableObject<Env> {
     if (state === undefined) return;
     const hostDue = state ? nextHostDeadline(state) : null;
     let next = nextDeadline(
-      this.ctx.storage.sql,
+      roomSql(this.ctx.storage),
       state ? roomExpiry(state) : null,
       hostDue === null ? [] : [hostDue],
     );
@@ -140,8 +151,13 @@ export class Room extends DurableObject<Env> {
         state.historyImport.createdAt + protocolMetadata.limits.historyTimeoutMs,
       );
     const scheduled = await this.ctx.storage.getAlarm();
-    if (next !== null && scheduled !== next) await this.ctx.storage.setAlarm(next);
-    else if (next === null && scheduled !== null) await this.ctx.storage.deleteAlarm();
+    if (next !== null && scheduled !== next) {
+      await this.ctx.storage.setAlarm(next);
+      countLocal(this.ctx.storage, 'alarmWrites');
+    } else if (next === null && scheduled !== null) {
+      await this.ctx.storage.deleteAlarm();
+      countLocal(this.ctx.storage, 'alarmWrites');
+    }
   }
   private socketFailure(socket: WebSocket, code: ProtocolErrorCode, closeCode = 4401): void {
     const info = attachment(socket);
@@ -152,7 +168,7 @@ export class Room extends DurableObject<Env> {
       return;
     }
     const wasCurrent = state && !!this.currentMember(info, state);
-    if (info) removeDeadline(this.ctx.storage.sql, info.socketId);
+    if (info) removeDeadline(roomSql(this.ctx.storage), info.socketId);
     try {
       sendMessage(
         socket,
@@ -281,6 +297,8 @@ export class Room extends DurableObject<Env> {
   }
 
   override async webSocketMessage(socket: WebSocket, raw: string | ArrayBuffer): Promise<void> {
+    bindLocalSocket(socket, this.ctx.storage);
+    incomingLocal(socket, raw);
     // Auth awaits cryptography. Serialize it with subsequent frames/alarms and generation changes.
     await this.ctx.blockConcurrencyWhile(async () => {
       try {
@@ -325,7 +343,7 @@ export class Room extends DurableObject<Env> {
           if (
             !this.ctx.storage.transactionSync(() =>
               consumeWindow(
-                this.ctx.storage.sql,
+                roomSql(this.ctx.storage),
                 'authenticate',
                 SOCKET_LIMITS.authPerRoom,
                 Date.now(),
@@ -340,6 +358,8 @@ export class Room extends DurableObject<Env> {
             this.socketFailure(socket, result.code);
             return;
           }
+          countLocal(this.ctx.storage, 'authentications');
+          if (result.message.generation > 1) countLocal(this.ctx.storage, 'reconnects');
           const wasConnected = this.ctx.getWebSockets().some((other) => {
             const previous = attachment(other);
             return (
@@ -359,7 +379,7 @@ export class Room extends DurableObject<Env> {
             catalogHash: protocolMetadata.catalogHash,
           };
           socket.serializeAttachment(bound);
-          removeDeadline(this.ctx.storage.sql, info.socketId);
+          removeDeadline(roomSql(this.ctx.storage), info.socketId);
           for (const old of this.ctx.getWebSockets()) {
             const previous = attachment(old);
             if (
@@ -425,9 +445,10 @@ export class Room extends DurableObject<Env> {
           return;
         }
         const command = decodeRoomMessage(raw, { direction: 'client' });
+        if ('actionId' in command) countLocal(this.ctx.storage, 'actions');
         if (
           !this.ctx.storage.transactionSync(() =>
-            consumeAuthenticatedAction(this.ctx.storage.sql, info.playerId, Date.now()),
+            consumeAuthenticatedAction(roomSql(this.ctx.storage), info.playerId, Date.now()),
           )
         ) {
           this.socketFailure(socket, 'RATE_LIMITED', 4429);
@@ -657,7 +678,7 @@ export class Room extends DurableObject<Env> {
       return;
     }
     const wasCurrent = before && !!this.currentMember(info, before);
-    if (info) removeDeadline(this.ctx.storage.sql, info.socketId);
+    if (info) removeDeadline(roomSql(this.ctx.storage), info.socketId);
     closeSocket(socket, 1000);
     if (wasCurrent) {
       this.ctx.storage.transactionSync(() => {
@@ -681,7 +702,7 @@ export class Room extends DurableObject<Env> {
 
   private hasTable(name: string): boolean {
     return (
-      this.ctx.storage.sql
+      roomSql(this.ctx.storage)
         .exec('SELECT name FROM sqlite_master WHERE type = ? AND name = ?', 'table', name)
         .toArray().length > 0
     );
@@ -749,10 +770,11 @@ export class Room extends DurableObject<Env> {
             : SOCKET_LIMITS.upgradesPerAddress;
     const now = Date.now();
     const allowed = this.ctx.storage.transactionSync(() =>
-      consumeWindow(this.ctx.storage.sql, kind, limit, now),
+      consumeWindow(roomSql(this.ctx.storage), kind, limit, now),
     );
     // A separate namespaced DO per address; no IP is persisted, no code registry/database.
     await this.ctx.storage.setAlarm(now + ENTRY_LIMITS.windowMs);
+    countLocal(this.ctx.storage, 'alarmWrites');
     return allowed;
   }
 
@@ -803,7 +825,7 @@ export class Room extends DurableObject<Env> {
             }
           : {}),
       };
-      this.ctx.storage.sql.exec(
+      roomSql(this.ctx.storage).exec(
         'CREATE TABLE room_record (singleton INTEGER PRIMARY KEY CHECK (singleton = 1), state TEXT)',
       );
       if (state.historyImport?.status === 'committed') delete state.historyOffer;
@@ -826,7 +848,7 @@ export class Room extends DurableObject<Env> {
       const now = Date.now(),
         state = this.live(now);
       if (!state) return { ok: false, code: 'ROOM_UNAVAILABLE', status: 410 };
-      if (!consumeWindow(this.ctx.storage.sql, 'join', ENTRY_LIMITS.joinsPerRoom, now))
+      if (!consumeWindow(roomSql(this.ctx.storage), 'join', ENTRY_LIMITS.joinsPerRoom, now))
         return { ok: false, code: 'RATE_LIMITED', status: 429 };
       const active = state.members.filter((m) => !m.revoked);
       if (reservedSeatIds(state).size >= ENTRY_LIMITS.maxMembers)
@@ -942,6 +964,7 @@ export class Room extends DurableObject<Env> {
   }
 
   override async alarm(): Promise<void> {
+    countLocal(this.ctx.storage, 'alarmInvocations');
     const now = Date.now();
     const state = this.ctx.storage.transactionSync(() => this.live(now));
     if (!state) {
@@ -950,13 +973,13 @@ export class Room extends DurableObject<Env> {
       await this.planAlarm();
       return;
     }
-    for (const deadline of dueDeadlines(this.ctx.storage.sql, now)) {
+    for (const deadline of dueDeadlines(roomSql(this.ctx.storage), now)) {
       for (const socket of this.ctx.getWebSockets()) {
         const info = attachment(socket);
         if (info?.kind === 'pending' && info.socketId === deadline.id)
           this.socketFailure(socket, 'CREDENTIAL_INVALID', 4408);
       }
-      removeDeadline(this.ctx.storage.sql, deadline.id);
+      removeDeadline(roomSql(this.ctx.storage), deadline.id);
     }
     this.broadcastLobby();
     await this.planAlarm();

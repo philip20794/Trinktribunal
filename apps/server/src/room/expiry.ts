@@ -1,3 +1,4 @@
+import { roomSql } from './metrics';
 import { protocolMetadata } from '../protocol/room_message.generated';
 import type { RoomState } from './repository';
 import { forgetValidatedRow } from './validated_row';
@@ -13,13 +14,13 @@ export function purgeRoom(storage: DurableObjectStorage): void {
   forgetValidatedRow(storage);
   for (const table of ['room_record', 'entry_limits', 'action_limits', 'deadlines']) {
     if (
-      !storage.sql
+      !roomSql(storage)
         .exec("SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?", table)
         .toArray().length
     )
       continue;
     if (table === 'room_record')
-      storage.sql.exec('UPDATE room_record SET state = NULL WHERE singleton = 1');
-    else storage.sql.exec(`DELETE FROM ${table}`);
+      roomSql(storage).exec('UPDATE room_record SET state = NULL WHERE singleton = 1');
+    else roomSql(storage).exec(`DELETE FROM ${table}`);
   }
 }

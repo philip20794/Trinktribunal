@@ -1,0 +1,100 @@
+{
+  "formatVersion": 1,
+  "date": "2026-10-28T08:19:48.236Z",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "cpu": "AMD Ryzen 5 5600XT 6-Core Processor            ",
+    "physicalMemoryBytes": 17101369344,
+    "node": "v24.13.0"
+  },
+  "scope": "Local workerd test binding, not internet latency or Cloudflare billing. SQL read counts include test inspection; synthetic rate-token resets are excluded.",
+  "measurements": [
+    {
+      "scenario": "normal-eight-person-50-cases-7-rules",
+      "metrics": {
+        "incomingFrames": 2125,
+        "incomingBytes": 385185,
+        "outgoingFrames": 12349,
+        "outgoingBytes": 52562938,
+        "maxFrameBytes": 6742,
+        "projections": 11022,
+        "maxProjectionBytes": 6742,
+        "actions": 1322,
+        "acknowledgements": 1322,
+        "errors": 1,
+        "authentications": 3,
+        "reconnects": 2,
+        "sqlCalls": 39290,
+        "sqlFailures": 0,
+        "sqlRowsRead": 123409,
+        "sqlRowsWritten": 9786,
+        "roomWrites": 1275,
+        "serializedStateBytes": 220112596,
+        "maxStateBytes": 336101,
+        "alarmInvocations": 1,
+        "alarmWrites": 1275
+      },
+      "receipts": 1260
+    },
+    {
+      "scenario": "all-judges-eight-person-50-cases-7-rules",
+      "metrics": {
+        "incomingFrames": 2575,
+        "incomingBytes": 602843,
+        "outgoingFrames": 16399,
+        "outgoingBytes": 69923243,
+        "maxFrameBytes": 6069,
+        "projections": 14622,
+        "maxProjectionBytes": 6069,
+        "actions": 1772,
+        "acknowledgements": 1772,
+        "errors": 1,
+        "authentications": 3,
+        "reconnects": 2,
+        "sqlCalls": 47940,
+        "sqlFailures": 0,
+        "sqlRowsRead": 150409,
+        "sqlRowsWritten": 12036,
+        "roomWrites": 1725,
+        "serializedStateBytes": 395307037,
+        "maxStateBytes": 449900,
+        "alarmInvocations": 1,
+        "alarmWrites": 1725
+      },
+      "receipts": 1710
+    },
+    {
+      "scenario": "single-reconnect",
+      "metrics": {
+        "incomingFrames": 1,
+        "incomingBytes": 287,
+        "outgoingFrames": 3,
+        "outgoingBytes": 2599,
+        "maxFrameBytes": 2119,
+        "projections": 1,
+        "maxProjectionBytes": 2119,
+        "actions": 0,
+        "acknowledgements": 0,
+        "errors": 0,
+        "authentications": 1,
+        "reconnects": 1,
+        "sqlCalls": 43,
+        "sqlFailures": 0,
+        "sqlRowsRead": 157,
+        "sqlRowsWritten": 8,
+        "roomWrites": 1,
+        "serializedStateBytes": 4812,
+        "maxStateBytes": 4812,
+        "alarmInvocations": 0,
+        "alarmWrites": 2
+      }
+    },
+    {
+      "scenario": "ten-parallel-eight-person-rooms",
+      "samples": 100,
+      "p95ActionToAckMs": 199,
+      "maxActionToAckMs": 233
+    }
+  ]
+}

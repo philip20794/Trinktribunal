@@ -5,7 +5,14 @@ import { createRoomMessage } from '../../src/protocol/room_message';
 import { protocolMetadata } from '../../src/protocol/room_message.generated';
 import { attachment } from '../../src/room/sockets';
 import { roomInPhase } from './game_phase_helpers';
-import { authenticated, cleanupPeers, requestId, connect, auth } from './socket_helpers';
+import {
+  authenticated,
+  cleanupPeers,
+  requestId,
+  connect,
+  auth,
+  framesFromServerMessage,
+} from './socket_helpers';
 import { result } from './all_judges_helpers';
 
 afterEach(cleanupPeers);
@@ -48,8 +55,7 @@ it('a pre-upgrade live attachment gets an explicit mismatch and can resume the s
   const f = await roomInPhase(true, 'numbers');
   const member = f.members[2]!;
   await f.snapshot(member.peer);
-  const before = await f.read(),
-    frameStart = member.peer.frames.length;
+  const before = await f.read();
   await runInDurableObject(f.room.stub, (_room, ctx) => {
     const socket = ctx.getWebSockets().find((socket) => {
       const info = attachment(socket);
@@ -62,12 +68,15 @@ it('a pre-upgrade live attachment gets an explicit mismatch and can resume the s
     socket.serializeAttachment(legacy);
   });
   await evictDurableObject(f.room.stub);
-  member.peer.send(createRoomMessage('ping', { requestId: requestId() }));
+  const frames = await framesFromServerMessage(
+    f.room.stub,
+    member.credential.playerId,
+    createRoomMessage('ping', { requestId: requestId() }),
+  );
   expect(await result(member.peer)).toMatchObject({ type: 'error', code: 'AVATAR_MISMATCH' });
   expect(await member.peer.closed()).toBe(4400);
-  expect(
-    member.peer.frames.slice(frameStart).every((frame) => JSON.parse(frame).type === 'error'),
-  ).toBe(true);
+  expect(frames).toHaveLength(1);
+  expect(frames.every((frame) => JSON.parse(frame).type === 'error')).toBe(true);
   const resumed = await authenticated(f.room.code, member.credential);
   expect(resumed.identity.playerId).toBe(member.credential.playerId);
   expect(resumed.identity.handshake.avatarVersion).toBe(protocolMetadata.avatarVersion);

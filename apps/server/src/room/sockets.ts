@@ -2,6 +2,7 @@ import type { PlayerId, RoomId, RoomMessage } from '../protocol/room_message.gen
 import { createRoomMessage, encodeRoomMessage, RoomIds } from '../protocol/room_message';
 import { protocolMetadata } from '../protocol/room_message.generated';
 import { createHash } from 'node:crypto';
+import { outgoingLocal, projectionLocal } from './metrics';
 
 export const SOCKET_LIMITS = Object.freeze({
   pendingPerRoom: 10,
@@ -93,13 +94,17 @@ export function attachment(socket: WebSocket): SocketAttachment | null {
 }
 export function sendMessage(socket: WebSocket, message: RoomMessage): void {
   if (message.type !== 'snapshot' && message.type !== 'delta') {
-    socket.send(encodeRoomMessage(message, { direction: 'server' }));
+    const raw = encodeRoomMessage(message, { direction: 'server' });
+    socket.send(raw);
+    outgoingLocal(socket, raw, message.type);
     return;
   }
   const raw = encodeRoomMessage(message, { direction: 'server', logical: true });
   const bytes = new TextEncoder().encode(raw);
+  projectionLocal(socket, bytes.length);
   if (bytes.length <= protocolMetadata.limits.frameBytes) {
     socket.send(raw);
+    outgoingLocal(socket, raw, message.type);
     return;
   }
   const size = protocolMetadata.limits.projectionChunkBytes;

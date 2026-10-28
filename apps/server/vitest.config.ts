@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 
 export default defineConfig({
   define: {
+    __TT_ENFORCE_LOCAL_BUDGET__: JSON.stringify(process.env.TT_LOCAL_BUDGET === '1'),
     __TT_PARITY_FIXTURE__: JSON.stringify(
       readFileSync(
         process.env.TT_PARITY_FIXTURE ?? '../../packages/protocol/fixtures/rules/parity/v1.json',

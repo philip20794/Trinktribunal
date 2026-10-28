@@ -1,3 +1,4 @@
+import { roomSql, stateWriteLocal } from './metrics';
 import type {
   Config,
   HistoryOffer,
@@ -62,7 +63,7 @@ export class RoomRepository {
   }
   private load(): RoomState | null {
     if (
-      !this.storage.sql
+      !roomSql(this.storage)
         .exec('SELECT name FROM sqlite_master WHERE type = ? AND name = ?', 'table', 'room_record')
         .toArray().length
     ) {
@@ -70,7 +71,7 @@ export class RoomRepository {
       return null;
     }
     return this.storage.transactionSync(() => {
-      const row = this.storage.sql
+      const row = roomSql(this.storage)
         .exec<{ state: string | null }>('SELECT state FROM room_record WHERE singleton = 1')
         .toArray()[0];
       if (!row?.state) {
@@ -101,9 +102,11 @@ export class RoomRepository {
   }
   write(state: RoomState): void {
     forgetValidatedRow(this.storage);
-    this.storage.sql.exec(
+    const raw = JSON.stringify(state);
+    roomSql(this.storage).exec(
       'INSERT OR REPLACE INTO room_record (singleton, state) VALUES (1, ?)',
-      JSON.stringify(state),
+      raw,
     );
+    stateWriteLocal(this.storage, raw);
   }
 }
