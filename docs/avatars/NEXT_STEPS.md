@@ -10,13 +10,15 @@
 | ID | Aufgabe | Status | Nächste Aktion |
 | --- | --- | --- | --- |
 | DOK-01 | Zentraler Einstieg und Architektur-/Entscheidungsdoku | **ERSTELLT** | Bei jeder weiteren Charge aktuell halten |
-| P1 | Farbmasken des gemalten männlichen Masters 09 bereinigen | **IN ARBEIT – NICHT ABGENOMMEN** | Vollformat-Diagnostik mit echtem Original durchführen, Masken korrigieren und visuell prüfen |
+| P1 | Farbmasken des gemalten männlichen Masters 09 bereinigen | **IN ARBEIT – NICHT ABGENOMMEN** | Git-Original gegen Upload-RGB vergleichen, verbleibende Haaransatz-/Brauenkanten korrigieren, Nutzersichtfreigabe einholen |
 | P2 | Zweite, stark andere weibliche Masterfigur testen | **OFFEN** | Erst nach P1, keine Übertragung hartcodierter Koordinaten |
 | P3 | Eingebrannte Wand/Schild versus gemeinsame SVGs lösen | **OFFEN** | Alternativen visuell/technisch vergleichen |
 | P4 | Methode/Format/Paletten abschließend entscheiden | **BLOCKIERT durch P1–P3** | Vorher kein verbindliches Manifest |
 | P5 | Produktions-Assets, Registry/Validator, Exportregeln definieren | **BLOCKIERT durch P4** | TECH-02 erst dann starten |
 | P6 | Flutter-Renderer/-Editor, Offline-Cache, Migration, Multiplayer | **BLOCKIERT durch P5** | v2 bleibt unverändert |
 | P7 | Weitere Masterfiguren bearbeiten, QA und Release-Gates | **BLOCKIERT durch P4/P5** | Kein Serienlauf ohne funktionierenden Piloten |
+
+**Aktuellster P1-Stand – v3 Maskenüberarbeitung (28.10.2026, abends):** [Review und Messprotokoll](reviews/p1-male09-refinement-v3-2026-10-28.md). `p1_mask_refinement_v3.py` erweitert die Schläfenhaar-Maske, verbessert kleine Brauen-Lücken und reduziert extreme Grau-/Blond-Highlights. `p1_refinement_v3_review.py` erzeugt 14 Ansichten und fünf Vergleichsbögen im Originalausschnitt; `test_p1_refinement_v3.py` ist hinzugefügt. **Tatsächlich lokal** am Nutzerupload geprüft: aus den archivierten v2-Graustufenmasken erzeugte v3-Variante, 14 Ansichten, 0 Pixeländerungen außerhalb der Masken, 0 in den geprüften Wand-/Schildflächen, 0 starke Maskenüberschneidungen bei Alpha > 0,35. Ein **End-to-End-Durchlauf der neuen Git-Skripte am Git-Master** wurde noch nicht nachgewiesen. Die komplette 1:1-Sichtprüfung zeigt weiterhin feine helle Stirn-/Haargrenzen und braune/dunkle Restpixel; keine visuelle Nutzerabnahme. **Kein P2, kein Flutter-/Runtime-Wechsel.** Die älteren P1-Zwischenstände unten dokumentieren den jeweiligen historischen Zeitpunkt, nicht mehr den aktuellen Sachstand.
 
 **P1-Zwischenstand (28.10.2026):** [Detaildiagnostik und Grenzen](reviews/p1-detail-diagnostics-2026-10-28.md). Ein neues Prüftool erzeugt acht unskalierte Vorher-/Nachher-Ausschnitte sowie Messwerte für Haut-, Haar-, Shirt- und Mischvarianten. Der Windows-abhängige Schriftpfad in `validate_pilot.py` ist durch den vorhandenen Font-Fallback ersetzt. Syntaxprüfung und Smoke-Test mit synthetischem Raster bestanden. **Die echte PNG-Referenz konnte über den GitHub-Zugriff nicht als Bild gelesen werden; deshalb wurden die Masken noch nicht überarbeitet, keine echten Kontaktbögen geprüft und keine visuellen Freigaben erteilt.** P1 bleibt die nächste aktive Aufgabe, P2 bleibt offen.
 
@@ -36,7 +38,7 @@
 
 **Quelle:** `docs/avatars/references/master-male-09-approved.png` (1229 × 1536, Original unverändert).  
 **Aktueller Code:** `artwork/avatars/v3/prototypes/male_09_color_masks/color_mask_pilot.py`, `validate_pilot.py`.  
-**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md). [Maskenbearbeitung und Zugriffsstatus](reviews/p1-mask-edit-workbench-2026-10-28.md). [Aktueller Roundtrip-Bericht](reviews/p1-mask-roundtrip-2026-10-28.md). [Realer Upload-Bildvergleich](reviews/p1-male09-uploaded-original-visual-2026-10-28.md). [Zweite reale Maskenrunde](reviews/p1-male09-refinement-v2-2026-10-28.md).
+**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md). [Maskenbearbeitung und Zugriffsstatus](reviews/p1-mask-edit-workbench-2026-10-28.md). [Aktueller Roundtrip-Bericht](reviews/p1-mask-roundtrip-2026-10-28.md). [Realer Upload-Bildvergleich](reviews/p1-male09-uploaded-original-visual-2026-10-28.md). [Zweite reale Maskenrunde](reviews/p1-male09-refinement-v2-2026-10-28.md). [Aktueller P1-v3-Review](reviews/p1-male09-refinement-v3-2026-10-28.md).
 
 **Konkrete Arbeit:**
 
