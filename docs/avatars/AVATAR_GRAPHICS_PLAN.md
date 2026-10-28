@@ -24,7 +24,7 @@ Die finale Komposition soll beim Editor (ca. 320 px) detailliert sein und auf de
 
 **Bereits vorhanden (bestehendes v2-System, nicht neue Kunst):** Flutter-`CustomPainter` in `apps/client/lib/design/avatar_view.dart`, versioniertes Avatar-Manifest, Konfiguration und lokaler/Online-Editor; TT-060 dokumentiert 53 Auswahloptionen in 14 Kategorien, Tests sowie v1→v2-Migration. Die v2-Grafik wird als **technische Fallback-Implementierung** weitergeführt.
 
-**Bisher visuell erstellt:** generierter Konzeptbogen vom **28.10.2026** mit zehn unterschiedlichen Mugshot-Figuren und modularen Beispielen; der Nutzer hat diese Stilrichtung ausdrücklich bestätigt. Er zeigt markante Köpfe/Körper, Kleidung, festes Schild und gemeinsame Messwand. **Aktueller ART-01-Status (28.10.2026): Acht Masterfiguren sind im Chat visuell freigegeben (4 männlich, 4 weiblich); nur Master 01 ist bisher im Repository archiviert. Auf Nutzerwunsch wird zusätzlich Master 09 als Bonusreferenz erstellt.** Technisch verwendbare Einzelebenen wurden noch nicht abgenommen. Die verbindliche textuelle Beschreibung steht in [STYLE_GUIDE.md](STYLE_GUIDE.md). Der [freigegebene Konzeptbogen](references/concept-sheet-approved-2026-10-28.png) liegt als Stilreferenz im Repository; er ist nicht mit validierten Laufzeitassets gleichzusetzen. Herkunft: am 28.10.2026 im Projektgespräch KI-generierter Konzeptbogen, vom Nutzer als gewünschte Stilrichtung bestätigt und anschließend in Git hochgeladen. Die Produktionsfreigabe einzelner Ebenen steht weiterhin aus.
+**Bisher visuell erstellt:** generierter Konzeptbogen vom **28.10.2026** mit zehn unterschiedlichen Mugshot-Figuren und modularen Beispielen; der Nutzer hat diese Stilrichtung ausdrücklich bestätigt. Er zeigt markante Köpfe/Körper, Kleidung, festes Schild und gemeinsame Messwand. **Aktueller ART-01-Status (28.10.2026): Die ersten acht Masterfiguren sind im Chat visuell freigegeben; seit dem Upload des Nutzers liegen **alle zehn Masterfiguren (5 männlich, 5 weiblich)** unter `docs/avatars/references/` im Repository. Master 09/10 sind zusätzliche, vom Nutzer ausgewählte Referenzen. Gemeinsame Stil-/Kompositionsabnahme und technische Alpha-Ebenen stehen noch aus.** Technisch verwendbare Einzelebenen wurden noch nicht abgenommen. Die verbindliche textuelle Beschreibung steht in [STYLE_GUIDE.md](STYLE_GUIDE.md). Der [freigegebene Konzeptbogen](references/concept-sheet-approved-2026-10-28.png) liegt als Stilreferenz im Repository; er ist nicht mit validierten Laufzeitassets gleichzusetzen. Herkunft: am 28.10.2026 im Projektgespräch KI-generierter Konzeptbogen, vom Nutzer als gewünschte Stilrichtung bestätigt und anschließend in Git hochgeladen. Die Produktionsfreigabe einzelner Ebenen steht weiterhin aus.
 
 **Rechte:** Das vom Nutzer gezeigte ursprüngliche Spielbild dient ausschließlich als *visuelle Inspiration*, nicht als in der App verwendbare oder nachzuzeichnende Grafik. Eigene, neu erzeugte Karikaturfiguren ohne kopierte Texte, Namen und Charakterdesigns erstellen. Herkunft/Verwendung jedes finalen Bildes dokumentieren; das offene Release-Gate **TT-065** bleibt bestehen.
 
@@ -78,6 +78,17 @@ Je nach Teil sind zusätzliche Vor-/Hinterebenen nötig; **das Schild bleibt una
 
 **Farbvarianten:** Haut-, Haar- und Stofffarben als kontrollierte Paletten. Recoloring nur bei tatsächlich maskenfähigem Material; bei malerischen Highlights keine simple Vollbildtönung, welche die Schattierung zerstört. Alternativ freigegebene Farbexports.
 
+### 4.1 Farb-Prototyp für v3 (Vorschlag, noch nicht technisch abgenommen)
+
+Das bestehende v2-Manifest enthält 5 Hautton-IDs (`light`, `medium`, `brown`, `dark`, `olive`), 5 Haarfarben (`brown`, `black`, `gold`, `gray`, `copper`) und 5 Oberteilfarben. Diese IDs sind **v2-Bestand**, nicht automatisch die endgültige v3-Palette.
+
+- **Nicht zehn Figuren in verschiedenen Haut-/Haarfarben neu rendern:** Die zehn vollständigen Bilder sind Zeichenstil- und Formreferenzen, keine fertigen modularen Einzelassets.
+- **Ebenen für variable Farben:** Kopfhaut, Hals, Ohren, Nase, Hände und Arme erhalten aufeinander abgestimmte Haut-Farbmasken. Haar vorne/hinten und Bart (sofern vorhanden) eigene Masken. Stofffarbe über definierte Kleidungsstoff-Masken. Augenweiß, Iris, Zähne, Schild und Hintergrund bleiben unabhängig.
+- **Schattierungsqualität:** Neutralisierte Farbgrundlage plus Farbmaske/Licht-Schatten-Information oder alternative geprüfte Palettenexports. Warme Glanzlichter, dunkle Linien, Textur und Nasen-/Wangenröte müssen bei hellen und dunklen Hauttönen erhalten bleiben. Keine pauschale RGBA-Tönung des gesamten fertigen PNG.
+- **Farbtest vor Serienproduktion:** Mindestens eine schlanke und eine breite Basisfigur, zwei extreme Hauttöne, hell/dunkel/grau/rot sowie eine Fantasie-Haarfarbe testen. 320/96/48-px-Vorschau und Kanten/Alpha kontrollieren. Wenn der Algorithmus malerische Details sichtbar beschädigt, für betroffene Teile geprüfte Farbexports statt Live-Recoloring einsetzen.
+- **Noch festzulegen:** endgültige v3-Haut-/Haar-/Stoffpaletten, stabile Palette-IDs, Maskenformat (separat oder kanalbasiert), Farbtransformation, Vorschaucache und Speicherbedarf. In TECH-01 testen und in TECH-02 schema-/versionsfest eintragen. Multiplayer überträgt Farb-IDs/Teil-IDs, keine Bilddateien.
+
+
 **Renderer:** Aufbau in Flutter über deklarative, versionierte Ebenen und Manifest, separates Asset-Caching/Precache; v2-Painter bleibt als Fallback. Kompatibilität auf Android und Web (einschließlich Offline-Bundle) testen. Im Multiplayer v3-Handshake/DTO-Änderung erst nach Migrationskonzept vornehmen; alte v2-Profile dürfen nicht still falsch angezeigt werden.
 
 **Budget (zunächst Messziele, keine Behauptung):** 48/96/320-px-Vorschauen ohne sichtbare Naht/Clipping, 3–20 Figuren auf dem Feld, keine Netzrequests für Grafiken; Asset-Bundle-Größe, Peak-RAM, Lade- und Renderzeiten auf Zielgeräten messen. Nach Prototyp feste Grenzwerte nachtragen.
@@ -95,7 +106,7 @@ Je nach Teil sind zusätzliche Vor-/Hinterebenen nötig; **das Schild bleibt una
 | ID | Paket / Ziel | Soll | Status 28.10.2026 | Abhängigkeit |
 | --- | --- | ---: | --- | --- |
 | ART-00 | Stilbibel, No-Gos, Referenz-Workflow | 1 | **ENTWURF** – Konzeptstil bestätigt | – |
-| ART-01 | vollständige Masterfiguren, davon 4 männlich / 4 weiblich | 8 | **IN_ARBEIT** – **8/8 visuell freigegeben** (4 männlich / 4 weiblich), davon **1/8 in Git archiviert**; Master 02–08 noch hochzuladen; Bonus-Master 09 in Vorbereitung | ART-00 |
+| ART-01 | vollständige Masterfiguren, davon 4 männlich / 4 weiblich | 8 | **REVIEW** – alle ursprünglichen 8 visuell akzeptiert und alle 10 Masterbilder (5 männlich / 5 weiblich) in Git archiviert; gemeinsame Galeriefreigabe, Leinwand-/Schildangleichung und Alpha-Layer-Technik noch offen | ART-00 |
 | ART-02 | eine feste Messwand | 1 | OFFEN | ART-01 |
 | ART-03 | ein festes Namensschild, Text-Safe-Area | 1 | OFFEN | ART-01 |
 | ART-04 | Griffsystem: Handrücken/Finger, ggf. Körperfamilien | 1 Basis-Set + nötige Varianten | OFFEN | ART-03 |
@@ -188,36 +199,35 @@ Nächster Schritt: ...
 | 28.10.2026 | Technische Alpha-/Runtime-Exportformate und exakte Canvas-Anker im Prototyp validieren | OFFEN – TECH-01 |
 | 28.10.2026 | Freigabe einzelner Masterfiguren und daraus abgeleiteter Grafikbausteine | OFFEN – ART-01 (8/8 visuell angenommen, Archivierung/technische Abnahme offen) |
 | 28.10.2026 | Master 08: der vom Nutzer erneut hochgeladene Boho-Charakter wird **anstelle** des zuvor vorgeschlagenen Muskel-/Kurzhaar-Konzepts freigegeben | FEST |
-| 28.10.2026 | Zusätzliches Charakterkonzept Master 09 auf Nutzerwunsch; keine Änderung der ursprünglichen acht Referenz-Gates | FEST |
+| 28.10.2026 | Zusätzliche Master 09 und 10 auf Nutzerwunsch; ursprünglicher Acht-Figuren-Sollumfang bleibt Initialgate | FEST |
+| 28.10.2026 | Alle zehn Master-Kompositionsbilder im Git archiviert; nächster Schritt Gesamtreview/Layer-Prototyp, nicht weitere Figurenproduktion | FEST |
+| 28.10.2026 | v3-Haut-/Haar-/Stofffarben über maskengestützte Farbvarianten oder qualitätsgesicherte Farbexports erproben; exaktes Verfahren noch offen | VORSCHLAG – TECH-01 |
 
 ## 10. Aktueller ART-01-Fortschritt und nächster Auftrag
 
-**Abgleich mit Git am 28.10.2026:** In `docs/avatars/references/` liegen der freigegebene Konzeptbogen und `master-male-01-approved.png`. Die übrigen Masterbilder 02–08 sind im Chat visuell angenommen, aber **noch nicht im Repository archiviert**. Visuelle Zustimmung ist keine technische Abnahme einer modularen Alpha-Grafik.
+**Repository-Abgleich am 28.10.2026:** In `docs/avatars/references/` befinden sich **zehn Master-Kompositionsbilder** mit den eindeutigen Dateinamen unten sowie der ursprüngliche Konzeptbogen. Damit sind **5 männliche und 5 weibliche Referenzdateien archiviert**. Die zehn vollständigen PNGs sind **keine** einzeln maskierten, transparenten Baukastengrafiken; aus dem Dateinamen `approved` folgt keine technische Freigabe.
 
-| Charge / Master | Profil | Kennzeichen und bewusster Kontrast | Visuelles Review | Git-Archiv |
-| --- | --- | --- | --- | --- |
-| 2026-10-28-01 / Master 01 | männlich | Sehr schlank; langer Kopf, abstehende Ohren, rote große Nase, braune Wuschelhaare, Bartstoppeln, violettes T-Shirt | **angenommen** | **vorhanden:** [master-male-01-approved.png](references/master-male-01-approved.png) |
-| 2026-10-28-02 / Master 02 | weiblich | Rundes Gesicht, kompakte kurvige Figur; braunes hochgestecktes Haar, dunkles Oberteil, lebendige Augen | **angenommen** | **fehlt:** vorgesehen `master-female-02-approved.png` |
-| 2026-10-28-03 / Master 03 | männlich | Breiter, kantiger Kopf, massiger Oberkörper, dichter dunkler Bart, olivgrünes Hemd, grimmige Mimik | **angenommen** | **fehlt:** vorgesehen `master-male-03-approved.png` |
-| 2026-10-28-04 / Master 04 | weiblich | Extrem dünn, langer kantiger hexenartiger Kopf, ausgeprägte Hakennase, spitze abstehende Ohren, asymmetrisches dunkellila Kurzhaar, dunkle Kleidung | **angenommen** | **fehlt:** vorgesehen `master-female-04-approved.png` |
-| 2026-10-28-05 / Master 05 | männlich | Älter, gedrungen und füllig; fast kahler Kopf, rundes Gesicht, schiefes Lächeln, Hawaiihemd | **angenommen** | **fehlt:** vorgesehen `master-male-05-approved.png` |
-| 2026-10-28-06 / Master 06 | weiblich | Fülliger Punk-Charakter mit breiten Schultern und kräftigen Armen, blondem asymmetrischem Undercut, markant anderen Ohren, Piercings, zerrissenem Oberteil | **angenommen** | **fehlt:** vorgesehen `master-female-06-approved.png` |
-| 2026-10-28-07 / Master 07 | männlich | Extrem hagerer älterer Mann, dreieckiges eingefallenes Gesicht, krumme Nase, wilde graue Haare, Punk-Biker-Look; nach Nutzerwunsch **sehr langer grauer Bart fast bis zum Bauchnabel** (letzte Fassung maßgeblich) | **angenommen** (nach Bartrevision) | **fehlt:** vorgesehen `master-male-07-approved.png` |
-| 2026-10-28-08 / Master 08 | weiblich | Dunkle, lange, voluminöse Locken, rotes gemustertes Haarband, spitze Ohren, Nasenring und goldene Ohrringe, Tattoo, weiße schulterfreie Bluse, dunkles Korsett und burgunderrote Stoffschichten; Nutzer hat **genau diesen zuvor generierten Boho-Entwurf erneut als Bild hochgeladen und ausdrücklich gewählt** | **angenommen** (ausdrückliche Nutzerwahl ersetzt frühere Ablehnung) | **fehlt:** vorgesehen `master-female-08-approved.png` |
-| 2026-10-28-09 / Master 09 (zusätzliche Referenz) | männlich | Ziel: neue, deutlich andere Silhouette; sehr großer kugelrunder Kopf auf schmalem Oberkörper, eng anliegende Kurzlocken, kleine Ohren, Knopfnase, markante Zähne und anderes Haut-/Kleidungsfarbschema | **OFFEN / vor Erstellung** | **fehlt:** vorgesehen `master-male-09-approved.png` |
+| Master | Profil | Original im Git | Vorläufiger visueller Status |
+| --- | --- | --- | --- |
+| 01 | männlich | [master-male-01-approved.png](references/master-male-01-approved.png) | einzeln freigegeben |
+| 02 | weiblich | [master-female-02-approved.png](references/master-female-02-approved.png) | einzeln freigegeben |
+| 03 | männlich | [master-male-03-approved.png](references/master-male-03-approved.png) | einzeln freigegeben |
+| 04 | weiblich | [master-female-04-approved.png](references/master-female-04-approved.png) | einzeln freigegeben; nachträglich engere Oberkörper-Komposition |
+| 05 | männlich | [master-male-05-approved.png](references/master-male-05-approved.png) | einzeln freigegeben |
+| 06 | weiblich | [master-female-06-approved.png](references/master-female-06-approved.png) | einzeln freigegeben |
+| 07 | männlich | [master-male-07-approved.png](references/master-male-07-approved.png) | einzeln freigegeben; langer grauer Bart; nachträglich engere Komposition |
+| 08 | weiblich | [master-female-08-approved.png](references/master-female-08-approved.png) | Nutzerwahl des Boho-Charakters; nachträglich engere Komposition |
+| 09 | männlich | [master-male-09-approved.png](references/master-male-09-approved.png) | zusätzliches vom Nutzer gewähltes Motiv; engere Komposition |
+| 10 | weiblich | [master-female-10-approved.png](references/master-female-10-approved.png) | zusätzliches **vom Nutzer extern ausgewähltes Motiv**; Stilvergleich im Gesamtset offen |
 
-### Vorhandenes Original und Archivierungsbedarf
+### Nächste Produktionsaufgaben
 
-- **Master 01:** Ursprünglich im Chat erzeugt als `grimmiger_fahndungsfoto_charakter_mit_massstab.png` (PNG 1122 × 1402); inzwischen tatsächlich als `docs/avatars/references/master-male-01-approved.png` im Repository vorhanden. Es handelt sich weiterhin um eine vollständige Kompositionsgrafik, **nicht** um eine freigestellte Alpha-Ebene.
-- **Master 02–08:** Bildgenerierungen und explizite Nutzerfreigaben erfolgten im Projektgespräch am 28.10.2026. Der Nutzer lädt die angenommenen Originale selbst nach `docs/avatars/references/` hoch. Die obigen Dateinamen sind **vorgesehen**, bis deren Existenz im Repository geprüft wurde. Beim späteren Abgleich Dateiname, Bildidentität und Quelle kontrollieren und Archivzählung erst dann anpassen.
-- **Zählweise:** **8/8 visuell angenommen** (4 männlich + 4 weiblich), davon **1/8 tatsächlich archiviert**. **0/8 technisch modulare Mastersets abgenommen.** Diese drei Zähler dürfen nicht vermischt werden.
+1. **ART-01-Gesamtreview (nächster Schritt):** Kontaktbogen aus den **tatsächlich vorhandenen zehn Git-Dateien** erzeugen und gemeinsam prüfen: Konsistenz von Stil, Format, Kopfgröße, Bildausschnitt, Messwand, Schildposition/-größe sowie markante unterschiedliche Silhouetten. Bei Bedarf einzelne Master auf denselben Canvas vereinheitlichen. Keine weiteren Einzelmaster als Voraussetzung.
+2. **ART-02/03:** eine separate, unveränderliche Messwand und ein gemeinsames leeres Schild mit definierter Namens-Safe-Area erstellen. Die in Referenzbildern gezeichnete Messwand/Schild sind **nicht** produktiv als Teil jeder Körpergrafik zu verwenden.
+3. **ART-04 + TECH-01-Prototyp:** genau **eine** ausgewählte Figur exemplarisch in Haut, Kopf, Haare, Körper, Kleidung, Griffhände und Schild-Vorderfinger zerlegen bzw. **neu als kompatible transparente Ebenen zeichnen**. Feste Anker testen. Dazu den Farb-/Maskenprototyp aus §4.1 durchführen; am Anfang **keine** Massenproduktion.
+4. **Review des Prototyps:** 320/96/48 px, verschiedene Haut-/Haarfarben, mindestens drei verschiedene Kopf-/Körperkombinationen und 20 deterministische Kombinationen auf technische Artefakte prüfen. Erst danach TECH-02-Manifest/Exportpipeline festlegen und weitere Assets (ART-05–17) seriell produzieren.
+5. Bestehende v2-App nicht bei der Grafikproduktion ersetzen; v3-Renderer, Editor, Datenmigration und Multiplayer erst in TECH-03/04 integrieren.
 
-### Nächste Produktionsschritte
+**Zählweise:** **10/10 Git-Referenzen archiviert** (ursprüngliches 8er-Set plus 2 Zusatzfiguren). **0 technisch freigegebene v3-Einzelassets**; gemeinsame 10er-Galerie und Farbrecoloring noch nicht abgenommen. Die Bildreferenzen dienen dem Stil/Design und müssen vor späterem Split-/Masken-Export visuell verglichen werden.
 
-1. Fehlende, bereits angenommene Mastergrafiken 02–08 unter den oben vorgesehenen Namen archivieren und ihre Originaldateien im Git prüfen. Anschließend die Archivzählung korrigieren.
-2. **ART-01 Masterfigur 07 (männlich):** visuell angenommen; finale Bartrevision ist die gültige Chat-Referenz. Vor Zählung als archiviert den **letzten** Entwurf unter `master-male-07-approved.png` ins Git aufnehmen.
-3. **ART-01 Masterfigur 08 (weiblich): visuell angenommen.** Maßgeblich ist ausschließlich das vom Nutzer im Chat erneut hochgeladene Bild: dunkelhaarige Frau mit roten Kopftuch-Details, weißer Bluse, Korsett und vielen Schmuckelementen. Die frühere Empfehlung, diese Bildrichtung zu verwerfen, ist durch die explizite Nutzerentscheidung überholt. Dateiexistenz im Git vor Archivzählung nachweisen.
-4. **ART-01 Masterfigur 09 (männlich, zusätzlich auf Nutzerwunsch):** eine weitere ausgeprägte Kopf-/Körpersilhouette im gleichen Mugshot-Stil erzeugen, **noch nicht freigegeben**. Dieser Bonus-Entwurf erweitert die Referenzgalerie, ändert aber nicht rückwirkend den initialen Acht-Figuren-Abnahmeumfang oder die ART-/TECH-Gates.
-5. Kontaktbogen der acht ursprünglich geplanten **archivierten und angenommenen** Figuren prüfen; bei Annahme von Master 09 auch diesen optional integrieren. Erst nach visuellem Gesamtreview ART-02 (feste Messwand), ART-03 (Schild) und den Schichtungsprototyp angehen.
-
-**Produktionsregel:** Pro neuer Charge genau eine vollständige Masterfigur erzeugen und dem Nutzer zeigen. Keine Chat-Grafik ohne tatsächlichen Git-Upload als archiviert markieren. Keine Änderung des produktiven Flutter-Codes in ART-01.
+**Produktionsregel:** Neue Baukastenteile einzeln reviewen und Quelle, Anker, Alpha, Kompatibilität sowie Farbtests im Register dokumentieren. Kein Eingriff in den produktiven Flutter-v2-Code vor bestandenem v3-Prototyp.
