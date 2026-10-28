@@ -20,6 +20,9 @@
 | D-11 | Vorgehen bei bereits eingebrannter Messwand und Schild im Master | **OFFEN** | Separierte gemeinsame Grafiken existieren, wurden aber noch nicht korrekt mit Original-PNGs kombiniert |
 | D-12 | Flutter-Rendering/Caching: on demand, vorab exportiert oder gemischt | **OFFEN** | Bisher ausschließlich Python-/Grafiktests; keine Runtime-/Performance-Messungen |
 | D-13 | Endgültige Anzahl freier Haarstile, Gesichts-/Körpermerkmale und Accessoires | **OFFEN** | Reine Farbmasken können nur Farben, nicht Geometrien verändern |
+| D-14 | **Quellenidentität vor Maskenfreigabe zwingend per Git-Blob/PNG-Raster verifizieren** | **FEST als technisches Prüfgate** | [Original-ZIP-Abgleich](reviews/p1-male09-exact-git-master-2026-10-28.md): echtes PNG 1198×1313, ältere 1229×1536-Arbeitskopien nicht identisch; keine Produktion auf bloß visuell ähnlicher Datei |
+
+**Korrektur zur historischen V4-Beschreibung (28.10.2026):** Der erst später als ZIP eingereichte und bytegenau verifizierte Git-Master hat **1198×1313** und eine Lederweste. Die früheren Maskenarbeiten mit **1229×1536** und violettem T-Shirt beruhen **nicht** auf diesen Originalbytes. Entsprechende Behauptungen in älteren Versuchsabschnitten sind durch den [maßgeblichen Git-Originalbericht](reviews/p1-male09-exact-git-master-2026-10-28.md) ersetzt. Der erste wirkliche Git-Original-Pilot ist `p1_native_git_master.py` und bleibt wegen sichtbarer Artefakte **nicht abgenommen**.
 
 ## Technische Versuche – was wirklich passiert ist
 
