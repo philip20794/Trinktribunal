@@ -19,7 +19,7 @@ Die vom Nutzer als ZIP gelieferte Datei master-male-09-approved.png ist mit dem 
 Neuer [Nativ-Pilot](../../../artwork/avatars/v3/prototypes/male_09_color_masks/p1_native_git_master.py), auf den exakten Git-Blob gebunden:
 
 - Fünf getrennte 8-Bit-Graustufenmasken: Haut, Kopfhaar, Brauen, Gesichtsbehaarung und **Teilflächen der Lederweste**.
-- 14 Original-/Farbansichten, Maskenoverlay, 1:1-Varianten und Vorschaubilder bei 320×400, 96×120 und 48×60 Pixeln.
+- 14 Original-/Farbansichten, Maskenoverlay, 1:1-Varianten und Vorschaubilder bei 320×400, 96×120 und 48×60 Pixeln. Die Vorschaubilder sind **mit proportionalem Innenbild und Rand** gerendert, nicht verzerrt.
 - Nur die Lederflächen werden probeweise gefärbt, nicht das cremefarbene Hemd, die Schmuckteile oder der Hintergrund. Dies ist **keine vollständige freie Kleidungsfarbauswahl**.
 - Die getestete ausführende Version wurde auf dem unveränderten Original im Container ausgeführt; die Nativ-Pipeline ist über das Skript reproduzierbar und [einfache Regressionstests](../../../artwork/avatars/v3/prototypes/male_09_color_masks/test_p1_native_git_master.py) sind im Git ergänzt.
 
