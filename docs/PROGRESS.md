@@ -126,7 +126,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-062 | Web-/Android-Performance messen und Wasm entscheiden | ERLEDIGT | Beide Builds kompilieren; JS bleibt D-18-Releaseweg, Offlinepaket −68,6 %, 20-Figuren-/50-Umsortierungs-Units grün; Gerätebudgets übersprungen, später manuell testen · [Performance](qa/performance.md). |
 | TT-063 | Nachrichten, Storage und Free-Tier-Budget messen | ERLEDIGT | Lokale SQL-/Frame-/Alarmzähler, beide 8×50+7-Modi und zehn parallele Achterräume: p95 199 ms; Kostenmodell mit 50 % Reserve und ungemessenem Edge-Billing · [Beleg](qa/cost-model.md). |
 | TT-064 | Bedienbarkeit, Fehler- und Leerzustände final prüfen | ERLEDIGT | 56 neue Semantik-/Tastatur-/Fehler-/200%-Tests, Live-Fehlertexte, personengebundener Fokus, Dialog-Escape und Wiederholungsweg; 411 Flutter-Tests und Builds grün · [M7](qa/M7.md). |
-| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 18 Paketen/119 Dateien und Releasegate geprüft; sechs Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
+| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 18 Paketen/123 Dateien und Releasegate geprüft; sechs Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
 | TT-066 | Android-Releaseartefakte und Signierung vorbereiten | OFFEN | — |
 | TT-067 | Pages-Webpaket und Worker lokal releasefertig prüfen | OFFEN | — |
 | TT-068 | Spielhilfe, Datenschutz und lokale Wartung dokumentieren | OFFEN | — |
@@ -199,7 +199,7 @@ Am 26.10.2026 lokal durchgeführt:
 ```text
 Branch: task/TT-072-court-design-system; enthält TT-071-Commit 1ab759d und Nutzerstand 8a54207
 Aktueller Beleg: docs/qa/M7_5.md. TT-071/072 abgeschlossen: 140 Node-/486 Flutter-Tests, Analyze/Format grün; Server unverändert mit 446 geprüften Tests aus M7.4. Frische Web-/Offline-/APK-Builds im M7.5-Beleg.
-Naechster Schritt: TT-073 – Startseite, Profil mit dynamischem Namensschild und kompakteren Kategorien, Einstellungen/lokale Einrichtung. Vor Änderungen Gitstand prüfen. Drei Quarantänemotive nicht bündeln. TT-065 extern offen (18 Pakete/119 Dateien, sechs ungeklärte Runtime-Pakete); Avatar v3 separater P1-Workstream. Browser/E2E übersprungen, später manuell testen.
+Naechster Schritt: TT-073 – Startseite, Profil mit dynamischem Namensschild und kompakteren Kategorien, Einstellungen/lokale Einrichtung. Vor Änderungen Gitstand prüfen. Drei Quarantänemotive nicht bündeln. TT-065 extern offen (18 Pakete/123 Dateien, sechs ungeklärte Runtime-Pakete); Avatar v3 separater P1-Workstream. Browser/E2E übersprungen, später manuell testen.
 Größeren TT-071/072-Stand nach main pushen, danach TT-073 fortsetzen.
 Keine GitHub Actions oder Cloudflare-Deployments
 ```
