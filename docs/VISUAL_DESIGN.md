@@ -2,6 +2,10 @@
 
 > Designvorgabe für die geplante Flutter-App (Android und Web). Grundlage ist die im Chat gezeigte Illustration mit drei karikierten Personen vor einer Polizeifoto-Messwand. Sie dient als **Stilreferenz**, nicht als zu kopierende Grafik.
 
+## Aktuelle Screenreferenzen (28.10.2026)
+
+Die vom Nutzer ausgewählte **UI-Layout- und Stilrichtung** ist als Bildsammlung in [docs/design/references/screens](design/references/screens/README.md) dokumentiert. Bei der visuellen Überarbeitung sollen **alle App-Seiten** ungefähr diesem illustrierten, dunkel-warmen Gerichtssaal-Look folgen. Die Beispielbilder legen keine neuen Spielregeln oder Abläufe fest; bisherige Funktionsvorgaben bleiben maßgeblich. Die Avatar-Produktion wird separat geplant.
+
 ## 1. Stil und Spielwelt
 
 **Trinktribunal** wirkt wie eine humorvolle Mischung aus Gerichtssaal, Verbrecherkartei und Partyspiel. Der Look ist handgezeichnet, charmant schräg und bewusst nicht fotorealistisch: überzeichnete Köpfe, auffällige Nasen, Frisuren und Gesichtsausdrücke, unregelmäßige Konturen, einfache Flächen und dezente Schattierung.
