@@ -149,7 +149,7 @@
   "phoneManageRoster": "Gruppe verwalten",
   "rosterReload": "Gruppe erneut laden",
   "rosterOrder": "Eure Sitzreihenfolge",
-  "rosterOrderHelp": "Die erste Person richtet zuerst. Verschiebt die Gruppe mit dem Griff oder den Pfeilen. Gleiche Namen werden durch den Sitzplatz unterschieden.",
+  "rosterOrderHelp": "Folgt den nummerierten Plätzen im Schlangenverlauf. Figur und Ziel antippen, ziehen oder mit den Pfeilen verschieben; per Tastatur Alt + Auf/Ab. Änderungen fügen die Person am Ziel ein.",
   "rosterEmpty": "Noch keine Personen. Fügt eure Gruppe hinzu.",
   "rosterEdit": "Bearbeiten",
   "rosterRemove": "Entfernen",
@@ -727,5 +727,7 @@
   "avatarOptiontricorn": "Dreispitz",
   "avatarOptionbadge": "Gerichtsabzeichen",
   "retry": "Erneut versuchen",
-  "settingsLoadFailed": "Die Einstellungen sind gerade nicht verfügbar. Bitte erneut laden oder zurückgehen."
+  "settingsLoadFailed": "Die Einstellungen sind gerade nicht verfügbar. Bitte erneut laden oder zurückgehen.",
+  "benchRowDirection": "Sitzfolge {from} bis {to}",
+  "benchControls": "Sortiersteuerung"
 }

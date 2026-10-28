@@ -15,7 +15,7 @@ abstract final class CourtTokens {
   static const List<double> spacing = [4, 8, 12, 16, 24, 32, 48];
 
   static int bankColumns(double availableWidth, double textScale) =>
-      availableWidth >= 600 && textScale <= 1.5 ? 3 : 2;
+      availableWidth >= 324 && textScale <= 1.5 ? 3 : 2;
   static Duration motionDuration(bool reducedMotion) =>
       reducedMotion ? Duration.zero : const Duration(milliseconds: 140);
 }

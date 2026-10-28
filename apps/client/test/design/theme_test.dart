@@ -22,9 +22,9 @@ void main() {
     }
   });
   test('responsive bank and reduced-motion tokens', () {
-    for (final width in [360.0, 390.0, 768.0, 1440.0]) {
+    for (final width in [288.0, 323.0, 324.0, 360.0, 390.0, 768.0, 1440.0]) {
       expect(CourtTokens.bankColumns(width, 2), 2);
-      expect(CourtTokens.bankColumns(width, 1), width >= 600 ? 3 : 2);
+      expect(CourtTokens.bankColumns(width, 1), width >= 324 ? 3 : 2);
     }
     expect(CourtTokens.motionDuration(true), Duration.zero);
     expect(

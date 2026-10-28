@@ -13,7 +13,7 @@ Stand: 27.10.2026. Konkretisierung von D-15; keine neue Fachentscheidung.
 | Abstandsskala | 4, 8, 12, 16, 24, 32, 48 px |
 | Inhaltsbreite / breiter Einstieg | maximal 760 px / ab 840 px |
 | Bedienelemente | mindestens 48 px, Inhalt scrollbar und umbrechend |
-| Bankspalten | 2, ab 600 px verfügbarem Platz 3; bei Textskalierung >150 % wieder 2 |
+| Bankspalten | 2, ab 324 px verfügbarem Platz 3; bei Textskalierung >150 % wieder 2 |
 | Bewegung | höchstens 140 ms, reduzierte Bewegung 0 ms |
 
 Roboto 400/500/700 liegt lokal als `CourtRoboto` bei. Keine externen Schriftabrufe erforderlich. Semantische Farben haben auf Papier jeweils mindestens 4,5:1 Kontrast (Unit-Test). Skalierung bleibt systemgesteuert; die Galerie bietet zusätzlich 200 % zur Kontrolle. Keine künstliche Begrenzung der Textskalierung.
@@ -37,3 +37,9 @@ Keine Bitmap-Referenz nachgezeichnet, keine Getränkefiguren. Menschliche Avatar
 `CourtAssets` und das Manifest nennen 15 einzelne PNGs (5.645.597 Byte): zwei Hintergründe, Logo, Übergabe, zwei Papierflächen und neun Symbole. Keine pauschale Ordneraufnahme, keine Quarantänedatei. `CourtArt` verwendet direktes `ExactAssetImage` mit Flutter-ImageCache und `ResizeImage`: Decodierbreite nach sichtbarer Breite, maximal dreifache Pixeldichte und nie über nativer Breite. Hintergründe mit `cover`, Symbole/Logo proportional mit `contain`. Fehlende Dateien erhalten leere Dekoration bzw. ein textuelles Marken-Fallback; Inhalte und Bedienung bleiben unabhängig davon erhalten. Keine externen Bildabrufe und keine Mockup-Screens als Oberfläche. Auswahl und ungeklärte Herkunft stehen im [Assetnachweis](../qa/asset-sources.md).
 
 Zwölf neue Widget-/Semantik-/Unitprüfungen decken 320×640 und 1440×900 bei 100/200 % Text, alle gebündelten Bilder, fehlende Bilder, Kontrast, lokale Themes, begrenzte Decodierung, Tastaturhöhe und Tab/Enter ab. Optionale native Test-Renderings sind Diagnoseartefakte im ignorierten Buildordner, keine Golden- oder Browserabnahme. Browser/E2E: **ÜBERSPRUNGEN – später manuell testen**. Die Migration der Produktseiten folgt in TT-073–077.
+
+## Personen und Sitzbank (TT-074)
+
+Die lokale Personenverwaltung verwendet `BenchView` wie die Urteilssortierung, jedoch mit eigenen Roster-Callbacks und Personenmenüs. Keine Vermischung mit der eingefrorenen Spielsortierung. Sichtbare nummerierte Reihen folgen 1→2→3 / 6←5←4 / 7→8→9; unvollständige Rückreihen bleiben rechts ausgerichtet. Ab 324 px tatsächlicher Bankbreite und höchstens 150 % Text sind drei Plätze möglich; sonst zwei. Das entspricht mindestens 108 px pro Platz vor Zwischenräumen. Nameplates umbrechen, Figuren bleiben v2. Holzleisten/Reihenschilder entstehen aus echten Flutter-Flächen; keine zusätzlichen Bilddateien.
+
+Einfügen über Drag, Figur/Ziel-Taps, Pfeiltasten mit Alt sowie native Pfeilbuttons bleibt D-17-konform. Fokus folgt der Spieler-ID, Zahlen bleiben an IDs gebunden. Read-only-Bänke geben keine Umordnungsaktionen frei. Bearbeiten/Entfernen liegen in lokalisierten Personenmenüs mit Name und Platz; Hinzufügen steht vor der Bank, die ausführliche Sortierhilfe ist aufklappbar. Dekoration hat keine Geheimzahldaten; Semantik sortiert Plätze innerhalb der Schlangenreihen logisch.

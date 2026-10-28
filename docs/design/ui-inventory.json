@@ -226,7 +226,8 @@
       ],
       "tests": [
         "apps/client/test/application/roster_controller_test.dart",
-        "apps/client/test/accessibility/screen_matrix_test.dart"
+        "apps/client/test/accessibility/screen_matrix_test.dart",
+        "apps/client/test/features/roster_bench_test.dart"
       ],
       "targetTask": "TT-074"
     },
@@ -331,7 +332,8 @@
       ],
       "tests": [
         "apps/client/test/features/online_order_test.dart",
-        "apps/client/test/accessibility/interaction_test.dart"
+        "apps/client/test/accessibility/interaction_test.dart",
+        "apps/client/test/features/roster_bench_test.dart"
       ],
       "targetTask": "TT-074"
     },

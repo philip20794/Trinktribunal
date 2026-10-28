@@ -1,4 +1,5 @@
 import '../../design/court_scene.dart';
+import '../bench/bench_view.dart';
 import '../../design/status_notice.dart';
 
 import 'package:flutter/material.dart';
@@ -39,7 +40,10 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
   Future<void> _edit(RosterController controller, [UserProfile? member]) async {
     final result = await showDialog<({String name, AvatarConfig avatar})>(
       context: context,
-      builder: (context) => _RosterEditDialog(member: member),
+      builder: (context) => Theme(
+        data: courtPaperTheme(),
+        child: _RosterEditDialog(member: member),
+      ),
     );
     if (!mounted || result == null) return;
     await _act(
@@ -50,9 +54,9 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const TText('modePhone')),
-    body: ref
+  Widget build(BuildContext context) => CourtScaffold(
+    title: const TText('modePhone'),
+    bodyBuilder: (context) => ref
         .watch(rosterProvider)
         .when(
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -73,7 +77,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 760),
                 child: ListView(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(16),
                   children: [
                     TText(
                       'rosterOrder',
@@ -85,120 +89,6 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                         'count': controller.members.length,
                       }),
                     ),
-                    const TText('rosterOrderHelp'),
-                    const SizedBox(height: 16),
-                    if (controller.error != null)
-                      StatusNotice(context.feedback(controller.error!)),
-                    if (controller.members.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 24),
-                        child: TText('rosterEmpty'),
-                      ),
-                    ReorderableListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      buildDefaultDragHandles: false,
-                      itemCount: controller.members.length,
-                      onReorderItem: (oldIndex, newIndex) =>
-                          _act(() => controller.move(oldIndex, newIndex)),
-                      itemBuilder: (context, index) {
-                        final member = controller.members[index];
-                        final displayName =
-                            controller.members
-                                    .where(
-                                      (p) =>
-                                          p.player.name == member.player.name,
-                                    )
-                                    .length >
-                                1
-                            ? context.tr('rosterSeatName', {
-                                'name': member.player.name,
-                                'position': index + 1,
-                              })
-                            : member.player.name;
-                        return Card(
-                          key: ValueKey(member.player.id.value),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    AvatarView(config: member.avatar, size: 48),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        '${index + 1}. $displayName',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
-                                      ),
-                                    ),
-                                    ReorderableDragStartListener(
-                                      index: index,
-                                      enabled: !_busy,
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(12),
-                                        child: Icon(Icons.drag_handle),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Wrap(
-                                  spacing: 8,
-                                  children: [
-                                    IconButton(
-                                      tooltip: context.tr('playerUp'),
-                                      onPressed: !_busy && index > 0
-                                          ? () => _act(
-                                              () => controller.move(
-                                                index,
-                                                index - 1,
-                                              ),
-                                            )
-                                          : null,
-                                      icon: const Icon(Icons.arrow_upward),
-                                    ),
-                                    IconButton(
-                                      tooltip: context.tr('playerDown'),
-                                      onPressed:
-                                          !_busy &&
-                                              index <
-                                                  controller.members.length - 1
-                                          ? () => _act(
-                                              () => controller.move(
-                                                index,
-                                                index + 1,
-                                              ),
-                                            )
-                                          : null,
-                                      icon: const Icon(Icons.arrow_downward),
-                                    ),
-                                    TextButton(
-                                      onPressed: _busy
-                                          ? null
-                                          : () => _edit(controller, member),
-                                      child: const TText('rosterEdit'),
-                                    ),
-                                    TextButton(
-                                      onPressed: _busy
-                                          ? null
-                                          : () => _act(
-                                              () => controller.remove(
-                                                member.player.id,
-                                              ),
-                                            ),
-                                      child: const TText('rosterRemove'),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 16),
                     FilledButton(
                       onPressed: !_busy && controller.members.length < 20
                           ? () => _edit(controller)
@@ -217,6 +107,66 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                             : null,
                         child: const TText('rosterImport'),
                       ),
+                    ExpansionTile(
+                      tilePadding: EdgeInsets.zero,
+                      title: const TText('benchControls'),
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 12),
+                          child: TText('rosterOrderHelp'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    if (controller.error != null)
+                      StatusNotice(context.feedback(controller.error!)),
+                    if (controller.members.isEmpty)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: TText('rosterEmpty'),
+                      ),
+                    if (controller.members.isNotEmpty)
+                      BenchView(
+                        order: [
+                          for (final member in controller.members)
+                            member.player.id,
+                        ],
+                        profiles: {
+                          for (final member in controller.members)
+                            member.player.id: member,
+                        },
+                        onMove: _busy
+                            ? null
+                            : (from, to) =>
+                                  _act(() => controller.move(from, to)),
+                        actionsBuilder: (context, member, index) =>
+                            PopupMenuButton<String>(
+                              tooltip:
+                                  '${context.tr('rosterEditPerson')}: ${member.player.name} · ${index + 1}',
+                              enabled: !_busy,
+                              onSelected: (action) {
+                                if (action == 'edit') {
+                                  _edit(controller, member);
+                                } else {
+                                  _act(
+                                    () => controller.remove(member.player.id),
+                                  );
+                                }
+                              },
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  value: 'edit',
+                                  child: const TText('rosterEdit'),
+                                ),
+                                PopupMenuItem(
+                                  value: 'remove',
+                                  child: const TText('rosterRemove'),
+                                ),
+                              ],
+                              icon: const Icon(Icons.more_horiz),
+                            ),
+                      ),
+                    const SizedBox(height: 16),
                     const SizedBox(height: 12),
                     if (controller.canStart) const TText('rosterReady'),
                     if (widget.allowStart && session != null) ...[
