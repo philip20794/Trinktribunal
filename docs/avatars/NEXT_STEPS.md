@@ -10,13 +10,15 @@
 | ID | Aufgabe | Status | Nächste Aktion |
 | --- | --- | --- | --- |
 | DOK-01 | Zentraler Einstieg und Architektur-/Entscheidungsdoku | **ERSTELLT** | Bei jeder weiteren Charge aktuell halten |
-| P1 | Farbmasken des gemalten männlichen Masters 09 bereinigen | **NÄCHSTE AUFGABE – OFFEN** | Masken gezielt überarbeiten, Varianten vergleichen |
+| P1 | Farbmasken des gemalten männlichen Masters 09 bereinigen | **IN ARBEIT – NICHT ABGENOMMEN** | Vollformat-Diagnostik mit echtem Original durchführen, Masken korrigieren und visuell prüfen |
 | P2 | Zweite, stark andere weibliche Masterfigur testen | **OFFEN** | Erst nach P1, keine Übertragung hartcodierter Koordinaten |
 | P3 | Eingebrannte Wand/Schild versus gemeinsame SVGs lösen | **OFFEN** | Alternativen visuell/technisch vergleichen |
 | P4 | Methode/Format/Paletten abschließend entscheiden | **BLOCKIERT durch P1–P3** | Vorher kein verbindliches Manifest |
 | P5 | Produktions-Assets, Registry/Validator, Exportregeln definieren | **BLOCKIERT durch P4** | TECH-02 erst dann starten |
 | P6 | Flutter-Renderer/-Editor, Offline-Cache, Migration, Multiplayer | **BLOCKIERT durch P5** | v2 bleibt unverändert |
 | P7 | Weitere Masterfiguren bearbeiten, QA und Release-Gates | **BLOCKIERT durch P4/P5** | Kein Serienlauf ohne funktionierenden Piloten |
+
+**P1-Zwischenstand (28.10.2026):** [Detaildiagnostik und Grenzen](reviews/p1-detail-diagnostics-2026-10-28.md). Ein neues Prüftool erzeugt acht unskalierte Vorher-/Nachher-Ausschnitte sowie Messwerte für Haut-, Haar-, Shirt- und Mischvarianten. Der Windows-abhängige Schriftpfad in `validate_pilot.py` ist durch den vorhandenen Font-Fallback ersetzt. Syntaxprüfung und Smoke-Test mit synthetischem Raster bestanden. **Die echte PNG-Referenz konnte über den GitHub-Zugriff nicht als Bild gelesen werden; deshalb wurden die Masken noch nicht überarbeitet, keine echten Kontaktbögen geprüft und keine visuellen Freigaben erteilt.** P1 bleibt die nächste aktive Aufgabe, P2 bleibt offen.
 
 **Erhaltene ART-/TECH-IDs im [alten Plan](AVATAR_GRAPHICS_PLAN.md):** ART-01 (Masterreferenzen), ART-02/03 (visuell akzeptierte gemeinsame Wand/Schild), ART-04/TECH-01 (Technikprototypen, **nicht** abgeschlossen). ART-05–17 (ursprünglich freier Modulbaukasten) erst nach P4 neu ausrichten; nicht als automatische Arbeitsreihenfolge übernehmen.
 
@@ -26,7 +28,7 @@
 
 **Quelle:** `docs/avatars/references/master-male-09-approved.png` (1229 × 1536, Original unverändert).  
 **Aktueller Code:** `artwork/avatars/v3/prototypes/male_09_color_masks/color_mask_pilot.py`, `validate_pilot.py`.  
-**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md).
+**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md).
 
 **Konkrete Arbeit:**
 
