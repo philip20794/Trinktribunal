@@ -1,0 +1,364 @@
+{
+  "formatVersion": 1,
+  "date": "2026-10-28",
+  "scope": "Asset/content provenance inventory, not legal clearance; dependency notices are covered separately by Flutter and TT-068.",
+  "packages": [
+    {
+      "id": "catalog-questions-de",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "Existing project catalog; editorial approval does not establish translation/distribution rights. Source/license evidence requested from project owner.",
+      "evidence": "docs/qa/content-review.md",
+      "files": [
+        {
+          "path": "apps/client/assets/catalogs/questions/de.json",
+          "sha256": "634c1cd9c0f75a85779b4e83555e4f1bc7939e9602550d0fd570f63d3b86d932"
+        },
+        {
+          "path": "data/questions/top-ten/de.json",
+          "sha256": "04125439af5655efa9a633ccec0fabe4e8cad6ff068aa9678bdb6a07bc70718a"
+        }
+      ]
+    },
+    {
+      "id": "catalog-questions-en",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "Existing project catalog; editorial approval does not establish translation/distribution rights. Source/license evidence requested from project owner.",
+      "evidence": "docs/qa/content-review.md",
+      "files": [
+        {
+          "path": "apps/client/assets/catalogs/questions/en.json",
+          "sha256": "f2746e796f41809ecef34800e4437e4cfa6b4d0e86cfb7e01b4fca10afa37efe"
+        },
+        {
+          "path": "data/questions/top-ten/en.json",
+          "sha256": "685084c990b04bd83a1b2aa8565d4498d68b84cfbad0039981c8381316d579c3"
+        }
+      ]
+    },
+    {
+      "id": "catalog-rules-de",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "Existing project catalog; editorial approval does not establish translation/distribution rights. Source/license evidence requested from project owner.",
+      "evidence": "docs/qa/content-review.md",
+      "files": [
+        {
+          "path": "apps/client/assets/catalogs/rules/de.json",
+          "sha256": "e2e81352cd3de1919e6ce494f3a014dcc4d836b5ada42d688d8ce8f78cd1670a"
+        },
+        {
+          "path": "data/rules/de.json",
+          "sha256": "3f3ac4f05c41e34aa174977bc8e2c3149e9bc7027b0a4ed1653f13e1e0055e1d"
+        }
+      ]
+    },
+    {
+      "id": "catalog-rules-en",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "Existing project catalog; editorial approval does not establish translation/distribution rights. Source/license evidence requested from project owner.",
+      "evidence": "docs/qa/content-review.md",
+      "files": [
+        {
+          "path": "apps/client/assets/catalogs/rules/en.json",
+          "sha256": "88d4406c2779d9e28c975c000e266ae5db96d5d03ebf0e9b3592ecf1318583f5"
+        },
+        {
+          "path": "data/rules/en.json",
+          "sha256": "9326e87d1244e6addbd2afcc355f89b3236d8422d26008296840a2f15d703e74"
+        }
+      ]
+    },
+    {
+      "id": "catalog-metadata",
+      "distribution": "runtime",
+      "status": "original",
+      "provenance": "Generated project metadata for the four separately inventoried catalogs.",
+      "evidence": "docs/qa/TT-004.md",
+      "files": [
+        {
+          "path": "apps/client/assets/catalogs/manifest.json",
+          "sha256": "9ffa674da509340c68e2239a9f2b2a185121b18dbfa5f36688160219e2826220"
+        },
+        {
+          "path": "data/manifest.json",
+          "sha256": "9ffa674da509340c68e2239a9f2b2a185121b18dbfa5f36688160219e2826220"
+        }
+      ]
+    },
+    {
+      "id": "roboto-fonts",
+      "distribution": "runtime",
+      "status": "licensed",
+      "provenance": "Unmodified copies from the installed Flutter 3.47.7 material_fonts bundle, with accompanying Apache license.",
+      "evidence": "docs/qa/asset-sources.md",
+      "licenseId": "Apache-2.0",
+      "licenseFile": "apps/client/assets/fonts/roboto_license.txt",
+      "files": [
+        {
+          "path": "apps/client/assets/fonts/roboto-bold.ttf",
+          "sha256": "7d0b991ee3e0be7af01ad7ea8cd2beea6c00a25e679a0226b6737f079aafff86"
+        },
+        {
+          "path": "apps/client/assets/fonts/roboto-medium.ttf",
+          "sha256": "f205cc511821ea56078a105557fcea6253129404d411c997e1866fbd006abb68"
+        },
+        {
+          "path": "apps/client/assets/fonts/roboto-regular.ttf",
+          "sha256": "79e851404657dac2106b3d22ad256d47824a9a5765458edb72c9102a45816d95"
+        },
+        {
+          "path": "apps/client/assets/fonts/roboto_license.txt",
+          "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+        }
+      ]
+    },
+    {
+      "id": "avatar-v2",
+      "distribution": "runtime",
+      "status": "original",
+      "provenance": "Project-created vector geometry and option manifest; no imported character images.",
+      "evidence": "docs/qa/TT-060.md",
+      "files": [
+        {
+          "path": "apps/client/assets/avatars/manifest.json",
+          "sha256": "ec7e681be06bfbf3a4761940a71801e95ae1d6fefc778e098751c7ca24653fc3"
+        },
+        {
+          "path": "apps/client/lib/design/avatar_view.dart",
+          "sha256": "c2ac2a208082076cdf540f22f460fc2cc14f86fd2e3df4811d15de1170e7ce20"
+        }
+      ]
+    },
+    {
+      "id": "court-ui-geometry",
+      "distribution": "runtime",
+      "status": "original",
+      "provenance": "Project-created Flutter paper, seal and nameplate geometry; Material glyphs use SDK notices.",
+      "evidence": "docs/qa/asset-sources.md",
+      "files": [
+        {
+          "path": "apps/client/lib/design/case_file.dart",
+          "sha256": "39c003ed41f465ba6dc31b38a37a0116a5616543dfe1f0ddaa0e4b6d6d05c8c9"
+        }
+      ]
+    },
+    {
+      "id": "launcher-icons",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "Project owner supplied icon and derived Android/PWA files in b7bac2d/1f80185; origin/license statement not supplied.",
+      "evidence": "docs/qa/asset-sources.md",
+      "files": [
+        {
+          "path": "apps/client/android/app/src/main/res/drawable-nodpi/ic_launcher_foreground.png",
+          "sha256": "44f7b60649dc53c62827cf169fcae4e6a75746ed2f0be3f0c221a738ed50d52f"
+        },
+        {
+          "path": "apps/client/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+          "sha256": "7ed62874c254de31278718d9a26a30af9a1daa9e1242223bb17da2346c3ce0c0"
+        },
+        {
+          "path": "apps/client/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+          "sha256": "ce5f48d5d41af6b233f32fde336f6582abcbc6e42b78e6666283c0e8aef5582f"
+        },
+        {
+          "path": "apps/client/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+          "sha256": "49effed85fbb49b0afdc7d80d55391ba64b26a32a1819ba7c5e084f5433e93fd"
+        },
+        {
+          "path": "apps/client/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+          "sha256": "ac16ce31707d00d5599256ccc8209f1391f0e9b630fad6be8ed77be3804f7418"
+        },
+        {
+          "path": "apps/client/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+          "sha256": "c6515bb911a0ef7d122630c8be592735312f8ec37a161efc92551161b013c193"
+        },
+        {
+          "path": "apps/client/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+          "sha256": "7bd58464a795988c299a83244587c3dd3ee45b47823ad11f26d3c24199031223"
+        },
+        {
+          "path": "apps/client/assets/branding/trinktribunal_app_icon.png",
+          "sha256": "730f1e7006ff34f6395c0d33c2e50507cb2b2f694b87779b6ea117eac6690853"
+        },
+        {
+          "path": "apps/client/web/favicon.png",
+          "sha256": "5c304de4ac7c23ee8ff72c2f63efd3d7fa740db5c77495bf585cd122a7cb6307"
+        },
+        {
+          "path": "apps/client/web/icons/Icon-192.png",
+          "sha256": "7dae28027d0f7cddc2146e584cace96c9c5bc5a41a770f253e3fb97733626d04"
+        },
+        {
+          "path": "apps/client/web/icons/Icon-512.png",
+          "sha256": "ebe0100fcb72cd548e0b03d61f36a9df2d42ac345bd26dbc2337bd4d8d8e5470"
+        },
+        {
+          "path": "apps/client/web/icons/Icon-maskable-192.png",
+          "sha256": "fb245ae489a0978b64c9cfb72d8f40c84922b5c02211ba4f3f1c4af277944c14"
+        },
+        {
+          "path": "apps/client/web/icons/Icon-maskable-512.png",
+          "sha256": "c6f90a84b5a79d011ab25b6117627332fa8d8820c6280d714fe1280bca9c9d45"
+        }
+      ]
+    },
+    {
+      "id": "courtroom-pngs",
+      "distribution": "source-only",
+      "status": "unresolved",
+      "provenance": "33 PNG files supplied in 4672141; three replaced in 10679be. Not registered in Flutter assets. Origin/license statement requested.",
+      "evidence": "docs/qa/asset-sources.md",
+      "files": [
+        {
+          "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_chamber.png",
+          "sha256": "1082e5a3f45168abefc2402bf46f58700adaf439a040c3269a47b6ff6994afee"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_seating.png",
+          "sha256": "ae930cd6eb190903324fce9f689eb493ceb727a4da9262c44101df69457c1ebc"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_wood_wall.png",
+          "sha256": "02e4282e93159294b67d5e8235f12251bc15dd07b8811cf1cf5b8a742567eaaa"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/backgrounds/home_courtroom.png",
+          "sha256": "6f52cb275d73a18523632b21fb979e20f7955a23d33f71d0d85f1b9b36e94ea1"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/backgrounds/parchment_background.png",
+          "sha256": "9cdab1d8168bcd18b6fdba271aa296dd5983e07b92714c85bc244c191432dc86"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/branding/trinktribunal_logo.png",
+          "sha256": "8c707f5dafe1edd6a410e9d5d8c65e1b82656a9cbd66ca504ead71241ddf40e2"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/beer_foam.png",
+          "sha256": "a68a1b8f79853a3f897c5ef8126d134a9e662c653453eb762a5855ddabb9196b"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/courtroom_chandelier.png",
+          "sha256": "511809902322ee8a54d75991ce11f1d24a9a5f4af4474d7d9f00be7158f6bcfd"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/golden_highlight_rays.png",
+          "sha256": "7a1cf59dde8fb087e52d39f2f2a6593b5eb509eaf9eba6fcb2b5ddf647325c43"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_left.png",
+          "sha256": "95b1974c15fa8f478de1d4ceed093db412dc395a2007321e2258ef1b9f1524f4"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_right.png",
+          "sha256": "d980b106215360a35b1beba36c411e343adb826499dc060d3af4b65d6b175752"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_top.png",
+          "sha256": "9f90c2eef42b77de6d97946c9585ffab661f7efe653ef201ea5817a7c535b41c"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/seating_arrow_right.png",
+          "sha256": "adf60736cb97f21f90aab1e0bcd1363cfb4a175a577cbb7e227d90bc90264e28"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/seating_arrow_turn.png",
+          "sha256": "b3921fb66499305e9359a5d3d9090825999d2ecf93d2b26fdbb7aec15dd1244f"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/wall_candle.png",
+          "sha256": "2b1a7278dc972ad8d723fecf1fceeb8288aa407b9a69913ebd8da4417ef9c3d6"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/decorations/wooden_judge_bench.png",
+          "sha256": "4498be0bcfd16f1494fb7a1add499a2bb10bc0e76b22854496af8e87ec2a2e45"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/clinking_beer_mugs.png",
+          "sha256": "1ebe976c5b67da79956ebf44d2e115c5c6e7093aacc2e8c7b395de5c9d871767"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/number_cards_1_2_3.png",
+          "sha256": "9351b761f31220def210c91d0c4f6e8ad7464015caa37374051fd71551945c90"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/phone_handover.png",
+          "sha256": "de227803b5dc94ad174d26cf727ca0ebacab84380dcbdd6e74c422185688cbcf"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/case_parchment_blank.png",
+          "sha256": "f33f872f73a58a508f2b4d1b99e2cbd1ae6feb4be757fc5b62be10e057c81911"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/lined_note_blank.png",
+          "sha256": "6c9655c646fbe8a46150412c28f59c39b574c920803d079e131f871c777b3f25"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/mugshot_height_chart_blank.png",
+          "sha256": "dd50737e09f0f269d0cb4a62efc0bffd57c9817aaccc3cafd98324518b54e285"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/number_card_blank.png",
+          "sha256": "280eb522765de9ca3fb7e570430dfc622c2988ce21db6cecb960e69c0aed8ea6"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/square_parchment_blank.png",
+          "sha256": "e445fcd08892adeb40c418f2dc0d1d53d3f83d4adfdc5971ca35f72974efdaa1"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/beer_mug.png",
+          "sha256": "85dc0d912d70df363a291616bbc287e405734b27934f4b873805486b8b77a89f"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/dice.png",
+          "sha256": "6dfd0199ba6194dab5246ad4169a078371ba2ebb9970eb115ae5aaa664b0e79b"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/judge_gavel.png",
+          "sha256": "b2b8ddb0241bf91acb1853decc034f4042e7b989f66241881468223c369725f7"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/justice_scales.png",
+          "sha256": "2b015076a1313829a71e7bb589240b7e46f1be3759f7f2e218ebe7138981a285"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/player_group.png",
+          "sha256": "ee511e14a43a657582e450996e90f6192ba9d17b5cb5b297ef85b97085eeb012"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/playing_cards.png",
+          "sha256": "c9dd5946a790023aa1a8eb34b04ab4afbe7bee9bb54e5a993c5cf1cfbdfbaaa3"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/refresh.png",
+          "sha256": "1275536ad19e2144e4146ae2cb8e987656e4fe73da3ed02a9d28077470882638"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/reveal_eye.png",
+          "sha256": "65fc081e91450900a90b9dd721cc30461094f608b0dafc1e43cdd36c77def142"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/smartphone.png",
+          "sha256": "ea544b5210f955a38d38fd50be1e00b0ecfed766add31d4f02258d2b3ac49023"
+        }
+      ]
+    },
+    {
+      "id": "avatar-v3-concept",
+      "distribution": "reference-only",
+      "status": "unresolved",
+      "provenance": "AI-generated style reference identified by project owner in the v3 plan; no production layers or licensing record approved.",
+      "evidence": "docs/avatars/AVATAR_GRAPHICS_PLAN.md",
+      "files": [
+        {
+          "path": "docs/avatars/references/concept-sheet-approved-2026-10-28.png",
+          "sha256": "e84aa3b2947dc08c99c234928cc375fc40b3cae1851f4ab39b6cb2eaed57d4c7"
+        }
+      ]
+    }
+  ]
+}

@@ -42,6 +42,7 @@ if ($Scope -in @('Docs', 'All')) {
     }
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'check-docs.mjs'))
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'validate-data.mjs'), '--check')
+    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'check-rights.mjs'))
     $testFiles = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'tests') -Filter '*.test.mjs' -File |
         Sort-Object Name | ForEach-Object { $_.FullName })
     Invoke-Checked 'node' (@('--test') + $testFiles)

@@ -55,6 +55,8 @@ Ein eigenständiger Verstoß: ein manueller Strafschluck. Keine Strafketten bei 
 
 TT-061 belegt die vollständige sprachliche Schlussredaktion; TT-065 muss Rechtequelle, Umfang, betroffene Version/Hashes und Freigabebeleg dokumentieren oder Inhalte ersetzen. Ohne Nachweis bleibt öffentlicher Release blockiert; die technische Weiterentwicklung bleibt möglich.
 
+Die dateigenaue Bestandsaufnahme und der aktuelle blockierte TT-065-Status stehen im [Rechtenachweis](rights.md) und [Rechteregister](rights-registry.json). Die technische Integritätsprüfung gibt die redaktionell bestätigten Texte nicht automatisch zur Veröffentlichung frei.
+
 ## Inventar
 
 Die folgenden Listen wurden aus dem geprüften Bestand erzeugt und gegen die Quellen gelesen:

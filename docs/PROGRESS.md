@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen, TT-065 folgt (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 128 Node-/411 Flutter-/427 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen, TT-065 wegen Rechten blockiert; lokale TT-066 folgt (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 133 Node-/411 Flutter-/427 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -50,7 +50,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M5 | TT-043–TT-050 | ERLEDIGT | Normales Online-Spiel mit 3 Fällen + 2 Regeln, D-07, Neustart, privater eigener Historie und Unit-Gates geprüft; Browser/E2E übersprungen, später manuell testen · [M5](qa/M5.md) |
 | M6 | TT-051–TT-058 | ERLEDIGT | Beide Modi mit 8 Teilnehmern/50 Fällen/7 Regeln und Störfolge, 20 unabhängige Ordnungen, 21. Join abgelehnt; Browser/E2E übersprungen, später manuell testen · [M6](qa/M6.md) |
 | M7 | TT-059–TT-064 | ERLEDIGT | Sicherheit, Avatare, Inhaltsreview, Renderer-/Kostenmodell und Bedienbarkeit nach Unit-Gates geprüft; Browser/Geräte übersprungen, später manuell testen · [M7](qa/M7.md). |
-| M8 | TT-065–TT-070 | OFFEN | Lokal geprüfte Web/APK/AAB-Artefakte und Releaseanleitung; `docs/qa/RELEASE_CHECKLIST.md`. |
+| M8 | TT-065–TT-070 | IN ARBEIT | Rechteregister/Gate vorbereitet, TT-065 extern blockiert; unabhängige lokale Releasevorbereitung TT-066–068 folgt. |
 
 M0/M1/M2 und TT-027 haben Prüfbelege. Die weiteren QA-Dateien sind geplante Pfade. Release-/Cloud- und visuelle Prüfungen werden nicht aus lokalen Unit-Tests als erledigt abgeleitet.
 
@@ -124,7 +124,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-062 | Web-/Android-Performance messen und Wasm entscheiden | ERLEDIGT | Beide Builds kompilieren; JS bleibt D-18-Releaseweg, Offlinepaket −68,6 %, 20-Figuren-/50-Umsortierungs-Units grün; Gerätebudgets übersprungen, später manuell testen · [Performance](qa/performance.md). |
 | TT-063 | Nachrichten, Storage und Free-Tier-Budget messen | ERLEDIGT | Lokale SQL-/Frame-/Alarmzähler, beide 8×50+7-Modi und zehn parallele Achterräume: p95 199 ms; Kostenmodell mit 50 % Reserve und ungemessenem Edge-Billing · [Beleg](qa/cost-model.md). |
 | TT-064 | Bedienbarkeit, Fehler- und Leerzustände final prüfen | ERLEDIGT | 56 neue Semantik-/Tastatur-/Fehler-/200%-Tests, Live-Fehlertexte, personengebundener Fokus, Dialog-Escape und Wiederholungsweg; 411 Flutter-Tests und Builds grün · [M7](qa/M7.md). |
-| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | OFFEN | — |
+| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 11 Paketen/64 Dateien und Releasegate geprüft; fünf Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
 | TT-066 | Android-Releaseartefakte und Signierung vorbereiten | OFFEN | — |
 | TT-067 | Pages-Webpaket und Worker lokal releasefertig prüfen | OFFEN | — |
 | TT-068 | Spielhilfe, Datenschutz und lokale Wartung dokumentieren | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-065 – Inhalte und Asset-Nutzungsnachweise abschließen.** TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste lokale Implementierung: TT-066 – Android-Releaseartefakte und Signierung vorbereiten.** TT-065 wartet auf externe Rechtenachweise. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -182,8 +182,8 @@ Am 26.10.2026 lokal durchgeführt:
 
 ```text
 Branch: main mit geprüftem TT-064-/M7-Stand; Nutzercommits bis bac5ce9 erhalten
-Aktueller Beleg: docs/qa/M7.md; 128 Node-/411 Flutter-/427 Server-Tests grün
-Naechster Schritt: TT-065 Herkunfts-/Nutzungsregister prüfen; Nachweise beim Nutzer angefragt, Antwort offen. Unabhängige lokale Releasevorbereitung TT-066 darf weiterlaufen. Avatar v3 ist ein eigener offener Grafik-Workstream; keine v3-Runtime behaupten.
+Aktueller Beleg: docs/qa/M7.md; 133 Node-/411 Flutter-/427 Server-Tests grün
+Naechster Schritt: TT-066 lokale signierte Releaseartefakte, bestehende Codemagic-Signierung erhalten. TT-065: Register/Gate vorhanden, externe Nachweise angefragt und offen. Avatar v3 ist ein eigener offener Grafik-Workstream; keine v3-Runtime behaupten.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```
