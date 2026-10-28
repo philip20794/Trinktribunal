@@ -125,7 +125,7 @@ Das bestehende v2-Manifest enthält 5 Hautton-IDs (`light`, `medium`, `brown`, `
 | ART-17 | Brillen, Hüte, Schmuck, Piercings, Tattoos, Extras | 18 | OFFEN | ART-07/16 |
 | ART-18 | Kontaktbögen/Regressionsreferenzen aller Optionen | fortlaufend | OFFEN | ab ART-01 |
 | ART-19 | finaler visueller Gesamtreview + Assetrechte | 1 Gate | OFFEN | alle |
-| TECH-01 | Canvas-/Anker-/Kompatibilitäts-Prototyp | 1 | **IN_ARBEIT** – 8 transparente Ebenen, 20 deterministische Farbtests, Stroke-/Fill-Recoloring und feste Schildreihenfolge geprüft; 20 Formkombinationen, künstlerischer Stil und Flutter-Test offen | ART-01–04 |
+| TECH-01 | Canvas-/Anker-/Kompatibilitäts-Prototyp | 1 | **IN_ARBEIT** – PNG-Masterfarben erstmals maskiert getestet (Haut/Haar/Stoff) ohne Layoutänderung; Alpha-/SVG-Vorprototyp vorhanden, künstlerische Maskenfreigabe, echte Formkombinationen und Flutter weiter offen | ART-01–04 |
 | TECH-02 | v3-Manifest, Registry-Validator, Exportpipeline | 1 | OFFEN | TECH-01 |
 | TECH-03 | Flutter-Kompositor/Editor/Galerie inkl. Namensschild | 1 | OFFEN | TECH-02 |
 | TECH-04 | Speichern, Versionierung, v2→v3-Migration und Multiplayer | 1 | OFFEN | TECH-03 |
@@ -275,3 +275,15 @@ Nächster Schritt: ...
 - **Nutzerentscheidung:** offen; ART-02/03 bleiben visuell freigegeben, aber technisch noch nicht vollständig abgenommen.
 - **Review:** [ART-04/TECH-01 – zweiter Stilversuch](reviews/art04-tech01-painterly-2026-10-28.md).
 - **Nächster Schritt:** eine malerisch neu gezeichnete, echte transparente Kopf-/Haar-Testgruppe mit robustem Farbmaskenversuch; danach 3 Körperfamilien, 20 geometrische Kombinationen und TECH-01-Gate. Keine Änderung am produktiven v2-Avatar.
+
+
+### Charge 2026-10-28-04 – Fertige PNG-Master mit getrennten Farbmasken
+
+- **Status:** TECHNISCH ERPROBT / REVIEW OFFEN; keine Produktionsfreigabe.
+- **Referenz:** `docs/avatars/references/master-male-09-approved.png` (1229 × 1536); tatsächliches, vom Nutzer akzeptiertes Originalbild mit lila Shirt.
+- **Verfahren:** Original unverändert, drei separate, halbtransparente Farbbereichsmasken (Haut, Haare einschließlich Bart/Brauen, Shirt). Masken per manuell definierten Regionen + pixelbasierten Farbkriterien für genau diese Figur erzeugt. Keine erneut generierten Körperteile.
+- **Testmaterial:** [Skript, Validierung und Messwerte](../../artwork/avatars/v3/prototypes/male_09_color_masks/), [Review](reviews/art04-tech01-png-mask-colors-2026-10-28.md); generierte Kontaktbögen und PNG/WebP-Varianten wurden im Chat als Reviewmaterial ausgegeben, nicht als Runtime-Assets eingecheckt.
+- **Ergebnisse:** 14 Farbproben, darunter gleichzeitige Veränderungen aller drei Kategorien; Kontrollflächen von Hintergrund/Schild wurden bei drei Kombinationsproben nicht verändert; außerhalb der Masken wurde kein Pixel verändert. Die WebP-Testexports sind bei Qualität 88 jeweils ca. 99–118 KiB. 320×400, 96×120 und 48×60 berechnet.
+- **Visueller Check:** Stil und Geometrie des vollständigen Originals bleiben erhalten. Shirt und einige Haarfarben sind vielversprechend; Farbfehler an den Übergängen von Augenbrauen, Bart, Hals und auf besonders hellen Haarfarben sowie Qualitätsfragen bei dunklen Hauttönen bleiben sichtbar. **Nicht abgenommen.**
+- **Architekturentscheidung:** Noch **nicht** auf fertige Varianten oder Farbmasken umstellen. Erst nach manuell bereinigter Maskenabnahme und Versuch mit einer zweiten deutlich anderen Figur entscheiden. Ein Masterbild hat noch eingebrannten Hintergrund und Schild; gemeinsamer Renderer-Namensschildlayer separat zu prüfen.
+- **Nächster Schritt:** Qualität der Farbmasken prüfen/revidieren, zweite Körper-/Gesichtsform testen, dann TECH-01-Vorgehen anhand beider Ergebnisse entscheiden. Produktives v2 unverändert.
