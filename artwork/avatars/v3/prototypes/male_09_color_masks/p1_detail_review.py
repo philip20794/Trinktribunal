@@ -32,6 +32,7 @@ GROUPS = {
     "skin": ["original", "overlay", "skin_light", "skin_olive", "skin_brown", "skin_deep", "combo_deep_gray_green"],
     "hair": ["original", "overlay", "hair_black", "hair_blond", "hair_gray", "hair_copper", "combo_light_blond_red"],
     "shirt": ["original", "overlay", "shirt_forest", "shirt_blue", "shirt_red", "shirt_charcoal", "combo_brown_copper_blue"],
+    "sign": ["original", "overlay", "skin_deep", "hair_blond", "shirt_red", "combo_deep_gray_green", "combo_light_blond_red"],
 }
 ASSIGNMENT = {
     "hairline_brows": "hair",
@@ -41,7 +42,7 @@ ASSIGNMENT = {
     "left_arm_fingers": "skin",
     "right_arm_fingers": "skin",
     "shirt_folds": "shirt",
-    "sign_hands": "shirt",
+    "sign_hands": "sign",
 }
 OPTIONS = {
     "skin_light": dict(skin="light"),
