@@ -30,7 +30,7 @@
 ## Referenzhierarchie
 
 1. **Freigegebene echte Masterfiguren** aus `docs/avatars/references/` (nach ART-01): verbindlich für Gesicht-/Körperverhältnisse, Schatten, Linienstärke, Farben.
-2. **Bestätigter Konzeptbogen** vom 28.10.2026 (zweiter generierter Bogen): vorläufige Gesamtstilreferenz, aber im Detail ggf. unpräzise (Text in generierten Bildern, Collage-Geometrie). Datei erst im Repository referenzieren, wenn sie dort wirklich hinterlegt wurde.
+2. **[Bestätigter Konzeptbogen](references/concept-sheet-approved-2026-10-28.png)** vom 28.10.2026 (zweiter generierter Bogen): vorläufige Gesamtstilreferenz, aber im Detail ggf. unpräzise (Text in generierten Bildern, Collage-Geometrie). Original im Repository vorhanden; keine freigegebenen Einzelebenen.
 3. **Textregeln** dieses Dokuments: sichern den Workflow, ersetzen aber keine Bildreferenzen.
 4. **Ursprüngliches Nutzerbeispiel:** Inspirationsbild für den Karikaturcharakter; nicht als Produktions-/Quellgrafik verwenden.
 
