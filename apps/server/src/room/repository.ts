@@ -6,8 +6,10 @@ import type {
   RoomId,
 } from '../protocol/room_message.generated';
 import type { GameState, Phase } from '../domain/game_state';
+import { immutable } from '../domain/game_state';
 import { migrateRoomState, StoredStateInvalid } from './migrations';
 import { purgeRoom } from './expiry';
+import { forgetValidatedRow, isValidatedRow, rememberValidatedRow } from './validated_row';
 import type { LobbyReceipt } from './profile_actions';
 import type { HistoryImportState, HistoryExport } from './history';
 
@@ -63,13 +65,24 @@ export class RoomRepository {
       !this.storage.sql
         .exec('SELECT name FROM sqlite_master WHERE type = ? AND name = ?', 'table', 'room_record')
         .toArray().length
-    )
+    ) {
+      forgetValidatedRow(this.storage);
       return null;
+    }
     return this.storage.transactionSync(() => {
       const row = this.storage.sql
         .exec<{ state: string | null }>('SELECT state FROM room_record WHERE singleton = 1')
         .toArray()[0];
-      if (!row?.state) return null;
+      if (!row?.state) {
+        forgetValidatedRow(this.storage);
+        return null;
+      }
+      if (isValidatedRow(this.storage, row.state)) {
+        // Parse a fresh copy: callers can mutate members before an atomic write.
+        const state = JSON.parse(row.state) as RoomState;
+        if (state.game) state.game = immutable(state.game);
+        return state;
+      }
       let loaded: ReturnType<typeof migrateRoomState>;
       try {
         loaded = migrateRoomState(row.state);
@@ -79,10 +92,15 @@ export class RoomRepository {
         return null;
       }
       if (loaded.migrated) this.write(loaded.state);
+      rememberValidatedRow(
+        this.storage,
+        loaded.migrated ? JSON.stringify(loaded.state) : row.state,
+      );
       return loaded.state;
     });
   }
   write(state: RoomState): void {
+    forgetValidatedRow(this.storage);
     this.storage.sql.exec(
       'INSERT OR REPLACE INTO room_record (singleton, state) VALUES (1, ?)',
       JSON.stringify(state),

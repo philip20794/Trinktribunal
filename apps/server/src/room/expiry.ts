@@ -1,5 +1,6 @@
 import { protocolMetadata } from '../protocol/room_message.generated';
 import type { RoomState } from './repository';
+import { forgetValidatedRow } from './validated_row';
 
 export function roomExpiry(state: Pick<RoomState, 'createdAt' | 'lastDomainActivity'>): number {
   return Math.min(
@@ -9,6 +10,7 @@ export function roomExpiry(state: Pick<RoomState, 'createdAt' | 'lastDomainActiv
 }
 /** Retain only the empty code reservation; all app-owned private rows are erased. */
 export function purgeRoom(storage: DurableObjectStorage): void {
+  forgetValidatedRow(storage);
   for (const table of ['room_record', 'entry_limits', 'action_limits', 'deadlines']) {
     if (
       !storage.sql
