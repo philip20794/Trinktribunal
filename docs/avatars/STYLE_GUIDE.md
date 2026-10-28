@@ -3,6 +3,8 @@
 **Stand:** 28.10.2026 · **Status:** Stilrichtung vom Nutzer bestätigt; technisch verwendbare Einzelgrafiken noch nicht freigegeben.  
 **Plan:** [AVATAR_GRAPHICS_PLAN.md](AVATAR_GRAPHICS_PLAN.md)
 
+> **Weiterarbeit ab 28.10.2026:** Zuerst [INTRO.md](INTRO.md), [DECISIONS.md](DECISIONS.md) und [NEXT_STEPS.md](NEXT_STEPS.md) lesen. Die folgenden **visuellen** Stilregeln bleiben verbindlich. Der ältere Abschnitt „Wiederverwendbarer Prompt – einzelne modular nutzbare Ebenen“ beschreibt einen **zurückgestellten Versuchsweg**, nicht mehr die aktuelle bevorzugte Produktion. Diese verwendet nach vorläufigem Befund **fertige gemalte Master-PNGs mit gezielten Farbmasken**, die noch an einer zweiten Figur zu verifizieren sind. Siehe [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## Verbindlicher visueller Stil
 
 **Kern:** humorvolle, sehr stark überzeichnete menschliche Mugshot-Karikaturen; eigenwillig, handgezeichnet, ausdrucksstark. Ausgangspunkt ist der in der Unterhaltung am 28.10.2026 bestätigte **zweite generierte Konzeptbogen** mit männlichen/weiblichen Figuren, stark unterschiedlichen Köpfen/Körpern, leerem dunklen Schild und beispielhaft getrennten Oberkörper-/Kleidungsformen. Er ist eine **Stilreferenz**, kein Asset-Sheet zum automatischen Ausschneiden.
