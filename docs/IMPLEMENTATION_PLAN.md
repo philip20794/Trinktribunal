@@ -2,7 +2,7 @@
 
 **Verbindliche Testvorgabe (27.10.2026):** Unit-Tests sind das Implementierungs-/Mergegate. Sämtliche Browser-/E2E-/visuellen Browserabnahmen werden auf ausdrücklichen Nutzerwunsch als **ÜBERSPRUNGEN – später manuell testen** vermerkt und blockieren weder Taskabschluss noch Folgeaufgaben. Bei grünen Unit-Tests wird die Funktion für die weitere Implementierung als funktionsfähig angenommen; ein tatsächlich durchgeführter Browsertest wird daraus nicht behauptet.
 
-**Laufender Stand, 28.10.2026:** TT-001–064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün; TT-065 folgt. Größere geprüfte Stände werden nach main gepusht. [Status und Belege](PROGRESS.md).
+**Laufender Stand, 28.10.2026:** TT-001–064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün. **Neu geplant:** M7.5 mit TT-071–TT-078 für die freigegebene UI-Neugestaltung (noch nicht implementiert). TT-065 (Rechte/Provenienz) darf parallel weiterlaufen; TT-069 (M8-Releaseabnahme) wartet auf TT-078. Größere geprüfte Stände werden nach main gepusht. [Status und Belege](PROGRESS.md).
 
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 
@@ -127,7 +127,7 @@ D-07-Zweig aus einer laufenden angezeigten Fallphase: `confirmCompleteWithoutVer
 
 ## 4. Phasen und lokal prüfbare Meilensteine
 
-Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren Modi unstartbar machen. Abhängigkeiten beziehen sich auf **abgeschlossene** Aufgaben. Unfertige Features erhalten sichtbare, ehrliche Platzhalter, keine tote Navigation. Maßgeblich sind die Abhängigkeiten und die Reihenfolge im Dokument, nicht allein die Nummer. **TT-001 bis TT-070 sind sämtliche 70 definierten Implementierungsaufgaben**; nicht definierte IDs gehören nicht zu einem Meilenstein.
+Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren Modi unstartbar machen. Abhängigkeiten beziehen sich auf **abgeschlossene** Aufgaben. Unfertige Features erhalten sichtbare, ehrliche Platzhalter, keine tote Navigation. Maßgeblich sind die Abhängigkeiten und die Reihenfolge im Dokument, nicht allein die Nummer. **TT-001–TT-070 sind die ursprünglichen 70 Aufgaben, ergänzt durch TT-071–TT-078 für M7.5.** Die 78 definierten Aufgaben behalten ihre eindeutigen IDs; bestehende Abschlüsse werden nicht rückwirkend geändert. Nicht definierte IDs gehören nicht zu einem Meilenstein.
 
 | Meilenstein | Aufgaben | Lokal vorführbares Ergebnis / Gate |
 | --- | --- | --- |
@@ -139,7 +139,8 @@ Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren 
 | M5 – normales Multiplayer-Spiel | TT-043–TT-050 | Drei lokale Browser spielen mehrere vollständige Fälle mit privater Zahl und autoritativem Urteil. |
 | M6 – vollständige Multiplayer-Varianten | TT-051–TT-058 | Alle Richter, Besetzungswechsel, Hostwechsel, Reconnect, Persistenz und Aufräumen lokal geprüft. |
 | M7 – Inhalt, Sicherheit und Effizienz | TT-059–TT-064 | DE/EN, vollständiger Baukasten, Angriffs-/Last-/Performanceprüfungen, dokumentierte Budgets. |
-| M8 – lokal veröffentlichungsfähiger Stand | TT-065–TT-070 | Geprüfte Web-/Android-Artefakte, manuelle Releaseanleitung, komplette Abnahme. Veröffentlichung bleibt separater Auftrag. |
+| **M7.5 – UI-Neugestaltung** | **TT-071–TT-078** | Alle Seiten im freigegebenen Gerichtssaalstil, vollständige Bedienbarkeit und erhaltene Spielmechanik; [M7.5-Gate](qa/M7_5.md). |
+| M8 – lokal veröffentlichungsfähiger Stand | TT-065–TT-070 | Geprüfte Web-/Android-Artefakte, manuelle Releaseanleitung und Abnahme **nach TT-078**. TT-065–068 dürfen unabhängig vorbereitet werden. Veröffentlichung bleibt separater Auftrag. |
 
 ### Gemeinsame Definition of Done (G)
 
@@ -807,11 +808,101 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 - **Manuell / lokal:** `W`, `MP`, `C`; Chrome/Edge und Android mit verfügbarer Vorlesefunktion prüfen.
 - **Abschluss:** G; M7-Abnahme mit dokumentierten Gerätegrenzen statt pauschaler Plattformfreigabe.
 
+### M7.5 – UI-Neugestaltung nach den freigegebenen Designreferenzen
+
+**Status: OFFEN (Planergänzung 28.10.2026).** Der Meilenstein liegt fachlich nach M7 und vor der abschließenden M8-Abnahme. Die neuen IDs TT-071–TT-078 werden nicht in die bereits festgelegten TT-065–070 hineingeschoben. **TT-065–068 sind bei erfüllten Abhängigkeiten parallel möglich; TT-069 und TT-070 erst nach TT-078.**
+
+**Designquellen:** [Screens und visuelle Leitlinie](design/references/screens/README.md), [visuelles Konzept](VISUAL_DESIGN.md), [Design-Tokens](contracts/VISUAL_SYSTEM.md). Vorhandene PNGs: `apps/client/assets/ui/courtroom/`. Vor Einbindung Bildqualität, Auflösung, Transparenz, Dateigröße und Herkunft kontrollieren. Die Screens sind **Referenzen, keine als Ganzes einzublendenden App-Bilder**; auch Seiten ohne Bild müssen optisch passen. Der dritte schwarze Screen ist bewusst leer und keine Implementierungsvorgabe. Bild `10_spieler_hinzufuegen.png` steht für Personenverwaltung, nicht für die Urteilsfunktion: Beispielüberschriften und Buttons begründen keine Fachlogik.
+
+**Fachliche Grenzen:** Keine unbeabsichtigten Änderungen an Spielregeln, Phasen, Rechteprüfung, Geheimzahlen, Multiplayer-Nachrichten, Datenmodellen, Fairnesslogik oder Speicherung. UI-Widgets (Buttons, Slider, Texte, Listen) bleiben echte Flutter-Widgets. Bestehende v2-Avatare dürfen bis zur **separat geplanten** v3-Avatarproduktion ([Grafikplan](avatars/AVATAR_GRAPHICS_PLAN.md)) verwendet werden; v3 ist kein M7.5-Blocker. Keine GitHub Actions oder Deployments als Teil des Redesigns.
+
+**Umsetzungsfolge:** TT-071 → TT-072 → TT-073/074/075/076 (bei erfüllten Abhängigkeiten auch parallel) → TT-077 → TT-078. Jede Aufgabe hält die drei Spielmodi startbar. **Das Redesign verändert die Informationshierarchie und verkürzt unnötige Scrollstrecken; es ist nicht nur ein Farbwechsel.** Hauptaktionen sollen bei normaler Handyhöhe gut erreichbar sein, aber lange Texte und 200 % Textskalierung dürfen nicht abgeschnitten werden.
+
+#### TT-071 – Screens und Assets vollständig inventarisieren
+
+- **Umsetzung:** Alle vorhandenen lokalen und Multiplayer-Seiten, Dialoge, Lade-/Leer-/Fehler-/Offline-/Reconnect-Zustände erfassen und den Mockups oder passenden neuen Seitentypen zuordnen. Referenz 10 als Personenverwaltung und den schwarzen Platzhalter als Nicht-Vorgabe einordnen. Vorhandene PNGs einzeln auf Bildfehler, Beschnitt, Transparenz, Auflösung, Größe und Herkunft prüfen; bestehende Funktionen dokumentieren statt sie nach Mockup wegzulassen.
+- **Dateien:** `docs/design/references/screens/`, `docs/VISUAL_DESIGN.md`, `apps/client/lib/features/`, `apps/client/assets/ui/courtroom/`, `docs/qa/M7_5.md`.
+- **Abhängigkeiten:** TT-064; Designreferenzen und PNGs liegen bereits vor.
+- **Akzeptanz:** Screen-/Zustandsmatrix für drei Modi inklusive Online-Host/Gast und DE/EN; nötige Assetverbesserungen und UI-Abweichungen benannt.
+- **Auto:** Navigation-/Screen-Bestandstests erfassen; referenzierte Dateien und Assets auf Existenz prüfen.
+- **Manuell / lokal:** Bisherige Ansichten und Mockups vergleichen; nicht durchgeführte visuelle Abnahmen ausdrücklich offen halten.
+- **Abschluss:** G; nachvollziehbarer UI- und Asset-Bestand ohne vorgetäuschte Implementierung.
+
+#### TT-072 – Gerichtssaal-Designsystem und PNG-Integration
+
+- **Umsetzung:** Wiederverwendbare responsive Layout-Hülle, Hintergründe, Pergamentflächen, Aktionsleisten, visuelle Tokens, Schrift- und Kontrastregeln. Haupt-/Nebenaktionen, Slider, Eingaben und Dialoge in Flutter statt als Bild. Bestehende Assets laden, Caching/Fallbacks und Bildzuschnitt berücksichtigen; fehlende oder mangelhafte Assets nachvollziehbar ersetzen.
+- **Dateien:** `apps/client/lib/design/`, `apps/client/assets/ui/courtroom/`, ggf. `apps/client/pubspec.yaml`, `docs/contracts/VISUAL_SYSTEM.md`, `docs/qa/asset-sources.md`.
+- **Abhängigkeiten:** TT-071, TT-013.
+- **Akzeptanz:** Einheitlicher Stil auf schmalem Android-Hochformat und breitem Webviewport, lesbare Kontraste, ausreichende Touchziele, Offline-Assets; keine pixelgenaue Screenshot-Einblendung.
+- **Auto:** Widget-/Semantiktests bei kleinen/breiten Viewports, 200 % Text, fehlenden Assets und Fokuswechsel.
+- **Manuell / lokal:** `W`/`C`, Designgalerie bei verschiedenen Bildschirmgrößen.
+- **Abschluss:** G; wiederverwendbare Widgets sind geprüft.
+
+#### TT-073 – Start, Profil und Einstellungen neugestalten
+
+- **Umsetzung:** Startseite mit drei bisherigen Spielmodi; Profil-/Avatar-Editor mit großer Polizeifoto-Vorschau, dynamischem Namensschild und kompakten Kategorien; allgemeine Einstellungen und lokale Spieleinrichtung zusammenhängend gestalten. Alle bestehenden Auswahlmöglichkeiten erhalten, v2-Avatar-Fallback bis zur v3-Grafikproduktion.
+- **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`, `apps/client/lib/l10n/`.
+- **Abhängigkeiten:** TT-072, TT-015, TT-028.
+- **Akzeptanz:** Alle Spielmodi, Profiloptionen, Speichern, Sprache, Konfiguration und Zurück-Navigation erreichbar; unnötiges Scrollen reduziert, lange Namen/DE/EN/200-%-Text bedienbar.
+- **Auto:** Navigation, Persistenz, Formularvalidierung, Settings-/Viewport-Widgettests.
+- **Manuell / lokal:** `W`/`C`; Referenzen 01/02/05.
+- **Abschluss:** G; Avatar-v3 bleibt gesondert.
+
+#### TT-074 – Personenverwaltung und Schlangen-Sitzbank
+
+- **Umsetzung:** Spieler hinzufügen, bearbeiten, entfernen und umordnen. Kompakte Karten mit Avatar und dynamischem Namen auf Gerichtsbänken; drei Plätze pro Reihe, wo die Breite ausreicht. Schlangenverlauf **1→2→3 / 6←5←4 / 7→8→9**. Drag & Drop gemäß D-17 **Einfügen statt Tauschen** mit Tastatur-/Touchalternative; Sitzliste und spielbezogene Urteilssortierung nicht vermischen.
+- **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`, `docs/qa/M7_5.md`.
+- **Abhängigkeiten:** TT-072, TT-016, TT-020, TT-021, TT-025, TT-053.
+- **Akzeptanz:** 3–20 Personen, verständliche Schlangenrichtung, keine unlesbaren Namen, kein versehentlicher Rollen-/Geheimzahlwechsel; responsive zwei Spalten, wo nötig.
+- **Auto:** Mapping, unvollständige Reihen, Einfügebewegungen, Rechte, Semantik, 200-%-Text.
+- **Manuell / lokal:** `W`/`C`/`MP`; Referenzen 04 und 10 fachlich korrekt zugeordnet.
+- **Abschluss:** G; alternative Sortiersteuerung funktionsfähig.
+
+#### TT-075 – Übergabe, Richter, Fallakte, Geheimzahl und Urteil
+
+- **Umsetzung:** Handy weitergeben, Richterwechsel, Fall-/Regelakten, Frage- und Antwortphase, verdeckte Zahl und Urteils-/Aufdeckansichten im neuen Stil darstellen. Beispielaktionen aus Mockups nur übernehmen, wenn Phase und Berechtigung es erlauben. Lange Fragen und Skalenenden auf Pergament lesbar halten.
+- **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`, `apps/client/lib/l10n/`.
+- **Abhängigkeiten:** TT-072, TT-018/019, TT-022–024, TT-046–050.
+- **Akzeptanz:** Geheimzahl nur bewusst und berechtigt sichtbar, keine Lecks beim Weitergeben, Wiederverdecken, Richter- und Ergebnisschritte korrekt; alle-Richter-Modus bleibt gültig.
+- **Auto:** Zustands-/Berechtigungs-/Semantiktests, Geheimzahl-Verdeckung, lange DE/EN-Texte, Ergebnisgleichheit mit Spielkern.
+- **Manuell / lokal:** `W`/`C`/`MP`, eine vollständige lokale Runde; Referenzen 06–09.
+- **Abschluss:** G; Urteilsansicht bleibt ein eigener fachlicher Screen.
+
+#### TT-076 – Kartenmodus, Trinkregeln und übrige lokale UI
+
+- **Umsetzung:** Kartenmodus ohne Pflichtprofile, aktive Regeln, Regelereignisse, Fortschritt, Neustart, Offline-/Resume- und Fehlerzustände an das neue Design anbinden. Sekundäre Funktionen kompakt unterbringen, aber nichts streichen oder fachlich verändern.
+- **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`, `apps/client/lib/l10n/`.
+- **Abhängigkeiten:** TT-072, TT-009–012, TT-027, TT-028, TT-033.
+- **Akzeptanz:** 50-Fälle-/7-Regeln-Konfiguration, kompletter Kartenablauf, DE/EN und Offline/Resume erhalten; Aktionen ohne übermäßiges Scrollen, bei 200 % Text vollständig erreichbar.
+- **Auto:** Navigation, Konfiguration, Regelzustände, Resume/Offline, Layout-/Semantiktests.
+- **Manuell / lokal:** `W`/`C`/`B` soweit nötig.
+- **Abschluss:** G; lokale Screens konsistent.
+
+#### TT-077 – Lobby und sämtliche übrigen Multiplayer-Screens
+
+- **Umsetzung:** Raum erstellen/beitreten, Lobby, Profil-/Gerichtssaal-Tabs, Host-/Gastaktionen, private Geheimzahl, Bereitschaft, Reconnect, Hostwechsel, Warte-/Fehlerzustände neugestalten. Keine Änderungen am Protokoll und keine Drag-Frames ins Netzwerk senden.
+- **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`.
+- **Abhängigkeiten:** TT-073, TT-074, TT-075, TT-076, TT-057, TT-058.
+- **Akzeptanz:** Beide Online-Varianten, Join-Link, Host-/Gastrechte, private Zahl, Wiederaufnahme und Raumablauf korrekt, kein optisch veralteter Multiplayerbereich.
+- **Auto:** Host-/Gast-Projektionen, Reconnect, Zustands-/Widget- und vorhandene Multiplayer-Regressionstests.
+- **Manuell / lokal:** `MP`/`W`/`C`; mehrere Clients (laut Nutzervorgabe ggf. zurückgestellt).
+- **Abschluss:** G; visuell und funktional konsistente Online-UI.
+
+#### TT-078 – Abschlussgate für UI, Layout und Regression
+
+- **Umsetzung:** Screenmatrix aus TT-071 abgleichen, Overflows, verdeckte Aktionen und unleserliche Zustände beheben; Performance, Asset-/Offlinebundle und frische Builds überprüfen. Einheitlicher Stil auch auf nicht illustrierten Seiten. Neue verwendete Grafiken im Herkunftsregister für TT-065 erfassen.
+- **Dateien:** `apps/client/lib/`, `apps/client/test/`, `docs/qa/M7_5.md`, `docs/PROGRESS.md`.
+- **Abhängigkeiten:** TT-073, TT-074, TT-075, TT-076, TT-077.
+- **Akzeptanz:** Drei Modi, beide Online-Varianten, DE/EN, 20 Personen, lange Texte, 200-%-Text, Offline/Resume und Fehlerzustände abgedeckt; Hauptaktionen auf normalen Handyhöhen möglichst ohne Scrollen. Fachlogik, Rollen und Geheimhaltung unverändert; Avatar-v3 nicht erforderlich.
+- **Auto:** Betroffene Flutter-Unit-/Widget-/Semantiktests, Analyze/Format, Asset-Check, Web-/Android-Build-Smokes, kritische Offline-/Berechtigungsregressionen.
+- **Manuell / lokal:** Dokumentierte Screenmatrix; **Browser-/E2E-Abnahmen gemäß aktueller Vorgabe „ÜBERSPRUNGEN – später manuell testen“**, soweit nicht tatsächlich ausgeführt. Keine erfundene Nutzerfreigabe.
+- **Abschluss:** G und [M7.5-Gate](qa/M7_5.md); erst danach darf TT-069 abgeschlossen werden.
+
 ### M8 – lokal veröffentlichungsfähiger Stand
 
 #### TT-065 – Inhalte und Asset-Nutzungsnachweise abschließen
 
-- **Umsetzung:** Offene Provenienz aus TT-005 auflösen: Herkunft/Lizenz/Freigabe je Inhalts- und Assetpaket dokumentieren. Falls nicht geklärt, eigener freigegebener Ersatzkatalog als separate nachvollziehbare Inhaltsänderungen; danach Übersetzungs-/Paritätsprüfungen erneut. Keine juristische Freigabe erfinden.
+- **Umsetzung:** Offene Provenienz aus TT-005 auflösen: Herkunft/Lizenz/Freigabe je Inhalts- und Assetpaket dokumentieren, einschließlich neuer, im Rahmen von M7.5 tatsächlich eingebundener PNG-/Schriftdateien. Reine Mockup-Referenzen nicht automatisch als Runtime-Assets behandeln. Falls nicht geklärt, eigener freigegebener Ersatzkatalog als separate nachvollziehbare Inhaltsänderungen; danach Übersetzungs-/Paritätsprüfungen erneut. Keine juristische Freigabe erfinden.
 - **Dateien:** `docs/qa/asset-sources.md`, `docs/qa/content-review.md`, `LICENSE`/`NOTICE` nur nach geklärter Lizenzwahl, gegebenenfalls `data/`.
 - **Abhängigkeiten:** TT-005, TT-060, TT-061; Herkunftsklärung bereits ab TT-005 beginnen.
 - **Akzeptanz:** Jede ausgelieferte Quelle mit nachvollziehbarem Nutzungsstatus; ungeklärtes Material blockiert Veröffentlichung, nicht bestehende lokale Technik. Ersatz wahrt vereinbarten Umfang/50-Fälle-Standard oder dokumentiert nötige Produktentscheidung.
@@ -853,8 +944,8 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 
 - **Umsetzung:** Alle Meilensteingates im sauberen lokalen Checkout/Worktree ausführen; Toolversionen, Lockfiles und reproduzierbare Assetgenerierung prüfen. Abdeckungsmatrix unten anhand tatsächlich vorhandener Screens/Tests abhaken; Fehler einzeln beheben und betroffene Gates wiederholen.
 - **Dateien:** `scripts/check.ps1`, `docs/qa/RELEASE_CHECKLIST.md`, `docs/PROGRESS.md`.
-- **Abhängigkeiten:** TT-068 und alle TT-001–TT-067.
-- **Akzeptanz:** Drei Varianten, optionale alle Richter, DE/EN, Offline/Resume, Rosterwechsel, Geheimhaltung, Reconnect und Builds vollständig nachgewiesen. Keine offenen funktionalen Blocker, keine behaupteten Cloudtests.
+- **Abhängigkeiten:** TT-068, alle TT-001–TT-067 **und TT-078**. TT-065–068 dürfen parallel vorbereitet werden; die finale Releaseabnahme wartet auf das abgeschlossene UI-Gate.
+- **Akzeptanz:** Drei Varianten, optionale alle Richter, DE/EN, Offline/Resume, Rosterwechsel, Geheimhaltung, Reconnect und Builds vollständig nachgewiesen; das M7.5-Gate liegt vor und Release-Artefakte wurden mit den aktualisierten UI-Assets neu erstellt. Keine offenen funktionalen Blocker, keine behaupteten Cloudtests.
 - **Auto:** `D`, `C`, `S`, Parität, `E`, Last-/Offlineprüfungen, `B` Web/APK/AAB einmal vollständig lokal.
 - **Manuell / lokal:** Drei reale Browserfenster, Androidgerät, kalter Web-Offlinestart und vollständige Bildschirmmatrix mit dokumentierten Versionen.
 - **Abschluss:** G; Abnahmebeleg mit Artefaktprüfsummen und verbleibenden Betriebsrisiken.
