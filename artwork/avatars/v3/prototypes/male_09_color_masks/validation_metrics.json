@@ -1,0 +1,34 @@
+{
+  "source_size": [
+    1229,
+    1536
+  ],
+  "mask_pixel_counts_at_alpha_gt_0.35": {
+    "skin": 339575,
+    "hair": 72879,
+    "shirt": 224804
+  },
+  "mask_total_px_at_alpha_gt_0.01": 654960,
+  "wall_mask_pixels": 0,
+  "central_sign_mask_pixels": 0,
+  "variants": {
+    "olive_black_blue": {
+      "changed_px_total": 661993,
+      "changed_outside_masks": 0,
+      "changed_wall_pixels": 0,
+      "changed_central_sign_pixels": 0
+    },
+    "deep_gray_forest": {
+      "changed_px_total": 661515,
+      "changed_outside_masks": 0,
+      "changed_wall_pixels": 0,
+      "changed_central_sign_pixels": 0
+    },
+    "light_blond_red": {
+      "changed_px_total": 649970,
+      "changed_outside_masks": 0,
+      "changed_wall_pixels": 0,
+      "changed_central_sign_pixels": 0
+    }
+  }
+}
