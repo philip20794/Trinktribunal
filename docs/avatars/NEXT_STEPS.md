@@ -26,6 +26,8 @@
 
 **P1 – erster realer Sichtversuch am hochgeladenen Mann 09 (28.10.2026):** Bild 10 des Nutzeruploads ist **1229×1536** und entspricht visuell dem Git-Master `master-male-09-approved.png`. Auf diesem Upload reproduziert der alte Pilot **exakt** die drei alten Masken-Zählwerte (339575/72879/224804). Ein neuer [Bild-Reviewbericht](reviews/p1-male09-uploaded-original-visual-2026-10-28.md) und das [Masken-/Farb-Tuningexperiment](../../artwork/avatars/v3/prototypes/male_09_color_masks/p1_visual_tuning.py) liegen im Git. Tatsächlich betrachtet: Original, Overlay, helle/dunkle und gemischte Varianten sowie 1:1-Gesichtsausschnitte. **Verbleibend:** Haaransatz-Randhalos, gesprenkelte helle Gesicht-/Bartübergänge bei extremer Färbung, bewusst unveränderte Augenbrauen und fehlender Byte-/Pixelabgleich mit dem großen Git-PNG. Die von der Chatumgebung neu codierte PNG-Datei hat einen anderen Datei-Hash/Dateigröße. **P1 bleibt IN ARBEIT, nicht ABGENOMMEN; P2 bleibt offen.**
 
+**P1-Fortsetzung: zweite reale Maskenüberarbeitung (28.10.2026):** Die [neue P1-Reviewfassung](reviews/p1-male09-refinement-v2-2026-10-28.md) ist als reproduzierbarer Prototyp eingecheckt. Ein separates Augenbrauenmasken-Segment, erweiterte Stirn-/Kinnbereiche und Schläfenhaar-Masken verbessern den zuvor sichtbaren Farbwechsel. Auf der vom Nutzer hochgeladenen, visuell entsprechenden **1229×1536**-PNG wurden 13 Varianten inklusive vier Regressionstests untersucht: **0 veränderte Pixel außerhalb der vier Masken**, **0 in den geprüften Wand-/Schildflächen**. Weiterhin sichtbar: helle Kanten am Haaransatz bei dunkler Haut/hellem Haar sowie einige dunkle Schläfen-/Braueninseln. Die Git-PNG unterscheidet sich in der Dateigröße vom Chat-Upload; **Pixelgleichheit wurde nicht bestätigt**. Neue Skripte: `p1_mask_refinement_v2.py`, `p1_refinement_review.py`, `test_p1_refinement_review.py`. **Kein Abnahmegate erfüllt; P1 bleibt IN ARBEIT, P2 OFFEN.**
+
 **Erhaltene ART-/TECH-IDs im [alten Plan](AVATAR_GRAPHICS_PLAN.md):** ART-01 (Masterreferenzen), ART-02/03 (visuell akzeptierte gemeinsame Wand/Schild), ART-04/TECH-01 (Technikprototypen, **nicht** abgeschlossen). ART-05–17 (ursprünglich freier Modulbaukasten) erst nach P4 neu ausrichten; nicht als automatische Arbeitsreihenfolge übernehmen.
 
 ---
@@ -34,7 +36,7 @@
 
 **Quelle:** `docs/avatars/references/master-male-09-approved.png` (1229 × 1536, Original unverändert).  
 **Aktueller Code:** `artwork/avatars/v3/prototypes/male_09_color_masks/color_mask_pilot.py`, `validate_pilot.py`.  
-**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md). [Maskenbearbeitung und Zugriffsstatus](reviews/p1-mask-edit-workbench-2026-10-28.md). [Aktueller Roundtrip-Bericht](reviews/p1-mask-roundtrip-2026-10-28.md). [Realer Upload-Bildvergleich](reviews/p1-male09-uploaded-original-visual-2026-10-28.md).
+**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md). [Maskenbearbeitung und Zugriffsstatus](reviews/p1-mask-edit-workbench-2026-10-28.md). [Aktueller Roundtrip-Bericht](reviews/p1-mask-roundtrip-2026-10-28.md). [Realer Upload-Bildvergleich](reviews/p1-male09-uploaded-original-visual-2026-10-28.md). [Zweite reale Maskenrunde](reviews/p1-male09-refinement-v2-2026-10-28.md).
 
 **Konkrete Arbeit:**
 
