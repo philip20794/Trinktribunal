@@ -308,7 +308,9 @@ final class RoomController {
       } else if (message is HistoryEventsMessage) {
         _historyPages.add(message);
       } else if (message is AckMessage) {
-        _pending.remove(message.actionId.value);
+        // Delayed/unrelated ACKs must not resolve a newer intention or close a
+        // session after its original intention has already been discarded.
+        if (_pending.remove(message.actionId.value) == null) return;
         if (['left', 'closed'].contains(message.outcome)) {
           unawaited(_invalidate('ROOM_UNAVAILABLE'));
         }

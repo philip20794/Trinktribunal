@@ -20,9 +20,12 @@ final class OnlineOrderController extends ChangeNotifier {
   late final StreamSubscription<RoomSessionState> _subscription;
   GameId? _gameId;
   RoundId? _roundId;
+  RoomId? _roomId;
+  PlayerId? _playerId;
   List<PlayerId> _draft = [];
   bool _pending = false, _confirmed = false;
-  List<PlayerId> get order => List.unmodifiable(_draft);
+  List<PlayerId> get order =>
+      snapshot == null ? const [] : List.unmodifiable(_draft);
   bool get pending => _pending;
   bool get confirmed => _confirmed;
   SnapshotMessage? get snapshot =>
@@ -45,6 +48,12 @@ final class OnlineOrderController extends ChangeNotifier {
   }
 
   void _receive(RoomSessionState state) {
+    // Keep an unconfirmed intention during a transient outage, hidden and
+    // uneditable until an authoritative snapshot confirms the same scope.
+    if (state.status == RoomConnectionStatus.reconnecting) {
+      notifyListeners();
+      return;
+    }
     final view = state.status == RoomConnectionStatus.online
         ? state.snapshot
         : null;
@@ -54,13 +63,20 @@ final class OnlineOrderController extends ChangeNotifier {
         !['ordering', 'revealing', 'judged'].contains(view.public.phase)) {
       _gameId = null;
       _roundId = null;
+      _roomId = null;
+      _playerId = null;
       _draft = [];
       _pending = false;
       _confirmed = false;
       notifyListeners();
       return;
     }
-    if (_gameId != view.public.gameId || _roundId != view.public.roundId) {
+    if (_roomId != view.roomId ||
+        _playerId != view.you ||
+        _gameId != view.public.gameId ||
+        _roundId != view.public.roundId) {
+      _roomId = view.roomId;
+      _playerId = view.you;
       _gameId = view.public.gameId;
       _roundId = view.public.roundId;
       _draft = view.public.frozenRoster

@@ -139,7 +139,12 @@ for (const alarm of [false, true])
     await due(f);
     if (alarm) {
       await evictDurableObject(f.room.stub);
-      expect(await runDurableObjectAlarm(f.room.stub)).toBe(true);
+      // Workerd may already dispatch a past-due alarm while evicting. Verify
+      // its committed effect before authentication can reconcile the lease.
+      await runDurableObjectAlarm(f.room.stub);
+      const transferred = await f.read();
+      expect(transferred.hostId).toBe(f.members[1]!.credential.playerId);
+      expect(transferred.game!.hostRevision).toBe(1);
     }
     const old = await authenticated(f.room.code, f.room.credential),
       current = await f.read();

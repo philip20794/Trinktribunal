@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–056 nach Unit-Gates abgeschlossen, TT-057 folgt (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 118 Node-/323 Flutter-/390 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–057 nach Unit-Gates abgeschlossen, TT-058 folgt (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 118 Node-/327 Flutter-/404 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -48,7 +48,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M3 | TT-027–TT-033 | ERLEDIGT | Nach Unit-Gates freigegeben; Browserabnahme ÜBERSPRUNGEN – später manuell testen · [M3](qa/M3.md) |
 | M4 | TT-034–TT-042 | ERLEDIGT | Unit-Gate grün; drei lokale Clients und Harness geprüft; Browser/E2E ÜBERSPRUNGEN – später manuell testen · [M4](qa/M4.md) |
 | M5 | TT-043–TT-050 | ERLEDIGT | Normales Online-Spiel mit 3 Fällen + 2 Regeln, D-07, Neustart, privater eigener Historie und Unit-Gates geprüft; Browser/E2E übersprungen, später manuell testen · [M5](qa/M5.md) |
-| M6 | TT-051–TT-058 | IN ARBEIT | TT-051–056 geprüft: beide Modi, Besetzung, Hostverlust, Raumablauf/-schließung und atomare Migration/Rehydrierung; vollständiger Reconnect folgt · [TT-056](qa/TT-056.md) |
+| M6 | TT-051–TT-058 | IN ARBEIT | TT-051–057 geprüft: beide Modi, Besetzung, Hostverlust, Raumablauf/-schließung, Migration/Rehydrierung und Reconnect; Langlauf/Kapazität folgen · [TT-057](qa/TT-057.md) |
 | M7 | TT-059–TT-064 | OFFEN | Sicherheits-/Kosten-/Performancechecks und DE/EN-/Bedienprüfung; `docs/qa/M7.md`. |
 | M8 | TT-065–TT-070 | OFFEN | Lokal geprüfte Web/APK/AAB-Artefakte und Releaseanleitung; `docs/qa/RELEASE_CHECKLIST.md`. |
 
@@ -116,7 +116,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-054 | Host dauerhaft verlieren und neu zuweisen | ERLEDIGT | 28.10.2026 · persistierte 90-Sekunden-Frist, stabile atomare Übergabe, rechtzeitiger/später Reconnect, Eviction, gemeinsamer Alarm und genaue private Pauseprojektionen · [TT-054](qa/TT-054.md) |
 | TT-055 | Raumablauf, Löschung und datensparsame Logs | ERLEDIGT | 28.10.2026 · 24h/48h-Ablaufvorrang, vollständige atomare Bereinigung/Alarmretry, bestätigte Host-Schließung, sichere lokale Startbereinigung und DE/EN-Fristenhinweis · [TT-055](qa/TT-055.md) |
 | TT-056 | Rehydrierung und persistierte Zustandsmigration testen | ERLEDIGT | 33 neue Units: alle Phasen beider Modi mit tatsächlicher Eviction, atomare Migration/Rollback, Dedupe, Hostfrist und sichere Attachments · [TT-056](qa/TT-056.md) |
-| TT-057 | Reconnect ohne Identitäts- und Zustandsverlust | OFFEN | — |
+| TT-057 | Reconnect ohne Identitäts- und Zustandsverlust | ERLEDIGT | 4 neue Flutter-/14 Workerd-Units; persistente Credentials, gleichrundige Entwürfe, alte ACKs, fortgeschrittenes Spiel und privater Historienabgleich · [TT-057](qa/TT-057.md) |
 | TT-058 | Gesamten Multiplayer mit Störungen durchspielen | OFFEN | — |
 | TT-059 | Angriffs- und Missbrauchsgrenzen nachweisen | OFFEN | — |
 | TT-060 | Avatar-Baukasten und thematische Übergänge fertigstellen | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-057 – Reconnect ohne Identitäts- und Zustandsverlust.** TT-056 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-058 – Gesamten Multiplayer mit Störungen durchspielen.** TT-057 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-056-Rehydrierungsstand
-Aktueller Beleg: docs/qa/TT-056.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-057 vollständigen Reconnect bei fortgeschrittenem Spiel, persistenten Credentials, alten Sockets/ACKs und privatem Historienabgleich prüfen; Entwürfe nur für dieselbe Partie/Runde wiederherstellen.
+Branch: main mit geprüftem TT-057-Reconnectstand
+Aktueller Beleg: docs/qa/TT-057.md; Browserprüfungen übersprungen, später manuell testen
+Naechster Schritt: TT-058 beide Modi mit acht Teilnehmern über 50 Fälle/sieben Regeln und deterministischen Störungen prüfen; 20 Teilnehmer/21. Join/20 unabhängige Ordnungen und isolierte Parallelräume prüfen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```
