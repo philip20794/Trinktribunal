@@ -44,6 +44,8 @@ Original sowie dunkel/grau/grün, hell/blond/rot und braun/kupfer/blau wurden al
 
 **Weiterhin nicht gut genug:** Am Kopfhaar/Stirnrand bleiben bei **dunkler Haut mit grauem Haar helle 1–3-Pixel-Fransen** sichtbar. Einzelne Schläfensträhnen bleiben dunkelbraun, und graue bzw. blonde Augenbrauen enthalten noch dunkle Originalpigment-Inseln. Die stark unterschiedliche Helligkeit zwischen Gesicht und Haarbasis bei extremen Kombinationen wirkt teils künstlich. Diese Fehler sind im verkleinerten Avatar schwerer zu erkennen, im **1:1-Detailbild** jedoch eindeutig. Darum keine behauptete Freigabe, keine P2- oder Runtime-Integration.
 
+**Zusätzlicher lokaler Sichtversuch (nicht übernommen):** Eine pauschale Abdunklung der als Haar-/Hautgrenze erkannten Antialias-Pixel wurde am Beispiel `dunkel/grau/grün` ausprobiert. Die helle Stirnkontur blieb teilweise sichtbar und die neue dunkle Naht wirkte unregelmäßig. Dieser Nachfilter wurde **nicht** in die reproduzierbaren Git-Skripte übernommen. Die nächste Korrektur muss die tatsächlich gemalten Übergangspixel feiner zuordnen, statt alle Kanten einfach dunkler zu rechnen.
+
 ## Reproduktion
 
 Am Repository-Root (Python + Pillow, NumPy und OpenCV):
