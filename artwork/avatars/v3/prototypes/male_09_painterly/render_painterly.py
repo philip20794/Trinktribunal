@@ -69,9 +69,16 @@ def render_svg(s,colors=None):
  for elem in r.iter():
   role=elem.attrib.get('data-palette')
   if role and colors and role in colors:
-   # Only recolor specific parts, never their outlines, eyes or environment.
-   if elem.tag.endswith('stop'): elem.set('stop-color',colors[role])
-   else: elem.set('fill',colors[role])
+   # Recolor semantically marked pigment FILLS or STROKES; keep unrelated outlines,
+   # eyes, teeth, background and plaque unchanged.
+   if elem.tag.endswith('stop'):
+    elem.set('stop-color',colors[role])
+   elif elem.attrib.get('fill') not in (None,'none'):
+    elem.set('fill',colors[role])
+   elif elem.attrib.get('stroke') not in (None,'none'):
+    elem.set('stroke',colors[role])
+   else:
+    elem.set('fill',colors[role])
  b=cairosvg.svg2png(bytestring=ET.tostring(r,encoding='utf-8'),output_width=1024,output_height=1280)
  return Image.open(BytesIO(b)).convert('RGBA')
 
