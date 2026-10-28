@@ -2,7 +2,7 @@
 
 **Verbindliche Testvorgabe (27.10.2026):** Unit-Tests sind das Implementierungs-/Mergegate. Sämtliche Browser-/E2E-/visuellen Browserabnahmen werden auf ausdrücklichen Nutzerwunsch als **ÜBERSPRUNGEN – später manuell testen** vermerkt und blockieren weder Taskabschluss noch Folgeaufgaben. Bei grünen Unit-Tests wird die Funktion für die weitere Implementierung als funktionsfähig angenommen; ein tatsächlich durchgeführter Browsertest wird daraus nicht behauptet.
 
-**Laufender Stand, 28.10.2026:** TT-001–064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün. **Neu geplant:** M7.5 mit TT-071–TT-078 für die freigegebene UI-Neugestaltung (noch nicht implementiert). TT-065 (Rechte/Provenienz) darf parallel weiterlaufen; TT-069 (M8-Releaseabnahme) wartet auf TT-078. Größere geprüfte Stände werden nach main gepusht. [Status und Belege](PROGRESS.md).
+**Laufender Stand, 28.10.2026:** TT-001–064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün. **Neu geplant und noch offen:** M7.4 (TT-079–084) für Kartenwechsel, Weiter und Geheimzahlübergabe, **danach** M7.5 (TT-071–078) für das UI-Redesign. TT-065 (Rechte/Provenienz) darf parallel weiterlaufen; die finale M8-Abnahme TT-069 setzt TT-084 und TT-078 voraus. [Status und Belege](PROGRESS.md).
 
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 
@@ -127,7 +127,7 @@ D-07-Zweig aus einer laufenden angezeigten Fallphase: `confirmCompleteWithoutVer
 
 ## 4. Phasen und lokal prüfbare Meilensteine
 
-Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren Modi unstartbar machen. Abhängigkeiten beziehen sich auf **abgeschlossene** Aufgaben. Unfertige Features erhalten sichtbare, ehrliche Platzhalter, keine tote Navigation. Maßgeblich sind die Abhängigkeiten und die Reihenfolge im Dokument, nicht allein die Nummer. **TT-001–TT-070 sind die ursprünglichen 70 Aufgaben, ergänzt durch TT-071–TT-078 für M7.5.** Die 78 definierten Aufgaben behalten ihre eindeutigen IDs; bestehende Abschlüsse werden nicht rückwirkend geändert. Nicht definierte IDs gehören nicht zu einem Meilenstein.
+Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren Modi unstartbar machen. Abhängigkeiten beziehen sich auf **abgeschlossene** Aufgaben. Unfertige Features erhalten sichtbare, ehrliche Platzhalter, keine tote Navigation. Maßgeblich sind die Abhängigkeiten und die Reihenfolge im Dokument, nicht allein die Nummer. **TT-001–TT-070 sind die ursprünglichen 70 Aufgaben, ergänzt durch TT-071–TT-078 (M7.5) und TT-079–TT-084 (M7.4).** Die nun **84** definierten Aufgaben behalten ihre eindeutigen IDs. Fachliche Abarbeitungsreihenfolge: M7 → M7.4 (TT-079–084) → M7.5 (TT-071–078) → finale M8-Abnahme; bestehende Abschlüsse werden nicht rückwirkend geändert. Nicht definierte IDs gehören nicht zu einem Meilenstein.
 
 | Meilenstein | Aufgaben | Lokal vorführbares Ergebnis / Gate |
 | --- | --- | --- |
@@ -139,8 +139,9 @@ Eine Phase enthält kleine Arbeitspakete; keine Phase darf die zuvor spielbaren 
 | M5 – normales Multiplayer-Spiel | TT-043–TT-050 | Drei lokale Browser spielen mehrere vollständige Fälle mit privater Zahl und autoritativem Urteil. |
 | M6 – vollständige Multiplayer-Varianten | TT-051–TT-058 | Alle Richter, Besetzungswechsel, Hostwechsel, Reconnect, Persistenz und Aufräumen lokal geprüft. |
 | M7 – Inhalt, Sicherheit und Effizienz | TT-059–TT-064 | DE/EN, vollständiger Baukasten, Angriffs-/Last-/Performanceprüfungen, dokumentierte Budgets. |
+| **M7.4 – Spielabläufe überarbeiten** | **TT-079–TT-084** | Unbeschränkter Kartenwechsel innerhalb der gültigen Auswahl; „Weiter“ ohne Trink-/Fehlerpopup; Spielregelseite; sichere separate Ein-Handy-Geheimzahlübergabe. [M7.4-Gate](qa/M7_4.md). |
 | **M7.5 – UI-Neugestaltung** | **TT-071–TT-078** | Alle Seiten im freigegebenen Gerichtssaalstil, vollständige Bedienbarkeit und erhaltene Spielmechanik; [M7.5-Gate](qa/M7_5.md). |
-| M8 – lokal veröffentlichungsfähiger Stand | TT-065–TT-070 | Geprüfte Web-/Android-Artefakte, manuelle Releaseanleitung und Abnahme **nach TT-078**. TT-065–068 dürfen unabhängig vorbereitet werden. Veröffentlichung bleibt separater Auftrag. |
+| M8 – lokal veröffentlichungsfähiger Stand | TT-065–TT-070 | Geprüfte Web-/Android-Artefakte, manuelle Releaseanleitung und Abnahme **nach TT-084 und TT-078**. TT-065–068 dürfen unabhängig vorbereitet werden. Veröffentlichung bleibt separater Auftrag. |
 
 ### Gemeinsame Definition of Done (G)
 
@@ -808,21 +809,93 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 - **Manuell / lokal:** `W`, `MP`, `C`; Chrome/Edge und Android mit verfügbarer Vorlesefunktion prüfen.
 - **Abschluss:** G; M7-Abnahme mit dokumentierten Gerätegrenzen statt pauschaler Plattformfreigabe.
 
+### M7.4 – Funktionale Spielabläufe vor dem UI-Redesign anpassen
+
+**Status: OFFEN / neu geplant am 28.10.2026.** Dieser funktionale Meilenstein folgt auf das erledigte M7 und ist **vollständig vor TT-071/M7.5** zu implementieren. Er umfasst die nachträglichen IDs **TT-079–TT-084**. Die früheren Aufgaben behalten ihre IDs und ihren erledigten Status; M8-Releaseabnahme TT-069 setzt auch TT-084 voraus. Unabhängige Rechteklärung und Release-Vorbereitung TT-065–068 dürfen bei erfüllten Abhängigkeiten parallel laufen.
+
+**Produktvorgabe:** Der Richter darf die aktuelle reguläre Frage über das Refresh-Symbol oben links beliebig oft durch einen neuen zulässigen Zufallskandidaten ersetzen. Reguläres **Weiter** darf **kein Popup für richtige/falsche Plätze, Schluckzahlen oder trinkende Personen** aufrufen. Auf der Startseite gibt es eine jederzeit lesbare Seite **Spielregeln** mit den allgemeinen Trink- und Modusregeln, getrennt von der Liste aktuell aktiver Zusatzregeln. Im **Ein-Handy-Modus ohne Karten** sind Fallakte, Geräteweitergabe und persönliche Geheimzahl strikt getrennte Screens: Karte → Weiter → „Gib das Handy an Lisa“ → „Ich bin Lisa“ → verdeckte Zahl, nur während „Nummer anzeigen“ gedrückt gehalten wird sichtbar → „Fertig – weiter zum nächsten Spieler“. Die Folge wiederholt sich für alle Empfänger und endet beim Richter; ab dem zweiten Fall erhält der **vorherige Richter seine eigene Zahl zuerst**.
+
+**Geltung:** Kartenmodus, Ein-Handy-Modus und normaler Multiplayer; „Alle sind Richter“ erhält statt einer Richterrolle nur den bestehenden organisatorischen Vorleser als berechtigten Kartenwechsler. Regeln werden nicht automatisch zum Reroll freigegeben. Der Kartenwechsel verwendet D-01-/D-05-Auswahl, stable IDs und gültige Auswahlgrenzen; bestehende Berechtigungen/D-09-Privatsphäre sind zu erhalten. D-01, D-05, D-07, D-09 und Phasenverträge auf nötige Ergänzungen prüfen; die neue Fachfestlegung in **D-19** dokumentieren, ohne ältere Beschlüsse still zu überschreiben. Technische Umsetzung darf nicht mit reinem Austauschen der UI beginnen.
+
+**Reihenfolge:** TT-079 → TT-080 und TT-082 (nach TT-079) → TT-081 (nach TT-080) und TT-083 (nach TT-079) → TT-084 (nach TT-080–083). Erst nach TT-084 beginnt TT-071. Bei jedem Teil-Commit müssen bisherige Spielmodi soweit fachlich möglich weiterhin startbar bleiben.
+
+#### TT-079 – Neue Abläufe verbindlich spezifizieren und Phasenverträge abgleichen
+
+- **Umsetzung:** Ergänzung D-19 (Kartentausch, Weiter ohne manuelle Wertung, generelle Spielregelseite, getrennte Ein-Handy-Geheimzahlübergabe). Fachlichen Unterschied zwischen **Reroll**, **normalem Weiter nach vollständig gespieltem Fall**, **Weiter innerhalb eines Falls** und **ausdrücklich bestätigtem D-07-Fallabschluss ohne Urteil** festhalten. D-01: sichtbare und später ersetzte Frage bleibt gezogen (6h-Historie, während der Partie verbrauchte ID), erzeugt aber keine zusätzliche Fallzählung, Richterrotation oder Regelereignisse. D-05: schon verbindlich gebundene Personen und Zähler nicht rückwirkend löschen; neue Karte bekommt neue faire Rollenbindung. Angezeigte Geheimzahlen beim Kartentausch nicht versehentlich freigeben. Phasen-/Berechtigungs-/Retry-Verhalten für alle drei Modi dokumentieren.
+- **Dateien:** `docs/decisions/D-19-gameplay-flow-adjustments.md` (neu), `docs/GAME_DESIGN.md`, `docs/USER_FLOWS.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/contracts/`, `docs/qa/M7_4.md`.
+- **Abhängigkeiten:** TT-064, D-01, D-05, D-07, D-09 und vorhandene Zustands-/Sichtbarkeitsverträge.
+- **Akzeptanz:** Eindeutige Zustandsübergänge und Rollenrechte je Modus; Reroll zählt keinen abgeschlossenen Fall; kein Widerspruch zu D-07-Abbruch, D-01-Verbrauch oder Datenschutz. Weiter nach Fallende und Weiter bei Geheimzahlübergabe klar getrennt. Keine implizite Wiederverwendung einer verworfenen Frage.
+- **Auto:** Daten-/Vertrags- und Referenztests auf gültige Phasenübergänge vorbereiten; Dokumentationslinks und Entscheidungen auf Konsistenz prüfen.
+- **Manuell / lokal:** Fachabläufe Schritt für Schritt gegen `GAME_DESIGN`/`USER_FLOWS` und vorhandene Reducer abgleichen; keine Tests als durchgeführt behaupten.
+- **Abschluss:** G; verbindliches D-19-Dokument und testbare Übergangsmatrix stehen, ohne Spiellogik als implementiert auszugeben.
+
+#### TT-080 – Frage beliebig oft neu ziehen: lokaler und serverseitiger Spielkern
+
+- **Umsetzung:** Neue fachliche `rerollCurrentQuestion`-Transition (beziehungsweise getrennte äquivalente Kommandos) für eine noch laufende, nicht abgeschlossene reguläre Frage. Bisherige Karte durch einen anderen, gültigen Kandidaten ersetzen; unbeschränkt wiederholbar, **solange neue zulässige IDs vorhanden** sind. D-01-Wahl: zulässige ungezeigte IDs der laufenden Partie, zuerst mit `recentCount=0`, andernfalls minimaler 6h-Zähler und Zufallsentscheid bei Gleichstand. Jede bereits tatsächlich gezeigte Karte einschließlich verworfener Karten bleibt für die Partie verbraucht und im 6h-Verlauf; D-05-Rollen auf der neuen Karte neu und fair binden. Fallnummer, Regelereignisplan, Richter/Leser und Geheimzahlen bleiben unverändert; bisherige Antworten/Sortierentwürfe für die ersetzte Frage invalidieren. Wenn kein anderer Kandidat existiert, unveränderte Karte und verständlicher Hinweis statt Verlust des Falls. Doppelaktion/Retry darf nicht mehrere Ziehungen auslösen. Reroll nach bereits freigegebenen Zahlen oder abgeschlossener Wertung benötigt ausdrücklich im TT-079-Vertrag definierte sichere Behandlung; kein stilles Geheimnisleck und keine Wiederverwendung bereits öffentlicher privater Werte.
+- **Dateien:** `apps/client/lib/domain/selection/`, `apps/client/lib/domain/local_game_reducer.dart`, `apps/client/lib/domain/`, `apps/server/src/domain/selection/`, `apps/server/src/room/`, `packages/protocol/fixtures/` und zugehörige Dart-/TS-Tests.
+- **Abhängigkeiten:** TT-079, TT-007, TT-017, TT-044, TT-045.
+- **Akzeptanz:** Zehn Kartenwechsel im selben Fall verändern den Fallzähler nicht, verwenden jeweils neue geeignete IDs und erhalten denselben Richter, dieselben Zahlen und dieselben Regel-Slots. Kein unnötiger Wechsel von Partiezuständen; kein Fallverlust bei Katalogerschöpfung.
+- **Auto:** Dart-/TS-Parität, deterministischer Zufall/UTC-Zeit, 6h-Zähler und D-05-Referenzzähler, gleicher Aktionsschlüssel als Retry, parallele Aktionen, Restore/Reconnect und Erschöpfung.
+- **Manuell / lokal:** `C`, `S`, `MP`; mehrere Rerolls, Reload und anschließende reguläre Fallbeendigung.
+- **Abschluss:** G; atomare, wiederholbare Frageersetzung auf beiden Engines und persistenter Verlauf geprüft.
+
+#### TT-081 – Refresh-Symbol und Rollenrechte in allen Spielvarianten
+
+- **Umsetzung:** Refresh-Aktion **oben links an der aktuellen Frage/Fallakte** mit TT-080 verbinden. Lokal nur aktueller Richter (Kartenmodus: die Person, die die Fallakte als Richter bedient); im Multiplayer serverautoritativ der aktuelle Richter, bei „Alle sind Richter“ der aktuelle Vorleser. Hostrechte allein reichen nicht. Neue Karte überall synchronisieren; alte Fragen-Rollenbindungen, Antworten und bereits unbestätigte Sortierentwürfe nicht weiterverwenden. Geheime Zahlen bleiben zunächst verdeckt; Rückkehr aus späteren Phasen muss den laut TT-079 festgelegten Ablauf erneut sauber starten. Nur reguläre Fragen neu ziehen, nicht bereits aktivierte Zusatzregeln.
+- **Dateien:** `apps/client/lib/features/setup/card_mode_screen.dart`, `apps/client/lib/features/handoff/shared_game_screen.dart`, `apps/client/lib/features/multiplayer/`, `apps/client/lib/application/`, `apps/server/src/room/`, Protokoll-DTOs und Lokalisierung.
+- **Abhängigkeiten:** TT-080, TT-046–TT-052.
+- **Akzeptanz:** Refresh in allen drei Spielmodi, autorisiert und mit verständlichem Fehlerzustand; alle Online-Clients zeigen dieselbe neue Frage, kein verbotener Kartenwechsel durch Host/Gast; kein doppelter Rollenzähler oder heimlich erneut geöffnete Geheimzahl.
+- **Auto:** Rollen-, Phasen-, Snapshot-, Synchronisations-, Privatprojektions-, Dedupe- und Wiederverbindungstests.
+- **Manuell / lokal:** `W`, `C`, `MP`; mehrfacher Refresh vor und nach laufenden Eingaben bei langem Text/DE/EN.
+- **Abschluss:** G; Button- und Protokollanbindung ohne zusätzliche Fachlogik im Widget.
+
+#### TT-082 – Einfaches Weiter und eigenständige allgemeine Spielregelseite
+
+- **Umsetzung:** Im **Kartenmodus** die manuelle Fehlpositions-/Schluck-Eingabe aus dem normalen Weiter-Fluss entfernen: Weiter schließt den gespielten Fall ohne erfundene Wertung ab und erreicht direkt die nächste Fallgrenze beziehungsweise ein fälliges Regelereignis. Im **Ein-Handy-Modus** wird ein gültiges Urteil weiterhin automatisch berechnet, danach folgt Weiter ohne manuelle Strafabfrage; auf der Fallakte ist Weiter dagegen nur der Wechsel zur getrennten Zahlenübergabe aus TT-083. Im **Multiplayer** bleibt die serverseitige Wertung und Phasenberechtigung unverändert, aber normale Weiter-Aktionen benötigen keine zusätzliche Trink-/Fehlerabfrage. **D-07-Fall ohne Urteil abschließen** bleibt als getrennte, ausdrücklich bestätigte Abbruchaktion bestehen; sie ist nicht der normale Weiter-Button. Neue von der Startseite erreichbare Seite **Spielregeln** für die allgemeinen Regeln: Fehlpositionen, normale Schluckregel, „Alle sind Richter“ (nur eigene Fehler, kein Mittrinken), Richterwechsel, Zusatzregeln und Verstöße; DE/EN. Sie ist unabhängig von der während der Partie angezeigten Liste **Aktive Trinkregeln** und ohne Abbruch des aktuellen Spiels lesbar.
+- **Dateien:** `apps/client/lib/features/home/`, `apps/client/lib/features/rules/`, `apps/client/lib/features/setup/card_mode_screen.dart`, `apps/client/lib/features/handoff/`, `apps/client/lib/features/multiplayer/`, `apps/client/lib/l10n/`, `docs/USER_FLOWS.md`.
+- **Abhängigkeiten:** TT-079, TT-010, TT-022, TT-023, TT-043–TT-050.
+- **Akzeptanz:** Reguläres Weiter zeigt keinen Dialog zu Fehlern, Schlucken oder Trinker-Auswahl. Fallzähler und Regel-Slots jeweils genau einmal; digitale automatische Wertung unverändert; separate D-07-Abbruchbestätigung vorhanden. Die Regelseite ist auf Startseite und im Spiel erreichbar, lokalisiert und beschreibt keine falschen Werte.
+- **Auto:** Widget-/Navigations-/Lokalisierungstests, keine manuelle Strafabfrage in regulärem Pfad, Fallzählung, Event-Slots, D-07-Trennung, Regeltexte in DE/EN.
+- **Manuell / lokal:** `W`, `C`, `MP`, normale Runde und bewusster Abbruch getrennt vorführen.
+- **Abschluss:** G; „Weiter“ und die allgemeine Regelnavigation sind vollständig integriert.
+
+#### TT-083 – Ein-Handy-Modus: Fallakte, Übergabe und geheime Zahl trennen
+
+- **Umsetzung:** Die bisher gemeinsam gerenderte Frage/Geheimzahl in getrennte, explizit modellierte lokale Screens aufteilen: **(1)** Richter sieht Fallakte und kann die Frage austauschen; „Weiter“ startet die Übergabe **ohne** Fallabschluss. **(2)** „Gib das Handy an [Name]“ ohne sichtbare Zahl; „Ich bin [Name]“ bestätigt die Übernahme. **(3)** Geheime Zahl zunächst vollständig verdeckt; **nur solange „Nummer anzeigen“ gehalten wird** ist sie sichtbar (Touch/Maus/Pointer-Key-Äquivalent, beim Loslassen/Cancel/Fokusverlust/App-Hintergrund sofort verdecken). **(4)** „Fertig – weiter zum nächsten Spieler“ verdeckt zwingend die Zahl und zeigt die nächste Übergabe. Nach dem letzten Empfänger wird an den **aktuellen Richter** zurückgegeben; Antworten/Sortieren/Urteil bleiben normale Folgephasen. Empfängerliste ist für diesen Fall eingefroren; Richter erhält **keine** Zahl.
+- **Reihenfolge:** Bei einem neuen Fall zuerst den **unmittelbar vorherigen Richter**, sofern noch aktiv und jetzt Zahlenempfänger; danach die übrigen aktiven Nicht-Richter in der stabilen zyklischen Sitzreihenfolge, ohne doppelte Übergabe. Beispiel Anna → Ben → Carla → David: bisher Anna Richterin, jetzt Ben Richter → Übergabe **Anna → Carla → David**, danach zurück an Ben. Für den allerersten Fall ohne vorigen Richter beginnt die Liste beim ersten Empfänger nach dem aktuellen Richter. Geänderte Besetzung wird wie D-06 erst ab nächster Fallgrenze wirksam; bei entferntem vorherigem Richter die nächstzulässige stabile Reihenfolge aus TT-079 verwenden, ohne ein fremdes Profil zu erraten.
+- **Privatsphäre:** Beim Loslassen, Drag/Pointer-Cancel, Dialog, Zurück, App-Wechsel, inaktiver Route, Resume und Fehlzustand sofort verdecken; Anzeigezustand niemals dauerhaft im Snapshot speichern oder an andere Geräte übertragen. Bei Unterbrechung muss dieselbe Person sicher fortfahren können, ohne dass die Zahl offen bleibt. Button zum Weitergeben erst nach explizitem Übernahmeschritt. Alle Phasen-/Empfängerwechsel idempotent; doppelte Taps überspringen keine Person.
+- **Dateien:** `apps/client/lib/features/handoff/shared_game_screen.dart`, `apps/client/lib/design/private_number.dart`, `apps/client/lib/application/`, `apps/client/lib/domain/`, `apps/client/lib/l10n/`, lokale Persistenz und Flutter-Tests.
+- **Abhängigkeiten:** TT-079, TT-018, TT-024–TT-027.
+- **Akzeptanz:** Kein gemeinsamer Fallakte-/Geheimzahl-Screen mehr; Übergabe pro Zahlenempfänger, definierte „Ich bin …“-Bestätigung, Halten zum Anzeigen, Weiter zum nächsten; alter Richter zuerst, neuer Richter nicht in der Empfängerliste. 3–20 Spieler, Pause/Resume, Namen/Avatare und Fallgrenzen korrekt.
+- **Auto:** Übergabereihenfolgen inkl. Rosterwechsel und erstem Fall, Pointer-Down/Up/Cancel, Fokus/App-Lifecycle, Semantik/Leakfreiheit, Wiederherstellung, Doppelaktion und 20-Spieler-Grenze.
+- **Manuell / lokal:** `W` und `C`, ein kompletter Richterwechsel mit mehreren Zahlenempfängern; alle Geheimzahlen vor Weitergabe verdecken.
+- **Abschluss:** G; Geheimzahlen nur auf eigenem, nicht kombinierbarem Screen sichtbar und Übergabe pro Person vollständig.
+
+#### TT-084 – Integrations- und Regressionstest als Gate für M7.5
+
+- **Umsetzung:** End-to-End-Logik für den neuen Funktionsblock über alle Modi kombinieren: mehrfache Kartenwechsel, Personenbindungen, Historie, Zahlvergabe, Richterrotation, Zusatzregel-Slots, „Weiter“, automatisches Urteil, bewusster D-07-Abbruch, Geheimzahlübergabe und Wiederaufnahme. Neue DTO-/Persistenzzustände versionssicher migrieren; zusätzliche Runtime-Aktionen dürfen keine Geheimzahlen oder ungültigen alten Sortierungen freigeben. Die neuen Abläufe an die M7.5-Screeninventur übergeben.
+- **Dateien:** `apps/client/test/`, `apps/server/test/`, `packages/protocol/fixtures/`, `docs/qa/M7_4.md`, `docs/PROGRESS.md`, gegebenenfalls Persistenz-/Migrationsmodule.
+- **Abhängigkeiten:** TT-080, TT-081, TT-082, TT-083.
+- **Akzeptanz:** Kartenwechsel zählt keinen Fall und keine Regel doppelt; normales Weiter zeigt keine manuelle Strafabfrage; alle drei Modi einschließlich Online-Host/Gast und „Alle sind Richter“ bleiben spielbar. Lokale Zahlübergabe folgt alten/neuen Richter korrekt; alle Zahlen sind nach Loslassen und Resume verdeckt. DE/EN und Offline/Wiederaufnahme unverändert. Keine Regression der D-01-/D-05-/D-07-/D-09-Invarianten.
+- **Auto:** Dart-/TS-Parität, Unit-/Widget-/Semantik-/Protokoll-/Persistenztests, Analyze/Format, Asset-/Offline-Check und lokale Web-/Android-Build-Smokes.
+- **Manuell / lokal:** `W`/`C`/`S`/`MP`; Browser-/E2E-Abnahmen laut bestehender Nutzervorgabe **ÜBERSPRUNGEN – später manuell testen**, falls nicht tatsächlich ausgeführt.
+- **Abschluss:** G; [M7.4-Gate](qa/M7_4.md) mit realen Testbelegen und offenen Einschränkungen. Erst danach TT-071/M7.5 beginnen.
+
 ### M7.5 – UI-Neugestaltung nach den freigegebenen Designreferenzen
 
-**Status: OFFEN (Planergänzung 28.10.2026).** Der Meilenstein liegt fachlich nach M7 und vor der abschließenden M8-Abnahme. Die neuen IDs TT-071–TT-078 werden nicht in die bereits festgelegten TT-065–070 hineingeschoben. **TT-065–068 sind bei erfüllten Abhängigkeiten parallel möglich; TT-069 und TT-070 erst nach TT-078.**
+**Status: OFFEN (Planergänzung 28.10.2026).** Der Meilenstein liegt fachlich **nach dem abgeschlossenen M7.4/TT-084** und vor der abschließenden M8-Abnahme. Die neuen IDs TT-071–TT-078 werden nicht in die bereits festgelegten TT-065–070 hineingeschoben. **TT-065–068 sind bei erfüllten Abhängigkeiten parallel möglich; TT-069 und TT-070 erst nach TT-078.**
 
 **Designquellen:** [Screens und visuelle Leitlinie](design/references/screens/README.md), [visuelles Konzept](VISUAL_DESIGN.md), [Design-Tokens](contracts/VISUAL_SYSTEM.md). Vorhandene PNGs: `apps/client/assets/ui/courtroom/`. Vor Einbindung Bildqualität, Auflösung, Transparenz, Dateigröße und Herkunft kontrollieren. Die Screens sind **Referenzen, keine als Ganzes einzublendenden App-Bilder**; auch Seiten ohne Bild müssen optisch passen. Der dritte schwarze Screen ist bewusst leer und keine Implementierungsvorgabe. Bild `10_spieler_hinzufuegen.png` steht für Personenverwaltung, nicht für die Urteilsfunktion: Beispielüberschriften und Buttons begründen keine Fachlogik.
 
-**Fachliche Grenzen:** Keine unbeabsichtigten Änderungen an Spielregeln, Phasen, Rechteprüfung, Geheimzahlen, Multiplayer-Nachrichten, Datenmodellen, Fairnesslogik oder Speicherung. UI-Widgets (Buttons, Slider, Texte, Listen) bleiben echte Flutter-Widgets. Bestehende v2-Avatare dürfen bis zur **separat geplanten** v3-Avatarproduktion ([Grafikplan](avatars/AVATAR_GRAPHICS_PLAN.md)) verwendet werden; v3 ist kein M7.5-Blocker. Keine GitHub Actions oder Deployments als Teil des Redesigns.
+**Fachliche Grenzen:** M7.5 setzt die in M7.4/D-19 bewusst neu definierten Funktionen voraus. Keine **weiteren unbeabsichtigten** Änderungen an Spielregeln, Phasen, Rechteprüfung, Geheimzahlen, Multiplayer-Nachrichten, Datenmodellen, Fairnesslogik oder Speicherung. UI-Widgets (Buttons, Slider, Texte, Listen) bleiben echte Flutter-Widgets. Bestehende v2-Avatare dürfen bis zur **separat geplanten** v3-Avatarproduktion ([Grafikplan](avatars/AVATAR_GRAPHICS_PLAN.md)) verwendet werden; v3 ist kein M7.5-Blocker. Keine GitHub Actions oder Deployments als Teil des Redesigns.
 
-**Umsetzungsfolge:** TT-071 → TT-072 → TT-073/074/075/076 (bei erfüllten Abhängigkeiten auch parallel) → TT-077 → TT-078. Jede Aufgabe hält die drei Spielmodi startbar. **Das Redesign verändert die Informationshierarchie und verkürzt unnötige Scrollstrecken; es ist nicht nur ein Farbwechsel.** Hauptaktionen sollen bei normaler Handyhöhe gut erreichbar sein, aber lange Texte und 200 % Textskalierung dürfen nicht abgeschnitten werden.
+**Umsetzungsfolge:** erst TT-084 abschließen, dann TT-071 → TT-072 → TT-073/074/075/076 (bei erfüllten Abhängigkeiten auch parallel) → TT-077 → TT-078. Jede Aufgabe hält die drei Spielmodi startbar. **Das Redesign verändert die Informationshierarchie und verkürzt unnötige Scrollstrecken; es ist nicht nur ein Farbwechsel.** Hauptaktionen sollen bei normaler Handyhöhe gut erreichbar sein, aber lange Texte und 200 % Textskalierung dürfen nicht abgeschnitten werden.
 
 #### TT-071 – Screens und Assets vollständig inventarisieren
 
 - **Umsetzung:** Alle vorhandenen lokalen und Multiplayer-Seiten, Dialoge, Lade-/Leer-/Fehler-/Offline-/Reconnect-Zustände erfassen und den Mockups oder passenden neuen Seitentypen zuordnen. Referenz 10 als Personenverwaltung und den schwarzen Platzhalter als Nicht-Vorgabe einordnen. Vorhandene PNGs einzeln auf Bildfehler, Beschnitt, Transparenz, Auflösung, Größe und Herkunft prüfen; bestehende Funktionen dokumentieren statt sie nach Mockup wegzulassen.
 - **Dateien:** `docs/design/references/screens/`, `docs/VISUAL_DESIGN.md`, `apps/client/lib/features/`, `apps/client/assets/ui/courtroom/`, `docs/qa/M7_5.md`.
-- **Abhängigkeiten:** TT-064; Designreferenzen und PNGs liegen bereits vor.
+- **Abhängigkeiten:** TT-084, TT-064; Designreferenzen und PNGs liegen bereits vor.
 - **Akzeptanz:** Screen-/Zustandsmatrix für drei Modi inklusive Online-Host/Gast und DE/EN; nötige Assetverbesserungen und UI-Abweichungen benannt.
 - **Auto:** Navigation-/Screen-Bestandstests erfassen; referenzierte Dateien und Assets auf Existenz prüfen.
 - **Manuell / lokal:** Bisherige Ansichten und Mockups vergleichen; nicht durchgeführte visuelle Abnahmen ausdrücklich offen halten.
@@ -842,7 +915,7 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 
 - **Umsetzung:** Startseite mit drei bisherigen Spielmodi; Profil-/Avatar-Editor mit großer Polizeifoto-Vorschau, dynamischem Namensschild und kompakten Kategorien; allgemeine Einstellungen und lokale Spieleinrichtung zusammenhängend gestalten. Alle bestehenden Auswahlmöglichkeiten erhalten, v2-Avatar-Fallback bis zur v3-Grafikproduktion.
 - **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`, `apps/client/lib/l10n/`.
-- **Abhängigkeiten:** TT-072, TT-015, TT-028.
+- **Abhängigkeiten:** TT-072, TT-015, TT-028, TT-082 (neue Startseiten-Regelnavigation).
 - **Akzeptanz:** Alle Spielmodi, Profiloptionen, Speichern, Sprache, Konfiguration und Zurück-Navigation erreichbar; unnötiges Scrollen reduziert, lange Namen/DE/EN/200-%-Text bedienbar.
 - **Auto:** Navigation, Persistenz, Formularvalidierung, Settings-/Viewport-Widgettests.
 - **Manuell / lokal:** `W`/`C`; Referenzen 01/02/05.
@@ -862,7 +935,7 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 
 - **Umsetzung:** Handy weitergeben, Richterwechsel, Fall-/Regelakten, Frage- und Antwortphase, verdeckte Zahl und Urteils-/Aufdeckansichten im neuen Stil darstellen. Beispielaktionen aus Mockups nur übernehmen, wenn Phase und Berechtigung es erlauben. Lange Fragen und Skalenenden auf Pergament lesbar halten.
 - **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`, `apps/client/lib/l10n/`.
-- **Abhängigkeiten:** TT-072, TT-018/019, TT-022–024, TT-046–050.
+- **Abhängigkeiten:** TT-072, TT-018/019, TT-022–024, TT-046–050, TT-081 und TT-083 (Refresh und getrennte Übergabe).
 - **Akzeptanz:** Geheimzahl nur bewusst und berechtigt sichtbar, keine Lecks beim Weitergeben, Wiederverdecken, Richter- und Ergebnisschritte korrekt; alle-Richter-Modus bleibt gültig.
 - **Auto:** Zustands-/Berechtigungs-/Semantiktests, Geheimzahl-Verdeckung, lange DE/EN-Texte, Ergebnisgleichheit mit Spielkern.
 - **Manuell / lokal:** `W`/`C`/`MP`, eine vollständige lokale Runde; Referenzen 06–09.
@@ -872,7 +945,7 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 
 - **Umsetzung:** Kartenmodus ohne Pflichtprofile, aktive Regeln, Regelereignisse, Fortschritt, Neustart, Offline-/Resume- und Fehlerzustände an das neue Design anbinden. Sekundäre Funktionen kompakt unterbringen, aber nichts streichen oder fachlich verändern.
 - **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`, `apps/client/lib/l10n/`.
-- **Abhängigkeiten:** TT-072, TT-009–012, TT-027, TT-028, TT-033.
+- **Abhängigkeiten:** TT-072, TT-009–012, TT-027, TT-028, TT-033, TT-082 (Weiter ohne Strafabfrage, Spielregelseite).
 - **Akzeptanz:** 50-Fälle-/7-Regeln-Konfiguration, kompletter Kartenablauf, DE/EN und Offline/Resume erhalten; Aktionen ohne übermäßiges Scrollen, bei 200 % Text vollständig erreichbar.
 - **Auto:** Navigation, Konfiguration, Regelzustände, Resume/Offline, Layout-/Semantiktests.
 - **Manuell / lokal:** `W`/`C`/`B` soweit nötig.
@@ -882,7 +955,7 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 
 - **Umsetzung:** Raum erstellen/beitreten, Lobby, Profil-/Gerichtssaal-Tabs, Host-/Gastaktionen, private Geheimzahl, Bereitschaft, Reconnect, Hostwechsel, Warte-/Fehlerzustände neugestalten. Keine Änderungen am Protokoll und keine Drag-Frames ins Netzwerk senden.
 - **Dateien:** `apps/client/lib/features/`, `apps/client/lib/design/`.
-- **Abhängigkeiten:** TT-073, TT-074, TT-075, TT-076, TT-057, TT-058.
+- **Abhängigkeiten:** TT-073, TT-074, TT-075, TT-076, TT-057, TT-058, TT-081 (serverseitiger Kartenwechsel).
 - **Akzeptanz:** Beide Online-Varianten, Join-Link, Host-/Gastrechte, private Zahl, Wiederaufnahme und Raumablauf korrekt, kein optisch veralteter Multiplayerbereich.
 - **Auto:** Host-/Gast-Projektionen, Reconnect, Zustands-/Widget- und vorhandene Multiplayer-Regressionstests.
 - **Manuell / lokal:** `MP`/`W`/`C`; mehrere Clients (laut Nutzervorgabe ggf. zurückgestellt).
@@ -944,8 +1017,8 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 
 - **Umsetzung:** Alle Meilensteingates im sauberen lokalen Checkout/Worktree ausführen; Toolversionen, Lockfiles und reproduzierbare Assetgenerierung prüfen. Abdeckungsmatrix unten anhand tatsächlich vorhandener Screens/Tests abhaken; Fehler einzeln beheben und betroffene Gates wiederholen.
 - **Dateien:** `scripts/check.ps1`, `docs/qa/RELEASE_CHECKLIST.md`, `docs/PROGRESS.md`.
-- **Abhängigkeiten:** TT-068, alle TT-001–TT-067 **und TT-078**. TT-065–068 dürfen parallel vorbereitet werden; die finale Releaseabnahme wartet auf das abgeschlossene UI-Gate.
-- **Akzeptanz:** Drei Varianten, optionale alle Richter, DE/EN, Offline/Resume, Rosterwechsel, Geheimhaltung, Reconnect und Builds vollständig nachgewiesen; das M7.5-Gate liegt vor und Release-Artefakte wurden mit den aktualisierten UI-Assets neu erstellt. Keine offenen funktionalen Blocker, keine behaupteten Cloudtests.
+- **Abhängigkeiten:** TT-068, alle TT-001–TT-067, **TT-084 und TT-078**. TT-065–068 dürfen parallel vorbereitet werden; die finale Releaseabnahme wartet auf das funktionale M7.4-Gate und das UI-Gate M7.5.
+- **Akzeptanz:** Drei Varianten, optionale alle Richter, DE/EN, Offline/Resume, Rosterwechsel, Geheimhaltung, Reconnect und Builds vollständig nachgewiesen; das M7.4-Funktionsgate und das M7.5-UI-Gate liegen vor, Release-Artefakte wurden mit den neuen Abläufen und UI-Assets neu erstellt. Keine offenen funktionalen Blocker, keine behaupteten Cloudtests.
 - **Auto:** `D`, `C`, `S`, Parität, `E`, Last-/Offlineprüfungen, `B` Web/APK/AAB einmal vollständig lokal.
 - **Manuell / lokal:** Drei reale Browserfenster, Androidgerät, kalter Web-Offlinestart und vollständige Bildschirmmatrix mit dokumentierten Versionen.
 - **Abschluss:** G; Abnahmebeleg mit Artefaktprüfsummen und verbleibenden Betriebsrisiken.
