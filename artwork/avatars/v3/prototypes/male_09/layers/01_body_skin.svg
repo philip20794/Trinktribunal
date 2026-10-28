@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+ <!-- Neck and shoulders before clothes: never baked into an outfit -->
+ <path data-palette="skin.deep" fill="#81423a" stroke="#6a3c34" stroke-width="7" d="M446 650 Q448 717 421 778 L358 830 Q500 875 663 815 L608 778 Q577 724 582 654 Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#683e35" stroke-width="4" d="M456 634 Q461 728 430 783 Q500 808 599 775 Q569 725 573 639 Z"/>
+ <path data-palette="skin.shadow" fill="#bb6b56" opacity=".50" d="M541 665 Q561 725 568 764 L588 779 555 788 Q532 750 541 665Z"/>
+ <path data-palette="skin.highlight" fill="#ffcfaa" opacity=".62" d="M473 675 Q484 747 452 782 L475 791 Q497 755 491 711Z"/>
+ <path fill="none" stroke="#9c604d" stroke-width="4" opacity=".65" d="M460 749Q484 775 500 770M564 754Q548 772 533 768"/>
+</g></svg>
