@@ -13,7 +13,7 @@ from pathlib import Path
 from PIL import Image
 
 GIT_MASTER_BLOB = "1fbf3fe02f99fcb4fb03168045ea12d237c09e59"
-SOURCE_SIZE = (1229, 1536)
+SOURCE_SIZE = (1198, 1313)
 
 
 def inspect_file(path, expected_blob=GIT_MASTER_BLOB):
