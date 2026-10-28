@@ -53,3 +53,16 @@ Wird stattdessen die hochgeladene Arbeitskopie verwendet, kann `TT_P1_SOURCE` f�
 ## Weiterer Auftrag
 
 P1 bleibt die **erste offene Aufgabe**. Einmalige RGB-Pixelgleichheit zwischen Git-Master und Chat-Upload prüfen. Wenn gleich: verbleibende Stirn-/Brauenkanten auf dem Original und bei 48/96/320 Pixeln nacharbeiten; wenn abweichend: die Farbmasken am Git-Master neu evaluieren. Danach Nutzerfreigabe des echten v3-Vergleichs einholen. **P2 nicht starten**, bevor P1 den vorgesehenen Sicht-/Quellvergleich besteht. v2-Avatare und Flutter/Multiplayer bleiben unverändert.
+
+## Dateiformat-Korrektur nach erneutem Nutzerupload (28.10.2026)
+
+Eine erneute direkte Prüfung der im Chat eingebundenen **Dateibytes** zeigt: Die bisher verwendete Arbeitskopie `1000141823.png` ist trotz Endung **JPEG**, 1229 × 1536, **261.707 Bytes**, SHA-256 `b6413acbfac52b7e2b9447567fd6028ffff1650ba63eec3dac1f03c1ce3963ec`. Die bisherige Bezeichnung „Upload-PNG“ im Bericht war technisch falsch; die RGB-Pixelwerte und die als Arbeitsprobe ermittelten Maskenmetriken bleiben unverändert. Die Dateiendung ist kein verlässlicher Formatnachweis.
+
+Die **neu** hochgeladene `1000141837.png` ist ebenfalls **JPEG**, diesmal **1401 × 1536**, **313.507 Bytes**, Datei-SHA-256 `1fbd948b91940351ce92b4a3606e8fb1582ff8d4f0a2e7c9823d8e1158087854`. Damit fehlen ihr sowohl echtes PNG-Format als auch das vom P1-Piloten verlangte Rastermaß 1229 × 1536. Sie ist **nur Sichtreferenz**. Das Git-Original ist nach Git-Metadaten dagegen eine **2.037.786-Byte-PNG**, Git-Blob `1fbf3fe02f99fcb4fb03168045ea12d237c09e59`.
+
+Neu im Prototyp: [`verify_master_source.py`](../../../artwork/avatars/v3/prototypes/male_09_color_masks/verify_master_source.py). Der Prüfer liest das tatsächliche Bildformat, meldet Dateigröße, Pixel-/Datei-Hash und berechnet die Git-Blob-SHA-1 über die unveränderten Datei-Bytes. Mit `--require-exact-git-source` stoppt er bei jeder umcodierten oder skalierten Kopie. [`p1_refinement_v3_review.py`](../../../artwork/avatars/v3/prototypes/male_09_color_masks/p1_refinement_v3_review.py) schreibt diese Herkunftskontrolle in seine neuen Metriken; der strikte Modus kann optional aktiviert werden. **Ein Abgleich mit den tatsächlichen Git-Bildbytes ist weiterhin ausstehend; die ursprünglichen Grafiken bleiben unverändert und P1 nicht abgenommen.**
+
+~~~sh
+python artwork/avatars/v3/prototypes/male_09_color_masks/verify_master_source.py --source docs/avatars/references/master-male-09-approved.png --require-exact-git-source
+python artwork/avatars/v3/prototypes/male_09_color_masks/p1_refinement_v3_review.py --source docs/avatars/references/master-male-09-approved.png --out avatar-p1-review-v3 --require-exact-git-source
+~~~
