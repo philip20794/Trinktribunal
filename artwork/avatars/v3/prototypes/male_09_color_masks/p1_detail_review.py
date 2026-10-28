@@ -87,6 +87,20 @@ def make_comparison(images, area, labels, path):
     canvas.save(path, optimize=True)
 
 
+def make_before_after(src, baseline, corrected, area, kwargs, destination):
+    """1:1 crop: unedited pilot, corrected masks, and explicit pixel-delta map."""
+    original_variant = recolor(src, baseline, **kwargs)
+    edited_variant = recolor(src, corrected, **kwargs)
+    delta = np.max(np.abs(original_variant.astype(np.int16) - edited_variant.astype(np.int16)), axis=2)
+    # Highlight any pixel changed by mask editing; bright magenta means large RGB delta.
+    indicator = np.zeros_like(src)
+    indicator[:, :, 0] = np.uint8(np.minimum(255, delta * 4))
+    indicator[:, :, 2] = np.uint8(np.minimum(255, delta * 4))
+    images = {"Pilot vorher": original_variant, "Maske nachher": edited_variant, "Pixelabweichung x4": indicator}
+    make_comparison(images, area, list(images), destination)
+    return int(np.count_nonzero(delta))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", type=Path, required=True)
@@ -103,6 +117,21 @@ def main():
     images.update({key: recolor(src, masks, **kwargs) for key, kwargs in OPTIONS.items()})
     for area_name, area in AREAS.items():
         make_comparison(images, area, GROUPS[ASSIGNMENT[area_name]], args.out / f"detail_{area_name}.png")
+    comparisons = {}
+    if args.mask_dir:
+        baseline = make_masks(src)
+        area_cases = {
+            "skin": OPTIONS["skin_deep"],
+            "hair": OPTIONS["hair_blond"],
+            "shirt": OPTIONS["shirt_red"],
+            "sign": OPTIONS["combo_deep_gray_green"],
+        }
+        for area_name, area in AREAS.items():
+            key = ASSIGNMENT[area_name]
+            comparisons[area_name] = make_before_after(
+                src, baseline, masks, area, area_cases[key],
+                args.out / f"before_after_{area_name}.png"
+            )
 
     maxmask = np.maximum.reduce([masks[key] for key in ("skin", "hair", "shirt")])
     active = maxmask > 0
@@ -133,6 +162,7 @@ def main():
         "variants": cases,
         "review_status": "NOT_VISUALLY_APPROVED",
         "mask_origin": "verified_edited_pngs" if args.mask_dir else "baseline_pilot",
+        "baseline_vs_edited_changed_px_in_area": comparisons,
         "warning": "Zero changes outside masks cannot establish correct segmentation, edges or colours.",
         "detail_files": [f"detail_{name}.png" for name in AREAS],
     }
