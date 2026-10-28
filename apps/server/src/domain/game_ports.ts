@@ -28,6 +28,16 @@ export function gamePorts(
     ...overrides,
     planSlots: (config, random) =>
       planSlots(config.targetCases, config.requestedRuleEvents, random),
+    prepareQuestion: (state, random, now) =>
+      assignContent(
+        catalogs[state.config.contentLanguage].questions,
+        'question',
+        {
+          ...input(state, now, state.drawnQuestionIds),
+          players: state.round!.roster.filter((id) => state.roster.includes(id)),
+        },
+        random,
+      ),
     prepareCase: (state, random, now) => {
       const question = assignContent(
         catalogs[state.config.contentLanguage].questions,

@@ -10,6 +10,7 @@ import '../domain/models/ids.dart';
 import '../domain/models/person_selection_counts.dart';
 import '../domain/number_assignment.dart';
 import '../domain/question_deck.dart';
+import '../domain/question_draws.dart';
 import '../domain/rules/drinking_rules.dart';
 import '../domain/selection/content_selection.dart';
 import '../domain/selection/random_source.dart';
@@ -128,6 +129,7 @@ final class SharedPhoneController {
   Verdict? _verdict;
   final Set<String> _completedRounds = {};
   final Set<int> _processedSlots = {};
+  Map<String, List<String>> _questionDraws = const {};
   String? _pauseReason;
   SharedGameView? get view => _config == null ? null : SharedGameView._(this);
   PersonSelectionCounts get personCounts => _rules!.selection.counts;
@@ -205,6 +207,7 @@ final class SharedPhoneController {
     _completed = 0;
     _completedRounds.clear();
     _processedSlots.clear();
+    _questionDraws = const {};
     _question = null;
     _numbers = null;
     _order = [];
@@ -269,6 +272,7 @@ final class SharedPhoneController {
       _question = selected.assignments[id];
       _numbers = numbers;
       _roundId = id;
+      _questionDraws = appendQuestionDraw(_questionDraws, id, id);
       _recipients = numbers.numbers.keys.toList();
       _handoffIndex = 0;
       _phase = GamePhase.numbers;
@@ -292,6 +296,68 @@ final class SharedPhoneController {
 
   void hideSecret() {
     _visible = false;
+  }
+
+  bool rerollCurrentQuestion({required String roundId}) {
+    if (wasRerolled(_questionDraws, roundId)) return false;
+    _checkRound(roundId);
+    if (![
+          GamePhase.numbers,
+          GamePhase.answers,
+          GamePhase.ordering,
+          GamePhase.revealing,
+        ].contains(_phase) ||
+        _revealCursor != 0) {
+      _invalid('Diese Frage kann nach der Aufdeckung nicht gewechselt werden.');
+    }
+    final selection = _rules!.selection;
+    final id =
+        '${_gameId!.value}:q:${selection.drawnIds(ContentKind.question).length + 1}';
+    final selected =
+        QuestionDeck(
+          questions: _questions,
+          mode: GameMode.sharedPhone,
+          random: _random,
+          clock: _clock,
+        ).draw(
+          state: SelectionState(
+            history: _historyStore.history,
+            counts: selection.counts,
+            assignments: selection.assignments,
+          ),
+          eventId: id,
+          activePlayers: _ids
+              .where(
+                (id) =>
+                    _pending == null || _pending!.any((p) => p.player.id == id),
+              )
+              .toList(),
+        );
+    final numbers = NumberAssignment.restore(
+      roundId: RoundId(id),
+      numbers: _numbers!.numbers,
+      roster: _ids,
+      judgeId: _judge!,
+      maxSecretNumber: (_roster.length * _config!.factorTenths + 9) ~/ 10,
+    );
+    final draws = appendQuestionDraw(
+      _questionDraws,
+      '${_gameId!.value}:case:${_completed + 1}',
+      id,
+    );
+    _rules = _rules!.withSelection(selected);
+    _historyStore.merge(selected.history);
+    _questionDraws = draws;
+    _question = selected.assignments[id];
+    _numbers = numbers;
+    _roundId = id;
+    _phase = GamePhase.numbers;
+    _handoffIndex = 0;
+    _order = [];
+    _revealCursor = 0;
+    _verdict = null;
+    hideSecret();
+    return true;
   }
 
   void acknowledgeNumber({required String roundId, required PlayerId player}) {
@@ -356,7 +422,10 @@ final class SharedPhoneController {
     required bool confirmed,
     bool withoutVerdict = false,
   }) {
-    if (!confirmed || _completedRounds.contains(roundId)) return;
+    if (!confirmed ||
+        isCompletedQuestion(_questionDraws, _completedRounds, roundId)) {
+      return;
+    }
     _checkRound(roundId);
     if ([
           GamePhase.ruleEvent,
@@ -367,7 +436,7 @@ final class SharedPhoneController {
       _invalid('Der Fall kann noch nicht abgeschlossen werden.');
     }
     hideSecret();
-    _completedRounds.add(roundId);
+    _completedRounds.add('${_gameId!.value}:case:${_completed + 1}');
     _completed++;
     _numbers = null;
     _recipients = [];
@@ -496,6 +565,7 @@ final class SharedPhoneController {
       ? null
       : {
           'id': _gameId!.value,
+          'questionDraws': _questionDraws,
           'config': _config!.toJson(),
           'phase': _phase.name,
           'profiles': _profiles.values.map((p) => p.toJson()).toList(),
@@ -646,17 +716,22 @@ final class SharedPhoneController {
     )) {
       throw const FormatException('Ungültiger verbrauchter Slot');
     }
-    if (candidate._rules!.selection.drawnIds(ContentKind.question).length !=
-        completed + (activeCase ? 1 : 0)) {
-      throw const FormatException(
-        'Fragenverbrauch und Fallzähler widersprechen sich',
-      );
-    }
+    candidate._questionDraws = decodeQuestionDraws(
+      json['questionDraws'],
+      gameId: candidate._gameId!.value,
+      completedCases: completed,
+      activeCase: activeCase,
+      selection: candidate._rules!.selection,
+    );
     if (activeCase) {
       if (candidate._roster.length < 3 ||
           candidate._judge == null ||
           candidate._question == null ||
           candidate._question!.event.eventId != candidate._roundId ||
+          candidate
+                  ._questionDraws['${candidate._gameId!.value}:case:${completed + 1}']!
+                  .last !=
+              candidate._roundId ||
           candidate._question!.event.kind != ContentKind.question) {
         throw const FormatException('Aktiver Fall unvollständig');
       }
@@ -737,6 +812,7 @@ final class SharedPhoneController {
     _schedule = candidate._schedule;
     _judge = candidate._judge;
     _question = candidate._question;
+    _questionDraws = candidate._questionDraws;
     _numbers = candidate._numbers;
     _recipients = candidate._recipients;
     _handoffIndex = candidate._handoffIndex;

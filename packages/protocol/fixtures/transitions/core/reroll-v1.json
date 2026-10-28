@@ -1,0 +1,15 @@
+{
+  "players": ["A", "B", "C", "D"],
+  "questions": ["001-a", "001-b", "002-a", "002-b", "003-a", "003-b", "004-a", "004-b", "005-a", "005-b", "006-a", "006-b"],
+  "rerolls": 10,
+  "expected": {
+    "phase": "numbers",
+    "completed": 0,
+    "judge": "A",
+    "question": "006-a",
+    "drawn": 11,
+    "history": 11,
+    "slots": [1, 2],
+    "numbers": {"B": 1, "C": 2, "D": 3}
+  }
+}

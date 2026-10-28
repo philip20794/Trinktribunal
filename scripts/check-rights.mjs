@@ -20,7 +20,7 @@ export function rightsInventory(root=repository) {
     else if(accept(path)) files.push(path);
   }
   scan('apps/client/assets',()=>true);
-  for(const path of ['apps/client/web','apps/client/android/app/src/main/res','docs/avatars/references','docs/design/references/screens']) scan(path,p=>/\.(png|jpe?g|webp|svg|avif|ttf|otf)$/.test(p));
+  for(const path of ['apps/client/web','apps/client/android/app/src/main/res','docs/avatars/references','docs/design/references/screens','artwork/avatars/v3']) scan(path,p=>/\.(png|jpe?g|webp|svg|avif|ttf|otf)$/.test(p));
   return files.sort();
 }
 export function checkRights(registry,{root=repository,requiredFiles=rightsInventory(root),requireCleared=false}={}) {

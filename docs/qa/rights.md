@@ -4,7 +4,7 @@ Stand: 28.10.2026. **BLOCKIERT: externe Herkunfts-/Nutzungsnachweise fehlen.** D
 
 ## Konkreter Bestand
 
-Das [Rechteregister](rights-registry.json) enthält 13 Pakete mit 80 dateigenauen SHA-256-Werten und Links auf die vorhandenen Herkunftseinträge. Es inventarisiert Inhalte, Schriftdateien, Original-Vektorgeometrie, App-Icons, zusätzliche Gerichtssaal-PNGs und den separat dokumentierten v3-Konzeptbogen. Generierte DE/EN-Assetkopien sind zusammen mit ihren Quellen erfasst. SDK-/Paketnotizen bleiben der getrennte Flutter-/TT-068-Nachweis; dieses Register erfindet keine Projektlizenz und ersetzt keine Prüfung externer Belege.
+Das [Rechteregister](rights-registry.json) enthält 14 Pakete mit 86 dateigenauen SHA-256-Werten und Links auf die vorhandenen Herkunftseinträge. Es inventarisiert Inhalte, Schriftdateien, Original-Vektorgeometrie, App-Icons, zusätzliche Gerichtssaal-PNGs und den separat dokumentierten v3-Konzeptbogen. Generierte DE/EN-Assetkopien sind zusammen mit ihren Quellen erfasst. SDK-/Paketnotizen bleiben der getrennte Flutter-/TT-068-Nachweis; dieses Register erfindet keine Projektlizenz und ersetzt keine Prüfung externer Belege.
 
 | Paket | Verwendung | Erfasster Status |
 | --- | --- | --- |
@@ -16,7 +16,8 @@ Das [Rechteregister](rights-registry.json) enthält 13 Pakete mit 80 dateigenaue
 | Akten-/Schildgeometrie | Runtime | projektinterner Flutter-Code; Materialglyphen über SDK-Notices |
 | App-/Android-/PWA-Icons | Runtime | Nutzerdatei und Ableitungen vorhanden, Herkunfts-/Nutzungserklärung fehlt |
 | 33 Gerichtssaal-PNGs | derzeit nur Quelldateien | Herkunfts-/Nutzungserklärung fehlt; neue Einbindung benötigt erneute Einstufung |
-| Avatar-v3-Konzept und sechs hochgeladene Masterdateien | nur Dokumentreferenzen | Visuelle Zustimmungen laut Nutzerplan; keine modularen Runtime-Layer oder allgemeine Lizenzfreigabe |
+| Avatar-v3-Konzept und zehn hochgeladene Masterdateien | nur Dokumentreferenzen | Visuelle Zustimmungen laut Nutzerplan; keine modularen Runtime-Layer oder allgemeine Lizenzfreigabe |
+| Messwand-/Schild-SVG v3 | nur Entwurfsquellen | Eigene Erstellung dokumentiert; Comic-Neue-Schriftumrisse, Freigabe und technische Layerprüfung offen |
 | Zehn UI-Screenvorlagen | nur Dokumentreferenzen | Nutzerfreigabe als Layout-/Stilreferenz, keine gebündelten Bildschirmbilder |
 
 Damit bleiben **fünf Runtime-Pakete** ungeklärt: vier Katalogpakete und die Iconfamilie. Die nicht gebündelten Bildpakete werden ebenfalls nicht als freigegeben bezeichnet. Quellen-/Stilbestätigung eines Konzeptbogens überträgt sich nicht auf andere Dateien.

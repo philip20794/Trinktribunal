@@ -7,6 +7,7 @@ import 'models/game_mode.dart';
 import 'models/ids.dart';
 import 'models/person_selection_counts.dart';
 import 'question_deck.dart';
+import 'question_draws.dart';
 import 'rules/drinking_rules.dart';
 import 'selection/content_selection.dart';
 import 'selection/random_source.dart';
@@ -28,7 +29,9 @@ final class CardGameState {
     this.lastCompletion,
     this.manualErrors,
     this.pauseReason,
-  }) : completedEventIds = Set.unmodifiable(completedEventIds);
+    Map<String, List<String>> questionDraws = const {},
+  }) : completedEventIds = Set.unmodifiable(completedEventIds),
+       questionDraws = freezeQuestionDraws(questionDraws);
 
   final GameId id;
   final GameConfig config;
@@ -42,6 +45,7 @@ final class CardGameState {
   final CaseCompletion? lastCompletion;
   final int? manualErrors;
   final String? pauseReason;
+  final Map<String, List<String>> questionDraws;
   int get caseNumber =>
       completedCases + (phase == GamePhase.casePresented ? 1 : 0);
   int get effectiveRuleTarget =>
@@ -57,6 +61,7 @@ final class CardGameState {
     'completedCases': completedCases,
     'currentEventId': currentEventId,
     'questionEventId': currentQuestion?.event.eventId,
+    'questionDraws': questionDraws,
     'completedEventIds': completedEventIds.toList(),
     'lastCompletion': lastCompletion?.name,
     'manualErrors': manualErrors,
@@ -148,17 +153,20 @@ final class LocalGameReducer {
       }
     }
     final question = rules.selection.assignments[json['questionEventId']];
-    if (rules.selection.drawnIds(ContentKind.question).length !=
-        completed + (phase == GamePhase.casePresented ? 1 : 0)) {
-      throw const FormatException(
-        'Fragenverbrauch und Fallzähler widersprechen sich',
-      );
-    }
+    final questionDraws = decodeQuestionDraws(
+      json['questionDraws'],
+      gameId: id.value,
+      completedCases: completed,
+      activeCase: phase == GamePhase.casePresented,
+      selection: rules.selection,
+    );
     final currentEvent = json['currentEventId'] as String;
     if (question == null ||
         question.event.kind != ContentKind.question ||
         (phase == GamePhase.casePresented &&
             (currentEvent != question.event.eventId ||
+                questionDraws['${id.value}:case:${completed + 1}']!.last !=
+                    currentEvent ||
                 events.contains(currentEvent)))) {
       throw const FormatException('Fallakte fehlt');
     }
@@ -196,6 +204,7 @@ final class LocalGameReducer {
       lastCompletion: completion,
       manualErrors: errors,
       pauseReason: json['pauseReason'] as String?,
+      questionDraws: questionDraws,
     );
   }
 
@@ -239,7 +248,13 @@ final class LocalGameReducer {
     bool fullOrderConfirmed = false,
   }) {
     if (!confirmed) return state;
-    if (state.completedEventIds.contains(roundId)) return state;
+    if (isCompletedQuestion(
+      state.questionDraws,
+      state.completedEventIds,
+      roundId,
+    )) {
+      return state;
+    }
     if (state.phase != GamePhase.casePresented ||
         state.currentEventId != roundId) {
       _invalid('Der Fall ist nicht aktiv.');
@@ -257,7 +272,10 @@ final class LocalGameReducer {
     final next = _copy(
       state,
       completedCases: completed,
-      completedEventIds: {...state.completedEventIds, roundId},
+      completedEventIds: {
+        ...state.completedEventIds,
+        '${state.id.value}:case:$completed',
+      },
       lastCompletion: manualErrors == null
           ? CaseCompletion.withoutVerdict
           : CaseCompletion.judged,
@@ -311,6 +329,11 @@ final class LocalGameReducer {
         currentEventId: eventId,
         rules: state.rules.withSelection(selection),
         currentQuestion: selection.assignments[eventId],
+        questionDraws: appendQuestionDraw(
+          state.questionDraws,
+          eventId,
+          eventId,
+        ),
       );
     } on DomainException catch (error) {
       if (error.code != DomainErrorCode.contentExhausted) rethrow;
@@ -333,6 +356,7 @@ final class LocalGameReducer {
     CaseCompletion? lastCompletion,
     int? manualErrors,
     String? pauseReason,
+    Map<String, List<String>>? questionDraws,
   }) => CardGameState._(
     id: state.id,
     config: state.config,
@@ -346,7 +370,37 @@ final class LocalGameReducer {
     lastCompletion: lastCompletion ?? state.lastCompletion,
     manualErrors: lastCompletion != null ? manualErrors : state.manualErrors,
     pauseReason: pauseReason,
+    questionDraws: questionDraws ?? state.questionDraws,
   );
+
+  CardGameState rerollCurrentQuestion(
+    CardGameState state, {
+    required String roundId,
+  }) {
+    if (wasRerolled(state.questionDraws, roundId)) return state;
+    if (state.phase != GamePhase.casePresented ||
+        state.currentEventId != roundId) {
+      _invalid('Diese Frage ist nicht mehr aktiv.');
+    }
+    final id =
+        '${state.id.value}:q:${state.rules.selection.drawnIds(ContentKind.question).length + 1}';
+    final selection = _deck.draw(
+      state: state.rules.selection,
+      eventId: id,
+      activePlayers: [],
+    );
+    return _copy(
+      state,
+      currentEventId: id,
+      currentQuestion: selection.assignments[id],
+      rules: state.rules.withSelection(selection),
+      questionDraws: appendQuestionDraw(
+        state.questionDraws,
+        '${state.id.value}:case:${state.completedCases + 1}',
+        id,
+      ),
+    );
+  }
 }
 
 Never _invalid(String message) =>

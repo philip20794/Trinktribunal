@@ -111,6 +111,13 @@ final class LocalSessionController {
     ),
   );
 
+  void rerollCurrentQuestion(String roundId) => _accept(
+    _reducer.rerollCurrentQuestion(
+      _reducer.withHistory(_requireState(), history),
+      roundId: roundId,
+    ),
+  );
+
   void abort({required bool confirmed}) {
     if (confirmed) _state = null;
   }

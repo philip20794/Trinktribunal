@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
-import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
+import wireSchema from '../../../../packages/protocol/schemas/room-message.schema.json';
+import { canonicalJson, validateSchema } from '../../../../packages/protocol/schema-validation.mjs';
 import {
   decodeRoomMessage,
   ProtocolDecodeException,
@@ -12,6 +13,7 @@ import {
   type Config,
   type PlayerId,
   type RoomMessage,
+  type ReadyForOrderingMessage,
 } from '../protocol/room_message.generated';
 import {
   immutable,
@@ -37,6 +39,25 @@ export const gameActions = [
   'resumePaused',
 ] as const;
 type GameAction = Extract<RoomMessage, { type: (typeof gameActions)[number] }>;
+/** Internal intent until TT-081 publishes the versioned wire action. */
+export type RerollCommand = Omit<ReadyForOrderingMessage, 'type'> & {
+  readonly type: 'rerollCurrentQuestion';
+};
+const rerollSchema = {
+  ...wireSchema.$defs.readyForOrdering,
+  properties: {
+    ...wireSchema.$defs.readyForOrdering.properties,
+    type: { const: 'rerollCurrentQuestion' },
+  },
+};
+export function decodeRerollCommand(input: unknown): RerollCommand {
+  try {
+    validateSchema(input, rerollSchema, '$', wireSchema);
+  } catch {
+    throw new ProtocolDecodeException('INVALID_MESSAGE');
+  }
+  return input as RerollCommand;
+}
 type ActionResult =
   | { ok: true; state: GameState; duplicate: boolean }
   | { ok: false; state: GameState; code: ProtocolErrorCode };
@@ -215,6 +236,11 @@ function beginCase(state: MutableGameState, ports: GamePorts, now: number): void
   if (state.completedRoundIds.includes(id)) reject('ROOM_UNAVAILABLE');
   selected(state, prepared.question, 'question', ports, now);
   state.drawnQuestionIds.push(prepared.question.contentId);
+  state.questionDraws.push({
+    roundId: id,
+    questionId: prepared.question.contentId,
+    caseNumber: state.completedCases + 1,
+  });
   state.round = {
     id,
     question: structuredClone(prepared.question),
@@ -228,6 +254,44 @@ function beginCase(state: MutableGameState, ports: GamePorts, now: number): void
     revealCursor: 0,
     score: null,
   };
+  state.phase = 'numbers';
+}
+function reroll(state: MutableGameState, actor: PlayerId, ports: GamePorts, now: number): void {
+  const role = state.config.allJudges ? state.readerId : state.judgeId;
+  if (actor !== role) reject('UNAUTHORIZED_ACTION');
+  const round = state.round;
+  if (
+    !round ||
+    !['numbers', 'answers', 'ordering', 'revealing'].includes(state.phase) ||
+    round.revealCursor !== 0
+  )
+    reject('INVALID_PHASE');
+  if (!ports.prepareQuestion) reject('ROOM_UNAVAILABLE');
+  const question = ports.prepareQuestion(immutable(structuredClone(state)), random(ports), now);
+  if (!question) reject('CONTENT_EXHAUSTED');
+  if (
+    state.drawnQuestionIds.includes(question.contentId) ||
+    Object.values(question.bindings).some(
+      (id) => !round.roster.includes(id) || !state.roster.includes(id),
+    )
+  )
+    reject('ROOM_UNAVAILABLE');
+  const id = RoomIds.round(newId(ports, 'round'));
+  if (state.questionDraws.some((draw) => draw.roundId === id)) reject('ROOM_UNAVAILABLE');
+  selected(state, question, 'question', ports, now);
+  state.drawnQuestionIds.push(question.contentId);
+  state.questionDraws.push({
+    roundId: id,
+    questionId: question.contentId,
+    caseNumber: state.completedCases + 1,
+  });
+  round.id = id;
+  round.question = structuredClone(question);
+  round.acknowledged = [];
+  round.answerReady = [];
+  round.orders = [];
+  round.revealOrder = [];
+  round.score = null;
   state.phase = 'numbers';
 }
 function boundary(state: MutableGameState, ports: GamePorts, now: number): void {
@@ -371,6 +435,7 @@ function start(state: MutableGameState, config: Config, ports: GamePorts, now: n
   state.readerId = config.allJudges ? state.roster[0]! : null;
   state.completedRoundIds = [];
   state.drawnQuestionIds = [];
+  state.questionDraws = [];
   state.drawnRuleIds = [];
   state.activeRules = [];
   state.ruleSlots = slots.map((afterCase) => ({ afterCase, status: 'pending' }));
@@ -416,6 +481,7 @@ export function initialGameState({
     lastCompletion: null,
     completedRoundIds: [],
     drawnQuestionIds: [],
+    questionDraws: [],
     drawnRuleIds: [],
     ruleSlots: [],
     activeRules: [],
@@ -431,11 +497,33 @@ export function transition(
   input: unknown,
   ports: GamePorts,
 ): ActionResult {
+  return reduce(
+    state,
+    actor,
+    ports,
+    () =>
+      decodeRoomMessage(JSON.stringify(input), {
+        direction: 'client',
+        allowedTypes: gameActions,
+      }) as GameAction,
+  );
+}
+export function rerollCurrentQuestion(
+  state: GameState,
+  actor: PlayerId,
+  input: unknown,
+  ports: GamePorts,
+): ActionResult {
+  return reduce(state, actor, ports, () => decodeRerollCommand(input));
+}
+function reduce(
+  state: GameState,
+  actor: PlayerId,
+  ports: GamePorts,
+  decode: () => GameAction | RerollCommand,
+): ActionResult {
   try {
-    const command = decodeRoomMessage(JSON.stringify(input), {
-      direction: 'client',
-      allowedTypes: gameActions,
-    }) as GameAction;
+    const command = decode();
     if (!state.roster.includes(actor) || !state.connected.includes(actor))
       reject('CREDENTIAL_INVALID');
     const fingerprint = createHash('sha256').update(canonicalJson(command)).digest('hex'),
@@ -454,6 +542,9 @@ export function transition(
     if ('gameId' in command && command.gameId !== state.gameId) reject('STALE_ROUND');
     if ('roundId' in command && command.roundId !== state.round?.id) reject('STALE_ROUND');
     switch (command.type) {
+      case 'rerollCurrentQuestion':
+        reroll(next, actor, ports, now);
+        break;
       case 'setConfig':
         requireHost(next, actor);
         requirePhase(next, 'lobby');

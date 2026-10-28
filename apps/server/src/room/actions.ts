@@ -1,6 +1,14 @@
 import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
-import { initialGameState, stageRoster, transition, gameActions } from '../domain/game_reducer';
+import {
+  initialGameState,
+  stageRoster,
+  transition,
+  gameActions,
+  decodeRerollCommand,
+  rerollCurrentQuestion,
+  type RerollCommand,
+} from '../domain/game_reducer';
 import { gamePorts } from '../domain/game_ports';
 import { scoreRound } from '../domain/verdict';
 import { synchronizeRoster } from './roster';
@@ -56,6 +64,7 @@ function mutate(
   input: unknown,
   connected: ReadonlySet<PlayerId>,
   ports: GamePorts,
+  internalReroll = false,
 ): { state: RoomState; result: GameActionResult } {
   const now = ports.now();
   if (now >= roomExpiry(state)) return { state, result: { ok: false, code: 'ROOM_UNAVAILABLE' } };
@@ -69,10 +78,12 @@ function mutate(
     !connected.has(actor.playerId)
   )
     return { state, result: { ok: false, code: 'CREDENTIAL_INVALID' } };
-  const command = decodeRoomMessage(JSON.stringify(input), {
-    direction: 'client',
-    allowedTypes: types,
-  }) as GameCommand;
+  const command: GameCommand | RerollCommand = internalReroll
+    ? decodeRerollCommand(input)
+    : (decodeRoomMessage(JSON.stringify(input), {
+        direction: 'client',
+        allowedTypes: types,
+      }) as GameCommand);
   const lobbyReceipt = state.lobbyReceipts?.find(
     (receipt) => receipt.actionId === command.actionId,
   );
@@ -86,10 +97,15 @@ function mutate(
   if ((command.type === 'startGame' || command.type === 'restartGame') && state.historyOffer)
     return { state, result: { ok: false, code: 'INVALID_PHASE' } };
   const game = synchronizedGame(state, connected, now);
-  const outcome = transition(immutable(game), actor.playerId, command, {
-    ...ports,
-    now: () => now,
-  });
+  const outcome = (internalReroll ? rerollCurrentQuestion : transition)(
+    immutable(game),
+    actor.playerId,
+    command,
+    {
+      ...ports,
+      now: () => now,
+    },
+  );
   if (!outcome.ok)
     return {
       state,
@@ -129,11 +145,31 @@ export function commitGameAction(
   connected: ReadonlySet<PlayerId>,
   ports: GamePorts = productionGamePorts(),
 ): GameActionResult {
+  return commitDomainAction(repository, actor, command, connected, ports, false);
+}
+/** Trusted core entry only. TT-081 will add the authenticated wire route. */
+export function commitRerollAction(
+  repository: RoomRepository,
+  actor: { playerId: PlayerId; generation: number },
+  command: unknown,
+  connected: ReadonlySet<PlayerId>,
+  ports: GamePorts = productionGamePorts(),
+): GameActionResult {
+  return commitDomainAction(repository, actor, command, connected, ports, true);
+}
+function commitDomainAction(
+  repository: RoomRepository,
+  actor: { playerId: PlayerId; generation: number },
+  command: unknown,
+  connected: ReadonlySet<PlayerId>,
+  ports: GamePorts,
+  internalReroll: boolean,
+): GameActionResult {
   try {
     return repository.storage.transactionSync(() => {
       const state = repository.read();
       if (!state) return { ok: false as const, code: 'ROOM_UNAVAILABLE' as const };
-      const result = mutate(state, actor, command, connected, ports);
+      const result = mutate(state, actor, command, connected, ports, internalReroll);
       if (result.result.ok && !result.result.duplicate) repository.write(result.state);
       return result.result;
     });

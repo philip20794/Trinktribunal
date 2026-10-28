@@ -79,3 +79,5 @@ Eine eigenständige DE/EN-Seite „Spielregeln“ ist von Start und laufender Pa
 ## Referenzmatrix und Umsetzung
 
 Die [maschinenlesbare Übergangsmatrix](../contracts/fixtures/gameplay-flow-d19.json) und ihre Node-Prüfungen definieren erwartete Fälle, keine Engine-Ergebnisse. TT-080 ergänzt echte Dart-/TS-Reducer-, Historien-, Dedupe- und Restoretests, TT-081 Rollen/Projektionen, TT-082 Navigation/Weiter/Regeln, TT-083 Übergabe/Pointer/Lifecycle und TT-084 die gemeinsame Regression. Browser/E2E gemäß Nutzervorgabe **ÜBERSPRUNGEN – später manuell testen**; keine tatsächliche Geräte- oder Spiellogikabnahme aus dieser Spezifikation ableiten.
+
+TT-080-Präzisierung: Neue Fragenrollen verwenden die Schnittmenge aus eingefrorener Fallbesetzung und aktuell aktiven Mitgliedern. Vorgemerkte neue Personen werden erst an der nächsten Fallgrenze berücksichtigt; Ausscheidende werden nicht neu gebunden.

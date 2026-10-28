@@ -373,11 +373,19 @@
         },
         {
           "path": "docs/avatars/references/master-female-04-approved.png",
-          "sha256": "e67dfe21c89977f6662872acb44daf052360a5172aa3039369fceb2728269f47"
+          "sha256": "ac35867c3164152bb5e0cd11a69377776ac41445a02df7e58196663e75d49b1d"
         },
         {
           "path": "docs/avatars/references/master-female-06-approved.png",
-          "sha256": "7bacff270e0f9ab4bb43c6c6bc3a9793c3bad2e9ce249d1612be8b0d2d5e6596"
+          "sha256": "9587d47282d130a6fdb4ab9d9a07e36246171b8a87f7fe42bbb40d5a2b5336c6"
+        },
+        {
+          "path": "docs/avatars/references/master-female-08-approved.png",
+          "sha256": "09a47cefb83a522aea02c60b70b3dc03e9110f898f3876c0d394186e2f90b6d9"
+        },
+        {
+          "path": "docs/avatars/references/master-female-10-approved.png",
+          "sha256": "bdd5f162fd09e7a1d7d6cf291186d0e74a379269d0223b0af6064da45e900d9d"
         },
         {
           "path": "docs/avatars/references/master-male-01-approved.png",
@@ -389,7 +397,15 @@
         },
         {
           "path": "docs/avatars/references/master-male-05-approved.png",
-          "sha256": "5db91745afd8abb1d505564cd733762a17a09e0279720a1340f58b01ef1b7d48"
+          "sha256": "2f94214562ae158faae7d9c6e4a3f1cfe3db08d82964cbc9e0b77d04cdfe9fb0"
+        },
+        {
+          "path": "docs/avatars/references/master-male-07-approved.png",
+          "sha256": "38deb6d314a2af6625d4c121847b51763ae253ccc16a3657bfa75cf9ae344302"
+        },
+        {
+          "path": "docs/avatars/references/master-male-09-approved.png",
+          "sha256": "8cff8d21145abb683893ab7c99c83ad16873a98ee65a887faff9104f3cb750f6"
         }
       ]
     },
@@ -439,6 +455,23 @@
         {
           "path": "docs/design/references/screens/10_spieler_hinzufuegen.png",
           "sha256": "ebad3f27749144fde599619d7ed7d28d9a01742400e1c012ed86336bad662bb6"
+        }
+      ]
+    },
+    {
+      "id": "avatar-v3-foundation-drafts",
+      "distribution": "source-only",
+      "status": "unresolved",
+      "provenance": "Project-authored SVG drafts documented in ART-02/03; visual approval and Comic Neue outline license evidence remain open. Not bundled.",
+      "evidence": "docs/avatars/reviews/art02-art03-foundation-2026-10-28.md",
+      "files": [
+        {
+          "path": "artwork/avatars/v3/background/mugshot_wall.svg",
+          "sha256": "a9c9b6d708dec27a53e66f81b8b43bea369ea360f9ecdfd60cc5bd17a7422860"
+        },
+        {
+          "path": "artwork/avatars/v3/frame/nameplate.svg",
+          "sha256": "7ee7a57e7b5545394fd5913083d213cc7a93026f58c68fbd24ac0bb68ab3d446"
         }
       ]
     }

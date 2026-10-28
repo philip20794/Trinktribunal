@@ -93,6 +93,7 @@ export interface MutableGameState {
   lastCompletion: Completion | null;
   completedRoundIds: RoundId[];
   drawnQuestionIds: string[];
+  questionDraws: Array<{ roundId: RoundId; questionId: string; caseNumber: number }>;
   drawnRuleIds: string[];
   ruleSlots: RuleSlot[];
   activeRules: Assignment[];
@@ -123,6 +124,12 @@ export interface GamePorts {
     randomIndex: (bound: number) => number,
     now: number,
   ): PreparedCase | null;
+  /** Reroll selects only content; it must not draw or replace secret numbers. */
+  prepareQuestion?(
+    state: GameState,
+    randomIndex: (bound: number) => number,
+    now: number,
+  ): Assignment | null;
   activateRule(
     state: GameState,
     randomIndex: (bound: number) => number,

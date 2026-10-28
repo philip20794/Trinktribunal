@@ -160,6 +160,10 @@ const definitions: Record<string, Schema> = {
       ),
       completedRoundIds: array(id, 491, true),
       drawnQuestionIds: array(id, 491, true),
+      questionDraws: array(
+        object({ roundId: id, questionId: id, caseNumber: integer(1, 491) }),
+        491,
+      ),
       drawnRuleIds: array(id, 25, true),
       ruleSlots: array(
         object(
@@ -275,6 +279,29 @@ export function migrateRoomState(raw: string): { state: RoomState; migrated: boo
       }
     }
     if (record(game) && game.formatVersion === 1) {
+      if (!Object.hasOwn(game, 'questionDraws')) {
+        requireState(
+          Array.isArray(game.drawnQuestionIds) &&
+            Array.isArray(game.completedRoundIds) &&
+            Number.isSafeInteger(game.completedCases),
+        );
+        const completed = game.completedCases as number;
+        const drawn = game.drawnQuestionIds as unknown[],
+          completedIds = game.completedRoundIds as unknown[];
+        requireState(
+          completed >= 0 &&
+            completed <= 491 &&
+            completedIds.length === completed &&
+            drawn.length === completed + (game.round === null ? 0 : 1),
+        );
+        const active = record(game.round) ? game.round.id : undefined;
+        game.questionDraws = drawn.map((questionId, index) => ({
+          roundId: (game.completedRoundIds as unknown[])[index] ?? active,
+          questionId,
+          caseNumber: index + 1,
+        }));
+        migrated = true;
+      }
       if (record(game.round) && !Object.hasOwn(game.round, 'answerReady')) {
         game.round.answerReady = [];
         migrated = true;
@@ -338,6 +365,31 @@ export function migrateRoomState(raw: string): { state: RoomState; migrated: boo
         g.drawnQuestionIds.every((id) => questionIds.has(id)) &&
           g.drawnRuleIds.every((id) => ruleIds.has(id)),
       );
+      requireState(
+        g.questionDraws.length === g.drawnQuestionIds.length &&
+          unique(g.questionDraws.map((draw) => draw.roundId)),
+      );
+      requireState(
+        g.questionDraws.every(
+          (draw, index) =>
+            draw.questionId === g.drawnQuestionIds[index] &&
+            draw.caseNumber <= g.completedCases + (r ? 1 : 0) &&
+            (index === 0
+              ? draw.caseNumber === 1
+              : draw.caseNumber === g.questionDraws[index - 1]!.caseNumber ||
+                draw.caseNumber === g.questionDraws[index - 1]!.caseNumber + 1),
+        ),
+      );
+      for (let caseNumber = 1; caseNumber <= g.completedCases + (r ? 1 : 0); caseNumber++) {
+        const draws = g.questionDraws.filter((draw) => draw.caseNumber === caseNumber);
+        requireState(draws.length > 0);
+        const last = draws.at(-1)!;
+        requireState(
+          caseNumber <= g.completedCases
+            ? last.roundId === g.completedRoundIds[caseNumber - 1]
+            : last.roundId === r!.id && last.questionId === r!.question.contentId,
+        );
+      }
       const effectivePhase = g.phase === 'paused' ? g.pausedFrom : g.phase;
       requireState(effectivePhase !== undefined);
       requireState((effectivePhase === 'lobby') === (g.gameId === null));
