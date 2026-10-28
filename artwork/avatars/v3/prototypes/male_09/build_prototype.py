@@ -11,6 +11,18 @@ from io import BytesIO
 import xml.etree.ElementTree as ET
 import random
 from PIL import Image, ImageDraw, ImageFont
+
+def font_at(size, bold=False):
+    # Use installed system fonts; test previews may use the Pillow fallback.
+    names = (
+        ['/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 'C:/Windows/Fonts/arialbd.ttf', '/System/Library/Fonts/Supplemental/Arial Bold.ttf']
+        if bold else
+        ['/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 'C:/Windows/Fonts/arial.ttf', '/System/Library/Fonts/Supplemental/Arial.ttf']
+    )
+    for name in names:
+        try: return ImageFont.truetype(name, size)
+        except OSError: pass
+    return ImageFont.load_default()
 import cairosvg
 
 OUT=Path(__file__).parent
@@ -186,7 +198,7 @@ def compose(skin='light',hair='brown',fabric='purple',name=None):
  if name:
   # Preview only, not included in source art. Text is renderer-owned in production.
   dr=ImageDraw.Draw(canvas)
-  font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',max(36,54-2*max(0,len(name)-12)))
+  font=font_at(max(36,54-2*max(0,len(name)-12)),bold=True)
   center=(512,1012)
   dr.text(center,name,font=font,fill='#f5ede0',anchor='mm',stroke_width=1,stroke_fill='#9d918a')
  return canvas
@@ -210,8 +222,8 @@ for i,(s,h,c) in enumerate(scenes):
  preview.append((im,(s,h,c)))
 contact=Image.new('RGB',(1230,1040),'#f1ede7')
 d=ImageDraw.Draw(contact)
-font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',22)
-font2=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',34)
+font=font_at(22)
+font2=font_at(34,bold=True)
 d.text((25,18),'Trinktribunal v3 | ART-04 + TECH-01 | Prototyp',fill='#2d2929',font=font2)
 d.text((27,70),'Ein modulares Testprofil, sechs Farbvarianten. Keine freigegebenen Serienassets.',fill='#595454',font=font)
 for i,(im,(s,h,c)) in enumerate(preview):
