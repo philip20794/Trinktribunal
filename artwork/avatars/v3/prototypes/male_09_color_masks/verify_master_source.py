@@ -20,7 +20,7 @@ def inspect_file(path, expected_blob=GIT_MASTER_BLOB):
     path = Path(path)
     data = path.read_bytes()
     blob = hashlib.sha1(b"blob " + str(len(data)).encode("ascii")
-                        + b"\\0" + data).hexdigest()
+                        + b"\0" + data).hexdigest()
     with Image.open(path) as im:
         fmt = im.format
         size = im.size
@@ -59,10 +59,10 @@ def main():
     encoded = json.dumps(info, indent=2, ensure_ascii=False)
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
-        args.out.write_text(encoded + "\\n", encoding="utf-8")
+        args.out.write_text(encoded + "\n", encoding="utf-8")
     print(encoded)
     if args.require_exact_git_source and not info["exact_git_source_match"]:
-        parser.exit(2, "REJECTED: file is not the unmodified Git master PNG.\\n")
+        parser.exit(2, "REJECTED: file is not the unmodified Git master PNG.\n")
 
 
 if __name__ == "__main__":
