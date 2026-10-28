@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,13 +12,28 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final current = ref.watch(settingsProvider).asData?.value;
+    final loaded = ref.watch(settingsProvider), current = loaded.asData?.value;
     return Scaffold(
       appBar: AppBar(title: const TText('settings')),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
-          child: current == null
+          child: loaded.hasError
+              ? Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      StatusNotice(context.tr('settingsLoadFailed')),
+                      const SizedBox(height: 16),
+                      FilledButton(
+                        onPressed: () => ref.invalidate(settingsProvider),
+                        child: const TText('retry'),
+                      ),
+                    ],
+                  ),
+                )
+              : current == null
               ? const Center(child: CircularProgressIndicator())
               : ListenableBuilder(
                   listenable: current,
@@ -73,12 +90,7 @@ class SettingsScreen extends ConsumerWidget {
                         if (current.error != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 12),
-                            child: Text(
-                              context.tr(current.error!),
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.error,
-                              ),
-                            ),
+                            child: StatusNotice(context.tr(current.error!)),
                           ),
                         const SizedBox(height: 24),
                         const OfflineSettings(),

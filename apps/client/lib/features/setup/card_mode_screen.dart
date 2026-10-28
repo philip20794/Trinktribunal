@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'dart:math' as math;
 
 import '../../l10n/app_strings.dart';
@@ -239,19 +241,11 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                 padding: const EdgeInsets.all(24),
                 children: [
                   if (_storageWarning != null)
-                    Text(context.feedback(_storageWarning!)),
+                    StatusNotice(context.feedback(_storageWarning!)),
                   if (_error != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: Text(
-                        context.feedback(_error!),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                        semanticsLabel: context.tr('errorText', {
-                          'text': _error,
-                        }),
-                      ),
+                      child: StatusNotice(context.feedback(_error!)),
                     ),
                   if (state == null)
                     ..._setup(controller)

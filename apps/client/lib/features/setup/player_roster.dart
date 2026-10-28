@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
@@ -85,12 +87,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                     const TText('rosterOrderHelp'),
                     const SizedBox(height: 16),
                     if (controller.error != null)
-                      Text(
-                        context.feedback(controller.error!),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      ),
+                      StatusNotice(context.feedback(controller.error!)),
                     if (controller.members.isEmpty)
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 24),

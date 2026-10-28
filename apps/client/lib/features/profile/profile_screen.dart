@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
@@ -118,11 +120,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     if (controller.error != null)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),
-                        child: Text(
+                        child: StatusNotice(
                           context.feedback(controller.error!),
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
                         ),
                       ),
                     FilledButton(

@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -52,7 +54,9 @@ class RoomConnectionScreen extends ConsumerWidget {
               if (state.errorCode != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: TText(roomErrorKey(state.errorCode)),
+                  child: StatusNotice(
+                    context.tr(roomErrorKey(state.errorCode)),
+                  ),
                 ),
               if (state.snapshot != null) ...[
                 const SizedBox(height: 16),

@@ -423,5 +423,7 @@
   "avatarOptionplum": "Plum",
   "avatarOptionrectangular": "Rectangular",
   "avatarOptiontricorn": "Tricorn",
-  "avatarOptionbadge": "Court badge"
+  "avatarOptionbadge": "Court badge",
+  "retry": "Try again",
+  "settingsLoadFailed": "Settings are currently unavailable. Try loading them again or go back."
 }

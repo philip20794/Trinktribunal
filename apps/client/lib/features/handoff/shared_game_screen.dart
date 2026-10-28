@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
@@ -236,12 +238,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 if (_error != null)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      context.feedback(_error!),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
+                    child: StatusNotice(context.feedback(_error!)),
                   ),
                 if (view.pendingRoster != null)
                   const Padding(

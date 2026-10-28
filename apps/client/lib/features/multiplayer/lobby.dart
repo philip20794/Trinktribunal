@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -80,7 +82,7 @@ class RoomLobbyScreen extends ConsumerWidget {
             if (state.errorCode != null)
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: TText(roomErrorKey(state.errorCode)),
+                child: StatusNotice(context.tr(roomErrorKey(state.errorCode))),
               ),
             Expanded(
               child: TabBarView(

@@ -25,22 +25,27 @@ class CaseFile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              children: [
-                const Icon(
-                  Icons.folder_open_outlined,
-                  size: 20,
-                  color: CourtTokens.blue,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    label.toUpperCase(),
-                    style: Theme.of(context).textTheme.labelLarge
-                        ?.copyWith(color: CourtTokens.blue, letterSpacing: 1.2),
+            Semantics(
+              header: true,
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.folder_open_outlined,
+                    size: 20,
+                    color: CourtTokens.blue,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      label.toUpperCase(),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: CourtTokens.blue,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 12),

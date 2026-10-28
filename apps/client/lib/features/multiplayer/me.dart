@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -101,7 +103,9 @@ class _RoomMeState extends ConsumerState<RoomMe> {
                 if (editor.errorCode != null)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: TText(roomErrorKey(editor.errorCode)),
+                    child: StatusNotice(
+                      context.tr(roomErrorKey(editor.errorCode)),
+                    ),
                   ),
                 const SizedBox(height: 12),
                 FilledButton(

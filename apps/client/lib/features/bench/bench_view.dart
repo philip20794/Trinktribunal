@@ -29,10 +29,23 @@ class BenchView extends StatefulWidget {
 
 class _BenchViewState extends State<BenchView> {
   final _scroll = ScrollController();
-  PlayerId? _selected;
+  final _focus = <PlayerId, FocusNode>{};
+  PlayerId? _selected, _focused;
+  @override
+  void didUpdateWidget(BenchView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    for (final id
+        in _focus.keys.where((id) => !widget.order.contains(id)).toList()) {
+      _focus.remove(id)!.dispose();
+    }
+  }
+
   @override
   void dispose() {
     _scroll.dispose();
+    for (final node in _focus.values) {
+      node.dispose();
+    }
     super.dispose();
   }
 
@@ -45,7 +58,16 @@ class _BenchViewState extends State<BenchView> {
     final from = widget.order.indexOf(_selected!);
     final to = widget.order.indexOf(id);
     setState(() => _selected = null);
-    if (from >= 0 && from != to) widget.onMove!(from, to);
+    if (from >= 0 && from != to) {
+      _move(id: widget.order[from], from: from, to: to);
+    }
+  }
+
+  void _move({required PlayerId id, required int from, required int to}) {
+    widget.onMove?.call(from, to);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _focus[id]?.requestFocus();
+    });
   }
 
   void _edgeScroll(Offset global) {
@@ -121,9 +143,31 @@ class _BenchViewState extends State<BenchView> {
       onMove: (details) => _edgeScroll(details.offset),
       onAcceptWithDetails: (details) {
         setState(() => _selected = null);
-        widget.onMove?.call(widget.order.indexOf(details.data), index);
+        _move(
+          id: details.data,
+          from: widget.order.indexOf(details.data),
+          to: index,
+        );
       },
       builder: (context, candidates, rejected) => Focus(
+        focusNode: editable
+            ? _focus.putIfAbsent(
+                id,
+                () => FocusNode(debugLabel: 'bench-${id.value}'),
+              )
+            : null,
+        canRequestFocus: editable,
+        onFocusChange: (focused) {
+          if (mounted) {
+            setState(() {
+              if (focused) {
+                _focused = id;
+              } else if (_focused == id) {
+                _focused = null;
+              }
+            });
+          }
+        },
         onKeyEvent: (node, event) {
           if (!editable ||
               event is! KeyDownEvent ||
@@ -140,7 +184,7 @@ class _BenchViewState extends State<BenchView> {
               index + delta >= widget.order.length) {
             return KeyEventResult.ignored;
           }
-          widget.onMove!(index, index + delta);
+          _move(id: id, from: index, to: index + delta);
           return KeyEventResult.handled;
         },
         child: AnimatedContainer(
@@ -152,10 +196,12 @@ class _BenchViewState extends State<BenchView> {
             color: CourtTokens.file,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: candidates.isNotEmpty || _selected == id
+              color: candidates.isNotEmpty || _selected == id || _focused == id
                   ? CourtTokens.red
                   : CourtTokens.border,
-              width: candidates.isNotEmpty || _selected == id ? 3 : 1,
+              width: candidates.isNotEmpty || _selected == id || _focused == id
+                  ? 3
+                  : 1,
             ),
           ),
           child: Column(
@@ -211,14 +257,14 @@ class _BenchViewState extends State<BenchView> {
                         'position': index + 1,
                       }),
                       onPressed: index > 0
-                          ? () => widget.onMove!(index, index - 1)
+                          ? () => _move(id: id, from: index, to: index - 1)
                           : null,
                       icon: const Icon(Icons.arrow_upward),
                     ),
                     IconButton(
                       tooltip: context.tr('moveBack', {'position': index + 1}),
                       onPressed: index < widget.order.length - 1
-                          ? () => widget.onMove!(index, index + 1)
+                          ? () => _move(id: id, from: index, to: index + 1)
                           : null,
                       icon: const Icon(Icons.arrow_downward),
                     ),

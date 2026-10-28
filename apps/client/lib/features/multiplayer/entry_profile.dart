@@ -1,3 +1,5 @@
+import '../../design/status_notice.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,6 +30,8 @@ class RoomProfileForm extends ConsumerStatefulWidget {
 
 class _RoomProfileFormState extends ConsumerState<RoomProfileForm> {
   final _name = TextEditingController();
+  final _nameFocus = FocusNode();
+  final _codeFocus = FocusNode();
   late final _code = TextEditingController(text: widget.initialCode);
   var _avatar = AvatarConfig();
   bool _initialized = false, _busy = false, _canRetrySave = false;
@@ -36,6 +40,8 @@ class _RoomProfileFormState extends ConsumerState<RoomProfileForm> {
   void dispose() {
     _name.dispose();
     _code.dispose();
+    _nameFocus.dispose();
+    _codeFocus.dispose();
     super.dispose();
   }
 
@@ -85,7 +91,17 @@ class _RoomProfileFormState extends ConsumerState<RoomProfileForm> {
     } on Object {
       if (mounted) setState(() => _error = 'roomErrorServer');
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) {
+        setState(() => _busy = false);
+        if (_error == 'roomErrorName' || _error == 'roomErrorCode') {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              (_error == 'roomErrorName' ? _nameFocus : _codeFocus)
+                  .requestFocus();
+            }
+          });
+        }
+      }
     }
   }
 
@@ -105,6 +121,9 @@ class _RoomProfileFormState extends ConsumerState<RoomProfileForm> {
           TextField(
             key: const ValueKey('room-code'),
             controller: _code,
+            focusNode: _codeFocus,
+            textInputAction: TextInputAction.next,
+            onSubmitted: (_) => _nameFocus.requestFocus(),
             enabled: !_busy,
             decoration: InputDecoration(labelText: context.tr('roomCode')),
             textCapitalization: TextCapitalization.characters,
@@ -123,6 +142,9 @@ class _RoomProfileFormState extends ConsumerState<RoomProfileForm> {
         TextField(
           key: const ValueKey('room-name'),
           controller: _name,
+          focusNode: _nameFocus,
+          textInputAction: TextInputAction.done,
+          onSubmitted: (_) => _submit(),
           onChanged: (_) => _initialized = true,
           enabled: !_busy,
           maxLength: 24,
@@ -159,7 +181,7 @@ class _RoomProfileFormState extends ConsumerState<RoomProfileForm> {
         if (_error != null)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            child: TText(_error!),
+            child: StatusNotice(context.tr(_error!)),
           ),
         const SizedBox(height: 16),
         if (_canRetrySave)

@@ -699,5 +699,7 @@
   "avatarOptionplum": "Pflaume",
   "avatarOptionrectangular": "Rechteckig",
   "avatarOptiontricorn": "Dreispitz",
-  "avatarOptionbadge": "Gerichtsabzeichen"
+  "avatarOptionbadge": "Gerichtsabzeichen",
+  "retry": "Erneut versuchen",
+  "settingsLoadFailed": "Die Einstellungen sind gerade nicht verfügbar. Bitte erneut laden oder zurückgehen."
 }

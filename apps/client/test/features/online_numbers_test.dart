@@ -9,6 +9,7 @@ import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/data/protocol/room_message.dart';
 import 'package:trinktribunal/data/room_credential_store.dart';
 import 'package:trinktribunal/design/private_number.dart';
+import 'package:trinktribunal/design/court_theme.dart';
 import 'package:trinktribunal/features/multiplayer/connection.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 import 'package:trinktribunal/domain/models/ids.dart';
@@ -52,6 +53,8 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
   String uiLanguage = 'de',
   String contentLanguage = 'de',
   bool own = true,
+  double textScale = 1,
+  ThemeData? theme,
 }) async {
   final transport = FakeRoomTransport(),
       store = RoomCredentialStore(MemoryCredentialBackend()),
@@ -74,7 +77,15 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
       ],
       child: AppLanguageScope(
         language: uiLanguage,
-        child: const MaterialApp(home: RoomConnectionScreen()),
+        child: MaterialApp(
+          theme: theme,
+          home: const RoomConnectionScreen(),
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: TextScaler.linear(textScale)),
+            child: child!,
+          ),
+        ),
       ),
     ),
   );
@@ -101,6 +112,53 @@ Future<void> tapText(WidgetTester tester, String text) async {
 }
 
 void main() {
+  for (final language in ['de', 'en']) {
+    for (final host in [false, true]) {
+      testWidgets(
+        'online number screen at 200 percent, $language, host=$host',
+        (tester) async {
+          await tester.binding.setSurfaceSize(const Size(360, 800));
+          addTearDown(() => tester.binding.setSurfaceSize(null));
+          final semantics = tester.ensureSemantics();
+          try {
+            await pump(
+              tester,
+              uiLanguage: language,
+              host: host,
+              own: !host,
+              textScale: 2,
+              theme: courtTheme(),
+            );
+            expect(tester.takeException(), isNull);
+            expect(
+              find.bySemanticsLabel(
+                RegExp(AppStrings(language).get('secretNumber', {'number': 2})),
+              ),
+              findsNothing,
+            );
+            await expectLater(
+              tester,
+              meetsGuideline(labeledTapTargetGuideline),
+            );
+            await expectLater(
+              tester,
+              meetsGuideline(androidTapTargetGuideline),
+            );
+            for (final element in find.byType(Scrollable).evaluate().toList()) {
+              if (!element.mounted) continue;
+              final state =
+                  (element as StatefulElement).state as ScrollableState;
+              state.position.jumpTo(state.position.maxScrollExtent);
+              await tester.pumpAndSettle();
+              expect(tester.takeException(), isNull);
+            }
+          } finally {
+            semantics.dispose();
+          }
+        },
+      );
+    }
+  }
   testWidgets(
     'host completion stays reachable when a departed question reference cannot render',
     (tester) async {
