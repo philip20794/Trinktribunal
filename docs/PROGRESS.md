@@ -2,7 +2,7 @@
 
 Stand: 27.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–053 nach Unit-Gates abgeschlossen, TT-054 folgt.** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 117 Node-/320 Flutter-/341 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–054 nach Unit-Gates abgeschlossen, TT-055 folgt (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 118 Node-/321 Flutter-/352 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -113,7 +113,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-051 | Alle Richter: eigene Zahlen und private Ordnungen | ERLEDIGT | Vollständige eigene Bank, 100 lokale Bewegungen ohne Frames, private versiegelte Abgaben nach Eviction/Resume und Vorleser ohne Zusatzrechte · [TT-051](qa/TT-051.md) |
 | TT-052 | Alle Richter: gemeinsame Aufdeckung, persönliche Ergebnisse | ERLEDIGT | Tatsächliche Dart-/TS-Parität 2/4/0/0, eigener Ergebniszugriff aller Rollen je Cursor, gemeinsamer Reveal, Eviction/Resume und 3 Fälle + 2 Regeln mit Vorleserrotation · [TT-052](qa/TT-052.md) |
 | TT-053 | Multiplayer-Besetzung und Reihenfolge während Partie | ERLEDIGT | Beide Modi/alle Phasen: atomisches Pending-Roster, eingefrorene Profile mit Aktivstatus, reservierte 20 Sitze, Hostverwaltung, D-05-Baseline und einmalige Regel-Neubindung · [TT-053](qa/TT-053.md) |
-| TT-054 | Host dauerhaft verlieren und neu zuweisen | OFFEN | — |
+| TT-054 | Host dauerhaft verlieren und neu zuweisen | ERLEDIGT | 28.10.2026 · persistierte 90-Sekunden-Frist, stabile atomare Übergabe, rechtzeitiger/später Reconnect, Eviction, gemeinsamer Alarm und genaue private Pauseprojektionen · [TT-054](qa/TT-054.md) |
 | TT-055 | Raumablauf, Löschung und datensparsame Logs | OFFEN | — |
 | TT-056 | Rehydrierung und persistierte Zustandsmigration testen | OFFEN | — |
 | TT-057 | Reconnect ohne Identitäts- und Zustandsverlust | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-054 – Host dauerhaft verlieren und neu zuweisen.** TT-053 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-055 – Raumablauf, Löschung und datensparsame Logs.** TT-054 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-053-Besetzungsstand
-Aktueller Beleg: docs/qa/TT-053.md; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-054 vorhandene D-08-Kernlogik an echte Socketpräsenz und gemeinsamen Alarm anschließen; fällige Übergabe vor spätem Host-Reconnect prüfen, keine Polling-/Fachzeitgeber.
+Branch: main mit geprüftem TT-054-Hoststand
+Aktueller Beleg: docs/qa/TT-054.md; Browserprüfungen übersprungen, später manuell testen
+Naechster Schritt: TT-055 CloseRoom anschließen, Ablaufbereinigung vereinheitlichen, Ablauf vor Auth-/Hostfrist behandeln und datensparsame Logs sowie Credential-Bereinigung prüfen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

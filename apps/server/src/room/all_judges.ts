@@ -7,9 +7,10 @@ export function ownPersonalVerdict(
   you: PlayerId,
 ): { errors: number; sips: number } | undefined {
   const round = game?.round;
+  const phase = game?.phase === 'paused' ? game.pausedFrom : game?.phase;
   if (
     !game?.config.allJudges ||
-    game.phase !== 'judged' ||
+    phase !== 'judged' ||
     !round ||
     round.revealCursor !== round.recipients.length ||
     round.score?.kind !== 'all_judges'

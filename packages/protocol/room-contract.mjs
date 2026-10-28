@@ -37,7 +37,7 @@ const defs={
     question:nullable(ref('assignment')),activeRules:array(ref('assignment'),25),completedCases:integer(0,491),
     revealCursor:integer(0,20),revealed:array(ref('revealed'),20),judgeOrder:array(ref('id'),20,2),result:ref('publicResult'),
     pauseReason:{enum:['insufficient_players','content_exhausted','host_unavailable']},expiresAtUtc:ref('utc'),
-    pausedFrom:{enum:['lobby','case_boundary','numbers','answers','ordering','revealing','judged','rule_event']},
+    pausedFrom:{enum:['lobby','case_boundary','numbers','answers','ordering','revealing','judged','rule_event','finished']},
   },['judgeOrder','result','pauseReason','pausedFrom']),
 };
 defs.publicChanges=object(defs.publicView.properties,Object.keys(defs.publicView.properties));

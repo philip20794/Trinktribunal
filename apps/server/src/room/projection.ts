@@ -38,7 +38,8 @@ export function lobbySnapshot(
     round = game?.round,
     order = ownConfirmedOrder(game, you),
     result = ownPersonalVerdict(game, you),
-    retained = retainedProfileIds(state);
+    retained = retainedProfileIds(state),
+    phase = game?.phase === 'paused' ? game.pausedFrom : game?.phase;
   return createRoomMessage('snapshot', {
     requestId: RoomIds.request(crypto.randomUUID()),
     roomId: state.roomId,
@@ -79,7 +80,7 @@ export function lobbySnapshot(
       expiresAtUtc: new Date(expiresAt).toISOString(),
     },
     private:
-      round && ['numbers', 'answers', 'ordering', 'revealing', 'judged'].includes(game!.phase)
+      round && ['numbers', 'answers', 'ordering', 'revealing', 'judged'].includes(phase ?? '')
         ? (() => {
             const own = round.numbers.find((entry) => entry.playerId === you);
             return {

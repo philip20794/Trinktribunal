@@ -38,6 +38,7 @@ import { applyLobbyAction, lobbyFingerprint, type LobbyReceipt } from './profile
 import { RoomRepository, roomExpiry, type RoomState, type Member } from './repository';
 import { commitGameAction, isGameAction } from './actions';
 import { reservedSeatIds, synchronizeRoster } from './roster';
+import { reconcileHost, nextHostDeadline } from './host_lifecycle';
 import {
   commitHistoryAction,
   isHistoryAction,
@@ -118,7 +119,12 @@ export class Room extends DurableObject<Env> {
 
   private async planAlarm(): Promise<void> {
     const state = this.read();
-    let next = nextDeadline(this.ctx.storage.sql, state ? roomExpiry(state) : null);
+    const hostDue = state ? nextHostDeadline(state) : null;
+    let next = nextDeadline(
+      this.ctx.storage.sql,
+      state ? roomExpiry(state) : null,
+      hostDue === null ? [] : [hostDue],
+    );
     if (state?.historyImport?.status === 'receiving')
       next = Math.min(
         next ?? Infinity,
@@ -144,6 +150,10 @@ export class Room extends DurableObject<Env> {
     closeSocket(socket, closeCode);
     if (wasCurrent) {
       state.revision++;
+      reconcileHost(state, this.connectedPlayers(state), Date.now(), {
+        detectMissing: true,
+        presenceRevision: true,
+      });
       this.write(state);
     }
   }
@@ -151,6 +161,14 @@ export class Room extends DurableObject<Env> {
     if (info?.kind !== 'authenticated' || info.roomId !== state.roomId) return undefined;
     return state.members.find(
       (m) => m.playerId === info.playerId && !m.revoked && m.generation === info.generation,
+    );
+  }
+  private connectedPlayers(state: RoomState): ReadonlySet<PlayerId> {
+    return new Set(
+      this.ctx.getWebSockets().flatMap((socket) => {
+        const member = this.currentMember(attachment(socket), state);
+        return member ? [member.playerId] : [];
+      }),
     );
   }
   private sendSnapshot(socket: WebSocket, info: SocketAttachment, state: RoomState): void {
@@ -333,6 +351,10 @@ export class Room extends DurableObject<Env> {
             });
             if (!alreadyConnected && !wasConnected) {
               latest.revision++;
+              reconcileHost(latest, this.connectedPlayers(latest), Date.now(), {
+                detectMissing: true,
+                presenceRevision: true,
+              });
               this.write(latest);
             }
             return latest;
@@ -526,9 +548,13 @@ export class Room extends DurableObject<Env> {
     closeSocket(socket, 1000);
     if (wasCurrent) {
       this.ctx.storage.transactionSync(() => {
-        const state = this.live(Date.now());
+        const state = this.live(Date.now(), false);
         if (state) {
           state.revision++;
+          reconcileHost(state, this.connectedPlayers(state), Date.now(), {
+            detectMissing: true,
+            presenceRevision: true,
+          });
           this.write(state);
         }
       });
@@ -554,7 +580,7 @@ export class Room extends DurableObject<Env> {
     synchronizeRoster(state, Date.now());
     new RoomRepository(this.ctx.storage).write(state);
   }
-  private live(now: number): RoomState | null {
+  private live(now: number, refreshHost = true): RoomState | null {
     const state = this.read();
     if (state && now >= roomExpiry(state)) {
       // Retain only an empty reservation: old codes can never address a different party.
@@ -564,7 +590,10 @@ export class Room extends DurableObject<Env> {
       for (const socket of this.ctx.getWebSockets()) this.socketFailure(socket, 'ROOM_UNAVAILABLE');
       return null;
     }
-    if (state && expireHistory(state, now)) this.write(state);
+    if (state) {
+      const hostChanged = refreshHost && reconcileHost(state, this.connectedPlayers(state), now);
+      if (expireHistory(state, now) || hostChanged) this.write(state);
+    }
     return state;
   }
   private credential(
@@ -695,6 +724,7 @@ export class Room extends DurableObject<Env> {
       return { ok: true, message: this.credential(state, playerId, token, command.requestId) };
     });
     if (result.ok) this.broadcastLobby();
+    await this.planAlarm();
     return result;
   }
 
@@ -719,6 +749,10 @@ export class Room extends DurableObject<Env> {
         state.lastDomainActivity = Date.now();
         state.revision++;
         member.leaveRevision = state.revision;
+        reconcileHost(state, this.connectedPlayers(state), Date.now(), {
+          detectMissing: true,
+          presenceRevision: true,
+        });
         this.write(state);
       }
       return {
@@ -796,6 +830,7 @@ export class Room extends DurableObject<Env> {
       for (const socket of this.ctx.getWebSockets()) this.socketFailure(socket, 'ROOM_UNAVAILABLE');
       if (this.hasTable('entry_limits')) this.ctx.storage.sql.exec('DELETE FROM entry_limits');
     }
+    if (state) this.broadcastLobby();
     await this.planAlarm();
   }
 }

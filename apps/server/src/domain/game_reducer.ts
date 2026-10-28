@@ -642,8 +642,7 @@ export function hostDeadline(state: GameState, now: number): GameState {
       ...(next.pausedFrom ? { pausedFrom: next.pausedFrom } : {}),
       ...(next.pauseReason ? { pauseReason: next.pauseReason } : {}),
     };
-    if (next.phase !== 'paused')
-      next.pausedFrom = next.phase === 'finished' ? 'case_boundary' : next.phase;
+    if (next.phase !== 'paused') next.pausedFrom = next.phase;
     next.phase = 'paused';
     next.pauseReason = 'host_unavailable';
   }

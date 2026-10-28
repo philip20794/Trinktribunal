@@ -26,10 +26,17 @@ export function dueDeadlines(sql: SqlStorage, now: number): Deadline[] {
         .toArray()
     : [];
 }
-export function nextDeadline(sql: SqlStorage, roomExpiry: number | null): number | null {
+export function nextDeadline(
+  sql: SqlStorage,
+  roomExpiry: number | null,
+  additional: readonly number[] = [],
+): number | null {
   const row = exists(sql)
     ? sql.exec<{ due: number | null }>('SELECT MIN(due) AS due FROM deadlines').one()
     : null;
   const due = row?.due ?? null;
-  return due === null ? roomExpiry : roomExpiry === null ? due : Math.min(due, roomExpiry);
+  const candidates = [due, roomExpiry, ...additional].filter(
+    (value): value is number => value !== null,
+  );
+  return candidates.length ? Math.min(...candidates) : null;
 }

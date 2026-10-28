@@ -5,11 +5,12 @@ import type { PublicView } from '../protocol/room_message.generated';
 export function normalRevealFields(
   game: GameState | undefined,
 ): Pick<PublicView, 'judgeOrder' | 'result'> {
-  if (!game?.round || game.config.allJudges || !['revealing', 'judged'].includes(game.phase))
+  const phase = game?.phase === 'paused' ? game.pausedFrom : game?.phase;
+  if (!game?.round || game.config.allJudges || !['revealing', 'judged'].includes(phase ?? ''))
     return {};
   const order = game.round.orders.find((entry) => entry.playerId === game.judgeId)?.order;
   const score =
-    game.phase === 'judged' && game.round.revealCursor === game.round.recipients.length
+    phase === 'judged' && game.round.revealCursor === game.round.recipients.length
       ? game.round.score
       : null;
   return {

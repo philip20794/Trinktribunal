@@ -70,14 +70,14 @@ export interface MutableGameState {
   revision: number;
   config: Config;
   phase: Phase;
-  pausedFrom?: Exclude<Phase, 'paused' | 'finished'> | 'case_boundary';
+  pausedFrom?: Exclude<Phase, 'paused'> | 'case_boundary';
   pauseReason?: PauseReason;
   hostId: PlayerId;
   hostRevision: number;
   hostDisconnectedAt: number | null;
   hostPauseState?: {
     phase: Phase;
-    pausedFrom?: Exclude<Phase, 'paused' | 'finished'> | 'case_boundary';
+    pausedFrom?: Exclude<Phase, 'paused'> | 'case_boundary';
     pauseReason?: PauseReason;
   };
   /** Room membership and stable join order are separate from seating/frozen rounds. */

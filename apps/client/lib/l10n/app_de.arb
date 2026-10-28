@@ -1,5 +1,9 @@
 {
   "@@locale": "de",
+  "onlineHostGrace": "Der Host ist offline. Nach 90 Sekunden wird die automatische Übergabe geprüft. Der Fall bleibt erhalten.",
+  "onlineHostWaiting": "Kein verbundener Nachfolger verfügbar. Der Raum wartet auf eine berechtigte Verbindung.",
+  "onlineHostYou": "Du bist jetzt Host ({name}). Richter- und Vorleserrolle bleiben unverändert.",
+  "onlineHostChanged": "Neuer Host: {name}. Richter- und Vorleserrolle bleiben unverändert.",
   "onlinePausePlayers": "Für den nächsten Fall werden mindestens drei aktive Teilnehmer benötigt.",
   "onlineRosterJoining": "Ab dem nächsten Fall dabei",
   "onlineRosterLeaving": "Ausgetreten; bleibt in dieser Fallakte sichtbar",

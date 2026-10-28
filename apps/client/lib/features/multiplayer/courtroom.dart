@@ -15,6 +15,7 @@ import 'game_screen.dart';
 import 'game_progress.dart';
 import 'order_view.dart';
 import 'roster_management.dart';
+import 'host_status.dart';
 
 class RoomCourtroom extends ConsumerWidget {
   const RoomCourtroom({required this.snapshot, super.key});
@@ -45,6 +46,11 @@ class RoomCourtroom extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        if (snapshot.public.hostRevision > 0 ||
+            players.any(
+              (p) => p.playerId == snapshot.public.hostId && !p.connected,
+            ))
+          OnlineHostStatus(snapshot: snapshot),
         if (snapshot.public.phase == 'lobby')
           RoomGameSettings(snapshot: snapshot)
         else

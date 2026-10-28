@@ -761,7 +761,8 @@
             "ordering",
             "revealing",
             "judged",
-            "rule_event"
+            "rule_event",
+            "finished"
           ]
         }
       }
@@ -929,7 +930,8 @@
             "ordering",
             "revealing",
             "judged",
-            "rule_event"
+            "rule_event",
+            "finished"
           ]
         }
       }

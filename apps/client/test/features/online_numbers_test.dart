@@ -95,6 +95,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
 Future<void> tapText(WidgetTester tester, String text) async {
   final finder = find.text(text);
   await tester.ensureVisible(finder);
+  await tester.pumpAndSettle();
   await tester.tap(finder);
   await tester.pumpAndSettle();
 }

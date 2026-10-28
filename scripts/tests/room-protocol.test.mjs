@@ -136,6 +136,11 @@ test('retired public profiles remain valid frozen references but cannot receive 
   retired.active='false';assert.throws(()=>validateRoomMessage(m));
 });
 
+test('a host pause of a finished game preserves the finished phase without inventing a new case',()=>{
+  const m=sample('snapshot');Object.assign(m.public,{phase:'paused',pausedFrom:'finished',pauseReason:'host_unavailable',completedCases:m.public.config.targetCases,roundId:null,question:null,frozenRoster:[]});m.private={};
+  assert.doesNotThrow(()=>validateRoomMessage(m));
+});
+
 test('rule and finished boundaries carry no previous or future case secrets in either mode',()=>{
   for(const allJudges of [false,true])for(const phase of ['rule_event','finished']){
     const m=sample('snapshot');Object.assign(m.public,{phase,config:{...m.public.config,allJudges},completedCases:phase==='finished'?50:1,roundId:null,question:null,frozenRoster:[],judgeId:allJudges?null:'p1',readerId:allJudges?'p1':null,activeRules:[{contentId:'swear_penalty',bindings:{}}]});m.private={};

@@ -1,5 +1,9 @@
 {
   "@@locale": "en",
+  "onlineHostGrace": "The host is offline. Automatic transfer is checked after 90 seconds. The case is preserved.",
+  "onlineHostWaiting": "No connected successor is available. The room is waiting for an eligible connection.",
+  "onlineHostYou": "You are now the host ({name}). Judge and reader roles stay unchanged.",
+  "onlineHostChanged": "New host: {name}. Judge and reader roles stay unchanged.",
   "onlinePausePlayers": "At least three active participants are needed for the next case.",
   "onlineRosterJoining": "Participates from the next case",
   "onlineRosterLeaving": "Left; remains visible in this case file",
