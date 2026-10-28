@@ -95,7 +95,7 @@ Je nach Teil sind zusätzliche Vor-/Hinterebenen nötig; **das Schild bleibt una
 | ID | Paket / Ziel | Soll | Status 28.10.2026 | Abhängigkeit |
 | --- | --- | ---: | --- | --- |
 | ART-00 | Stilbibel, No-Gos, Referenz-Workflow | 1 | **ENTWURF** – Konzeptstil bestätigt | – |
-| ART-01 | vollständige Masterfiguren, davon 4 männlich / 4 weiblich | 8 | **ENTWURF** – Konzeptbogen, keine Einzelabnahme | ART-00 |
+| ART-01 | vollständige Masterfiguren, davon 4 männlich / 4 weiblich | 8 | **IN_ARBEIT** – Master 01 (männlich) visuell vom Nutzer freigegeben; Bild noch nicht in Git, daher **0/8 archiviert** | ART-00 |
 | ART-02 | eine feste Messwand | 1 | OFFEN | ART-01 |
 | ART-03 | ein festes Namensschild, Text-Safe-Area | 1 | OFFEN | ART-01 |
 | ART-04 | Griffsystem: Handrücken/Finger, ggf. Körperfamilien | 1 Basis-Set + nötige Varianten | OFFEN | ART-03 |
@@ -188,6 +188,21 @@ Nächster Schritt: ...
 | 28.10.2026 | Technische Alpha-/Runtime-Exportformate und exakte Canvas-Anker im Prototyp validieren | OFFEN – TECH-01 |
 | 28.10.2026 | Freigabe einzelner Masterfiguren und daraus abgeleiteter Grafikbausteine | OFFEN – ART-01 |
 
-## 10. Nächster konkreter Auftrag
+## 10. Aktueller ART-01-Fortschritt und nächster Auftrag
 
-**ART-01**: Acht vollständig unterschiedliche Master-Karikaturen (4 männlich, 4 weiblich) im bestätigten Stil und vor identischer Messwand erzeugen, jeweils mit **leerem dunklen Schild**. Unterschiede von Kopf, Körper, Nase, Haaren, Schultern und Kleidung bewusst übertreiben. Referenzbogen und Einzelfiguren für Nutzerfeedback vorlegen. **Erst nach Freigabe** ART-02/03 und TECH-01 angehen. Kein Eingriff in produktiven Flutter-Code in diesem Schritt.
+### Charge 2026-10-28-01 – Masterfigur 01 (männlich)
+
+- **Visuelle Nutzerentscheidung:** **angenommen** („Sieht gut aus.“). Ein einzelner Charakter, nicht der gesamte Satz oder die modulare Technik, wurde freigegeben.
+- **Motiv:** schlanke männliche Karikatur mit langem Gesicht, sehr großen seitlichen Ohren, großem rötlichem Nasenrücken, unordentlich aufstehendem braunem Haar, missmutiger Mimik, Kinnbart/Stoppeln, violettem T-Shirt und in beiden Händen gehaltenem **leerem** dunklen Schild vor einer cremefarbenen Polizeifoto-Messwand.
+- **Original im Chat erzeugt:** `grimmiger_fahndungsfoto_charakter_mit_massstab.png`, PNG 1122 × 1402; **noch nicht im Git-Repository archiviert**. Der generierte Screenshot ist **keine einzeln freigestellte Alpha-Ebene**.
+- **Vorgesehener Git-Pfad nach Archivierung:** `docs/avatars/references/master-male-01-approved.png`. Nach tatsächlichem Upload den Link und Commit ergänzen; die lokale/Chat-Datei nicht als dauerhaft verfügbaren Git-Pfad ausgeben.
+- **Asset-Status:** Entwurf visuell angenommen, Dateiar­chivierung und spätere Layer-/Kombinationstests noch offen. Die Kennzahl für tatsächlich im Repository vorhandene und visuell bestätigte Masterfiguren beträgt derzeit **0/8**.
+
+### Nächste Produktionsschritte
+
+1. **Master 01 archivieren** unter `docs/avatars/references/master-male-01-approved.png`; Bild und Namen/Provenienz prüfen. Erst nach tatsächlichem Upload wird diese Masterfigur im Projektregister als **1/8 archiviert** gezählt.
+2. **ART-01 Masterfigur 02 (weiblich):** im **identischen** warmen, malerisch-organischen Zeichenstil und gleicher Frontalperspektive, aber als deutlicher Gegenpol zur ersten Figur: **sehr breiter/runder Kopf**, kleiner/kurzer Nasentyp, andere Augen/Mimik, **deutlich anderer, kompakter/kurviger Oberkörper**, anderer Kleidungsstil und prägnante weibliche Frisur. Kein Bart. Dasselbe **leere** Schild und dieselbe **Messwand**. Bild als **einzelne vollständige Figur**, keine Collage. Vor dem nächsten Charakter Nutzerreview abwarten.
+3. Weitere sechs Charaktere gezielt mit gegensätzlichen Silhouetten erstellen, bis 4 männliche und 4 weibliche **visuell angenommen und tatsächlich archiviert** sind.
+4. Erst danach feste Hintergrund-/Schild-Vorlagen sowie den Schichtungsprototyp starten; die ganze Figur nicht automatisch als fertige modulare Grafik behandeln.
+
+**Produktionsregel:** Pro Charge genau eine vollständige Masterfigur erzeugen, dem Nutzer zeigen, Freigabe dokumentieren und Original ins Git bringen. Vor jedem folgenden Master Bildreferenz und Stilbibel erneut heranziehen. Kein Eingriff in den produktiven Flutter-Code in ART-01.
