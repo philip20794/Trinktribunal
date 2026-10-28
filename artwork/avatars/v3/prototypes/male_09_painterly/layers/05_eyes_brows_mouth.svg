@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+
+<path fill="#432a26" stroke="#3a2724" stroke-width="3" d="M391 381 Q401 352 436 355 Q462 358 477 390 L470 404 Q434 387 394 399Z" />
+<path fill="#432a26" stroke="#3a2724" stroke-width="3" d="M554 389 Q566 360 596 353 Q623 347 651 365 L645 384 Q609 372 558 401Z" />
+<path fill="none" stroke="#7a4d35" stroke-width="2.6" opacity=".60" d="M402 376Q423 370 439 380M571 374Q607 356 623 371" />
+
+<path fill="#f4e4d1" stroke="#69423b" stroke-width="5" d="M393 429 Q419 407 473 415 Q482 436 459 456 Q427 469 406 449 Q398 443 393 429Z" />
+<path fill="#f4e4d1" stroke="#69423b" stroke-width="5" d="M554 412 Q590 387 644 397 Q647 419 627 439 Q595 450 565 432Z" />
+
+<path fill="#513d32" d="M442 419 Q460 421 458 457 Q444 461 438 451 Q432 428 442 419Z" />
+<path fill="#513d32" d="M616 395 Q632 398 627 436 Q613 441 608 430 Q605 407 616 395Z" />
+<path fill="#211f22" d="M450 423Q457 431 454 450Q450 454 446 448Q442 436 446 425ZM623 399Q629 409 624 430Q620 433 618 425Q616 410 620 401Z" />
+<path fill="#fff7df" opacity=".93" d="M450 425Q454 423 455 430Q452 435 449 432ZM619 405Q621 402 624 406Q624 411 620 411Z" />
+
+<path data-palette="skin.base" fill="#edb08d" d="M393 428Q426 409 473 418L466 435Q429 427 394 441Z M554 412Q601 389 644 398L635 416Q590 409 555 425Z" />
+<path data-palette="skin.shadow" fill="#bb6b56" opacity=".36" d="M399 428Q424 416 468 422L462 431Q419 429 401 437Z M559 410Q606 394 639 400L630 411Q592 407 559 419Z" />
+
+<path fill="none" stroke="#3b2927" stroke-width="8" d="M391 426Q429 401 473 418M552 414Q599 386 645 398" />
+<path fill="none" stroke="#94564c" stroke-width="5" opacity=".72" d="M404 457Q428 477 466 456M560 443Q601 463 636 435" />
+<path fill="none" stroke="#a36657" stroke-width="2.5" opacity=".64" d="M401 468Q431 491 464 473M567 454Q604 467 633 444" />
+
+<path fill="#773d3a" stroke="#60352f" stroke-width="5" d="M455 609 Q493 586 531 589 Q554 591 571 577 Q580 589 580 602 Q558 610 552 623 Q531 646 498 645 Q472 635 455 609Z" />
+<path fill="#412b2e" d="M463 607Q497 600 531 604Q561 598 575 592Q565 609 551 618Q531 630 503 627Q482 624 463 607Z" />
+<path fill="#f3e0c7" d="M543 602Q556 596 572 594L564 610Q552 615 543 611Z" />
+<path fill="none" stroke="#663932" stroke-width="4" d="M450 609Q455 605 461 606M575 579Q581 571 589 576" />
+<path fill="none" stroke="#a55e51" stroke-width="3" opacity=".67" d="M484 654Q511 665 535 652M548 627Q556 629 563 625" />
+
+<g stroke="#754b40" stroke-width="2" opacity=".52"><path d="M478 582l3 5M488 579l3 6M503 578l2 5M525 578l2 5M539 578l2 4M551 576l2 4" /></g>
+</g><g stroke-linecap="round" stroke-linejoin="round">
+
+</g></svg>
