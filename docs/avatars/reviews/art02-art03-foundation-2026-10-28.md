@@ -1,6 +1,6 @@
 # ART-02 / ART-03 – gemeinsame Messwand und leeres Namensschild
 
-**Charge:** 2026-10-28-01 · **Status:** ENTWURF / REVIEW AUSSTEHEND · **Kein Runtime-Asset und keine Nutzerfreigabe**
+**Charge:** 2026-10-28-01 · **Status:** REVIEW / visuell durch Nutzer akzeptiert, technische Abnahme offen · **Kein Runtime-Asset**
 
 ## Entwurfsansicht
 
@@ -50,6 +50,6 @@ Maße und Anker sind für TECH-01 **vorläufig**, nicht versioniert eingefroren.
 
 ## Reviewentscheidung
 
-**Nutzerentscheidung:** ausstehend. Bis zur Freigabe bleiben ART-02 und ART-03 ENTWURF. Die produktive v2-Avataransicht ist unverändert.
+**Nutzerentscheidung:** Messwand und Namensschild am 28.10.2026 ausdrücklich visuell akzeptiert. ART-02/03 bleiben wegen fehlender Renderer-/Text-/Griff-/Rechteabnahme im Status REVIEW, nicht ABGENOMMEN. Die produktive v2-Avataransicht ist unverändert.
 
-**Nächster Schritt:** Nutzer prüft Hintergrund-/Schildansicht. Danach ART-04 + TECH-01 mit einer neu gezeichneten Figur und separaten Alpha-Ebenen; keine Massenproduktion vor bestandenem Prototyp.
+**Nächster Schritt:** [ART-04/TECH-01-Ebenenprototyp](art04-tech01-male09-prototype-2026-10-28.md) wurde begonnen; Künstlerstil und Körpervarianten müssen noch überarbeitet werden. Keine Massenproduktion vor bestandenem Prototyp.
