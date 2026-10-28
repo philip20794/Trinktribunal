@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 export const signingVariables = ['CM_KEYSTORE_PATH', 'CM_KEYSTORE_PASSWORD', 'CM_KEY_ALIAS', 'CM_KEY_PASSWORD'];
 
-function httpsOrigin(value) {
+export function httpsOrigin(value) {
   if (!value) return null;
   let uri;
   try { uri = new URL(value); } catch { throw new Error('Invalid release HTTPS origin'); }

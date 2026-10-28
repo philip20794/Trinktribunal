@@ -535,3 +535,7 @@ Server einrichten: in `apps/server` einmal `npm.cmd ci`, danach vom Root `script
 ## Android-Releasevorbereitung (TT-066)
 
 Bestehende Codemagic-Signierung und App-ID bleiben erhalten. `node scripts/check-android-release.mjs` prüft Konfiguration ohne Secret-Ausgabe. `scripts/build-android-release.ps1 -Target Apk|AppBundle` verlangt vorhandene CM-Signaturdaten und prüft das erzeugte Artefakt; `scripts/verify-android-release.ps1 -ArtifactPath ...` benötigt nur das Artefakt und SDK/JDK. Keine Produktionsschlüssel lokal erzeugen oder einchecken. Aktueller fehlender Releasebeleg und tatsächliche Negativ-/Debugchecks: [TT-066](qa/android-release.md).
+
+## Web-/Worker-Releasevorbereitung (TT-067)
+
+`node scripts/check-production-config.mjs` prüft die öffentlichen Beispiele. `scripts/build-worker-review.ps1` erzeugt ausschließlich ein lokales Dry-run-Bundle mit leerer Review-Envdatei. `scripts/build-web-release.ps1 -ConfigPath ... -WorkerConfigPath ...` verlangt echte HTTPS-Origins und prüft das Webpaket. `node scripts/check-web-release.mjs` prüft reale HTTP-Routen, Header und Offline-Integrität ohne Browser. Befehle, Hashes und späterer manueller Pages-Upload: [TT-067](qa/web-release.md). Beispiele sind keine konfigurierten Produktionsdienste.

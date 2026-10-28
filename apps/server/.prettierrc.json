@@ -4,5 +4,12 @@
   "printWidth": 100,
   "tabWidth": 2,
   "endOfLine": "lf",
-  "overrides": [{ "files": "wrangler.jsonc", "options": { "trailingComma": "none" } }]
+  "overrides": [
+    {
+      "files": ["wrangler.jsonc", "wrangler.release.example.jsonc"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ]
 }

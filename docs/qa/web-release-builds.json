@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-28",
+  "task": "TT-067",
+  "sourceRevision": "4030196 + release preparation",
+  "webSourceRevision": "35a073324992a941eb9f9cdf0aa647785775cfd0",
+  "web": {
+    "renderer": "JS/CanvasKit",
+    "totals": {
+      "files": 51,
+      "bytes": 19699112,
+      "gzipBytes": 10759544,
+      "brotliBytes": 10264413
+    },
+    "precache": {
+      "files": 48,
+      "bytes": 19678987,
+      "version": "57ef75ecc113d025bdf8aee4216b22e06f7e3f30b42b1540db7e12008ae07893"
+    },
+    "configuredConnections": [
+      "'self'"
+    ],
+    "requests": [
+      {
+        "path": "/",
+        "status": 200,
+        "mime": "text/html"
+      },
+      {
+        "path": "/join/ABCD2345",
+        "status": 200,
+        "mime": "text/html"
+      },
+      {
+        "path": "/missing-asset.js",
+        "status": 404,
+        "mime": "text/plain"
+      },
+      {
+        "path": "/api/rooms",
+        "status": 404,
+        "mime": "text/plain"
+      },
+      {
+        "path": "/.env",
+        "status": 404,
+        "mime": "text/plain"
+      },
+      {
+        "path": "/main.dart.js",
+        "status": 200,
+        "mime": "text/javascript"
+      },
+      {
+        "path": "/canvaskit/canvaskit.wasm",
+        "status": 200,
+        "mime": "application/wasm"
+      },
+      {
+        "path": "/assets/assets/fonts/roboto-regular.ttf",
+        "status": 200,
+        "mime": "font/ttf"
+      },
+      {
+        "path": "/service-worker.js",
+        "status": 200,
+        "mime": "text/javascript"
+      }
+    ],
+    "browserAcceptance": "SKIPPED - later manual testing",
+    "deploymentPerformed": false
+  },
+  "worker": {
+    "wrangler": "4.153.0",
+    "mode": "deploy --dry-run --autoconfig=false",
+    "files": [
+      {
+        "path": "index.js",
+        "bytes": 498399,
+        "sha256": "bad6de10c223188a0352afa739cfc16467e98263dc13d73aa8c5692f255f27fb"
+      },
+      {
+        "path": "index.js.map",
+        "bytes": 898507,
+        "sha256": "dba0c5295bc86a87aedfd566b619dec6423521722b70ddcf80523d65717632c0"
+      },
+      {
+        "path": "bundle-meta.json",
+        "bytes": 33429,
+        "sha256": "76205904b6afb3394502bf0eac3647be64da5b40778b91971f3ce13d3e9e1178"
+      }
+    ],
+    "deploymentPerformed": false
+  },
+  "checks": {
+    "nodeTests": 152,
+    "serverTests": 446,
+    "serverFiles": 34,
+    "serverDurationSeconds": 278.83,
+    "manualAcceptance": "SKIPPED - later manual testing"
+  }
+}

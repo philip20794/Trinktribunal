@@ -11,8 +11,8 @@
     "types": "node -e \"require('node:fs').mkdirSync('.wrangler/types',{recursive:true})\" && wrangler types .wrangler/types/worker-env.d.ts",
     "typecheck": "npm run types && tsc --noEmit",
     "test": "vitest run",
-    "format": "prettier --write src test vitest.config.ts tsconfig.json package.json wrangler.jsonc .prettierrc.json",
-    "format:check": "prettier --check src test vitest.config.ts tsconfig.json package.json wrangler.jsonc .prettierrc.json",
+    "format": "prettier --write src test vitest.config.ts tsconfig.json package.json wrangler.jsonc wrangler.release.example.jsonc .prettierrc.json",
+    "format:check": "prettier --check src test vitest.config.ts tsconfig.json package.json wrangler.jsonc wrangler.release.example.jsonc .prettierrc.json",
     "check": "npm run format:check && npm run typecheck && npm test"
   },
   "devDependencies": {

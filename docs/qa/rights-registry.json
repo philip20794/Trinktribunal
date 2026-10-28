@@ -591,6 +591,30 @@
         {
           "path": "artwork/avatars/v3/prototypes/male_09_color_masks/p1_mask_refinement_v3.py",
           "sha256": "7f7bea65acab5fe489a091a614b0870f48051f7560311445f854c86024a58e13"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/p1_refinement_v3_review.py",
+          "sha256": "2ba7274fac368b74ac80fd06e1e280a7fc159fdcb8ba8794ac827f16373cf0bf"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/test_p1_refinement_v3.py",
+          "sha256": "a076763e6b2ac9c42664e434bdc93e6d191e5dafcc239a5db1d6086138ca3747"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/p1_native_git_master.py",
+          "sha256": "3bbe572654825a0d7a94d6647cc5b9b943676403fa4c42fa24a21250a8ea1fef"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/test_p1_native_git_master.py",
+          "sha256": "b75b097212a95a71dd8a4041413317e068735269aec333f004a5a5029fd89127"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/verify_master_source.py",
+          "sha256": "ab31f395446d31c5f8618f7d03ad834f16f870e253bd98b7d9b3b7204d9f930a"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/test_verify_master_source.py",
+          "sha256": "d63c211a042ed036248bdca8f875b376515fd8072577486c24e8a62473406dfb"
         }
       ]
     },

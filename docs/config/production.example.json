@@ -1,0 +1,5 @@
+{
+  "formatVersion": 1,
+  "apiBaseUrl": "https://api.example.invalid",
+  "publicClientBaseUrl": "https://app.example.invalid"
+}
