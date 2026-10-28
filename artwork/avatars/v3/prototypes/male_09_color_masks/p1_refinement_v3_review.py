@@ -18,6 +18,7 @@ from color_mask_pilot import make_masks, label_font
 from p1_visual_tuning import EXPECTED
 from p1_mask_refinement_v2 import refine_masks, recolor_v2
 from p1_mask_refinement_v3 import refine_v3, recolor_v3
+from verify_master_source import inspect_file
 
 CASES = [
     ("Original", {}),
@@ -48,7 +49,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--require-exact-git-source", action="store_true",
+                        help="Fail if bytes do not match the approved Git master PNG")
     args = parser.parse_args()
+    identity = inspect_file(args.source)
+    if args.require_exact_git_source and not identity["exact_git_source_match"]:
+        parser.error("Input is not the exact Git master; use an unmodified repository PNG")
     raw = args.source.read_bytes()
     src = np.asarray(Image.open(args.source).convert("RGB")).copy()
     if src.shape != (1536,1229,3):
@@ -118,6 +124,7 @@ def main():
         for i,a in enumerate(names) for b in names[i+1:]}
     metrics = {
         "source_file_sha256":hashlib.sha256(raw).hexdigest(),
+        "source_identity": identity,
         "source_rgb_sha256":hashlib.sha256(src.tobytes()).hexdigest(),
         "source_size":[1229,1536],
         "baseline_counts":counts,
