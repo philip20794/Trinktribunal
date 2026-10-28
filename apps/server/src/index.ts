@@ -21,7 +21,7 @@ export default {
     return new Response(
       request.method === 'HEAD'
         ? null
-        : JSON.stringify({ status: 'ok', service: 'trinktribunal', protocolVersion: 1 }),
+        : JSON.stringify({ status: 'ok', service: 'trinktribunal', protocolVersion: 2 }),
       {
         headers: { ...headers, 'Content-Type': 'application/json; charset=utf-8' },
       },

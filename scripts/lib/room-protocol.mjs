@@ -146,7 +146,7 @@ export function applyDelta(base,delta,context={}) {
   validateRoomMessage(base,{...context,logical:true});
   validateRoomMessage(delta,{...context,logical:true});
   if(base.type!=='snapshot'||delta.type!=='delta'||base.revision!==delta.baseRevision||base.you!==delta.you||base.roomId!==delta.roomId)fail('DELTA_BASE_MISMATCH');
-  const next={type:'snapshot',protocolVersion:1,requestId:delta.requestId,roomId:delta.roomId,you:delta.you,revision:delta.revision,public:{...base.public,...delta.publicChanges},private:delta.private};
+  const next={type:'snapshot',protocolVersion:2,requestId:delta.requestId,roomId:delta.roomId,you:delta.you,revision:delta.revision,public:{...base.public,...delta.publicChanges},private:delta.private};
   return validateRoomMessage(next,{...context,logical:true});
 }
 

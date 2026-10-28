@@ -30,6 +30,40 @@ final class OnlineGameController extends ChangeNotifier {
       : null;
   int? get visibleNumber => _visible ? snapshot?.private.ownNumber : null;
   bool get ackPending => _ackPending;
+  bool get canReroll {
+    final view = snapshot;
+    if (view == null ||
+        view.public.gameId == null ||
+        view.public.roundId == null) {
+      return false;
+    }
+    final state = view.public;
+    return view.you ==
+            (state.config.allJudges ? state.readerId : state.judgeId) &&
+        ['numbers', 'answers', 'ordering', 'revealing'].contains(state.phase) &&
+        state.revealCursor == 0 &&
+        !pending('reroll');
+  }
+
+  bool rerollCurrentQuestion({
+    required GameId gameId,
+    required RoundId roundId,
+  }) {
+    final view = snapshot;
+    if (!canReroll || !_sameRound(gameId, roundId) || view == null) {
+      return false;
+    }
+    return _send(
+      'reroll',
+      RerollCurrentQuestionMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        roundId: roundId,
+      ),
+    );
+  }
+
   int get activeCount =>
       snapshot?.public.players.where((p) => p.active != false).length ?? 0;
   bool get acknowledged =>

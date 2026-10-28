@@ -191,6 +191,7 @@ export class Room extends DurableObject<Env> {
     if (
       info?.kind !== 'authenticated' ||
       info.roomId !== state.roomId ||
+      info.protocolVersion !== 2 ||
       info.avatarVersion !== protocolMetadata.avatarVersion ||
       info.catalogHash !== protocolMetadata.catalogHash
     )
@@ -236,6 +237,10 @@ export class Room extends DurableObject<Env> {
     }
     for (const socket of this.ctx.getWebSockets()) {
       const info = attachment(socket);
+      if (info?.kind === 'authenticated' && info.protocolVersion !== 2) {
+        this.socketFailure(socket, 'PROTOCOL_MISMATCH', 4400);
+        continue;
+      }
       if (info?.kind === 'authenticated' && info.avatarVersion !== protocolMetadata.avatarVersion) {
         this.socketFailure(socket, 'AVATAR_MISMATCH', 4400);
         continue;
@@ -312,6 +317,10 @@ export class Room extends DurableObject<Env> {
           this.socketFailure(socket, 'ROOM_UNAVAILABLE');
           return;
         }
+        if (info.kind === 'authenticated' && info.protocolVersion !== 2) {
+          this.socketFailure(socket, 'PROTOCOL_MISMATCH', 4400);
+          return;
+        }
         if (
           info.kind === 'authenticated' &&
           info.avatarVersion !== protocolMetadata.avatarVersion
@@ -375,6 +384,7 @@ export class Room extends DurableObject<Env> {
             roomId: result.message.roomId,
             playerId: result.message.playerId,
             generation: result.message.generation,
+            protocolVersion: 2,
             avatarVersion: protocolMetadata.avatarVersion,
             catalogHash: protocolMetadata.catalogHash,
           };
@@ -954,7 +964,7 @@ export class Room extends DurableObject<Env> {
           generation: member.generation,
           expiresAtUtc: new Date(roomExpiry(state)).toISOString(),
           handshake: {
-            protocolVersion: 1,
+            protocolVersion: 2,
             catalogHash: protocolMetadata.catalogHash,
             avatarVersion: protocolMetadata.avatarVersion,
           },

@@ -10,7 +10,7 @@ afterEach(cleanupPeers);
 function intent(state: RoomState) {
   return {
     type: 'rerollCurrentQuestion',
-    protocolVersion: 1,
+    protocolVersion: 2,
     actionId: crypto.randomUUID(),
     expectedRevision: state.revision,
     gameId: state.game!.gameId,

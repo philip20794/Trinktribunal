@@ -19,6 +19,7 @@ export type SocketAttachment =
       roomId: RoomId;
       playerId: PlayerId;
       generation: number;
+      protocolVersion?: number;
       avatarVersion?: number;
       catalogHash?: string;
       viewRevision?: number;
@@ -70,6 +71,7 @@ export function attachment(socket: WebSocket): SocketAttachment | null {
         'roomId',
         'playerId',
         'generation',
+        'protocolVersion',
         'avatarVersion',
         'catalogHash',
         'viewRevision',
@@ -79,6 +81,8 @@ export function attachment(socket: WebSocket): SocketAttachment | null {
     ) &&
     (!('catalogHash' in value) ||
       (typeof value.catalogHash === 'string' && /^[a-f0-9]{64}$/.test(value.catalogHash))) &&
+    (!('protocolVersion' in value) ||
+      (Number.isSafeInteger(value.protocolVersion) && Number(value.protocolVersion) > 0)) &&
     (!('avatarVersion' in value) ||
       (Number.isSafeInteger(value.avatarVersion) && Number(value.avatarVersion) > 0)) &&
     (!('viewRevision' in value) ||

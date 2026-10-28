@@ -1,5 +1,5 @@
 {
-  "protocolVersion": 1,
+  "protocolVersion": 2,
   "limits": {
     "frameBytes": 16384,
     "jsonDepth": 32,
@@ -228,6 +228,24 @@
       ],
       "phases": [
         "any"
+      ],
+      "maxBytes": 16384,
+      "action": true
+    },
+    "rerollCurrentQuestion": {
+      "direction": "client",
+      "transports": [
+        "websocket"
+      ],
+      "roles": [
+        "judge",
+        "reader"
+      ],
+      "phases": [
+        "numbers",
+        "answers",
+        "ordering",
+        "revealing"
       ],
       "maxBytes": 16384,
       "action": true

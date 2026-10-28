@@ -1,7 +1,7 @@
 import { env } from 'cloudflare:workers';
 import { runInDurableObject } from 'cloudflare:test';
 import { attachment } from '../../src/room/sockets';
-import fixtures from '../../../../packages/protocol/fixtures/messages/room-v1.json';
+import fixtures from '../../../../packages/protocol/fixtures/messages/room-v2.json';
 import worker from '../../src/index';
 import { createRoomMessage, decodeRoomMessage, RoomIds } from '../../src/protocol/room_message';
 import type { CredentialMessage } from '../../src/protocol/room_message.generated';

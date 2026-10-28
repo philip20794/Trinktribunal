@@ -19,7 +19,7 @@ void echoProfile(
   socket.receive(
     DeltaMessage.fromJson({
       'type': 'delta',
-      'protocolVersion': 1,
+      'protocolVersion': 2,
       'requestId': 'echo',
       'roomId': base.roomId.value,
       'you': base.you.value,

@@ -1,4 +1,6 @@
 {
+  "refreshQuestion": "Andere Frage ziehen",
+  "refreshNoQuestion": "Keine andere geeignete Frage verfügbar. Die aktuelle Frage bleibt erhalten.",
   "@@locale": "de",
   "roomRetention": "Raumdaten werden nach 24 Stunden ohne Spielaktivität gelöscht, spätestens 48 Stunden nach Erstellung. Der Host kann den Raum vorher für alle schließen. Reine Verbindungen und Wiederholungen verlängern diese Fristen nicht.",
   "roomClose": "Raum schließen",

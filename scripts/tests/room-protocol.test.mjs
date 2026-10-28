@@ -8,7 +8,7 @@ import {tmpdir} from 'node:os';
 import {canonicalJson,validateSchema} from '../lib/catalogs.mjs';
 import {roomMessageSchema,messagePolicies,ROOM_LIMITS} from '../../packages/protocol/room-contract.mjs';
 import {normalizeRoomCode,resumeVerifier,parseRoomFrame,validateRoomMessage as validateMessage,validateHistoryImport as validateImport,assembleProjection,applyDelta,protocolCatalogHash} from '../lib/room-protocol.mjs';
-const fixture=JSON.parse(readFileSync(new URL('../../packages/protocol/fixtures/messages/room-v1.json',import.meta.url),'utf8'));
+const fixture=JSON.parse(readFileSync(new URL('../../packages/protocol/fixtures/messages/room-v2.json',import.meta.url),'utf8'));
 const sample=type=>structuredClone(fixture.fixtures.find(f=>f.valid.type===type).valid);
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const validateRoomMessage=(message,context={})=>validateMessage(message,{nowUtc:fixture.nowUtc,...context});
@@ -21,7 +21,7 @@ test('every wire type has independent positive/negative fixture, role, phase and
     const policy=messagePolicies[f.valid.type];
     assert.doesNotThrow(()=>validateRoomMessage(f.valid,{roles:[f.role],phase:f.phase,nowUtc:fixture.nowUtc,direction:policy.direction,transport:policy.transports[0]}),f.fixtureId);
     assert.throws(()=>validateRoomMessage(f.invalid),undefined,f.fixtureId);
-    assert.throws(()=>validateRoomMessage({...f.valid,protocolVersion:2}),undefined,f.fixtureId);
+    assert.throws(()=>validateRoomMessage({...f.valid,protocolVersion:1}),undefined,f.fixtureId);
     assert.ok(messagePolicies[f.valid.type].maxBytes<=ROOM_LIMITS.projectionBytes);
   }
 });

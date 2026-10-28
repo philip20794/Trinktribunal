@@ -1,4 +1,4 @@
-# Raumprotokoll v1 – TT-034
+# Raumprotokoll v2 – TT-034 / TT-081
 
 Stand: 28.10.2026. **TT-034–054 implementiert: sichere Aufnahme/Resume, Client/Lobby, Spielkern mit Parität, atomare SQLite-Aktionen/private Historie, beide Spielmodi und Urteile, Partieende/Regeln/Neustart, Besetzungsänderungen sowie persistierter Hostverlust mit gemeinsamem Alarm. Rehydrierungs-/Migrationsprüfung folgt TT-056 und vollständiger Reconnect-/Historienabgleich TT-057.** Grundlage sind [GAME_STATE](GAME_STATE.md), [D-08](../decisions/D-08-host-failover.md), [D-09](../decisions/D-09-private-reveal-projections.md), [D-12](../decisions/D-12-retention-and-resume.md), [D-14](../decisions/D-14-room-codes.md) und [D-16](../decisions/D-16-persistent-accountless-rejoin.md). Browser-/E2E-Abnahmen sind gemäß Nutzervorgabe übersprungen und später manuell zu testen; sie blockieren Folgeaufgaben nicht.
 
@@ -7,7 +7,7 @@ Stand: 28.10.2026. **TT-034–054 implementiert: sichere Aufnahme/Resume, Client
 - [Nachrichtenschema](../../packages/protocol/schemas/room-message.schema.json): geschlossene JSON-Schema-2020-12-Objekte; unbekannte Felder, Versionen, Avatarwerte und Typen ablehnen. Es gibt keine frei übermittelten HTML-/Asset-URLs.
 - [Rollen-/Phasen-/Größenregister](../../packages/protocol/message-policies.json): alle 41 Nachrichtentypen mit Richtung, Transport, Rolle, Phase und Bytebudget. `any` bedeutet jeden Raumzustand, keine Aufhebung der Authentifizierung. Rollen sind serverseitig abgeleitete Fähigkeiten, keine Clientfelder.
 - [Deklarative Quelle](../../packages/protocol/room-contract.mjs); `node scripts/generate-room-protocol.mjs --check` erkennt Drift aus beliebigem Arbeitsverzeichnis. JSON-Ausgaben bleiben für unabhängige Dart-/TS-Adapter nutzbar.
-- [Positiv-/Negativbeispiele](../../packages/protocol/fixtures/messages/room-v1.json) für jeden Nachrichtentyp. Zusätzliche [Unit-Vertragsprüfungen](../../scripts/tests/room-protocol.test.mjs) decken Sichtbarkeit, Rollen, Grenzen, Historie und atomare Chunkübertragung ab.
+- [Positiv-/Negativbeispiele](../../packages/protocol/fixtures/messages/room-v2.json) für jeden Nachrichtentyp. Zusätzliche [Unit-Vertragsprüfungen](../../scripts/tests/room-protocol.test.mjs) decken Sichtbarkeit, Rollen, Grenzen, Historie und atomare Chunkübertragung ab.
 
 Das Schema beschreibt die Struktur; Uhrzeitfenster, Permutationen, Identitätsbindung, Besitzrechte und aktuelle Spielphase brauchen zusätzlich semantische Prüfungen. Der [Node-Referenzprüfer](../../scripts/lib/room-protocol.mjs) ist eine überprüfbare Spezifikationshilfe. Authentifizierung und autoritative Zustandsübergänge müssen in TT-036–058 gegen die tatsächliche Runtime geprüft werden.
 
@@ -32,7 +32,7 @@ Namen: getrimmt, 1–24 Unicode-Graphemcluster, keine Steuerzeichen. JSON-Schema
 
 ## Versions- und Inhalts-Handshake
 
-Create, Join und Authenticate enthalten `handshake = {protocolVersion:1, catalogHash, avatarVersion:1}`. Der Inhaltshash ist SHA-256 über UTF-8 der rekursiv nach Objektschlüsseln sortierten kanonischen `assets/catalogs/manifest.json` ohne Whitespace; Arrayreihenfolgen bleiben erhalten. Er umfasst beide Sprachen, Fragen und Regeln. Es werden weder Hashes pro Gerät erfunden noch unterschiedliche Kataloggenerationen in derselben Partie gemischt. Der Server gibt den erwarteten Handshake erst nach erfolgreicher Auth im privaten `authenticated` zurück.
+Create, Join und Authenticate enthalten `handshake = {protocolVersion:2, catalogHash, avatarVersion:2}`. Der Inhaltshash ist SHA-256 über UTF-8 der rekursiv nach Objektschlüsseln sortierten kanonischen `assets/catalogs/manifest.json` ohne Whitespace; Arrayreihenfolgen bleiben erhalten. Er umfasst beide Sprachen, Fragen und Regeln. Es werden weder Hashes pro Gerät erfunden noch unterschiedliche Kataloggenerationen in derselben Partie gemischt. Der Server gibt den erwarteten Handshake erst nach erfolgreicher Auth im privaten `authenticated` zurück.
 
 Bei unbekannter Version, Katalog- oder Avatar-Inkompatibilität keine neue Partie/Abgabe zulassen und keinen Spielzustand versenden; stabiler Fehlercode führt zum Updateangebot. Das separate HTTP-Leave prüft das Credential ohne Katalogabgleich, damit eine veraltete App ihre Berechtigung trotzdem widerrufen kann. Ein Sprachwechsel der Oberfläche ändert weder Hash noch eingefrorene Multiplayer-Inhaltssprache.
 
@@ -144,3 +144,10 @@ Bei jedem tatsächlich committed Ziehereignis dessen damalige Host-Identität al
 `node --test scripts/tests/room-protocol.test.mjs` prüft jede Nachricht positiv/negativ, Versionskonflikte, unbekannte/prototypische Felder, Größen/Grapheme, Rollen-/Phasenrechte, Code-Normalisierung, Tokenplatzierung, alle öffentlichen/private Phasen, Revealpräfix, Historienfenster/IDs/Seiten/Replay und große atomare Übertragungen. Die übrigen Katalog-/Projektionstests bleiben Regressionen. Das ist eine Vertragsprüfung, keine Behauptung eines bereits sicheren Netzservers.
 
 TT-035 stellt die lokale Worker-Runtime bereit; TT-036 bindet Dart/TS-Decoder an genau diese Artefakte. `node scripts/generate-room-dtos.mjs --check` prüft generierte Typen und Katalogmetadaten; beide Decoder verwenden dieselben 41 zusätzlichen Grenzfälle. JSON-Tiefe ist vor dem Parsen auf 32 begrenzt. Auth-/Generations-/Widerrufs- und Persistenzbeweise folgen auf den in TT-037–059 vorgesehenen echten Zustandsübergängen. Keine neuen E2E-Tests. Schema-Stringgrenzen und `oneOf` folgen den geprüften offiziellen Quellen: [Validation](https://json-schema.org/draft/2020-12/json-schema-validation), [Core](https://json-schema.org/draft/2020-12/json-schema-core).
+
+
+## TT-081 / D-19 – Protokoll v2
+
+`rerollCurrentQuestion {actionId, expectedRevision, gameId, roundId}` ist eine geschlossene autoritative Spielaktion. Nur aktueller Richter bzw. bei „Alle sind Richter“ aktueller Vorleser darf vor der ersten öffentlichen Zahl eine reguläre Frage wechseln. Host allein genügt nicht. Neue `roundId`, Frage und Bindungen werden atomar gespeichert und mit privaten Projektionen verteilt. Fallposition, Zahlen, Rollen, Regelplan und aktive Regeln bleiben bestehen; Bestätigungen/Antwortbereitschaft/Ordnungen werden verworfen. Keine Kandidaten: `CONTENT_EXHAUSTED`, unveränderter Fall.
+
+Wire- und Handshakeversion sind jetzt **2**; Avatarversion bleibt **2**, Inhaltshash bleibt unverändert. v1-Nachrichten werden mit `PROTOCOL_MISMATCH` abgewiesen. Authentifizierte hibernierte Socket-Attachments tragen zusätzlich die Protokollversion; fehlende/alte Version wird geschlossen (4400), bevor ein Snapshot gesendet oder eine Aktion verarbeitet wird. Gespeicherte Raumidentitäten/Token und SQLite-Domänenstände bleiben erhalten; ein aktualisierter Client kann dieselbe Identität wiederaufnehmen. Credential-Speicherformat und Tokenverifier-Domäne `trinktribunal-resume-v1` werden nicht verändert. Bereits gespeicherte v1-Aktionsbelege bleiben unverändert archiviert; derselbe Aktionsschlüssel mit neuem v2-Inhalt ist ein Konflikt.

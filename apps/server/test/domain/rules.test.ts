@@ -248,7 +248,7 @@ describe('existing TT-003/007/008 fixtures and production invariants', () => {
       const result = transition(
         state,
         state.hostId,
-        { type: 'startGame', protocolVersion: 1, actionId: 'start', expectedRevision: 0 },
+        { type: 'startGame', protocolVersion: 2, actionId: 'start', expectedRevision: 0 },
         ports,
       );
       expect(result.ok).toBe(true);

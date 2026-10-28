@@ -95,8 +95,8 @@ it('invalid frames expose no private payload and do not disturb a regular partic
     `{"${marker}":`,
     ' '.repeat(16385),
     '['.repeat(33) + '0' + ']'.repeat(33),
-    JSON.stringify({ protocolVersion: 1, type: 'ping', requestId: 'x', playerId: marker }),
-    JSON.stringify({ protocolVersion: 1, type: 'snapshot', roomId: marker }),
+    JSON.stringify({ protocolVersion: 2, type: 'ping', requestId: 'x', playerId: marker }),
+    JSON.stringify({ protocolVersion: 2, type: 'snapshot', roomId: marker }),
   ];
   const before = await f.read();
   for (const raw of invalid) {

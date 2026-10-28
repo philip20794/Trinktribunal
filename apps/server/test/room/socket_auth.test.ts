@@ -82,7 +82,7 @@ describe('authenticated hibernation sockets', () => {
       auth({ ...room.credential, resumeToken: newResumeToken() }),
       auth(foreign.credential),
       { ...auth(room.credential), playerId: room.credential.playerId },
-      { type: 'requestSnapshot', protocolVersion: 1, requestId: requestId() },
+      { type: 'requestSnapshot', protocolVersion: 2, requestId: requestId() },
     ]) {
       const peer = await connect(room.code);
       peer.send(message);
@@ -123,6 +123,7 @@ describe('authenticated hibernation sockets', () => {
         roomId: room.credential.roomId,
         playerId: room.credential.playerId,
         generation: 1,
+        protocolVersion: handshake.protocolVersion,
         avatarVersion: handshake.avatarVersion,
         catalogHash: handshake.catalogHash,
       });

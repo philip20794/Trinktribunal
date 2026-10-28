@@ -8,7 +8,7 @@
       "phase": "answers",
       "valid": {
         "type": "readyForOrdering",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "ready_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -16,7 +16,7 @@
       },
       "invalid": {
         "type": "readyForOrdering",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "ready_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -30,7 +30,7 @@
       "phase": "none",
       "valid": {
         "type": "create",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "profile": {
           "name": "Anna",
@@ -55,14 +55,14 @@
           }
         },
         "handshake": {
-          "protocolVersion": 1,
+          "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
           "avatarVersion": 2
         }
       },
       "invalid": {
         "type": "create",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "profile": {
           "name": "Anna",
@@ -87,7 +87,7 @@
           }
         },
         "handshake": {
-          "protocolVersion": 1,
+          "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
           "avatarVersion": 2
         },
@@ -100,7 +100,7 @@
       "phase": "any",
       "valid": {
         "type": "join",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "profile": {
           "name": "Anna",
@@ -125,14 +125,14 @@
           }
         },
         "handshake": {
-          "protocolVersion": 1,
+          "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
           "avatarVersion": 2
         }
       },
       "invalid": {
         "type": "join",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "profile": {
           "name": "Anna",
@@ -157,7 +157,7 @@
           }
         },
         "handshake": {
-          "protocolVersion": 1,
+          "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
           "avatarVersion": 2
         },
@@ -170,7 +170,7 @@
       "phase": "any",
       "valid": {
         "type": "credential",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "roomCode": "ABCD2345",
         "roomId": "room_1",
@@ -180,7 +180,7 @@
       },
       "invalid": {
         "type": "credential",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "roomCode": "ABCD2345",
         "roomId": "room_1",
@@ -196,22 +196,22 @@
       "phase": "any",
       "valid": {
         "type": "authenticate",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "handshake": {
-          "protocolVersion": 1,
+          "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
           "avatarVersion": 2
         }
       },
       "invalid": {
         "type": "authenticate",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "handshake": {
-          "protocolVersion": 1,
+          "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
           "avatarVersion": 2
         },
@@ -224,28 +224,28 @@
       "phase": "any",
       "valid": {
         "type": "authenticated",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "roomId": "room_1",
         "playerId": "p2",
         "generation": 1,
         "expiresAtUtc": "2026-10-28T12:00:00.000Z",
         "handshake": {
-          "protocolVersion": 1,
+          "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
           "avatarVersion": 2
         }
       },
       "invalid": {
         "type": "authenticated",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "roomId": "room_1",
         "playerId": "p2",
         "generation": 1,
         "expiresAtUtc": "2026-10-28T12:00:00.000Z",
         "handshake": {
-          "protocolVersion": 1,
+          "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
           "avatarVersion": 2
         },
@@ -258,12 +258,12 @@
       "phase": "any",
       "valid": {
         "type": "requestSnapshot",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1"
       },
       "invalid": {
         "type": "requestSnapshot",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "actorId": "spoofed"
       }
@@ -274,7 +274,7 @@
       "phase": "lobby",
       "valid": {
         "type": "setConfig",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "config": {
@@ -287,7 +287,7 @@
       },
       "invalid": {
         "type": "setConfig",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "config": {
@@ -306,13 +306,13 @@
       "phase": "lobby",
       "valid": {
         "type": "startGame",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0
       },
       "invalid": {
         "type": "startGame",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "actorId": "spoofed"
@@ -324,7 +324,7 @@
       "phase": "any",
       "valid": {
         "type": "restartGame",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -339,7 +339,7 @@
       },
       "invalid": {
         "type": "restartGame",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -360,7 +360,7 @@
       "phase": "any",
       "valid": {
         "type": "editOwnProfile",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "profile": {
@@ -388,7 +388,7 @@
       },
       "invalid": {
         "type": "editOwnProfile",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "profile": {
@@ -422,7 +422,7 @@
       "phase": "any",
       "valid": {
         "type": "reorderRoster",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "playerIds": [
@@ -433,7 +433,7 @@
       },
       "invalid": {
         "type": "reorderRoster",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "playerIds": [
@@ -450,7 +450,7 @@
       "phase": "any",
       "valid": {
         "type": "kick",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "targetPlayerId": "p3",
@@ -458,7 +458,7 @@
       },
       "invalid": {
         "type": "kick",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "targetPlayerId": "p3",
@@ -472,14 +472,14 @@
       "phase": "any",
       "valid": {
         "type": "leave",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "confirmed": true
       },
       "invalid": {
         "type": "leave",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "confirmed": true,
@@ -492,14 +492,14 @@
       "phase": "any",
       "valid": {
         "type": "closeRoom",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "confirmed": true
       },
       "invalid": {
         "type": "closeRoom",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "confirmed": true,
@@ -512,7 +512,7 @@
       "phase": "numbers",
       "valid": {
         "type": "acknowledgeNumber",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -520,7 +520,7 @@
       },
       "invalid": {
         "type": "acknowledgeNumber",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -534,7 +534,7 @@
       "phase": "answers",
       "valid": {
         "type": "beginOrdering",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -542,7 +542,7 @@
       },
       "invalid": {
         "type": "beginOrdering",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -556,7 +556,7 @@
       "phase": "ordering",
       "valid": {
         "type": "submitOrder",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -569,7 +569,7 @@
       },
       "invalid": {
         "type": "submitOrder",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -588,7 +588,7 @@
       "phase": "revealing",
       "valid": {
         "type": "revealNext",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -597,7 +597,7 @@
       },
       "invalid": {
         "type": "revealNext",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -612,7 +612,7 @@
       "phase": "judged",
       "valid": {
         "type": "completeCase",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -620,7 +620,7 @@
       },
       "invalid": {
         "type": "completeCase",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -634,7 +634,7 @@
       "phase": "numbers",
       "valid": {
         "type": "completeWithoutVerdict",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -643,7 +643,7 @@
       },
       "invalid": {
         "type": "completeWithoutVerdict",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -658,7 +658,7 @@
       "phase": "rule_event",
       "valid": {
         "type": "continueRule",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -666,7 +666,7 @@
       },
       "invalid": {
         "type": "continueRule",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -680,14 +680,14 @@
       "phase": "paused",
       "valid": {
         "type": "resumePaused",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1"
       },
       "invalid": {
         "type": "resumePaused",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "actionId": "action_1",
         "expectedRevision": 0,
         "gameId": "game_1",
@@ -700,7 +700,7 @@
       "phase": "lobby",
       "valid": {
         "type": "historyImport",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "importId": "import_1",
         "page": 0,
@@ -715,7 +715,7 @@
       },
       "invalid": {
         "type": "historyImport",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "importId": "import_1",
         "page": 0,
@@ -736,13 +736,13 @@
       "phase": "lobby",
       "valid": {
         "type": "cancelHistoryImport",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "importId": "import_1"
       },
       "invalid": {
         "type": "cancelHistoryImport",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "importId": "import_1",
         "actorId": "spoofed"
@@ -754,13 +754,13 @@
       "phase": "any",
       "valid": {
         "type": "historyPull",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "cursor": null
       },
       "invalid": {
         "type": "historyPull",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "cursor": null,
         "actorId": "spoofed"
@@ -772,7 +772,7 @@
       "phase": "any",
       "valid": {
         "type": "historyEvents",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "cursor": "cursor_1",
         "hasMore": false,
@@ -787,7 +787,7 @@
       },
       "invalid": {
         "type": "historyEvents",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "cursor": "cursor_1",
         "hasMore": false,
@@ -808,13 +808,13 @@
       "phase": "any",
       "valid": {
         "type": "historyReceipt",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "cursor": "cursor_1"
       },
       "invalid": {
         "type": "historyReceipt",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "cursor": "cursor_1",
         "actorId": "spoofed"
@@ -826,7 +826,7 @@
       "phase": "any",
       "valid": {
         "type": "ack",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "action_1",
         "actionId": "action_1",
         "revision": 1,
@@ -834,7 +834,7 @@
       },
       "invalid": {
         "type": "ack",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "action_1",
         "actionId": "action_1",
         "revision": 1,
@@ -848,13 +848,13 @@
       "phase": "any",
       "valid": {
         "type": "error",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "code": "INVALID_PHASE"
       },
       "invalid": {
         "type": "error",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "code": "INVALID_PHASE",
         "actorId": "spoofed"
@@ -866,12 +866,12 @@
       "phase": "any",
       "valid": {
         "type": "sessionReplaced",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1"
       },
       "invalid": {
         "type": "sessionReplaced",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "actorId": "spoofed"
       }
@@ -882,12 +882,12 @@
       "phase": "any",
       "valid": {
         "type": "roomClosed",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1"
       },
       "invalid": {
         "type": "roomClosed",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "actorId": "spoofed"
       }
@@ -898,12 +898,12 @@
       "phase": "any",
       "valid": {
         "type": "ping",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1"
       },
       "invalid": {
         "type": "ping",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "actorId": "spoofed"
       }
@@ -914,12 +914,12 @@
       "phase": "any",
       "valid": {
         "type": "pong",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1"
       },
       "invalid": {
         "type": "pong",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "actorId": "spoofed"
       }
@@ -930,7 +930,7 @@
       "phase": "any",
       "valid": {
         "type": "snapshot",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "roomId": "room_1",
         "you": "p2",
@@ -1058,7 +1058,7 @@
       },
       "invalid": {
         "type": "snapshot",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "roomId": "room_1",
         "you": "p2",
@@ -1192,7 +1192,7 @@
       "phase": "any",
       "valid": {
         "type": "delta",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "roomId": "room_1",
         "you": "p2",
@@ -1207,7 +1207,7 @@
       },
       "invalid": {
         "type": "delta",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "roomId": "room_1",
         "you": "p2",
@@ -1228,7 +1228,7 @@
       "phase": "any",
       "valid": {
         "type": "projectionStart",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "transferId": "transfer_1",
         "revision": 1,
@@ -1238,7 +1238,7 @@
       },
       "invalid": {
         "type": "projectionStart",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "transferId": "transfer_1",
         "revision": 1,
@@ -1254,7 +1254,7 @@
       "phase": "any",
       "valid": {
         "type": "projectionChunk",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "transferId": "transfer_1",
         "index": 0,
@@ -1262,7 +1262,7 @@
       },
       "invalid": {
         "type": "projectionChunk",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "transferId": "transfer_1",
         "index": 0,
@@ -1276,13 +1276,13 @@
       "phase": "any",
       "valid": {
         "type": "projectionEnd",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "transferId": "transfer_1"
       },
       "invalid": {
         "type": "projectionEnd",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "transferId": "transfer_1",
         "actorId": "spoofed"
@@ -1294,7 +1294,7 @@
       "phase": "any",
       "valid": {
         "type": "leaveHttp",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "actionId": "action_1",
@@ -1302,7 +1302,7 @@
       },
       "invalid": {
         "type": "leaveHttp",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "actionId": "action_1",
@@ -1316,7 +1316,7 @@
       "phase": "lobby",
       "valid": {
         "type": "historyBegin",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "offer": {
           "importId": "import_1",
@@ -1326,7 +1326,7 @@
       },
       "invalid": {
         "type": "historyBegin",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "offer": {
           "importId": "import_1",
@@ -1342,7 +1342,7 @@
       "phase": "lobby",
       "valid": {
         "type": "historyStatus",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "importId": "import_1",
         "status": "receiving",
@@ -1353,7 +1353,7 @@
       },
       "invalid": {
         "type": "historyStatus",
-        "protocolVersion": 1,
+        "protocolVersion": 2,
         "requestId": "request_1",
         "importId": "import_1",
         "status": "receiving",
@@ -1363,6 +1363,28 @@
         "receivedEvents": 1,
         "actorId": "spoofed"
       }
+    },
+    {
+      "fixtureId": "rerollCurrentQuestion",
+      "valid": {
+        "type": "rerollCurrentQuestion",
+        "protocolVersion": 2,
+        "actionId": "reroll_1",
+        "expectedRevision": 3,
+        "gameId": "game_1",
+        "roundId": "round_1"
+      },
+      "invalid": {
+        "type": "rerollCurrentQuestion",
+        "protocolVersion": 2,
+        "actionId": "reroll_1",
+        "expectedRevision": 3,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "playerId": "spoof"
+      },
+      "role": "judge",
+      "phase": "numbers"
     }
   ]
 }

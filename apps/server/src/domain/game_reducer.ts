@@ -1,6 +1,5 @@
 import { createHash } from 'node:crypto';
-import wireSchema from '../../../../packages/protocol/schemas/room-message.schema.json';
-import { canonicalJson, validateSchema } from '../../../../packages/protocol/schema-validation.mjs';
+import { canonicalJson } from '../../../../packages/protocol/schema-validation.mjs';
 import {
   decodeRoomMessage,
   ProtocolDecodeException,
@@ -13,7 +12,7 @@ import {
   type Config,
   type PlayerId,
   type RoomMessage,
-  type ReadyForOrderingMessage,
+  type RerollCurrentQuestionMessage,
 } from '../protocol/room_message.generated';
 import {
   immutable,
@@ -25,6 +24,7 @@ import {
 } from './game_state';
 
 export const gameActions = [
+  'rerollCurrentQuestion',
   'setConfig',
   'startGame',
   'restartGame',
@@ -39,25 +39,14 @@ export const gameActions = [
   'resumePaused',
 ] as const;
 type GameAction = Extract<RoomMessage, { type: (typeof gameActions)[number] }>;
-/** Internal intent until TT-081 publishes the versioned wire action. */
-export type RerollCommand = Omit<ReadyForOrderingMessage, 'type'> & {
-  readonly type: 'rerollCurrentQuestion';
-};
-const rerollSchema = {
-  ...wireSchema.$defs.readyForOrdering,
-  properties: {
-    ...wireSchema.$defs.readyForOrdering.properties,
-    type: { const: 'rerollCurrentQuestion' },
-  },
-};
+export type RerollCommand = RerollCurrentQuestionMessage;
 export function decodeRerollCommand(input: unknown): RerollCommand {
-  try {
-    validateSchema(input, rerollSchema, '$', wireSchema);
-  } catch {
-    throw new ProtocolDecodeException('INVALID_MESSAGE');
-  }
-  return input as RerollCommand;
+  return decodeRoomMessage(JSON.stringify(input), {
+    direction: 'client',
+    allowedTypes: ['rerollCurrentQuestion'],
+  }) as RerollCommand;
 }
+
 type ActionResult =
   | { ok: true; state: GameState; duplicate: boolean }
   | { ok: false; state: GameState; code: ProtocolErrorCode };
@@ -102,7 +91,7 @@ function configValid(config: Config): void {
   decodeRoomMessage(
     JSON.stringify({
       type: 'setConfig',
-      protocolVersion: 1,
+      protocolVersion: 2,
       actionId: 'validate',
       expectedRevision: 0,
       config,

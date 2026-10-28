@@ -82,6 +82,7 @@ for (const allJudges of [false, true])
             'kind',
             'playerId',
             'playersHash',
+            'protocolVersion',
             'roomId',
             'socketId',
             'viewExpiry',

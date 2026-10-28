@@ -78,7 +78,7 @@ for(const [name,value] of Object.entries(defs).filter(([,s])=>s.type==='object')
   dartOutput+='  }\n';
   if(message) {
     const fields=Object.entries(value.properties).filter(([key])=>!['type','protocolVersion'].includes(key));
-    dartOutput+=`  factory ${klass}.create({${fields.map(([key,child])=>`${value.required.includes(key)?'required ':''}${dart(child,key).replace(/\?$/,'')}${!value.required.includes(key)||nullable(child)?'?':''} ${key}`).join(', ')}}) => ${klass}.fromJson({\n    'type': '${name}', 'protocolVersion': 1,\n`;
+    dartOutput+=`  factory ${klass}.create({${fields.map(([key,child])=>`${value.required.includes(key)?'required ':''}${dart(child,key).replace(/\?$/,'')}${!value.required.includes(key)||nullable(child)?'?':''} ${key}`).join(', ')}}) => ${klass}.fromJson({\n    'type': '${name}', 'protocolVersion': 2,\n`;
     for(const [key] of fields)dartOutput+=`    ${value.required.includes(key)?'':`if (${key} != null) `}'${key}': _wireValue(${key}),\n`;
     dartOutput+='  });\n';
   }

@@ -65,7 +65,7 @@ let serial = 0;
 function command(state: GameState, type: string, extra: Record<string, unknown> = {}) {
   return {
     type,
-    protocolVersion: 1,
+    protocolVersion: 2,
     actionId: `action_${serial++}`,
     expectedRevision: state.revision,
     ...(!['startGame', 'setConfig'].includes(type) ? { gameId: state.gameId } : {}),

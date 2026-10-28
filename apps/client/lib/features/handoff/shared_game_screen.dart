@@ -294,6 +294,22 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     ].contains(view.phase)) ...[
                   const SizedBox(height: 16),
                   CaseFile(
+                    animationKey: view.roundId,
+                    showRefresh: true,
+                    onRefresh:
+                        [
+                              GamePhase.numbers,
+                              GamePhase.answers,
+                              GamePhase.ordering,
+                              GamePhase.revealing,
+                            ].contains(view.phase) &&
+                            view.revealCursor == 0
+                        ? () => _act(
+                            () => _controller.rerollCurrentQuestion(
+                              roundId: view.roundId,
+                            ),
+                          )
+                        : null,
                     label: context.tr('caseNumber', {
                       'number': view.completedCases + 1,
                     }),

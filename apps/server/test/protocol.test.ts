@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import fixtures from '../../../packages/protocol/fixtures/messages/room-v1.json';
+import fixtures from '../../../packages/protocol/fixtures/messages/room-v2.json';
 import adversarial from '../../../packages/protocol/fixtures/messages/codec-cases.json';
 import policies from '../../../packages/protocol/message-policies.json';
 import worker from '../src/index';

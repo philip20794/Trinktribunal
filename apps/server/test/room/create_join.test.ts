@@ -1,7 +1,7 @@
 import { env } from 'cloudflare:workers';
 import { runInDurableObject, runDurableObjectAlarm } from 'cloudflare:test';
 import { describe, expect, it } from 'vitest';
-import fixtures from '../../../../packages/protocol/fixtures/messages/room-v1.json';
+import fixtures from '../../../../packages/protocol/fixtures/messages/room-v2.json';
 import vectors from '../../../../packages/protocol/fixtures/messages/resume-verifiers.json';
 import worker from '../../src/index';
 import { createRoomMessage, decodeRoomMessage, RoomIds } from '../../src/protocol/room_message';

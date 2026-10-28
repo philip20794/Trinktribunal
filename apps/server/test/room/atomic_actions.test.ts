@@ -43,7 +43,7 @@ async function outcome(peer: Peer) {
 function action(state: RoomState, type: string, extra: Record<string, unknown> = {}) {
   return {
     type,
-    protocolVersion: 1,
+    protocolVersion: 2,
     actionId: RoomIds.action(crypto.randomUUID()),
     expectedRevision: state.revision,
     ...(!['startGame', 'setConfig'].includes(type) ? { gameId: state.game?.gameId } : {}),

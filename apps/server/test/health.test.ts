@@ -10,7 +10,7 @@ describe('local worker health', () => {
     expect(await response.json()).toEqual({
       status: 'ok',
       service: 'trinktribunal',
-      protocolVersion: 1,
+      protocolVersion: 2,
     });
     expect(response.headers.get('Cache-Control')).toBe('no-store');
     expect(response.headers.get('Content-Type')).toContain('application/json');

@@ -20,7 +20,7 @@ function command(
 ) {
   return {
     type,
-    protocolVersion: 1,
+    protocolVersion: 2,
     actionId: `reroll_${actionId++}`,
     expectedRevision: state.revision,
     ...(type !== 'startGame' ? { gameId: state.gameId, roundId: state.round?.id } : {}),

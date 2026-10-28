@@ -147,7 +147,7 @@ export function commitGameAction(
 ): GameActionResult {
   return commitDomainAction(repository, actor, command, connected, ports, false);
 }
-/** Trusted core entry only. TT-081 will add the authenticated wire route. */
+/** Module entry for the same versioned reroll intent used by the socket route. */
 export function commitRerollAction(
   repository: RoomRepository,
   actor: { playerId: PlayerId; generation: number },

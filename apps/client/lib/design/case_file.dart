@@ -9,11 +9,15 @@ class CaseFile extends StatelessWidget {
     required this.label,
     required this.child,
     this.animationKey,
+    this.onRefresh,
+    this.showRefresh = false,
     super.key,
   });
   final String label;
   final Widget child;
   final Object? animationKey;
+  final VoidCallback? onRefresh;
+  final bool showRefresh;
 
   @override
   Widget build(BuildContext context) => CourtMotion(
@@ -29,6 +33,12 @@ class CaseFile extends StatelessWidget {
               header: true,
               child: Row(
                 children: [
+                  if (showRefresh)
+                    IconButton(
+                      tooltip: context.tr('refreshQuestion'),
+                      onPressed: onRefresh,
+                      icon: const Icon(Icons.refresh),
+                    ),
                   const Icon(
                     Icons.folder_open_outlined,
                     size: 20,

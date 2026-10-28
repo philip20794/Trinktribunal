@@ -9,7 +9,7 @@ import 'package:trinktribunal/domain/models/ids.dart';
 
 final _fixtures =
     (jsonDecode(
-          File('../../packages/protocol/fixtures/messages/room-v1.json')
+          File('../../packages/protocol/fixtures/messages/room-v2.json')
               .readAsStringSync(),
         ) as Map)['fixtures']
         as List;

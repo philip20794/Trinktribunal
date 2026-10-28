@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4 in Arbeit: TT-079–080 erledigt, TT-081–084 offen; danach M7.5 (TT-071–078). Nächste Aufgabe TT-081; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 137 Node-/419 Flutter-/438 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4 in Arbeit: TT-079–080 erledigt, TT-081–084 offen; danach M7.5 (TT-071–078). Aktiv TT-081; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 137 Node-/419 Flutter-/438 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -142,7 +142,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-078 | UI- und Layout-Regression abschließen | OFFEN | — |
 | TT-079 | Neue Abläufe und Phasenverträge spezifizieren (D-19) | ERLEDIGT | D-19 und maschinenlesbare Sollmatrix, vier neue Vertragsprüfungen; Produktcode unverändert · [M7.4](qa/M7_4.md). |
 | TT-080 | Fragenkarten im Spielkern beliebig neu ziehen | ERLEDIGT | Atomarer Reroll in lokalen/Serverkernen, Frageinstanz-Ledger mit Altstandmigration; 8 Flutter-/11 Servertests neu, Gesamtcheck/Parität und Builds grün · [M7.4](qa/M7_4.md). |
-| TT-081 | Refresh-Aktion in allen drei Spielvarianten | OFFEN | — |
+| TT-081 | Refresh-Aktion in allen drei Spielvarianten | IN ARBEIT | Refresh in lokalen/Online-Frageakten; v2-DTOs, Socket-Versionsschutz und Rollen-/Widgettests vorhanden; Gesamtcheck läuft. |
 | TT-082 | Weiter ohne Strafpopup und allgemeine Spielregeln | OFFEN | — |
 | TT-083 | Ein-Handy-Übergabe und Geheimzahl in getrennten Screens | OFFEN | — |
 | TT-084 | Integration und Regression M7.4 abschließen | OFFEN | — |
@@ -199,7 +199,7 @@ Am 26.10.2026 lokal durchgeführt:
 ```text
 Branch: task/TT-080-question-reroll auf Nutzerstand ed1428c, geprüfter Kernabschluss wird nach main gepusht
 Aktueller Beleg: docs/qa/M7_4.md; 137 Node-/419 Flutter-/438 Server-Tests, Parität, JS-Web und Debug-APK grün
-Naechster Schritt: TT-081: Refresh links an allen Fragekarten, autoritativer Richter/Vorleser, Protokoll v2 einschließlich alter Socket-Attachments ohne Identitätsverlust. Danach TT-082–084, erst dann TT-071–078. TT-065: externe Nachweise offen; Inventar 15/96 inklusive neuer v3-Entwurfsquellen. TT-069 erst nach TT-084 und TT-078. Avatar v3 bleibt eigener Grafik-Workstream, kein Runtime-Abschluss.
+Naechster Schritt: TT-081 Gesamtcheck/Builds abschließen: Refresh links an allen Fragekarten, autoritativer Richter/Vorleser, v2-DTOs und Socket-Guard implementiert; 8 neue Widget-/2 Controller-Tests grün, 5 neue Wiretests in Gesamtprüfung. Danach TT-082–084, erst dann TT-071–078. TT-065: externe Nachweise offen; Inventar 15/96 inklusive neuer v3-Entwurfsquellen. TT-069 erst nach TT-084 und TT-078. Avatar v3 bleibt eigener Grafik-Workstream, kein Runtime-Abschluss.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

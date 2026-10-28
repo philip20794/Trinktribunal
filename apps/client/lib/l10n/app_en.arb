@@ -1,4 +1,6 @@
 {
+  "refreshQuestion": "Draw another question",
+  "refreshNoQuestion": "No other suitable question is available. Your current question is unchanged.",
   "@@locale": "en",
   "roomRetention": "Room data is deleted after 24 hours without game activity, and at most 48 hours after creation. The host can close the room for everyone earlier. Connections and retries alone do not extend these limits.",
   "roomClose": "Close room",

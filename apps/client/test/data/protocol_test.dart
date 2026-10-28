@@ -11,7 +11,7 @@ Map<String, dynamic> fixture(String name) => jsonDecode(
 ) as Map<String, dynamic>;
 
 void main() {
-  final fixtures = fixture('room-v1')['fixtures'] as List;
+  final fixtures = fixture('room-v2')['fixtures'] as List;
   for (final value in fixtures) {
     final row = value as Map<String, dynamic>;
     test(
@@ -114,7 +114,7 @@ void main() {
       expect(
         () => SubmitOrderMessage.fromJson({
           'type': 'ping',
-          'protocolVersion': 1,
+          'protocolVersion': 2,
           'requestId': 'req',
         }),
         throwsA(isA<ProtocolDecodeException>()),

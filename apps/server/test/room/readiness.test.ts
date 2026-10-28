@@ -74,7 +74,7 @@ async function setup() {
     const state = await read();
     return {
       type,
-      protocolVersion: 1,
+      protocolVersion: 2,
       actionId: id,
       expectedRevision: state.revision,
       gameId: state.game!.gameId!,

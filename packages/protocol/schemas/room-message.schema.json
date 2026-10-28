@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Trinktribunal room messages v1",
+  "title": "Trinktribunal room messages v2",
   "oneOf": [
     {
       "$ref": "#/$defs/create"
@@ -46,6 +46,9 @@
     },
     {
       "$ref": "#/$defs/closeRoom"
+    },
+    {
+      "$ref": "#/$defs/rerollCurrentQuestion"
     },
     {
       "$ref": "#/$defs/acknowledgeNumber"
@@ -207,7 +210,7 @@
       ],
       "properties": {
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "catalogHash": {
           "$ref": "#/$defs/hash"
@@ -965,7 +968,7 @@
           "const": "create"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -996,7 +999,7 @@
           "const": "join"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1027,7 +1030,7 @@
           "const": "credential"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1064,7 +1067,7 @@
           "const": "authenticate"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1093,7 +1096,7 @@
           "const": "leaveHttp"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1127,7 +1130,7 @@
           "const": "authenticated"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1164,7 +1167,7 @@
           "const": "requestSnapshot"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1186,7 +1189,7 @@
           "const": "setConfig"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1213,7 +1216,7 @@
           "const": "startGame"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1240,7 +1243,7 @@
           "const": "restartGame"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1274,7 +1277,7 @@
           "const": "editOwnProfile"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1302,7 +1305,7 @@
           "const": "reorderRoster"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1337,7 +1340,7 @@
           "const": "kick"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1368,7 +1371,7 @@
           "const": "leave"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1396,7 +1399,7 @@
           "const": "closeRoom"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1406,6 +1409,38 @@
         },
         "confirmed": {
           "const": true
+        }
+      }
+    },
+    "rerollCurrentQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "protocolVersion",
+        "actionId",
+        "expectedRevision",
+        "gameId",
+        "roundId"
+      ],
+      "properties": {
+        "type": {
+          "const": "rerollCurrentQuestion"
+        },
+        "protocolVersion": {
+          "const": 2
+        },
+        "actionId": {
+          "$ref": "#/$defs/id"
+        },
+        "expectedRevision": {
+          "$ref": "#/$defs/revision"
+        },
+        "gameId": {
+          "$ref": "#/$defs/id"
+        },
+        "roundId": {
+          "$ref": "#/$defs/id"
         }
       }
     },
@@ -1425,7 +1460,7 @@
           "const": "acknowledgeNumber"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1457,7 +1492,7 @@
           "const": "readyForOrdering"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1489,7 +1524,7 @@
           "const": "beginOrdering"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1523,7 +1558,7 @@
           "const": "submitOrder"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1568,7 +1603,7 @@
           "const": "revealNext"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1605,7 +1640,7 @@
           "const": "completeCase"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1638,7 +1673,7 @@
           "const": "completeWithoutVerdict"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1673,7 +1708,7 @@
           "const": "continueRule"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1706,7 +1741,7 @@
           "const": "resumePaused"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "actionId": {
           "$ref": "#/$defs/id"
@@ -1735,7 +1770,7 @@
           "const": "historyImport"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1773,7 +1808,7 @@
           "const": "historyBegin"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1800,7 +1835,7 @@
           "const": "historyStatus"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1850,7 +1885,7 @@
           "const": "cancelHistoryImport"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1874,7 +1909,7 @@
           "const": "historyPull"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1907,7 +1942,7 @@
           "const": "historyEvents"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1943,7 +1978,7 @@
           "const": "historyReceipt"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -1969,7 +2004,7 @@
           "const": "ack"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2004,7 +2039,7 @@
           "const": "error"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2050,7 +2085,7 @@
           "const": "sessionReplaced"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2070,7 +2105,7 @@
           "const": "roomClosed"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2090,7 +2125,7 @@
           "const": "ping"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2110,7 +2145,7 @@
           "const": "pong"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2135,7 +2170,7 @@
           "const": "snapshot"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2176,7 +2211,7 @@
           "const": "delta"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2219,7 +2254,7 @@
           "const": "projectionStart"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2261,7 +2296,7 @@
           "const": "projectionChunk"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"
@@ -2295,7 +2330,7 @@
           "const": "projectionEnd"
         },
         "protocolVersion": {
-          "const": 1
+          "const": 2
         },
         "requestId": {
           "$ref": "#/$defs/id"

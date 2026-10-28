@@ -89,6 +89,13 @@ class RoomGameScreen extends ConsumerWidget {
               if (rendered != null)
                 CaseFile(
                   animationKey: view.roundId,
+                  showRefresh: true,
+                  onRefresh: game.canReroll
+                      ? () => game.rerollCurrentQuestion(
+                          gameId: view.gameId!,
+                          roundId: view.roundId!,
+                        )
+                      : null,
                   label: context.tr('caseNumber', {
                     'number': view.completedCases + 1,
                   }),

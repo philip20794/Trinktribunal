@@ -123,10 +123,10 @@ export function decodeRoomMessage(raw: string, options: DecodeOptions = {}): Roo
     fail('INVALID_JSON');
   }
   if (!record(value)) fail();
-  if (value.protocolVersion !== 1) fail('PROTOCOL_MISMATCH');
+  if (value.protocolVersion !== 2) fail('PROTOCOL_MISMATCH');
   const handshake = value.handshake;
   if (record(handshake)) {
-    if (handshake.protocolVersion !== 1) fail('PROTOCOL_MISMATCH');
+    if (handshake.protocolVersion !== 2) fail('PROTOCOL_MISMATCH');
     if (
       handshake.avatarVersion !== undefined &&
       handshake.avatarVersion !== protocolMetadata.avatarVersion
@@ -197,7 +197,7 @@ export function createRoomMessage<T extends RoomMessage['type']>(
 ): Extract<RoomMessage, { type: T }> {
   if (Object.hasOwn(fields, 'type') || Object.hasOwn(fields, 'protocolVersion')) fail();
   return decodeRoomMessage(
-    JSON.stringify({ type, protocolVersion: 1, ...fields }),
+    JSON.stringify({ type, protocolVersion: 2, ...fields }),
     options,
   ) as Extract<RoomMessage, { type: T }>;
 }

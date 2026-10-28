@@ -468,6 +468,7 @@ final class RoomController {
       'kick',
       'closeRoom',
       'acknowledgeNumber',
+      'rerollCurrentQuestion',
       'readyForOrdering',
       'beginOrdering',
       'submitOrder',

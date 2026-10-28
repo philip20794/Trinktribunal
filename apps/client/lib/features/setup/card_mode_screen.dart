@@ -416,6 +416,11 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
         const SizedBox(height: 16),
         CaseFile(
+          animationKey: state.currentEventId,
+          showRefresh: true,
+          onRefresh: () => _act(
+            () => controller.rerollCurrentQuestion(state.currentEventId),
+          ),
           label: context.tr('caseProgress', {
             'number': state.caseNumber,
             'total': config.targetCases,

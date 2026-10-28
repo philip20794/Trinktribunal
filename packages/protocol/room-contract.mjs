@@ -15,7 +15,7 @@ const defs={
   utc:text('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$',24),
   revision:integer(0),
   config:object({targetCases:integer(1,491),requestedRuleEvents:integer(0,25),factorTenths:integer(10,30),allJudges:{type:'boolean'},contentLanguage:{enum:['de','en']}}),
-  handshake:object({protocolVersion:{const:1},catalogHash:ref('hash'),avatarVersion:{const:avatarManifest.version}}),
+  handshake:object({protocolVersion:{const:2},catalogHash:ref('hash'),avatarVersion:{const:avatarManifest.version}}),
   avatar:object({version:{const:avatarManifest.version},selections:object(Object.fromEntries(Object.entries(avatarManifest.options).map(([key,values])=>[key,{enum:values}])))}),
   profile:object({name:{type:'string',minLength:1},avatar:ref('avatar')}),
   historyEvent:object({eventId:ref('id'),kind:{enum:['question','rule']},contentId:text('^[A-Za-z0-9_-]{1,64}$'),timestampUtc:ref('utc')}),
@@ -44,7 +44,7 @@ defs.publicChanges=object(defs.publicView.properties,Object.keys(defs.publicView
 export const messagePolicies={};
 function message(type,fields,{direction='client',roles=['authenticated'],phases=['any'],optional=[],action=false}={}) {
   const metadata=action?{actionId:ref('id'),expectedRevision:ref('revision')}:{requestId:ref('id')};
-  defs[type]=object({type:{const:type},protocolVersion:{const:1},...metadata,...fields},optional);
+  defs[type]=object({type:{const:type},protocolVersion:{const:2},...metadata,...fields},optional);
   const transports=['create','join','credential','leaveHttp'].includes(type)?['http']:['ack','error'].includes(type)?['http','websocket']:['websocket'];
   messagePolicies[type]={direction,transports,roles,phases,maxBytes:['snapshot','delta'].includes(type)?ROOM_LIMITS.projectionBytes:ROOM_LIMITS.frameBytes,action};
 }
@@ -65,6 +65,7 @@ message('kick',{targetPlayerId:ref('id'),confirmed:{const:true}},{...host,...any
 message('leave',{confirmed:{const:true}},{...any,action:true});
 message('closeRoom',{confirmed:{const:true}},{...host,...any,action:true});
 const round={gameId:ref('id'),roundId:ref('id')};
+message('rerollCurrentQuestion',round,{roles:['judge','reader'],phases:['numbers','answers','ordering','revealing'],action:true});
 message('acknowledgeNumber',round,{roles:['numberRecipient'],phases:['numbers'],action:true});
 message('readyForOrdering',round,{roles:['roundParticipant'],phases:['answers'],action:true});
 message('beginOrdering',round,{...host,phases:['answers'],action:true});
@@ -94,4 +95,4 @@ message('projectionStart',{transferId:ref('id'),revision:ref('revision'),chunks:
 message('projectionChunk',{transferId:ref('id'),index:integer(0,ROOM_LIMITS.projectionChunks-1),data:text('^[A-Za-z0-9_-]+$',Math.ceil(ROOM_LIMITS.projectionChunkBytes*4/3))},server);
 message('projectionEnd',{transferId:ref('id')},server);
 
-export const roomMessageSchema={$schema:'https://json-schema.org/draft/2020-12/schema',title:'Trinktribunal room messages v1',oneOf:Object.keys(messagePolicies).map(ref),$defs:defs};
+export const roomMessageSchema={$schema:'https://json-schema.org/draft/2020-12/schema',title:'Trinktribunal room messages v2',oneOf:Object.keys(messagePolicies).map(ref),$defs:defs};

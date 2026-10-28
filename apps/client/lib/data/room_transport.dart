@@ -17,7 +17,7 @@ String newRoomRequestId() {
 }
 
 Handshake get currentRoomHandshake => Handshake.fromJson({
-  'protocolVersion': 1,
+  'protocolVersion': 2,
   'catalogHash': currentProtocolCatalogHash,
   'avatarVersion': currentAvatarVersion,
 });

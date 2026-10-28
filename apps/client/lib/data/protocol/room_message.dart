@@ -222,10 +222,10 @@ RoomMessage decodeRoomMessage(
     _fail('INVALID_JSON');
   }
   if (decoded is! Map<String, Object?>) _fail();
-  if (decoded['protocolVersion'] != 1) _fail('PROTOCOL_MISMATCH');
+  if (decoded['protocolVersion'] != 2) _fail('PROTOCOL_MISMATCH');
   final handshake = decoded['handshake'];
   if (handshake is Map) {
-    if (handshake['protocolVersion'] != 1) _fail('PROTOCOL_MISMATCH');
+    if (handshake['protocolVersion'] != 2) _fail('PROTOCOL_MISMATCH');
     if (handshake.containsKey('avatarVersion') &&
         handshake['avatarVersion'] != currentAvatarVersion) {
       _fail('AVATAR_MISMATCH');

@@ -1,5 +1,5 @@
 import {readFileSync,writeFileSync} from 'node:fs';
-const base=JSON.parse(readFileSync(new URL('../packages/protocol/fixtures/messages/room-v1.json',import.meta.url),'utf8'));
+const base=JSON.parse(readFileSync(new URL('../packages/protocol/fixtures/messages/room-v2.json',import.meta.url),'utf8'));
 const sample=type=>structuredClone(base.fixtures.find(f=>f.valid.type===type).valid);
 const cases=[];
 const add=(name,value,code=null)=>cases.push({name,wire:typeof value==='string'?value:JSON.stringify(value),code});
@@ -7,8 +7,8 @@ const change=(name,type,mutate,code)=>{const value=sample(type);mutate(value);ad
 add('invalid-json','{"resumeToken":"synthetic-secret"','INVALID_JSON');
 add('null-root','null','INVALID_MESSAGE');add('array-root','[]','INVALID_MESSAGE');
 change('unknown-type','ping',m=>m.type='notSupported','INVALID_MESSAGE');
-change('protocol-version','ping',m=>m.protocolVersion=2,'PROTOCOL_MISMATCH');
-change('handshake-version','join',m=>m.handshake.protocolVersion=2,'PROTOCOL_MISMATCH');
+change('protocol-version','ping',m=>m.protocolVersion=1,'PROTOCOL_MISMATCH');
+change('handshake-version','join',m=>m.handshake.protocolVersion=1,'PROTOCOL_MISMATCH');
 change('avatar-handshake-version','join',m=>m.handshake.avatarVersion=99,'AVATAR_MISMATCH');
 change('avatar-profile-version','join',m=>m.profile.avatar.version=99,'AVATAR_MISMATCH');
 change('catalog-conflict','join',m=>m.handshake.catalogHash='f'.repeat(64),'CATALOG_MISMATCH');
@@ -38,7 +38,7 @@ change('foreign-secret-field','snapshot',m=>m.private.numbers={p1:3},'INVALID_ME
 change('public-token','snapshot',m=>m.public.resumeToken='A'.repeat(43),'INVALID_MESSAGE');
 add('whitespace-frame-budget',' '.repeat(16384)+JSON.stringify(sample('ping')),'MESSAGE_TOO_LARGE');
 add('deep-json','{"x":'.repeat(40)+'0'+'}'.repeat(40),'INVALID_MESSAGE');
-add('integral-double',JSON.stringify(sample('ping')).replace('"protocolVersion":1','"protocolVersion":1.0'));
+add('integral-double',JSON.stringify(sample('ping')).replace('"protocolVersion":2','"protocolVersion":2.0'));
 const expected=JSON.stringify({formatVersion:1,cases},null,2)+'\n',url=new URL('../packages/protocol/fixtures/messages/codec-cases.json',import.meta.url);
 if(process.argv.includes('--check')) {if(readFileSync(url,'utf8').replaceAll('\r\n','\n')!==expected)throw new Error('Stale codec fixtures');}
 else writeFileSync(url,expected);
