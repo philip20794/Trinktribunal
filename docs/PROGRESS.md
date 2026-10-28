@@ -126,7 +126,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-062 | Web-/Android-Performance messen und Wasm entscheiden | ERLEDIGT | Beide Builds kompilieren; JS bleibt D-18-Releaseweg, Offlinepaket −68,6 %, 20-Figuren-/50-Umsortierungs-Units grün; Gerätebudgets übersprungen, später manuell testen · [Performance](qa/performance.md). |
 | TT-063 | Nachrichten, Storage und Free-Tier-Budget messen | ERLEDIGT | Lokale SQL-/Frame-/Alarmzähler, beide 8×50+7-Modi und zehn parallele Achterräume: p95 199 ms; Kostenmodell mit 50 % Reserve und ungemessenem Edge-Billing · [Beleg](qa/cost-model.md). |
 | TT-064 | Bedienbarkeit, Fehler- und Leerzustände final prüfen | ERLEDIGT | 56 neue Semantik-/Tastatur-/Fehler-/200%-Tests, Live-Fehlertexte, personengebundener Fokus, Dialog-Escape und Wiederholungsweg; 411 Flutter-Tests und Builds grün · [M7](qa/M7.md). |
-| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 14 Paketen/86 Dateien und Releasegate geprüft; fünf Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
+| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 15 Paketen/96 Dateien und Releasegate geprüft; fünf Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
 | TT-066 | Android-Releaseartefakte und Signierung vorbereiten | OFFEN | — |
 | TT-067 | Pages-Webpaket und Worker lokal releasefertig prüfen | OFFEN | — |
 | TT-068 | Spielhilfe, Datenschutz und lokale Wartung dokumentieren | OFFEN | — |
@@ -199,7 +199,7 @@ Am 26.10.2026 lokal durchgeführt:
 ```text
 Branch: task/TT-080-question-reroll auf Nutzerstand ed1428c, geprüfter Kernabschluss wird nach main gepusht
 Aktueller Beleg: docs/qa/M7_4.md; 137 Node-/419 Flutter-/438 Server-Tests, Parität, JS-Web und Debug-APK grün
-Naechster Schritt: TT-081: Refresh links an allen Fragekarten, autoritativer Richter/Vorleser, Protokoll v2 einschließlich alter Socket-Attachments ohne Identitätsverlust. Danach TT-082–084, erst dann TT-071–078. TT-065: externe Nachweise offen; Inventar 14/86 inklusive neuer v3-Entwurfsquellen. TT-069 erst nach TT-084 und TT-078. Avatar v3 bleibt eigener Grafik-Workstream, kein Runtime-Abschluss.
+Naechster Schritt: TT-081: Refresh links an allen Fragekarten, autoritativer Richter/Vorleser, Protokoll v2 einschließlich alter Socket-Attachments ohne Identitätsverlust. Danach TT-082–084, erst dann TT-071–078. TT-065: externe Nachweise offen; Inventar 15/96 inklusive neuer v3-Entwurfsquellen. TT-069 erst nach TT-084 und TT-078. Avatar v3 bleibt eigener Grafik-Workstream, kein Runtime-Abschluss.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

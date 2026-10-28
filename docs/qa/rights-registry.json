@@ -474,6 +474,55 @@
           "sha256": "7ee7a57e7b5545394fd5913083d213cc7a93026f58c68fbd24ac0bb68ab3d446"
         }
       ]
+    },
+    {
+      "id": "avatar-v3-male09-prototype",
+      "distribution": "source-only",
+      "status": "unresolved",
+      "provenance": "Project-authored modular SVG/palette prototype, documented as artistically unapproved and not bundled. Source/reference/font provenance remains subject to TT-065.",
+      "evidence": "docs/avatars/reviews/art04-tech01-male09-prototype-2026-10-28.md",
+      "files": [
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/build_prototype.py",
+          "sha256": "cea6c39daa70dc96ea81aada74a8dd364215ff8be7ed63c0863b3dca65a1f4a0"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/layers/01_body_skin.svg",
+          "sha256": "de943ca36b518d8f1a6f543311fb4de1732af74456edcf85c6307228e11dbd61"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/layers/02_clothes_shirt.svg",
+          "sha256": "4ea23587c4799b8baea9c27e2c12b0c1de98578673b71f492c2d1ca03b98bf19"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/layers/03_arms_hands_back.svg",
+          "sha256": "7413edfde04ad862ad6c2092084a3a3bcf0524109209b72f93f6c3c9f63e5f78"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/layers/04_head_face.svg",
+          "sha256": "239224306b745b1743294757aa0c88ed6131fd7830b4364d48e6c0c1d747b235"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/layers/05_eyes_brows_mouth.svg",
+          "sha256": "b63300576be8129cea1f740fcb17f78944624553ad100d426e3690c00d006ba5"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/layers/06_hair_front.svg",
+          "sha256": "a878dfd0a5485ac89f4f737f250909843d108ad1055b713d9c7974e52a5eb7c1"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/layers/07_beard_goatee.svg",
+          "sha256": "a4c81e84bd924a77f6f8a3419c6312a55c8571e65832dbac8878e9840f4b0217"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/layers/08_grip_fingers_front.svg",
+          "sha256": "eec90bef8b944f3266edb723f566d7de35d79afbbdd76d07dd2ebf736fc46d46"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09/male_09_composite_preview.svg",
+          "sha256": "03ef67b6c04334573a1de5b0a1c9df5720967ffea6b1e270b6690e6b8ef939ce"
+        }
+      ]
     }
   ]
 }
