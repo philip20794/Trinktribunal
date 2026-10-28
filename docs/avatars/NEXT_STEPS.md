@@ -24,6 +24,8 @@
 
 **P1-Fortsetzung (28.10.2026):** Die neue [quellegebundene Maskenprüfung](reviews/p1-mask-roundtrip-2026-10-28.md) verbindet die zuvor getrennten Arbeitsschritte: Korrekturen erstellen → SHA-256-/Rasterprüfung → echte Vorher-/Nachher-Detailbögen → 320/96/48-Pixel-Validierung. Der Loader verhindert versehentliches Verwenden von Masken zu einem anderen Master. **Neun synthetische Unit-Tests lokal bestanden; der End-to-End-Lauf am echten Original ist wegen fehlender PNG-Binärdaten weiterhin nicht erfolgt.** Es gibt keine neuen visuell begutachteten Maskenpixel und keine Abnahme. Erst diese fachliche Bildprüfung abschließen, dann P2 beginnen.
 
+**P1 – erster realer Sichtversuch am hochgeladenen Mann 09 (28.10.2026):** Bild 10 des Nutzeruploads ist **1229×1536** und entspricht visuell dem Git-Master `master-male-09-approved.png`. Auf diesem Upload reproduziert der alte Pilot **exakt** die drei alten Masken-Zählwerte (339575/72879/224804). Ein neuer [Bild-Reviewbericht](reviews/p1-male09-uploaded-original-visual-2026-10-28.md) und das [Masken-/Farb-Tuningexperiment](../../artwork/avatars/v3/prototypes/male_09_color_masks/p1_visual_tuning.py) liegen im Git. Tatsächlich betrachtet: Original, Overlay, helle/dunkle und gemischte Varianten sowie 1:1-Gesichtsausschnitte. **Verbleibend:** Haaransatz-Randhalos, gesprenkelte helle Gesicht-/Bartübergänge bei extremer Färbung, bewusst unveränderte Augenbrauen und fehlender Byte-/Pixelabgleich mit dem großen Git-PNG. Die von der Chatumgebung neu codierte PNG-Datei hat einen anderen Datei-Hash/Dateigröße. **P1 bleibt IN ARBEIT, nicht ABGENOMMEN; P2 bleibt offen.**
+
 **Erhaltene ART-/TECH-IDs im [alten Plan](AVATAR_GRAPHICS_PLAN.md):** ART-01 (Masterreferenzen), ART-02/03 (visuell akzeptierte gemeinsame Wand/Schild), ART-04/TECH-01 (Technikprototypen, **nicht** abgeschlossen). ART-05–17 (ursprünglich freier Modulbaukasten) erst nach P4 neu ausrichten; nicht als automatische Arbeitsreihenfolge übernehmen.
 
 ---
@@ -32,7 +34,7 @@
 
 **Quelle:** `docs/avatars/references/master-male-09-approved.png` (1229 × 1536, Original unverändert).  
 **Aktueller Code:** `artwork/avatars/v3/prototypes/male_09_color_masks/color_mask_pilot.py`, `validate_pilot.py`.  
-**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md). [Maskenbearbeitung und Zugriffsstatus](reviews/p1-mask-edit-workbench-2026-10-28.md). [Aktueller Roundtrip-Bericht](reviews/p1-mask-roundtrip-2026-10-28.md).
+**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md). [Maskenbearbeitung und Zugriffsstatus](reviews/p1-mask-edit-workbench-2026-10-28.md). [Aktueller Roundtrip-Bericht](reviews/p1-mask-roundtrip-2026-10-28.md). [Realer Upload-Bildvergleich](reviews/p1-male09-uploaded-original-visual-2026-10-28.md).
 
 **Konkrete Arbeit:**
 
