@@ -18,7 +18,7 @@ def fake_masks(src):
     return {
         "skin": ((x > 300) & (x < 700) & (y > 290) & (y < 1000)).astype(np.float32),
         "hair": ((x > 350) & (x < 780) & (y < 280)).astype(np.float32),
-        "shirt": ((x > 400) & (x < 880) & (y > 1050)).astype(np.float32),
+        "shirt": ((x > 400) & (x < 880) & (y > 1320)).astype(np.float32),
     }
 
 
@@ -49,6 +49,8 @@ class P1DetailReviewSmokeTest(unittest.TestCase):
             self.assertEqual(source.read_bytes(), source_before)
             for key, stats in metrics["variants"].items():
                 self.assertEqual(stats["changed_outside_zero_alpha"], 0, key)
+                self.assertEqual(stats["changed_wall_px"], 0, key)
+                self.assertEqual(stats["changed_central_sign_px"], 0, key)
             for key, (left, top, right, bottom) in review.AREAS.items():
                 with Image.open(out / f"detail_{key}.png") as image:
                     width = right - left
