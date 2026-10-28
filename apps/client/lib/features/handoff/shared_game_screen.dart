@@ -297,42 +297,49 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
             onPressed: () {
               _act(_controller.interruptPrivateHandoff);
               showModalBottomSheet<void>(
+                backgroundColor: CourtSceneTokens.parchment,
+                useSafeArea: true,
                 context: context,
                 isScrollControlled: true,
                 showDragHandle: true,
-                builder: (context) => FractionallySizedBox(
-                  heightFactor: 0.7,
-                  child: ListView(
-                    padding: const EdgeInsets.all(24),
-                    children: [
-                      Text(
-                        context.tr('activeRulesCount', {
-                          'count': view.activeRules.length,
-                        }),
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      const TText('phoneRuleHelp'),
-                      for (final rule in view.activeRules)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: Text(
-                            localizedRule(
-                              ref.read(catalogsProvider).requireValue,
-                              AppLanguageScope.of(context).language,
-                              rule.entry as DrinkingRule,
-                            ).render(
-                              localizedRule(
-                                ref.read(catalogsProvider).requireValue,
-                                AppLanguageScope.of(context).language,
-                                rule.entry as DrinkingRule,
-                              ).text,
-                              rule.names(view.names),
-                            ),
+                builder: (context) => Theme(
+                  data: courtPaperTheme(),
+                  child: Builder(
+                    builder: (context) => FractionallySizedBox(
+                      heightFactor: 0.7,
+                      child: ListView(
+                        padding: const EdgeInsets.all(24),
+                        children: [
+                          Text(
+                            context.tr('activeRulesCount', {
+                              'count': view.activeRules.length,
+                            }),
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                        ),
-                      if (view.activeRules.isEmpty)
-                        const TText('phoneRulesEmpty'),
-                    ],
+                          const TText('phoneRuleHelp'),
+                          for (final rule in view.activeRules)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Text(
+                                localizedRule(
+                                  ref.read(catalogsProvider).requireValue,
+                                  AppLanguageScope.of(context).language,
+                                  rule.entry as DrinkingRule,
+                                ).render(
+                                  localizedRule(
+                                    ref.read(catalogsProvider).requireValue,
+                                    AppLanguageScope.of(context).language,
+                                    rule.entry as DrinkingRule,
+                                  ).text,
+                                  rule.names(view.names),
+                                ),
+                              ),
+                            ),
+                          if (view.activeRules.isEmpty)
+                            const TText('phoneRulesEmpty'),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               );

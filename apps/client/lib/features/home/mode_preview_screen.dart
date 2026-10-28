@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
+import '../../design/court_scene.dart';
 
 import 'home_screen.dart';
 
@@ -11,17 +12,15 @@ class ModePreviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          context.tr(switch (mode) {
-            GameMode.cards => 'modeCards',
-            GameMode.sharedPhone => 'modePhone',
-            GameMode.multiplayer => 'modeMulti',
-          }),
-        ),
+    return CourtScaffold(
+      title: Text(
+        context.tr(switch (mode) {
+          GameMode.cards => 'modeCards',
+          GameMode.sharedPhone => 'modePhone',
+          GameMode.multiplayer => 'modeMulti',
+        }),
       ),
-      body: Center(
+      bodyBuilder: (context) => Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 640),
           child: ListView(

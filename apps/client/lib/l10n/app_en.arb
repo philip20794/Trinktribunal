@@ -454,5 +454,7 @@
   "settingsLoadFailed": "Settings are currently unavailable. Try loading them again or go back.",
   "benchRowDirection": "Seat order {from} to {to}",
   "benchControls": "Reordering controls",
-  "verdictHeading": "The verdict"
+  "verdictHeading": "The verdict",
+  "playersLabel": "Players",
+  "factorLabel": "Factor"
 }

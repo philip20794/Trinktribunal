@@ -1,4 +1,5 @@
 import '../../design/court_scene.dart';
+import '../../design/court_theme.dart';
 import '../../design/status_notice.dart';
 
 import 'dart:math' as math;
@@ -121,12 +122,27 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
   @override
   Widget build(BuildContext context) {
     final catalogs = ref.watch(catalogsProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: const TText('modeCards'),
-        actions: const [GameRulesButton()],
-      ),
-      body: catalogs.when(
+    final loaded = catalogs.hasValue && ref.watch(localResumeProvider).hasValue
+        ? ref.watch(localSessionProvider)
+        : null;
+    final current = loaded?.state;
+    final VoidCallback? next = current?.phase == GamePhase.casePresented
+        ? () => _act(() => loaded!.advancePlayedCase(current!.currentEventId))
+        : current?.phase == GamePhase.ruleEvent
+        ? () => _act(() => loaded!.continueAfterRule(current!.currentEventId))
+        : null;
+    return CourtScaffold(
+      footer: next == null
+          ? null
+          : CourtActionBar(
+              primary: FilledButton(
+                onPressed: next,
+                child: const TText('nextCase'),
+              ),
+            ),
+      title: const TText('modeCards'),
+      actions: const [GameRulesButton()],
+      bodyBuilder: (context) => catalogs.when(
         loading: () => const Center(
           child: CircularProgressIndicator(
             semanticsLabel: 'Fallakten werden geladen',
@@ -164,7 +180,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 760),
               child: ListView(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(16),
                 children: [
                   if (_storageWarning != null)
                     StatusNotice(context.feedback(_storageWarning!)),
@@ -176,7 +192,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                   if (state == null)
                     ..._setup(controller)
                   else
-                    ..._game(controller, state),
+                    ..._game(context, controller, state),
                   const SizedBox(height: 20),
                   TextButton.icon(
                     onPressed: () => Navigator.pop(context),
@@ -210,65 +226,79 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     return [
       CourtPaper(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TText(
-              'nextHearing',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 12),
-            const TText('cardIntro'),
-            const SizedBox(height: 12),
-            _slider('Spieler', _players, 3, 20, (n) => _players = n),
-            _slider(context.tr('cases'), cases, 1, maxCases, (n) {
-              _cases = n;
-              _rules = math.min(_rules, n - 1);
-            }),
-            _slider(
-              context.tr('additionalRules'),
-              rules,
-              0,
-              math.max(0, maxRules),
-              (n) => _rules = n,
-            ),
-            _slider(
-              'Faktor',
-              _factor,
-              10,
-              30,
-              (n) => _factor = n,
-              display: (_factor / 10).toStringAsFixed(1).replaceAll('.', ','),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              context.tr('cardsPrepare', {
-                'max': (_players * _factor + 9) ~/ 10,
-                'count': _players - 1,
+        child: Builder(
+          builder: (context) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TText(
+                'nextHearing',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 12),
+              const TText('cardIntro'),
+              const SizedBox(height: 12),
+              _slider(
+                context,
+                context.tr('playersLabel'),
+                _players,
+                3,
+                20,
+                (n) => _players = n,
+              ),
+              _slider(context, context.tr('cases'), cases, 1, maxCases, (n) {
+                _cases = n;
+                _rules = math.min(_rules, n - 1);
               }),
-            ),
-            const SizedBox(height: 12),
-            FilledButton.icon(
-              onPressed: () => _act(
-                () => controller.start(
-                  controller.configure(
-                    playerCount: _players,
-                    targetCases: cases,
-                    requestedRuleEvents: rules,
-                    factorTenths: _factor,
+              _slider(
+                context,
+                context.tr('additionalRules'),
+                rules,
+                0,
+                math.max(0, maxRules),
+                (n) => _rules = n,
+              ),
+              _slider(
+                context,
+                context.tr('factorLabel'),
+                _factor,
+                10,
+                30,
+                (n) => _factor = n,
+                display: AppLanguageScope.of(context).language == 'de'
+                    ? (_factor / 10).toStringAsFixed(1).replaceAll('.', ',')
+                    : (_factor / 10).toStringAsFixed(1),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                context.tr('cardsPrepare', {
+                  'max': (_players * _factor + 9) ~/ 10,
+                  'count': _players - 1,
+                }),
+              ),
+              const SizedBox(height: 12),
+              FilledButton.icon(
+                onPressed: () => _act(
+                  () => controller.start(
+                    controller.configure(
+                      playerCount: _players,
+                      targetCases: cases,
+                      requestedRuleEvents: rules,
+                      factorTenths: _factor,
+                    ),
                   ),
                 ),
+                icon: const Icon(Icons.gavel),
+                label: const TText('startHearing'),
               ),
-              icon: const Icon(Icons.gavel),
-              label: const TText('startHearing'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ];
   }
 
   Widget _slider(
+    BuildContext context,
     String label,
     int value,
     int min,
@@ -288,14 +318,19 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         max: max.toDouble(),
         divisions: max > min ? max - min : null,
         label: display ?? '$value',
-        semanticFormatterCallback: (v) =>
-            label == 'Faktor' ? (v / 10).toStringAsFixed(1) : '${v.round()}',
+        semanticFormatterCallback: (v) => label == context.tr('factorLabel')
+            ? (v / 10).toStringAsFixed(1)
+            : '${v.round()}',
         onChanged: max > min ? (v) => setState(() => update(v.round())) : null,
       ),
     ],
   );
 
-  List<Widget> _game(LocalSessionController controller, CardGameState state) {
+  List<Widget> _game(
+    BuildContext context,
+    LocalSessionController controller,
+    CardGameState state,
+  ) {
     final config = state.config;
     final originalQuestion = state.currentQuestion?.entry as Question?;
     final question = originalQuestion == null
@@ -378,11 +413,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           }),
         ),
         const SizedBox(height: 16),
-        FilledButton(
-          onPressed: () =>
-              _act(() => controller.advancePlayedCase(state.currentEventId)),
-          child: const TText('nextCase'),
-        ),
         OutlinedButton(
           onPressed: () => _skip(controller, state),
           child: const TText('withoutVerdict'),
@@ -396,31 +426,21 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Text(
-              (state.newRule == null
-                      ? null
-                      : localizedRule(
-                          ref.read(catalogsProvider).requireValue,
-                          AppLanguageScope.of(context).language,
-                          state.newRule!.entry as DrinkingRule,
-                        ).text) ??
-                  context.tr('cardNoRule', {
-                    'count': state.effectiveRuleTarget,
-                  }),
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+        CourtPaper(
+          child: Text(
+            (state.newRule == null
+                    ? null
+                    : localizedRule(
+                        ref.read(catalogsProvider).requireValue,
+                        AppLanguageScope.of(context).language,
+                        state.newRule!.entry as DrinkingRule,
+                      ).text) ??
+                context.tr('cardNoRule', {'count': state.effectiveRuleTarget}),
+            style: const TextStyle(color: CourtTokens.ink, fontSize: 20),
           ),
         ),
         const SizedBox(height: 16),
         const TText('ruleEventHelp'),
-        FilledButton(
-          onPressed: () =>
-              _act(() => controller.continueAfterRule(state.currentEventId)),
-          child: const TText('nextCase'),
-        ),
       ],
       if (state.phase == GamePhase.finished) ...[
         TText('endHearing', style: Theme.of(context).textTheme.headlineMedium),

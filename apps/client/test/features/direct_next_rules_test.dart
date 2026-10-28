@@ -22,7 +22,11 @@ Future<void> tap(WidgetTester tester, String text) async {
     await tester.pumpAndSettle();
   }
   if (finder.evaluate().isEmpty) {
-    await tester.scrollUntilVisible(finder, 400);
+    await tester.scrollUntilVisible(
+      finder,
+      400,
+      scrollable: find.byType(Scrollable).first,
+    );
   }
   // Center long localized labels below the pinned app bar after scroll/layout.
   await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
@@ -83,7 +87,7 @@ void main() {
           of: find.text(strings.get('nextCase')),
           matching: find.byType(FilledButton),
         );
-        await tester.scrollUntilVisible(next, 400);
+        expect(next.hitTestable(), findsOneWidget);
         final callback = tester.widget<FilledButton>(next).onPressed!;
         callback();
         callback();

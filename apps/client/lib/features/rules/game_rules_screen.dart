@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
+import '../../design/court_scene.dart';
 
 Future<void> showGameRules(BuildContext context) =>
     Navigator.of(context)
@@ -23,9 +24,9 @@ class GameRulesButton extends StatelessWidget {
 class GameRulesScreen extends StatelessWidget {
   const GameRulesScreen({super.key});
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const TText('gameRules')),
-    body: Center(
+  Widget build(BuildContext context) => CourtScaffold(
+    title: const TText('gameRules'),
+    bodyBuilder: (context) => Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 720),
         child: ListView(
@@ -42,19 +43,24 @@ class GameRulesScreen extends StatelessWidget {
             ])
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Semantics(
-                      header: true,
-                      child: TText(
-                        'gameRules${section}Title',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
+                child: CourtPaper(
+                  padding: const EdgeInsets.all(16),
+                  child: Builder(
+                    builder: (context) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Semantics(
+                          header: true,
+                          child: TText(
+                            'gameRules${section}Title',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TText('gameRules${section}Body'),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    TText('gameRules${section}Body'),
-                  ],
+                  ),
                 ),
               ),
           ],

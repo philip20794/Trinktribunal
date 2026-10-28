@@ -730,5 +730,7 @@
   "settingsLoadFailed": "Die Einstellungen sind gerade nicht verfügbar. Bitte erneut laden oder zurückgehen.",
   "benchRowDirection": "Sitzfolge {from} bis {to}",
   "benchControls": "Sortiersteuerung",
-  "verdictHeading": "Das Urteil"
+  "verdictHeading": "Das Urteil",
+  "playersLabel": "Spieler",
+  "factorLabel": "Faktor"
 }
