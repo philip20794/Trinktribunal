@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+ <!-- Asymmetrical spiky hair, independent editable hair slot -->
+ <path data-palette="hair.shadow" fill="#30202a" stroke="#2f2226" stroke-width="7" d="M384 347Q360 296 371 271L314 280Q333 255 382 249L339 222Q383 226 404 232L387 177Q427 203 444 216L431 147Q471 193 479 209L496 125Q523 174 522 204L557 147Q561 194 551 222L615 172Q595 219 581 231L672 195Q646 235 622 250L700 245Q658 267 650 304Q635 282 603 279Q563 260 529 285Q490 282 454 286Q414 296 384 347Z"/>
+ <path data-palette="hair.base" fill="#543328" stroke="#2f2226" stroke-width="4" d="M377 306Q356 283 359 274Q413 274 426 257L390 203Q425 222 453 238L443 163Q471 197 486 239L510 152Q518 201 511 244L559 173Q552 222 548 242L640 198Q614 245 593 258L660 241Q636 274 596 276Q564 267 536 286Q493 265 467 286Q424 274 377 306Z"/>
+ <path data-palette="hair.light" fill="#986646" opacity=".65" d="M373 280Q404 269 430 266L408 237Q445 252 464 267L452 194Q475 219 482 259L504 185Q511 213 503 261L563 199Q552 242 523 270Z"/>
+ <path fill="none" stroke="#241c22" stroke-width="4" opacity=".78" d="M376 288Q427 279 448 289M443 192Q454 231 471 253M513 167Q515 224 503 260M594 216Q559 256 540 271"/>
+ <path fill="none" stroke="#b07d5b" stroke-width="2.5" opacity=".66" d="M413 237Q450 253 458 266M557 202Q543 233 532 246"/>
+</g></svg>
