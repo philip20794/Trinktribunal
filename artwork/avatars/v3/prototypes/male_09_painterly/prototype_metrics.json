@@ -1,0 +1,222 @@
+{
+  "canvas": [
+    1024,
+    1280
+  ],
+  "layer_order": [
+    "01_body_skin",
+    "02_clothes_shirt",
+    "03_arms_hands_back",
+    "04_head_face",
+    "05_eyes_brows_mouth",
+    "06_hair_front",
+    "07_beard_goatee",
+    "08_grip_fingers_front"
+  ],
+  "palette_ids": {
+    "skin": [
+      "light",
+      "olive",
+      "deep"
+    ],
+    "hair": [
+      "brown",
+      "black",
+      "blond",
+      "gray",
+      "copper",
+      "purple"
+    ],
+    "fabric": [
+      "purple",
+      "forest",
+      "blue"
+    ]
+  },
+  "checks": {
+    "01_body_skin": {
+      "bbox": [
+        354,
+        632,
+        667,
+        853
+      ],
+      "alpha_zero": true,
+      "alpha_nonzero": true
+    },
+    "02_clothes_shirt": {
+      "bbox": [
+        101,
+        736,
+        910,
+        1255
+      ],
+      "alpha_zero": true,
+      "alpha_nonzero": true
+    },
+    "03_arms_hands_back": {
+      "bbox": [
+        98,
+        883,
+        925,
+        1158
+      ],
+      "alpha_zero": true,
+      "alpha_nonzero": true
+    },
+    "04_head_face": {
+      "bbox": [
+        279,
+        212,
+        791,
+        728
+      ],
+      "alpha_zero": true,
+      "alpha_nonzero": true
+    },
+    "05_eyes_brows_mouth": {
+      "bbox": [
+        387,
+        350,
+        653,
+        661
+      ],
+      "alpha_zero": true,
+      "alpha_nonzero": true
+    },
+    "06_hair_front": {
+      "bbox": [
+        310,
+        106,
+        704,
+        351
+      ],
+      "alpha_zero": true,
+      "alpha_nonzero": true
+    },
+    "07_beard_goatee": {
+      "bbox": [
+        450,
+        622,
+        576,
+        728
+      ],
+      "alpha_zero": true,
+      "alpha_nonzero": true
+    },
+    "08_grip_fingers_front": {
+      "bbox": [
+        142,
+        947,
+        887,
+        1121
+      ],
+      "alpha_zero": true,
+      "alpha_nonzero": true
+    }
+  },
+  "tested_color_combinations": [
+    [
+      "olive",
+      "gray",
+      "purple"
+    ],
+    [
+      "olive",
+      "gray",
+      "blue"
+    ],
+    [
+      "olive",
+      "purple",
+      "blue"
+    ],
+    [
+      "deep",
+      "copper",
+      "purple"
+    ],
+    [
+      "deep",
+      "brown",
+      "blue"
+    ],
+    [
+      "light",
+      "blond",
+      "purple"
+    ],
+    [
+      "deep",
+      "gray",
+      "purple"
+    ],
+    [
+      "olive",
+      "black",
+      "purple"
+    ],
+    [
+      "deep",
+      "blond",
+      "forest"
+    ],
+    [
+      "light",
+      "brown",
+      "purple"
+    ],
+    [
+      "olive",
+      "blond",
+      "blue"
+    ],
+    [
+      "light",
+      "black",
+      "purple"
+    ],
+    [
+      "deep",
+      "black",
+      "purple"
+    ],
+    [
+      "deep",
+      "blond",
+      "forest"
+    ],
+    [
+      "deep",
+      "purple",
+      "purple"
+    ],
+    [
+      "light",
+      "blond",
+      "blue"
+    ],
+    [
+      "deep",
+      "purple",
+      "forest"
+    ],
+    [
+      "olive",
+      "blond",
+      "blue"
+    ],
+    [
+      "light",
+      "blond",
+      "blue"
+    ],
+    [
+      "light",
+      "copper",
+      "purple"
+    ]
+  ],
+  "geometry_combinations_tested": 1,
+  "status": "ENTWURF"
+}
