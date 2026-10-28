@@ -6,12 +6,13 @@ import cv2
 import numpy as np
 from PIL import Image,ImageDraw,ImageFont
 from color_mask_pilot import make_masks,recolor,label_font
+from mask_io import load_masks
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--source',type=Path,required=True);ap.add_argument('--out',type=Path,required=True)
+    ap=argparse.ArgumentParser();ap.add_argument('--source',type=Path,required=True);ap.add_argument('--out',type=Path,required=True);ap.add_argument('--mask-dir',type=Path,help='Use source-verified edited masks')
     a=ap.parse_args(); a.out.mkdir(parents=True,exist_ok=True)
     src=np.array(Image.open(a.source).convert('RGB'))
-    masks=make_masks(src)
+    masks=load_masks(a.mask_dir,a.source,(1229,1536)) if a.mask_dir else make_masks(src)
     options={
         'olive_black_blue':dict(skin='olive',hair='black',shirt='blue'),
         'deep_gray_forest':dict(skin='deep',hair='gray',shirt='forest'),
@@ -22,7 +23,7 @@ def main():
     # Neither the wallpaper nor the sign's central name safe area may be touched.
     wall=np.zeros(src.shape[:2],bool);wall[80:600,20:240]=True
     sign=np.zeros(src.shape[:2],bool);sign[1150:1300,380:825]=True
-    data={'source_size':list(src.shape[1::-1]),'mask_pixel_counts_at_alpha_gt_0.35':{k:int(np.count_nonzero(v>0.35)) for k,v in masks.items()},'mask_total_px_at_alpha_gt_0.01':int(np.count_nonzero(allm>0.01)),'wall_mask_pixels':int(np.count_nonzero(allm[wall]>0.01)),'central_sign_mask_pixels':int(np.count_nonzero(allm[sign]>0.01)), 'variants':{}}
+    data={'mask_origin':'verified_edited_pngs' if a.mask_dir else 'baseline_pilot','source_size':list(src.shape[1::-1]),'mask_pixel_counts_at_alpha_gt_0.35':{k:int(np.count_nonzero(v>0.35)) for k,v in masks.items()},'mask_total_px_at_alpha_gt_0.01':int(np.count_nonzero(allm>0.01)),'wall_mask_pixels':int(np.count_nonzero(allm[wall]>0.01)),'central_sign_mask_pixels':int(np.count_nonzero(allm[sign]>0.01)), 'variants':{}}
     # Two alternatives plus original, shown at editor/lobby sizes.
     picks=[('Original',src),('Oliv / schwarz / blau',recolor(src,masks,**options['olive_black_blue'])),('Dunkel / grau / gruen',recolor(src,masks,**options['deep_gray_forest']))]
     frame=Image.new('RGB',(1000,510),'#f6f4ed');d=ImageDraw.Draw(frame)
