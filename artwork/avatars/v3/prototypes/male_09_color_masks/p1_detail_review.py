@@ -13,6 +13,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from color_mask_pilot import label_font, make_masks, recolor
+from mask_io import load_masks
 
 # Hand-selected inspection windows based on master-male-09's existing ROIs.
 # Coordinates are (left, top, right, bottom), source raster: 1229x1536.
@@ -90,13 +91,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--mask-dir", type=Path, help="Use source-verified edited PNG masks instead of auto-generated masks")
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     source_bytes = args.source.read_bytes()
     src = np.asarray(Image.open(args.source).convert("RGB")).copy()
     if src.shape[:2] != (1536, 1229):
         raise ValueError("P1 review expects exactly 1229x1536 pixels; no scaling allowed")
-    masks = make_masks(src)
+    masks = load_masks(args.mask_dir, args.source, (1229, 1536)) if args.mask_dir else make_masks(src)
     images = {"original": src, "overlay": overlay_masks(src, masks)}
     images.update({key: recolor(src, masks, **kwargs) for key, kwargs in OPTIONS.items()})
     for area_name, area in AREAS.items():
@@ -130,6 +132,7 @@ def main():
         "central_sign_mask_px_alpha_gt_0_01": int(np.count_nonzero((maxmask > .01) & sign)),
         "variants": cases,
         "review_status": "NOT_VISUALLY_APPROVED",
+        "mask_origin": "verified_edited_pngs" if args.mask_dir else "baseline_pilot",
         "warning": "Zero changes outside masks cannot establish correct segmentation, edges or colours.",
         "detail_files": [f"detail_{name}.png" for name in AREAS],
     }
