@@ -124,6 +124,7 @@ describe('authenticated hibernation sockets', () => {
         playerId: room.credential.playerId,
         generation: 1,
         avatarVersion: handshake.avatarVersion,
+        catalogHash: handshake.catalogHash,
       });
     });
     stale.send(createRoomMessage('requestSnapshot', { requestId: requestId() }));

@@ -12,6 +12,34 @@ import '../application/online_order_controller_test.dart' show orderingView;
 import 'room_test_support.dart';
 
 void main() {
+  test('catalog mismatch stops retry without discarding the saved identity for an update', () {
+    fakeAsync((clock) {
+      final backend = MemoryCredentialBackend(),
+          transport = FakeRoomTransport();
+      final store = RoomCredentialStore(backend);
+      final room = RoomController(transport: transport, credentials: store);
+      unawaited(store.save(testCredential()));
+      unawaited(room.resume(testCredential()));
+      clock.flushMicrotasks();
+      transport.sockets.last.receive(
+        ErrorMessage.create(
+          requestId: RequestId('catalog'),
+          code: 'CATALOG_MISMATCH',
+        ),
+      );
+      clock.flushMicrotasks();
+      clock.elapse(const Duration(minutes: 1));
+      clock.flushMicrotasks();
+      expect(room.state.errorCode, 'CATALOG_MISMATCH');
+      expect(room.state.snapshot, isNull);
+      expect(backend.records, hasLength(1));
+      expect(transport.connections, 1);
+      expect(transport.joins, 0);
+      unawaited(room.dispose());
+      clock.flushMicrotasks();
+      expect(clock.pendingTimers, isEmpty);
+    });
+  });
   for (final sameRound in [true, false]) {
     test('outage restores a draft only for the same round: $sameRound', () {
       fakeAsync((clock) {

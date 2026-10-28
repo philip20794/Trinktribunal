@@ -175,7 +175,8 @@ export class Room extends DurableObject<Env> {
     if (
       info?.kind !== 'authenticated' ||
       info.roomId !== state.roomId ||
-      info.avatarVersion !== protocolMetadata.avatarVersion
+      info.avatarVersion !== protocolMetadata.avatarVersion ||
+      info.catalogHash !== protocolMetadata.catalogHash
     )
       return undefined;
     return state.members.find(
@@ -221,6 +222,10 @@ export class Room extends DurableObject<Env> {
       const info = attachment(socket);
       if (info?.kind === 'authenticated' && info.avatarVersion !== protocolMetadata.avatarVersion) {
         this.socketFailure(socket, 'AVATAR_MISMATCH', 4400);
+        continue;
+      }
+      if (info?.kind === 'authenticated' && info.catalogHash !== protocolMetadata.catalogHash) {
+        this.socketFailure(socket, 'CATALOG_MISMATCH', 4400);
         continue;
       }
       if (
@@ -296,6 +301,10 @@ export class Room extends DurableObject<Env> {
           this.socketFailure(socket, 'AVATAR_MISMATCH', 4400);
           return;
         }
+        if (info.kind === 'authenticated' && info.catalogHash !== protocolMetadata.catalogHash) {
+          this.socketFailure(socket, 'CATALOG_MISMATCH', 4400);
+          return;
+        }
         if (info.kind === 'pending') {
           if (Date.now() >= info.authDeadline) {
             this.socketFailure(socket, 'CREDENTIAL_INVALID', 4408);
@@ -347,6 +356,7 @@ export class Room extends DurableObject<Env> {
             playerId: result.message.playerId,
             generation: result.message.generation,
             avatarVersion: protocolMetadata.avatarVersion,
+            catalogHash: protocolMetadata.catalogHash,
           };
           socket.serializeAttachment(bound);
           removeDeadline(this.ctx.storage.sql, info.socketId);

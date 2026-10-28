@@ -2182,7 +2182,7 @@
       "scale": {
         "green": "A truly awful flight",
         "connector": "to",
-        "red": "An unforgettable experience"
+        "red": "An unforgettably wonderful experience"
       }
     },
     {
@@ -3446,7 +3446,7 @@
     },
     {
       "id": "183-a",
-      "text": "'Knock, knock ...' Confess to something you've done wrong.",
+      "text": "'Knock, knock ...' Confess to a minor misdeed.",
       "scale": {
         "green": "Very easy to admit",
         "connector": "to",

@@ -76,6 +76,7 @@ for (const allJudges of [false, true])
           if (info?.kind !== 'authenticated') continue;
           expect(Object.keys(info).sort()).toEqual([
             'avatarVersion',
+            'catalogHash',
             'formatVersion',
             'generation',
             'kind',

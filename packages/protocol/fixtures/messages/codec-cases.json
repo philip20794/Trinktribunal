@@ -28,17 +28,17 @@
     },
     {
       "name": "handshake-version",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":2,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":2,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "PROTOCOL_MISMATCH"
     },
     {
       "name": "avatar-handshake-version",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":99}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":99}}",
       "code": "AVATAR_MISMATCH"
     },
     {
       "name": "avatar-profile-version",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":99,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":99,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "AVATAR_MISMATCH"
     },
     {
@@ -53,57 +53,57 @@
     },
     {
       "name": "missing-name",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_MESSAGE"
     },
     {
       "name": "empty-name",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_NAME"
     },
     {
       "name": "spaces",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"  Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"  Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_NAME"
     },
     {
       "name": "control",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"A\\nB\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"A\\nB\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_NAME"
     },
     {
       "name": "unicode-surrogate",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"\\ud800\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"\\ud800\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_NAME"
     },
     {
       "name": "25-graphemes",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"AAAAAAAAAAAAAAAAAAAAAAAAA\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"AAAAAAAAAAAAAAAAAAAAAAAAA\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_NAME"
     },
     {
       "name": "25-families",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_NAME"
     },
     {
       "name": "24-families",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": null
     },
     {
       "name": "quoted-json-in-name",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"{\\\"a\\\":\\\"b\\\"}\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"{\\\"a\\\":\\\"b\\\"}\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": null
     },
     {
       "name": "unknown-avatar-layer",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\",\"url\":\"https://invalid.test/a.svg\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"round\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\",\"url\":\"https://invalid.test/a.svg\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_MESSAGE"
     },
     {
       "name": "invalid-avatar-choice",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"triangle\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":2,\"selections\":{\"face\":\"triangle\",\"skin\":\"light\",\"eyes\":\"open\",\"brows\":\"calm\",\"nose\":\"round\",\"mouth\":\"smile\",\"hair\":\"short\",\"hairColor\":\"brown\",\"beard\":\"none\",\"top\":\"shirt\",\"topColor\":\"blue\",\"glasses\":\"none\",\"hat\":\"none\",\"extra\":\"none\"}}},\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "INVALID_MESSAGE"
     },
     {
@@ -158,7 +158,7 @@
     },
     {
       "name": "bad-token-canonical",
-      "wire": "{\"type\":\"authenticate\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"resumeToken\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB\",\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246\",\"avatarVersion\":2}}",
+      "wire": "{\"type\":\"authenticate\",\"protocolVersion\":1,\"requestId\":\"request_1\",\"resumeToken\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB\",\"handshake\":{\"protocolVersion\":1,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":2}}",
       "code": "CREDENTIAL_INVALID"
     },
     {

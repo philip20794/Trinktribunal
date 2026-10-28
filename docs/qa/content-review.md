@@ -1,6 +1,22 @@
-# Redaktioneller Abgleich (TT-005)
+# Redaktioneller Abgleich (TT-005 / TT-061)
 
-Stand: 26.10.2026. Prüfung der 60 personenbezogenen Fragen einschließlich Text/grüner/roter Skala in beiden Sprachen, aller 25 Regeln in DE/EN und der bekannten Konflikt-/Materialfälle. Technische Strukturprüfung: [TT-004](TT-004.md). Die vollständige sprachliche Schlussredaktion aller übrigen Fragen bleibt TT-061; Nutzungsrechte TT-065.
+Stand: 28.10.2026. TT-005 prüfte am 26.10.2026 die 60 personenbezogenen Fragen, alle 25 Regeln und bekannte Konflikt-/Materialfälle. TT-061 ergänzt jetzt die vollständige Schlussredaktion aller 491 Fragen mit beiden Skalen sowie sämtlicher 25 Regeln in DE und EN. Technische Strukturprüfung: [TT-004](TT-004.md). Nutzungsrechte bleiben TT-065. Abschlusslauf TT-061 **ERLEDIGT nach Unit-Gates**; Browser/E2E **ÜBERSPRUNGEN – später manuell testen** gemäß Nutzervorgabe.
+
+## Vollständiger Schlussreview TT-061
+
+Alle 491 Fragenpaare wurden mit Fragetext und grüner/roter Skala nebeneinander gelesen; danach alle 25 Regelpaare einschließlich Rollen und Ausschlüssen. Die [ID-genaue Reviewliste](content-review-ledger.tsv) enthält 516 eindeutige DE/EN-Paare mit SHA-256 beider vollständigen Einträge, Reviewdatum, Ergebnis und Hinweis. 513 Paare bleiben unverändert; drei erhalten die unten genannten Korrekturen. Die Node-Prüfung vergleicht jeden Hash mit dem aktuellen Quelleintrag und schlägt bei fehlender ID, Dopplung oder späterer Text-/Skalen-/Rollenänderung fehl. Eine veraltete Reviewliste kann dadurch keine neue Fassung abdecken. Der Review ist ein redaktioneller Beleg, kein Rechtebeleg.
+
+| ID | Befund und nötige Korrektur |
+| --- | --- |
+| `116-b` | DE nennt ausdrücklich ein unvergesslich **schönes** Flugerlebnis. EN ließ mit „unforgettable“ auch negative Erlebnisse offen; das rote Skalenende nennt jetzt ausdrücklich ein wunderbar positives Erlebnis. |
+| `183-a` | DE verlangt ein kleines Vergehen. EN ließ diese Einschränkung weg; der Auftrag beschränkt sich jetzt ebenfalls auf ein kleines Fehlverhalten. |
+| `interrupting_penalty` | Deutscher Dativ berichtigt: jemandem ins Wort fallen. Regelbedeutung und EN-Fassung unverändert. |
+
+Alle bisherigen TT-005-Korrekturen bleiben erhalten. Auch bewusst umgekehrte Wertungen wie `125-a`, `128-a` und `201-a` wurden unverändert in ihrer jeweiligen Richtung bestätigt. Personenrollen, Ersetzungsstellen und alle Ausschlusskanten bleiben identisch. Die neun entfernten Materialfragen bleiben in beiden Sprachen entfernt. Lokalisierte Figuren-/Werktitel sowie der englische Zungenbrecher in `202-b` sind sinngemäße Anpassungen; sie werden nicht durch eine wortwörtliche deutsche Fassung ersetzt. Kein vollständig deutscher Fragetext wird als englische Fassung übernommen.
+
+Die IDs und strukturellen Katalogversionen bleiben erhalten. Nur EN-Fragen und DE-Regeln erhalten neue Inhaltshashes; DE-Fragen und EN-Regeln bleiben unverändert. Assets, Manifest, generierte Client-/Servermetadaten und gemeinsame Codec-Fixtures werden konsistent aktualisiert. Der Katalog-Gesamthash lautet jetzt `54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0`.
+
+D-11 wird auch für bereits laufende Verbindungen durchgesetzt: Ein authentifiziertes Attachment trägt den geprüften Kataloghash. Fehlende oder alte Hashes erhalten `CATALOG_MISMATCH`, bevor Spielprojektionen ausgegeben oder Aktionen verarbeitet werden. Zwei Workerd-Units prüfen dies nach Eviction; danach setzt der aktualisierte Client dieselbe Identität/Runde mit unveränderten Zahlen, Auswahlzählern und Historie fort. Eine Flutter-Unit prüft, dass der Versionsfehler keine Retry-Schleife oder Credential-Löschung auslöst. Die bestehenden DE/EN-/Hostinhaltssprache-Widget-Units bleiben Teil des Gesamtchecks. Manueller EN-Partie-/Mehrbrowserdurchlauf ist gemäß Nutzervorgabe übersprungen und später manuell zu testen.
 
 ## Bestätigte Befunde
 
@@ -37,7 +53,7 @@ Ein eigenständiger Verstoß: ein manueller Strafschluck. Keine Strafketten bei 
 
 **Offenes Release-Gate CONTENT-RIGHTS / TT-065.** Verantwortlich: Projektinhaber Philip (Nachweise beschaffen oder nachweislich nutzbaren Ersatzkatalog bereitstellen); Agent kann Nachweise inventarisieren, keine Nutzungsrechte erfinden. Bestand nennt sinngemäße Übertragung aus dem Französischen; Rechte-/Lizenz-/Übersetzungsnachweise pro Katalog liegen im Repository nicht vor. Lokale Entwicklung ist gemäß D-05 zulässig fortsetzbar; diese technische Abnahme gibt Inhalte nicht zur öffentlichen Veröffentlichung frei. Auch fiktionale Figuren/Markennamen werden durch diesen Review nicht pauschal rechtlich freigegeben.
 
-TT-061 prüft die vollständige Schlussredaktion; TT-065 muss Rechtequelle, Umfang, betroffene Version/Hashes und Freigabebeleg dokumentieren oder Inhalte ersetzen. Ohne Nachweis bleibt öffentlicher Release blockiert, nicht die Umsetzung von TT-006.
+TT-061 belegt die vollständige sprachliche Schlussredaktion; TT-065 muss Rechtequelle, Umfang, betroffene Version/Hashes und Freigabebeleg dokumentieren oder Inhalte ersetzen. Ohne Nachweis bleibt öffentlicher Release blockiert; die technische Weiterentwicklung bleibt möglich.
 
 ## Inventar
 
@@ -47,6 +63,14 @@ Die folgenden Listen wurden aus dem geprüften Bestand erzeugt und gegen die Que
 
 `swear_penalty`, `no_drink_word`, `no_ich_word`, `left_hand_drinking`, `imaginary_kobold`, `announce_drinking`, `two_hands_drinking`, `no_yes_no`, `toast_neighbor`, `thank_before_drinking`, `imaginary_fly`, `permission_before_drinking`, `closed_eyes_drinking`, `touch_player_while_drinking`, `enjoyment_sound`, `sniff_before_drinking`, `number_penalty`, `toast_to_player`, `pointing_penalty`, `no_face_touching`, `interrupting_penalty`, `repeat_question_penalty`, `permission_to_stand`, `apology_to_player`, `thanks_to_player`.
 
-## Lokale Prüfung
+## Historische lokale Prüfung TT-005
 
 Finaler Lauf scripts/check.ps1 -Scope All: Exitcode 0, 78 Node-Tests und 17 Flutter-Tests bestanden, Format unverändert und Analyze ohne Befunde. Assetprüfung schreibfrei grün; nur der EN-Fragenhash wurde geändert. Laufende Chrome-Debugvorschau auf Port 7357 mit tatsächlichem Hot Restart in 700 ms aktualisiert. Keine agentenseitige visuelle Prüfung behauptet. Keine Actions oder Deployments.
+
+## Abschlussprüfung TT-061
+
+`scripts/check.ps1 -Scope All`: Exitcode 0; 123 Node-, 352 Flutter- und 423 Workerd-Tests, Analyze, Generator-/Schema-/Assetprüfungen sowie Dart/TypeScript-Parität einschließlich Mutationsprüfungen erfolgreich. Webrelease und Android-Debugbuild erfolgreich.
+
+- Web-Bundle: `f8706bed277f562c3ffb19ca6b44e66cea5ea73ecf9d609704f5e711d1c429ce`.
+- Android-Debug-APK SHA-256: `ddb4914493aacf6590d4c7bafec64eb91188465342c2b0d85fa7a41d8b201396`.
+- Browser/E2E: **ÜBERSPRUNGEN – später manuell testen**, gemäß Nutzervorgabe. Keine Codemagic-Ausführung oder externe Veröffentlichung durch diesen lokalen Nachweis behauptet.
