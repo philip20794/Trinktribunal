@@ -42,3 +42,7 @@ Alle 14 Kategorien sind im gemeinsamen Editor für lokale und Onlineprofile ausw
 ## App-, Android- und PWA-Icons
 
 Die PNG-Icons und adaptive Android-Ressourcen wurden mit Nutzercommit `b7bac2d` übernommen; `1f80185` verknüpft das Favicon. Die ursprüngliche Quelldatei ist `apps/client/assets/branding/trinktribunal_app_icon.png`. Technische Abmessungen und Web-/Androidbuild wurden geprüft. Ein veröffentlichungsfähiger Herkunfts-/Nutzungsnachweis wurde damit nicht geliefert; er gehört zum offenen TT-065-Rechtenachweis. Keine Bearbeitung oder neue Lizenzbehauptung durch TT-060.
+
+## Zusätzliche Gerichtssaal-PNGs
+
+Nutzercommit `4672141` enthält 33 benannte PNGs unter `apps/client/assets/ui/courtroom/` (Hintergründe, Branding, Dekoration, Illustrationen, Papier, Symbole). Beim TT-062-Abschluss konfliktfrei übernommen und unverändert erhalten. Der Commit registriert sie nicht im Flutter-Assetmanifest und verwendet sie noch nicht in Widgets; die gemessenen Release-/Offlinegrößen enthalten sie daher nicht. Eine spätere Einbindung erfordert eine erneute Größenmessung. Herkunfts-/Nutzungsnachweise wurden nicht mitgeliefert und bleiben Teil von TT-065; keine pauschale Rechtefreigabe aus dem Dateizugang ableiten.

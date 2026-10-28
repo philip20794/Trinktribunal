@@ -35,6 +35,7 @@ try {
     if ($ApiBaseUrl) { $buildArgs += "--dart-define=API_BASE_URL=$ApiBaseUrl" }
     if ($PublicClientBaseUrl) { $buildArgs += "--dart-define=PUBLIC_CLIENT_BASE_URL=$PublicClientBaseUrl" }
     Invoke-Checked 'flutter' $buildArgs
+    Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'web-performance.mjs'), 'trim-js', $output)
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'prepare-web.mjs'), $output, $ApiBaseUrl)
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'build-precache.mjs'), $output)
     Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'prepare-web.mjs'), $output, $ApiBaseUrl)

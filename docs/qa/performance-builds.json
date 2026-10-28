@@ -1,0 +1,492 @@
+{
+  "date": "2026-10-28",
+  "sourceRevision": "74e4518",
+  "environment": {
+    "os": "Windows",
+    "cpu": "AMD Ryzen 5 5600XT",
+    "physicalMemoryBytes": 17101369344,
+    "flutter": "3.47.7",
+    "dart": "3.13.5",
+    "engine": "deb287481e"
+  },
+  "manualBrowserProfiling": "SKIPPED - user requested later manual testing",
+  "reports": {
+    "js": {
+      "formatVersion": 1,
+      "builds": [
+        {
+          "compileTarget": "dart2js",
+          "renderer": "canvaskit",
+          "mainJsPath": "main.dart.js"
+        }
+      ],
+      "files": [
+        {
+          "path": "assets/AssetManifest.bin",
+          "bytes": 869,
+          "sha256": "2572e3aab3ce5f91e0429d531da7aaaefe7dd7d78ed643343bf0dd72ff7d1f3a",
+          "gzipBytes": 218,
+          "brotliBytes": 182
+        },
+        {
+          "path": "assets/AssetManifest.bin.json",
+          "bytes": 1162,
+          "sha256": "c15ca5dd3e3190ba1e55c38f36d5f763bc22fa84357bf1b5f7fd6e3f9a7ae30e",
+          "gzipBytes": 444,
+          "brotliBytes": 436
+        },
+        {
+          "path": "assets/FontManifest.json",
+          "bytes": 486,
+          "sha256": "cb595d81ea0c2267e264d51d26064280cc9857e4d7cc4ceb02004addbeed4503",
+          "gzipBytes": 206,
+          "brotliBytes": 179
+        },
+        {
+          "path": "assets/NOTICES",
+          "bytes": 1328097,
+          "sha256": "feca0929277c0ce3980f83fc16f9ddad3feffb553fb003ca89baf218debb405e",
+          "gzipBytes": 100457,
+          "brotliBytes": 48362
+        },
+        {
+          "path": "assets/assets/avatars/manifest.json",
+          "bytes": 2800,
+          "sha256": "ec7e681be06bfbf3a4761940a71801e95ae1d6fefc778e098751c7ca24653fc3",
+          "gzipBytes": 672,
+          "brotliBytes": 649
+        },
+        {
+          "path": "assets/assets/catalogs/manifest.json",
+          "bytes": 9728,
+          "sha256": "9ffa674da509340c68e2239a9f2b2a185121b18dbfa5f36688160219e2826220",
+          "gzipBytes": 1689,
+          "brotliBytes": 954
+        },
+        {
+          "path": "assets/assets/catalogs/questions/de.json",
+          "bytes": 106347,
+          "sha256": "634c1cd9c0f75a85779b4e83555e4f1bc7939e9602550d0fd570f63d3b86d932",
+          "gzipBytes": 29166,
+          "brotliBytes": 28246
+        },
+        {
+          "path": "assets/assets/catalogs/questions/en.json",
+          "bytes": 96294,
+          "sha256": "f2746e796f41809ecef34800e4437e4cfa6b4d0e86cfb7e01b4fca10afa37efe",
+          "gzipBytes": 25765,
+          "brotliBytes": 24755
+        },
+        {
+          "path": "assets/assets/catalogs/rules/de.json",
+          "bytes": 3803,
+          "sha256": "e2e81352cd3de1919e6ce494f3a014dcc4d836b5ada42d688d8ce8f78cd1670a",
+          "gzipBytes": 1328,
+          "brotliBytes": 1314
+        },
+        {
+          "path": "assets/assets/catalogs/rules/en.json",
+          "bytes": 3834,
+          "sha256": "88d4406c2779d9e28c975c000e266ae5db96d5d03ebf0e9b3592ecf1318583f5",
+          "gzipBytes": 1182,
+          "brotliBytes": 1102
+        },
+        {
+          "path": "assets/assets/fonts/roboto-bold.ttf",
+          "bytes": 170760,
+          "sha256": "7d0b991ee3e0be7af01ad7ea8cd2beea6c00a25e679a0226b6737f079aafff86",
+          "gzipBytes": 92202,
+          "brotliBytes": 85452
+        },
+        {
+          "path": "assets/assets/fonts/roboto-medium.ttf",
+          "bytes": 172064,
+          "sha256": "f205cc511821ea56078a105557fcea6253129404d411c997e1866fbd006abb68",
+          "gzipBytes": 92461,
+          "brotliBytes": 85294
+        },
+        {
+          "path": "assets/assets/fonts/roboto-regular.ttf",
+          "bytes": 171676,
+          "sha256": "79e851404657dac2106b3d22ad256d47824a9a5765458edb72c9102a45816d95",
+          "gzipBytes": 91546,
+          "brotliBytes": 84655
+        },
+        {
+          "path": "assets/assets/fonts/roboto_license.txt",
+          "bytes": 11560,
+          "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5",
+          "gzipBytes": 3943,
+          "brotliBytes": 3684
+        },
+        {
+          "path": "assets/fonts/MaterialIcons-Regular.otf",
+          "bytes": 10504,
+          "sha256": "d3b44cb0e0516c535b8a0c295f316bf0c63fe2bc1aed9b2702fb7b1377cc6c61",
+          "gzipBytes": 5635,
+          "brotliBytes": 5419
+        },
+        {
+          "path": "assets/fonts/fallback/Roboto-Regular.ttf",
+          "bytes": 171676,
+          "sha256": "79e851404657dac2106b3d22ad256d47824a9a5765458edb72c9102a45816d95",
+          "gzipBytes": 91546,
+          "brotliBytes": 84655
+        },
+        {
+          "path": "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf",
+          "bytes": 1472,
+          "sha256": "3d90c370aa4cf00dc57ee2b902f6652147c0f81e03e483df584a9c08b1687c9d",
+          "gzipBytes": 1023,
+          "brotliBytes": 1008
+        },
+        {
+          "path": "assets/shaders/ink_sparkle.frag",
+          "bytes": 8890,
+          "sha256": "2dca5ab93d4ec29e963f996f3916320ba60825e9537dfb149a68008c7a16b026",
+          "gzipBytes": 2011,
+          "brotliBytes": 1913
+        },
+        {
+          "path": "assets/shaders/stretch_effect.frag",
+          "bytes": 6737,
+          "sha256": "ab412f07a5b9b50b67a885b24dbe16929738ae28630407d6490c924caf0a3220",
+          "gzipBytes": 1346,
+          "brotliBytes": 1268
+        },
+        {
+          "path": "canvaskit/canvaskit.js",
+          "bytes": 86987,
+          "sha256": "bb559f6080c7d312ac2a912b4abec9f68ff3d3022d4a603c7796b9b31460642b",
+          "gzipBytes": 27648,
+          "brotliBytes": 26568
+        },
+        {
+          "path": "canvaskit/canvaskit.wasm",
+          "bytes": 7284602,
+          "sha256": "fbed517a43e82452404446683f00f2e876d835aed84410695759e67b6bb01cd3",
+          "gzipBytes": 2941805,
+          "brotliBytes": 2634874
+        },
+        {
+          "path": "favicon.png",
+          "bytes": 4257,
+          "sha256": "5c304de4ac7c23ee8ff72c2f63efd3d7fa740db5c77495bf585cd122a7cb6307",
+          "gzipBytes": 4280,
+          "brotliBytes": 4261
+        },
+        {
+          "path": "flutter.js",
+          "bytes": 12136,
+          "sha256": "2beb1ce6b159c71540aa66030af1d7964b6a92377cc78473745e02f97b74effe",
+          "gzipBytes": 4630,
+          "brotliBytes": 4426
+        },
+        {
+          "path": "flutter_bootstrap.js",
+          "bytes": 13172,
+          "sha256": "5833cd1733e3a8b0d63ccfb9de83d41f1fcb8a2561337f40c1aa891a651cb235",
+          "gzipBytes": 5214,
+          "brotliBytes": 4954
+        },
+        {
+          "path": "flutter_service_worker.js",
+          "bytes": 815,
+          "sha256": "dbfbe64ae5be5b462abb97338eb9af783ed4ed57a8c73a53c2a44488a26f6416",
+          "gzipBytes": 359,
+          "brotliBytes": 317
+        },
+        {
+          "path": "icons/Icon-192.png",
+          "bytes": 45141,
+          "sha256": "7dae28027d0f7cddc2146e584cace96c9c5bc5a41a770f253e3fb97733626d04",
+          "gzipBytes": 45174,
+          "brotliBytes": 45145
+        },
+        {
+          "path": "icons/Icon-512.png",
+          "bytes": 240644,
+          "sha256": "ebe0100fcb72cd548e0b03d61f36a9df2d42ac345bd26dbc2337bd4d8d8e5470",
+          "gzipBytes": 240348,
+          "brotliBytes": 240649
+        },
+        {
+          "path": "icons/Icon-maskable-192.png",
+          "bytes": 33685,
+          "sha256": "fb245ae489a0978b64c9cfb72d8f40c84922b5c02211ba4f3f1c4af277944c14",
+          "gzipBytes": 33664,
+          "brotliBytes": 33689
+        },
+        {
+          "path": "icons/Icon-maskable-512.png",
+          "bytes": 179773,
+          "sha256": "c6f90a84b5a79d011ab25b6117627332fa8d8820c6280d714fe1280bca9c9d45",
+          "gzipBytes": 178864,
+          "brotliBytes": 179778
+        },
+        {
+          "path": "index.html",
+          "bytes": 972,
+          "sha256": "a950a73aace536319ea75e7eb2b89ee88a757b79c3db5c784b3eba3f00cfbed1",
+          "gzipBytes": 490,
+          "brotliBytes": 404
+        },
+        {
+          "path": "main.dart.js",
+          "bytes": 3775751,
+          "sha256": "5646953a735961c667c184b9ee5a86344808c00e5fe74eac062d5a814ca74460",
+          "gzipBytes": 1079011,
+          "brotliBytes": 963640
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 697,
+          "sha256": "7a6e256e93febe754429c1986a1452888d97cdeb85176474604c44c713e9d332",
+          "gzipBytes": 307,
+          "brotliBytes": 262
+        },
+        {
+          "path": "offline.js",
+          "bytes": 3188,
+          "sha256": "764226bc974df2a5d480b868a3cae4f576a1198fc2ed232fe0dbb06a2ecaaa56",
+          "gzipBytes": 1187,
+          "brotliBytes": 1095
+        },
+        {
+          "path": "precache-manifest.json",
+          "bytes": 5605,
+          "sha256": "272dfc41253e35f975f4c29f6c521410bfce6b3c2826d8fe64b0e1b7a3341f08",
+          "gzipBytes": 1911,
+          "brotliBytes": 1882
+        },
+        {
+          "path": "service-worker.js",
+          "bytes": 8533,
+          "sha256": "a284bb9b2680744d024aa4b4478fabac7f6184d8133f792a124ab1742d0fb59d",
+          "gzipBytes": 3568,
+          "brotliBytes": 3412
+        },
+        {
+          "path": "version.json",
+          "bytes": 96,
+          "sha256": "76716363148111bac7f7b83f71c14b619a05c59d5061ff9e4e20cdce2bd6a36e",
+          "gzipBytes": 92,
+          "brotliBytes": 63
+        }
+      ],
+      "totals": {
+        "files": 36,
+        "bytes": 13974813,
+        "gzipBytes": 5111392,
+        "brotliBytes": 4604946
+      },
+      "precache": {
+        "files": 33,
+        "bytes": 13959860,
+        "version": "652b9bbb9a52d8bc26c355c266ac3b4c25a63169094be0ff18aa8d04fb7c728c"
+      },
+      "compression": "Per-file gzip level 9 / Brotli quality 6 laboratory compression; HTTP server compression and browser timings are not measured."
+    },
+    "wasm": {
+      "formatVersion": 1,
+      "builds": [
+        {
+          "compileTarget": "dart2wasm",
+          "renderer": "skwasm",
+          "mainWasmPath": "main.dart.wasm",
+          "jsSupportRuntimePath": "main.dart.mjs"
+        },
+        {
+          "compileTarget": "dart2js",
+          "renderer": "canvaskit",
+          "mainJsPath": "main.dart.js"
+        }
+      ],
+      "files": [
+        {
+          "path": "canvaskit/canvaskit.js",
+          "bytes": 86987,
+          "sha256": "bb559f6080c7d312ac2a912b4abec9f68ff3d3022d4a603c7796b9b31460642b",
+          "gzipBytes": 27648,
+          "brotliBytes": 26568
+        },
+        {
+          "path": "canvaskit/canvaskit.js.symbols",
+          "bytes": 1356926,
+          "sha256": "384f80b392972c83fd4f262527e3d06215a297d33ed59732c726721e9d9311bd",
+          "gzipBytes": 200348,
+          "brotliBytes": 161497
+        },
+        {
+          "path": "canvaskit/canvaskit.wasm",
+          "bytes": 7284602,
+          "sha256": "fbed517a43e82452404446683f00f2e876d835aed84410695759e67b6bb01cd3",
+          "gzipBytes": 2941805,
+          "brotliBytes": 2634874
+        },
+        {
+          "path": "canvaskit/chromium/canvaskit.js",
+          "bytes": 86226,
+          "sha256": "6018b12bd8ed37e6952eee72d59c1cf7ad707ccdb74a0a45190010f77edd9068",
+          "gzipBytes": 27444,
+          "brotliBytes": 26372
+        },
+        {
+          "path": "canvaskit/chromium/canvaskit.js.symbols",
+          "bytes": 1235870,
+          "sha256": "31c86fac6042dd8b756150832c1d15495d0d07742e2718f75dbdde5a5a91455e",
+          "gzipBytes": 175815,
+          "brotliBytes": 141468
+        },
+        {
+          "path": "canvaskit/chromium/canvaskit.wasm",
+          "bytes": 5428806,
+          "sha256": "ae8ff1d858140f7b1300ced3fa89fb8c9dce0a400a0f4f1e11f6dcfb3315fdcf",
+          "gzipBytes": 2080477,
+          "brotliBytes": 1821210
+        },
+        {
+          "path": "canvaskit/skwasm.js",
+          "bytes": 63537,
+          "sha256": "71d7d3e34bf71b52bdba3b588b103bba8148ba28de5754083e01b3398e7a6e1c",
+          "gzipBytes": 17183,
+          "brotliBytes": 16434
+        },
+        {
+          "path": "canvaskit/skwasm.js.symbols",
+          "bytes": 1540006,
+          "sha256": "9137f1a3ae744dea575043abfc6e063a047e910e6dab1ee53e496c975d1c033e",
+          "gzipBytes": 227188,
+          "brotliBytes": 176964
+        },
+        {
+          "path": "canvaskit/skwasm.wasm",
+          "bytes": 3593715,
+          "sha256": "e540fd5e8303b7b68ec2718cb49e9c421f8ade3075b15e02a7059a62654df9a1",
+          "gzipBytes": 1554452,
+          "brotliBytes": 1399919
+        },
+        {
+          "path": "canvaskit/skwasm_heavy.js",
+          "bytes": 63650,
+          "sha256": "cec554b46ddcf4c0e63d799e0556d546f42d2c3f69316fb4f67ed776f6104558",
+          "gzipBytes": 17186,
+          "brotliBytes": 16441
+        },
+        {
+          "path": "canvaskit/skwasm_heavy.js.symbols",
+          "bytes": 1672152,
+          "sha256": "b6b79ed497e11d4cd13cc46724f9e289eacc744d2d185e31c72d595cdf62772b",
+          "gzipBytes": 254073,
+          "brotliBytes": 197924
+        },
+        {
+          "path": "canvaskit/skwasm_heavy.wasm",
+          "bytes": 5216217,
+          "sha256": "565f5cc1cca6ab120f11934b105f01fec4b58b480c82e0889dca93af8e6f8635",
+          "gzipBytes": 2311687,
+          "brotliBytes": 2105046
+        },
+        {
+          "path": "canvaskit/webparagraph/canvaskit.js",
+          "bytes": 76114,
+          "sha256": "3110e3e4d9b7b5657d336f253aaca8acca5777cde9319fb69ac302d6ff5a8b23",
+          "gzipBytes": 24861,
+          "brotliBytes": 23820
+        },
+        {
+          "path": "canvaskit/webparagraph/canvaskit.js.symbols",
+          "bytes": 963641,
+          "sha256": "44d6c47919106235cf32252252490cdf798d907ee874ba343ab53dc94bc2a9dc",
+          "gzipBytes": 138299,
+          "brotliBytes": 115451
+        },
+        {
+          "path": "canvaskit/webparagraph/canvaskit.wasm",
+          "bytes": 3729129,
+          "sha256": "0ce1b05082efdc8529550e8a01f6ff0593972d55525035010e26f5600aa9f254",
+          "gzipBytes": 1415072,
+          "brotliBytes": 1213604
+        },
+        {
+          "path": "canvaskit/wimp.js",
+          "bytes": 59127,
+          "sha256": "8fd8a47480c6eb0a374d159912d0b3fb15661b41f5c113ecdd39c2f01f2bee46",
+          "gzipBytes": 16860,
+          "brotliBytes": 16150
+        },
+        {
+          "path": "canvaskit/wimp.js.symbols",
+          "bytes": 1813030,
+          "sha256": "b4907ebd33131302a8cd99f7c55f52357bdfde04f421b605a616ba8764ae1de4",
+          "gzipBytes": 204026,
+          "brotliBytes": 158772
+        },
+        {
+          "path": "canvaskit/wimp.wasm",
+          "bytes": 3581677,
+          "sha256": "e924eaafd801d41e017d178f3fd5cf8a417f641fe35c9ed34a4e1d7582283e0c",
+          "gzipBytes": 1464750,
+          "brotliBytes": 1305270
+        },
+        {
+          "path": "flutter.js",
+          "bytes": 12136,
+          "sha256": "2beb1ce6b159c71540aa66030af1d7964b6a92377cc78473745e02f97b74effe",
+          "gzipBytes": 4630,
+          "brotliBytes": 4426
+        },
+        {
+          "path": "flutter_bootstrap.js",
+          "bytes": 13377,
+          "sha256": "6b50f9f743614fcf8a943d8f9b640b316d708cb9e001f2aa076307314f45192e",
+          "gzipBytes": 5298,
+          "brotliBytes": 5021
+        },
+        {
+          "path": "index.html",
+          "bytes": 540,
+          "sha256": "8e910a960d8348fadf50d730b99b180f8a48d8bcfd88f4b1de113d6249c00b7d",
+          "gzipBytes": 326,
+          "brotliBytes": 250
+        },
+        {
+          "path": "main.dart.js",
+          "bytes": 3775751,
+          "sha256": "5646953a735961c667c184b9ee5a86344808c00e5fe74eac062d5a814ca74460",
+          "gzipBytes": 1079011,
+          "brotliBytes": 963640
+        },
+        {
+          "path": "main.dart.mjs",
+          "bytes": 34553,
+          "sha256": "5a67c4180b2361e0e639f4e91d9045be81f709404b5b2d44a826429e162b2a0f",
+          "gzipBytes": 7864,
+          "brotliBytes": 7543
+        },
+        {
+          "path": "main.dart.wasm",
+          "bytes": 3125104,
+          "sha256": "4b00683abf857afae469d2cdc2382828f227d19d3448a393e65bb0da9dd1c50c",
+          "gzipBytes": 1154059,
+          "brotliBytes": 1022151
+        },
+        {
+          "path": "version.json",
+          "bytes": 96,
+          "sha256": "76716363148111bac7f7b83f71c14b619a05c59d5061ff9e4e20cdce2bd6a36e",
+          "gzipBytes": 92,
+          "brotliBytes": 63
+        }
+      ],
+      "totals": {
+        "files": 25,
+        "bytes": 44812969,
+        "gzipBytes": 15350454,
+        "brotliBytes": 13560878
+      },
+      "precache": null,
+      "compression": "Per-file gzip level 9 / Brotli quality 6 laboratory compression; HTTP server compression and browser timings are not measured."
+    }
+  }
+}

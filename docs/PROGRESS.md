@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–061 und M6 nach Unit-Gates abgeschlossen, TT-062 folgt (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 123 Node-/352 Flutter-/423 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–062 und M6 nach Unit-Gates abgeschlossen, TT-063 folgt (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 128 Node-/355 Flutter-/423 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -49,7 +49,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M4 | TT-034–TT-042 | ERLEDIGT | Unit-Gate grün; drei lokale Clients und Harness geprüft; Browser/E2E ÜBERSPRUNGEN – später manuell testen · [M4](qa/M4.md) |
 | M5 | TT-043–TT-050 | ERLEDIGT | Normales Online-Spiel mit 3 Fällen + 2 Regeln, D-07, Neustart, privater eigener Historie und Unit-Gates geprüft; Browser/E2E übersprungen, später manuell testen · [M5](qa/M5.md) |
 | M6 | TT-051–TT-058 | ERLEDIGT | Beide Modi mit 8 Teilnehmern/50 Fällen/7 Regeln und Störfolge, 20 unabhängige Ordnungen, 21. Join abgelehnt; Browser/E2E übersprungen, später manuell testen · [M6](qa/M6.md) |
-| M7 | TT-059–TT-064 | IN ARBEIT | TT-059–061 Sicherheit, Avatare und Schlussredaktion geprüft; Kosten-/Performance- und Bedienprüfung folgen · [TT-060](qa/TT-060.md). |
+| M7 | TT-059–TT-064 | IN ARBEIT | TT-059–062 Sicherheit, Avatare, Inhalte und Build-/Performanceentscheid geprüft; Kosten-/Bedienprüfung folgen · [TT-060](qa/TT-060.md). |
 | M8 | TT-065–TT-070 | OFFEN | Lokal geprüfte Web/APK/AAB-Artefakte und Releaseanleitung; `docs/qa/RELEASE_CHECKLIST.md`. |
 
 M0/M1/M2 und TT-027 haben Prüfbelege. Die weiteren QA-Dateien sind geplante Pfade. Release-/Cloud- und visuelle Prüfungen werden nicht aus lokalen Unit-Tests als erledigt abgeleitet.
@@ -121,7 +121,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-059 | Angriffs- und Missbrauchsgrenzen nachweisen | ERLEDIGT | Raum-Aktionsbudget, begrenzte private Chunk-Projektionen, Release-CSP und Android-Speicherfehler; 3 neue Node-/17 Flutter-/6 Workerd-Units · [Sicherheit](qa/security.md). |
 | TT-060 | Avatar-Baukasten und thematische Übergänge fertigstellen | ERLEDIGT | 53 Optionen/14 Kategorien, v1-Übernahme und v2-Handshake, Golden/Pixel-/Editor- und Bewegungs-Units; 7 neue Flutter-/4 Workerd-Units · [TT-060](qa/TT-060.md). |
 | TT-061 | Deutsche und englische Inhalte redaktionell fertig prüfen | ERLEDIGT | 516 DE/EN-Paare vollständig geprüft, drei minimale Korrekturen, ID-/Hash-Reviewliste und Live-Katalogschutz; Gesamtcheck und Builds grün · [Review](qa/content-review.md). |
-| TT-062 | Web-/Android-Performance messen und Wasm entscheiden | OFFEN | — |
+| TT-062 | Web-/Android-Performance messen und Wasm entscheiden | ERLEDIGT | Beide Builds kompilieren; JS bleibt D-18-Releaseweg, Offlinepaket −68,6 %, 20-Figuren-/50-Umsortierungs-Units grün; Gerätebudgets übersprungen, später manuell testen · [Performance](qa/performance.md). |
 | TT-063 | Nachrichten, Storage und Free-Tier-Budget messen | OFFEN | — |
 | TT-064 | Bedienbarkeit, Fehler- und Leerzustände final prüfen | OFFEN | — |
 | TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | OFFEN | — |
@@ -158,7 +158,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-062 – Web-/Android-Performance messen und Wasm entscheiden.** TT-061 und M6 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-063 – Nachrichten, Storage und Free-Tier-Budget messen.** TT-062 und M6 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -181,9 +181,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: main mit geprüftem TT-061-Inhaltsreview, Icon-Commits b7bac2d/1f80185 erhalten
-Aktueller Beleg: docs/qa/content-review.md und content-review-ledger.tsv; Browserprüfungen übersprungen, später manuell testen
-Naechster Schritt: TT-062 JS-/Wasm-Builds, Bundle-/Precache-Messung und D-18-Entscheid; keine Browsermessungen erfinden. Inhaltsrechte bleiben TT-065.
+Branch: main mit geprüftem TT-062-JS-Release; Nutzer-PNG-Commit 4672141 erhalten
+Aktueller Beleg: docs/qa/performance.md; Browser-/Geräteprofiling übersprungen, später manuell testen
+Naechster Schritt: TT-063 lokale Instrumentierung/Lastskript und Kostenmodell. Keine Internet-/Billingwerte aus lokalen Zählern erfinden. Inhalts-/PNG-Rechte bleiben TT-065.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

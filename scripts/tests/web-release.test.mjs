@@ -14,7 +14,7 @@ function fixture(t) {
   t.after(()=>{ if(dirname(root)!==resolve(tmpdir())||!basename(root).startsWith('trinktribunal-web-test-')) throw new Error('Unsafe fixture cleanup'); rmSync(root,{recursive:true,force:true}); });
   const put=(path,data)=>{ mkdirSync(dirname(join(root,path)),{recursive:true});writeFileSync(join(root,path),data); };
   put('index.html','<!doctype html><base href="/"><title>Trinktribunal</title>');
-  put('flutter_bootstrap.js','_flutter.loader.load({config:{canvasKitBaseUrl:new URL("canvaskit/",document.baseURI),fontFallbackBaseUrl:new URL("assets/font-fallback/",document.baseURI)}});');
+  put('flutter_bootstrap.js','_flutter.buildConfig = {"builds":[{"compileTarget":"dart2js","renderer":"canvaskit"}]};\n_flutter.loader.load({config:{canvasKitBaseUrl:new URL("canvaskit/",document.baseURI),fontFallbackBaseUrl:new URL("assets/font-fallback/",document.baseURI)}});');
   put('main.dart.js','console.log("release")'); put('version.json',JSON.stringify({version:'0.1.0',build_number:'1'}));
   put('manifest.json','{}'); put('assets/AssetManifest.bin',Buffer.from([0,1])); put('assets/FontManifest.json','[{"family":"test","fonts":[{"asset":"test.ttf"}]}]'); put('assets/test.ttf','font');
   put('assets/assets/catalogs/manifest.json','{"catalogs":[{"kind":"questions","language":"de","sha256":"test-hash"}]}');
@@ -65,8 +65,14 @@ test('bundle metadata is stable and changes only when an asset changes',t=>{
 });
 test('unexpanded templates, remote-default bootstraps and missing fonts fail preparation',t=>{
   const {root,put}=fixture(t);put('index.html','<base href="$FLUTTER_BASE_HREF">');assert.throws(()=>prepareWeb(root),/Unexpanded/);
-  put('index.html','html');put('flutter_bootstrap.js','_flutter.loader.load();');assert.throws(()=>prepareWeb(root),/origin-local/);
-  put('flutter_bootstrap.js','canvasKitBaseUrl:new URL("canvaskit/",document.baseURI),fontFallbackBaseUrl:new URL("assets/font-fallback/",document.baseURI)');put('assets/FontManifest.json','[{"fonts":[{"asset":"missing.ttf"}]}]');assert.throws(()=>prepareWeb(root),/ENOENT|Missing/);
+  put('index.html','html');put('flutter_bootstrap.js','_flutter.loader.load();');assert.throws(()=>prepareWeb(root),/configuration/);
+  put('flutter_bootstrap.js','_flutter.buildConfig = {"builds":[{"compileTarget":"dart2js","renderer":"canvaskit"}]};\ncanvasKitBaseUrl:new URL("canvaskit/",document.baseURI),fontFallbackBaseUrl:new URL("assets/font-fallback/",document.baseURI)');put('assets/FontManifest.json','[{"fonts":[{"asset":"missing.ttf"}]}]');assert.throws(()=>prepareWeb(root),/ENOENT|Missing/);
+});
+
+test('experimental Wasm cannot be mislabeled and published as an approved JS release',t=>{
+  const {root,put}=fixture(t);
+  put('flutter_bootstrap.js','_flutter.buildConfig = {"builds":[{"compileTarget":"dart2wasm","renderer":"skwasm"},{"compileTarget":"dart2js","renderer":"canvaskit"}]};');
+  assert.throws(()=>prepareWeb(root),/comparison-only/);
 });
 
 test('precache is deterministic, integrity-complete and excludes workers/metadata',t=>{

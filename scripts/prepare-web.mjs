@@ -7,6 +7,14 @@ import {secureReleaseHtml} from './web-security.mjs';
 
 export const webRoot = fileURLToPath(new URL('../apps/client/build/web/',import.meta.url));
 const hash = content => createHash('sha256').update(content).digest('hex');
+export function flutterBuilds(root) {
+  const bootstrap=readFileSync(join(root,'flutter_bootstrap.js'),'utf8');
+  const match=bootstrap.match(/_flutter\.buildConfig\s*=\s*(\{[^\n]+\});/);
+  if(!match) throw new Error('Missing generated Flutter build configuration');
+  const {builds}=JSON.parse(match[1]);
+  if(!Array.isArray(builds)||!builds.length) throw new Error('Missing Flutter build targets');
+  return {bootstrap, builds};
+}
 export function listBundleFiles(root, directory='') {
   const result=[];
   for(const name of readdirSync(join(root,directory)).sort()) {
@@ -20,6 +28,8 @@ export function listBundleFiles(root, directory='') {
 }
 
 export function prepareWeb(root=webRoot,{sourceRevision='unknown',sourceDirty=false,apiBaseUrl=''}={}) {
+  const {builds}=flutterBuilds(root);
+  if(builds.length!==1||builds[0].compileTarget!=='dart2js'||builds[0].renderer!=='canvaskit') throw new Error('Release requires D-18 JS CanvasKit; Wasm is comparison-only');
   const required=['index.html','flutter_bootstrap.js','main.dart.js','version.json','manifest.json','assets/AssetManifest.bin','assets/FontManifest.json','assets/assets/catalogs/manifest.json','assets/assets/avatars/manifest.json','canvaskit/canvaskit.js','canvaskit/canvaskit.wasm'];
   for(const path of required) if(!statSync(join(root,path)).isFile()) throw new Error('Missing release asset: '+path);
   const html=readFileSync(join(root,'index.html'),'utf8'); const bootstrap=readFileSync(join(root,'flutter_bootstrap.js'),'utf8');

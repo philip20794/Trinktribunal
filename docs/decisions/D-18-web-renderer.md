@@ -8,3 +8,9 @@
 - Entscheidung, Messgeräte/-umgebung und getestete Browser in TT-062 dokumentieren; die Anwendung muss offlinefähig und auf Android/Web bedienbar bleiben.
 
 **Umsetzung/Tests:** TT-029–031, TT-062 und TT-067.
+
+## Ergebnis TT-062, 28.10.2026
+
+**JS/CanvasKit bleibt der verbindliche Releaseweg.** Beide Builds kompilieren mit Flutter 3.47.7; der Wasm-Build enthält den JS-Fallback. Ein Laufzeitvorteil wurde nicht gemessen. Der vorbereitete JS-Offlinebestand wurde bei identischer gewählter CanvasKit-Laufzeit von 44.439.683 auf 13.959.860 Byte reduziert. Unbenutzte SDK-Renderer/Symbole werden nur bei nachgewiesenem JS-only-Build mit `canvasKitVariant: 'full'` entfernt. Wasm-Vergleich und Releaseverzeichnis bleiben getrennt; die Releasevorbereitung lehnt Wasm ausdrücklich ab.
+
+Messumgebung, Einzelgrößen, Reproduktionsskript, Kompatibilitäts-/Headerbefunde und Unit-Smokes stehen im [Performancebeleg](../qa/performance.md). Browser-/Android-Profiling, Start-/Frame-/Heapbudgets und tatsächlicher Wasm-Fallback sind gemäß Nutzervorgabe **ÜBERSPRUNGEN – später manuell testen**; keine Geschwindigkeitsschätzung oder erreichte Gerätebudgets behauptet. Fehlender belegter Vorteil genügt nach dem bereits beschlossenen Verfahren, Wasm vorerst nicht zu aktivieren. Die manuellen Nachprüfungen bleiben für eine spätere Neubewertung dokumentiert.
