@@ -1,7 +1,7 @@
 # Trinktribunal – Avatar v3: Einstieg und Übergabe
 
 **Stand:** 28.10.2026 · **Zweck:** Startpunkt für neue Chats, Agenten und Entwickler  
-**Status:** Entwurfs-/Prototypphase; **keine produktive v3-Integration**  
+**Status:** Entwurfs-/Prototypphase; **P1 in Arbeit, keine visuelle Abnahme und keine produktive v3-Integration**  
 **Lies diese Datei zuerst.** Sie beschreibt die aktuelle Richtung. Der ältere [Grafikplan](AVATAR_GRAPHICS_PLAN.md) dokumentiert zusätzlich historische Versuche und noch nicht aktualisierte Baukasten-Aufgaben.
 
 ## Auftrag in einem Satz
@@ -10,7 +10,7 @@ Erhalte die Qualität der **zehn freigegebenen Mugshot-Karikaturen** und ermögl
 
 ## Sofortiger Wiedereinstieg
 
-**Nächste Arbeit:** Die Farbmasken des Originals `references/master-male-09-approved.png` korrigieren (Haaransatz, Augenbrauen, Bart/Kinn, Hals, helle Haare, sehr dunkle Haut). Danach dieselbe Methode auf **eine deutlich anders geformte weibliche Masterfigur** anwenden und beide Ergebnisse visuell prüfen. Noch **keinen** Flutter-Editor umbauen, keine Massenproduktion beginnen und keine Methode als endgültig freigegeben darstellen.
+**Nächste Arbeit:** P1 am **echten Originalbild** `references/master-male-09-approved.png` fortsetzen: vorhandene [1:1-Detaildiagnostik](../../artwork/avatars/v3/prototypes/male_09_color_masks/p1_detail_review.py) ausführen, Haaransatz, Augenbrauen, Bart/Kinn, Hals, helle Haare und sehr dunkle Haut visuell markieren und die Masken gezielt korrigieren. Bisher nur synthetischer Smoke-Test, **kein geprüfter Original-Kontaktbogen**; siehe [P1-Zwischenbericht](reviews/p1-detail-diagnostics-2026-10-28.md). Danach dieselbe Methode auf **eine deutlich anders geformte weibliche Masterfigur** anwenden. Noch **keinen** Flutter-Editor umbauen oder Massenproduktion beginnen. Noch **keinen** Flutter-Editor umbauen, keine Massenproduktion beginnen und keine Methode als endgültig freigegeben darstellen.
 
 Zum Nacharbeiten und Entscheiden in dieser Reihenfolge lesen:
 
@@ -32,7 +32,7 @@ Zum Nacharbeiten und Entscheiden in dieser Reihenfolge lesen:
 | Gemeinsames Schild | `artwork/avatars/v3/frame/nameplate.svg` | **Visuell** akzeptiert, Text-/Finger-/Renderer-Test offen |
 | Erster SVG-Prototyp | `artwork/avatars/v3/prototypes/male_09/` | Transparenz/Layer technisch demonstriert; Stil deutlich zu flach |
 | Detaillierter SVG-Prototyp | `artwork/avatars/v3/prototypes/male_09_painterly/` | Bessere Details, aber noch vektorhaft; keine Stilfreigabe |
-| Farbmasken-Pilot | `artwork/avatars/v3/prototypes/male_09_color_masks/` | **Reproduzierbare Python-Skripte und Messwerte**, vielversprechend, keine finalen Masken im Git |
+| Farbmasken-Pilot | `artwork/avatars/v3/prototypes/male_09_color_masks/` | **Python-Skripte, alte Messwerte und neues 1:1-Reviewwerkzeug**; keine korrigierten/freigegebenen Masken im Git |
 | Überprüfungsprotokolle | `docs/avatars/reviews/` | Nicht mit Produktionsfreigaben verwechseln |
 | Bestehende v2-App | `apps/client/lib/design/avatar_view.dart` und v2-Konfiguration | Bleibt unverändert/Fallback; v3 nicht integriert |
 
@@ -51,7 +51,7 @@ Zum Nacharbeiten und Entscheiden in dieser Reihenfolge lesen:
 
 ## Was der Farbmasken-Pilot nachweislich konnte
 
-Original: `docs/avatars/references/master-male-09-approved.png`, **1229 × 1536 Pixel**, schmaler Mann mit violettem T-Shirt. Skripte: `color_mask_pilot.py` und `validate_pilot.py`.
+Original: `docs/avatars/references/master-male-09-approved.png`, **1229 × 1536 Pixel**, schmaler Mann mit violettem T-Shirt. Skripte: `color_mask_pilot.py`, `validate_pilot.py` und **neu:** `p1_detail_review.py` (Detailansichten/zusätzliche Checks).
 
 - Drei Masken für **Haut**, **Haare einschließlich Bart/Brauen** und **Shirt**, für genau diese Referenz per manuell definierten Regionen + Farbkriterien berechnet.
 - 14 Proben mit einzelnen oder kombinierten Farbänderungen; in drei gemessenen Kombinationsfällen **0 veränderte Pixel außerhalb der Masken** und **0** in den geprüften Wand-/Schildflächen.
@@ -70,9 +70,10 @@ Vom Repository-Root (Python, Pillow, NumPy, OpenCV erforderlich):
 python -m pip install Pillow numpy opencv-python
 python artwork/avatars/v3/prototypes/male_09_color_masks/color_mask_pilot.py --source docs/avatars/references/master-male-09-approved.png --out avatar-mask-test
 python artwork/avatars/v3/prototypes/male_09_color_masks/validate_pilot.py --source docs/avatars/references/master-male-09-approved.png --out avatar-mask-test
+python artwork/avatars/v3/prototypes/male_09_color_masks/p1_detail_review.py --source docs/avatars/references/master-male-09-approved.png --out avatar-mask-test
 ```
 
-**Bekannter Umgebungsfehler:** `validate_pilot.py` lädt für das Kontaktblatt derzeit eine DejaVu-Sans-Schrift von `/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf`; auf Windows kann dieser Pfad fehlen. In diesem Fall die Schriftauflösung plattformübergreifend machen, bevor die Validierung unter Windows ausgeführt wird. Dieser Punkt steht in [NEXT_STEPS.md](NEXT_STEPS.md).
+**Schriftpfad-Korrektur (P1):** `validate_pilot.py` verwendet nun den plattformübergreifenden `label_font`-Fallback des Pilotgenerators statt eines festgelegten Linux-Pfades. Der Lauf unter Windows und mit dem echten Originalbild ist noch nicht verifiziert. Die 1:1-Detailbögen und Messdaten sind reproduzierbar vorgesehen, aber **noch nicht anhand des echten Originals in dieser Sitzung erzeugt oder visuell freigegeben**; siehe [P1-Review](reviews/p1-detail-diagnostics-2026-10-28.md).
 
 ## Was NICHT angenommen wurde
 
@@ -87,4 +88,4 @@ python artwork/avatars/v3/prototypes/male_09_color_masks/validate_pilot.py --sou
 
 Neue Arbeiten als **kleine Charge** im Git ablegen. Nach jeder Arbeitssitzung: betroffene Dateien, verwendete Referenzen, tatsächliche Tests, Bildvergleich, Fehler, Nutzerfreigabe und nächste Aufgabe in `NEXT_STEPS.md` sowie einem Review unter `reviews/` aktualisieren. Metriken nicht mit Sichtfreigaben gleichsetzen. Bei geänderter Entscheidung `DECISIONS.md` aktualisieren und den alten [Grafikplan](AVATAR_GRAPHICS_PLAN.md) widerspruchsfrei nachziehen.
 
-**Unmittelbar nächster Auftrag:** [NEXT_STEPS.md, P1](NEXT_STEPS.md).
+**Unmittelbar nächster Auftrag:** [NEXT_STEPS.md, P1 fortsetzen](NEXT_STEPS.md), echten Master ansehen und Masken korrigieren; P2 bleibt offen.
