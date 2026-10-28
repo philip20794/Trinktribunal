@@ -1,6 +1,6 @@
 # Spielkonzept und Regeln
 
-> Fachliche Vorgaben für Trinktribunal. „Partie“ bezeichnet das gesamte Spiel bis zum eingestellten Ende; „Fall“ ist eine einzelne Frage/Aussage mit Sortierung und Urteil.
+> Fachliche Vorgaben für Trinktribunal. Ergänzung [D-19](decisions/D-19-gameplay-flow-adjustments.md) ist ab TT-079 spezifiziert; die neuen Abläufe werden erst in TT-080–084 implementiert. „Partie“ bezeichnet das gesamte Spiel bis zum eingestellten Ende; „Fall“ ist eine einzelne Frage/Aussage mit Sortierung und Urteil.
 
 ## Partie und Einstellungen
 
@@ -14,7 +14,7 @@
 
 Die geheimen Zahlen werden pro Fall **ohne Wiederholung** aus `1..X` vergeben (beim normalen Modus an alle außer dem Richter, bei „Alle sind Richter“ an alle). `X` muss mindestens so groß sein wie die Zahl der Empfänger. Der eingestellte Faktor bleibt während einer Partie fest; bei geänderter Spielerzahl wird `X` **ab dem nächsten Fall** neu berechnet.
 
-**Entscheidung D-01 (26.10.2026):** Die 50 Fälle sind **50 Fragen/Aussagen**. Die 7 zusätzlichen Trinkregel-Ereignisse werden zwischen regulären Fällen eingefügt, ohne die 50 Fälle zu verbrauchen. Ein Ereignis kann frühestens nach dem ersten Fall, spätestens vor dem letzten Fall auftreten; pro Zwischenraum höchstens ein Ereignis. Die `F−1` Zwischenräume werden für die gewünschte, bei kurzen Partien begrenzte Anzahl an Ereignissen in möglichst gleich große Abschnitte geteilt und pro Abschnitt wird zufällig ein Zwischenraum gewählt. Direkt benachbarte Slots sind bei genügend Zwischenräumen ausgeschlossen; sind sie unvermeidbar (F=3/R=2), bleiben sie erlaubt (D-01). Für nur einen Fall gibt es kein Regelereignis. Fallen Regeln wegen fehlender gültiger Kandidaten aus, wird dies als geringere tatsächliche Ereignisanzahl angezeigt. Ein Standardspiel umfasst also **50 Fragen und bis zu 7 Regelereignisse**.
+**Entscheidung D-01 (26.10.2026):** Die 50 Fälle sind **50 abgeschlossene reguläre Fälle**. Nach D-19 kann ein Fall mehrere nacheinander gezeigte Fragen verbrauchen; ein Kartenwechsel allein zählt keinen Fall. Die 7 zusätzlichen Trinkregel-Ereignisse werden zwischen regulären Fällen eingefügt, ohne die 50 Fälle zu verbrauchen. Ein Ereignis kann frühestens nach dem ersten Fall, spätestens vor dem letzten Fall auftreten; pro Zwischenraum höchstens ein Ereignis. Die `F−1` Zwischenräume werden für die gewünschte, bei kurzen Partien begrenzte Anzahl an Ereignissen in möglichst gleich große Abschnitte geteilt und pro Abschnitt wird zufällig ein Zwischenraum gewählt. Direkt benachbarte Slots sind bei genügend Zwischenräumen ausgeschlossen; sind sie unvermeidbar (F=3/R=2), bleiben sie erlaubt (D-01). Für nur einen Fall gibt es kein Regelereignis. Fallen Regeln wegen fehlender gültiger Kandidaten aus, wird dies als geringere tatsächliche Ereignisanzahl angezeigt. Ein Standardspiel umfasst also **50 Fragen und bis zu 7 Regelereignisse**.
 
 ### Zufallsauswahl mit rollierender 6-Stunden-Historie
 
@@ -36,6 +36,14 @@ Die beiden lokalen Modi teilen sich ihre Historie auf derselben App-/Browserinst
 **Fallabschluss ohne Urteil (D-07):** Wird ein bereits angezeigter regulärer Fall ausdrücklich und bestätigt beendet, gilt er als **abgeschlossen und zählt zur Zielfallzahl**, auch ohne vollständige Sortierung. Es wird keine Ersatzfrage für dieselbe Fallnummer gezogen. Ohne gültiges Urteil gibt es keine erfundenen Fehlpositionen oder automatisch zugewiesenen Schlucke; der Zustand ist „abgeschlossen ohne Urteil“, nicht „0 Fehler“. Die Frage bleibt gezogen und die vorhandenen fairen Spielerbindungen/Zähler bleiben unverändert. Die normale Richterrotation, die nächste Fallgrenze und ein dort geplantes Trinkregel-Ereignis laufen jeweils **einmal** weiter. Ein Verbindungsabbruch allein zählt keinen Fall; es braucht eine ausdrückliche, autorisierte Abschlussaktion. Nach F abgeschlossenen Fällen endet die Partie, auch wenn ein Fall ohne Urteil darunter war. Siehe [D-07-Beschluss](decisions/D-07-interrupted-case-completion.md).
 
 Trinkregel-Ereignisse haben **keine geheime Zahl, keine Sortierung und keinen Richterwechsel**; sie werden eingeblendet und anschließend geht es mit dem nächsten Fall weiter. Wenn die eingestellte Zahl der Fälle erreicht ist, endet die Partie; eine neue Partie kann jederzeit manuell gestartet werden.
+
+## Kartenwechsel, Weiter und allgemeine Hilfe (D-19)
+
+Der aktuelle Richter darf reguläre Fallakten über Refresh oben links durch neue geeignete Fragen ersetzen; bei „Alle sind Richter“ darf das der Vorleser, nicht der Host allein. Fallnummer, Zahlen, Besetzung, Richter/Vorleser und Regelplan bleiben unverändert. Jede ersetzte gezeigte Frage bleibt verbraucht und in der 6h-Historie; neue faire Rollenbindung ohne Rücknahme alter Zähler. Neue Frageinstanz, alle alten Eingaben/Ordnungen verworfen, Anzeigen verdeckt. Nach der ersten öffentlichen digitalen Zahl bzw. nach Urteil ist Refresh gesperrt; Regelkarten werden nicht ersetzt. Ohne Kandidaten bleibt der Fall unverändert.
+
+Normales Weiter zeigt keine manuelle Fehler-/Schluck-/Personenabfrage. Im Kartenmodus wird der gespielte Fall ohne App-Wertung abgeschlossen; digitale Modi behalten ihre automatische Wertung. D-07 bleibt eine getrennte bestätigte vorzeitige Abschlussaktion. Im Ein-Handy-Modus bedeutet Weiter auf der Fallakte dagegen nur Übergabe: neutrale Personenseite → „Ich bin …“ → eigene private Seite mit Halten zum Anzeigen → „Fertig – weiter zum nächsten Spieler“ → Richterübergabe. Der vorige Richter erhält ab dem zweiten Fall zuerst eine Zahl, sofern er noch aktiver Empfänger ist. Fallakte und Geheimzahl erscheinen nicht auf derselben Seite.
+
+„Spielregeln“ erklärt jederzeit DE/EN-Grundregeln von Start und laufender Partie aus; „Aktive Trinkregeln“ zeigt separat die tatsächlich aktiven Zusatzregeln. Keine Navigation löst von sich aus Fallabschluss oder Strafen aus. Verbindliche Rollen-/Phasen-/Historien-/Restoredetails: [D-19](decisions/D-19-gameplay-flow-adjustments.md).
 
 ## Trinkregeln als JSON
 

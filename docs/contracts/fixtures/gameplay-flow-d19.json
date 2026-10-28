@@ -1,0 +1,570 @@
+{
+  "formatVersion": 1,
+  "status": "SPECIFICATION_ONLY",
+  "decision": "D-19",
+  "implementationTasks": [
+    "TT-080",
+    "TT-081",
+    "TT-082",
+    "TT-083",
+    "TT-084"
+  ],
+  "invariants": {
+    "renewedIdentity": "roundId identifies question instance, not completed case count",
+    "retained": [
+      "gameId",
+      "completedCases",
+      "config",
+      "frozenRoster",
+      "numberRecipients",
+      "numbers",
+      "judgeId",
+      "readerId",
+      "ruleSlots",
+      "activeRules",
+      "pendingRoster"
+    ],
+    "cleared": [
+      "acknowledged",
+      "answerReady",
+      "orders",
+      "revealOrder",
+      "visibleSecret",
+      "unsubmittedDrafts"
+    ],
+    "history": "all displayed question draws retained; fresh eventId per successful draw"
+  },
+  "rerolls": [
+    {
+      "id": "online-normal-numbers",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "numbers",
+      "revealCursor": 0,
+      "actor": "judge",
+      "outcome": "accepted",
+      "nextPhase": "numbers",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 1,
+        "newQuestionInstance": true,
+        "clearsDrafts": true,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "online-normal-answers",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "answers",
+      "revealCursor": 0,
+      "actor": "judge",
+      "outcome": "accepted",
+      "nextPhase": "numbers",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 1,
+        "newQuestionInstance": true,
+        "clearsDrafts": true,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "online-normal-ordering",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "ordering",
+      "revealCursor": 0,
+      "actor": "judge",
+      "outcome": "accepted",
+      "nextPhase": "numbers",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 1,
+        "newQuestionInstance": true,
+        "clearsDrafts": true,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "online-normal-revealing",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "revealing",
+      "revealCursor": 0,
+      "actor": "judge",
+      "outcome": "accepted",
+      "nextPhase": "numbers",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 1,
+        "newQuestionInstance": true,
+        "clearsDrafts": true,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "online-reader",
+      "mode": "multiplayer",
+      "allJudges": true,
+      "phase": "ordering",
+      "revealCursor": 0,
+      "actor": "reader",
+      "outcome": "accepted",
+      "nextPhase": "numbers",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 1,
+        "newQuestionInstance": true,
+        "clearsDrafts": true,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "host-not-judge",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "ordering",
+      "revealCursor": 0,
+      "actor": "host_only",
+      "outcome": "rejected",
+      "reason": "unauthorized",
+      "nextPhase": "ordering",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "guest",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "numbers",
+      "revealCursor": 0,
+      "actor": "participant",
+      "outcome": "rejected",
+      "reason": "unauthorized",
+      "nextPhase": "numbers",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "public-number",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "revealing",
+      "revealCursor": 1,
+      "actor": "judge",
+      "outcome": "rejected",
+      "reason": "public_reveal_started",
+      "nextPhase": "revealing",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "judged",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "judged",
+      "revealCursor": 3,
+      "actor": "judge",
+      "outcome": "rejected",
+      "reason": "invalid_phase",
+      "nextPhase": "judged",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "rule",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "rule_event",
+      "revealCursor": 0,
+      "actor": "judge",
+      "outcome": "rejected",
+      "reason": "invalid_phase",
+      "nextPhase": "rule_event",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "paused",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "paused",
+      "revealCursor": 0,
+      "actor": "judge",
+      "outcome": "rejected",
+      "reason": "invalid_phase",
+      "nextPhase": "paused",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "lobby",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "lobby",
+      "revealCursor": 0,
+      "actor": "judge",
+      "outcome": "rejected",
+      "reason": "invalid_phase",
+      "nextPhase": "lobby",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "finished",
+      "mode": "multiplayer",
+      "allJudges": false,
+      "phase": "finished",
+      "revealCursor": 0,
+      "actor": "judge",
+      "outcome": "rejected",
+      "reason": "invalid_phase",
+      "nextPhase": "finished",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "physical-card",
+      "mode": "physical_cards",
+      "phase": "case_presented",
+      "revealCursor": 0,
+      "actor": "local_judge",
+      "outcome": "accepted",
+      "nextPhase": "case_presented",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 1,
+        "newQuestionInstance": true,
+        "clearsDrafts": true,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "shared-before-reveal",
+      "mode": "shared_phone",
+      "phase": "ordering",
+      "revealCursor": 0,
+      "actor": "local_judge",
+      "outcome": "accepted",
+      "nextPhase": "case_presented",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 1,
+        "newQuestionInstance": true,
+        "clearsDrafts": true,
+        "secretVisible": false
+      }
+    },
+    {
+      "id": "empty-candidates",
+      "mode": "multiplayer",
+      "phase": "answers",
+      "revealCursor": 0,
+      "actor": "judge",
+      "eligibleUnusedCandidates": 0,
+      "outcome": "no_candidate",
+      "nextPhase": "answers",
+      "expected": {
+        "completedCasesDelta": 0,
+        "rotationDelta": 0,
+        "ruleActivationsDelta": 0,
+        "numbersPreserved": true,
+        "historyDrawDelta": 0,
+        "newQuestionInstance": false,
+        "clearsDrafts": false,
+        "secretVisible": false
+      }
+    }
+  ],
+  "advances": [
+    {
+      "id": "played-physical",
+      "mode": "physical_cards",
+      "from": "case_presented",
+      "intent": "normal_next",
+      "confirmation": false,
+      "manualPenaltyDialog": false,
+      "completion": "played_without_recorded_verdict",
+      "score": null,
+      "completedCasesDelta": 1
+    },
+    {
+      "id": "judged-shared",
+      "mode": "shared_phone",
+      "from": "judged",
+      "intent": "normal_next",
+      "confirmation": false,
+      "manualPenaltyDialog": false,
+      "completion": "judged",
+      "score": "preserved_automatic",
+      "completedCasesDelta": 1
+    },
+    {
+      "id": "judged-online",
+      "mode": "multiplayer",
+      "from": "judged",
+      "actor": "host",
+      "intent": "normal_next",
+      "confirmation": false,
+      "manualPenaltyDialog": false,
+      "completion": "judged",
+      "score": "preserved_automatic",
+      "completedCasesDelta": 1
+    },
+    {
+      "id": "handoff-next",
+      "mode": "shared_phone",
+      "from": "case_presented",
+      "intent": "within_case_next",
+      "confirmation": false,
+      "manualPenaltyDialog": false,
+      "next": "recipient_handoff",
+      "completedCasesDelta": 0
+    },
+    {
+      "id": "explicit-d07",
+      "mode": "multiplayer",
+      "from": "numbers",
+      "actor": "host",
+      "intent": "abort_without_verdict",
+      "confirmation": true,
+      "manualPenaltyDialog": false,
+      "completion": "completed_without_verdict",
+      "score": null,
+      "repeatedIdenticalActions": 2,
+      "completedCasesDelta": 1
+    },
+    {
+      "id": "cancel-d07",
+      "mode": "shared_phone",
+      "from": "answers",
+      "intent": "cancel_abort_dialog",
+      "confirmation": false,
+      "manualPenaltyDialog": false,
+      "completedCasesDelta": 0
+    }
+  ],
+  "handoffOrderExamples": [
+    {
+      "id": "first-round",
+      "seats": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "judge": "a",
+      "previousJudge": null,
+      "expected": [
+        "b",
+        "c",
+        "d"
+      ]
+    },
+    {
+      "id": "old-judge-first",
+      "seats": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "judge": "b",
+      "previousJudge": "a",
+      "expected": [
+        "a",
+        "c",
+        "d"
+      ]
+    },
+    {
+      "id": "old-judge-removed",
+      "seats": [
+        "b",
+        "c",
+        "d",
+        "e"
+      ],
+      "judge": "c",
+      "previousJudge": "a",
+      "expected": [
+        "d",
+        "e",
+        "b"
+      ]
+    },
+    {
+      "id": "three-people",
+      "seats": [
+        "a",
+        "b",
+        "c"
+      ],
+      "judge": "b",
+      "previousJudge": "a",
+      "expected": [
+        "a",
+        "c"
+      ]
+    },
+    {
+      "id": "twenty-people",
+      "seats": [
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8",
+        "p9",
+        "p10",
+        "p11",
+        "p12",
+        "p13",
+        "p14",
+        "p15",
+        "p16",
+        "p17",
+        "p18",
+        "p19"
+      ],
+      "judge": "p10",
+      "previousJudge": "p9",
+      "expected": [
+        "p9",
+        "p11",
+        "p12",
+        "p13",
+        "p14",
+        "p15",
+        "p16",
+        "p17",
+        "p18",
+        "p19",
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8"
+      ]
+    }
+  ],
+  "privatePage": {
+    "containsQuestion": false,
+    "persistVisibleFlag": false,
+    "restoreStage": "recipient_handoff_same_person",
+    "visibleOnlyOn": [
+      "holdDown"
+    ],
+    "hiddenOn": [
+      "holdUp",
+      "pointerCancel",
+      "focusLost",
+      "routeLost",
+      "dialog",
+      "background",
+      "resume",
+      "error",
+      "nextRecipient",
+      "newQuestionInstance"
+    ],
+    "keyboard": [
+      "space_down/up",
+      "enter_down/up"
+    ],
+    "duplicateNext": "same instance and recipient token cannot advance twice"
+  }
+}

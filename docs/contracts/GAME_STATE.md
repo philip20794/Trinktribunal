@@ -1,11 +1,11 @@
 # Technischer Zustands- und Aktionsvertrag (TT-003)
 
-Stand: 26.10.2026 · **Implementierungsvorlage, noch nicht lokal abgenommen**. Dieser Vertrag konkretisiert die bereits beschlossenen D-01 bis D-18, er ersetzt keine dieser Entscheidungen. Änderungen an Zahlen, Rollenrechten oder Ablauf erfordern eine dokumentierte Änderung des entsprechenden D-Beschlusses. Die technische Umsetzung erfolgt nach dem [Implementierungsplan](../IMPLEMENTATION_PLAN.md); konkrete sprachübergreifende Beispiele liegen in [packages/protocol](../../packages/protocol/README.md).
+Stand: Grundvertrag 26.10.2026, D-19-Ergänzung 28.10.2026 · **D-19 spezifiziert; neue Spiellogik noch nicht implementiert**. Dieser Vertrag konkretisiert die bereits beschlossenen D-01 bis D-18, er ersetzt keine dieser Entscheidungen. Änderungen an Zahlen, Rollenrechten oder Ablauf erfordern eine dokumentierte Änderung des entsprechenden D-Beschlusses. Die technische Umsetzung erfolgt nach dem [Implementierungsplan](../IMPLEMENTATION_PLAN.md); konkrete sprachübergreifende Beispiele liegen in [packages/protocol](../../packages/protocol/README.md).
 
 ## 1. Begriffe und Autorität
 
-- **Partie** (`gameId`): F reguläre Fragen; Regelereignisse sind Zusatzereignisse und **keine** Fälle.
-- **Fall** (`roundId`): genau eine angezeigte Frage und ein eingefrorener Teilnehmerstand mit Nummern und ggf. einem Urteil. Abschluss entweder `judged` oder `completed_without_verdict`.
+- **Partie** (`gameId`): F abgeschlossene reguläre Fälle; Regelereignisse sind Zusatzereignisse und **keine** Fälle.
+- **Fall:** logische Fortschrittsposition `(gameId, completedCases + 1)` mit eingefrorenen Teilnehmern/Zahlen. **Frageinstanz** (`roundId`): eine konkrete gezeigte Karte; erfolgreicher D-19-Wechsel erneuert sie innerhalb desselben Falls. Abschluss entweder `judged`, normaler physischer Fall `played_without_recorded_verdict` oder bestätigter D-07-Marker `completed_without_verdict`.
 - **Zwischenraum/Slot**: Nummer 1 bis F−1, **nach** dem jeweiligen gezählten Fall. Ereignispläne werden bei Partiestart gespeichert und danach nicht neu ausgewürfelt.
 - **Modus**: `physical_cards` (nur Anzahl, keine Spieler-IDs und keine personengebundenen Inhalte), `shared_phone` (lokale IDs), `multiplayer` (Raum, WebSockets, Serverautorität). Nur Multiplayer darf `allJudges=true` haben.
 - **Host**: Raumsteuerung, nicht automatisch Richter. **Richter**: ordnet beim normalen Spiel. **Vorleser**: rotierende organisatorische Rolle bei `allJudges=true`, weder Richter noch Hostersatz.
@@ -68,6 +68,7 @@ ContentHistory {
 | `ordering` | Richter setzt im Normalmodus endgültig eine Permutation der N−1 IDs; alle Richter geben je eine **private** Permutation aller N IDs ab |
 | `revealing` | Autorisierte Schritte erhöhen `revealCursor` monoton; veröffentlicht werden ausschließlich bereits freigegebene Zahlen |
 | `judged` | Normales Urteil: falsch platzierte Positionen = Fehler E, Richter und **jeder** falsch platzierte Spieler trinken E; alle Richter: jede Person erhält nur ihre **eigenen** Fehlpositionen als Schluckzahl |
+| `played_without_recorded_verdict` | Normales Weiter im physischen Kartenmodus ohne Wertungsdialog; genau eine Fallgrenze, keine erfundenen Fehler/Schlucke |
 | `completed_without_verdict` | Nur ausdrücklich bestätigter Abbruch eines bereits angezeigten Falls; E/Schlucke **null nicht setzen**, sondern `null`; Frage bleibt verbraucht |
 | `rule_event` | Genau ein geplanter Zwischenraum, Regel bei Erreichen fachlich wählen/aktivieren oder Slot `skipped` markieren; keine Fallzählung/Rotation |
 | `paused` | Bei weniger als 3 wirksamen Spielern oder unerwarteter Inhaltserschöpfung; keine automatische Ersatzfrage/-wertung; Grund explizit |
@@ -75,7 +76,7 @@ ContentHistory {
 
 Der konkrete Client kann die feingranularen Phasen für Kartenmodus zusammenfassen. Die fachlichen Guards (eindeutiges `roundId`, aktiver Fall, keine fremden Abgaben, persistierter Reveal-Cursor) gelten trotzdem. Vor der **ersten** erfolgreichen Frageanzeige/Commit wird weder Inhalt noch Person gezählt. Ein schon angezeigter Fall wird nicht durch technischen Fehler oder Disconnect als beendet betrachtet.
 
-**Fallgrenze:** Nach `judged` oder `completed_without_verdict` den `completedCases`-Zähler **genau einmal** erhöhen; dann ausstehende Besetzung übernehmen, Nachfolger gemäß D-06 ermitteln, bei N<3 pausieren; bei `completedCases < F` zuerst gegebenenfalls geplanten Regel-Slot `afterCase=completedCases` genau einmal behandeln, dann nächsten Fall; bei `completedCases = F` unmittelbar `finished`. Ein ausgefallener Regel-Slot bleibt nicht erneut versuchbar, sobald er als `skipped` committed wurde. Pause vor einer noch offenen Regelaktion erhält deren `pending`-Status.
+**Fallgrenze:** Nach `judged`, `played_without_recorded_verdict` oder `completed_without_verdict` den `completedCases`-Zähler **genau einmal** erhöhen; dann ausstehende Besetzung übernehmen, Nachfolger gemäß D-06 ermitteln, bei N<3 pausieren; bei `completedCases < F` zuerst gegebenenfalls geplanten Regel-Slot `afterCase=completedCases` genau einmal behandeln, dann nächsten Fall; bei `completedCases = F` unmittelbar `finished`. Ein ausgefallener Regel-Slot bleibt nicht erneut versuchbar, sobald er als `skipped` committed wurde. Pause vor einer noch offenen Regelaktion erhält deren `pending`-Status.
 
 ## 5. Rechte-/Aktionstabelle
 
@@ -89,6 +90,7 @@ TT-043 implementiert diese Guards im reinen TypeScript-Reducer `apps/server/src/
 | `join`/`leave`/`kick`/`reorderRoster` | Modus 2 lokal (Modus 1 nur Spielerzahl vor Start) | Join eigener Identität; Kick/Reorder durch Host; wirksam ab nächster Fallgrenze |
 | `editOwnProfile` | lokal, per stabiler ID | jeweils nur eigene Identität; Host verwaltet die Gruppe, nicht fremde private Daten |
 | `drawNextCase`/`activateRuleEvent` | lokale autorisierte Bedienung | Host gesteuerter Übergang; Auswahl/Commit ausschließlich serverseitig |
+| `rerollCurrentQuestion` | lokale Richterbedienung vor öffentlicher digitaler Zahl; Kartenmodus aktive Fallakte | aktueller Richter bzw. Vorleser; nicht Host allein, Cursor 0, aktive Frageinstanz; atomare neue Instanz ohne Fallgrenze |
 | `acknowledgeOwnNumber` | diskrete lokale Übergabe | nur identifizierter Nummernempfänger, eigene `roundId` |
 | `submitOrder` | lokaler Richter | normal: aktueller Richter; alle Richter: nur jeweiliger Teilnehmer, je eigener Entwurf |
 | `revealNext`/`completeVerdict` | lokale autorisierte Bedienung | vom Server geprüfte Phasen-/Steuerberechtigung, keine vorzeitige Freigabe |
@@ -135,3 +137,9 @@ Verarbeitungsreihenfolge: **(1)** Authentifizierung/Absenderrechte, **(2)** beka
 ## 8. Prüfbasis und noch offene Umsetzung
 
 Die JSON-Beispiele in [fixtures/rules](../../packages/protocol/fixtures/rules/) und [fixtures/transitions](../../packages/protocol/fixtures/transitions/) sind **fachliche Ein-/Ausgabe-Beispiele**, noch keine ausführbare Dart-/TypeScript-Engine. Vor TT-003-Abnahme: Beispiele am Tisch nachspielen, JSON/Fixture-IDs/Links prüfen, dieselben Fälle gegen spätere Dart- und TypeScript-Tests binden. Außerdem müssen zuerst die gemäß Plan vorgeordneten TT-001 und TT-002 auf Windows abgenommen werden. Nutzungsrechte der übernommenen Inhalte bleiben ein eigenständiges Release-Gate (TT-061/065) und sind durch dieses Dokument nicht freigegeben.
+
+## D-19 – neue Frageinstanz und getrennte Übergabe (TT-079)
+
+[D-19](../decisions/D-19-gameplay-flow-adjustments.md) und [Referenzmatrix](fixtures/gameplay-flow-d19.json) präzisieren den Sollzustand für TT-080–084. Ein Kartenwechsel erneuert `roundId`/Ziehereignis und Rollenbindung, erhält Zahlen/Richter/Regelplan/Fallposition und setzt Bestätigungen/Bereitschaft/Ordnungen/Anzeigezustände zurück. Keine Auswahl bedeutet keine Domänenmutation. Digital zulässig in `numbers`, `answers`, `ordering`, `revealing` mit Cursor 0; nach erster öffentlicher Zahl oder Urteil gesperrt. Alte Instanz-Aktionen und UI-Entwürfe bleiben unwirksam. Online-Protokollerweiterung ist erst mit TT-081 versioniert auszuliefern; aktuelle Codecs/Fixtures sind dadurch noch nicht geändert.
+
+Lokales Ein-Handy: `case_presented` → `recipient_handoff` → `recipient_number` (Hold nur flüchtig) → nächste Übergabe → `judge_handoff` → `answers` → `ordering` → `revealing` → `judged`. Die Übergabeetappen sind lokale Ansichten, keine neuen öffentlichen Onlinephasen. Restore einer privaten Etappe verlangt erneute Übernahme derselben Person; Anzeigezustand wird nie persistiert. Die neuen lokalen Snapshotetappen sind bei Implementierung explizit zu versionieren/migrieren. D-19 regelt die Reihenfolge bei altem/neuem Richter und ausstehenden Besetzungsänderungen vollständig.

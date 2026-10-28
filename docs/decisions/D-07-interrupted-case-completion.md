@@ -25,7 +25,7 @@
 ## Fehlende Spieler, Zahlenannahmen, Bereitschaft und Abgaben
 
 - **Keine automatische Beendigung und keine automatische Ersatzabgabe aufgrund einer Wartefrist.** Ein kurzfristiger Disconnect ändert die eingefrorene Teilnehmerliste nicht. Fehlende Geheimzahlbestätigung, Ready-Aktion, Richterordnung oder private Ordnung bei „Alle sind Richter“ halten die betroffene Phase im erklärten Wartezustand; die Benutzer sehen, **wer noch fehlt**, ohne private Zahlen/Ordnungen zu erfahren.
-- Der **Host** darf während einer solchen blockierten Phase einen bereits angezeigten Fall ausdrücklich über „Fall ohne Urteil abschließen“ und einen zusätzlichen Bestätigungsdialog beenden; das ist die **einzige** Abkürzung ohne vollständige gültige Abgaben. Im gemeinsamen Ein-Handy-Modus bestätigt die Gruppe die lokale Aktion. Der normale Richter erhält dadurch **keine** Hostrechte, und der Host darf weder fremde Zahlen noch fremde Sortierungen stellvertretend abgeben.
+- Der **Host** darf während einer solchen blockierten Phase einen bereits angezeigten Fall ausdrücklich über „Fall ohne Urteil abschließen“ und einen zusätzlichen Bestätigungsdialog beenden; das ist die **einzige** Abkürzung zum Fallabschluss ohne vollständige gültige Abgaben. Im gemeinsamen Ein-Handy-Modus bestätigt die Gruppe die lokale Aktion. Der normale Richter erhält dadurch **keine** Hostrechte, und der Host darf weder fremde Zahlen noch fremde Sortierungen stellvertretend abgeben.
 - Werden fehlende, eingefrorene Teilnehmer später wieder verbunden, können sie in der ursprünglichen Phase regulär fortfahren, solange noch kein bestätigter Abschluss erfolgt ist. Nach einem solchen Abschluss sind spätere Eingaben der alten `roundId` unwirksam.
 - Ein **echter Austritt/Kick** wird zwar als ausstehende Besetzungsänderung für die nächste Fallgrenze vermerkt, er korrigiert aber eine schon laufende geheime Vergabe oder bestätigte Ordnung **nicht rückwirkend**. Die bestehende Phase wartet daher auf eine zulässige vollständige Abgabe oder den bewussten Hostabschluss ohne Urteil.
 - Fällt der Host selbst aus, greift D-08: zunächst bis zu 90 Sekunden Host-Reconnect und dann eine atomare Hostübernahme. Ein wartender Fall wird deshalb nicht automatisch abgeschlossen. Ist niemand zur Hostübernahme verfügbar, bleibt die Partie bis zum Wiederbeitritt oder D-12-Raumablauf stehen.
@@ -36,3 +36,7 @@
 Warte-/Abbruchrechte und Verhalten bei fehlenden Abgaben sind hier verbindlich geregelt. Die rein technischen Phasencodes, Fehlermeldungen und Idempotenzfixtures entstehen in TT-043.
 
 **Implementierungsaufgaben offen:** TT-003, TT-007, TT-010, TT-024, TT-026, TT-043, TT-045, TT-047, TT-050, TT-053, TT-058. Keine App-/Serverlogik wurde hiermit bereits implementiert.
+
+## Ergänzung D-19 (28.10.2026)
+
+[D-19](D-19-gameplay-flow-adjustments.md) spezifiziert zusätzliche Kartenwechsel innerhalb eines Falls: gezeigte alte Fragen, ihre Historie und Personenbindungen bleiben wirksam; keine Fallzählung oder Rotation beim Wechsel. Eine neue Frageinstanz verwirft alte Eingaben und verdeckt unveränderte Zahlen. Nach erster öffentlicher digitaler Zahl ist Refresh gesperrt. Normales ungewertetes Weiter bei physischen Karten ist von bestätigtem D-07-Abschluss getrennt. Die Implementierung folgt in TT-080–084; bestehende Datenschutz-/Auswahlregeln bleiben erhalten.

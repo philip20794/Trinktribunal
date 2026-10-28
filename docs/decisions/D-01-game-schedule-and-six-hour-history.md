@@ -36,3 +36,7 @@
 - Sprachwechsel DE↔EN umgeht die 6-Stunden-Präferenz nicht, weil IDs sprachneutral sind; abgelaufene Raum-/Geräteverläufe und fehlende lokale Persistenz führen zu kontrolliertem Verhalten.
 
 **Noch nicht implementiert:** Dieser Beschluss ist eine Fachvorgabe. Sämtliche zugehörigen Code- und Testaufgaben bleiben offen.
+
+## Ergänzung D-19 (28.10.2026)
+
+[D-19](D-19-gameplay-flow-adjustments.md) spezifiziert zusätzliche Kartenwechsel innerhalb eines Falls: gezeigte alte Fragen, ihre Historie und Personenbindungen bleiben wirksam; keine Fallzählung oder Rotation beim Wechsel. Eine neue Frageinstanz verwirft alte Eingaben und verdeckt unveränderte Zahlen. Nach erster öffentlicher digitaler Zahl ist Refresh gesperrt. Normales ungewertetes Weiter bei physischen Karten ist von bestätigtem D-07-Abschluss getrennt. Die Implementierung folgt in TT-080–084; bestehende Datenschutz-/Auswahlregeln bleiben erhalten.

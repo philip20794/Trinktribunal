@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. Neu und OFFEN: M7.4 (TT-079–084) für die Spielfunktionen; danach M7.5 (TT-071–078) für die UI. Nächste Aufgabe TT-079; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 133 Node-/411 Flutter-/427 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4 in Arbeit: TT-079 spezifiziert, TT-080–084 offen; danach M7.5 (TT-071–078). Nächste Aufgabe TT-080; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 137 Node-/411 Flutter-/427 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -50,7 +50,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M5 | TT-043–TT-050 | ERLEDIGT | Normales Online-Spiel mit 3 Fällen + 2 Regeln, D-07, Neustart, privater eigener Historie und Unit-Gates geprüft; Browser/E2E übersprungen, später manuell testen · [M5](qa/M5.md) |
 | M6 | TT-051–TT-058 | ERLEDIGT | Beide Modi mit 8 Teilnehmern/50 Fällen/7 Regeln und Störfolge, 20 unabhängige Ordnungen, 21. Join abgelehnt; Browser/E2E übersprungen, später manuell testen · [M6](qa/M6.md) |
 | M7 | TT-059–TT-064 | ERLEDIGT | Sicherheit, Avatare, Inhaltsreview, Renderer-/Kostenmodell und Bedienbarkeit nach Unit-Gates geprüft; Browser/Geräte übersprungen, später manuell testen · [M7](qa/M7.md). |
-| **M7.4** | **TT-079–TT-084** | **OFFEN** | Kartenwechsel, vereinfachtes Weiter, allgemeine Spielregeln und getrennte Ein-Handy-Zahlenübergabe; [M7.4-Gate](qa/M7_4.md). |
+| **M7.4** | **TT-079–TT-084** | **IN ARBEIT** | TT-079 spezifiziert;  Kartenwechsel, vereinfachtes Weiter, allgemeine Spielregeln und getrennte Ein-Handy-Zahlenübergabe; [M7.4-Gate](qa/M7_4.md). |
 | **M7.5** | **TT-071–TT-078** | **OFFEN** | Redesign **nach TT-084**, anhand der [Screenreferenzen](design/references/screens/README.md); [Abnahmeprotokoll](qa/M7_5.md) ist noch leer. |
 | M8 | TT-065–TT-070 | IN ARBEIT | Rechteregister/Gate vorhanden, TT-065 extern blockiert; TT-066–068 können parallel vorbereitet werden. TT-069 setzt zusätzlich TT-084 und TT-078 voraus. |
 
@@ -140,7 +140,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-076 | Kartenmodus, Regeln und lokale UI angleichen | OFFEN | — |
 | TT-077 | Lobby und Multiplayer-Ansichten angleichen | OFFEN | — |
 | TT-078 | UI- und Layout-Regression abschließen | OFFEN | — |
-| TT-079 | Neue Abläufe und Phasenverträge spezifizieren (D-19) | OFFEN | — |
+| TT-079 | Neue Abläufe und Phasenverträge spezifizieren (D-19) | ERLEDIGT | D-19 und maschinenlesbare Sollmatrix, vier neue Vertragsprüfungen; Produktcode unverändert · [M7.4](qa/M7_4.md). |
 | TT-080 | Fragenkarten im Spielkern beliebig neu ziehen | OFFEN | — |
 | TT-081 | Refresh-Aktion in allen drei Spielvarianten | OFFEN | — |
 | TT-082 | Weiter ohne Strafpopup und allgemeine Spielregeln | OFFEN | — |
@@ -174,7 +174,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-079 – die neuen Spielabläufe und D-19 spezifizieren.** Darauf folgen TT-080–084; erst dann TT-071/M7.5. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-080 – Kartenwechsel im lokalen/serverseitigen Kern.** TT-079 ist spezifiziert; darauf folgen TT-081–084; erst dann TT-071/M7.5. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -197,9 +197,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: Integration des Nutzerstands c1b4c4a mit lokalem TT-065-Register 19f8084; TT-066 noch ohne Codeänderung
-Aktueller Beleg: docs/qa/M7.md; 133 Node-/411 Flutter-/427 Server-Tests grün
-Naechster Schritt: TT-079 Fachänderungen D-19 und Phasenvertrag spezifizieren; TT-080–084 danach, erst dann TT-071–078 für UI. Parallel TT-065: Herkunfts-/Nutzungsregister vorhanden, externe Nachweise beim Nutzer angefragt und offen und bei erfüllten Abhängigkeiten TT-066 vorbereiten. TT-069 erst nach TT-084 und TT-078. Avatar v3 bleibt ein eigener Grafik-Workstream; keine v3-Runtime behaupten.
+Branch: task/TT-079-gameplay-contract auf Merge d7a4798; Nutzerstand c1b4c4a und Rechteregister erhalten; TT-066 noch ohne Codeänderung
+Aktueller Beleg: docs/qa/M7.md; 137 Node-/411 Flutter-/427 Server-Tests grün
+Naechster Schritt: TT-080 D-19-Kartenwechsel im Kern, zehn Rerolls mit gleichen Zahlen/Richter/Slots; neue roundId je Frage, Historie/D-05-Zähler erhalten. Danach TT-081–084, erst dann TT-071–078. Parallel TT-065: Herkunfts-/Nutzungsregister vorhanden, externe Nachweise beim Nutzer angefragt und offen und bei erfüllten Abhängigkeiten TT-066 vorbereiten. TT-069 erst nach TT-084 und TT-078. Avatar v3 bleibt ein eigener Grafik-Workstream; keine v3-Runtime behaupten.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

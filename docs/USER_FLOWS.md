@@ -1,9 +1,12 @@
 # Screens und Nutzerabläufe
 
+**Sollablauf nach [D-19](decisions/D-19-gameplay-flow-adjustments.md), spezifiziert in TT-079; neue Funktionen erst TT-080–084.** Der bisherige M7-Implementierungsstand bleibt separat dokumentiert.
+
 Die Hauptnavigation startet mit **drei Spielvarianten**. Alle spielbezogenen Ansichten verwenden die Gerichtssaal-/Fallakten-Optik aus [VISUAL_DESIGN.md](VISUAL_DESIGN.md).
 
 ## Global: Start, Profil und App-Einstellungen
 
+- **Spielregeln:** Eigene DE/EN-Grundregelseite von Start und laufendem Spiel aus, ohne Abbruch; getrennt von „Aktive Trinkregeln“.
 - **Startbildschirm:** „Handy + Karten“, „Ein Handy“, „Jeder ein Handy“. Oben rechts ein **anklickbarer eigener Avatar**.
 - **Eigenes Profil:** Name und menschlicher Cartoon-Avatar frei anpassen; im Baukasten z. B. Haare, Augen, Gesicht, Kleidung und Accessoires wählen. Ausgangsfigur männlich/weiblich oder freie Gestaltung. Wird auf dem Gerät gespeichert und ist die Voreinstellung für neue Multiplayer-Räume.
 - **Allgemeine Einstellungen:** UI-Sprache **Deutsch / Englisch** je Gerät; die Inhaltssprache der Multiplayer-Partie legt der Host vor dem Start einheitlich für alle fest (D-11), ggf. Audio/Darstellung. Unabhängig von den gesperrten Partie-Einstellungen. Der 6-Stunden-Zähler je tatsächlich gezogener Frage/Regel läuft automatisch im Hintergrund, ohne zusätzliche Einrichtung.
@@ -12,7 +15,8 @@ Die Hauptnavigation startet mit **drei Spielvarianten**. Alle spielbezogenen Ans
 
 1. **Einrichtung:** Nur **Spieleranzahl (3–20)** eingeben; optional Spieldauer (1–431 geeignete Fragen), Trinkregelanzahl (max. 22 geeignete Regeln und höchstens F−1 Ereignisse) und Schwierigkeit (Faktor 1,0–3,0 in 0,1-Schritten) über Schieberegler anpassen. „Spiel starten“ ist direkt verfügbar, sofern die Auswahl gültig ist.
 2. **Spiel:** Richter erhält die Fallakte. Die Gruppe mischt Karten `1..X` und verteilt je eine an alle außer dem Richter. Antworten und Sortierung erfolgen mündlich; Zahlen werden in angesagter Reihenfolge aufgedeckt.
-3. **Weiter:** Urteil/Schlucke bei Bedarf in der App erfassen, nächster Richter wird außerhalb der App bestimmt. Trinkregeln erscheinen zwischen den Fällen. Eine bereits angezeigte Frage kann ausdrücklich **ohne Urteil abgeschlossen** werden und **zählt dann als ein Fall**; sie wird nicht ersetzt.
+3. **Refresh:** Aktive reguläre Frage beliebig oft durch einen geeigneten neuen Kandidaten ersetzen, ohne Fallabschluss; bisherige Karten bleiben verbraucht.
+4. **Weiter:** Gespielten Fall direkt ohne manuelle Wertungs-/Schluckabfrage abschließen; nächster Richter außerhalb der App, fällige Zusatzregel an der Fallgrenze. D-07 bleibt eine eigene bestätigte vorzeitige Abschlussaktion, keine Ersatzfrage für einen abgeschlossenen Fall.
 
 Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**. Gemäß D-03 nur Fragen/Regeln ohne Spielerrollen; die 6-Stunden-Auswahlhistorie wird mit dem Ein-Handy-Modus auf derselben Installation geteilt.
 
@@ -21,8 +25,8 @@ Hier werden **keine Spielernamen und keine Avatar-Verwaltung benötigt**. Gemä�
 1. **Spieler einrichten:** **3–20** Namen mit je 1–24 sichtbaren Unicode-Zeichen hinzufügen, Liste per **Drag & Drop** oder zugängliche Auf/Ab-Steuerung umsortieren; auch mit 20 Spielern gut lesbar und scrollbar. Diese Reihenfolge bestimmt sowohl die Geräteübergabe zur Geheimzahl als auch die **Rotation der Richter**.
 2. Zu jedem Namen wird automatisch ein **zufälliger menschlicher Avatar** erzeugt. Optional kann bereits beim Hinzufügen „männlich“ oder „weiblich“ als Ausgangsfigur gewählt werden. Avatare bleiben später im Editor anpassbar.
 3. **Partie-Einstellungen:** Wie Modus 1; danach starten. D-05: Bei Fragen und Regeln mit `{player1}` usw. werden Bezugspersonen möglichst gleichmäßig anhand eines internen Zählers je Partie verteilt; auch der Richter kann ausgelost werden.
-4. **Geheimzahl:** Das Handy geht in Listenreihenfolge an die Beteiligten **ohne den Richter**. Zuerst „Gerät an [Name]“, dann „Geheime Akte öffnen“, Zahl anzeigen und vor der Weitergabe wieder verbergen.
-5. **Antworten/Sortieren/Urteil:** Anklagebank mit Avatar-Namensschildern; Richter zieht die Figuren in die vermutete Reihenfolge. Zahlen und Fehler erscheinen in der Aufdeckung.
+4. **Fallakte und Geheimzahl getrennt:** Richter sieht zunächst nur Fallakte mit Refresh; Weiter startet ohne Fallabschluss die Übergabe. Pro Empfänger eigene Seite „Gib das Handy an [Name]“ → „Ich bin [Name]“ → private Seite, Zahl ausschließlich während Halten auf „Nummer anzeigen“ sichtbar → „Fertig – weiter zum nächsten Spieler“. Danach neutrale Rückgabe an den Richter. Ab dem zweiten Fall erhält der vorherige Richter zuerst seine Zahl, sofern noch aktiv; danach zyklische Sitzfolge. Aktueller Richter bleibt ohne Zahl. Bei Loslassen, Cancel, Fokus-/App-/Routewechsel und Restore immer verdecken.
+5. **Antworten/Sortieren/Urteil:** Anklagebank mit Avatar-Namensschildern und zugänglichen Alternativen; automatisches Urteil nach Aufdeckung, danach direkt Weiter ohne manuelle Strafabfrage. Refresh vor erster öffentlicher digitaler Zahl verwirft alte Eingaben und startet dieselben Zahlen verdeckt erneut auf der Fallakte.
 6. **Während des Spiels:** Namen/Avatare bearbeiten, Spieler hinzufügen/entfernen und Reihenfolge anpassen. Änderungen an der Besetzung werden **ab dem nächsten Fall** wirksam. Der nächste Richter ist jeweils der nächste noch aktive Eintrag nach dem aktuellen Richter in der aktuellen Liste (zyklisch).
 
 Bei einer bereits angezeigten Frage kann der Spielleiter am gemeinsamen Handy den **Fall ohne Urteil abschließen** (bestätigen). Dieser Fall zählt vollständig zum Fortschritt, es gibt ohne Wertung keine automatisch zugewiesenen Schlucke und die übliche Richterrotation greift genau einmal.
@@ -48,7 +52,7 @@ Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechsel
 ## Weitere Screens in allen Modi
 
 - **Fallakte:** Gut lesbare Frage/Aussage mit Skalenenden; **Trinkregel-Akte** kann stattdessen als Sonderereignis erscheinen und bleibt über „Aktive Regeln“ abrufbar.
-- **Geheime Akte:** Klarer Privatbildschirm, erst auf Tippen sichtbar; keine versehentliche Anzeige der nächsten Person.
+- **Geheime Akte:** Ein-Handy: eigener Privatbildschirm nach Übernahme, nur während Halten sichtbar; Online weiterhin diskrete persönliche Zahlenbedienung. Keine Fallakte zusammen mit der lokalen Geheimzahl, keine versehentliche Anzeige der nächsten Person.
 - **Anklagebank:** 2–3 Figuren je Reihe, **schlangenförmige Reihenfolge**, Drag & Drop, Positionen sichtbar. Auch bei 20 Teilnehmern auf kleinen Geräten lesbar und scrollbar, mit Auto-Scroll beim Ziehen und alternativer Tastatur-/Auf-/Ab-Bedienung.
 - **Urteil:** Nacheinander aufgedeckte Zahlen, falsch platzierte Figuren, Fehler und Schlucke. Im normalen Modus: Richter und seine falsch platzierten Spieler trinken die Fehlerzahl. Bei „Alle sind Richter“: persönliche Auswertung pro Spieler, **nur eigene Fehler = eigene Schlucke**, ohne Mittrinken; kein Richterwechsel.
 - **Fortschritt & Ende:** Zähler `Fall 12/50` plus Anzeige aktiver Trinkregeln; am Partieende Abschlussansicht mit Aktion „Neue Partie“. Neue Partien setzen den D-05-Personen-Zähler zurück, nicht aber die D-01-Sechsstunden-Historie der Inhalts-IDs.
@@ -63,3 +67,7 @@ Der **Host** verwaltet den Raum und steuert den Ablauf; die Richterrolle wechsel
 ## Raumfristen und Datenschutz beim Urteil
 
 D-12 beendet Multiplayer-Räume nach 24 Stunden fachlicher Inaktivität, spätestens nach 48 Stunden Gesamtdauer. D-07 verlangt bei fehlenden Abgaben ein klares Warten; nur der Host kann einen bereits angezeigten Fall bestätigt ohne Urteil abschließen. D-09 hält im Modus „Alle sind Richter“ fremde persönliche Ordnungen und Fehler-/Schluckzahlen auch vor dem Host geheim.
+
+## Verbindliche Ergänzung für Multiplayer-Refresh
+
+Nur gültige Sitzung des aktuellen Richters, bei „Alle sind Richter“ des Vorlesers, darf die reguläre Karte vor öffentlicher Zahlaufdeckung wechseln. Host allein genügt nicht. Server commitet neue Frageinstanz/Bindung/Historie gemeinsam; dieselbe Retry-Aktion zieht nicht erneut. Alle Geräte verwerfen alte Entwürfe und verdecken Zahlen. Die normalen Host-/Aufdeck-/Abschlussrechte bleiben bestehen. Erschöpfung oder unzulässige Phase lässt die aktuelle Karte unverändert; D-07 ist weiterhin ausdrücklich zu bestätigen. Siehe [Phasenmatrix](contracts/fixtures/gameplay-flow-d19.json).
