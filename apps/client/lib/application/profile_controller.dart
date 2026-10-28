@@ -62,4 +62,21 @@ final class ProfileController {
       (_) => random.nextInt(16).toRadixString(16),
     ).join();
   }
+
+  Future<bool> delete() async {
+    if (saving) return false;
+    saving = true;
+    try {
+      await store.delete();
+      profile = null;
+      error = null;
+      return true;
+    } on Object {
+      error =
+          'Das Profil konnte nicht gelöscht werden. Bitte erneut versuchen.';
+      return false;
+    } finally {
+      saving = false;
+    }
+  }
 }

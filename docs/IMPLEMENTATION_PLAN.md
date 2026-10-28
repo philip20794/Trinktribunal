@@ -2,7 +2,7 @@
 
 **Verbindliche Testvorgabe (27.10.2026):** Unit-Tests sind das Implementierungs-/Mergegate. Sämtliche Browser-/E2E-/visuellen Browserabnahmen werden auf ausdrücklichen Nutzerwunsch als **ÜBERSPRUNGEN – später manuell testen** vermerkt und blockieren weder Taskabschluss noch Folgeaufgaben. Bei grünen Unit-Tests wird die Funktion für die weitere Implementierung als funktionsfähig angenommen; ein tatsächlich durchgeführter Browsertest wird daraus nicht behauptet.
 
-**Laufender Stand, 28.10.2026:** TT-001–064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün. **M7.4 abgeschlossen:** TT-079–084 für Kartenwechsel, Weiter und Geheimzahlübergabe; **M7.5 in Arbeit (TT-071 inventarisiert, als Nächstes TT-072–078)** für das UI-Redesign. TT-065 (Rechte/Provenienz) bleibt ohne externe Nachweise blockiert; Register/Gate sind vorhanden. TT-065–068 dürfen parallel vorbereitet werden; die finale M8-Abnahme TT-069 setzt TT-084 und TT-078 voraus. [Status und Belege](PROGRESS.md).
+**Laufender Stand, 28.10.2026:** TT-001–064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Abnahmen gemäß Nutzervorgabe übersprungen, später manuell testen; keine Blocker für Folgeaufgaben. Lokale Worker-/SQLite-Runtime und Gesamtcheck grün. **M7.4 abgeschlossen:** TT-079–084 für Kartenwechsel, Weiter und Geheimzahlübergabe; **M7.5 abgeschlossen (TT-071–078)** für das UI-Redesign. TT-065 (Rechte/Provenienz) bleibt ohne externe Nachweise blockiert; Register/Gate sind vorhanden. TT-065–068 dürfen parallel vorbereitet werden; die finale M8-Abnahme TT-069 setzt TT-084 und TT-078 voraus. [Status und Belege](PROGRESS.md).
 
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 
@@ -884,7 +884,7 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 
 ### M7.5 – UI-Neugestaltung nach den freigegebenen Designreferenzen
 
-**Status: IN ARBEIT (28.10.2026); TT-071 abgeschlossen, TT-072 als Nächstes.** Der Meilenstein liegt fachlich **nach dem abgeschlossenen M7.4/TT-084** und vor der abschließenden M8-Abnahme. Die neuen IDs TT-071–TT-078 werden nicht in die bereits festgelegten TT-065–070 hineingeschoben. **TT-065–068 sind bei erfüllten Abhängigkeiten parallel möglich; TT-069 und TT-070 erst nach TT-078.**
+**Status: ERLEDIGT nach Unit-Gates (28.10.2026); TT-071–078 abgeschlossen.** Der Meilenstein liegt fachlich **nach dem abgeschlossenen M7.4/TT-084** und vor der abschließenden M8-Abnahme. Die neuen IDs TT-071–TT-078 werden nicht in die bereits festgelegten TT-065–070 hineingeschoben. **TT-065–068 sind bei erfüllten Abhängigkeiten parallel möglich; TT-069 und TT-070 erst nach TT-078.**
 
 **Designquellen:** [Screens und visuelle Leitlinie](design/references/screens/README.md), [visuelles Konzept](VISUAL_DESIGN.md), [Design-Tokens](contracts/VISUAL_SYSTEM.md). Vorhandene PNGs: `apps/client/assets/ui/courtroom/`. Vor Einbindung Bildqualität, Auflösung, Transparenz, Dateigröße und Herkunft kontrollieren. Die Screens sind **Referenzen, keine als Ganzes einzublendenden App-Bilder**; auch Seiten ohne Bild müssen optisch passen. Der dritte schwarze Screen ist bewusst leer und keine Implementierungsvorgabe. Bild `10_spieler_hinzufuegen.png` steht für Personenverwaltung, nicht für die Urteilsfunktion: Beispielüberschriften und Buttons begründen keine Fachlogik.
 
@@ -1005,6 +1005,8 @@ Ein Kürzel ist erst nutzbar, wenn seine Skript-Aufgabe abgeschlossen ist: vor T
 - **Abschluss:** G; prüfbares Releasepaket ohne Deployment erstellt.
 
 #### TT-068 – Spielhilfe, Datenschutz und lokale Wartung dokumentieren
+
+**Status: ERLEDIGT nach Unit-Gates, 28.10.2026.** DE/EN-Hilfe, reale Speicher-/Cloudhinweise und bestätigte Löschaktionen samt Backupbereinigung; [Belege](qa/help-privacy.md). Browser/E2E: übersprungen, später manuell testen.
 
 - **Umsetzung:** In-App-Kurzanleitungen je Modus, Unterschiede der Schluckregeln, Offlinebereitschaft, Neustart/Spieleränderungen; Datenschutztext entsprechend realem Speicher/Cloudfluss, Löschaktionen, keine Konten/Analytics. Lokale Fehlerdiagnose ohne Geheimnisexport. Audio bleibt optional, kein Pflichtfeature erfinden.
 - **Dateien:** `apps/client/lib/features/help/`, `lib/l10n/`, `docs/USER_GUIDE.md`, `docs/PRIVACY.md`, Workflow.

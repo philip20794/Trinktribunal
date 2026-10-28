@@ -15,11 +15,18 @@ final class BrowserAtomicStateStorage implements AtomicStateStorage {
       value,
   ];
   @override
-  Future<void> commit(String envelope, {String? previousValid}) async {
+  Future<void> commit(
+    String envelope, {
+    String? previousValid,
+    bool resetBackup = false,
+  }) async {
     // setItem is atomic with respect to failure. Quota/security errors propagate
     // to the coordinator; a failed replacement retains the previous envelope.
-    if (previousValid != null) {
-      web.window.localStorage.setItem(backupKey, previousValid);
+    if (resetBackup || previousValid != null) {
+      web.window.localStorage.setItem(
+        backupKey,
+        resetBackup ? envelope : previousValid!,
+      );
     }
     web.window.localStorage.setItem(primaryKey, envelope);
   }

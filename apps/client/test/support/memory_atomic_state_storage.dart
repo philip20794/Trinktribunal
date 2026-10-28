@@ -13,9 +13,15 @@ final class MemoryAtomicStateStorage implements AtomicStateStorage {
   }
 
   @override
-  Future<void> commit(String envelope, {String? previousValid}) async {
+  Future<void> commit(
+    String envelope, {
+    String? previousValid,
+    bool resetBackup = false,
+  }) async {
     if (beforeCommit != null) await beforeCommit!();
-    if (previousValid != null) backup = previousValid;
+    if (resetBackup || previousValid != null) {
+      backup = resetBackup ? envelope : previousValid;
+    }
     if (failAfterBackup) throw StateError('synthetic crash before replace');
     primary = envelope;
   }

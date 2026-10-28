@@ -858,6 +858,64 @@
         "status": "implemented",
         "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
       }
+    },
+    {
+      "id": "help_privacy",
+      "files": [
+        "apps/client/lib/features/help/help_screen.dart"
+      ],
+      "tests": [
+        "apps/client/test/features/help_maintenance_test.dart",
+        "apps/client/test/data/local_data_deletion_test.dart"
+      ],
+      "states": [
+        "DE/EN, 200% text, narrow/wide",
+        "help/rules/privacy links and storage facts"
+      ],
+      "roles": [
+        "all"
+      ],
+      "modes": [
+        "cards",
+        "shared_phone",
+        "multiplayer"
+      ],
+      "references": [],
+      "targetTask": "TT-068",
+      "implementation": {
+        "task": "TT-068",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
+    },
+    {
+      "id": "local_maintenance",
+      "files": [
+        "apps/client/lib/features/help/data_maintenance.dart"
+      ],
+      "tests": [
+        "apps/client/test/features/help_maintenance_test.dart",
+        "apps/client/test/data/local_data_deletion_test.dart"
+      ],
+      "states": [
+        "DE/EN, 200% text, narrow/wide",
+        "confirmation/cancel/busy/success/failure/retry"
+      ],
+      "roles": [
+        "all"
+      ],
+      "modes": [
+        "cards",
+        "shared_phone",
+        "multiplayer"
+      ],
+      "references": [],
+      "targetTask": "TT-068",
+      "implementation": {
+        "task": "TT-068",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     }
   ],
   "assets": [

@@ -24,8 +24,15 @@ class DelayedStorage implements AtomicStateStorage {
   }
 
   @override
-  Future<void> commit(String envelope, {String? previousValid}) =>
-      storage.commit(envelope, previousValid: previousValid);
+  Future<void> commit(
+    String envelope, {
+    String? previousValid,
+    bool resetBackup = false,
+  }) => storage.commit(
+    envelope,
+    previousValid: previousValid,
+    resetBackup: resetBackup,
+  );
 }
 
 void main() {

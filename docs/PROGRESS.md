@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; nächster Schritt TT-068; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Gesamtgate grün: 141 Node-/521 Flutter-/446 Server-Tests, Analyze/Format, Dart-/TS-Parität und Mutationen. Frische Web-/Offline-/Debug-APK-Builds · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 152 Node-/543 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
 
 ## Statusregeln
 
@@ -52,7 +52,7 @@ Den zugehörigen Commit nach dem Commitvorgang mit `git log --oneline -- docs/IM
 | M7 | TT-059–TT-064 | ERLEDIGT | Sicherheit, Avatare, Inhaltsreview, Renderer-/Kostenmodell und Bedienbarkeit nach Unit-Gates geprüft; Browser/Geräte übersprungen, später manuell testen · [M7](qa/M7.md). |
 | **M7.4** | **TT-079–TT-084** | **IN ARBEIT** | TT-079 spezifiziert;  Kartenwechsel, vereinfachtes Weiter, allgemeine Spielregeln und getrennte Ein-Handy-Zahlenübergabe; [M7.4-Gate](qa/M7_4.md). |
 | **M7.5** | **TT-071–TT-078** | **OFFEN** | Redesign **nach TT-084**, anhand der [Screenreferenzen](design/references/screens/README.md); [Abnahmeprotokoll](qa/M7_5.md) ist noch leer. |
-| M8 | TT-065–TT-070 | IN ARBEIT | Rechteregister/Gate vorhanden, TT-065 extern blockiert; TT-066–068 können parallel vorbereitet werden. TT-069 setzt zusätzlich TT-084 und TT-078 voraus. |
+| M8 | TT-065–TT-070 | IN ARBEIT | TT-067/068 abgeschlossen, TT-065/066 extern blockiert; finale TT-069/070 warten auf Rechte und signierten Artefaktbeleg. TT-069 setzt zusätzlich TT-084 und TT-078 voraus. |
 
 M0/M1/M2 und TT-027 haben Prüfbelege. Die weiteren QA-Dateien sind geplante Pfade. Release-/Cloud- und visuelle Prüfungen werden nicht aus lokalen Unit-Tests als erledigt abgeleitet.
 
@@ -129,9 +129,9 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 18 Paketen/130 Dateien und Releasegate geprüft; sechs Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
 | TT-066 | Android-Releaseartefakte und Signierung vorbereiten | BLOCKIERT | Vorbereitung/Signatur- und HTTPS-Gates fertig, 145 Node-Tests/Debugbuild grün; echter signierter APK/AAB-Beleg aus bestehender Codemagic-Signierung fehlt · [TT-066](qa/android-release.md). |
 | TT-067 | Pages-Webpaket und Worker lokal releasefertig prüfen | ERLEDIGT | Getrennte HTTPS-Beispiele, Worker-Dry-run und neun HTTP-Releaseprüfungen; 152 Node-/446 Server-Tests, Format/Typen grün, kein Upload · [TT-067](qa/web-release.md). |
-| TT-068 | Spielhilfe, Datenschutz und lokale Wartung dokumentieren | OFFEN | — |
-| TT-069 | Vollständige lokale Releaseabnahme | OFFEN | — |
-| TT-070 | Manuellen Release- und späteren CI-Prozess übergeben | OFFEN | — |
+| TT-068 | Spielhilfe, Datenschutz und lokale Wartung dokumentieren | ERLEDIGT | DE/EN-Hilfe/Datenschutz und bestätigte Löschaktionen inklusive Backups; 543 Flutter-/152 Node-Tests, Analyze/Format, Web-/Debug-APK-/HTTP-Gate grün. [Beleg](qa/help-privacy.md). |
+| TT-069 | Vollständige lokale Releaseabnahme | BLOCKIERT | TT-068/084/078 fertig; finale Abnahme wartet gemäß Plan auf TT-065 (Rechte) und TT-066 (signierter Artefaktbeleg). Browser/E2E übersprungen, später manuell testen. |
+| TT-070 | Manuellen Release- und späteren CI-Prozess übergeben | BLOCKIERT | Abhängigkeit TT-069 offen; vorhandene Codemagic-Pipeline bleibt aktiv, kein zusätzlicher Upload/Workflow. |
 | TT-071 | Screens und Assets inventarisieren | ERLEDIGT | 21 Gruppen/35 Featurequellen, alle 33 PNGs mit Maßen/Alpha/Hashes und Sichtnotizen; zehn Referenzen, drei Quarantänemotive, 140 Node-Tests grün · [M7.5](qa/M7_5.md). |
 | TT-072 | Gerichtssaal-Designsystem und PNG-Integration | ERLEDIGT | Responsive Hülle/Papier/Aktionsleisten, 15 PNGs mit Cache/Fallback; 486 Flutter-/140 Node-Tests, Analyze/Format und frische Web-/APK-Builds grün · [M7.5](qa/M7_5.md). |
 | TT-073 | Startseite, Profil und Einstellungen neugestalten | ERLEDIGT | Kompakte Moduskarten, v2-Vorschau/live Namensschild, Speichernleiste, responsive Kategorien, Einstellungen und lokale Konfiguration; 494 Flutter-/140 Node-Tests, Analyze/Format grün · [M7.5](qa/M7_5.md). |
@@ -174,7 +174,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-068 – Spielhilfe, Datenschutz und lokale Wartung.** TT-067 ist abgeschlossen. TT-066 ist vorbereitet und wartet auf einen echten signierten Artefaktbeleg; TT-065 auf externe Nutzungsnachweise. TT-069/070 erst bei erfüllten Abhängigkeiten abschließen; Browser/E2E übersprungen, später manuell testen.
+**Nächster Planschritt: TT-069 – finale Releaseabnahme, derzeit extern blockiert.** TT-067/068 sind abgeschlossen. TT-066 ist vorbereitet und wartet auf einen echten signierten Artefaktbeleg; TT-065 auf externe Nutzungsnachweise. TT-069/070 erst bei erfüllten Abhängigkeiten abschließen; Browser/E2E übersprungen, später manuell testen.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -197,22 +197,10 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-067-web-worker-release auf Nutzerstand 4030196; TT-067 fertig geprüft
-Beleg: docs/qa/web-release.md + web-release-builds.json. 152 Node-/446 Server-Tests (278,83 s), Typen/Format grün; Worker-Dry-run ohne Upload, reale Web-HTTP-/Precacheprüfung grün. Web-Anwendungssourcen unverändert seit M7.5-Build 35a0733. TT-066 wartet auf signiertes Artefakt, TT-065 auf Rechte.
-Naechster Schritt: TT-068 – tatsächliche DE/EN-Spielhilfe/Datenschutz und bestätigte getrennte Löschaktionen. StringStore hat noch kein remove; AtomicStateStorage.commit muss für endgültiges Löschen auch alte Backupslots bereinigen, damit Spiele nicht aus Backup zurückkehren. 6h-Historie beim normalen Neustart behalten.
-TT-065: 18 Pakete/130 Dateien, sechs ungeklärte Runtime-Pakete. Neueste Native-P1-Units (sieben) grün, visuelle Maskenqualität weiter offen, Avatar-v2 unverändert. Rechtehashes auf LF normalisieren und gegen Git-Blobs prüfen. Browser/E2E übersprungen, später manuell testen.
-Größere geprüfte Stände nach main pushen. Keine GitHub Actions oder Cloudflare-Deployments.
-```
-
-## Vorlage für spätere Übergaben
-
-```text
-Task-ID / Status / Datum:
-Branch / letzter Commit:
-Geaenderte Dateien:
-Bereits funktionierender lokaler Stand:
-Letzte Befehle + Ergebnis/Exitcode:
-Noch offene Akzeptanzpunkte / Tests:
-Blocker / Entscheidungs-ID:
-Exakter naechster Arbeitsschritt:
+Branch: task/TT-068-help-privacy-maintenance auf main 7bb04ad; Nutzerstand 4030196 vollständig erhalten.
+TT-068: abgeschlossen. Hilfe/Datenschutz DE/EN, getrennte bestätigte Profil-/Partielöschung inklusive Backupbereinigung. 543 Flutter-/152 Node-Tests, Analyze/Format, frische Web-/Debug-APK-Builds und HTTP-/Offlineintegrität grün. Beleg docs/qa/help-privacy.md + TT-068-builds.json.
+TT-065: sechs externe Rechte-/Provenienznachweise offen. TT-066: echter produktionssignierter APK/AAB-Beleg aus bestehendem Codemagic offen, keine neuen lokalen Schlüssel.
+TT-067: abgeschlossen, 152 Node-/446 Server-Tests, Worker-Dry-run und Web-HTTP-Prüfung; keine Uploads. Serverruntime seitdem unverändert.
+Avatar v3: Nutzer-Master/prototypen erhalten, Runtime v2 bleibt; sieben native Quell-/Isolationstests bestanden, visuelle Masken nicht freigegeben.
+Nach TT-068: TT-069/070 bleiben bis zu erfüllten Abhängigkeiten offen. Keine Browser-/E2E-/Geräteabnahme: ÜBERSPRUNGEN – später manuell testen.
 ```

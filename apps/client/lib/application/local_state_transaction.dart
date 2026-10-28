@@ -114,7 +114,11 @@ final class LocalStateTransaction {
     }
   }
 
-  Future<void> save() {
+  Future<void> save() async {
+    await _commit();
+  }
+
+  Future<bool> _commit({bool resetBackup = false}) {
     // Capture synchronously, queue writes in order. UI updates need not wait for IO.
     final recent = _recent(history.history);
     final envelope = jsonEncode({
@@ -124,26 +128,36 @@ final class LocalStateTransaction {
       'cards': cards.toSnapshot(),
       'shared': shared.toSnapshot(),
     });
-    final completer = Completer<void>();
+    final completer = Completer<bool>();
     _pending = _pending.then((_) async {
       try {
-        await storage.commit(envelope, previousValid: _lastValid);
+        await storage.commit(
+          envelope,
+          previousValid: _lastValid,
+          resetBackup: resetBackup,
+        );
         _lastValid = envelope;
         error = null;
         needsReset = false;
+        completer.complete(true);
       } on Object {
-        error = 'Der Spielstand konnte nicht gespeichert werden. Du kannst weiterspielen; nach Schließen kann Fortschritt fehlen.';
-      } finally {
-        completer.complete();
+        error = resetBackup
+            ? 'Die lokalen Partien konnten nicht vollständig gelöscht werden. Bitte erneut versuchen.'
+            : 'Der Spielstand konnte nicht gespeichert werden. Du kannst weiterspielen; nach Schließen kann Fortschritt fehlen.';
+        completer.complete(false);
       }
     });
     return completer.future;
   }
 
   Future<void> discardGames() async {
+    await deleteGames();
+  }
+
+  Future<bool> deleteGames() {
     cards.abort(confirmed: true);
     shared.abort(confirmed: true);
-    await save();
     restored = false;
+    return _commit(resetBackup: true);
   }
 }

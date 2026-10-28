@@ -38,7 +38,7 @@ Der Gerichtssaal ist im humorvollen Cartoon-Stil gestaltet. Die Spieler erschein
 
 Kartenmodus und gemeinsames Handy sind lokal spielbar; lokale Partien und die gemeinsame Sechs-Stunden-Historie werden gespeichert. Multiplayer unterstützt beide Modi mit privater Zahlen-/Ordnungs-/Urteilsprojektion, Regelereignissen, Besetzungs- und Hostwechseln, Reconnect, atomarer Wiederherstellung, Raumablauf und bestätigter Schließung. Die DE/EN-Oberfläche und Einladungen sind angeschlossen. Lokale Workerd-Tests prüfen beide Modi mit acht Teilnehmern über 50 Fälle/sieben Regeln sowie 20 unabhängige Ordnungen. Große Projektionen werden begrenzt und integritätsgeprüft übertragen. Vorbereitete Web-Releases enthalten eine CSP und ein statisches Offlinepaket; Android nutzt separaten Credential-Speicher.
 
-Die Entscheidungen D-01 bis D-19 sind festgelegt. TT-001–064 und M7 nach Unit-Gates abgeschlossen; 137 Node-/474 Flutter-/446 Server-Tests sowie Web- und Android-Debugbuild grün. Der Avatar-v2-Baukasten bietet 53 Optionen in 14 Kategorien mit Übernahme bekannter v1-Figuren. Codemagic ist für Main-Pushes konfiguriert; aktuelle Buildresultate werden separat geprüft. Browser-/E2E-Abnahmen sind übersprungen und später manuell zu testen. M7.4 (TT-079–084) ist mit Fragenwechsel, direktem Karten-Weiter, Spielregeln und getrennter Hold-Übergabe abgeschlossen. Als Nächstes folgt M7.5 (TT-071–078) für das UI-Redesign. TT-065 bleibt ohne Rechtenachweise blockiert; Releasevorbereitung TT-066–070 ist offen. [Fortschritt](docs/PROGRESS.md) · [Sicherheitsnachweis](docs/qa/security.md).
+Die Entscheidungen D-01 bis D-19 sind festgelegt. TT-001–064 und M7 nach Unit-Gates abgeschlossen; 152 Node-/543 Flutter-/446 Server-Tests sowie Web- und Android-Debugbuild grün. Der Avatar-v2-Baukasten bietet 53 Optionen in 14 Kategorien mit Übernahme bekannter v1-Figuren. Codemagic ist für Main-Pushes konfiguriert; aktuelle Buildresultate werden separat geprüft. Browser-/E2E-Abnahmen sind übersprungen und später manuell zu testen. M7.4 (TT-079–084) ist mit Fragenwechsel, direktem Karten-Weiter, Spielregeln und getrennter Hold-Übergabe abgeschlossen. M7.5 (TT-071–078) mit dem Court-UI ist abgeschlossen. TT-068 ergänzt Hilfe, Datenschutz und bestätigte lokale Löschaktionen. TT-065 bleibt ohne Rechtenachweise blockiert; TT-066 wartet auf den produktionssignierten Artefaktbeleg aus Codemagic. TT-067 ist geprüft; die finale Releaseabnahme TT-069/070 wartet auf diese offenen Voraussetzungen. [Fortschritt](docs/PROGRESS.md) · [Sicherheitsnachweis](docs/qa/security.md).
 
 Lokaler Start vom Repository-Root unter Windows (Flutter 3.47.7 oder neuer):
 
@@ -49,9 +49,10 @@ powershell -NoProfile -File .\scripts\dev-client.ps1
 
 Vorschau: `http://127.0.0.1:7357`. Im Flutter-Terminal lädt `r` UI-Änderungen nach.
 
-- [Entwicklungsplan mit 70 Aufgaben und neun Meilensteinen](docs/IMPLEMENTATION_PLAN.md)
+- [Entwicklungsplan mit 84 Aufgaben](docs/IMPLEMENTATION_PLAN.md)
 - [Android-APK-CI mit Codemagic ohne GitHub Actions](docs/CODEMAGIC_CI.md)
 - [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)
+- [Spielhilfe](docs/USER_GUIDE.md) · [Datenschutz und lokale Löschung](docs/PRIVACY.md)
 - [Fortschritt, offene Entscheidungen und Übergabe](docs/PROGRESS.md)
 - [Abgleich der KI-Änderungen und geprüfte lokale Entwicklungsumgebung](docs/qa/PLAN_RECONCILIATION.md)
 - [Beschluss zur Spielverteilung und 6-Stunden-Ziehhistorie](docs/decisions/D-01-game-schedule-and-six-hour-history.md)

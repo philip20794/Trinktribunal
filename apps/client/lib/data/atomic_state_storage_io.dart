@@ -29,14 +29,21 @@ final class FileAtomicStateStorage implements AtomicStateStorage {
   }
 
   @override
-  Future<void> commit(String envelope, {String? previousValid}) async {
+  Future<void> commit(
+    String envelope, {
+    String? previousValid,
+    bool resetBackup = false,
+  }) async {
     final root = await directory();
     await root.create(recursive: true);
     final temporary = File('${root.path}/local-state.pending.json');
     await temporary.writeAsString(envelope, flush: true);
-    if (previousValid != null) {
+    if (resetBackup || previousValid != null) {
       final backup = File('${root.path}/local-state.backup.pending.json');
-      await backup.writeAsString(previousValid, flush: true);
+      await backup.writeAsString(
+        resetBackup ? envelope : previousValid!,
+        flush: true,
+      );
       await backup.rename('${root.path}/local-state.backup.json');
     }
     // Android's same-filesystem rename replaces the complete flushed file.

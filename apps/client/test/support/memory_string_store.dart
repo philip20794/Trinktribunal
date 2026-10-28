@@ -17,4 +17,11 @@ final class MemoryStringStore implements StringStore {
     if (failWrite) throw StateError('synthetic write failure');
     values[key] = value;
   }
+
+  @override
+  Future<void> remove(String key) async {
+    if (beforeWrite != null) await beforeWrite!();
+    if (failWrite) throw StateError('synthetic write failure');
+    values.remove(key);
+  }
 }

@@ -22,4 +22,5 @@ final class ProfileStore {
 
   Future<void> save(UserProfile profile) =>
       storage.write(key, jsonEncode(profile.toJson()));
+  Future<void> delete() => storage.remove(key);
 }

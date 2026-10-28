@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
+import '../../application/local_maintenance_controller.dart';
 import '../../design/avatar_view.dart';
 import '../../design/home_layout.dart';
 import '../../design/court_scene.dart';
@@ -62,6 +63,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(localMaintenanceProvider);
     final profile = ref.watch(profileProvider).asData?.value.profile;
     final resume = ref.watch(localResumeProvider);
     final transaction = resume.hasValue
@@ -181,7 +183,8 @@ class HomeScreen extends ConsumerWidget {
                                   } on Object {
                                     /* The destination shows catalog/load errors. */
                                   }
-                                  if (!context.mounted ||
+                                  if (ref.read(localMaintenanceProvider).busy ||
+                                      !context.mounted ||
                                       ModalRoute.of(context)?.isCurrent !=
                                           true) {
                                     return;

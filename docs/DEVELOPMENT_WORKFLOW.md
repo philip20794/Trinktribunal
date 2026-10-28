@@ -539,3 +539,10 @@ Bestehende Codemagic-Signierung und App-ID bleiben erhalten. `node scripts/check
 ## Web-/Worker-Releasevorbereitung (TT-067)
 
 `node scripts/check-production-config.mjs` prüft die öffentlichen Beispiele. `scripts/build-worker-review.ps1` erzeugt ausschließlich ein lokales Dry-run-Bundle mit leerer Review-Envdatei. `scripts/build-web-release.ps1 -ConfigPath ... -WorkerConfigPath ...` verlangt echte HTTPS-Origins und prüft das Webpaket. `node scripts/check-web-release.mjs` prüft reale HTTP-Routen, Header und Offline-Integrität ohne Browser. Befehle, Hashes und späterer manueller Pages-Upload: [TT-067](qa/web-release.md). Beispiele sind keine konfigurierten Produktionsdienste.
+
+
+## TT-068: Hilfe und lokale Wartung
+
+Einstellungen verlinken die DE/EN-Spielhilfe und den tatsächlichen Datenschutz-/Speicherfluss. Siehe [Spielhilfe](USER_GUIDE.md), [Datenschutz](PRIVACY.md) und [Prüfbeleg](qa/help-privacy.md). Profilvorlage und beide lokalen Partien lassen sich getrennt nach Bestätigung löschen. Die Partielöschung bereinigt beide Zustandsslots, hält die Schreibreihenfolge ein und behält die Sechs-Stunden-Ziehhistorie. Fehlgeschlagene Speicherung darf nicht als bestätigte Löschung gelten. Online-Identität/Hostschließung bleiben eigenständige Aktionen.
+
+Gezielt: `flutter test test/data/local_data_deletion_test.dart test/features/help_maintenance_test.dart` in `apps/client`; danach `scripts/check.ps1 -Scope Client` und `-Scope Docs`. Browser-/E2E-Abnahme: **ÜBERSPRUNGEN – später manuell testen**. Betreiber-/Kontakt-/Hostingdaten vor öffentlicher Verteilung anhand der wirklichen Konfiguration ergänzen.

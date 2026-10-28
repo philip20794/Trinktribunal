@@ -39,7 +39,7 @@ export function checkUiInventory(inventory, { root = repository, pubspecText } =
   for (const section of inventory.sections) {
     if (sectionIds.has(section.id) || !section.states?.length || !section.roles?.length ||
         !section.modes?.length || section.modes.some(mode => !['cards', 'shared_phone', 'multiplayer'].includes(mode)) ||
-        !/^TT-07[2-7]$/.test(section.targetTask)) fail('Incomplete screen/state section');
+        !/^TT-(?:068|07[2-7])$/.test(section.targetTask)) fail('Incomplete screen/state section');
     sectionIds.add(section.id);
     for (const path of section.files) {
       file(path);
