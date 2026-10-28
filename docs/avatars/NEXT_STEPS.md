@@ -22,6 +22,8 @@
 
 **Weitere P1-Arbeit (28.10.2026):** [Manuelle Masken-Korrekturschnittstelle und Testbericht](reviews/p1-mask-edit-workbench-2026-10-28.md) hinzugefügt. `p1_mask_edits.py` kann genaue Ergänzungen/Ausschlüsse auf Originalraster anwenden, Haar und Brauen/Bart für die Diagnose teilen und Maskenmetriken mit Quell-Hash protokollieren; `test_p1_mask_edits.py`: 4/4 synthetische Unit-Tests bestanden. Die versionierte `p1_mask_edits.json` enthält **absichtlich noch keine Korrektur**, da der tatsächliche PNG-Binärinhalt trotz öffentlichem Repository in dieser Ausführungsumgebung nicht lesbar war. **Keine** Vorher-/Nachher-Bildabnahme; P1 bleibt IN ARBEIT und P2 wartet.
 
+**P1-Fortsetzung (28.10.2026):** Die neue [quellegebundene Maskenprüfung](reviews/p1-mask-roundtrip-2026-10-28.md) verbindet die zuvor getrennten Arbeitsschritte: Korrekturen erstellen → SHA-256-/Rasterprüfung → echte Vorher-/Nachher-Detailbögen → 320/96/48-Pixel-Validierung. Der Loader verhindert versehentliches Verwenden von Masken zu einem anderen Master. **Neun synthetische Unit-Tests lokal bestanden; der End-to-End-Lauf am echten Original ist wegen fehlender PNG-Binärdaten weiterhin nicht erfolgt.** Es gibt keine neuen visuell begutachteten Maskenpixel und keine Abnahme. Erst diese fachliche Bildprüfung abschließen, dann P2 beginnen.
+
 **Erhaltene ART-/TECH-IDs im [alten Plan](AVATAR_GRAPHICS_PLAN.md):** ART-01 (Masterreferenzen), ART-02/03 (visuell akzeptierte gemeinsame Wand/Schild), ART-04/TECH-01 (Technikprototypen, **nicht** abgeschlossen). ART-05–17 (ursprünglich freier Modulbaukasten) erst nach P4 neu ausrichten; nicht als automatische Arbeitsreihenfolge übernehmen.
 
 ---
@@ -30,7 +32,7 @@
 
 **Quelle:** `docs/avatars/references/master-male-09-approved.png` (1229 × 1536, Original unverändert).  
 **Aktueller Code:** `artwork/avatars/v3/prototypes/male_09_color_masks/color_mask_pilot.py`, `validate_pilot.py`.  
-**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md). [Maskenbearbeitung und Zugriffsstatus](reviews/p1-mask-edit-workbench-2026-10-28.md).
+**Review:** [erster Maskentest](reviews/art04-tech01-png-mask-colors-2026-10-28.md). [Aktueller Diagnostikbericht](reviews/p1-detail-diagnostics-2026-10-28.md). [Maskenbearbeitung und Zugriffsstatus](reviews/p1-mask-edit-workbench-2026-10-28.md). [Aktueller Roundtrip-Bericht](reviews/p1-mask-roundtrip-2026-10-28.md).
 
 **Konkrete Arbeit:**
 
