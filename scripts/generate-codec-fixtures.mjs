@@ -9,8 +9,8 @@ add('null-root','null','INVALID_MESSAGE');add('array-root','[]','INVALID_MESSAGE
 change('unknown-type','ping',m=>m.type='notSupported','INVALID_MESSAGE');
 change('protocol-version','ping',m=>m.protocolVersion=2,'PROTOCOL_MISMATCH');
 change('handshake-version','join',m=>m.handshake.protocolVersion=2,'PROTOCOL_MISMATCH');
-change('avatar-handshake-version','join',m=>m.handshake.avatarVersion=2,'AVATAR_MISMATCH');
-change('avatar-profile-version','join',m=>m.profile.avatar.version=2,'AVATAR_MISMATCH');
+change('avatar-handshake-version','join',m=>m.handshake.avatarVersion=99,'AVATAR_MISMATCH');
+change('avatar-profile-version','join',m=>m.profile.avatar.version=99,'AVATAR_MISMATCH');
 change('catalog-conflict','join',m=>m.handshake.catalogHash='f'.repeat(64),'CATALOG_MISMATCH');
 change('bad-hash-format','join',m=>m.handshake.catalogHash='not-a-hash','INVALID_MESSAGE');
 change('missing-name','join',m=>delete m.profile.name,'INVALID_MESSAGE');

@@ -112,7 +112,7 @@ void _checkProfile(Object? value) {
   final avatar = value['avatar'];
   if (avatar is Map &&
       avatar.containsKey('version') &&
-      avatar['version'] != 1) {
+      avatar['version'] != currentAvatarVersion) {
     _fail('AVATAR_MISMATCH');
   }
 }
@@ -227,7 +227,7 @@ RoomMessage decodeRoomMessage(
   if (handshake is Map) {
     if (handshake['protocolVersion'] != 1) _fail('PROTOCOL_MISMATCH');
     if (handshake.containsKey('avatarVersion') &&
-        handshake['avatarVersion'] != 1) {
+        handshake['avatarVersion'] != currentAvatarVersion) {
       _fail('AVATAR_MISMATCH');
     }
   }

@@ -88,6 +88,7 @@ class RoomGameScreen extends ConsumerWidget {
               const TText('rosterFrozen'),
               if (rendered != null)
                 CaseFile(
+                  animationKey: view.roundId,
                   label: context.tr('caseNumber', {
                     'number': view.completedCases + 1,
                   }),

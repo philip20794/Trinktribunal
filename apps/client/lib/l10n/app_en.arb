@@ -409,5 +409,19 @@
   "roomProfileConfirmed": "Profile confirmed in the courtroom.",
   "roomProfileFlush": "Save changes now",
   "roomErrorStale": "The room view was updated. Please retry.",
-  "roomErrorAuthority": "Your membership does not allow this change."
+  "roomErrorAuthority": "Your membership does not allow this change.",
+  "avatarOptionheart": "Heart shaped",
+  "avatarOptionolive": "Olive",
+  "avatarOptionwink": "Winking",
+  "avatarOptionstern": "Stern",
+  "avatarOptionbutton": "Button nose",
+  "avatarOptionsmirk": "Smirk",
+  "avatarOptionponytail": "Ponytail",
+  "avatarOptioncopper": "Copper",
+  "avatarOptionmoustache": "Moustache",
+  "avatarOptionwaistcoat": "Waistcoat",
+  "avatarOptionplum": "Plum",
+  "avatarOptionrectangular": "Rectangular",
+  "avatarOptiontricorn": "Tricorn",
+  "avatarOptionbadge": "Court badge"
 }

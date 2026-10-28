@@ -213,7 +213,7 @@
           "$ref": "#/$defs/hash"
         },
         "avatarVersion": {
-          "const": 1
+          "const": 2
         }
       }
     },
@@ -226,7 +226,7 @@
       ],
       "properties": {
         "version": {
-          "const": 1
+          "const": 2
         },
         "selections": {
           "type": "object",
@@ -252,7 +252,8 @@
               "enum": [
                 "round",
                 "square",
-                "long"
+                "long",
+                "heart"
               ]
             },
             "skin": {
@@ -260,32 +261,37 @@
                 "light",
                 "medium",
                 "brown",
-                "dark"
+                "dark",
+                "olive"
               ]
             },
             "eyes": {
               "enum": [
                 "open",
-                "sleepy"
+                "sleepy",
+                "wink"
               ]
             },
             "brows": {
               "enum": [
                 "calm",
-                "raised"
+                "raised",
+                "stern"
               ]
             },
             "nose": {
               "enum": [
                 "round",
-                "long"
+                "long",
+                "button"
               ]
             },
             "mouth": {
               "enum": [
                 "smile",
                 "neutral",
-                "surprised"
+                "surprised",
+                "smirk"
               ]
             },
             "hair": {
@@ -293,7 +299,8 @@
                 "short",
                 "curly",
                 "long",
-                "bald"
+                "bald",
+                "ponytail"
               ]
             },
             "hairColor": {
@@ -301,20 +308,23 @@
                 "brown",
                 "black",
                 "gold",
-                "gray"
+                "gray",
+                "copper"
               ]
             },
             "beard": {
               "enum": [
                 "none",
                 "stubble",
-                "full"
+                "full",
+                "moustache"
               ]
             },
             "top": {
               "enum": [
                 "shirt",
-                "jacket"
+                "jacket",
+                "waistcoat"
               ]
             },
             "topColor": {
@@ -322,25 +332,29 @@
                 "blue",
                 "red",
                 "green",
-                "brown"
+                "brown",
+                "plum"
               ]
             },
             "glasses": {
               "enum": [
                 "none",
-                "round"
+                "round",
+                "rectangular"
               ]
             },
             "hat": {
               "enum": [
                 "none",
-                "cap"
+                "cap",
+                "tricorn"
               ]
             },
             "extra": {
               "enum": [
                 "none",
-                "bowtie"
+                "bowtie",
+                "badge"
               ]
             }
           }

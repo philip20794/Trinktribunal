@@ -685,5 +685,19 @@
   "roomProfileConfirmed": "Profil im Gerichtssaal bestätigt.",
   "roomProfileFlush": "Änderungen jetzt speichern",
   "roomErrorStale": "Die Raumansicht wurde aktualisiert. Bitte erneut versuchen.",
-  "roomErrorAuthority": "Diese Änderung ist für deine Teilnahme nicht erlaubt."
+  "roomErrorAuthority": "Diese Änderung ist für deine Teilnahme nicht erlaubt.",
+  "avatarOptionheart": "Herzförmig",
+  "avatarOptionolive": "Oliv",
+  "avatarOptionwink": "Zwinkernd",
+  "avatarOptionstern": "Streng",
+  "avatarOptionbutton": "Stupsnase",
+  "avatarOptionsmirk": "Schmunzeln",
+  "avatarOptionponytail": "Pferdeschwanz",
+  "avatarOptioncopper": "Kupfer",
+  "avatarOptionmoustache": "Schnurrbart",
+  "avatarOptionwaistcoat": "Weste",
+  "avatarOptionplum": "Pflaume",
+  "avatarOptionrectangular": "Rechteckig",
+  "avatarOptiontricorn": "Dreispitz",
+  "avatarOptionbadge": "Gerichtsabzeichen"
 }

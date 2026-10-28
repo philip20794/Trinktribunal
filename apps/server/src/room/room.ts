@@ -172,7 +172,12 @@ export class Room extends DurableObject<Env> {
     }
   }
   private currentMember(info: SocketAttachment | null, state: RoomState): Member | undefined {
-    if (info?.kind !== 'authenticated' || info.roomId !== state.roomId) return undefined;
+    if (
+      info?.kind !== 'authenticated' ||
+      info.roomId !== state.roomId ||
+      info.avatarVersion !== protocolMetadata.avatarVersion
+    )
+      return undefined;
     return state.members.find(
       (m) => m.playerId === info.playerId && !m.revoked && m.generation === info.generation,
     );
@@ -214,6 +219,10 @@ export class Room extends DurableObject<Env> {
     }
     for (const socket of this.ctx.getWebSockets()) {
       const info = attachment(socket);
+      if (info?.kind === 'authenticated' && info.avatarVersion !== protocolMetadata.avatarVersion) {
+        this.socketFailure(socket, 'AVATAR_MISMATCH', 4400);
+        continue;
+      }
       if (
         info?.kind !== 'authenticated' ||
         !this.currentMember(info, state) ||
@@ -280,6 +289,13 @@ export class Room extends DurableObject<Env> {
           this.socketFailure(socket, 'ROOM_UNAVAILABLE');
           return;
         }
+        if (
+          info.kind === 'authenticated' &&
+          info.avatarVersion !== protocolMetadata.avatarVersion
+        ) {
+          this.socketFailure(socket, 'AVATAR_MISMATCH', 4400);
+          return;
+        }
         if (info.kind === 'pending') {
           if (Date.now() >= info.authDeadline) {
             this.socketFailure(socket, 'CREDENTIAL_INVALID', 4408);
@@ -330,6 +346,7 @@ export class Room extends DurableObject<Env> {
             roomId: result.message.roomId,
             playerId: result.message.playerId,
             generation: result.message.generation,
+            avatarVersion: protocolMetadata.avatarVersion,
           };
           socket.serializeAttachment(bound);
           removeDeadline(this.ctx.storage.sql, info.socketId);
@@ -907,7 +924,7 @@ export class Room extends DurableObject<Env> {
           handshake: {
             protocolVersion: 1,
             catalogHash: protocolMetadata.catalogHash,
-            avatarVersion: 1,
+            avatarVersion: protocolMetadata.avatarVersion,
           },
         }),
       };

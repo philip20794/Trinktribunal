@@ -59,7 +59,7 @@ test('symlinks to outside files are rejected when the platform supports links',a
 });
 test('bundle metadata is stable and changes only when an asset changes',t=>{
   const {root,put}=fixture(t); const one=prepareWeb(root,{sourceRevision:'unit'});const two=prepareWeb(root,{sourceRevision:'unit'});
-  assert.equal(one.bundleHash,two.bundleHash);assert.deepEqual(one.files,two.files);assert.equal(one.compileTarget,'dart2js');assert.equal(one.catalogHashes[0].sha256,'test-hash');
+  assert.equal(one.bundleHash,two.bundleHash);assert.deepEqual(one.files,two.files);assert.equal(one.compileTarget,'dart2js');assert.equal(one.avatarVersion,1);assert.equal(one.catalogHashes[0].sha256,'test-hash');
   assert.ok(!one.files.some(f=>f.path.startsWith('.')));put('main.dart.js','changed');assert.notEqual(prepareWeb(root).bundleHash,one.bundleHash);
   assert.equal(JSON.parse(readFileSync(join(root,'build-info.json'),'utf8')).version,'0.1.0');
 });

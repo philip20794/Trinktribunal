@@ -43,18 +43,21 @@ class AvatarPainter extends CustomPainter {
     'medium': Color(0xFFD9A575),
     'brown': Color(0xFFAD7650),
     'dark': Color(0xFF754C38),
+    'olive': Color(0xFFB6A474),
   };
   static const hairColors = {
     'brown': Color(0xFF63412D),
     'black': Color(0xFF302B29),
     'gold': Color(0xFFB48A3E),
     'gray': Color(0xFF92918C),
+    'copper': Color(0xFFA95F3E),
   };
   static const topColors = {
     'blue': CourtTokens.blue,
     'red': CourtTokens.red,
     'green': CourtTokens.green,
     'brown': CourtTokens.wood,
+    'plum': Color(0xFF654668),
   };
 
   @override
@@ -118,7 +121,42 @@ class AvatarPainter extends CustomPainter {
         CourtTokens.file,
       );
     }
+    if (config['top'] == 'waistcoat') {
+      path(
+        Path()
+          ..moveTo(60, 123)
+          ..lineTo(80, 147)
+          ..lineTo(100, 123)
+          ..lineTo(91, 169)
+          ..lineTo(80, 163)
+          ..lineTo(69, 169)
+          ..close(),
+        CourtTokens.file,
+      );
+      for (final y in [145.0, 155.0, 165.0]) {
+        canvas.drawCircle(Offset(80, y), 2, Paint()..color = CourtTokens.ink);
+      }
+      canvas.drawLine(const Offset(102, 149), const Offset(116, 147), line);
+    }
     // hairBack
+    if (config['hair'] == 'ponytail') {
+      path(
+        Path()
+          ..moveTo(100, 45)
+          ..quadraticBezierTo(146, 43, 140, 83)
+          ..quadraticBezierTo(151, 108, 128, 126)
+          ..quadraticBezierTo(138, 90, 113, 79)
+          ..close(),
+        hair,
+      );
+      canvas.drawLine(
+        const Offset(118, 67),
+        const Offset(134, 72),
+        Paint()
+          ..color = CourtTokens.red
+          ..strokeWidth = 5,
+      );
+    }
     if (config['hair'] == 'long') {
       path(
         Path()
@@ -138,7 +176,18 @@ class AvatarPainter extends CustomPainter {
     final rect = face == 'long'
         ? const Rect.fromLTWH(49, 30, 62, 94)
         : const Rect.fromLTWH(45, 34, 70, 86);
-    if (face == 'round') {
+    if (face == 'heart') {
+      path(
+        Path()
+          ..moveTo(80, 39)
+          ..cubicTo(47, 20, 35, 58, 49, 87)
+          ..quadraticBezierTo(59, 113, 80, 124)
+          ..quadraticBezierTo(102, 114, 112, 86)
+          ..cubicTo(128, 54, 110, 20, 80, 39)
+          ..close(),
+        skin,
+      );
+    } else if (face == 'round') {
       oval(rect, skin);
     } else {
       final rounded = RRect.fromRectAndRadius(
@@ -150,7 +199,7 @@ class AvatarPainter extends CustomPainter {
     }
     // eyes
     for (final x in [65.0, 96.0]) {
-      if (config['eyes'] == 'sleepy') {
+      if (config['eyes'] == 'sleepy' || config['eyes'] == 'wink' && x == 96) {
         canvas.drawLine(Offset(x - 5, 69), Offset(x + 5, 70), line);
       } else {
         oval(
@@ -165,9 +214,14 @@ class AvatarPainter extends CustomPainter {
       }
     }
     // brows
-    final browY = config['brows'] == 'raised' ? 51.0 : 57.0;
-    canvas.drawLine(Offset(58, browY + 2), Offset(71, browY), line);
-    canvas.drawLine(Offset(90, browY), Offset(103, browY + 2), line);
+    if (config['brows'] == 'stern') {
+      canvas.drawLine(const Offset(58, 52), const Offset(72, 59), line);
+      canvas.drawLine(const Offset(90, 59), const Offset(104, 52), line);
+    } else {
+      final browY = config['brows'] == 'raised' ? 51.0 : 57.0;
+      canvas.drawLine(Offset(58, browY + 2), Offset(71, browY), line);
+      canvas.drawLine(Offset(90, browY), Offset(103, browY + 2), line);
+    }
     // nose
     if (config['nose'] == 'long') {
       path(
@@ -177,6 +231,8 @@ class AvatarPainter extends CustomPainter {
           ..quadraticBezierTo(83, 98, 89, 89),
         skin,
       );
+    } else if (config['nose'] == 'button') {
+      oval(const Rect.fromLTWH(77, 82, 10, 8), skin);
     } else {
       oval(const Rect.fromLTWH(73, 79, 17, 12), skin);
     }
@@ -190,6 +246,14 @@ class AvatarPainter extends CustomPainter {
           ..quadraticBezierTo(82, 117, 96, 100),
         line,
       );
+    } else if (config['mouth'] == 'smirk') {
+      canvas.drawPath(
+        Path()
+          ..moveTo(70, 104)
+          ..quadraticBezierTo(88, 109, 96, 97),
+        line,
+      );
+      canvas.drawLine(const Offset(94, 96), const Offset(99, 98), line);
     } else {
       canvas.drawLine(const Offset(71, 104), const Offset(91, 104), line);
     }
@@ -209,8 +273,20 @@ class AvatarPainter extends CustomPainter {
         canvas.drawLine(Offset(x, 113), Offset(x + 2, 117), line);
       }
     }
+    if (config['beard'] == 'moustache') {
+      path(
+        Path()
+          ..moveTo(80, 95)
+          ..quadraticBezierTo(71, 89, 61, 99)
+          ..quadraticBezierTo(68, 108, 80, 101)
+          ..quadraticBezierTo(93, 108, 101, 98)
+          ..quadraticBezierTo(90, 90, 80, 95)
+          ..close(),
+        hair,
+      );
+    }
     // hairFront
-    if (config['hair'] == 'short' || config['hair'] == 'long') {
+    if (['short', 'long', 'ponytail'].contains(config['hair'])) {
       path(
         Path()
           ..moveTo(45, 57)
@@ -243,6 +319,18 @@ class AvatarPainter extends CustomPainter {
       canvas.drawCircle(const Offset(96, 71), 13, line);
       canvas.drawLine(const Offset(77, 70), const Offset(83, 70), line);
     }
+    if (config['glasses'] == 'rectangular') {
+      for (final x in [50.0, 83.0]) {
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(x, 59, 27, 23),
+            const Radius.circular(4),
+          ),
+          line,
+        );
+      }
+      canvas.drawLine(const Offset(77, 70), const Offset(83, 70), line);
+    }
     // hat
     if (config['hat'] == 'cap') {
       path(
@@ -254,6 +342,28 @@ class AvatarPainter extends CustomPainter {
           ..lineTo(40, 43)
           ..close(),
         CourtTokens.blue,
+      );
+    }
+    if (config['hat'] == 'tricorn') {
+      path(
+        Path()
+          ..moveTo(34, 18)
+          ..lineTo(58, 23)
+          ..quadraticBezierTo(80, 1, 104, 23)
+          ..lineTo(128, 16)
+          ..lineTo(118, 44)
+          ..quadraticBezierTo(80, 36, 43, 44)
+          ..close(),
+        CourtTokens.wood,
+      );
+      canvas.drawPath(
+        Path()
+          ..moveTo(43, 34)
+          ..quadraticBezierTo(81, 28, 117, 33),
+        Paint()
+          ..color = hairColors['gold']!
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 3,
       );
     }
     // extra
@@ -269,6 +379,11 @@ class AvatarPainter extends CustomPainter {
           ..close(),
         CourtTokens.red,
       );
+    }
+    if (config['extra'] == 'badge') {
+      oval(const Rect.fromLTWH(101, 132, 20, 24), hairColors['gold']!);
+      canvas.drawLine(const Offset(106, 143), const Offset(116, 143), line);
+      canvas.drawLine(const Offset(111, 138), const Offset(111, 148), line);
     }
     if (config.isFallback) {
       canvas.drawCircle(

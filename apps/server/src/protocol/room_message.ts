@@ -54,7 +54,11 @@ function checkProfile(value: unknown): void {
     )
       fail('INVALID_NAME');
   }
-  if (record(value.avatar) && value.avatar.version !== undefined && value.avatar.version !== 1)
+  if (
+    record(value.avatar) &&
+    value.avatar.version !== undefined &&
+    value.avatar.version !== protocolMetadata.avatarVersion
+  )
     fail('AVATAR_MISMATCH');
 }
 function canonicalBase64(value: string, max: number, error: ProtocolErrorCode): void {
@@ -123,7 +127,10 @@ export function decodeRoomMessage(raw: string, options: DecodeOptions = {}): Roo
   const handshake = value.handshake;
   if (record(handshake)) {
     if (handshake.protocolVersion !== 1) fail('PROTOCOL_MISMATCH');
-    if (handshake.avatarVersion !== undefined && handshake.avatarVersion !== 1)
+    if (
+      handshake.avatarVersion !== undefined &&
+      handshake.avatarVersion !== protocolMetadata.avatarVersion
+    )
       fail('AVATAR_MISMATCH');
   }
   checkProfile(value.profile);

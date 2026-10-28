@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/domain/models/domain_error.dart';
+import 'package:trinktribunal/data/protocol/room_message.dart';
 
 import '../domain/selection_support.dart';
 
@@ -31,7 +32,54 @@ void main() {
     expect(manifest['options'], AvatarCatalog.options);
     expect(manifest['layers'], AvatarCatalog.layers);
     expect(manifest['canvas'], {'width': 160, 'height': 180});
+    expect(manifest['legacyOptionsV1'], AvatarCatalog.legacyOptionsV1);
+    expect(currentAvatarVersion, AvatarCatalog.version);
+    expect(File('assets/avatars/manifest.json').lengthSync(), lessThan(4096));
+    expect(File('lib/design/avatar_view.dart').lengthSync(), lessThan(16384));
+    expect(
+      utf8.encode(jsonEncode(AvatarConfig().toJson())).length,
+      lessThan(512),
+    );
+    expect(AvatarCatalog.options.length, 14);
+    expect(
+      AvatarCatalog.options.values.fold<int>(
+        0,
+        (sum, values) => sum + values.length,
+      ),
+      53,
+    );
+    expect(
+      AvatarCatalog.options.values.fold<int>(
+        1,
+        (count, values) => count * values.length,
+      ),
+      87480000,
+    );
   });
+  test(
+    'known v1 portraits retain all selections and upgrade only their version',
+    () {
+      for (final entry in AvatarCatalog.legacyOptionsV1.entries) {
+        for (final value in entry.value) {
+          final selections = {...AvatarCatalog.defaults, entry.key: value};
+          final restored = AvatarConfig.fromJson({
+            'version': 1,
+            'selections': selections,
+          });
+          expect(restored.isFallback, isFalse);
+          expect(restored.selections, selections);
+          expect(restored.toJson()['version'], AvatarCatalog.version);
+        }
+      }
+      expect(
+        AvatarConfig.fromJson({
+          'version': 1,
+          'selections': {...AvatarCatalog.defaults, 'hat': 'tricorn'},
+        }).isFallback,
+        isTrue,
+      );
+    },
+  );
   test('all options roundtrip; presets allow unrestricted further changes', () {
     for (final category in AvatarCatalog.options.entries) {
       for (final value in category.value) {

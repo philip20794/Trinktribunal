@@ -9,6 +9,7 @@ import '../../application/profile_controller.dart';
 import '../../design/avatar_view.dart';
 import '../../domain/avatar_config.dart';
 import '../../domain/selection/random_source.dart';
+import 'avatar_options.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -110,42 +111,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     const SizedBox(height: 12),
                     const TText('profileHelp'),
                     const SizedBox(height: 16),
-                    for (final category in AvatarCatalog.options.entries)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: DropdownButtonFormField<String>(
-                          key: ValueKey(
-                            '${category.key}:${_avatar[category.key]}',
-                          ),
-                          initialValue: _avatar[category.key],
-                          isExpanded: true,
-                          decoration: InputDecoration(
-                            labelText: context.tr(
-                              'avatarCategory${category.key}',
-                            ),
-                          ),
-                          items: category.value
-                              .map(
-                                (option) => DropdownMenuItem(
-                                  value: option,
-                                  child: Text(
-                                    context.tr('avatarOption$option'),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (value) {
-                            if (value != null) {
-                              setState(
-                                () => _avatar = _avatar.withOption(
-                                  category.key,
-                                  value,
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ),
+                    AvatarOptions(
+                      config: _avatar,
+                      onChanged: (value) => setState(() => _avatar = value),
+                    ),
                     if (controller.error != null)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),

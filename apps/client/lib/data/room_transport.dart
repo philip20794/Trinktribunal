@@ -19,7 +19,7 @@ String newRoomRequestId() {
 Handshake get currentRoomHandshake => Handshake.fromJson({
   'protocolVersion': 1,
   'catalogHash': currentProtocolCatalogHash,
-  'avatarVersion': 1,
+  'avatarVersion': currentAvatarVersion,
 });
 String normalizedRoomCode(String raw) {
   if (raw.length > 64) throw const ProtocolDecodeException('INVALID_ROOM_CODE');

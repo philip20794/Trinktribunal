@@ -18,6 +18,7 @@ export type SocketAttachment =
       roomId: RoomId;
       playerId: PlayerId;
       generation: number;
+      avatarVersion?: number;
       viewRevision?: number;
       playersHash?: string;
       viewExpiry?: number;
@@ -67,11 +68,14 @@ export function attachment(socket: WebSocket): SocketAttachment | null {
         'roomId',
         'playerId',
         'generation',
+        'avatarVersion',
         'viewRevision',
         'playersHash',
         'viewExpiry',
       ].includes(key),
     ) &&
+    (!('avatarVersion' in value) ||
+      (Number.isSafeInteger(value.avatarVersion) && Number(value.avatarVersion) > 0)) &&
     (!('viewRevision' in value) ||
       (Number.isSafeInteger(value.viewRevision) && Number(value.viewRevision) >= 0)) &&
     (!('viewExpiry' in value) ||

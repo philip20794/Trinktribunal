@@ -58,6 +58,18 @@ class _DesignGalleryScreenState extends State<DesignGalleryScreen> {
                 children: [
                   AvatarView(config: AvatarConfig.masculine(), size: 64),
                   AvatarView(config: AvatarConfig.feminine(), size: 160),
+                  AvatarView(
+                    config: AvatarConfig(
+                      selections: const {
+                        'hat': 'tricorn',
+                        'top': 'waistcoat',
+                        'extra': 'badge',
+                        'glasses': 'rectangular',
+                        'hairColor': 'copper',
+                      },
+                    ),
+                    size: 96,
+                  ),
                   AvatarView(config: AvatarConfig.fallback(), size: 64),
                 ],
               ),

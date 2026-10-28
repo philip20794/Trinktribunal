@@ -28,11 +28,12 @@ export function prepareWeb(root=webRoot,{sourceRevision='unknown',sourceDirty=fa
   const fonts=JSON.parse(readFileSync(join(root,'assets/FontManifest.json'),'utf8'));
   for(const family of fonts) for(const font of family.fonts) if(!statSync(join(root,'assets',font.asset)).isFile()) throw new Error('Missing bundled font');
   const manifest=JSON.parse(readFileSync(join(root,'assets/assets/catalogs/manifest.json'),'utf8'));
+  const avatars=JSON.parse(readFileSync(join(root,'assets/assets/avatars/manifest.json'),'utf8'));
   const version=JSON.parse(readFileSync(join(root,'version.json'),'utf8'));
   const secured = secureReleaseHtml(html, apiBaseUrl);
   if (secured !== html) writeFileSync(join(root,'index.html'), secured);
   const files=listBundleFiles(root);
-  const info={formatVersion:1,renderer:'canvaskit',compileTarget:'dart2js',version:version.version,buildNumber:version.build_number,sourceRevision,sourceDirty,
+  const info={formatVersion:1,renderer:'canvaskit',compileTarget:'dart2js',avatarVersion:avatars.version,version:version.version,buildNumber:version.build_number,sourceRevision,sourceDirty,
     catalogHashes:manifest.catalogs.map(({kind,language,sha256})=>({kind,language,sha256})),
     bundleHash:hash(JSON.stringify(files)),files};
   writeFileSync(join(root,'build-info.json'),JSON.stringify(info,null,2)+'\n');

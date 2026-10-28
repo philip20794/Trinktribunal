@@ -29,6 +29,8 @@ Fixtures geben keine plattformabhängigen PRNG-Seeds an, sondern **explizite gew
 
 ## Zugriffsspezifische Zustandsprojektion (D-09)
 
+Seit TT-060 ist `avatarVersion` im Handshake **2**. Die Avataroptionen stammen aus dem lokalen Avatar-Manifest; die Nachrichten bleiben Protokoll v1, daher behalten die gemeinsamen Fixture-Dateien ihre Protokoll-v1-Namen. Der Raumloader und lokale Avatarparser übernehmen ausschließlich bekannte v1-Auswahlen. Alte Handshakes/laufende Attachments erhalten einen expliziten Versionsfehler; gültige Credentials bleiben beim Clientupdate verwendbar. Client und Worker benötigen denselben Avatarstand. [Prüfbeleg](../../docs/qa/TT-060.md).
+
 Die zusätzliche Datei [`fixtures/transitions/projection-private.json`](fixtures/transitions/projection-private.json) enthält einen deterministischen Minimalfall für einen Multiplayer-Raum im Modus „Alle sind Richter“: allgemeine Daten wie Frage und Bereitschaft dürfen öffentlich sichtbar sein, geheime Nummer und Sortierung **ausschließlich für die zugehörige `playerId`**. Auch der Host darf keine fremden Zahlen, Ordnungen oder individuellen Schluckwerte abfragen. Ein unbekannter/nicht autorisierter Betrachter erhält keine private Projektion.
 
 Das Testszenario ist mit `node --test scripts/tests/projections.test.mjs` lokal ausführbar. Der enthaltene referenzielle Reducer beweist **nur die Fachbeispiel-Projektion**, nicht die später notwendige serverseitige Redaction sämtlicher WebSocket-Antworten, ACKs, Fehlermeldungen und Resume-Zustände. Diese wird mit echten Worker-Tests bei TT-046–TT-052 und TT-059 überprüft.

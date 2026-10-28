@@ -1,4 +1,5 @@
 import wire from '../../../../packages/protocol/schemas/room-message.schema.json';
+import avatarManifest from '../../../client/assets/avatars/manifest.json';
 import {
   assertJsonDepth,
   canonicalJson,
@@ -256,6 +257,23 @@ export function migrateRoomState(raw: string): { state: RoomState; migrated: boo
     const root = value as Record<string, unknown>,
       game = root.game;
     let migrated = false;
+    if (Array.isArray(root.members)) {
+      for (const member of root.members) {
+        if (!record(member) || !record(member.profile) || !record(member.profile.avatar)) continue;
+        const avatar = member.profile.avatar;
+        if (avatar.version !== 1) continue;
+        const selections = avatar.selections;
+        requireState(
+          record(selections) &&
+            Object.keys(selections).length === Object.keys(avatarManifest.legacyOptionsV1).length,
+        );
+        for (const [key, values] of Object.entries(avatarManifest.legacyOptionsV1)) {
+          requireState(values.includes((selections as Record<string, unknown>)[key] as string));
+        }
+        avatar.version = protocolMetadata.avatarVersion;
+        migrated = true;
+      }
+    }
     if (record(game) && game.formatVersion === 1) {
       if (record(game.round) && !Object.hasOwn(game.round, 'answerReady')) {
         game.round.answerReady = [];

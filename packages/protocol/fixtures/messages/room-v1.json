@@ -3,11 +3,26 @@
   "nowUtc": "2026-10-27T12:00:00.000Z",
   "fixtures": [
     {
-      "fixtureId":"wire-readyForOrdering",
-      "role":"roundParticipant",
-      "phase":"answers",
-      "valid":{"type":"readyForOrdering","protocolVersion":1,"actionId":"ready_1","expectedRevision":0,"gameId":"game_1","roundId":"round_1"},
-      "invalid":{"type":"readyForOrdering","protocolVersion":1,"actionId":"ready_1","expectedRevision":0,"gameId":"game_1","roundId":"round_1","targetPlayerId":"p3"}
+      "fixtureId": "wire-readyForOrdering",
+      "role": "roundParticipant",
+      "phase": "answers",
+      "valid": {
+        "type": "readyForOrdering",
+        "protocolVersion": 1,
+        "actionId": "ready_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1"
+      },
+      "invalid": {
+        "type": "readyForOrdering",
+        "protocolVersion": 1,
+        "actionId": "ready_1",
+        "expectedRevision": 0,
+        "gameId": "game_1",
+        "roundId": "round_1",
+        "targetPlayerId": "p3"
+      }
     },
     {
       "fixtureId": "wire-create",
@@ -20,7 +35,7 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 1,
+            "version": 2,
             "selections": {
               "face": "round",
               "skin": "light",
@@ -42,7 +57,7 @@
         "handshake": {
           "protocolVersion": 1,
           "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
-          "avatarVersion": 1
+          "avatarVersion": 2
         }
       },
       "invalid": {
@@ -52,7 +67,7 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 1,
+            "version": 2,
             "selections": {
               "face": "round",
               "skin": "light",
@@ -74,7 +89,7 @@
         "handshake": {
           "protocolVersion": 1,
           "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
-          "avatarVersion": 1
+          "avatarVersion": 2
         },
         "actorId": "spoofed"
       }
@@ -90,7 +105,7 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 1,
+            "version": 2,
             "selections": {
               "face": "round",
               "skin": "light",
@@ -112,7 +127,7 @@
         "handshake": {
           "protocolVersion": 1,
           "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
-          "avatarVersion": 1
+          "avatarVersion": 2
         }
       },
       "invalid": {
@@ -122,7 +137,7 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 1,
+            "version": 2,
             "selections": {
               "face": "round",
               "skin": "light",
@@ -144,7 +159,7 @@
         "handshake": {
           "protocolVersion": 1,
           "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
-          "avatarVersion": 1
+          "avatarVersion": 2
         },
         "actorId": "spoofed"
       }
@@ -187,7 +202,7 @@
         "handshake": {
           "protocolVersion": 1,
           "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
-          "avatarVersion": 1
+          "avatarVersion": 2
         }
       },
       "invalid": {
@@ -198,7 +213,7 @@
         "handshake": {
           "protocolVersion": 1,
           "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
-          "avatarVersion": 1
+          "avatarVersion": 2
         },
         "actorId": "spoofed"
       }
@@ -218,7 +233,7 @@
         "handshake": {
           "protocolVersion": 1,
           "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
-          "avatarVersion": 1
+          "avatarVersion": 2
         }
       },
       "invalid": {
@@ -232,7 +247,7 @@
         "handshake": {
           "protocolVersion": 1,
           "catalogHash": "8d45c7ebcea374a5a5761b1741854b62ca53e6617d83727465ae3bb417ec3246",
-          "avatarVersion": 1
+          "avatarVersion": 2
         },
         "actorId": "spoofed"
       }
@@ -351,7 +366,7 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 1,
+            "version": 2,
             "selections": {
               "face": "round",
               "skin": "light",
@@ -379,7 +394,7 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 1,
+            "version": 2,
             "selections": {
               "face": "round",
               "skin": "light",
@@ -937,7 +952,7 @@
               "profile": {
                 "name": "p1",
                 "avatar": {
-                  "version": 1,
+                  "version": 2,
                   "selections": {
                     "face": "round",
                     "skin": "light",
@@ -965,7 +980,7 @@
               "profile": {
                 "name": "p2",
                 "avatar": {
-                  "version": 1,
+                  "version": 2,
                   "selections": {
                     "face": "round",
                     "skin": "light",
@@ -993,7 +1008,7 @@
               "profile": {
                 "name": "p3",
                 "avatar": {
-                  "version": 1,
+                  "version": 2,
                   "selections": {
                     "face": "round",
                     "skin": "light",
@@ -1065,7 +1080,7 @@
               "profile": {
                 "name": "p1",
                 "avatar": {
-                  "version": 1,
+                  "version": 2,
                   "selections": {
                     "face": "round",
                     "skin": "light",
@@ -1093,7 +1108,7 @@
               "profile": {
                 "name": "p2",
                 "avatar": {
-                  "version": 1,
+                  "version": 2,
                   "selections": {
                     "face": "round",
                     "skin": "light",
@@ -1121,7 +1136,7 @@
               "profile": {
                 "name": "p3",
                 "avatar": {
-                  "version": 1,
+                  "version": 2,
                   "selections": {
                     "face": "round",
                     "skin": "light",

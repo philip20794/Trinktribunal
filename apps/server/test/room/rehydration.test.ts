@@ -75,6 +75,7 @@ for (const allJudges of [false, true])
           const info = attachment(socket);
           if (info?.kind !== 'authenticated') continue;
           expect(Object.keys(info).sort()).toEqual([
+            'avatarVersion',
             'formatVersion',
             'generation',
             'kind',

@@ -2,8 +2,8 @@ import 'models/domain_error.dart';
 import 'selection/random_source.dart';
 
 abstract final class AvatarCatalog {
-  static const version = 1;
-  static const options = <String, List<String>>{
+  static const version = 2;
+  static const legacyOptionsV1 = <String, List<String>>{
     'face': ['round', 'square', 'long'],
     'skin': ['light', 'medium', 'brown', 'dark'],
     'eyes': ['open', 'sleepy'],
@@ -18,6 +18,22 @@ abstract final class AvatarCatalog {
     'glasses': ['none', 'round'],
     'hat': ['none', 'cap'],
     'extra': ['none', 'bowtie'],
+  };
+  static const options = <String, List<String>>{
+    'face': ['round', 'square', 'long', 'heart'],
+    'skin': ['light', 'medium', 'brown', 'dark', 'olive'],
+    'eyes': ['open', 'sleepy', 'wink'],
+    'brows': ['calm', 'raised', 'stern'],
+    'nose': ['round', 'long', 'button'],
+    'mouth': ['smile', 'neutral', 'surprised', 'smirk'],
+    'hair': ['short', 'curly', 'long', 'bald', 'ponytail'],
+    'hairColor': ['brown', 'black', 'gold', 'gray', 'copper'],
+    'beard': ['none', 'stubble', 'full', 'moustache'],
+    'top': ['shirt', 'jacket', 'waistcoat'],
+    'topColor': ['blue', 'red', 'green', 'brown', 'plum'],
+    'glasses': ['none', 'round', 'rectangular'],
+    'hat': ['none', 'cap', 'tricorn'],
+    'extra': ['none', 'bowtie', 'badge'],
   };
   static const defaults = <String, String>{
     'face': 'round',
@@ -76,13 +92,19 @@ final class AvatarConfig {
       if (raw is! Map ||
           raw.length != 2 ||
           raw['version'] is! int ||
-          raw['version'] != AvatarCatalog.version ||
+          ![1, AvatarCatalog.version].contains(raw['version']) ||
           raw['selections'] is! Map) {
         return AvatarConfig.fallback();
       }
       final values = raw['selections'] as Map;
+      final options = raw['version'] == 1
+          ? AvatarCatalog.legacyOptionsV1
+          : AvatarCatalog.options;
       if (values.length != AvatarCatalog.options.length ||
-          !values.keys.toSet().containsAll(AvatarCatalog.options.keys)) {
+          !values.keys.toSet().containsAll(AvatarCatalog.options.keys) ||
+          values.entries.any(
+            (entry) => !(options[entry.key]?.contains(entry.value) ?? false),
+          )) {
         return AvatarConfig.fallback();
       }
       return AvatarConfig(

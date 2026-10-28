@@ -1,4 +1,5 @@
 // Declarative source for schemas/room-message.schema.json. No server implementation.
+import avatarManifest from '../../apps/client/assets/avatars/manifest.json' with {type:'json'};
 const ref=name=>({$ref:'#/$defs/'+name});
 const object=(properties,optional=[])=>({type:'object',additionalProperties:false,required:Object.keys(properties).filter(k=>!optional.includes(k)),properties});
 const array=(items,maxItems,minItems=0)=>({type:'array',items,minItems,maxItems,uniqueItems:true});
@@ -14,10 +15,8 @@ const defs={
   utc:text('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$',24),
   revision:integer(0),
   config:object({targetCases:integer(1,491),requestedRuleEvents:integer(0,25),factorTenths:integer(10,30),allJudges:{type:'boolean'},contentLanguage:{enum:['de','en']}}),
-  handshake:object({protocolVersion:{const:1},catalogHash:ref('hash'),avatarVersion:{const:1}}),
-  avatar:object({version:{const:1},selections:object({
-    face:{enum:['round','square','long']},skin:{enum:['light','medium','brown','dark']},eyes:{enum:['open','sleepy']},brows:{enum:['calm','raised']},nose:{enum:['round','long']},mouth:{enum:['smile','neutral','surprised']},hair:{enum:['short','curly','long','bald']},hairColor:{enum:['brown','black','gold','gray']},beard:{enum:['none','stubble','full']},top:{enum:['shirt','jacket']},topColor:{enum:['blue','red','green','brown']},glasses:{enum:['none','round']},hat:{enum:['none','cap']},extra:{enum:['none','bowtie']},
-  })}),
+  handshake:object({protocolVersion:{const:1},catalogHash:ref('hash'),avatarVersion:{const:avatarManifest.version}}),
+  avatar:object({version:{const:avatarManifest.version},selections:object(Object.fromEntries(Object.entries(avatarManifest.options).map(([key,values])=>[key,{enum:values}])))}),
   profile:object({name:{type:'string',minLength:1},avatar:ref('avatar')}),
   historyEvent:object({eventId:ref('id'),kind:{enum:['question','rule']},contentId:text('^[A-Za-z0-9_-]{1,64}$'),timestampUtc:ref('utc')}),
   historyOffer:object({importId:ref('id'),count:integer(0,ROOM_LIMITS.historyEvents),sha256:ref('hash')}),
