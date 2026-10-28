@@ -11,7 +11,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 ORIGINAL_BLOB = "1fbf3fe02f99fcb4fb03168045ea12d237c09e59"
 SIZE = (1198, 1313)
@@ -244,14 +244,12 @@ def run(source, out, require_exact=True):
         arr=recolor(rgb,masks,**options)
         x=12+(i%4)*306
         y=10+(i//4)*370
-        sheet.paste(Image.fromarray(arr).resize(
-            (292,324),Image.Resampling.LANCZOS),(x,y+24))
+        sheet.paste(ImageOps.pad(Image.fromarray(arr),(292,324),Image.Resampling.LANCZOS,color="#f6f1e9"),(x,y+24))
         draw.text((x,y),label,font=font,fill="#282828")
         if i in (0,3,5,6,11,12,13):
             Image.fromarray(arr).save(out/f"full_{i:02d}.png")
         for width,height in ((320,400),(96,120),(48,60)):
-            Image.fromarray(arr).resize(
-                (width,height),Image.Resampling.LANCZOS).save(
+            ImageOps.pad(Image.fromarray(arr),(width,height),Image.Resampling.LANCZOS,color="#f6f1e9").save(
                 out/f"preview_{i:02d}_{width}x{height}.png")
         changed=np.any(arr!=rgb,axis=2)
         metrics["variants"].append({
