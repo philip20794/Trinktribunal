@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4/TT-079–084 abgeschlossen; nächster Meilenstein M7.5 (TT-071–078). Aktiv TT-078; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 140 Node-/521 Flutter-/446 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. Nächster Meilenstein M8: TT-066–068; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Gesamtgate grün: 141 Node-/521 Flutter-/446 Server-Tests, Analyze/Format, Dart-/TS-Parität und Mutationen. Frische Web-/Offline-/Debug-APK-Builds · [M7.5](qa/M7_5.md).
 
 ## Statusregeln
 
@@ -139,7 +139,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-075 | Übergabe, Richter, Fallakte, Geheimzahl und Urteil | ERLEDIGT | Gemeinsame Frage/Skala, feste Phasenaktionen, Übergabe-/Zahlen-/Urteilspapier; 511 Flutter-/140 Node-Tests, Analyze/Format, vollständige DE/EN-Widgetrunden grün · [M7.5](qa/M7_5.md). |
 | TT-076 | Kartenmodus, Regeln und lokale UI angleichen | ERLEDIGT | Kartenhülle/festes Weiter, Papier-Regeln, lokalisierte Konfiguration; vollständige 50+7-/Resume-Widgetflüsse, 513 Flutter-/140 Node-Tests, Analyze/Format grün · [M7.5](qa/M7_5.md). |
 | TT-077 | Lobby und Multiplayer-Ansichten angleichen | ERLEDIGT | Gemeinsame Hülle/TabBar/Profile, feste autorisierte Aktionen und sichtbare Formularfehler; acht neue Variantenflüsse, 521 Flutter-/140 Node-Tests, Analyze/Format grün · [M7.5](qa/M7_5.md). |
-| TT-078 | UI- und Layout-Regression abschließen | OFFEN | — |
+| TT-078 | UI- und Layout-Regression abschließen | ERLEDIGT | 21 Gruppen/35 Featurequellen abgeglichen; All-Gate 141 Node-/521 Flutter-/446 Server-Tests, Parität/Mutationen und frische Web-/Offline-/APK-Builds grün · [M7.5](qa/M7_5.md). |
 | TT-079 | Neue Abläufe und Phasenverträge spezifizieren (D-19) | ERLEDIGT | D-19 und maschinenlesbare Sollmatrix, vier neue Vertragsprüfungen; Produktcode unverändert · [M7.4](qa/M7_4.md). |
 | TT-080 | Fragenkarten im Spielkern beliebig neu ziehen | ERLEDIGT | Atomarer Reroll in lokalen/Serverkernen, Frageinstanz-Ledger mit Altstandmigration; 8 Flutter-/11 Servertests neu, Gesamtcheck/Parität und Builds grün · [M7.4](qa/M7_4.md). |
 | TT-081 | Refresh-Aktion in allen drei Spielvarianten | ERLEDIGT | Refresh und Richter-/Vorleserrechte in allen Modi, v2-DTOs und alter Socket-Versionsschutz; synchronisierte private Projektionen, Retry/Rejoin und Erschöpfung geprüft · [M7.4](qa/M7_4.md). |
@@ -174,7 +174,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-078 – UI-/Layout-Gesamtgate und Builds.** TT-071–077 sind abgeschlossen, M7.4/TT-079–084 abgeschlossen; danach folgen die unabhängigen M8-Aufgaben TT-066–068. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-066 – Android-Releasevorbereitung mit bestehender Codemagic-Signierung; danach TT-067/068.** TT-071–078 und TT-079–084 sind abgeschlossen. TT-065 bleibt als externes Veröffentlichungs-Gate offen; TT-069/070 erst bei erfüllten Abhängigkeiten abschließen. Browser/E2E gemäß Nutzervorgabe übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -197,11 +197,11 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-077-online-courtroom-ui auf main b6f5f00; TT-077 fertig geprüft
-Aktueller Beleg: docs/qa/M7_5.md. TT-071–077 abgeschlossen: 140 Node-/521 Flutter-Tests, Analyze/Format grün; Server unverändert mit 446 Tests aus M7.4. Builds zuletzt TT-072.
-Naechster Schritt: TT-078 – Screenmatrix abschließen, vollständiges Gate inklusive Server/Parität, neue Web-/Offline-/Android-Builds und Maße/Hashes. Danach unabhängige M8-Aufgaben TT-066–068; TT-065 bleibt extern offen, TT-069/070 nicht vor erfüllten Gates abschließen.
-TT-065 extern offen (18 Pakete/123 Dateien, sechs ungeklärte Runtime-Pakete); Avatar v3 separat, P1-Quellbildkonflikt dokumentiert. Rechtehashes auf LF normalisieren und nach Staging gegen Git-Blobs prüfen. Browser/E2E übersprungen, später manuell testen.
-Größere geprüfte Stände nach main pushen. Keine GitHub Actions oder Cloudflare-Deployments
+Branch: task/TT-078-ui-regression auf main 35a0733; TT-078/M7.5 fertig geprüft
+Aktueller Beleg: docs/qa/M7_5.md und M7_5-builds.json. All-Gate Exitcode 0: 141 Node-/521 Flutter-/446 Server-Tests (34 Serverdateien, 278,92 s), Analyze/Format, Parität/Mutationen grün. Frische Web-/Offline-/Debug-APK-Builds und Hashes erfasst.
+Naechster Schritt: TT-066 – Releasevorbereitung, vorhandene Codemagic-only-Signierung respektieren; keine neue Produktionsschlüsseldatei erzeugen. Danach TT-067 Web/Worker-Dry-run und TT-068 Hilfe/Datenschutz/Löschfunktionen. TT-065 extern blockiert, TT-069/070 nicht vor erfüllten Gates abschließen.
+TT-065: 18 Pakete/123 Dateien, sechs ungeklärte Runtime-Pakete. Avatar v3 separat, P1-Quellbildkonflikt dokumentiert. Rechtehashes auf LF normalisieren und nach Staging gegen Git-Blobs prüfen. Browser/E2E übersprungen, später manuell testen.
+Größere geprüfte Stände nach main pushen. Keine GitHub Actions oder Cloudflare-Deployments. GitHub-Commitstatus zu 35a0733 leer, kein Codemagic-Erfolg belegt.
 ```
 
 ## Vorlage für spätere Übergaben

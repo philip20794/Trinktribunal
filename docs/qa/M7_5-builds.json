@@ -1,0 +1,394 @@
+{
+  "date": "2026-10-28",
+  "task": "TT-078",
+  "sourceRevision": "35a0733",
+  "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen",
+  "publicReleaseCleared": false,
+  "web": {
+    "formatVersion": 1,
+    "builds": [
+      {
+        "compileTarget": "dart2js",
+        "renderer": "canvaskit",
+        "mainJsPath": "main.dart.js"
+      }
+    ],
+    "files": [
+      {
+        "path": "assets/AssetManifest.bin",
+        "bytes": 2458,
+        "sha256": "d98aa07c0e2d9a36730f4cb2edbed8ed010e3d16ec323ab07102a16637334bcd",
+        "gzipBytes": 484,
+        "brotliBytes": 432
+      },
+      {
+        "path": "assets/AssetManifest.bin.json",
+        "bytes": 3282,
+        "sha256": "b5fb8334c52ffed2880755e9aa8578a840bc38339dc6c18798eb7d4eac3b94f8",
+        "gzipBytes": 996,
+        "brotliBytes": 984
+      },
+      {
+        "path": "assets/FontManifest.json",
+        "bytes": 486,
+        "sha256": "cb595d81ea0c2267e264d51d26064280cc9857e4d7cc4ceb02004addbeed4503",
+        "gzipBytes": 206,
+        "brotliBytes": 179
+      },
+      {
+        "path": "assets/NOTICES",
+        "bytes": 1328097,
+        "sha256": "feca0929277c0ce3980f83fc16f9ddad3feffb553fb003ca89baf218debb405e",
+        "gzipBytes": 100457,
+        "brotliBytes": 48362
+      },
+      {
+        "path": "assets/assets/avatars/manifest.json",
+        "bytes": 2609,
+        "sha256": "0d1081fc8d17092064ff8097e7c33e9ce8f76f8a06a05805f7e5ac2109949fda",
+        "gzipBytes": 663,
+        "brotliBytes": 638
+      },
+      {
+        "path": "assets/assets/catalogs/manifest.json",
+        "bytes": 9728,
+        "sha256": "9ffa674da509340c68e2239a9f2b2a185121b18dbfa5f36688160219e2826220",
+        "gzipBytes": 1689,
+        "brotliBytes": 954
+      },
+      {
+        "path": "assets/assets/catalogs/questions/de.json",
+        "bytes": 106347,
+        "sha256": "634c1cd9c0f75a85779b4e83555e4f1bc7939e9602550d0fd570f63d3b86d932",
+        "gzipBytes": 29166,
+        "brotliBytes": 28246
+      },
+      {
+        "path": "assets/assets/catalogs/questions/en.json",
+        "bytes": 96294,
+        "sha256": "f2746e796f41809ecef34800e4437e4cfa6b4d0e86cfb7e01b4fca10afa37efe",
+        "gzipBytes": 25765,
+        "brotliBytes": 24755
+      },
+      {
+        "path": "assets/assets/catalogs/rules/de.json",
+        "bytes": 3803,
+        "sha256": "e2e81352cd3de1919e6ce494f3a014dcc4d836b5ada42d688d8ce8f78cd1670a",
+        "gzipBytes": 1328,
+        "brotliBytes": 1314
+      },
+      {
+        "path": "assets/assets/catalogs/rules/en.json",
+        "bytes": 3834,
+        "sha256": "88d4406c2779d9e28c975c000e266ae5db96d5d03ebf0e9b3592ecf1318583f5",
+        "gzipBytes": 1182,
+        "brotliBytes": 1102
+      },
+      {
+        "path": "assets/assets/fonts/roboto-bold.ttf",
+        "bytes": 170760,
+        "sha256": "7d0b991ee3e0be7af01ad7ea8cd2beea6c00a25e679a0226b6737f079aafff86",
+        "gzipBytes": 92202,
+        "brotliBytes": 85452
+      },
+      {
+        "path": "assets/assets/fonts/roboto-medium.ttf",
+        "bytes": 172064,
+        "sha256": "f205cc511821ea56078a105557fcea6253129404d411c997e1866fbd006abb68",
+        "gzipBytes": 92461,
+        "brotliBytes": 85294
+      },
+      {
+        "path": "assets/assets/fonts/roboto-regular.ttf",
+        "bytes": 171676,
+        "sha256": "79e851404657dac2106b3d22ad256d47824a9a5765458edb72c9102a45816d95",
+        "gzipBytes": 91546,
+        "brotliBytes": 84655
+      },
+      {
+        "path": "assets/assets/fonts/roboto_license.txt",
+        "bytes": 11358,
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "gzipBytes": 3928,
+        "brotliBytes": 3673
+      },
+      {
+        "path": "assets/assets/ui/courtroom/backgrounds/courtroom_wood_wall.png",
+        "bytes": 1226652,
+        "sha256": "02e4282e93159294b67d5e8235f12251bc15dd07b8811cf1cf5b8a742567eaaa",
+        "gzipBytes": 1226930,
+        "brotliBytes": 1226660
+      },
+      {
+        "path": "assets/assets/ui/courtroom/backgrounds/home_courtroom.png",
+        "bytes": 1187434,
+        "sha256": "6f52cb275d73a18523632b21fb979e20f7955a23d33f71d0d85f1b9b36e94ea1",
+        "gzipBytes": 1187817,
+        "brotliBytes": 1187442
+      },
+      {
+        "path": "assets/assets/ui/courtroom/branding/trinktribunal_logo.png",
+        "bytes": 819768,
+        "sha256": "8c707f5dafe1edd6a410e9d5d8c65e1b82656a9cbd66ca504ead71241ddf40e2",
+        "gzipBytes": 815917,
+        "brotliBytes": 819773
+      },
+      {
+        "path": "assets/assets/ui/courtroom/illustrations/phone_handover.png",
+        "bytes": 560351,
+        "sha256": "de227803b5dc94ad174d26cf727ca0ebacab84380dcbdd6e74c422185688cbcf",
+        "gzipBytes": 559599,
+        "brotliBytes": 560356
+      },
+      {
+        "path": "assets/assets/ui/courtroom/paper/case_parchment_blank.png",
+        "bytes": 654261,
+        "sha256": "f33f872f73a58a508f2b4d1b99e2cbd1ae6feb4be757fc5b62be10e057c81911",
+        "gzipBytes": 649773,
+        "brotliBytes": 654266
+      },
+      {
+        "path": "assets/assets/ui/courtroom/paper/number_card_blank.png",
+        "bytes": 375605,
+        "sha256": "280eb522765de9ca3fb7e570430dfc622c2988ce21db6cecb960e69c0aed8ea6",
+        "gzipBytes": 373772,
+        "brotliBytes": 375610
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/beer_mug.png",
+        "bytes": 111085,
+        "sha256": "85dc0d912d70df363a291616bbc287e405734b27934f4b873805486b8b77a89f",
+        "gzipBytes": 110045,
+        "brotliBytes": 110050
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/dice.png",
+        "bytes": 106377,
+        "sha256": "6dfd0199ba6194dab5246ad4169a078371ba2ebb9970eb115ae5aaa664b0e79b",
+        "gzipBytes": 105158,
+        "brotliBytes": 105125
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/judge_gavel.png",
+        "bytes": 127218,
+        "sha256": "b2b8ddb0241bf91acb1853decc034f4042e7b989f66241881468223c369725f7",
+        "gzipBytes": 126116,
+        "brotliBytes": 127223
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/justice_scales.png",
+        "bytes": 107795,
+        "sha256": "2b015076a1313829a71e7bb589240b7e46f1be3759f7f2e218ebe7138981a285",
+        "gzipBytes": 106621,
+        "brotliBytes": 106594
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/player_group.png",
+        "bytes": 88580,
+        "sha256": "ee511e14a43a657582e450996e90f6192ba9d17b5cb5b297ef85b97085eeb012",
+        "gzipBytes": 86552,
+        "brotliBytes": 86539
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/playing_cards.png",
+        "bytes": 105371,
+        "sha256": "c9dd5946a790023aa1a8eb34b04ab4afbe7bee9bb54e5a993c5cf1cfbdfbaaa3",
+        "gzipBytes": 103675,
+        "brotliBytes": 103608
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/refresh.png",
+        "bytes": 61876,
+        "sha256": "1275536ad19e2144e4146ae2cb8e987656e4fe73da3ed02a9d28077470882638",
+        "gzipBytes": 61108,
+        "brotliBytes": 61162
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/reveal_eye.png",
+        "bytes": 55284,
+        "sha256": "65fc081e91450900a90b9dd721cc30461094f608b0dafc1e43cdd36c77def142",
+        "gzipBytes": 54430,
+        "brotliBytes": 54347
+      },
+      {
+        "path": "assets/assets/ui/courtroom/symbols/smartphone.png",
+        "bytes": 57940,
+        "sha256": "ea544b5210f955a38d38fd50be1e00b0ecfed766add31d4f02258d2b3ac49023",
+        "gzipBytes": 56737,
+        "brotliBytes": 56911
+      },
+      {
+        "path": "assets/fonts/MaterialIcons-Regular.otf",
+        "bytes": 10648,
+        "sha256": "3a74a9f104dd86beb90cbd26fcff5da01a947943ecb519597564c081d183a579",
+        "gzipBytes": 5701,
+        "brotliBytes": 5443
+      },
+      {
+        "path": "assets/fonts/fallback/Roboto-Regular.ttf",
+        "bytes": 171676,
+        "sha256": "79e851404657dac2106b3d22ad256d47824a9a5765458edb72c9102a45816d95",
+        "gzipBytes": 91546,
+        "brotliBytes": 84655
+      },
+      {
+        "path": "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf",
+        "bytes": 1472,
+        "sha256": "3d90c370aa4cf00dc57ee2b902f6652147c0f81e03e483df584a9c08b1687c9d",
+        "gzipBytes": 1023,
+        "brotliBytes": 1008
+      },
+      {
+        "path": "assets/shaders/ink_sparkle.frag",
+        "bytes": 8890,
+        "sha256": "2dca5ab93d4ec29e963f996f3916320ba60825e9537dfb149a68008c7a16b026",
+        "gzipBytes": 2011,
+        "brotliBytes": 1913
+      },
+      {
+        "path": "assets/shaders/stretch_effect.frag",
+        "bytes": 6737,
+        "sha256": "ab412f07a5b9b50b67a885b24dbe16929738ae28630407d6490c924caf0a3220",
+        "gzipBytes": 1346,
+        "brotliBytes": 1268
+      },
+      {
+        "path": "canvaskit/canvaskit.js",
+        "bytes": 86987,
+        "sha256": "bb559f6080c7d312ac2a912b4abec9f68ff3d3022d4a603c7796b9b31460642b",
+        "gzipBytes": 27648,
+        "brotliBytes": 26568
+      },
+      {
+        "path": "canvaskit/canvaskit.wasm",
+        "bytes": 7284602,
+        "sha256": "fbed517a43e82452404446683f00f2e876d835aed84410695759e67b6bb01cd3",
+        "gzipBytes": 2941805,
+        "brotliBytes": 2634874
+      },
+      {
+        "path": "favicon.png",
+        "bytes": 4257,
+        "sha256": "5c304de4ac7c23ee8ff72c2f63efd3d7fa740db5c77495bf585cd122a7cb6307",
+        "gzipBytes": 4280,
+        "brotliBytes": 4261
+      },
+      {
+        "path": "flutter.js",
+        "bytes": 12136,
+        "sha256": "2beb1ce6b159c71540aa66030af1d7964b6a92377cc78473745e02f97b74effe",
+        "gzipBytes": 4630,
+        "brotliBytes": 4426
+      },
+      {
+        "path": "flutter_bootstrap.js",
+        "bytes": 13172,
+        "sha256": "5833cd1733e3a8b0d63ccfb9de83d41f1fcb8a2561337f40c1aa891a651cb235",
+        "gzipBytes": 5214,
+        "brotliBytes": 4954
+      },
+      {
+        "path": "flutter_service_worker.js",
+        "bytes": 815,
+        "sha256": "dbfbe64ae5be5b462abb97338eb9af783ed4ed57a8c73a53c2a44488a26f6416",
+        "gzipBytes": 359,
+        "brotliBytes": 317
+      },
+      {
+        "path": "icons/Icon-192.png",
+        "bytes": 45141,
+        "sha256": "7dae28027d0f7cddc2146e584cace96c9c5bc5a41a770f253e3fb97733626d04",
+        "gzipBytes": 45174,
+        "brotliBytes": 45145
+      },
+      {
+        "path": "icons/Icon-512.png",
+        "bytes": 240644,
+        "sha256": "ebe0100fcb72cd548e0b03d61f36a9df2d42ac345bd26dbc2337bd4d8d8e5470",
+        "gzipBytes": 240348,
+        "brotliBytes": 240649
+      },
+      {
+        "path": "icons/Icon-maskable-192.png",
+        "bytes": 33685,
+        "sha256": "fb245ae489a0978b64c9cfb72d8f40c84922b5c02211ba4f3f1c4af277944c14",
+        "gzipBytes": 33664,
+        "brotliBytes": 33689
+      },
+      {
+        "path": "icons/Icon-maskable-512.png",
+        "bytes": 179773,
+        "sha256": "c6f90a84b5a79d011ab25b6117627332fa8d8820c6280d714fe1280bca9c9d45",
+        "gzipBytes": 178864,
+        "brotliBytes": 179778
+      },
+      {
+        "path": "index.html",
+        "bytes": 930,
+        "sha256": "d0cd68e10a2d5618b110905857eaa355d1d429cefec8f7633d764f306fb4de8d",
+        "gzipBytes": 471,
+        "brotliBytes": 384
+      },
+      {
+        "path": "main.dart.js",
+        "bytes": 3845863,
+        "sha256": "4444f3c67d35defbe2b174d6242348c033c7d4a815b95f4c2b5a062e864ba00b",
+        "gzipBytes": 1100305,
+        "brotliBytes": 984963
+      },
+      {
+        "path": "manifest.json",
+        "bytes": 697,
+        "sha256": "7a6e256e93febe754429c1986a1452888d97cdeb85176474604c44c713e9d332",
+        "gzipBytes": 307,
+        "brotliBytes": 262
+      },
+      {
+        "path": "offline.js",
+        "bytes": 3188,
+        "sha256": "cc15b12fb93c0424b0dfb5425557f137080c5f4b4228e333764fc9062222f3d9",
+        "gzipBytes": 1190,
+        "brotliBytes": 1098
+      },
+      {
+        "path": "precache-manifest.json",
+        "bytes": 8446,
+        "sha256": "9a5ddfdb94c0eb43c017b62748938d37095b90e3986f45ea1c2c00015ca7180d",
+        "gzipBytes": 2781,
+        "brotliBytes": 2750
+      },
+      {
+        "path": "service-worker.js",
+        "bytes": 10864,
+        "sha256": "c6bcd312b10e31f1486d5561ff7f6c28d9744d2f6a7c6bc5ca99f17c6092cf1f",
+        "gzipBytes": 4462,
+        "brotliBytes": 4239
+      },
+      {
+        "path": "version.json",
+        "bytes": 96,
+        "sha256": "76716363148111bac7f7b83f71c14b619a05c59d5061ff9e4e20cdce2bd6a36e",
+        "gzipBytes": 92,
+        "brotliBytes": 63
+      }
+    ],
+    "totals": {
+      "files": 51,
+      "bytes": 19699112,
+      "gzipBytes": 10759544,
+      "brotliBytes": 10264413
+    },
+    "precache": {
+      "files": 48,
+      "bytes": 19678987,
+      "version": "57ef75ecc113d025bdf8aee4216b22e06f7e3f30b42b1540db7e12008ae07893"
+    },
+    "compression": "Per-file gzip level 9 / Brotli quality 6 laboratory compression; HTTP server compression and browser timings are not measured."
+  },
+  "androidDebug": {
+    "path": "apps/client/build/app/outputs/flutter-apk/app-debug.apk",
+    "bytes": 192958874,
+    "sha256": "a6a042aed025d4113ce10db9c681d4089d8ca5d061067c87848bdf7487aba27a",
+    "signing": "debug only; production signing remains in existing Codemagic configuration"
+  }
+}

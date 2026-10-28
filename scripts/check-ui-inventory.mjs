@@ -54,6 +54,18 @@ export function checkUiInventory(inventory, { root = repository, pubspecText } =
   }
   const featureFiles = list(root, 'apps/client/lib/features', '.dart');
   if (featureFiles.length !== sourceFiles.size || featureFiles.some(path => !sourceFiles.has(path))) fail('Unmapped feature source');
+  if (inventory.redesign) {
+    if (inventory.redesign.task !== 'TT-078' || inventory.redesign.implementationStatus !== 'complete' ||
+        inventory.redesign.manualAcceptance !== 'ÜBERSPRUNGEN – später manuell testen' ||
+        inventory.redesign.browserTestsRun !== false) fail('Invalid redesign/manual acceptance record');
+    for (const section of inventory.sections) {
+      if (section.implementation?.status !== 'implemented' || section.implementation.task !== section.targetTask)
+        fail(`Incomplete redesign section: ${section.id}`);
+    }
+    for (const path of featureFiles) {
+      if (/\bScaffold\s*\(/.test(readFileSync(file(path), 'utf8'))) fail(`Unmigrated feature scaffold: ${path}`);
+    }
+  }
   const pubspec = pubspecText ?? readFileSync(file('apps/client/pubspec.yaml'), 'utf8');
   const bundled = [...pubspec.matchAll(/^\s+-\s+(?:asset:\s+)?['"]?(assets\/[^'"\s]+)['"]?\s*(?:#.*)?$/gm)].map(match => 'apps/client/' + match[1]);
   const assets = new Set();

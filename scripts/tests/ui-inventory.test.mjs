@@ -20,3 +20,10 @@ test('placeholder and misleading mockup title never become a production requirem
   assert.throws(() => checkUiInventory(people), /Incorrect placeholder/);
   assert.throws(() => checkUiInventory(inventory(), { pubspecText: 'flutter:\n  assets:\n    - assets/ui/courtroom/\n' }), /Quarantined asset bundled/);
 });
+test('redesign completion requires every mapped section and preserves skipped manual acceptance', () => {
+  const missing = inventory();
+  delete missing.sections[0].implementation;
+  assert.throws(() => checkUiInventory(missing), /Incomplete redesign section/);
+  const invented = inventory(); invented.redesign.browserTestsRun = true;
+  assert.throws(() => checkUiInventory(invented), /Invalid redesign\/manual acceptance/);
+});

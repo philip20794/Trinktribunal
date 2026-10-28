@@ -134,7 +134,11 @@
         "apps/client/test/features/home_profile_settings_test.dart"
       ],
       "targetTask": "TT-073",
-      "implementation": "TT-073: Gerichtssaal-Hülle umgesetzt; Browserabnahme übersprungen, später manuell testen."
+      "implementation": {
+        "task": "TT-073",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "profile",
@@ -166,7 +170,11 @@
         "apps/client/test/features/home_profile_settings_test.dart"
       ],
       "targetTask": "TT-073",
-      "implementation": "TT-073: Gerichtssaal-Hülle umgesetzt; Browserabnahme übersprungen, später manuell testen."
+      "implementation": {
+        "task": "TT-073",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "settings",
@@ -197,7 +205,11 @@
         "apps/client/test/features/home_profile_settings_test.dart"
       ],
       "targetTask": "TT-073",
-      "implementation": "TT-073: Gerichtssaal-Hülle umgesetzt; Browserabnahme übersprungen, später manuell testen."
+      "implementation": {
+        "task": "TT-073",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "people",
@@ -229,7 +241,12 @@
         "apps/client/test/accessibility/screen_matrix_test.dart",
         "apps/client/test/features/roster_bench_test.dart"
       ],
-      "targetTask": "TT-074"
+      "targetTask": "TT-074",
+      "implementation": {
+        "task": "TT-074",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "physical_cards",
@@ -263,7 +280,12 @@
         "apps/client/test/design/question_card_test.dart",
         "apps/client/test/features/local_card_ui_test.dart"
       ],
-      "targetTask": "TT-076"
+      "targetTask": "TT-076",
+      "implementation": {
+        "task": "TT-076",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "shared_phone",
@@ -306,7 +328,12 @@
         "apps/client/test/application/local_marathon_test.dart",
         "apps/client/test/design/question_card_test.dart"
       ],
-      "targetTask": "TT-075"
+      "targetTask": "TT-075",
+      "implementation": {
+        "task": "TT-075",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "bench",
@@ -338,7 +365,12 @@
         "apps/client/test/accessibility/interaction_test.dart",
         "apps/client/test/features/roster_bench_test.dart"
       ],
-      "targetTask": "TT-074"
+      "targetTask": "TT-074",
+      "implementation": {
+        "task": "TT-074",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "active_rules",
@@ -364,7 +396,12 @@
         "apps/client/test/domain/card_game_test.dart",
         "apps/client/test/features/direct_next_rules_test.dart"
       ],
-      "targetTask": "TT-076"
+      "targetTask": "TT-076",
+      "implementation": {
+        "task": "TT-076",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "general_rules",
@@ -393,7 +430,12 @@
         "apps/client/test/features/question_refresh_test.dart",
         "apps/client/test/accessibility/screen_matrix_test.dart"
       ],
-      "targetTask": "TT-076"
+      "targetTask": "TT-076",
+      "implementation": {
+        "task": "TT-076",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "verdict",
@@ -426,7 +468,12 @@
         "apps/client/test/features/personal_verdict_test.dart",
         "apps/client/test/features/all_judges_test.dart"
       ],
-      "targetTask": "TT-075"
+      "targetTask": "TT-075",
+      "implementation": {
+        "task": "TT-075",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_entry",
@@ -461,7 +508,12 @@
         "apps/client/test/features/room_entry_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_connection",
@@ -493,7 +545,12 @@
         "apps/client/test/features/close_room_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_lobby",
@@ -527,7 +584,12 @@
         "apps/client/test/features/online_game_progress_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_me",
@@ -554,7 +616,12 @@
         "apps/client/test/application/online_profile_controller_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_settings",
@@ -582,7 +649,12 @@
         "apps/client/test/features/lobby_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_roster",
@@ -611,7 +683,12 @@
         "apps/client/test/features/online_roster_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_game",
@@ -655,7 +732,12 @@
         "apps/client/test/features/online_game_progress_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_invitation",
@@ -681,7 +763,12 @@
         "apps/client/test/features/room_entry_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "online_exit",
@@ -709,7 +796,12 @@
         "apps/client/test/application/room_controller_test.dart",
         "apps/client/test/features/online_court_actions_test.dart"
       ],
-      "targetTask": "TT-077"
+      "targetTask": "TT-077",
+      "implementation": {
+        "task": "TT-077",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "debug_gallery",
@@ -735,7 +827,12 @@
         "apps/client/test/design/avatar_test.dart",
         "apps/client/test/design/court_scene_test.dart"
       ],
-      "targetTask": "TT-072"
+      "targetTask": "TT-072",
+      "implementation": {
+        "task": "TT-072",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     },
     {
       "id": "legacy_preview",
@@ -755,7 +852,12 @@
         "alte Vorschau ohne produktiven Aufrufer; nicht als fehlende Funktion neu anbieten"
       ],
       "tests": [],
-      "targetTask": "TT-073"
+      "targetTask": "TT-073",
+      "implementation": {
+        "task": "TT-073",
+        "status": "implemented",
+        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
+      }
     }
   ],
   "assets": [
@@ -1386,5 +1488,12 @@
       "review": "candidate",
       "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
     }
-  ]
+  ],
+  "redesign": {
+    "task": "TT-078",
+    "baseline": "35a0733",
+    "implementationStatus": "complete",
+    "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen",
+    "browserTestsRun": false
+  }
 }

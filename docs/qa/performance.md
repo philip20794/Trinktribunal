@@ -62,3 +62,7 @@ Web-Bundlehash: `71ca6e50fba631085e449e579afcaa269decf3699495acf147016af5dfaf0f8
 ## Quellen
 
 [Flutter Wasm](https://docs.flutter.dev/platform-integration/web/wasm), [Bootstrap-Konfiguration](https://docs.flutter.dev/platform-integration/web/initialization), zusätzlich installierter SDK-Loader unter `C:/flutter/bin/cache/flutter_web_sdk/flutter_js/src/{loader,canvaskit_loader,skwasm_loader}.js`. Wasm-Browserfähigkeiten und Isolationsanforderungen bleiben versionsabhängig; keine pauschale Gerätefreigabe aus einem erfolgreichen Compilerlauf.
+
+## Nachtrag M7.5 / TT-078
+
+Die obigen TT-062-Zahlen bleiben der historische JS/Wasm-Vergleich. Das neue UI bündelt 15 ausgewählte Court-PNGs; der aktuelle [M7.5-Buildbeleg](M7_5-builds.json) misst 19.678.987 Byte Offlineinhalt in 48 Dateien. Bilddekodierung ist begrenzt, alle Dateien bleiben offline gebündelt. Neue Widget-/Build-Smokes sind in [M7.5](M7_5.md) belegt. Daraus werden keine neuen Browser-/Geräte-Startzeiten, Frame- oder Heapwerte abgeleitet; diese bleiben auf Nutzerwunsch manuell offen.
