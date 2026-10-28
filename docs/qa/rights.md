@@ -4,7 +4,7 @@ Stand: 28.10.2026. **BLOCKIERT: externe Herkunfts-/Nutzungsnachweise fehlen.** D
 
 ## Konkreter Bestand
 
-Das [Rechteregister](rights-registry.json) enthält 18 Pakete mit 123 dateigenauen SHA-256-Werten und Links auf die vorhandenen Herkunftseinträge. Es inventarisiert Inhalte, Schriftdateien, Original-Vektorgeometrie, App-Icons, zusätzliche Gerichtssaal-PNGs und den separat dokumentierten v3-Konzeptbogen. Generierte DE/EN-Assetkopien sind zusammen mit ihren Quellen erfasst. SDK-/Paketnotizen bleiben der getrennte Flutter-/TT-068-Nachweis; dieses Register erfindet keine Projektlizenz und ersetzt keine Prüfung externer Belege.
+Das [Rechteregister](rights-registry.json) enthält 18 Pakete mit 124 dateigenauen SHA-256-Werten und Links auf die vorhandenen Herkunftseinträge. Es inventarisiert Inhalte, Schriftdateien, Original-Vektorgeometrie, App-Icons, zusätzliche Gerichtssaal-PNGs und den separat dokumentierten v3-Konzeptbogen. Generierte DE/EN-Assetkopien sind zusammen mit ihren Quellen erfasst. SDK-/Paketnotizen bleiben der getrennte Flutter-/TT-068-Nachweis; dieses Register erfindet keine Projektlizenz und ersetzt keine Prüfung externer Belege.
 
 | Paket | Verwendung | Erfasster Status |
 | --- | --- | --- |

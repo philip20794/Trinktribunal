@@ -531,3 +531,7 @@ Android-Debug-APK reproduzieren: `scripts/build-android.ps1 -Offline`. Der Befeh
 Raumvertrag prüfen: `node scripts/generate-room-protocol.mjs --check`, `node --test scripts/tests/room-protocol.test.mjs` oder gesamtes `scripts/check.ps1 -Scope Docs`. Beide späteren Adapter verwenden die versionierten JSON-Schemas/Fixtures aus [packages/protocol](../packages/protocol/README.md); der Node-Referenzprüfer ersetzt keine Server-Runtimeprüfung.
 
 Server einrichten: in `apps/server` einmal `npm.cmd ci`, danach vom Root `scripts/dev-server.ps1` (Port 8787) und `scripts/check.ps1 -Scope Server` oder `-Scope All`. Gepinnte Tools und tatsächlich geprüfter Umfang: [TT-035](qa/TT-035.md). Die Server-Unit-Tests laufen im lokalen Workerd; Browser-/E2E-Abläufe werden übersprungen und später manuell geprüft.
+
+## Android-Releasevorbereitung (TT-066)
+
+Bestehende Codemagic-Signierung und App-ID bleiben erhalten. `node scripts/check-android-release.mjs` prüft Konfiguration ohne Secret-Ausgabe. `scripts/build-android-release.ps1 -Target Apk|AppBundle` verlangt vorhandene CM-Signaturdaten und prüft das erzeugte Artefakt; `scripts/verify-android-release.ps1 -ArtifactPath ...` benötigt nur das Artefakt und SDK/JDK. Keine Produktionsschlüssel lokal erzeugen oder einchecken. Aktueller fehlender Releasebeleg und tatsächliche Negativ-/Debugchecks: [TT-066](qa/android-release.md).

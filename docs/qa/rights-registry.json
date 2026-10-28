@@ -587,6 +587,10 @@
         {
           "path": "artwork/avatars/v3/prototypes/male_09_color_masks/test_p1_refinement_review.py",
           "sha256": "b730750b694cc4348367483e9360a5ea0e641e5bb3b148b762e4292a622d8838"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/p1_mask_refinement_v3.py",
+          "sha256": "7f7bea65acab5fe489a091a614b0870f48051f7560311445f854c86024a58e13"
         }
       ]
     },

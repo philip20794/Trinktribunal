@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // Stable APK identity: retain the existing installation/update and data path.
         applicationId = "com.example.trinktribunal"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
@@ -31,6 +31,17 @@ android {
 
     // Der Keystore kommt nur aus Codemagic. Lokal wird keine Debug-Signatur
     // stillschweigend fuer einen Release-Build verwendet.
+    val releaseRequested = gradle.startParameter.taskNames.any {
+        it.contains("release", ignoreCase = true)
+    }
+    val missingSigningVariables = listOf(
+        "CM_KEYSTORE_PATH", "CM_KEYSTORE_PASSWORD", "CM_KEY_ALIAS", "CM_KEY_PASSWORD"
+    ).filter { System.getenv(it).isNullOrBlank() }
+    if (releaseRequested && missingSigningVariables.isNotEmpty()) {
+        throw GradleException(
+            "Release signing requires Codemagic variables: " + missingSigningVariables.joinToString(", ")
+        )
+    }
     signingConfigs {
         create("release") {
             val keystorePath = System.getenv("CM_KEYSTORE_PATH")

@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. Nächster Meilenstein M8: TT-066–068; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Gesamtgate grün: 141 Node-/521 Flutter-/446 Server-Tests, Analyze/Format, Dart-/TS-Parität und Mutationen. Frische Web-/Offline-/Debug-APK-Builds · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; nächster Schritt TT-067; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Gesamtgate grün: 141 Node-/521 Flutter-/446 Server-Tests, Analyze/Format, Dart-/TS-Parität und Mutationen. Frische Web-/Offline-/Debug-APK-Builds · [M7.5](qa/M7_5.md).
 
 ## Statusregeln
 
@@ -126,8 +126,8 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-062 | Web-/Android-Performance messen und Wasm entscheiden | ERLEDIGT | Beide Builds kompilieren; JS bleibt D-18-Releaseweg, Offlinepaket −68,6 %, 20-Figuren-/50-Umsortierungs-Units grün; Gerätebudgets übersprungen, später manuell testen · [Performance](qa/performance.md). |
 | TT-063 | Nachrichten, Storage und Free-Tier-Budget messen | ERLEDIGT | Lokale SQL-/Frame-/Alarmzähler, beide 8×50+7-Modi und zehn parallele Achterräume: p95 199 ms; Kostenmodell mit 50 % Reserve und ungemessenem Edge-Billing · [Beleg](qa/cost-model.md). |
 | TT-064 | Bedienbarkeit, Fehler- und Leerzustände final prüfen | ERLEDIGT | 56 neue Semantik-/Tastatur-/Fehler-/200%-Tests, Live-Fehlertexte, personengebundener Fokus, Dialog-Escape und Wiederholungsweg; 411 Flutter-Tests und Builds grün · [M7](qa/M7.md). |
-| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 18 Paketen/123 Dateien und Releasegate geprüft; sechs Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
-| TT-066 | Android-Releaseartefakte und Signierung vorbereiten | OFFEN | — |
+| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 18 Paketen/124 Dateien und Releasegate geprüft; sechs Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
+| TT-066 | Android-Releaseartefakte und Signierung vorbereiten | BLOCKIERT | Vorbereitung/Signatur- und HTTPS-Gates fertig, 145 Node-Tests/Debugbuild grün; echter signierter APK/AAB-Beleg aus bestehender Codemagic-Signierung fehlt · [TT-066](qa/android-release.md). |
 | TT-067 | Pages-Webpaket und Worker lokal releasefertig prüfen | OFFEN | — |
 | TT-068 | Spielhilfe, Datenschutz und lokale Wartung dokumentieren | OFFEN | — |
 | TT-069 | Vollständige lokale Releaseabnahme | OFFEN | — |
@@ -174,7 +174,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-066 – Android-Releasevorbereitung mit bestehender Codemagic-Signierung; danach TT-067/068.** TT-071–078 und TT-079–084 sind abgeschlossen. TT-065 bleibt als externes Veröffentlichungs-Gate offen; TT-069/070 erst bei erfüllten Abhängigkeiten abschließen. Browser/E2E gemäß Nutzervorgabe übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-067 – Webpaket und Worker-Release-Dry-run; danach TT-068.** TT-066 ist technisch vorbereitet, benötigt zum Abschluss einen echten signierten Artefaktbeleg aus der vorhandenen Codemagic-Umgebung. TT-065 bleibt externes Veröffentlichungs-Gate. TT-069/070 erst bei erfüllten Abhängigkeiten abschließen; Browser/E2E übersprungen, später manuell testen.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -197,11 +197,11 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-078-ui-regression auf main 35a0733; TT-078/M7.5 fertig geprüft
-Aktueller Beleg: docs/qa/M7_5.md und M7_5-builds.json. All-Gate Exitcode 0: 141 Node-/521 Flutter-/446 Server-Tests (34 Serverdateien, 278,92 s), Analyze/Format, Parität/Mutationen grün. Frische Web-/Offline-/Debug-APK-Builds und Hashes erfasst.
-Naechster Schritt: TT-066 – Releasevorbereitung, vorhandene Codemagic-only-Signierung respektieren; keine neue Produktionsschlüsseldatei erzeugen. Danach TT-067 Web/Worker-Dry-run und TT-068 Hilfe/Datenschutz/Löschfunktionen. TT-065 extern blockiert, TT-069/070 nicht vor erfüllten Gates abschließen.
-TT-065: 18 Pakete/123 Dateien, sechs ungeklärte Runtime-Pakete. Avatar v3 separat, P1-Quellbildkonflikt dokumentiert. Rechtehashes auf LF normalisieren und nach Staging gegen Git-Blobs prüfen. Browser/E2E übersprungen, später manuell testen.
-Größere geprüfte Stände nach main pushen. Keine GitHub Actions oder Cloudflare-Deployments. GitHub-Commitstatus zu 35a0733 leer, kein Codemagic-Erfolg belegt.
+Branch: task/TT-066-android-release-prep auf main 9e0e866; Vorbereitung geprüft
+Beleg: docs/qa/android-release.md. 145 Node-Tests grün, Debug-APK erneut erfolgreich (Hash unverändert), Release ohne CM-Variablen wird früh abgewiesen; Debug-APK wird als Release zurückgewiesen. TT-066 BLOCKIERT bis echter signierter APK/AAB-Beleg vorliegt. Keine Produktionsschlüssel erzeugen.
+Naechster Schritt: TT-067 – Produktionskonfigurationsbeispiel, Web-Header/Offline-/Deep-Link-Prüfung, lokaler Worker-Dry-run ohne Upload. Danach TT-068 Hilfe/Datenschutz/Löschfunktionen. M7.5 vollständig grün mit 141 Node-/521 Flutter-/446 Server-Tests und frischen Builds.
+TT-065: 18 Pakete/124 Dateien, sechs ungeklärte Runtime-Pakete. Nutzerstand aff6c8a (P1-Masken-v3-Prototyp) erhalten/AST-geprüft, keine App-v3-Integration. Rechtehashes auf LF normalisieren und gegen Git-Blobs prüfen. Browser/E2E übersprungen, später manuell testen.
+Größere geprüfte Stände nach main pushen. Keine GitHub Actions oder Cloudflare-Deployments.
 ```
 
 ## Vorlage für spätere Übergaben
