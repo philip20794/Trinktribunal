@@ -9,6 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/local_data_providers.dart';
 import '../../application/profile_controller.dart';
 import '../../design/avatar_view.dart';
+import '../../design/court_scene.dart';
+import '../../design/case_file.dart';
 import '../../domain/avatar_config.dart';
 import '../../domain/selection/random_source.dart';
 import 'avatar_options.dart';
@@ -43,9 +45,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const TText('profileTitle')),
-    body: ref
+  Widget build(BuildContext context) => CourtScaffold(
+    title: const TText('profileTitle'),
+    footer: ref.watch(profileProvider).asData?.value == null
+        ? null
+        : CourtActionBar(
+            primary: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (ref.watch(profileProvider).asData?.value.error
+                    case final String error)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: StatusNotice(context.feedback(error)),
+                  ),
+                CourtPrimaryButton(
+                  onPressed: _saving
+                      ? null
+                      : () => _save(ref.read(profileProvider).requireValue),
+                  child: TText(_saving ? 'profileSaving' : 'profileSave'),
+                ),
+              ],
+            ),
+            secondary: CourtSecondaryButton(
+              onPressed: () => Navigator.pop(context),
+              child: const TText('profileBack'),
+            ),
+          ),
+    bodyBuilder: (context) => ref
         .watch(profileProvider)
         .when(
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -63,20 +91,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             }
             return Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
+                constraints: const BoxConstraints(maxWidth: 760),
                 child: ListView(
                   padding: const EdgeInsets.all(24),
                   children: [
                     Center(
                       child: AvatarView(
                         config: _avatar,
-                        size: 160,
+                        size: 200,
                         label: context.tr('profilePreview'),
                       ),
+                    ),
+                    const SizedBox(height: 8),
+                    NamePlate(
+                      name: _name.text.trim().isEmpty
+                          ? context.tr('profilePreview')
+                          : _name.text.trim(),
+                      position: 1,
                     ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: _name,
+                      onChanged: (_) => setState(() => controller.error = null),
                       decoration: InputDecoration(
                         labelText: context.tr('profileName'),
                         helperText: context.tr('profileLength'),
@@ -116,23 +152,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     AvatarOptions(
                       config: _avatar,
                       onChanged: (value) => setState(() => _avatar = value),
-                    ),
-                    if (controller.error != null)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: StatusNotice(
-                          context.feedback(controller.error!),
-                        ),
-                      ),
-                    FilledButton(
-                      onPressed: _saving ? null : () => _save(controller),
-                      child: Text(
-                        context.tr(_saving ? 'profileSaving' : 'profileSave'),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const TText('profileBack'),
                     ),
                   ],
                 ),

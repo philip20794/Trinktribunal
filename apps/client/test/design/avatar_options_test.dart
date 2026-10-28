@@ -5,6 +5,51 @@ import 'package:trinktribunal/features/profile/avatar_options.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
 void main() {
+  for (final scale in [1.0, 2.0]) {
+    testWidgets(
+      'categories use two columns only when width and text allow: $scale',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(760, 900));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        await tester.pumpWidget(
+          MaterialApp(
+            home: AppLanguageScope(
+              language: 'en',
+              child: MediaQuery(
+                data: MediaQueryData(textScaler: TextScaler.linear(scale)),
+                child: Scaffold(
+                  body: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: AvatarOptions(
+                        config: AvatarConfig(),
+                        onChanged: (_) {},
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        final fields = find.byWidgetPredicate(
+          (w) => w is DropdownButtonFormField<String>,
+        );
+        expect(fields, findsNWidgets(14));
+        final first = tester.getRect(fields.at(0)),
+            second = tester.getRect(fields.at(1));
+        if (scale == 1) {
+          expect(second.top, first.top);
+          expect(second.left, greaterThan(first.right));
+        } else {
+          expect(second.top, greaterThan(first.bottom));
+          expect(second.left, first.left);
+        }
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
   for (final language in ['de', 'en']) {
     testWidgets(
       'all 14 editor categories expose localized choices and remain independently editable: $language',

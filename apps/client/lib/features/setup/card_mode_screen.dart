@@ -1,3 +1,4 @@
+import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
 
 import 'dart:math' as math;
@@ -207,51 +208,62 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     final cases = math.min(_cases, maxCases);
     final rules = math.min(_rules, maxRules);
     return [
-      TText('nextHearing', style: Theme.of(context).textTheme.headlineMedium),
-      const SizedBox(height: 12),
-      const TText('cardIntro'),
-      const SizedBox(height: 24),
-      _slider('Spieler', _players, 3, 20, (n) => _players = n),
-      _slider(context.tr('cases'), cases, 1, maxCases, (n) {
-        _cases = n;
-        _rules = math.min(_rules, n - 1);
-      }),
-      _slider(
-        context.tr('additionalRules'),
-        rules,
-        0,
-        math.max(0, maxRules),
-        (n) => _rules = n,
-      ),
-      _slider(
-        'Faktor',
-        _factor,
-        10,
-        30,
-        (n) => _factor = n,
-        display: (_factor / 10).toStringAsFixed(1).replaceAll('.', ','),
-      ),
-      const SizedBox(height: 12),
-      Text(
-        context.tr('cardsPrepare', {
-          'max': (_players * _factor + 9) ~/ 10,
-          'count': _players - 1,
-        }),
-      ),
-      const SizedBox(height: 20),
-      FilledButton.icon(
-        onPressed: () => _act(
-          () => controller.start(
-            controller.configure(
-              playerCount: _players,
-              targetCases: cases,
-              requestedRuleEvents: rules,
-              factorTenths: _factor,
+      CourtPaper(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TText(
+              'nextHearing',
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
-          ),
+            const SizedBox(height: 12),
+            const TText('cardIntro'),
+            const SizedBox(height: 12),
+            _slider('Spieler', _players, 3, 20, (n) => _players = n),
+            _slider(context.tr('cases'), cases, 1, maxCases, (n) {
+              _cases = n;
+              _rules = math.min(_rules, n - 1);
+            }),
+            _slider(
+              context.tr('additionalRules'),
+              rules,
+              0,
+              math.max(0, maxRules),
+              (n) => _rules = n,
+            ),
+            _slider(
+              'Faktor',
+              _factor,
+              10,
+              30,
+              (n) => _factor = n,
+              display: (_factor / 10).toStringAsFixed(1).replaceAll('.', ','),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              context.tr('cardsPrepare', {
+                'max': (_players * _factor + 9) ~/ 10,
+                'count': _players - 1,
+              }),
+            ),
+            const SizedBox(height: 12),
+            FilledButton.icon(
+              onPressed: () => _act(
+                () => controller.start(
+                  controller.configure(
+                    playerCount: _players,
+                    targetCases: cases,
+                    requestedRuleEvents: rules,
+                    factorTenths: _factor,
+                  ),
+                ),
+              ),
+              icon: const Icon(Icons.gavel),
+              label: const TText('startHearing'),
+            ),
+          ],
         ),
-        icon: const Icon(Icons.gavel),
-        label: const TText('startHearing'),
       ),
     ];
   }

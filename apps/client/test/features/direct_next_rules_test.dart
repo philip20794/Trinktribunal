@@ -14,6 +14,14 @@ import '../accessibility/screen_matrix_test.dart' show accessibilityHost;
 Future<void> tap(WidgetTester tester, String text) async {
   final finder = find.text(text);
   if (finder.evaluate().isEmpty) {
+    // Phase changes can retain a scroll offset below a lazily built action.
+    final position = tester
+        .state<ScrollableState>(find.byType(Scrollable).first)
+        .position;
+    position.jumpTo(position.minScrollExtent);
+    await tester.pumpAndSettle();
+  }
+  if (finder.evaluate().isEmpty) {
     await tester.scrollUntilVisible(finder, 400);
   }
   // Center long localized labels below the pinned app bar after scroll/layout.

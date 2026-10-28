@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4/TT-079–084 abgeschlossen; nächster Meilenstein M7.5 (TT-071–078). Nächster Schritt TT-073; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 140 Node-/486 Flutter-/446 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4/TT-079–084 abgeschlossen; nächster Meilenstein M7.5 (TT-071–078). Aktiv TT-074; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 140 Node-/494 Flutter-/446 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -134,7 +134,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-070 | Manuellen Release- und späteren CI-Prozess übergeben | OFFEN | — |
 | TT-071 | Screens und Assets inventarisieren | ERLEDIGT | 21 Gruppen/35 Featurequellen, alle 33 PNGs mit Maßen/Alpha/Hashes und Sichtnotizen; zehn Referenzen, drei Quarantänemotive, 140 Node-Tests grün · [M7.5](qa/M7_5.md). |
 | TT-072 | Gerichtssaal-Designsystem und PNG-Integration | ERLEDIGT | Responsive Hülle/Papier/Aktionsleisten, 15 PNGs mit Cache/Fallback; 486 Flutter-/140 Node-Tests, Analyze/Format und frische Web-/APK-Builds grün · [M7.5](qa/M7_5.md). |
-| TT-073 | Startseite, Profil und Einstellungen neugestalten | OFFEN | — |
+| TT-073 | Startseite, Profil und Einstellungen neugestalten | ERLEDIGT | Kompakte Moduskarten, v2-Vorschau/live Namensschild, Speichernleiste, responsive Kategorien, Einstellungen und lokale Konfiguration; 494 Flutter-/140 Node-Tests, Analyze/Format grün · [M7.5](qa/M7_5.md). |
 | TT-074 | Personenverwaltung und Schlangen-Sitzbank | OFFEN | — |
 | TT-075 | Übergabe, Richter, Fallakte, Geheimzahl und Urteil | OFFEN | — |
 | TT-076 | Kartenmodus, Regeln und lokale UI angleichen | OFFEN | — |
@@ -174,7 +174,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-073 – Start, Profil und Einstellungen.** TT-071/072 sind abgeschlossen, M7.4/TT-079–084 abgeschlossen; danach folgen TT-074–078. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-074 – Personenverwaltung und Schlangen-Sitzbank.** TT-071–073 sind abgeschlossen, M7.4/TT-079–084 abgeschlossen; danach folgen TT-075–078. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -197,11 +197,11 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-072-court-design-system; enthält TT-071-Commit 1ab759d und Nutzerstand 8a54207
-Aktueller Beleg: docs/qa/M7_5.md. TT-071/072 abgeschlossen: 140 Node-/486 Flutter-Tests, Analyze/Format grün; Server unverändert mit 446 geprüften Tests aus M7.4. Frische Web-/Offline-/APK-Builds im M7.5-Beleg.
-Naechster Schritt: TT-073 – Startseite, Profil mit dynamischem Namensschild und kompakteren Kategorien, Einstellungen/lokale Einrichtung. Vor Änderungen Gitstand prüfen. Drei Quarantänemotive nicht bündeln. TT-065 extern offen (18 Pakete/123 Dateien, sechs ungeklärte Runtime-Pakete); Avatar v3 separater P1-Workstream. Browser/E2E übersprungen, später manuell testen.
-Größeren TT-071/072-Stand nach main pushen, danach TT-073 fortsetzen.
-Keine GitHub Actions oder Cloudflare-Deployments
+Branch: task/TT-073-home-profile-settings auf main db89afa; TT-073 fertig geprüft
+Aktueller Beleg: docs/qa/M7_5.md. TT-071–073 abgeschlossen: 140 Node-/494 Flutter-Tests, Analyze/Format grün; Server unverändert mit 446 Tests aus M7.4. Builds zuletzt TT-072; nächste frische Builds im TT-078-Gate.
+Naechster Schritt: TT-074 – Personenverwaltung mit derselben Schlangen-Sitzbank, drei Spalten bei ausreichender Breite, D-17-Einfügen und Alternativsteuerung. Vor Änderungen Gitstand prüfen.
+TT-065 extern offen (18 Pakete/123 Dateien, sechs ungeklärte Runtime-Pakete); Avatar v3 separat. Neuer P1-Originaltest scheitert an Bildmaßen 1198×1313 statt1229×1536, keine Masterbilder ändern. Browser/E2E übersprungen, später manuell testen.
+Größere geprüfte Stände nach main pushen. Keine GitHub Actions oder Cloudflare-Deployments
 ```
 
 ## Vorlage für spätere Übergaben

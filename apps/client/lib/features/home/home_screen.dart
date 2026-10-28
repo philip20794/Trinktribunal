@@ -10,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/local_data_providers.dart';
 import '../../design/avatar_view.dart';
 import '../../design/home_layout.dart';
+import '../../design/court_scene.dart';
+import '../../design/court_assets.dart';
 
 import '../../data/catalogs/catalog_diagnostics.dart';
 
@@ -65,42 +67,42 @@ class HomeScreen extends ConsumerWidget {
     final transaction = resume.hasValue
         ? ref.read(localStateTransactionProvider)
         : null;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trinktribunal'),
-        actions: [
-          const GameRulesButton(),
-          if (kDebugMode)
-            IconButton(
-              tooltip: context.tr('openDesign'),
-              onPressed: () => _open(context, const DesignGalleryScreen()),
-              icon: const Icon(Icons.palette_outlined),
-            ),
+    return CourtScaffold(
+      background: CourtAssets.home,
+      maxWidth: 1056,
+      title: const Text('Trinktribunal'),
+      actions: [
+        const GameRulesButton(),
+        if (kDebugMode)
           IconButton(
-            tooltip: context.tr('openSettings'),
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () => _open(context, const SettingsScreen()),
+            tooltip: context.tr('openDesign'),
+            onPressed: () => _open(context, const DesignGalleryScreen()),
+            icon: const Icon(Icons.palette_outlined),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: IconButton.filledTonal(
-              tooltip: context.tr('openProfile'),
-              icon: profile == null
-                  ? const Icon(Icons.person_outline)
-                  : AvatarView(
-                      config: profile.avatar,
-                      size: 28,
-                      label: profile.player.name,
-                    ),
-              onPressed: () => _open(context, const ProfileScreen()),
-            ),
+        IconButton(
+          tooltip: context.tr('openSettings'),
+          icon: const Icon(Icons.settings_outlined),
+          onPressed: () => _open(context, const SettingsScreen()),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 12),
+          child: IconButton.filledTonal(
+            tooltip: context.tr('openProfile'),
+            icon: profile == null
+                ? const Icon(Icons.person_outline)
+                : AvatarView(
+                    config: profile.avatar,
+                    size: 28,
+                    label: profile.player.name,
+                  ),
+            onPressed: () => _open(context, const ProfileScreen()),
           ),
-        ],
-      ),
-      body: LayoutBuilder(
+        ),
+      ],
+      bodyBuilder: (context) => LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth <= 40) return const SizedBox.shrink();
-          const gap = 16.0;
+          const gap = 12.0;
           final cardWidth = homeCardWidth(constraints.maxWidth);
 
           return SingleChildScrollView(
@@ -108,17 +110,21 @@ class HomeScreen extends ConsumerWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 1056),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 32, 20, 48),
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TText(
-                        'homeWelcome',
-                        style: Theme.of(context).textTheme.headlineMedium,
+                      Center(
+                        child: CourtBrandMark(
+                          width: constraints.maxWidth < 600 ? 190 : 250,
+                        ),
                       ),
-                      const SizedBox(height: 10),
-                      Text(context.tr('homeIntro')),
-                      const SizedBox(height: 28),
+                      const SizedBox(height: 8),
+                      Text(
+                        context.tr('homeIntro'),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
                       if (transaction?.restored == true)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 16),
@@ -196,10 +202,6 @@ class HomeScreen extends ConsumerWidget {
                       const SizedBox(height: 24),
                       const SavedRooms(),
                       const CatalogDiagnostics(),
-                      const TText(
-                        'homeDevPreview',
-                        style: TextStyle(color: Color(0xFF715E50)),
-                      ),
                     ],
                   ),
                 ),
@@ -220,43 +222,57 @@ class _ModeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 176),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    final title = context.tr(switch (mode) {
+      GameMode.cards => 'modeCards',
+      GameMode.sharedPhone => 'modePhone',
+      GameMode.multiplayer => 'modeMulti',
+    });
+    final description = context.tr(switch (mode) {
+      GameMode.cards => 'modeCardsDescription',
+      GameMode.sharedPhone => 'modePhoneDescription',
+      GameMode.multiplayer => 'modeMultiDescription',
+    });
+    return Semantics(
+      button: true,
+      child: Card(
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
               children: [
-                Icon(mode.icon, size: 36),
-                const SizedBox(height: 18),
-                Text(
-                  context.tr(switch (mode) {
-                    GameMode.cards => 'modeCards',
-                    GameMode.sharedPhone => 'modePhone',
-                    GameMode.multiplayer => 'modeMulti',
-                  }),
-                  style: Theme.of(context).textTheme.titleLarge,
+                CourtArt(
+                  switch (mode) {
+                    GameMode.cards => CourtAssets.cards,
+                    GameMode.sharedPhone => CourtAssets.phone,
+                    GameMode.multiplayer => CourtAssets.people,
+                  },
+                  width: 48,
+                  height: 48,
+                  fallback: Icon(mode.icon, size: 36),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  context.tr(switch (mode) {
-                    GameMode.cards => 'modeCardsDescription',
-                    GameMode.sharedPhone => 'modePhoneDescription',
-                    GameMode.multiplayer => 'modeMultiDescription',
-                  }),
-                ),
-                const SizedBox(height: 14),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Theme.of(context).colorScheme.primary,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
                   ),
                 ),
+                const SizedBox(width: 8),
+                const Icon(Icons.chevron_right, size: 24),
               ],
             ),
           ),

@@ -7,6 +7,7 @@ import 'package:trinktribunal/app/trinktribunal_app.dart';
 import 'package:trinktribunal/application/local_data_providers.dart';
 import 'package:trinktribunal/application/room_providers.dart';
 import 'package:trinktribunal/data/room_credential_store.dart';
+import 'package:trinktribunal/features/home/home_screen.dart';
 
 import 'data/room_test_support.dart';
 
@@ -42,7 +43,10 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Trinktribunal'), findsOneWidget);
-    expect(find.text('Der Gerichtssaal wartet.'), findsOneWidget);
+    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.text('Handy + Karten'), findsOneWidget);
+    expect(find.text('Ein Handy'), findsOneWidget);
+    expect(find.text('Jeder ein Handy'), findsOneWidget);
     expect(find.byType(Scaffold), findsOneWidget);
   });
 }

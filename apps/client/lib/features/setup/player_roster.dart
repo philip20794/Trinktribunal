@@ -1,3 +1,4 @@
+import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
 
 import 'package:flutter/material.dart';
@@ -219,47 +220,56 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                     const SizedBox(height: 12),
                     if (controller.canStart) const TText('rosterReady'),
                     if (widget.allowStart && session != null) ...[
-                      if (existing == null) ...[
-                        const SizedBox(height: 16),
-                        Text(context.tr('casesCount', {'count': _cases})),
-                        Slider(
-                          value: _cases.toDouble(),
-                          min: 1,
-                          max: 491,
-                          divisions: 490,
-                          label: '$_cases',
-                          onChanged: (v) => setState(() {
-                            _cases = v.round();
-                            if (_rules >= _cases) _rules = _cases - 1;
-                          }),
-                        ),
-                        Text(context.tr('rulesCount', {'count': _rules})),
-                        Slider(
-                          value: _rules.toDouble(),
-                          min: 0,
-                          max: (_cases - 1).clamp(0, 25).toDouble(),
-                          divisions: _cases > 1
-                              ? (_cases - 1).clamp(1, 25)
-                              : null,
-                          label: '$_rules',
-                          onChanged: _cases > 1
-                              ? (v) => setState(() => _rules = v.round())
-                              : null,
-                        ),
-                        Text(
-                          context.tr('factor', {
-                            'value': (_factor / 10).toStringAsFixed(1),
-                          }),
-                        ),
-                        Slider(
-                          value: _factor.toDouble(),
-                          min: 10,
-                          max: 30,
-                          divisions: 20,
-                          label: (_factor / 10).toStringAsFixed(1),
-                          onChanged: (v) => setState(() => _factor = v.round()),
-                        ),
-                      ] else
+                      if (existing == null)
+                        CourtPaper(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const SizedBox(height: 16),
+                              Text(context.tr('casesCount', {'count': _cases})),
+                              Slider(
+                                value: _cases.toDouble(),
+                                min: 1,
+                                max: 491,
+                                divisions: 490,
+                                label: '$_cases',
+                                onChanged: (v) => setState(() {
+                                  _cases = v.round();
+                                  if (_rules >= _cases) _rules = _cases - 1;
+                                }),
+                              ),
+                              Text(context.tr('rulesCount', {'count': _rules})),
+                              Slider(
+                                value: _rules.toDouble(),
+                                min: 0,
+                                max: (_cases - 1).clamp(0, 25).toDouble(),
+                                divisions: _cases > 1
+                                    ? (_cases - 1).clamp(1, 25)
+                                    : null,
+                                label: '$_rules',
+                                onChanged: _cases > 1
+                                    ? (v) => setState(() => _rules = v.round())
+                                    : null,
+                              ),
+                              Text(
+                                context.tr('factor', {
+                                  'value': (_factor / 10).toStringAsFixed(1),
+                                }),
+                              ),
+                              Slider(
+                                value: _factor.toDouble(),
+                                min: 10,
+                                max: 30,
+                                divisions: 20,
+                                label: (_factor / 10).toStringAsFixed(1),
+                                onChanged: (v) =>
+                                    setState(() => _factor = v.round()),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
                         const TText('rosterFrozen'),
                       FilledButton(
                         onPressed:

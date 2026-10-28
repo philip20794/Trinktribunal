@@ -1,4 +1,5 @@
 import '../../design/status_notice.dart';
+import '../../design/court_scene.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,9 +14,9 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loaded = ref.watch(settingsProvider), current = loaded.asData?.value;
-    return Scaffold(
-      appBar: AppBar(title: const TText('settings')),
-      body: Center(
+    return CourtScaffold(
+      title: const TText('settings'),
+      bodyBuilder: (context) => Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
           child: loaded.hasError
