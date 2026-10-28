@@ -712,7 +712,8 @@
       ],
       "tests": [
         "apps/client/test/design/theme_test.dart",
-        "apps/client/test/design/avatar_test.dart"
+        "apps/client/test/design/avatar_test.dart",
+        "apps/client/test/design/court_scene_test.dart"
       ],
       "targetTask": "TT-072"
     },

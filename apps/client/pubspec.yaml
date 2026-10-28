@@ -49,3 +49,18 @@ flutter:
     - assets/catalogs/manifest.json
     - assets/catalogs/questions/
     - assets/catalogs/rules/
+    - assets/ui/courtroom/backgrounds/courtroom_wood_wall.png
+    - assets/ui/courtroom/backgrounds/home_courtroom.png
+    - assets/ui/courtroom/paper/case_parchment_blank.png
+    - assets/ui/courtroom/paper/number_card_blank.png
+    - assets/ui/courtroom/branding/trinktribunal_logo.png
+    - assets/ui/courtroom/illustrations/phone_handover.png
+    - assets/ui/courtroom/symbols/playing_cards.png
+    - assets/ui/courtroom/symbols/smartphone.png
+    - assets/ui/courtroom/symbols/player_group.png
+    - assets/ui/courtroom/symbols/judge_gavel.png
+    - assets/ui/courtroom/symbols/dice.png
+    - assets/ui/courtroom/symbols/beer_mug.png
+    - assets/ui/courtroom/symbols/justice_scales.png
+    - assets/ui/courtroom/symbols/refresh.png
+    - assets/ui/courtroom/symbols/reveal_eye.png

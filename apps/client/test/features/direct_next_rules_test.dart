@@ -16,7 +16,10 @@ Future<void> tap(WidgetTester tester, String text) async {
   if (finder.evaluate().isEmpty) {
     await tester.scrollUntilVisible(finder, 400);
   }
-  await tester.ensureVisible(finder);
+  // Center long localized labels below the pinned app bar after scroll/layout.
+  await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
+  await tester.pumpAndSettle();
+  expect(finder.hitTestable(), findsOneWidget);
   await tester.tap(finder);
   await tester.pumpAndSettle();
 }

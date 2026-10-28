@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'court_theme.dart';
+import 'court_scene.dart';
 import 'court_motion.dart';
 import '../l10n/app_strings.dart';
 
@@ -23,47 +24,43 @@ class CaseFile extends StatelessWidget {
   Widget build(BuildContext context) => CourtMotion(
     style: CourtMotionStyle.file,
     replayKey: animationKey ?? label,
-    child: Card(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Semantics(
-              header: true,
-              child: Row(
-                children: [
-                  if (showRefresh)
-                    IconButton(
-                      tooltip: context.tr('refreshQuestion'),
-                      onPressed: onRefresh,
-                      icon: const Icon(Icons.refresh),
-                    ),
-                  const Icon(
-                    Icons.folder_open_outlined,
-                    size: 20,
-                    color: CourtTokens.blue,
+    child: CourtPaper(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Semantics(
+            header: true,
+            child: Row(
+              children: [
+                if (showRefresh)
+                  IconButton(
+                    tooltip: context.tr('refreshQuestion'),
+                    onPressed: onRefresh,
+                    icon: const Icon(Icons.refresh),
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      label.toUpperCase(),
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: CourtTokens.blue,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
+                const Icon(
+                  Icons.folder_open_outlined,
+                  size: 20,
+                  color: CourtTokens.blue,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    label.toUpperCase(),
+                    style: Theme.of(context).textTheme.labelLarge
+                        ?.copyWith(color: CourtTokens.blue, letterSpacing: 1.2),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: Divider(color: CourtTokens.border),
-            ),
-            child,
-          ],
-        ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Divider(color: CourtTokens.border),
+          ),
+          child,
+        ],
       ),
     ),
   );
@@ -84,18 +81,31 @@ class CourtSeal extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            border: Border.all(color: CourtTokens.red, width: 2),
+            border: Border.all(
+              color: (Theme.of(context).brightness == Brightness.dark
+                  ? CourtSceneTokens.gold
+                  : CourtTokens.red),
+              width: 2,
+            ),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Wrap(
             spacing: 8,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Icon(icon, color: CourtTokens.red),
+              Icon(
+                icon,
+                color: (Theme.of(context).brightness == Brightness.dark
+                    ? CourtSceneTokens.gold
+                    : CourtTokens.red),
+              ),
               Text(
                 label,
-                style: Theme.of(context).textTheme.titleMedium
-                    ?.copyWith(color: CourtTokens.red),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: (Theme.of(context).brightness == Brightness.dark
+                      ? CourtSceneTokens.gold
+                      : CourtTokens.red),
+                ),
               ),
             ],
           ),

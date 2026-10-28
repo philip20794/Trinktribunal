@@ -141,7 +141,15 @@
       "files": [
         {
           "path": "apps/client/lib/design/case_file.dart",
-          "sha256": "c1fd371e929daa7639f60481a909ccd63febfef8db406915c7adee2aba273cdf"
+          "sha256": "35aa5e6f3a5e7bb9dad1eccd46cb5a0998391aabb186c15e13d6ea87c1074605"
+        },
+        {
+          "path": "apps/client/lib/design/court_scene.dart",
+          "sha256": "4bd55a7f1a8c10108d97203a090071a9c6616a6cbd380830ba4eb496cb269946"
+        },
+        {
+          "path": "apps/client/lib/design/court_assets.dart",
+          "sha256": "a2bdb201369e9c334f9e9cdac53eaf84c9d5818ede242e1eff366d785d1e37da"
         }
       ]
     },
@@ -222,20 +230,8 @@
           "sha256": "ae930cd6eb190903324fce9f689eb493ceb727a4da9262c44101df69457c1ebc"
         },
         {
-          "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_wood_wall.png",
-          "sha256": "02e4282e93159294b67d5e8235f12251bc15dd07b8811cf1cf5b8a742567eaaa"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/backgrounds/home_courtroom.png",
-          "sha256": "6f52cb275d73a18523632b21fb979e20f7955a23d33f71d0d85f1b9b36e94ea1"
-        },
-        {
           "path": "apps/client/assets/ui/courtroom/backgrounds/parchment_background.png",
           "sha256": "9cdab1d8168bcd18b6fdba271aa296dd5983e07b92714c85bc244c191432dc86"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/branding/trinktribunal_logo.png",
-          "sha256": "8c707f5dafe1edd6a410e9d5d8c65e1b82656a9cbd66ca504ead71241ddf40e2"
         },
         {
           "path": "apps/client/assets/ui/courtroom/decorations/beer_foam.png",
@@ -286,14 +282,6 @@
           "sha256": "9351b761f31220def210c91d0c4f6e8ad7464015caa37374051fd71551945c90"
         },
         {
-          "path": "apps/client/assets/ui/courtroom/illustrations/phone_handover.png",
-          "sha256": "de227803b5dc94ad174d26cf727ca0ebacab84380dcbdd6e74c422185688cbcf"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/paper/case_parchment_blank.png",
-          "sha256": "f33f872f73a58a508f2b4d1b99e2cbd1ae6feb4be757fc5b62be10e057c81911"
-        },
-        {
           "path": "apps/client/assets/ui/courtroom/paper/lined_note_blank.png",
           "sha256": "6c9655c646fbe8a46150412c28f59c39b574c920803d079e131f871c777b3f25"
         },
@@ -302,48 +290,8 @@
           "sha256": "dd50737e09f0f269d0cb4a62efc0bffd57c9817aaccc3cafd98324518b54e285"
         },
         {
-          "path": "apps/client/assets/ui/courtroom/paper/number_card_blank.png",
-          "sha256": "280eb522765de9ca3fb7e570430dfc622c2988ce21db6cecb960e69c0aed8ea6"
-        },
-        {
           "path": "apps/client/assets/ui/courtroom/paper/square_parchment_blank.png",
           "sha256": "e445fcd08892adeb40c418f2dc0d1d53d3f83d4adfdc5971ca35f72974efdaa1"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/beer_mug.png",
-          "sha256": "85dc0d912d70df363a291616bbc287e405734b27934f4b873805486b8b77a89f"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/dice.png",
-          "sha256": "6dfd0199ba6194dab5246ad4169a078371ba2ebb9970eb115ae5aaa664b0e79b"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/judge_gavel.png",
-          "sha256": "b2b8ddb0241bf91acb1853decc034f4042e7b989f66241881468223c369725f7"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/justice_scales.png",
-          "sha256": "2b015076a1313829a71e7bb589240b7e46f1be3759f7f2e218ebe7138981a285"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/player_group.png",
-          "sha256": "ee511e14a43a657582e450996e90f6192ba9d17b5cb5b297ef85b97085eeb012"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/playing_cards.png",
-          "sha256": "c9dd5946a790023aa1a8eb34b04ab4afbe7bee9bb54e5a993c5cf1cfbdfbaaa3"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/refresh.png",
-          "sha256": "1275536ad19e2144e4146ae2cb8e987656e4fe73da3ed02a9d28077470882638"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/reveal_eye.png",
-          "sha256": "65fc081e91450900a90b9dd721cc30461094f608b0dafc1e43cdd36c77def142"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/symbols/smartphone.png",
-          "sha256": "ea544b5210f955a38d38fd50be1e00b0ecfed766add31d4f02258d2b3ac49023"
         }
       ]
     },
@@ -623,6 +571,75 @@
         {
           "path": "artwork/avatars/v3/prototypes/male_09_color_masks/validation_metrics.json",
           "sha256": "fa5bca3454385c82afaaf53b264e11d6e274afd631dfbe09bd09c036ee3a6947"
+        }
+      ]
+    },
+    {
+      "id": "courtroom-ui-runtime",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "TT-072 explicitly selected existing user PNGs after static source inspection; no new rights grant, public distribution awaits TT-065 evidence. Quarantined motifs are excluded.",
+      "evidence": "docs/qa/M7_5.md",
+      "files": [
+        {
+          "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_wood_wall.png",
+          "sha256": "02e4282e93159294b67d5e8235f12251bc15dd07b8811cf1cf5b8a742567eaaa"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/backgrounds/home_courtroom.png",
+          "sha256": "6f52cb275d73a18523632b21fb979e20f7955a23d33f71d0d85f1b9b36e94ea1"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/branding/trinktribunal_logo.png",
+          "sha256": "8c707f5dafe1edd6a410e9d5d8c65e1b82656a9cbd66ca504ead71241ddf40e2"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/phone_handover.png",
+          "sha256": "de227803b5dc94ad174d26cf727ca0ebacab84380dcbdd6e74c422185688cbcf"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/case_parchment_blank.png",
+          "sha256": "f33f872f73a58a508f2b4d1b99e2cbd1ae6feb4be757fc5b62be10e057c81911"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/number_card_blank.png",
+          "sha256": "280eb522765de9ca3fb7e570430dfc622c2988ce21db6cecb960e69c0aed8ea6"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/beer_mug.png",
+          "sha256": "85dc0d912d70df363a291616bbc287e405734b27934f4b873805486b8b77a89f"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/dice.png",
+          "sha256": "6dfd0199ba6194dab5246ad4169a078371ba2ebb9970eb115ae5aaa664b0e79b"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/judge_gavel.png",
+          "sha256": "b2b8ddb0241bf91acb1853decc034f4042e7b989f66241881468223c369725f7"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/justice_scales.png",
+          "sha256": "2b015076a1313829a71e7bb589240b7e46f1be3759f7f2e218ebe7138981a285"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/player_group.png",
+          "sha256": "ee511e14a43a657582e450996e90f6192ba9d17b5cb5b297ef85b97085eeb012"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/playing_cards.png",
+          "sha256": "c9dd5946a790023aa1a8eb34b04ab4afbe7bee9bb54e5a993c5cf1cfbdfbaaa3"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/refresh.png",
+          "sha256": "1275536ad19e2144e4146ae2cb8e987656e4fe73da3ed02a9d28077470882638"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/reveal_eye.png",
+          "sha256": "65fc081e91450900a90b9dd721cc30461094f608b0dafc1e43cdd36c77def142"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/symbols/smartphone.png",
+          "sha256": "ea544b5210f955a38d38fd50be1e00b0ecfed766add31d4f02258d2b3ac49023"
         }
       ]
     }
