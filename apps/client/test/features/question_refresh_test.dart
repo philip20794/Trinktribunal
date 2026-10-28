@@ -1,3 +1,5 @@
+import '../support/shared_handoff.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -119,14 +121,15 @@ void main() {
             expect(cards.state!.completedCases, 0);
             expect(cards.history.entries, hasLength(3));
           }
-          final saved = shared ? phone.toSnapshot() : cards.toSnapshot();
           if (shared) {
+            openSharedRecipient(phone);
             phone.revealOwnNumber(
               roundId: phone.view!.roundId,
               player: phone.view!.recipient!,
             );
             expect(phone.view!.visibleSecret, isNotNull);
           }
+          final saved = shared ? phone.toSnapshot() : cards.toSnapshot();
           await tester.tap(
             find.byTooltip(AppStrings(language).get('gameRules')),
           );

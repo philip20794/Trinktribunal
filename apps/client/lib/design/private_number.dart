@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../l10n/app_strings.dart';
 
@@ -18,6 +19,147 @@ class PrivateNumber extends StatefulWidget {
   final String confirmKey;
   @override
   State<PrivateNumber> createState() => _PrivateNumberState();
+}
+
+/// A shared-device value is visible only during an active pointer/key hold.
+/// Online PrivateNumber intentionally keeps its separate tap interaction.
+class HeldPrivateNumber extends StatefulWidget {
+  const HeldPrivateNumber({
+    required this.number,
+    required this.onReveal,
+    required this.onHide,
+    required this.onDone,
+    super.key,
+  });
+  final int? number;
+  final VoidCallback onReveal, onHide, onDone;
+  @override
+  State<HeldPrivateNumber> createState() => _HeldPrivateNumberState();
+}
+
+class _HeldPrivateNumberState extends State<HeldPrivateNumber>
+    with WidgetsBindingObserver {
+  final _focus = FocusNode(debugLabel: 'hold-private-number');
+  int? _pointer;
+  LogicalKeyboardKey? _key;
+  bool get _held => _pointer != null || _key != null;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void _stop() {
+    if (!_held) return;
+    _pointer = null;
+    _key = null;
+    if (mounted) setState(() {});
+    widget.onHide();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) _stop();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _focus.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      if (widget.number != null && _held)
+        Text(
+          '${widget.number}',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.displayLarge,
+          semanticsLabel: context.tr('secretNumber', {'number': widget.number}),
+        )
+      else
+        const Padding(
+          padding: EdgeInsets.all(24),
+          child: Icon(Icons.lock_outline, size: 48),
+        ),
+      Semantics(
+        button: true,
+        label: context.tr('phoneHoldNumber'),
+        hint: context.tr('phoneHoldHelp'),
+        child: Focus(
+          focusNode: _focus,
+          onFocusChange: (focused) {
+            if (!focused) _stop();
+            if (mounted) setState(() {});
+          },
+          onKeyEvent: (_, event) {
+            final key = event.logicalKey;
+            if (key != LogicalKeyboardKey.space &&
+                key != LogicalKeyboardKey.enter) {
+              return KeyEventResult.ignored;
+            }
+            if (event is KeyDownEvent && !_held) {
+              _key = key;
+              widget.onReveal();
+            }
+            if (event is KeyUpEvent && _key == key) _stop();
+            return KeyEventResult.handled;
+          },
+          child: LayoutBuilder(
+            builder: (context, constraints) => Listener(
+              onPointerDown: (event) {
+                if (_held || event.buttons != 1) return;
+                _pointer = event.pointer;
+                _focus.requestFocus();
+                widget.onReveal();
+              },
+              onPointerUp: (event) {
+                if (_pointer == event.pointer) _stop();
+              },
+              onPointerCancel: (event) {
+                if (_pointer == event.pointer) _stop();
+              },
+              onPointerMove: (event) {
+                if (_pointer == event.pointer &&
+                    (event.localPosition.dx < 0 ||
+                        event.localPosition.dy < 0 ||
+                        event.localPosition.dx > constraints.maxWidth ||
+                        event.localPosition.dy > 56)) {
+                  _stop();
+                }
+              },
+              child: Container(
+                height: 56,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _focus.hasFocus
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.transparent,
+                    width: 2,
+                  ),
+                ),
+                child: const ExcludeSemantics(child: TText('phoneHoldNumber')),
+              ),
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(height: 16),
+      FilledButton(
+        onPressed: () {
+          _stop();
+          widget.onDone();
+        },
+        child: const TText('phoneDoneNext'),
+      ),
+    ],
+  );
 }
 
 class _PrivateNumberState extends State<PrivateNumber> {

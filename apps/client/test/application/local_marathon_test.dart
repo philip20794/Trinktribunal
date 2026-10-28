@@ -13,6 +13,7 @@ import 'package:trinktribunal/domain/user_profile.dart';
 
 import '../domain/selection_support.dart';
 import '../support/memory_atomic_state_storage.dart';
+import '../support/shared_handoff.dart';
 
 class _Device {
   _Device(MemoryAtomicStateStorage storage) {
@@ -82,7 +83,12 @@ void main() {
       final phone = device.phone;
       expect(phoneQuestions.add(phone.view!.question!.entry.id), isTrue);
       while (phone.view!.phase == GamePhase.numbers) {
-        final view = phone.view!;
+        if (phone.view!.numberStage == SharedNumberStage.judgeHandoff) {
+          final view = phone.view!;
+          phone.confirmJudge(roundId: view.roundId, judge: view.judge!);
+          continue;
+        }
+        final view = openSharedRecipient(phone);
         expect(view.visibleSecret, isNull);
         phone.revealOwnNumber(roundId: view.roundId, player: view.recipient!);
         phone.hideSecret();

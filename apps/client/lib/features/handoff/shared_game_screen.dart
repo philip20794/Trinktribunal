@@ -17,6 +17,7 @@ import '../../design/private_number.dart';
 import '../../domain/config/game_config.dart';
 import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
+import '../../domain/models/ids.dart';
 import '../../domain/user_profile.dart';
 import '../bench/bench_view.dart';
 import '../setup/player_roster.dart';
@@ -47,7 +48,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     if (_controller.view == null) {
       _controller.start(config: widget.config, roster: widget.roster);
     } else {
-      _controller.hideSecret();
+      _controller.interruptPrivateHandoff();
       _controller.applyRoster(widget.roster);
     }
     _persist();
@@ -55,7 +56,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
 
   @override
   void dispose() {
-    _controller.hideSecret();
+    _controller.interruptPrivateHandoff();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -63,16 +64,37 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed && mounted) {
-      setState(_controller.hideSecret);
+      setState(_controller.interruptPrivateHandoff);
     }
   }
 
   void _act(VoidCallback action) {
+    _controller.hideSecret();
     try {
       action();
       setState(() => _error = null);
       _persist();
     } on DomainException catch (error) {
+      _controller.interruptPrivateHandoff();
+      setState(() => _error = error.message);
+    }
+  }
+
+  String _identity(SharedGameView view, PlayerId id) =>
+      context.tr('phoneIdentity', {
+        'name': view.name(id),
+        'seat': view.roster.indexWhere((p) => p.player.id == id) + 1,
+      });
+
+  void _showSecret(SharedGameView view) {
+    try {
+      _controller.revealOwnNumber(
+        roundId: view.roundId,
+        player: view.recipient!,
+      );
+      setState(() => _error = null);
+    } on DomainException catch (error) {
+      _controller.interruptPrivateHandoff();
       setState(() => _error = error.message);
     }
   }
@@ -89,7 +111,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
   Future<bool> _confirm(String title, String description) async {
     if (_dialogOpen) return false;
     _dialogOpen = true;
-    _act(_controller.hideSecret);
+    _act(_controller.interruptPrivateHandoff);
     try {
       return await showDialog<bool>(
             context: context,
@@ -115,7 +137,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
   }
 
   Future<void> _group() async {
-    _act(_controller.hideSecret);
+    _act(_controller.interruptPrivateHandoff);
     await Navigator.push<void>(
       context,
       MaterialPageRoute(
@@ -161,13 +183,15 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     final judge = view.judge == null ? null : view.profiles[view.judge];
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
-        _controller.hideSecret();
+        _controller.interruptPrivateHandoff();
       },
       child: Scaffold(
         appBar: AppBar(
           title: const TText('phoneTitle'),
           actions: [
-            GameRulesButton(beforeOpen: () => _act(_controller.hideSecret)),
+            GameRulesButton(
+              beforeOpen: () => _act(_controller.interruptPrivateHandoff),
+            ),
             IconButton(
               tooltip: context.tr('phoneManageRoster'),
               onPressed: _group,
@@ -176,7 +200,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
             IconButton(
               tooltip: context.tr('activeRules'),
               onPressed: () {
-                _act(_controller.hideSecret);
+                _act(_controller.interruptPrivateHandoff);
                 showModalBottomSheet<void>(
                   context: context,
                   isScrollControlled: true,
@@ -263,32 +287,87 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       ],
                     ),
                   ),
-                if (view.phase == GamePhase.numbers) ...[
+                if (view.numberStage == SharedNumberStage.recipientHandoff) ...[
+                  AvatarView(
+                    config: view.profiles[view.recipient!]!.avatar,
+                    size: 80,
+                    label: _identity(view, view.recipient!),
+                  ),
                   CourtSeal(
                     label: context.tr('passPhone', {
-                      'name': view.name(view.recipient!),
+                      'name': _identity(view, view.recipient!),
                     }),
-                    icon: Icons.lock_outline,
+                    icon: Icons.phone_android,
                   ),
                   const SizedBox(height: 16),
-                  PrivateNumber(
-                    number: view.visibleSecret,
-                    onReveal: () => _act(
-                      () => _controller.revealOwnNumber(
+                  FilledButton(
+                    onPressed: () => _act(
+                      () => _controller.confirmRecipient(
                         roundId: view.roundId,
                         player: view.recipient!,
                       ),
                     ),
-                    onConfirm: () => _act(
+                    child: Text(
+                      context.tr('phoneIAm', {
+                        'name': _identity(view, view.recipient!),
+                      }),
+                    ),
+                  ),
+                ],
+                if (view.numberStage == SharedNumberStage.recipientNumber) ...[
+                  Text(
+                    context.tr('phonePrivateFor', {
+                      'name': _identity(view, view.recipient!),
+                    }),
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  const TText('phoneHoldHelp'),
+                  HeldPrivateNumber(
+                    key: ValueKey('${view.roundId}:${view.recipient!.value}'),
+                    number: view.visibleSecret,
+                    onReveal: () => _showSecret(view),
+                    onHide: () {
+                      if (mounted) setState(_controller.hideSecret);
+                    },
+                    onDone: () => _act(
                       () => _controller.acknowledgeNumber(
                         roundId: view.roundId,
                         player: view.recipient!,
                       ),
                     ),
-                    onHide: () => _act(_controller.hideSecret),
+                  ),
+                ],
+                if (view.numberStage == SharedNumberStage.judgeHandoff) ...[
+                  AvatarView(
+                    config: judge!.avatar,
+                    size: 80,
+                    label: _identity(view, view.judge!),
+                  ),
+                  CourtSeal(
+                    label: context.tr('phoneBackToJudge', {
+                      'name': _identity(view, view.judge!),
+                    }),
+                    icon: Icons.gavel,
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    onPressed: () => _act(
+                      () => _controller.confirmJudge(
+                        roundId: view.roundId,
+                        judge: view.judge!,
+                      ),
+                    ),
+                    child: Text(
+                      context.tr('phoneIAm', {
+                        'name': _identity(view, view.judge!),
+                      }),
+                    ),
                   ),
                 ],
                 if (rendered != null &&
+                    (view.phase != GamePhase.numbers ||
+                        view.numberStage == SharedNumberStage.caseFile) &&
                     ![
                       GamePhase.ruleEvent,
                       GamePhase.finished,
@@ -332,6 +411,13 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     ),
                   ),
                 ],
+                if (view.numberStage == SharedNumberStage.caseFile)
+                  FilledButton(
+                    onPressed: () => _act(
+                      () => _controller.beginNumberHandoff(view.roundId),
+                    ),
+                    child: const TText('phoneStartNumbers'),
+                  ),
                 if (view.phase == GamePhase.answers) ...[
                   const SizedBox(height: 16),
                   const TText('phoneAnswersHelp'),

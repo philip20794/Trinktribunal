@@ -1,3 +1,5 @@
+import '../support/shared_handoff.dart';
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -34,7 +36,12 @@ SharedPhoneController controller({ContentHistoryStore? history}) {
 
 void handoff(SharedPhoneController session) {
   while (session.view!.phase == GamePhase.numbers) {
-    final view = session.view!;
+    if (session.view!.numberStage == SharedNumberStage.judgeHandoff) {
+      final view = session.view!;
+      session.confirmJudge(roundId: view.roundId, judge: view.judge!);
+      continue;
+    }
+    final view = openSharedRecipient(session);
     expect(view.visibleSecret, isNull);
     expect(view.revealedNumbers, isEmpty);
     expect(view.verdict, isNull);
@@ -196,7 +203,7 @@ void main() {
         config: session.configure(playerCount: 4),
         roster: roster(),
       );
-      final initial = session.view!;
+      final initial = openSharedRecipient(session);
       expect(initial.recipient, players[1]);
       expect(initial.visibleSecret, isNull);
       session.revealOwnNumber(
@@ -300,7 +307,7 @@ void main() {
       ),
       roster: roster(),
     );
-    final before = session.view!;
+    final before = openSharedRecipient(session);
     final e = UserProfile(
       player: Player(id: PlayerId('E'), name: 'New'),
       avatar: AvatarConfig(),

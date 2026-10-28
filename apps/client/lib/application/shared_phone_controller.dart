@@ -11,6 +11,7 @@ import '../domain/models/person_selection_counts.dart';
 import '../domain/number_assignment.dart';
 import '../domain/question_deck.dart';
 import '../domain/question_draws.dart';
+import '../domain/shared_handoff.dart';
 import '../domain/rules/drinking_rules.dart';
 import '../domain/selection/content_selection.dart';
 import '../domain/selection/random_source.dart';
@@ -18,6 +19,13 @@ import '../domain/user_profile.dart';
 import '../domain/verdict.dart';
 import '../domain/snapshot_codec.dart';
 import 'content_history_store.dart';
+
+enum SharedNumberStage {
+  caseFile,
+  recipientHandoff,
+  recipientNumber,
+  judgeHandoff,
+}
 
 /// UI projection deliberately excludes concealed numbers and future verdicts.
 final class SharedGameView {
@@ -34,10 +42,21 @@ final class SharedGameView {
       profiles = Map.unmodifiable(session._profiles),
       judge = session._judge,
       question = session._question,
-      recipient = session._phase == GamePhase.numbers
+      numberStage = session._phase == GamePhase.numbers
+          ? session._numberStage
+          : null,
+      recipient =
+          session._phase == GamePhase.numbers &&
+              [
+                SharedNumberStage.recipientHandoff,
+                SharedNumberStage.recipientNumber,
+              ].contains(session._numberStage)
           ? session._recipients[session._handoffIndex]
           : null,
-      visibleSecret = session._phase == GamePhase.numbers && session._visible
+      visibleSecret =
+          session._phase == GamePhase.numbers &&
+              session._numberStage == SharedNumberStage.recipientNumber &&
+              session._visible
           ? session._numbers!.numbers[session._recipients[session
                 ._handoffIndex]]
           : null,
@@ -70,6 +89,7 @@ final class SharedGameView {
   final List<UserProfile>? pendingRoster;
   final PlayerId? judge;
   final ContentAssignment? question;
+  final SharedNumberStage? numberStage;
   final PlayerId? recipient;
   final int? visibleSecret;
   final List<PlayerId> order;
@@ -120,6 +140,9 @@ final class SharedPhoneController {
   NumberAssignment? _numbers;
   List<PlayerId> _recipients = [];
   int _handoffIndex = 0;
+  SharedNumberStage _numberStage = SharedNumberStage.caseFile;
+  PlayerId? _previousJudge;
+  bool _legacyHandoffOrder = false;
   bool _visible = false;
   int _completed = 0;
   String _roundId = '';
@@ -196,6 +219,8 @@ final class SharedPhoneController {
     _roster = List.of(roster);
     _pending = null;
     _judge = roster.first.player.id;
+    _previousJudge = null;
+    _legacyHandoffOrder = false;
     _profiles = {for (final p in roster) p.player.id: p};
     _rules = RuleState(
       selection: SelectionState(
@@ -273,8 +298,14 @@ final class SharedPhoneController {
       _numbers = numbers;
       _roundId = id;
       _questionDraws = appendQuestionDraw(_questionDraws, id, id);
-      _recipients = numbers.numbers.keys.toList();
+      _recipients = handoffRecipients(
+        roster: _ids,
+        judge: _judge!,
+        previousJudge: _previousJudge,
+      );
       _handoffIndex = 0;
+      _numberStage = SharedNumberStage.caseFile;
+      _legacyHandoffOrder = false;
       _phase = GamePhase.numbers;
       _order = [];
       _revealCursor = 0;
@@ -288,7 +319,9 @@ final class SharedPhoneController {
 
   void revealOwnNumber({required String roundId, required PlayerId player}) {
     _checkRound(roundId);
-    if (_phase != GamePhase.numbers || _recipients[_handoffIndex] != player) {
+    if (_phase != GamePhase.numbers ||
+        _numberStage != SharedNumberStage.recipientNumber ||
+        _recipients[_handoffIndex] != player) {
       _invalid('Diese Zahlenübergabe ist nicht aktiv.');
     }
     _visible = true;
@@ -296,6 +329,49 @@ final class SharedPhoneController {
 
   void hideSecret() {
     _visible = false;
+  }
+
+  void interruptPrivateHandoff() {
+    hideSecret();
+    if (_phase == GamePhase.numbers &&
+        _numberStage == SharedNumberStage.recipientNumber) {
+      _numberStage = SharedNumberStage.recipientHandoff;
+    }
+  }
+
+  bool beginNumberHandoff(String roundId) {
+    _checkRound(roundId);
+    if (_phase != GamePhase.numbers ||
+        _numberStage != SharedNumberStage.caseFile) {
+      return false;
+    }
+    hideSecret();
+    _numberStage = SharedNumberStage.recipientHandoff;
+    return true;
+  }
+
+  bool confirmRecipient({required String roundId, required PlayerId player}) {
+    _checkRound(roundId);
+    if (_phase != GamePhase.numbers ||
+        _numberStage != SharedNumberStage.recipientHandoff ||
+        _recipients[_handoffIndex] != player) {
+      return false;
+    }
+    hideSecret();
+    _numberStage = SharedNumberStage.recipientNumber;
+    return true;
+  }
+
+  bool confirmJudge({required String roundId, required PlayerId judge}) {
+    _checkRound(roundId);
+    if (_phase != GamePhase.numbers ||
+        _numberStage != SharedNumberStage.judgeHandoff ||
+        judge != _judge) {
+      return false;
+    }
+    hideSecret();
+    _phase = GamePhase.answers;
+    return true;
   }
 
   bool rerollCurrentQuestion({required String roundId}) {
@@ -353,6 +429,7 @@ final class SharedPhoneController {
     _roundId = id;
     _phase = GamePhase.numbers;
     _handoffIndex = 0;
+    _numberStage = SharedNumberStage.caseFile;
     _order = [];
     _revealCursor = 0;
     _verdict = null;
@@ -363,17 +440,20 @@ final class SharedPhoneController {
   void acknowledgeNumber({required String roundId, required PlayerId player}) {
     _checkRound(roundId);
     if (_phase != GamePhase.numbers) return;
-    if (_recipients[_handoffIndex] != player &&
-        _recipients.contains(player) &&
+    if (_recipients.contains(player) &&
         _recipients.indexOf(player) < _handoffIndex) {
       return;
     }
-    if (_recipients[_handoffIndex] != player || !_visible) {
-      _invalid('Zahl zuerst bewusst öffnen und bestätigen.');
+    if (_numberStage != SharedNumberStage.recipientNumber ||
+        _handoffIndex >= _recipients.length ||
+        _recipients[_handoffIndex] != player) {
+      _invalid('Die Geräteübernahme muss zuerst bestätigt werden.');
     }
     _visible = false;
     _handoffIndex++;
-    if (_handoffIndex == _recipients.length) _phase = GamePhase.answers;
+    _numberStage = _handoffIndex == _recipients.length
+        ? SharedNumberStage.judgeHandoff
+        : SharedNumberStage.recipientHandoff;
   }
 
   void beginOrdering(String roundId) {
@@ -381,7 +461,7 @@ final class SharedPhoneController {
     if (_phase != GamePhase.answers) {
       _invalid('Antwortphase ist nicht abgeschlossen.');
     }
-    _order = List.of(_recipients);
+    _order = _ids.where((id) => id != _judge).toList();
     _phase = GamePhase.ordering;
   }
 
@@ -446,6 +526,8 @@ final class SharedPhoneController {
     _verdict = null;
     final oldIds = _ids;
     final oldJudge = _judge;
+    _previousJudge = oldJudge;
+    _legacyHandoffOrder = false;
     _applyPending();
     _judge = nextJudge(oldRoster: oldIds, previous: oldJudge, newRoster: _ids);
     if (_completed == _config!.targetCases) {
@@ -565,6 +647,15 @@ final class SharedPhoneController {
       ? null
       : {
           'id': _gameId!.value,
+          'handoffVersion': 2,
+          'numberStage': _phase == GamePhase.numbers
+              ? (_numberStage == SharedNumberStage.recipientNumber
+                        ? SharedNumberStage.recipientHandoff
+                        : _numberStage)
+                    .name
+              : null,
+          'previousJudge': _previousJudge?.value,
+          'legacyHandoffOrder': _legacyHandoffOrder,
           'questionDraws': _questionDraws,
           'config': _config!.toJson(),
           'phase': _phase.name,
@@ -619,12 +710,55 @@ final class SharedPhoneController {
     }
     candidate._gameId = GameId(json['id'] as String);
     candidate._phase = GamePhase.values.byName(json['phase'] as String);
+    final legacyHandoff = !json.containsKey('handoffVersion');
+    if (legacyHandoff) {
+      if ([
+        'numberStage',
+        'previousJudge',
+        'legacyHandoffOrder',
+      ].any(json.containsKey)) {
+        throw const FormatException('Unbekanntes Übergabeformat');
+      }
+      candidate._legacyHandoffOrder = true;
+      candidate._numberStage = SharedNumberStage.recipientHandoff;
+    } else {
+      if (json['handoffVersion'] != 2 ||
+          json['legacyHandoffOrder'] is! bool ||
+          ![
+            'numberStage',
+            'previousJudge',
+            'legacyHandoffOrder',
+          ].every(json.containsKey)) {
+        throw const FormatException('Unbekannte Übergabeversion');
+      }
+      candidate._legacyHandoffOrder = json['legacyHandoffOrder'] as bool;
+      candidate._previousJudge = json['previousJudge'] == null
+          ? null
+          : PlayerId(json['previousJudge'] as String);
+      final stage = json['numberStage'];
+      if (candidate._phase == GamePhase.numbers) {
+        if (stage is! String ||
+            !SharedNumberStage.values.any((value) => value.name == stage)) {
+          throw const FormatException('Unbekannte Übergabeetappe');
+        }
+        candidate._numberStage = SharedNumberStage.values.byName(stage);
+        if (candidate._numberStage == SharedNumberStage.recipientNumber) {
+          throw const FormatException('Unsichere gespeicherte Geräteübernahme');
+        }
+      } else if (stage != null) {
+        throw const FormatException('Vorzeitige Übergabeetappe');
+      }
+    }
     final profiles = (json['profiles'] as List)
         .map((p) => UserProfile.fromJson(p as Map<String, dynamic>))
         .toList();
     candidate._profiles = {for (final p in profiles) p.player.id: p};
     if (profiles.length != candidate._profiles.length) {
       throw const FormatException('Doppelte Profile');
+    }
+    if (candidate._previousJudge != null &&
+        !candidate._profiles.containsKey(candidate._previousJudge)) {
+      throw const FormatException('Unbekannter vorheriger Richter');
     }
     List<UserProfile> roster(Object? raw) {
       final ids = (raw as List).cast<String>().map(PlayerId.new).toList();
@@ -746,9 +880,13 @@ final class SharedPhoneController {
             (candidate._roster.length * candidate._config!.factorTenths + 9) ~/
             10,
       );
-      final recipients = candidate._ids
-          .where((id) => id != candidate._judge)
-          .toList();
+      final recipients = candidate._legacyHandoffOrder
+          ? candidate._ids.where((id) => id != candidate._judge).toList()
+          : handoffRecipients(
+              roster: candidate._ids,
+              judge: candidate._judge!,
+              previousJudge: candidate._previousJudge,
+            );
       if (candidate._recipients.length != recipients.length ||
           List.generate(
             recipients.length,
@@ -758,7 +896,11 @@ final class SharedPhoneController {
       }
       if (phase == GamePhase.numbers) {
         if (candidate._handoffIndex < 0 ||
-            candidate._handoffIndex >= recipients.length) {
+            candidate._handoffIndex > recipients.length ||
+            (candidate._numberStage == SharedNumberStage.judgeHandoff) !=
+                (candidate._handoffIndex == recipients.length) ||
+            (candidate._numberStage == SharedNumberStage.caseFile &&
+                candidate._handoffIndex != 0)) {
           throw const FormatException('Ungültiger Übergabecursor');
         }
       } else if (candidate._handoffIndex != recipients.length) {
@@ -816,6 +958,9 @@ final class SharedPhoneController {
     _numbers = candidate._numbers;
     _recipients = candidate._recipients;
     _handoffIndex = candidate._handoffIndex;
+    _numberStage = candidate._numberStage;
+    _previousJudge = candidate._previousJudge;
+    _legacyHandoffOrder = candidate._legacyHandoffOrder;
     _visible = false;
     _completed = candidate._completed;
     _roundId = candidate._roundId;

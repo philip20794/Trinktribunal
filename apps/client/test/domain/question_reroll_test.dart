@@ -1,3 +1,5 @@
+import '../support/shared_handoff.dart';
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -63,11 +65,7 @@ SharedPhoneController shared({
 }
 
 void prepare(SharedPhoneController session, GamePhase phase) {
-  while (session.view!.phase == GamePhase.numbers) {
-    final view = session.view!;
-    session.revealOwnNumber(roundId: view.roundId, player: view.recipient!);
-    session.acknowledgeNumber(roundId: view.roundId, player: view.recipient!);
-  }
+  finishSharedNumbers(session);
   if (phase == GamePhase.answers) return;
   session.beginOrdering(session.view!.roundId);
   if (phase == GamePhase.ordering) return;
@@ -169,7 +167,7 @@ void main() {
     final initial = copy(session.toSnapshot()), judge = session.view!.judge;
     final ids = <String>{session.view!.question!.entry.id};
     for (var i = 0; i < 10; i++) {
-      final previous = session.view!;
+      final previous = openSharedRecipient(session);
       session.revealOwnNumber(
         roundId: previous.roundId,
         player: previous.recipient!,

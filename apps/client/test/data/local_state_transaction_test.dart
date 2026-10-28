@@ -1,3 +1,5 @@
+import '../support/shared_handoff.dart';
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -76,13 +78,7 @@ final class Harness {
   );
 }
 
-void finishHandoff(SharedPhoneController phone) {
-  while (phone.view!.phase == GamePhase.numbers) {
-    final view = phone.view!;
-    phone.revealOwnNumber(roundId: view.roundId, player: view.recipient!);
-    phone.acknowledgeNumber(roundId: view.roundId, player: view.recipient!);
-  }
-}
+void finishHandoff(SharedPhoneController phone) => finishSharedNumbers(phone);
 
 void main() {
   test(
@@ -162,6 +158,7 @@ void main() {
         final phone = first.phone;
         final round = phone.view!.roundId;
         if (phase == GamePhase.numbers) {
+          openSharedRecipient(phone);
           phone.revealOwnNumber(roundId: round, player: phone.view!.recipient!);
         }
         if ([
