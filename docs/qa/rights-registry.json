@@ -576,6 +576,55 @@
           "sha256": "7606bff688df9ddd0f858e59bd2f011fdab696d8307188cdcaa4b49b5bde0336"
         }
       ]
+    },
+    {
+      "id": "avatar-v3-mask-workbench",
+      "distribution": "source-only",
+      "status": "unresolved",
+      "provenance": "User-supplied source-bound PNG color-mask workbench and synthetic tests, visually unapproved and not bundled. Master/source/font rights remain subject to TT-065; no v3 runtime claim.",
+      "evidence": "docs/avatars/reviews/p1-mask-roundtrip-2026-10-28.md",
+      "files": [
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/color_mask_pilot.py",
+          "sha256": "1c497cbfbbe181bb67c8a5dacdb0fcec8037c7e672fd6f40a878f9fbdaeff449"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/mask_io.py",
+          "sha256": "6d51ddd8bf6e499b99c47bf4b3cf66f71c94883f1e65e868e4bcd450b7bba88b"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/p1_detail_review.py",
+          "sha256": "e8f53f08a67f4931466f4672970f3b48a276e383cc75ed0377a62fb865fb18bb"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/p1_mask_edits.json",
+          "sha256": "119906de578de5d5b5360cf79bc78ac950934a13ea6eeb35171002da90552002"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/p1_mask_edits.py",
+          "sha256": "740dd54043182878241a34ead97800c9fd2816ec22abe68cb817da30afdeca80"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/test_mask_io.py",
+          "sha256": "e41df953ee971bf8179c158407d7f872f310f4554c8fb84ee2439552cd90b0fe"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/test_p1_detail_review.py",
+          "sha256": "dbd8de0de58321f5dea9bcc7e7c1456422fa1666e00b2bfec8dff7e315d32703"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/test_p1_mask_edits.py",
+          "sha256": "ca6cc5266602e7fdac25c1787919bb5ae65ce44159da4120d3995a5dd9a6c0b4"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/validate_pilot.py",
+          "sha256": "72a49046895b5bc074d1c21ef90aa8d9a867b428d3eec7a2aa9b6ec3bd4f1933"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_color_masks/validation_metrics.json",
+          "sha256": "fa5bca3454385c82afaaf53b264e11d6e274afd631dfbe09bd09c036ee3a6947"
+        }
+      ]
     }
   ]
 }

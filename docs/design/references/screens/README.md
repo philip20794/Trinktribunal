@@ -41,3 +41,5 @@ Dort gibt es `backgrounds/` (Gerichtssaal/Holz), `branding/` (Logo), `decoration
 Der separate Avatar-Plan liegt unter [AVATAR_GRAPHICS_PLAN](../../../avatars/AVATAR_GRAPHICS_PLAN.md); bisherige Avatar-Dateien/Manifeste unter `apps/client/assets/avatars/`. Das App-Icon liegt unabhängig davon unter `apps/client/assets/branding/`.
 
 **Diese Referenzablage ändert weder App-Code noch Spielabläufe oder Asset-Einbindung.**
+
+TT-071: [vollständige Screen-/Zustands- und Assetprüfung](../../../qa/M7_5.md), [Inventar](../../ui-inventory.json). Die drei fehlerhaften Einzelmotive werden nicht in Runtime übernommen; alle Bedienelemente bleiben echte Flutter-Widgets.

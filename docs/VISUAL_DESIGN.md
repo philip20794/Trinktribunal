@@ -77,3 +77,7 @@ Animationen unterstützen die Handlung und bleiben kurz: Akte aufklappen, Siegel
 ## 6. Verbindliche Designrichtung (D-15)
 
 Die Stilrichtung und das lokal gebündelte, skalierbare menschliche Avatar-Ebenensystem sind entschieden. Exakte Farb-/Schriftwerte, Ebenenanker, Bankgrafik, Breakpoints und Animationen werden als **technische Gestaltungsparameter** der bedienbaren Flutter-Galerie in TT-013/014 festgelegt, nicht als offene Produktentscheidung. Schrift-/Grafikquellen erfordern vor Veröffentlichung einen dokumentierten Nutzungsnachweis (TT-065). [D-15](decisions/D-15-visual-asset-policy.md).
+
+## TT-071 – tatsächlicher UI-/Assetbestand (28.10.2026)
+
+[Screen-/Zustandsmatrix und individuelle PNG-Sichtung](qa/M7_5.md) sowie [maschinenlesbares Inventar](design/ui-inventory.json) bilden die Umsetzung ab TT-072 ab. 35 Featuredateien/21 Gruppen, zehn Referenzen und 33 PNGs sind erfasst; drei fehlerhafte Motive bleiben ungebündelt. Die Referenzen bestimmen den Stil, D-19 weiterhin die Abläufe. V2 bleibt bis zur separat geprüften v3-Maskenproduktion erhalten. Visuelle Browser-/Geräteabnahme übersprungen, später manuell testen.

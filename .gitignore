@@ -29,6 +29,7 @@ node_modules/
 *.log
 chromedriver.log
 test-results/
+__pycache__/
 /.local/multiplayer/
 
 # Geheimnisse / Konfiguration

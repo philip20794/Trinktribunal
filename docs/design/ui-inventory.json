@@ -1,0 +1,1369 @@
+{
+  "formatVersion": 1,
+  "task": "TT-071",
+  "date": "2026-10-28",
+  "baseline": "8c0e17c",
+  "scope": "Quellcode-/Unitbestand und statische PNG-/Referenzsichtung; keine Browser-/Geräteabnahme, keine Rechtefreigabe.",
+  "languages": [
+    "de",
+    "en"
+  ],
+  "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen",
+  "rightsEvidence": "docs/qa/rights.md",
+  "references": [
+    {
+      "id": "01",
+      "path": "docs/design/references/screens/01_startseite.png",
+      "width": 306,
+      "height": 556,
+      "sha256": "a653d9dbb2ad9946c8ae7570e1fa8ee406170916d3c62b5911b5803d3e33abb2",
+      "role": "style_reference",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "02",
+      "path": "docs/design/references/screens/02_profil_bearbeiten.png",
+      "width": 304,
+      "height": 556,
+      "sha256": "ea06b4552d2f7a43a1d74b4b370931a2e533eb21ed321c25e93a78a6b1ccd8eb",
+      "role": "style_reference",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "03",
+      "path": "docs/design/references/screens/03_platzhalter_freier_screen.png",
+      "width": 279,
+      "height": 556,
+      "sha256": "2a964671e2a6f8de0f5ddf09d2988acfcec4211f38109cb121c3c3ef19d4158b",
+      "role": "placeholder",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "04",
+      "path": "docs/design/references/screens/04_sitzreihenfolge.png",
+      "width": 299,
+      "height": 556,
+      "sha256": "007b35b2ef81d25c122fc0aa3b10f5dab1888cb4e2f31ef79d625e5a02929a50",
+      "role": "style_reference",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "05",
+      "path": "docs/design/references/screens/05_spielkonfiguration_handy_karten.png",
+      "width": 273,
+      "height": 556,
+      "sha256": "d910b50133883cdc45f6addd4917cf9ef242d2bcf19389bad893904939eb25e7",
+      "role": "style_reference",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "06",
+      "path": "docs/design/references/screens/06_handy_weitergeben.png",
+      "width": 306,
+      "height": 426,
+      "sha256": "e25fb8d242bd917b938f3ed34e1bad8ccae10ea7392c8581f50e66e57bc879da",
+      "role": "style_reference",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "07",
+      "path": "docs/design/references/screens/07_richter_uebergabe.png",
+      "width": 304,
+      "height": 426,
+      "sha256": "a150670d89050e990f887bc6f896a37052d85a3d02968244d5ae87502e9eb831",
+      "role": "style_reference",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "08",
+      "path": "docs/design/references/screens/08_fallakte_frage.png",
+      "width": 279,
+      "height": 426,
+      "sha256": "09014f113140ceacdad16d1b1c1592b65343dcc8c9e2b36477648f269c4796e1",
+      "role": "style_reference",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "09",
+      "path": "docs/design/references/screens/09_geheime_nummer.png",
+      "width": 299,
+      "height": 426,
+      "sha256": "4127bd92dbd4e063828cbe6d8e72b1aa8613463e8910084731fcbfac53a15a31",
+      "role": "style_reference",
+      "useAsWholeScreen": false
+    },
+    {
+      "id": "10",
+      "path": "docs/design/references/screens/10_spieler_hinzufuegen.png",
+      "width": 273,
+      "height": 426,
+      "sha256": "ebad3f27749144fde599619d7ed7d28d9a01742400e1c012ed86336bad662bb6",
+      "role": "people_management",
+      "useAsWholeScreen": false
+    }
+  ],
+  "sections": [
+    {
+      "id": "home",
+      "files": [
+        "apps/client/lib/features/home/home_screen.dart"
+      ],
+      "modes": [
+        "cards",
+        "shared_phone",
+        "multiplayer"
+      ],
+      "roles": [
+        "local_user"
+      ],
+      "references": [
+        "01"
+      ],
+      "states": [
+        "Profil/Restore laden",
+        "drei Spielmodi",
+        "gültige Wiederaufnahme",
+        "defekter lokaler Stand mit bestätigtem Verwerfen",
+        "gespeicherte Raumidentitäten",
+        "Profil/Einstellungen/Spielregeln",
+        "Debuggalerie nur Debug"
+      ],
+      "tests": [
+        "apps/client/test/accessibility/screen_matrix_test.dart",
+        "apps/client/test/widget_test.dart"
+      ],
+      "targetTask": "TT-073"
+    },
+    {
+      "id": "profile",
+      "files": [
+        "apps/client/lib/features/profile/profile_screen.dart",
+        "apps/client/lib/features/profile/avatar_options.dart"
+      ],
+      "modes": [
+        "cards",
+        "shared_phone",
+        "multiplayer"
+      ],
+      "roles": [
+        "local_user"
+      ],
+      "references": [
+        "02"
+      ],
+      "states": [
+        "Laden/Lesefehler",
+        "Name leer/24 Grapheme",
+        "große Avatar-v2-Vorschau",
+        "14 Kategorien/53 Optionen",
+        "Speichern/Fehler/Zurück"
+      ],
+      "tests": [
+        "apps/client/test/application/profile_controller_test.dart",
+        "apps/client/test/accessibility/screen_matrix_test.dart"
+      ],
+      "targetTask": "TT-073"
+    },
+    {
+      "id": "settings",
+      "files": [
+        "apps/client/lib/features/settings/settings_screen.dart",
+        "apps/client/lib/features/settings/offline_settings.dart"
+      ],
+      "modes": [
+        "cards",
+        "shared_phone",
+        "multiplayer"
+      ],
+      "roles": [
+        "local_user"
+      ],
+      "references": [
+        "05"
+      ],
+      "states": [
+        "DE/EN-Oberfläche",
+        "Laden/Fehler/Wiederholen",
+        "Offline bereit/nicht verfügbar/Update/Fehler",
+        "laufendes Spiel sperrt Ersetzen/Löschen"
+      ],
+      "tests": [
+        "apps/client/test/application/settings_controller_test.dart",
+        "apps/client/test/accessibility/interaction_test.dart"
+      ],
+      "targetTask": "TT-073"
+    },
+    {
+      "id": "people",
+      "files": [
+        "apps/client/lib/features/setup/player_roster.dart"
+      ],
+      "modes": [
+        "shared_phone"
+      ],
+      "roles": [
+        "local_user"
+      ],
+      "references": [
+        "10",
+        "04",
+        "05"
+      ],
+      "states": [
+        "leer/1–20 Personen",
+        "Namen/Avatare bearbeiten",
+        "Einfügen/Umsortieren/Entfernen bestätigen",
+        "Profil übernehmen",
+        "ab drei Personen starten",
+        "laufende Besetzung nur zur Fallgrenze",
+        "Konfiguration/Resume/Katalogfehler"
+      ],
+      "tests": [
+        "apps/client/test/application/roster_controller_test.dart",
+        "apps/client/test/accessibility/screen_matrix_test.dart"
+      ],
+      "targetTask": "TT-074"
+    },
+    {
+      "id": "physical_cards",
+      "files": [
+        "apps/client/lib/features/setup/card_mode_screen.dart"
+      ],
+      "modes": [
+        "cards"
+      ],
+      "roles": [
+        "table_judge"
+      ],
+      "references": [
+        "05",
+        "08"
+      ],
+      "states": [
+        "Setup",
+        "reguläre Fallakte/Refresh/Erschöpfung",
+        "normales Weiter ohne Wertungsdialog",
+        "D-07 separat bestätigen",
+        "aktives/neues Regelereignis",
+        "Pause/Katalogerschöpfung",
+        "Partieende/Neustart/Abbruch",
+        "Speicherwarnung/alte echte Wertung"
+      ],
+      "tests": [
+        "apps/client/test/features/direct_next_rules_test.dart",
+        "apps/client/test/features/question_refresh_test.dart",
+        "apps/client/test/application/local_marathon_test.dart"
+      ],
+      "targetTask": "TT-076"
+    },
+    {
+      "id": "shared_phone",
+      "files": [
+        "apps/client/lib/features/handoff/shared_game_screen.dart"
+      ],
+      "modes": [
+        "shared_phone"
+      ],
+      "roles": [
+        "judge",
+        "number_recipient"
+      ],
+      "references": [
+        "08",
+        "06",
+        "09",
+        "07",
+        "04"
+      ],
+      "states": [
+        "Fallakte",
+        "Empfängerübergabe mit Sitzplatzidentität",
+        "Übernahme bestätigen",
+        "private Hold-Zahl",
+        "Richterübergabe",
+        "Antworten",
+        "Sortieren",
+        "öffentlich schrittweise aufdecken",
+        "automatisches Urteil",
+        "Regelereignis/Pause/Ende",
+        "D-07/Neustart/Abbruch",
+        "Roster/Spielhilfe/aktive Regeln verdecken",
+        "sicheres Resume derselben Person"
+      ],
+      "tests": [
+        "apps/client/test/features/shared_handoff_flow_test.dart",
+        "apps/client/test/application/shared_handoff_test.dart",
+        "apps/client/test/design/held_private_number_test.dart",
+        "apps/client/test/application/local_marathon_test.dart"
+      ],
+      "targetTask": "TT-075"
+    },
+    {
+      "id": "bench",
+      "files": [
+        "apps/client/lib/features/bench/bench_view.dart"
+      ],
+      "modes": [
+        "shared_phone",
+        "multiplayer"
+      ],
+      "roles": [
+        "judge",
+        "all_judges_participant",
+        "spectator"
+      ],
+      "references": [
+        "04"
+      ],
+      "states": [
+        "Einfügen per Drag/Tap/Tastatur",
+        "fester Anzeigenmodus nach Bestätigung",
+        "schrittweise öffentliche Markierung",
+        "2/3 responsive Spalten",
+        "3–20 Personen/lange gleiche Namen/200%",
+        "Fokus folgt Identität"
+      ],
+      "tests": [
+        "apps/client/test/features/online_order_test.dart",
+        "apps/client/test/accessibility/interaction_test.dart"
+      ],
+      "targetTask": "TT-074"
+    },
+    {
+      "id": "active_rules",
+      "files": [
+        "apps/client/lib/features/rules/active_rules_sheet.dart"
+      ],
+      "modes": [
+        "cards"
+      ],
+      "roles": [
+        "table_judge"
+      ],
+      "references": [
+        "08"
+      ],
+      "states": [
+        "leere/aktive Liste",
+        "lokalisierter Inhalt",
+        "übersprungene Regeln/Zielreduktion",
+        "zurück zum unveränderten Fall"
+      ],
+      "tests": [
+        "apps/client/test/domain/card_game_test.dart",
+        "apps/client/test/features/direct_next_rules_test.dart"
+      ],
+      "targetTask": "TT-076"
+    },
+    {
+      "id": "general_rules",
+      "files": [
+        "apps/client/lib/features/rules/game_rules_screen.dart"
+      ],
+      "modes": [
+        "cards",
+        "shared_phone",
+        "multiplayer"
+      ],
+      "roles": [
+        "local_user",
+        "host",
+        "guest"
+      ],
+      "references": [],
+      "states": [
+        "sieben allgemeine Regelabschnitte DE/EN",
+        "von Home und allen Modi erreichbar",
+        "Zurück ohne Fallabschluss",
+        "Geheimnisse beim Öffnen verdeckt"
+      ],
+      "tests": [
+        "apps/client/test/features/direct_next_rules_test.dart",
+        "apps/client/test/features/question_refresh_test.dart",
+        "apps/client/test/accessibility/screen_matrix_test.dart"
+      ],
+      "targetTask": "TT-076"
+    },
+    {
+      "id": "verdict",
+      "files": [
+        "apps/client/lib/features/verdict/personal_verdict.dart",
+        "apps/client/lib/features/verdict/online_reveal.dart"
+      ],
+      "modes": [
+        "shared_phone",
+        "multiplayer"
+      ],
+      "roles": [
+        "judge",
+        "host",
+        "guest",
+        "all_judges_participant"
+      ],
+      "references": [
+        "04"
+      ],
+      "states": [
+        "normal: öffentliche Fehlpositionen/Schlucke",
+        "alle Richter: nur eigenes privates Ergebnis",
+        "Host öffnet einen Cursor",
+        "kein Frühergebnis/fremde Ordnung",
+        "reguläres Weiter nach automatischem Urteil"
+      ],
+      "tests": [
+        "apps/client/test/features/online_reveal_test.dart",
+        "apps/client/test/features/personal_verdict_test.dart",
+        "apps/client/test/features/all_judges_test.dart"
+      ],
+      "targetTask": "TT-075"
+    },
+    {
+      "id": "online_entry",
+      "files": [
+        "apps/client/lib/features/multiplayer/create.dart",
+        "apps/client/lib/features/multiplayer/join.dart",
+        "apps/client/lib/features/multiplayer/entry_profile.dart",
+        "apps/client/lib/features/multiplayer/saved_rooms.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest"
+      ],
+      "references": [
+        "01",
+        "02",
+        "10"
+      ],
+      "states": [
+        "Create/Join",
+        "Einladung /join?room=",
+        "ungültige Einladung/Raumcode/Name",
+        "bestehende Identität ausdrücklich fortsetzen",
+        "neue Identität separat",
+        "Busy/Netzwerk/Storage/Raum voll/inkompatibel",
+        "QR/Clipboard-Fallback"
+      ],
+      "tests": [
+        "apps/client/test/features/room_entry_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "online_connection",
+      "files": [
+        "apps/client/lib/features/multiplayer/connection.dart",
+        "apps/client/lib/features/multiplayer/game_privacy.dart",
+        "apps/client/lib/features/multiplayer/host_status.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest"
+      ],
+      "references": [],
+      "states": [
+        "verbinden/online/reconnect",
+        "letzten Stand ohne Geheimnis anzeigen",
+        "Session ersetzt/geschlossen/abgelaufen",
+        "Versionsupdate erforderlich",
+        "Leave ohne Socket",
+        "Host 90s weg/kein Nachfolger/automatische Rückkehr",
+        "Route/Tab/Dialog verdeckt"
+      ],
+      "tests": [
+        "apps/client/test/application/room_controller_test.dart",
+        "apps/client/test/features/host_status_test.dart",
+        "apps/client/test/features/close_room_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "online_lobby",
+      "files": [
+        "apps/client/lib/features/multiplayer/lobby.dart",
+        "apps/client/lib/features/multiplayer/courtroom.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest"
+      ],
+      "references": [
+        "10",
+        "04",
+        "05"
+      ],
+      "states": [
+        "Me/Gerichtssaal-Tabs",
+        "Spielerliste/eingefrorene und ausstehende Besetzung",
+        "Hoststart/konfigurieren",
+        "berechtigtes Resume/Pause",
+        "aktive Regeln/Spielhilfe",
+        "Start/Neustart bestätigen"
+      ],
+      "tests": [
+        "apps/client/test/features/lobby_test.dart",
+        "apps/client/test/features/online_roster_test.dart",
+        "apps/client/test/features/online_game_progress_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "online_me",
+      "files": [
+        "apps/client/lib/features/multiplayer/me.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest"
+      ],
+      "references": [
+        "02"
+      ],
+      "states": [
+        "eigenes Profil/Name/Avatar",
+        "Entwurf/Serverbestätigung/Fehler",
+        "nur eigener Editor",
+        "Änderungen synchronisiert"
+      ],
+      "tests": [
+        "apps/client/test/application/online_profile_controller_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "online_settings",
+      "files": [
+        "apps/client/lib/features/multiplayer/game_settings.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest"
+      ],
+      "references": [
+        "05"
+      ],
+      "states": [
+        "Host im Lobbyzustand bearbeitet",
+        "Gast nur Ansicht",
+        "Inhaltssprache unabhängig UI",
+        "Ziele/Regeln/Faktor/alle Richter",
+        "Pending/Fehler/Reload"
+      ],
+      "tests": [
+        "apps/client/test/features/lobby_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "online_roster",
+      "files": [
+        "apps/client/lib/features/multiplayer/roster_management.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest"
+      ],
+      "references": [
+        "10",
+        "04"
+      ],
+      "states": [
+        "Host fügt bestehende Identitäten ein/ordnet um",
+        "entfernen bestätigen",
+        "retirierte eingefrorene Profile bleiben lesbar",
+        "Gäste ohne fremde Rechte",
+        "ab 21 Identitäten Grenze"
+      ],
+      "tests": [
+        "apps/client/test/features/online_roster_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "online_game",
+      "files": [
+        "apps/client/lib/features/multiplayer/game_screen.dart",
+        "apps/client/lib/features/multiplayer/readiness_view.dart",
+        "apps/client/lib/features/multiplayer/game_progress.dart",
+        "apps/client/lib/features/multiplayer/order_view.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest",
+        "judge",
+        "reader",
+        "all_judges_participant"
+      ],
+      "references": [
+        "08",
+        "09",
+        "04"
+      ],
+      "states": [
+        "Zahl privat freiwillig per Tap",
+        "Richter ohne Zahl/alle Richter mit eigener Zahl",
+        "Bereitschaft/Host sortieren freigeben",
+        "eigener privater Entwurf/Bestätigung",
+        "Richter/Vorleser-Refresh",
+        "neue Instanz verwirft Entwurf",
+        "Regelereignis/Pause/Ende",
+        "regulärer Abschluss vs D-07",
+        "Katalog-/Rechte-/Phasenfehler"
+      ],
+      "tests": [
+        "apps/client/test/features/online_numbers_test.dart",
+        "apps/client/test/features/readiness_test.dart",
+        "apps/client/test/features/online_order_test.dart",
+        "apps/client/test/features/question_refresh_test.dart",
+        "apps/client/test/features/online_game_progress_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "online_invitation",
+      "files": [
+        "apps/client/lib/features/multiplayer/invitation.dart",
+        "apps/client/lib/features/multiplayer/invite.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest"
+      ],
+      "references": [],
+      "states": [
+        "öffentlicher Code/QR/Link ohne Token",
+        "Clipboard nicht verfügbar",
+        "fehlerhafte Route/Code/Origin",
+        "lokalisierte feste Fehlertexte"
+      ],
+      "tests": [
+        "apps/client/test/features/room_entry_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "online_exit",
+      "files": [
+        "apps/client/lib/features/multiplayer/room_actions.dart",
+        "apps/client/lib/features/multiplayer/close_room.dart"
+      ],
+      "modes": [
+        "multiplayer"
+      ],
+      "roles": [
+        "host",
+        "guest"
+      ],
+      "references": [],
+      "states": [
+        "Leave bestätigen",
+        "Host schließt gesamten Raum bestätigen",
+        "kein Geheimnis im Dialog",
+        "Offline-Widerruf/Pending",
+        "geschlossene Identität getrennt von anderen"
+      ],
+      "tests": [
+        "apps/client/test/features/close_room_test.dart",
+        "apps/client/test/application/room_controller_test.dart"
+      ],
+      "targetTask": "TT-077"
+    },
+    {
+      "id": "debug_gallery",
+      "files": [
+        "apps/client/lib/features/design_gallery/design_gallery_screen.dart"
+      ],
+      "modes": [
+        "cards",
+        "shared_phone",
+        "multiplayer"
+      ],
+      "roles": [
+        "debug_user"
+      ],
+      "references": [],
+      "states": [
+        "Farben/Typografie/Komponenten",
+        "Avatare/Bewegung/Schriftgröße",
+        "nur Debug-Einstieg"
+      ],
+      "tests": [
+        "apps/client/test/design/theme_test.dart",
+        "apps/client/test/design/avatar_test.dart"
+      ],
+      "targetTask": "TT-072"
+    },
+    {
+      "id": "legacy_preview",
+      "files": [
+        "apps/client/lib/features/home/mode_preview_screen.dart"
+      ],
+      "modes": [
+        "cards",
+        "shared_phone",
+        "multiplayer"
+      ],
+      "roles": [
+        "unreachable_legacy"
+      ],
+      "references": [],
+      "states": [
+        "alte Vorschau ohne produktiven Aufrufer; nicht als fehlende Funktion neu anbieten"
+      ],
+      "tests": [],
+      "targetTask": "TT-073"
+    }
+  ],
+  "assets": [
+    {
+      "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_chamber.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 939964,
+      "sha256": "1082e5a3f45168abefc2402bf46f58700adaf439a040c3269a47b6ff6994afee",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1080,
+        1920
+      ],
+      "review": "candidate",
+      "notes": "Deckender 1080×1920-Hintergrund. Portrait geeignet; breit nur Cover/Crop, nicht strecken. Text braucht kontrastgesicherte Fläche/Overlay."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_seating.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 911341,
+      "sha256": "ae930cd6eb190903324fce9f689eb493ceb727a4da9262c44101df69457c1ebc",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1080,
+        1920
+      ],
+      "review": "candidate",
+      "notes": "Deckender 1080×1920-Hintergrund. Portrait geeignet; breit nur Cover/Crop, nicht strecken. Text braucht kontrastgesicherte Fläche/Overlay."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_wood_wall.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 1226652,
+      "sha256": "02e4282e93159294b67d5e8235f12251bc15dd07b8811cf1cf5b8a742567eaaa",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1080,
+        1920
+      ],
+      "review": "candidate",
+      "notes": "Deckender 1080×1920-Hintergrund. Portrait geeignet; breit nur Cover/Crop, nicht strecken. Text braucht kontrastgesicherte Fläche/Overlay."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/backgrounds/home_courtroom.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 1187434,
+      "sha256": "6f52cb275d73a18523632b21fb979e20f7955a23d33f71d0d85f1b9b36e94ea1",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1080,
+        1920
+      ],
+      "review": "candidate",
+      "notes": "Deckender 1080×1920-Hintergrund. Portrait geeignet; breit nur Cover/Crop, nicht strecken. Text braucht kontrastgesicherte Fläche/Overlay."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/backgrounds/parchment_background.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 1017866,
+      "sha256": "9cdab1d8168bcd18b6fdba271aa296dd5983e07b92714c85bc244c191432dc86",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1080,
+        1920
+      ],
+      "review": "candidate",
+      "notes": "Deckender 1080×1920-Hintergrund. Portrait geeignet; breit nur Cover/Crop, nicht strecken. Text braucht kontrastgesicherte Fläche/Overlay."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/branding/trinktribunal_logo.png",
+      "width": 1024,
+      "height": 840,
+      "bytes": 819768,
+      "sha256": "8c707f5dafe1edd6a410e9d5d8c65e1b82656a9cbd66ca504ead71241ddf40e2",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 368256,
+      "nonopaque_pixels": 422664,
+      "alpha_bbox": [
+        20,
+        43,
+        1003,
+        796
+      ],
+      "review": "candidate",
+      "notes": "Transparenter vollständiger Wortmarkenentwurf, genügend Detail bei ca. 280–340 logischen px. Deutscher Slogan ist eingebrannt; Branding, keine interaktive Anleitung."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/beer_foam.png",
+      "width": 500,
+      "height": 380,
+      "bytes": 102105,
+      "sha256": "a68a1b8f79853a3f897c5ef8126d134a9e662c653453eb762a5855ddabb9196b",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 124731,
+      "nonopaque_pixels": 148064,
+      "alpha_bbox": [
+        34,
+        34,
+        462,
+        345
+      ],
+      "review": "quarantine",
+      "notes": "Störender senkrechter grauschwarzer Streifen links, im Einzelbild bestätigt. Nicht bündeln; Schaumdetail in anderem Motiv verwenden oder später neu erstellen."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/courtroom_chandelier.png",
+      "width": 561,
+      "height": 528,
+      "bytes": 375555,
+      "sha256": "511809902322ee8a54d75991ce11f1d24a9a5f4af4474d7d9f00be7158f6bcfd",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 175357,
+      "nonopaque_pixels": 192784,
+      "alpha_bbox": [
+        27,
+        28,
+        534,
+        501
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/golden_highlight_rays.png",
+      "width": 420,
+      "height": 330,
+      "bytes": 76204,
+      "sha256": "7a1cf59dde8fb087e52d39f2f2a6593b5eb509eaf9eba6fcb2b5ddf647325c43",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 111989,
+      "nonopaque_pixels": 128603,
+      "alpha_bbox": [
+        83,
+        59,
+        399,
+        277
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_left.png",
+      "width": 500,
+      "height": 1000,
+      "bytes": 178739,
+      "sha256": "95b1974c15fa8f478de1d4ceed093db412dc395a2007321e2258ef1b9f1524f4",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 325106,
+      "nonopaque_pixels": 351025,
+      "alpha_bbox": [
+        95,
+        50,
+        404,
+        950
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_right.png",
+      "width": 500,
+      "height": 1000,
+      "bytes": 195979,
+      "sha256": "d980b106215360a35b1beba36c411e343adb826499dc060d3af4b65d6b175752",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 307017,
+      "nonopaque_pixels": 350893,
+      "alpha_bbox": [
+        80,
+        50,
+        414,
+        949
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_top.png",
+      "width": 1300,
+      "height": 580,
+      "bytes": 317387,
+      "sha256": "9f90c2eef42b77de6d97946c9585ffab661f7efe653ef201ea5817a7c535b41c",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 499298,
+      "nonopaque_pixels": 534165,
+      "alpha_bbox": [
+        65,
+        119,
+        1235,
+        460
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/seating_arrow_right.png",
+      "width": 460,
+      "height": 280,
+      "bytes": 70720,
+      "sha256": "adf60736cb97f21f90aab1e0bcd1363cfb4a175a577cbb7e227d90bc90264e28",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 95387,
+      "nonopaque_pixels": 108462,
+      "alpha_bbox": [
+        28,
+        14,
+        420,
+        257
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/seating_arrow_turn.png",
+      "width": 460,
+      "height": 280,
+      "bytes": 63411,
+      "sha256": "b3921fb66499305e9359a5d3d9090825999d2ecf93d2b26fdbb7aec15dd1244f",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 100373,
+      "nonopaque_pixels": 112142,
+      "alpha_bbox": [
+        83,
+        14,
+        427,
+        266
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/wall_candle.png",
+      "width": 318,
+      "height": 508,
+      "bytes": 178763,
+      "sha256": "2b1a7278dc972ad8d723fecf1fceeb8288aa407b9a69913ebd8da4417ef9c3d6",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 90717,
+      "nonopaque_pixels": 100054,
+      "alpha_bbox": [
+        27,
+        27,
+        290,
+        481
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/decorations/wooden_judge_bench.png",
+      "width": 1200,
+      "height": 570,
+      "bytes": 349814,
+      "sha256": "4498be0bcfd16f1494fb7a1add499a2bb10bc0e76b22854496af8e87ec2a2e45",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 186148,
+      "nonopaque_pixels": 255542,
+      "alpha_bbox": [
+        60,
+        32,
+        1140,
+        538
+      ],
+      "review": "candidate",
+      "notes": "Statische Sichtprüfung im beschrifteten Kontaktbogen; passende kleine UI-Dekoration, keine Runtime-Abnahme."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/clinking_beer_mugs.png",
+      "width": 700,
+      "height": 400,
+      "bytes": 353372,
+      "sha256": "1ebe976c5b67da79956ebf44d2e115c5c6e7093aacc2e8c7b395de5c9d871767",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 64118,
+      "nonopaque_pixels": 96506,
+      "alpha_bbox": [
+        0,
+        0,
+        615,
+        400
+      ],
+      "review": "quarantine",
+      "notes": "Deutlich verwaschen, an drei Rändern beschnitten und helle Flächen unsauber transparent gelocht. Einzelansicht bestätigt; nicht als Hero/Runtime-Asset nutzen."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/number_cards_1_2_3.png",
+      "width": 680,
+      "height": 450,
+      "bytes": 325312,
+      "sha256": "9351b761f31220def210c91d0c4f6e8ad7464015caa37374051fd71551945c90",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 83147,
+      "nonopaque_pixels": 127005,
+      "alpha_bbox": [
+        87,
+        0,
+        680,
+        450
+      ],
+      "review": "quarantine",
+      "notes": "Verwaschene kleine Ausgangsgrafik, Alphafranzen/-löcher und oben/rechts/unten hart angeschnitten. Nicht bündeln; Zahlenkarten als echte Flutter-Flächen/Text oder sauberes alternatives Symbol."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/phone_handover.png",
+      "width": 878,
+      "height": 601,
+      "bytes": 560351,
+      "sha256": "de227803b5dc94ad174d26cf727ca0ebacab84380dcbdd6e74c422185688cbcf",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 314876,
+      "nonopaque_pixels": 325149,
+      "alpha_bbox": [
+        26,
+        28,
+        852,
+        575
+      ],
+      "review": "candidate",
+      "notes": "Sauberes transparentes Übergabemotiv mit Innenluft; mit Contain und begrenzter Höhe einsetzbar. Text/Übernahmeaktion bleiben unabhängig."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/paper/case_parchment_blank.png",
+      "width": 920,
+      "height": 1180,
+      "bytes": 654261,
+      "sha256": "f33f872f73a58a508f2b4d1b99e2cbd1ae6feb4be757fc5b62be10e057c81911",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 270209,
+      "nonopaque_pixels": 299088,
+      "alpha_bbox": [
+        46,
+        93,
+        874,
+        1087
+      ],
+      "review": "candidate",
+      "notes": "Echte Außen-Transparenz mit teils breitem Innen-/Außenrand; Inhaltspadding und flexible Höhe/200% beachten. Zahlen/Fragen als Flutter-Text."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/paper/lined_note_blank.png",
+      "width": 850,
+      "height": 1250,
+      "bytes": 244569,
+      "sha256": "6c9655c646fbe8a46150412c28f59c39b574c920803d079e131f871c777b3f25",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 468474,
+      "nonopaque_pixels": 482441,
+      "alpha_bbox": [
+        158,
+        62,
+        692,
+        1182
+      ],
+      "review": "candidate",
+      "notes": "Schmales Papier innerhalb breiter transparenter Ränder; für kurze Notizen, nicht blind als vollbreite Formularfläche strecken."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/paper/mugshot_height_chart_blank.png",
+      "width": 850,
+      "height": 1100,
+      "bytes": 308689,
+      "sha256": "dd50737e09f0f269d0cb4a62efc0bffd57c9817aaccc3cafd98324518b54e285",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 185570,
+      "nonopaque_pixels": 185570,
+      "alpha_bbox": [
+        46,
+        55,
+        803,
+        1045
+      ],
+      "review": "candidate",
+      "notes": "Höhenlinien und Skalen sind Dekoration; nicht als Geheimzahl semantisieren. Avatar-v2-Fallback nicht mit doppelter Messwand überlagern."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/paper/number_card_blank.png",
+      "width": 690,
+      "height": 860,
+      "bytes": 375605,
+      "sha256": "280eb522765de9ca3fb7e570430dfc622c2988ce21db6cecb960e69c0aed8ea6",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 179088,
+      "nonopaque_pixels": 218854,
+      "alpha_bbox": [
+        65,
+        43,
+        622,
+        817
+      ],
+      "review": "candidate",
+      "notes": "Echte Außen-Transparenz mit teils breitem Innen-/Außenrand; Inhaltspadding und flexible Höhe/200% beachten. Zahlen/Fragen als Flutter-Text."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/paper/square_parchment_blank.png",
+      "width": 900,
+      "height": 950,
+      "bytes": 438829,
+      "sha256": "e445fcd08892adeb40c418f2dc0d1d53d3f83d4adfdc5971ca35f72974efdaa1",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 350448,
+      "nonopaque_pixels": 398479,
+      "alpha_bbox": [
+        140,
+        47,
+        756,
+        902
+      ],
+      "review": "candidate",
+      "notes": "Echte Außen-Transparenz mit teils breitem Innen-/Außenrand; Inhaltspadding und flexible Höhe/200% beachten. Zahlen/Fragen als Flutter-Text."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/beer_mug.png",
+      "width": 420,
+      "height": 420,
+      "bytes": 111085,
+      "sha256": "85dc0d912d70df363a291616bbc287e405734b27934f4b873805486b8b77a89f",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 104742,
+      "nonopaque_pixels": 120523,
+      "alpha_bbox": [
+        44,
+        36,
+        349,
+        361
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/dice.png",
+      "width": 420,
+      "height": 420,
+      "bytes": 106377,
+      "sha256": "6dfd0199ba6194dab5246ad4169a078371ba2ebb9970eb115ae5aaa664b0e79b",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 126239,
+      "nonopaque_pixels": 138607,
+      "alpha_bbox": [
+        105,
+        39,
+        365,
+        330
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/judge_gavel.png",
+      "width": 420,
+      "height": 420,
+      "bytes": 127218,
+      "sha256": "b2b8ddb0241bf91acb1853decc034f4042e7b989f66241881468223c369725f7",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 119731,
+      "nonopaque_pixels": 138639,
+      "alpha_bbox": [
+        38,
+        36,
+        384,
+        364
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/justice_scales.png",
+      "width": 420,
+      "height": 420,
+      "bytes": 107795,
+      "sha256": "2b015076a1313829a71e7bb589240b7e46f1be3759f7f2e218ebe7138981a285",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 129348,
+      "nonopaque_pixels": 156618,
+      "alpha_bbox": [
+        61,
+        36,
+        361,
+        349
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/player_group.png",
+      "width": 420,
+      "height": 420,
+      "bytes": 88580,
+      "sha256": "ee511e14a43a657582e450996e90f6192ba9d17b5cb5b297ef85b97085eeb012",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 125471,
+      "nonopaque_pixels": 139288,
+      "alpha_bbox": [
+        66,
+        56,
+        347,
+        305
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/playing_cards.png",
+      "width": 420,
+      "height": 420,
+      "bytes": 105371,
+      "sha256": "c9dd5946a790023aa1a8eb34b04ab4afbe7bee9bb54e5a993c5cf1cfbdfbaaa3",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 120439,
+      "nonopaque_pixels": 133947,
+      "alpha_bbox": [
+        83,
+        39,
+        375,
+        324
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/refresh.png",
+      "width": 300,
+      "height": 300,
+      "bytes": 61876,
+      "sha256": "1275536ad19e2144e4146ae2cb8e987656e4fe73da3ed02a9d28077470882638",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 56444,
+      "nonopaque_pixels": 63990,
+      "alpha_bbox": [
+        30,
+        46,
+        248,
+        253
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/reveal_eye.png",
+      "width": 300,
+      "height": 300,
+      "bytes": 55284,
+      "sha256": "65fc081e91450900a90b9dd721cc30461094f608b0dafc1e43cdd36c77def142",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 56223,
+      "nonopaque_pixels": 63456,
+      "alpha_bbox": [
+        15,
+        65,
+        285,
+        240
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/symbols/smartphone.png",
+      "width": 420,
+      "height": 420,
+      "bytes": 57940,
+      "sha256": "ea544b5210f955a38d38fd50be1e00b0ecfed766add31d4f02258d2b3ac49023",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 117609,
+      "nonopaque_pixels": 132588,
+      "alpha_bbox": [
+        90,
+        40,
+        314,
+        353
+      ],
+      "review": "candidate",
+      "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    }
+  ]
+}
