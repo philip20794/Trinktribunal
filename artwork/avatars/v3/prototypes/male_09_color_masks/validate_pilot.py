@@ -5,7 +5,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 from PIL import Image,ImageDraw,ImageFont
-from color_mask_pilot import make_masks,recolor
+from color_mask_pilot import make_masks,recolor,label_font
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--source',type=Path,required=True);ap.add_argument('--out',type=Path,required=True)
@@ -26,7 +26,7 @@ def main():
     # Two alternatives plus original, shown at editor/lobby sizes.
     picks=[('Original',src),('Oliv / schwarz / blau',recolor(src,masks,**options['olive_black_blue'])),('Dunkel / grau / gruen',recolor(src,masks,**options['deep_gray_forest']))]
     frame=Image.new('RGB',(1000,510),'#f6f4ed');d=ImageDraw.Draw(frame)
-    font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',15)
+    font=label_font(15)  # OS-independent font lookup with Pillow fallback
     labels=['320x400','96x120','48x60'];sizes=[(320,400),(96,120),(48,60)]
     for row,(label,im) in enumerate(picks):
         if row==0: y=18
