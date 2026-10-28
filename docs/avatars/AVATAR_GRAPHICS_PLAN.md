@@ -107,8 +107,8 @@ Das bestehende v2-Manifest enthält 5 Hautton-IDs (`light`, `medium`, `brown`, `
 | --- | --- | ---: | --- | --- |
 | ART-00 | Stilbibel, No-Gos, Referenz-Workflow | 1 | **ENTWURF** – Konzeptstil bestätigt | – |
 | ART-01 | vollständige Masterfiguren, davon 4 männlich / 4 weiblich | 8 | **REVIEW** – alle ursprünglichen 8 visuell akzeptiert und alle 10 Masterbilder (5 männlich / 5 weiblich) in Git archiviert; gemeinsame Galeriefreigabe, Leinwand-/Schildangleichung und Alpha-Layer-Technik noch offen | ART-00 |
-| ART-02 | eine feste Messwand | 1 | OFFEN | ART-01 |
-| ART-03 | ein festes Namensschild, Text-Safe-Area | 1 | OFFEN | ART-01 |
+| ART-02 | eine feste Messwand | 1 | **ENTWURF** – gemeinsame Messwand als SVG-Quelle erstellt; visuelle Nutzerfreigabe und TECH-01-Check ausstehend | ART-01 |
+| ART-03 | ein festes Namensschild, Text-Safe-Area | 1 | **ENTWURF** – transparentes SVG-Schild mit vorläufiger Textzone; Name/Greiffinger/Renderer noch nicht geprüft | ART-01 |
 | ART-04 | Griffsystem: Handrücken/Finger, ggf. Körperfamilien | 1 Basis-Set + nötige Varianten | OFFEN | ART-03 |
 | ART-05 | sehr verschiedene männliche Körperbasen | 6 | OFFEN | ART-01 |
 | ART-06 | sehr verschiedene weibliche Körperbasen | 6 | OFFEN | ART-01 |
@@ -223,11 +223,26 @@ Nächster Schritt: ...
 ### Nächste Produktionsaufgaben
 
 1. **ART-01-Gesamtreview (nächster Schritt):** Kontaktbogen aus den **tatsächlich vorhandenen zehn Git-Dateien** erzeugen und gemeinsam prüfen: Konsistenz von Stil, Format, Kopfgröße, Bildausschnitt, Messwand, Schildposition/-größe sowie markante unterschiedliche Silhouetten. Bei Bedarf einzelne Master auf denselben Canvas vereinheitlichen. Keine weiteren Einzelmaster als Voraussetzung.
-2. **ART-02/03:** eine separate, unveränderliche Messwand und ein gemeinsames leeres Schild mit definierter Namens-Safe-Area erstellen. Die in Referenzbildern gezeichnete Messwand/Schild sind **nicht** produktiv als Teil jeder Körpergrafik zu verwenden.
+2. **ART-02/03 – Entwurf erstellt, Review offen:** separate, unveränderliche Messwand unter `artwork/avatars/v3/background/mugshot_wall.svg` und transparentes gemeinsames Schild unter `artwork/avatars/v3/frame/nameplate.svg`. Geometrie, Safe-Area, Alpha-Vorprüfung und offene Punkte in [ART-02/03-Review](reviews/art02-art03-foundation-2026-10-28.md). Beide Entwürfe brauchen noch explizite visuelle Freigabe und TECH-01; die in Referenzbildern gezeichnete Messwand/Schild sind **nicht** produktiv als Teil jeder Körpergrafik zu verwenden.
 3. **ART-04 + TECH-01-Prototyp:** genau **eine** ausgewählte Figur exemplarisch in Haut, Kopf, Haare, Körper, Kleidung, Griffhände und Schild-Vorderfinger zerlegen bzw. **neu als kompatible transparente Ebenen zeichnen**. Feste Anker testen. Dazu den Farb-/Maskenprototyp aus §4.1 durchführen; am Anfang **keine** Massenproduktion.
 4. **Review des Prototyps:** 320/96/48 px, verschiedene Haut-/Haarfarben, mindestens drei verschiedene Kopf-/Körperkombinationen und 20 deterministische Kombinationen auf technische Artefakte prüfen. Erst danach TECH-02-Manifest/Exportpipeline festlegen und weitere Assets (ART-05–17) seriell produzieren.
 5. Bestehende v2-App nicht bei der Grafikproduktion ersetzen; v3-Renderer, Editor, Datenmigration und Multiplayer erst in TECH-03/04 integrieren.
 
-**Zählweise:** **10/10 Git-Referenzen archiviert** (ursprüngliches 8er-Set plus 2 Zusatzfiguren). **0 technisch freigegebene v3-Einzelassets**; gemeinsame 10er-Galerie und Farbrecoloring noch nicht abgenommen. Die Bildreferenzen dienen dem Stil/Design und müssen vor späterem Split-/Masken-Export visuell verglichen werden.
+**Zählweise:** **10/10 Git-Referenzen archiviert** (ursprüngliches 8er-Set plus 2 Zusatzfiguren). **2 SVG-Entwürfe (Messwand/Schild) im Git, 0 technisch freigegebene v3-Einzelassets**; gemeinsame 10er-Galerie und Farbrecoloring noch nicht abgenommen. Die Bildreferenzen dienen dem Stil/Design und müssen vor späterem Split-/Masken-Export visuell verglichen werden.
 
 **Produktionsregel:** Neue Baukastenteile einzeln reviewen und Quelle, Anker, Alpha, Kompatibilität sowie Farbtests im Register dokumentieren. Kein Eingriff in den produktiven Flutter-v2-Code vor bestandenem v3-Prototyp.
+
+
+### Charge 2026-10-28-01 – ART-02 / ART-03 Grundlagen
+
+- **Status:** ENTWURF; Reviewentscheidung und G0-Freigabe ausstehend.
+- **Ziel-IDs:** `background_mugshot_wall_01`, `frame_nameplate_01` (vorläufig, noch kein v3-Manifest).
+- **Referenzen:** zehn Master-PNGs in `docs/avatars/references/`, Stilbibel `docs/avatars/STYLE_GUIDE.md`.
+- **Generierung:** eigenständig programmatisch erstellte, editierbare SVG-Quellen für eine feste Messwand und ein leeres, transparentes Namensschild. Keine bestehenden Figuren freigestellt. Schrift als Vektorkontur aus Comic Neue Bold Italic; Rechteprüfung bei TT-065 offen.
+- **Ergebnisse:** `artwork/avatars/v3/background/mugshot_wall.svg`, `artwork/avatars/v3/frame/nameplate.svg`. Proberaster 1024 × 1280; Alphakanal des Schilds geprüft. Die PNG-Previews sind Chat-Reviewmaterial, keine Runtime-Assets.
+- **Kompatibilität:** gemeinsamer Canvas 1024 × 1280; Schild x = 172, y = 891, w = 680, h = 245; Text-Safe-Area vorläufig x = 242..782, y = 949..1085. Farben noch nicht variabel; keine Körperfamilien/Anker eingefroren.
+- **Visueller Check:** vorläufiger Kontaktbogen im Chat; 48/96/320-px- und 20-Kombinationen-Checks noch nicht bestanden.
+- **Nutzerentscheidung:** ausstehend.
+- **Probleme/Korrekturen:** finale Linien-/Schild-Stilkohärenz erst mit echter transparenter Figur prüfbar; exakte Fingergriffpunkte und Namenstext-Ausgabe noch offen.
+- **Review:** [ART-02/03-Protokoll](reviews/art02-art03-foundation-2026-10-28.md).
+- **Nächster Schritt:** Entwürfe visuell freigeben/überarbeiten; anschließend ART-04 + TECH-01-Modul- und Farbprototyp. Das bestehende v2-System bleibt unangetastet.
