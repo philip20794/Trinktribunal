@@ -16,6 +16,7 @@ import 'package:trinktribunal/features/setup/player_roster.dart';
 import 'package:trinktribunal/features/multiplayer/create.dart';
 import 'package:trinktribunal/features/multiplayer/join.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
+import 'package:trinktribunal/features/rules/game_rules_screen.dart';
 
 import '../data/room_test_support.dart';
 import '../support/memory_atomic_state_storage.dart';
@@ -58,6 +59,7 @@ Widget accessibilityHost(
 void main() {
   const screens = <String, Widget>{
     'home': HomeScreen(),
+    'game-rules': GameRulesScreen(),
     'profile': ProfileScreen(),
     'settings': SettingsScreen(),
     'card-setup': CardModeScreen(),

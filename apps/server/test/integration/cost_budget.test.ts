@@ -9,6 +9,7 @@ import {
   profile,
   requestId,
   socketRoom,
+  framesFromServerMessage,
 } from '../room/socket_helpers';
 
 afterEach(cleanupPeers);
@@ -68,7 +69,13 @@ it('idle and repeated unchanged alarms produce no room or alarm writes; snapshot
     expect(m.sqlRowsWritten).toBe(0);
     expect(m.alarmInvocations).toBe(2);
   });
-  await f.snapshot(f.host.peer);
+  // Await this request's server handler, not an already queued same-revision snapshot.
+  const frames = await framesFromServerMessage(
+    f.room.stub,
+    f.host.identity.playerId,
+    createRoomMessage('requestSnapshot', { requestId: requestId() }),
+  );
+  expect(frames.some((frame) => JSON.parse(frame).type === 'snapshot')).toBe(true);
   const metrics = await runInDurableObject(f.room.stub, (_room, ctx) => localMetrics(ctx.storage)!);
   expect(metrics.roomWrites).toBe(0);
   expect(metrics.alarmWrites).toBe(0);

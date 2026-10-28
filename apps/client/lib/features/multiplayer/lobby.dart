@@ -13,6 +13,7 @@ import 'invitation.dart';
 import 'room_actions.dart';
 import 'game_privacy.dart';
 import 'close_room.dart';
+import '../rules/game_rules_screen.dart';
 
 class RoomLobbyScreen extends ConsumerWidget {
   const RoomLobbyScreen({required this.state, super.key});
@@ -26,6 +27,9 @@ class RoomLobbyScreen extends ConsumerWidget {
         appBar: AppBar(
           title: const TText('roomTitle'),
           actions: [
+            GameRulesButton(
+              beforeOpen: ref.read(onlineGameProvider).hideSecret,
+            ),
             if (state.snapshot!.you == state.snapshot!.public.hostId)
               IconButton(
                 tooltip: context.tr('roomClose'),

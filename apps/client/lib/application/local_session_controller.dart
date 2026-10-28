@@ -87,6 +87,13 @@ final class LocalSessionController {
     );
   }
 
+  void advancePlayedCase(String roundId) => _accept(
+    _reducer.advancePlayedCase(
+      _reducer.withHistory(_requireState(), history),
+      roundId: roundId,
+    ),
+  );
+
   void completeCase({
     required String roundId,
     required bool confirmed,

@@ -17,6 +17,7 @@ import '../../domain/local_game_reducer.dart';
 import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
 import '../rules/active_rules_sheet.dart';
+import '../rules/game_rules_screen.dart';
 
 class CardModeScreen extends ConsumerStatefulWidget {
   const CardModeScreen({super.key});
@@ -93,85 +94,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     }
   }
 
-  Future<void> _manual(
-    LocalSessionController controller,
-    CardGameState state,
-  ) async {
-    if (_dialogOpen) return;
-    _dialogOpen = true;
-    int errors = 0;
-    bool checked = false;
-    int? result;
-    try {
-      result = await showDialog<int>(
-        context: context,
-        builder: (context) => StatefulBuilder(
-          builder: (context, update) => AlertDialog(
-            title: const TText('manualVerdictTitle'),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const TText('manualVerdictHelp'),
-                  const SizedBox(height: 16),
-                  DropdownButtonFormField<int>(
-                    initialValue: 0,
-                    decoration: InputDecoration(
-                      labelText: context.tr('incorrectPositions'),
-                    ),
-                    items:
-                        [
-                              0,
-                              for (var i = 2; i < state.config.playerCount; i++)
-                                i,
-                            ]
-                            .map(
-                              (n) =>
-                                  DropdownMenuItem(value: n, child: Text('$n')),
-                            )
-                            .toList(),
-                    onChanged: (value) => update(() => errors = value ?? 0),
-                  ),
-                  CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    value: checked,
-                    onChanged: (value) =>
-                        update(() => checked = value ?? false),
-                    title: const TText('correctOrderChecked'),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const TText('cancel'),
-              ),
-              FilledButton(
-                onPressed: checked
-                    ? () => Navigator.pop(context, errors)
-                    : null,
-                child: const TText('confirmVerdict'),
-              ),
-            ],
-          ),
-        ),
-      );
-    } finally {
-      _dialogOpen = false;
-    }
-    if (!mounted || result == null) return;
-    final verdict = result;
-    _act(
-      () => controller.completeCase(
-        roundId: state.currentEventId,
-        confirmed: true,
-        manualErrors: verdict,
-        fullOrderConfirmed: true,
-      ),
-    );
-  }
-
   Future<void> _restart(
     LocalSessionController controller,
     CardGameState state,
@@ -199,7 +121,10 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
   Widget build(BuildContext context) {
     final catalogs = ref.watch(catalogsProvider);
     return Scaffold(
-      appBar: AppBar(title: const TText('modeCards')),
+      appBar: AppBar(
+        title: const TText('modeCards'),
+        actions: const [GameRulesButton()],
+      ),
       body: catalogs.when(
         loading: () => const Center(
           child: CircularProgressIndicator(
@@ -400,13 +325,15 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ),
       const SizedBox(height: 24),
       if (state.lastCompletion != null) ...[
-        Text(
-          state.lastCompletion == CaseCompletion.withoutVerdict
-              ? context.tr('lastNoVerdict')
-              : context.tr('manualVerdictSummary', {
-                  'count': state.manualErrors,
-                }),
-        ),
+        Text(switch (state.lastCompletion!) {
+          CaseCompletion.withoutVerdict => context.tr('lastNoVerdict'),
+          CaseCompletion.playedWithoutRecordedVerdict => context.tr(
+            'lastPlayedCase',
+          ),
+          CaseCompletion.judged => context.tr('manualVerdictSummary', {
+            'count': state.manualErrors,
+          }),
+        }),
         const SizedBox(height: 16),
       ],
       if (state.phase == GamePhase.casePresented && question != null) ...[
@@ -463,8 +390,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ),
         const SizedBox(height: 16),
         FilledButton(
-          onPressed: () => _manual(controller, state),
-          child: const TText('manualVerdict'),
+          onPressed: () =>
+              _act(() => controller.advancePlayedCase(state.currentEventId)),
+          child: const TText('nextCase'),
         ),
         OutlinedButton(
           onPressed: () => _skip(controller, state),

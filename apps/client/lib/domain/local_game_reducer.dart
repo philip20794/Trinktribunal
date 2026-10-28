@@ -13,7 +13,7 @@ import 'selection/content_selection.dart';
 import 'selection/random_source.dart';
 import 'snapshot_codec.dart';
 
-enum CaseCompletion { judged, withoutVerdict }
+enum CaseCompletion { judged, withoutVerdict, playedWithoutRecordedVerdict }
 
 final class CardGameState {
   CardGameState._({
@@ -63,13 +63,16 @@ final class CardGameState {
     'questionEventId': currentQuestion?.event.eventId,
     'questionDraws': questionDraws,
     'completedEventIds': completedEventIds.toList(),
-    'lastCompletion': lastCompletion?.name,
+    'lastCompletion':
+        lastCompletion == CaseCompletion.playedWithoutRecordedVerdict
+        ? 'played_without_recorded_verdict'
+        : lastCompletion?.name,
     'manualErrors': manualErrors,
     'pauseReason': pauseReason,
   };
 }
 
-/// Physical cards stay outside the app: every verdict is explicitly manual.
+/// Physical numbers/verdicts stay at the table; normal Next records a played case.
 final class LocalGameReducer {
   LocalGameReducer({
     required this.questions,
@@ -179,9 +182,14 @@ final class LocalGameReducer {
                 !rules.skippedEvents.contains(currentEvent)))) {
       throw const FormatException('Regelslot fehlt');
     }
-    final completion = json['lastCompletion'] == null
-        ? null
-        : CaseCompletion.values.byName(json['lastCompletion'] as String);
+    final completion = switch (json['lastCompletion']) {
+      null => null,
+      'judged' => CaseCompletion.judged,
+      'withoutVerdict' => CaseCompletion.withoutVerdict,
+      'played_without_recorded_verdict' =>
+        CaseCompletion.playedWithoutRecordedVerdict,
+      _ => throw const FormatException('Unbekannter Fallabschluss'),
+    };
     final errors = json['manualErrors'] as int?;
     if ((completion != CaseCompletion.judged && errors != null) ||
         (completion == CaseCompletion.judged &&
@@ -246,6 +254,31 @@ final class LocalGameReducer {
     required bool confirmed,
     int? manualErrors,
     bool fullOrderConfirmed = false,
+  }) => _completeCase(
+    state,
+    roundId: roundId,
+    confirmed: confirmed,
+    manualErrors: manualErrors,
+    fullOrderConfirmed: fullOrderConfirmed,
+  );
+
+  CardGameState advancePlayedCase(
+    CardGameState state, {
+    required String roundId,
+  }) => _completeCase(
+    state,
+    roundId: roundId,
+    confirmed: true,
+    completion: CaseCompletion.playedWithoutRecordedVerdict,
+  );
+
+  CardGameState _completeCase(
+    CardGameState state, {
+    required String roundId,
+    required bool confirmed,
+    int? manualErrors,
+    bool fullOrderConfirmed = false,
+    CaseCompletion? completion,
   }) {
     if (!confirmed) return state;
     if (isCompletedQuestion(
@@ -276,9 +309,11 @@ final class LocalGameReducer {
         ...state.completedEventIds,
         '${state.id.value}:case:$completed',
       },
-      lastCompletion: manualErrors == null
-          ? CaseCompletion.withoutVerdict
-          : CaseCompletion.judged,
+      lastCompletion:
+          completion ??
+          (manualErrors == null
+              ? CaseCompletion.withoutVerdict
+              : CaseCompletion.judged),
       manualErrors: manualErrors,
       phase: GamePhase.judged,
     );

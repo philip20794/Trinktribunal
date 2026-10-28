@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4 in Arbeit: TT-079–080 erledigt, TT-081–084 offen; danach M7.5 (TT-071–078). Aktiv TT-081; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 137 Node-/419 Flutter-/438 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4 in Arbeit: TT-079–082 erledigt, TT-083–084 offen; danach M7.5 (TT-071–078). Nächste Aufgabe TT-083; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 137 Node-/440 Flutter-/444 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -126,7 +126,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-062 | Web-/Android-Performance messen und Wasm entscheiden | ERLEDIGT | Beide Builds kompilieren; JS bleibt D-18-Releaseweg, Offlinepaket −68,6 %, 20-Figuren-/50-Umsortierungs-Units grün; Gerätebudgets übersprungen, später manuell testen · [Performance](qa/performance.md). |
 | TT-063 | Nachrichten, Storage und Free-Tier-Budget messen | ERLEDIGT | Lokale SQL-/Frame-/Alarmzähler, beide 8×50+7-Modi und zehn parallele Achterräume: p95 199 ms; Kostenmodell mit 50 % Reserve und ungemessenem Edge-Billing · [Beleg](qa/cost-model.md). |
 | TT-064 | Bedienbarkeit, Fehler- und Leerzustände final prüfen | ERLEDIGT | 56 neue Semantik-/Tastatur-/Fehler-/200%-Tests, Live-Fehlertexte, personengebundener Fokus, Dialog-Escape und Wiederholungsweg; 411 Flutter-Tests und Builds grün · [M7](qa/M7.md). |
-| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 15 Paketen/96 Dateien und Releasegate geprüft; fünf Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
+| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 16 Paketen/107 Dateien und Releasegate geprüft; fünf Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
 | TT-066 | Android-Releaseartefakte und Signierung vorbereiten | OFFEN | — |
 | TT-067 | Pages-Webpaket und Worker lokal releasefertig prüfen | OFFEN | — |
 | TT-068 | Spielhilfe, Datenschutz und lokale Wartung dokumentieren | OFFEN | — |
@@ -142,8 +142,8 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-078 | UI- und Layout-Regression abschließen | OFFEN | — |
 | TT-079 | Neue Abläufe und Phasenverträge spezifizieren (D-19) | ERLEDIGT | D-19 und maschinenlesbare Sollmatrix, vier neue Vertragsprüfungen; Produktcode unverändert · [M7.4](qa/M7_4.md). |
 | TT-080 | Fragenkarten im Spielkern beliebig neu ziehen | ERLEDIGT | Atomarer Reroll in lokalen/Serverkernen, Frageinstanz-Ledger mit Altstandmigration; 8 Flutter-/11 Servertests neu, Gesamtcheck/Parität und Builds grün · [M7.4](qa/M7_4.md). |
-| TT-081 | Refresh-Aktion in allen drei Spielvarianten | IN ARBEIT | Refresh in lokalen/Online-Frageakten; v2-DTOs, Socket-Versionsschutz und Rollen-/Widgettests vorhanden; Gesamtcheck läuft. |
-| TT-082 | Weiter ohne Strafpopup und allgemeine Spielregeln | OFFEN | — |
+| TT-081 | Refresh-Aktion in allen drei Spielvarianten | ERLEDIGT | Refresh und Richter-/Vorleserrechte in allen Modi, v2-DTOs und alter Socket-Versionsschutz; synchronisierte private Projektionen, Retry/Rejoin und Erschöpfung geprüft · [M7.4](qa/M7_4.md). |
+| TT-082 | Weiter ohne Strafpopup und allgemeine Spielregeln | ERLEDIGT | Karten-Weiter ohne Strafdialog/erfundene Wertung; getrennte D-07-Bestätigung und allgemeine DE/EN-Regelseite in allen Modi. 440 Flutter-/444 Server-/137 Node-Tests und Builds grün · [M7.4](qa/M7_4.md). |
 | TT-083 | Ein-Handy-Übergabe und Geheimzahl in getrennten Screens | OFFEN | — |
 | TT-084 | Integration und Regression M7.4 abschließen | OFFEN | — |
 
@@ -174,7 +174,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-081 – Refresh-Aktion und Rollenrechte.** TT-079–080 sind erledigt; darauf folgen TT-081–084; erst dann TT-071/M7.5. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-083 – getrennte Ein-Handy-Übergabe und Hold-Geheimzahl.** TT-079–082 sind erledigt; darauf folgen TT-083–084; erst dann TT-071/M7.5. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -197,9 +197,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-080-question-reroll auf Nutzerstand ed1428c, geprüfter Kernabschluss wird nach main gepusht
-Aktueller Beleg: docs/qa/M7_4.md; 137 Node-/419 Flutter-/438 Server-Tests, Parität, JS-Web und Debug-APK grün
-Naechster Schritt: TT-081 Gesamtcheck/Builds abschließen: Refresh links an allen Fragekarten, autoritativer Richter/Vorleser, v2-DTOs und Socket-Guard implementiert; 8 neue Widget-/2 Controller-Tests grün, 5 neue Wiretests in Gesamtprüfung. Danach TT-082–084, erst dann TT-071–078. TT-065: externe Nachweise offen; Inventar 15/96 inklusive neuer v3-Entwurfsquellen. TT-069 erst nach TT-084 und TT-078. Avatar v3 bleibt eigener Grafik-Workstream, kein Runtime-Abschluss.
+Branch: task/TT-082-direct-next-and-rules, enthält TT-081-Code 21d7731 und Nutzerstand 8ec161a; geprüfter Stand wird nach main gepusht
+Aktueller Beleg: docs/qa/M7_4.md; 137 Node-/440 Flutter-/444 Server-Tests abgedeckt, Analyze/Format/Typecheck, Parität, JS-Web und Debug-APK grün. Server: 441 nach Testfixes erneut grün + 3 unveränderte lange Vollspiele zuvor grün.
+Naechster Schritt: TT-083. Lokale NumberStage (Fallakte -> Empfängerübergabe -> gehaltene Privatnummer -> Richterübergabe) explizit modellieren; Wiederherstellung derselben Person mit erneuter Übernahme, vorige Richter zuerst, Snapshotmigration/Pointer-/Key-/Lifecycle-/Roster-Tests. Danach TT-084 und erst dann TT-071–078. TT-065 extern offen, Rechteinventar 16/107, Avatar v3 nur separater ungeprüfter Grafikprototyp. Keine Browser-/E2E-Abnahme.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```

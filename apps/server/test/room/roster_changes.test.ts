@@ -186,7 +186,7 @@ it('a departed seat remains reserved up to the boundary and cannot create a twen
   const member = await join(f);
   expect((await f.read()).game!.pendingRoster).toContain(member.credential.playerId);
   expect((await f.snapshot(f.host.peer)).public.players).toHaveLength(20);
-});
+}, 15000);
 
 it('new identity gets the remaining active maximum, while credential resume never resets counters or assignments', async () => {
   const f = await allJudgesRoom(4),

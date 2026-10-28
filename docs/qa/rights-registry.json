@@ -523,6 +523,59 @@
           "sha256": "03ef67b6c04334573a1de5b0a1c9df5720967ffea6b1e270b6690e6b8ef939ce"
         }
       ]
+    },
+    {
+      "id": "avatar-v3-painterly-prototype",
+      "distribution": "source-only",
+      "status": "unresolved",
+      "provenance": "Project-authored painterly SVG/palette experiment with an explicitly open artistic style gate. No raster masters embedded and not bundled; source/reference/font evidence remains subject to TT-065.",
+      "evidence": "docs/avatars/reviews/art04-tech01-painterly-2026-10-28.md",
+      "files": [
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/layers/01_body_skin.svg",
+          "sha256": "2f6af8a6d408f5d0685a736e7821e3efdd71df32209d32f66b980286ec555eb3"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/layers/02_clothes_shirt.svg",
+          "sha256": "527e8da92cb63dd40a5d4d1385bd3cb18ade88a2ad40e6e801a9499dd2013137"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/layers/03_arms_hands_back.svg",
+          "sha256": "85f3bdb4d1a8cabee530a4142ee8f72e00f62596e5ec7bdab24be013482bf046"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/layers/04_head_face.svg",
+          "sha256": "3e2359a8c4a0186028f616fca287ae094564a68ff774ccd55abc937eb4f8275d"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/layers/05_eyes_brows_mouth.svg",
+          "sha256": "9672039e9482aaa4effaf42eba1530db12b56c8e485439fcf721b6361e9a733e"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/layers/06_hair_front.svg",
+          "sha256": "08da58f454dcbad6a263e6431c064084154adaba277911ebb7b0174f10098945"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/layers/07_beard_goatee.svg",
+          "sha256": "f0aa929fdc381decc88fd45e26d78319893ee94457b404abb4c85ed6826c71f5"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/layers/08_grip_fingers_front.svg",
+          "sha256": "7e7cc92a78f82fa518b3c0bcead7e5d78ac3605138d24f9b16ea70da665f64f6"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/prototype_metrics.json",
+          "sha256": "1bf13baca7078fdea445aab8bf18eaf73c8efce2073e64af75f4fab962c7c52b"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/refine_layers.py",
+          "sha256": "72963133ec1f83797c11644c73e704dc449d0d4e79fd0ebaf03030c2053cfee8"
+        },
+        {
+          "path": "artwork/avatars/v3/prototypes/male_09_painterly/render_painterly.py",
+          "sha256": "7606bff688df9ddd0f858e59bd2f011fdab696d8307188cdcaa4b49b5bde0336"
+        }
+      ]
     }
   ]
 }

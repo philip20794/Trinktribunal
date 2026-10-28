@@ -20,6 +20,7 @@ import '../setup/player_roster.dart';
 import '../design_gallery/design_gallery_screen.dart';
 import '../multiplayer/create.dart';
 import '../multiplayer/saved_rooms.dart';
+import '../rules/game_rules_screen.dart';
 
 enum GameMode {
   cards(
@@ -68,6 +69,7 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Trinktribunal'),
         actions: [
+          const GameRulesButton(),
           if (kDebugMode)
             IconButton(
               tooltip: context.tr('openDesign'),

@@ -14,6 +14,8 @@ import 'package:trinktribunal/domain/models/player.dart';
 import 'package:trinktribunal/domain/user_profile.dart';
 import 'package:trinktribunal/features/handoff/shared_game_screen.dart';
 import 'package:trinktribunal/features/setup/card_mode_screen.dart';
+import 'package:trinktribunal/features/rules/game_rules_screen.dart';
+import 'package:trinktribunal/application/room_providers.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
 import '../support/memory_atomic_state_storage.dart';
@@ -117,6 +119,23 @@ void main() {
             expect(cards.state!.completedCases, 0);
             expect(cards.history.entries, hasLength(3));
           }
+          final saved = shared ? phone.toSnapshot() : cards.toSnapshot();
+          if (shared) {
+            phone.revealOwnNumber(
+              roundId: phone.view!.roundId,
+              player: phone.view!.recipient!,
+            );
+            expect(phone.view!.visibleSecret, isNotNull);
+          }
+          await tester.tap(
+            find.byTooltip(AppStrings(language).get('gameRules')),
+          );
+          await tester.pumpAndSettle();
+          expect(find.byType(GameRulesScreen), findsOneWidget);
+          expect(phone.view?.visibleSecret, isNull);
+          await tester.tap(find.byType(BackButton));
+          await tester.pumpAndSettle();
+          expect(shared ? phone.toSnapshot() : cards.toSnapshot(), saved);
         },
       );
     }
@@ -162,6 +181,21 @@ void main() {
             expect(f.room.state.snapshot!.public.toJson(), before);
             expect(tester.widget<IconButton>(button).onPressed, isNotNull);
           }
+          final beforeRules = f.room.state.snapshot!.toJson();
+          final container = ProviderScope.containerOf(
+            tester.element(find.byType(GameRulesButton)),
+          );
+          final game = container.read(onlineGameProvider);
+          game.revealOwnNumber();
+          await tester.tap(
+            find.byTooltip(AppStrings(language).get('gameRules')),
+          );
+          await tester.pumpAndSettle();
+          expect(game.visibleNumber, isNull);
+          expect(find.byType(GameRulesScreen), findsOneWidget);
+          await tester.tap(find.byType(BackButton));
+          await tester.pumpAndSettle();
+          expect(f.room.state.snapshot!.toJson(), beforeRules);
         },
       );
     }

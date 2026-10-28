@@ -20,6 +20,7 @@ import '../../domain/models/game_mode.dart';
 import '../../domain/user_profile.dart';
 import '../bench/bench_view.dart';
 import '../setup/player_roster.dart';
+import '../rules/game_rules_screen.dart';
 
 class SharedGameScreen extends ConsumerStatefulWidget {
   const SharedGameScreen({
@@ -166,6 +167,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
         appBar: AppBar(
           title: const TText('phoneTitle'),
           actions: [
+            GameRulesButton(beforeOpen: () => _act(_controller.hideSecret)),
             IconButton(
               tooltip: context.tr('phoneManageRoster'),
               onPressed: _group,
