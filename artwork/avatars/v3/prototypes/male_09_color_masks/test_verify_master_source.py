@@ -13,7 +13,7 @@ class TestSourceIdentity(unittest.TestCase):
     def test_exact_png_blob_identity(self):
         with tempfile.TemporaryDirectory() as folder:
             file = Path(folder) / "master-male-09-approved.png"
-            Image.new("RGB", (1229,1536), (210,160,100)).save(file, "PNG")
+            Image.new("RGB", (1198,1313), (210,160,100)).save(file, "PNG")
             raw = file.read_bytes()
             sha1 = hashlib.sha1(
                 b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
@@ -28,7 +28,7 @@ class TestSourceIdentity(unittest.TestCase):
     def test_jpeg_named_png_is_rejected_even_with_matched_blob(self):
         with tempfile.TemporaryDirectory() as folder:
             file = Path(folder) / "master-male-09-approved.png"
-            Image.new("RGB", (1229,1536), (210,160,100)).save(file, "JPEG")
+            Image.new("RGB", (1198,1313), (210,160,100)).save(file, "JPEG")
             raw = file.read_bytes()
             sha1 = hashlib.sha1(
                 b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
@@ -42,7 +42,7 @@ class TestSourceIdentity(unittest.TestCase):
     def test_wrong_geometry_is_rejected_even_for_png(self):
         with tempfile.TemporaryDirectory() as folder:
             file = Path(folder) / "test.png"
-            Image.new("RGB", (1401,1536), (210,160,100)).save(file, "PNG")
+            Image.new("RGB", (1229,1536), (210,160,100)).save(file, "PNG")
             raw = file.read_bytes()
             sha1 = hashlib.sha1(
                 b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
@@ -54,7 +54,7 @@ class TestSourceIdentity(unittest.TestCase):
     def test_wrong_git_sha_rejected_with_same_raster(self):
         with tempfile.TemporaryDirectory() as folder:
             file = Path(folder) / "test.png"
-            Image.new("RGB", (1229,1536), (210,160,100)).save(file, "PNG")
+            Image.new("RGB", (1198,1313), (210,160,100)).save(file, "PNG")
             report = inspect_file(file, expected_blob="0" * 40)
             self.assertTrue(report["geometry_matches_p1"])
             self.assertFalse(report["exact_git_source_match"])
