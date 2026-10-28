@@ -8,8 +8,13 @@ import '../../design/case_file.dart';
 import '../../l10n/app_strings.dart';
 
 class OnlineGameProgress extends ConsumerWidget {
-  const OnlineGameProgress({required this.snapshot, super.key});
+  const OnlineGameProgress({
+    required this.snapshot,
+    this.showActions = true,
+    super.key,
+  });
   final SnapshotMessage snapshot;
+  final bool showActions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,81 +43,59 @@ class OnlineGameProgress extends ConsumerWidget {
             const TText('newDrinkingRule'),
             const TText('ruleEventHelp'),
           ],
-          if (view.activeRules.isNotEmpty) ...[
-            Text(
-              context.tr('activeRulesCount', {
-                'count': view.activeRules.length,
-              }),
-            ),
-            const TText('rulesHelp'),
-            for (final assignment in view.activeRules)
-              Builder(
-                builder: (context) {
-                  final matches = catalogs
-                      ?.rules[view.config.contentLanguage]
-                      ?.entries
-                      .where((r) => r.id == assignment.contentId)
-                      .toList();
-                  if (matches == null || matches.isEmpty) {
-                    return const TText('roomErrorGeneric');
-                  }
-                  final rule = matches.single;
-                  if (assignment.bindings.values.length !=
-                          rule.players.length ||
-                      !assignment.bindings.values.keys.toSet().containsAll(
-                        rule.players.keys,
-                      ) ||
-                      assignment.bindings.values.values.any(
-                        (id) => !names.containsKey(id),
-                      )) {
-                    return const TText('roomErrorGeneric');
-                  }
-                  final rendered = rule.render(rule.text, {
-                    for (final b in assignment.bindings.values.entries)
-                      b.key: names[b.value]!,
-                  });
-                  return CaseFile(
-                    label: context.tr('activeRules'),
-                    child: Text(rendered),
-                  );
-                },
+          if (view.activeRules.isNotEmpty)
+            ExpansionTile(
+              key: ValueKey('${view.gameId}:${view.phase == 'rule_event'}'),
+              initiallyExpanded: view.phase == 'rule_event',
+              tilePadding: EdgeInsets.zero,
+              title: Text(
+                context.tr('activeRulesCount', {
+                  'count': view.activeRules.length,
+                }),
               ),
-          ],
-          if (host && view.phase == 'judged' && view.roundId != null)
-            FilledButton(
-              onPressed: game.pending('complete')
-                  ? null
-                  : () => game.completeCase(
-                      gameId: gameId,
-                      roundId: view.roundId!,
-                    ),
-              child: const TText('finishCase'),
+              children: [
+                const TText('rulesHelp'),
+                for (final assignment in view.activeRules)
+                  Builder(
+                    builder: (context) {
+                      final matches = catalogs
+                          ?.rules[view.config.contentLanguage]
+                          ?.entries
+                          .where((r) => r.id == assignment.contentId)
+                          .toList();
+                      if (matches == null || matches.isEmpty) {
+                        return const TText('roomErrorGeneric');
+                      }
+                      final rule = matches.single;
+                      if (assignment.bindings.values.length !=
+                              rule.players.length ||
+                          !assignment.bindings.values.keys.toSet().containsAll(
+                            rule.players.keys,
+                          ) ||
+                          assignment.bindings.values.values.any(
+                            (id) => !names.containsKey(id),
+                          )) {
+                        return const TText('roomErrorGeneric');
+                      }
+                      final rendered = rule.render(rule.text, {
+                        for (final b in assignment.bindings.values.entries)
+                          b.key: names[b.value]!,
+                      });
+                      return CaseFile(
+                        label: context.tr('activeRules'),
+                        child: Text(rendered),
+                      );
+                    },
+                  ),
+              ],
             ),
-          if (host && view.phase == 'rule_event')
-            FilledButton(
-              onPressed: game.pending('continue')
-                  ? null
-                  : () => game.continueRule(
-                      gameId: gameId,
-                      afterCase: view.completedCases,
-                    ),
-              child: const TText('backToCase'),
-            ),
+
           if (view.phase == 'paused') ...[
             const TText('gamePaused'),
             if (view.pauseReason == 'insufficient_players')
               const TText('onlinePausePlayers'),
-            if (host)
-              FilledButton(
-                onPressed:
-                    game.pending('resume') ||
-                        view.pauseReason == 'insufficient_players' &&
-                            game.activeCount < 3
-                    ? null
-                    : () => game.resumePaused(gameId: gameId),
-                child: const TText('roomContinue'),
-              ),
           ],
+          if (showActions) OnlineProgressAction(snapshot: snapshot),
           if (host)
             OutlinedButton(
               onPressed: game.pending('restart') || game.activeCount < 3
@@ -141,6 +124,59 @@ class OnlineGameProgress extends ConsumerWidget {
                       }
                     },
               child: const TText('restartGame'),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class OnlineProgressAction extends ConsumerWidget {
+  const OnlineProgressAction({required this.snapshot, super.key});
+  final SnapshotMessage snapshot;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final game = ref.watch(onlineGameProvider),
+        view = snapshot.public,
+        gameId = view.gameId;
+    if (gameId == null || snapshot.you != view.hostId) {
+      return const SizedBox.shrink();
+    }
+    return ListenableBuilder(
+      listenable: game,
+      builder: (context, _) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (view.phase == 'judged' && view.roundId != null)
+            FilledButton(
+              onPressed: game.pending('complete')
+                  ? null
+                  : () => game.completeCase(
+                      gameId: gameId,
+                      roundId: view.roundId!,
+                    ),
+              child: const TText('finishCase'),
+            ),
+          if (view.phase == 'rule_event')
+            FilledButton(
+              onPressed: game.pending('continue')
+                  ? null
+                  : () => game.continueRule(
+                      gameId: gameId,
+                      afterCase: view.completedCases,
+                    ),
+              child: const TText('backToCase'),
+            ),
+          if (view.phase == 'paused')
+            FilledButton(
+              onPressed:
+                  game.pending('resume') ||
+                      view.pauseReason == 'insufficient_players' &&
+                          game.activeCount < 3
+                  ? null
+                  : () => game.resumePaused(gameId: gameId),
+              child: const TText('roomContinue'),
             ),
         ],
       ),

@@ -10,8 +10,13 @@ import '../../l10n/app_strings.dart';
 import '../bench/bench_view.dart';
 
 class OnlineOrderView extends ConsumerWidget {
-  const OnlineOrderView({required this.snapshot, super.key});
+  const OnlineOrderView({
+    required this.snapshot,
+    this.showActions = true,
+    super.key,
+  });
   final SnapshotMessage snapshot;
+  final bool showActions;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(onlineOrderProvider), view = snapshot.public;
@@ -83,44 +88,60 @@ class OnlineOrderView extends ConsumerWidget {
               },
               onMove: ownsOrder && controller.canEdit ? controller.move : null,
             ),
-            if (ownsOrder && view.phase == 'ordering')
-              FilledButton(
-                onPressed: controller.canEdit
-                    ? () async {
-                        final gameId = view.gameId, roundId = view.roundId;
-                        if (gameId == null || roundId == null) return;
-                        ref.read(onlineGameProvider).hideSecret();
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const TText('confirmOrderTitle'),
-                            content: const TText('confirmOrderHelp'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: const TText('cancel'),
-                              ),
-                              FilledButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: const TText('phoneConfirmOrder'),
-                              ),
-                            ],
-                          ),
-                        );
-                        if (context.mounted && confirmed == true) {
-                          controller.confirm(
-                            gameId: gameId,
-                            roundId: roundId,
-                            confirmed: true,
-                          );
-                        }
-                      }
-                    : null,
-                child: const TText('phoneConfirmOrder'),
-              ),
+            if (showActions) OnlineOrderAction(snapshot: snapshot),
           ],
         );
       },
+    );
+  }
+}
+
+class OnlineOrderAction extends ConsumerWidget {
+  const OnlineOrderAction({required this.snapshot, super.key});
+  final SnapshotMessage snapshot;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.watch(onlineOrderProvider), view = snapshot.public;
+    final ownsOrder =
+        view.frozenRoster.contains(snapshot.you) &&
+        (view.config.allJudges || snapshot.you == view.judgeId);
+    if (!ownsOrder || view.phase != 'ordering') return const SizedBox.shrink();
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) => FilledButton(
+        onPressed: controller.canEdit
+            ? () async {
+                final gameId = view.gameId, roundId = view.roundId;
+                if (gameId == null || roundId == null) return;
+                ref.read(onlineGameProvider).hideSecret();
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const TText('confirmOrderTitle'),
+                    content: const TText('confirmOrderHelp'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const TText('cancel'),
+                      ),
+                      FilledButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: const TText('phoneConfirmOrder'),
+                      ),
+                    ],
+                  ),
+                );
+                if (context.mounted && confirmed == true) {
+                  controller.confirm(
+                    gameId: gameId,
+                    roundId: roundId,
+                    confirmed: true,
+                  );
+                }
+              }
+            : null,
+        child: const TText('phoneConfirmOrder'),
+      ),
     );
   }
 }

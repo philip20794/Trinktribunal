@@ -10,6 +10,7 @@ import '../../data/room_transport.dart';
 import '../../design/avatar_view.dart';
 import '../../domain/avatar_config.dart';
 import '../../l10n/app_strings.dart';
+import '../../design/court_scene.dart';
 import '../profile/profile_screen.dart';
 import 'connection.dart';
 import 'invitation.dart';
@@ -113,110 +114,137 @@ class _RoomProfileFormState extends ConsumerState<RoomProfileForm> {
       _name.text = profile.player.name;
       _avatar = profile.avatar;
     }
-    return ListView(
-      padding: const EdgeInsets.all(24),
-      children: [
-        if (widget.invalidInvite) const TText('roomInviteInvalid'),
-        if (!widget.create) ...[
-          TextField(
-            key: const ValueKey('room-code'),
-            controller: _code,
-            focusNode: _codeFocus,
-            textInputAction: TextInputAction.next,
-            onSubmitted: (_) => _nameFocus.requestFocus(),
-            enabled: !_busy,
-            decoration: InputDecoration(labelText: context.tr('roomCode')),
-            textCapitalization: TextCapitalization.characters,
-            maxLength: 64,
-            onChanged: (_) => setState(() {}),
-          ),
-          if (_normalized != null) SavedRooms(code: _normalized),
-          const SizedBox(height: 16),
-        ],
-        AvatarView(
-          config: _avatar,
-          size: 112,
-          label: context.tr('profilePreview'),
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          key: const ValueKey('room-name'),
-          controller: _name,
-          focusNode: _nameFocus,
-          textInputAction: TextInputAction.done,
-          onSubmitted: (_) => _submit(),
-          onChanged: (_) => _initialized = true,
-          enabled: !_busy,
-          maxLength: 24,
-          textCapitalization: TextCapitalization.words,
-          decoration: InputDecoration(
-            labelText: context.tr('profileName'),
-            helperText: context.tr('profileLength'),
-          ),
-        ),
-        OutlinedButton.icon(
-          onPressed: _busy
-              ? null
-              : () async {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => const ProfileScreen(),
+    return LayoutBuilder(
+      builder: (context, constraints) => Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(24),
+              children: [
+                if (widget.invalidInvite) const TText('roomInviteInvalid'),
+                if (!widget.create) ...[
+                  TextField(
+                    key: const ValueKey('room-code'),
+                    controller: _code,
+                    focusNode: _codeFocus,
+                    textInputAction: TextInputAction.next,
+                    onSubmitted: (_) => _nameFocus.requestFocus(),
+                    enabled: !_busy,
+                    decoration: InputDecoration(
+                      labelText: context.tr('roomCode'),
                     ),
-                  );
-                  if (!mounted) return;
-                  final loaded = (await ref.read(profileProvider.future))
-                      .profile;
-                  if (!mounted) return;
-                  if (loaded != null) {
-                    setState(() {
-                      _name.text = loaded.player.name;
-                      _avatar = loaded.avatar;
-                      _initialized = true;
-                    });
-                  }
-                },
-          icon: const Icon(Icons.edit_outlined),
-          label: const TText('roomEditTemplate'),
-        ),
-        if (_error != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: StatusNotice(context.tr(_error!)),
+                    textCapitalization: TextCapitalization.characters,
+                    maxLength: 64,
+                    onChanged: (_) => setState(() {}),
+                  ),
+                  if (_normalized != null) SavedRooms(code: _normalized),
+                  const SizedBox(height: 16),
+                ],
+                AvatarView(
+                  config: _avatar,
+                  size: 112,
+                  label: context.tr('profilePreview'),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  key: const ValueKey('room-name'),
+                  controller: _name,
+                  focusNode: _nameFocus,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) => _submit(),
+                  onChanged: (_) => _initialized = true,
+                  enabled: !_busy,
+                  maxLength: 24,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: context.tr('profileName'),
+                    helperText: context.tr('profileLength'),
+                  ),
+                ),
+                OutlinedButton.icon(
+                  onPressed: _busy
+                      ? null
+                      : () async {
+                          await Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => const ProfileScreen(),
+                            ),
+                          );
+                          if (!mounted) return;
+                          final loaded = (await ref.read(
+                            profileProvider.future,
+                          )).profile;
+                          if (!mounted) return;
+                          if (loaded != null) {
+                            setState(() {
+                              _name.text = loaded.player.name;
+                              _avatar = loaded.avatar;
+                              _initialized = true;
+                            });
+                          }
+                        },
+                  icon: const Icon(Icons.edit_outlined),
+                  label: const TText('roomEditTemplate'),
+                ),
+                const SizedBox(height: 16),
+                if (_canRetrySave)
+                  OutlinedButton(
+                    onPressed: _busy
+                        ? null
+                        : () async {
+                            setState(() => _busy = true);
+                            final success = await ref
+                                .read(roomControllerProvider)
+                                .retrySavingCredential();
+                            ref.invalidate(savedRoomsProvider);
+                            if (!context.mounted) return;
+                            setState(() => _busy = false);
+                            if (success) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute<void>(
+                                  builder: (_) => const RoomConnectionScreen(),
+                                ),
+                              );
+                            }
+                          },
+                    child: const TText('roomSaveRetry'),
+                  ),
+                if (_busy)
+                  const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+              ],
+            ),
           ),
-        const SizedBox(height: 16),
-        if (_canRetrySave)
-          OutlinedButton(
-            onPressed: _busy
-                ? null
-                : () async {
-                    setState(() => _busy = true);
-                    final success = await ref
-                        .read(roomControllerProvider)
-                        .retrySavingCredential();
-                    ref.invalidate(savedRoomsProvider);
-                    if (!context.mounted) return;
-                    setState(() => _busy = false);
-                    if (success) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const RoomConnectionScreen(),
-                        ),
-                      );
-                    }
-                  },
-            child: const TText('roomSaveRetry'),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: constraints.maxHeight * .6),
+            child: SingleChildScrollView(
+              child: CourtActionBar(
+                primary: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (_error != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: StatusNotice(context.tr(_error!)),
+                      ),
+
+                    FilledButton(
+                      key: const ValueKey('room-submit'),
+                      onPressed: _busy || _canRetrySave ? null : _submit,
+                      child: TText(
+                        widget.create ? 'roomCreate' : 'roomJoinNew',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        FilledButton(
-          key: const ValueKey('room-submit'),
-          onPressed: _busy || _canRetrySave ? null : _submit,
-          child: TText(widget.create ? 'roomCreate' : 'roomJoinNew'),
-        ),
-        if (_busy)
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

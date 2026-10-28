@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/room_controller.dart';
 import '../../application/room_providers.dart';
 import '../../l10n/app_strings.dart';
+import '../../design/court_scene.dart';
 import 'invitation.dart';
 import 'invite.dart';
 import 'lobby.dart';
@@ -27,9 +28,9 @@ class RoomConnectionScreen extends ConsumerWidget {
     if (state.status == RoomConnectionStatus.online && state.snapshot != null) {
       return RoomLobbyScreen(state: state);
     }
-    return Scaffold(
-      appBar: AppBar(title: const TText('roomTitle')),
-      body: Center(
+    return CourtScaffold(
+      title: const TText('roomTitle'),
+      bodyBuilder: (context) => Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
           child: ListView(

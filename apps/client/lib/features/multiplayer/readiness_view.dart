@@ -6,8 +6,13 @@ import '../../data/protocol/room_message.dart';
 import '../../l10n/app_strings.dart';
 
 class ReadinessView extends ConsumerWidget {
-  const ReadinessView({required this.snapshot, super.key});
+  const ReadinessView({
+    required this.snapshot,
+    this.showActions = true,
+    super.key,
+  });
   final SnapshotMessage snapshot;
+  final bool showActions;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final game = ref.watch(onlineGameProvider),
@@ -29,45 +34,33 @@ class ReadinessView extends ConsumerWidget {
         children: [
           if (['numbers', 'answers'].contains(view.phase)) ...[
             if (answers) const TText('phoneAnswersHelp'),
-            TText(
-              answers ? 'onlineReadyAnswers' : 'onlineReadyNumbers',
-              style: Theme.of(context).textTheme.titleMedium,
+            ExpansionTile(
+              initiallyExpanded: recipients.length <= 5,
+              tilePadding: EdgeInsets.zero,
+              title: TText(
+                answers ? 'onlineReadyAnswers' : 'onlineReadyNumbers',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              children: [
+                for (final id in recipients)
+                  ListTile(
+                    dense: true,
+                    title: Text(
+                      participants[id]?.profile.name ??
+                          context.tr('onlineRemovedParticipant'),
+                    ),
+                    subtitle: TText(
+                      participants[id]?.connected != true
+                          ? 'onlineReadyDisconnected'
+                          : participants[id]?.ready == true
+                          ? 'onlineReadyDone'
+                          : 'onlineReadyWaiting',
+                    ),
+                  ),
+              ],
             ),
-            for (final id in recipients)
-              ListTile(
-                dense: true,
-                title: Text(
-                  participants[id]?.profile.name ??
-                      context.tr('onlineRemovedParticipant'),
-                ),
-                subtitle: TText(
-                  participants[id]?.connected != true
-                      ? 'onlineReadyDisconnected'
-                      : participants[id]?.ready == true
-                      ? 'onlineReadyDone'
-                      : 'onlineReadyWaiting',
-                ),
-              ),
-            if (answers && view.frozenRoster.contains(snapshot.you))
-              FilledButton(
-                onPressed:
-                    !game.pending('ready') &&
-                        participants[snapshot.you]?.ready != true
-                    ? () => game.readyForOrdering(
-                        gameId: gameId,
-                        roundId: roundId,
-                      )
-                    : null,
-                child: const TText('onlineAnswerReady'),
-              ),
+            if (showActions) ReadinessActions(snapshot: snapshot),
             if (game.pending('ready')) const TText('onlineReadySending'),
-            if (answers && host)
-              FilledButton(
-                onPressed: game.canBeginOrdering && !game.pending('begin')
-                    ? () => game.beginOrdering(gameId: gameId, roundId: roundId)
-                    : null,
-                child: const TText('phoneBeginOrder'),
-              ),
           ],
           if (host &&
               [
@@ -109,6 +102,50 @@ class ReadinessView extends ConsumerWidget {
                       }
                     },
               child: const TText('withoutVerdict'),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The same authoritative actions can be hosted in the sticky courtroom footer.
+class ReadinessActions extends ConsumerWidget {
+  const ReadinessActions({required this.snapshot, super.key});
+  final SnapshotMessage snapshot;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final game = ref.watch(onlineGameProvider),
+        view = snapshot.public,
+        roundId = view.roundId,
+        gameId = view.gameId;
+    if (roundId == null || gameId == null) return const SizedBox.shrink();
+    final answers = view.phase == 'answers', host = snapshot.you == view.hostId;
+    final participants = {
+      for (final player in view.players) player.playerId: player,
+    };
+    return ListenableBuilder(
+      listenable: game,
+      builder: (context, _) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (answers && view.frozenRoster.contains(snapshot.you))
+            FilledButton(
+              onPressed:
+                  !game.pending('ready') &&
+                      participants[snapshot.you]?.ready != true
+                  ? () =>
+                        game.readyForOrdering(gameId: gameId, roundId: roundId)
+                  : null,
+              child: const TText('onlineAnswerReady'),
+            ),
+          if (answers && host)
+            FilledButton(
+              onPressed: game.canBeginOrdering && !game.pending('begin')
+                  ? () => game.beginOrdering(gameId: gameId, roundId: roundId)
+                  : null,
+              child: const TText('phoneBeginOrder'),
             ),
         ],
       ),

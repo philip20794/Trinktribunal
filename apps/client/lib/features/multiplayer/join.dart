@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
+import '../../design/court_scene.dart';
 import 'entry_profile.dart';
 
 class JoinRoomScreen extends StatelessWidget {
@@ -12,9 +13,9 @@ class JoinRoomScreen extends StatelessWidget {
   final String initialCode;
   final bool invalidInvite;
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const TText('roomJoin')),
-    body: Center(
+  Widget build(BuildContext context) => CourtScaffold(
+    title: const TText('roomJoin'),
+    bodyBuilder: (context) => Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 600),
         child: RoomProfileForm(

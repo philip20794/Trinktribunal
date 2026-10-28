@@ -13,8 +13,13 @@ import '../verdict/online_reveal.dart';
 
 /// Game section inside the existing courtroom tab; profiles remain on Me.
 class RoomGameScreen extends ConsumerWidget {
-  const RoomGameScreen({required this.snapshot, super.key});
+  const RoomGameScreen({
+    required this.snapshot,
+    this.fixedActions = false,
+    super.key,
+  });
   final SnapshotMessage snapshot;
+  final bool fixedActions;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final catalogs = ref.watch(catalogsProvider),
@@ -25,7 +30,7 @@ class RoomGameScreen extends ConsumerWidget {
       error: (_, _) => Column(
         children: [
           const TText('roomErrorGeneric'),
-          ReadinessView(snapshot: snapshot),
+          ReadinessView(snapshot: snapshot, showActions: !fixedActions),
         ],
       ),
       data: (catalogs) {
@@ -56,8 +61,8 @@ class RoomGameScreen extends ConsumerWidget {
           return Column(
             children: [
               const TText('roomErrorGeneric'),
-              ReadinessView(snapshot: snapshot),
-              OnlineReveal(snapshot: snapshot),
+              ReadinessView(snapshot: snapshot, showActions: !fixedActions),
+              OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
             ],
           );
         }
@@ -128,8 +133,8 @@ class RoomGameScreen extends ConsumerWidget {
               ] else if (view.phase == 'numbers' &&
                   view.judgeId == snapshot.you)
                 const TText('onlineJudgeNoNumber'),
-              ReadinessView(snapshot: snapshot),
-              OnlineReveal(snapshot: snapshot),
+              ReadinessView(snapshot: snapshot, showActions: !fixedActions),
+              OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
             ],
           ),
         );

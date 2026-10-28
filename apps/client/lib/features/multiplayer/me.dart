@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/room_providers.dart';
 import '../../design/avatar_view.dart';
-import '../../domain/avatar_config.dart';
+import '../../design/case_file.dart';
+import '../profile/avatar_options.dart';
 import '../../l10n/app_strings.dart';
 import 'invitation.dart';
 
@@ -26,6 +27,13 @@ class _RoomMeState extends ConsumerState<RoomMe> {
   @override
   Widget build(BuildContext context) {
     final editor = ref.watch(onlineProfileProvider);
+    final snapshot = ref.watch(roomSessionProvider).asData?.value.snapshot;
+    final seat = snapshot == null
+        ? 1
+        : snapshot.public.players.indexWhere(
+                (p) => p.playerId == snapshot.you,
+              ) +
+              1;
     return ListenableBuilder(
       listenable: editor,
       builder: (context, _) {
@@ -40,17 +48,19 @@ class _RoomMeState extends ConsumerState<RoomMe> {
         }
         return Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
+            constraints: const BoxConstraints(maxWidth: 760),
             child: ListView(
               padding: const EdgeInsets.all(24),
               children: [
                 Center(
                   child: AvatarView(
                     config: editor.avatar,
-                    size: 128,
+                    size: 200,
                     label: editor.name,
                   ),
                 ),
+                const SizedBox(height: 8),
+                NamePlate(name: editor.name, position: seat < 1 ? 1 : seat),
                 const SizedBox(height: 16),
                 TextField(
                   key: const ValueKey('online-name'),
@@ -62,35 +72,6 @@ class _RoomMeState extends ConsumerState<RoomMe> {
                   onChanged: editor.rename,
                   onEditingComplete: editor.flush,
                 ),
-                for (final category in AvatarCatalog.options.entries)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: DropdownButtonFormField<String>(
-                      key: ValueKey(
-                        'online-${category.key}:${editor.avatar[category.key]}',
-                      ),
-                      initialValue: editor.avatar[category.key],
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        labelText: context.tr('avatarCategory${category.key}'),
-                      ),
-                      items: category.value
-                          .map(
-                            (value) => DropdownMenuItem(
-                              value: value,
-                              child: Text(context.tr('avatarOption$value')),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          editor.changeAvatar(
-                            editor.avatar.withOption(category.key, value),
-                          );
-                        }
-                      },
-                    ),
-                  ),
                 Text(
                   context.tr(
                     editor.saving
@@ -111,6 +92,11 @@ class _RoomMeState extends ConsumerState<RoomMe> {
                 FilledButton(
                   onPressed: editor.dirty ? editor.flush : null,
                   child: const TText('roomProfileFlush'),
+                ),
+                AvatarOptions(
+                  config: editor.avatar,
+                  keyPrefix: 'online-',
+                  onChanged: editor.changeAvatar,
                 ),
               ],
             ),

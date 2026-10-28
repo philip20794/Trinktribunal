@@ -184,6 +184,7 @@ class CourtScaffold extends StatelessWidget {
     this.title,
     this.actions,
     this.leading,
+    this.appBarBottom,
     this.footer,
     this.background = CourtAssets.wood,
     this.maxWidth = CourtTokens.contentWidth,
@@ -193,6 +194,7 @@ class CourtScaffold extends StatelessWidget {
   final WidgetBuilder? bodyBuilder;
   final Widget? title, leading, footer;
   final List<Widget>? actions;
+  final PreferredSizeWidget? appBarBottom;
   final String background;
   final double maxWidth;
   @override
@@ -229,7 +231,12 @@ class CourtScaffold extends StatelessWidget {
             backgroundColor: Colors.transparent,
             appBar: title == null
                 ? null
-                : AppBar(title: title, leading: leading, actions: actions),
+                : AppBar(
+                    title: title,
+                    leading: leading,
+                    actions: actions,
+                    bottom: appBarBottom,
+                  ),
             body: SafeArea(
               child: LayoutBuilder(
                 builder: (context, constraints) => Column(

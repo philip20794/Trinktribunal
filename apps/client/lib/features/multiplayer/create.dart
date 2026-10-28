@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
+import '../../design/court_scene.dart';
 import 'entry_profile.dart';
 import 'join.dart';
 import 'saved_rooms.dart';
@@ -8,9 +9,9 @@ import 'saved_rooms.dart';
 class MultiplayerEntryScreen extends StatelessWidget {
   const MultiplayerEntryScreen({super.key});
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const TText('modeMulti')),
-    body: Center(
+  Widget build(BuildContext context) => CourtScaffold(
+    title: const TText('modeMulti'),
+    bodyBuilder: (context) => Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 600),
         child: ListView(
@@ -47,9 +48,9 @@ class MultiplayerEntryScreen extends StatelessWidget {
 class CreateRoomScreen extends StatelessWidget {
   const CreateRoomScreen({super.key});
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const TText('roomCreate')),
-    body: Center(
+  Widget build(BuildContext context) => CourtScaffold(
+    title: const TText('roomCreate'),
+    bodyBuilder: (context) => Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 600),
         child: const RoomProfileForm(create: true),

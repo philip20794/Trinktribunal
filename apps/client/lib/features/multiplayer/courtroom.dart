@@ -18,8 +18,13 @@ import 'roster_management.dart';
 import 'host_status.dart';
 
 class RoomCourtroom extends ConsumerWidget {
-  const RoomCourtroom({required this.snapshot, super.key});
+  const RoomCourtroom({
+    required this.snapshot,
+    this.fixedActions = false,
+    super.key,
+  });
   final SnapshotMessage snapshot;
+  final bool fixedActions;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(onlineHistoryProvider);
@@ -54,9 +59,9 @@ class RoomCourtroom extends ConsumerWidget {
         if (snapshot.public.phase == 'lobby')
           RoomGameSettings(snapshot: snapshot)
         else
-          RoomGameScreen(snapshot: snapshot),
+          RoomGameScreen(snapshot: snapshot, fixedActions: fixedActions),
         if (snapshot.public.phase != 'lobby')
-          OnlineGameProgress(snapshot: snapshot),
+          OnlineGameProgress(snapshot: snapshot, showActions: !fixedActions),
         const SizedBox(height: 16),
         Text(
           context.tr('roomJoinedCount', {
@@ -71,7 +76,7 @@ class RoomCourtroom extends ConsumerWidget {
           ),
         const SizedBox(height: 12),
         if (['ordering', 'revealing', 'judged'].contains(snapshot.public.phase))
-          OnlineOrderView(snapshot: snapshot)
+          OnlineOrderView(snapshot: snapshot, showActions: !fixedActions)
         else if (snapshot.public.frozenRoster.any(
           (id) => !players.any((p) => p.playerId == id),
         ))

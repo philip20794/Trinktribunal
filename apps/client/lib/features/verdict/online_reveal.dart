@@ -9,8 +9,13 @@ import 'personal_verdict.dart';
 
 /// Displays only committed server fields; it never calculates truth or sips locally.
 class OnlineReveal extends ConsumerWidget {
-  const OnlineReveal({required this.snapshot, super.key});
+  const OnlineReveal({
+    required this.snapshot,
+    this.showActions = true,
+    super.key,
+  });
   final SnapshotMessage snapshot;
+  final bool showActions;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final view = snapshot.public,
@@ -39,17 +44,7 @@ class OnlineReveal extends ConsumerWidget {
                   view.frozenRoster.length - (view.config.allJudges ? 0 : 1),
             }),
           ),
-          if (view.phase == 'revealing' && snapshot.you == view.hostId)
-            FilledButton(
-              onPressed: game.pending('reveal')
-                  ? null
-                  : () => game.revealNext(
-                      gameId: gameId,
-                      roundId: roundId,
-                      expectedCursor: view.revealCursor,
-                    ),
-              child: const TText('phoneRevealNext'),
-            ),
+          if (showActions) OnlineRevealAction(snapshot: snapshot),
           if (verdict != null) ...[
             CourtSeal(
               label: context.tr('wrongPositionsCount', {
@@ -73,5 +68,36 @@ class OnlineReveal extends ConsumerWidget {
     return view.phase == 'judged'
         ? CaseFile(label: context.tr('verdictHeading'), child: content)
         : content;
+  }
+}
+
+class OnlineRevealAction extends ConsumerWidget {
+  const OnlineRevealAction({required this.snapshot, super.key});
+  final SnapshotMessage snapshot;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final game = ref.watch(onlineGameProvider),
+        view = snapshot.public,
+        gameId = view.gameId,
+        roundId = view.roundId;
+    if (view.phase != 'revealing' ||
+        snapshot.you != view.hostId ||
+        gameId == null ||
+        roundId == null) {
+      return const SizedBox.shrink();
+    }
+    return ListenableBuilder(
+      listenable: game,
+      builder: (context, _) => FilledButton(
+        onPressed: game.pending('reveal')
+            ? null
+            : () => game.revealNext(
+                gameId: gameId,
+                roundId: roundId,
+                expectedCursor: view.revealCursor,
+              ),
+        child: const TText('phoneRevealNext'),
+      ),
+    );
   }
 }

@@ -7,9 +7,11 @@ class AvatarOptions extends StatelessWidget {
   const AvatarOptions({
     required this.config,
     required this.onChanged,
+    this.keyPrefix = '',
     super.key,
   });
   final AvatarConfig config;
+  final String keyPrefix;
   final ValueChanged<AvatarConfig> onChanged;
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -28,7 +30,9 @@ class AvatarOptions extends StatelessWidget {
             SizedBox(
               width: width,
               child: DropdownButtonFormField<String>(
-                key: ValueKey('${category.key}:${config[category.key]}'),
+                key: ValueKey(
+                  '$keyPrefix${category.key}:${config[category.key]}',
+                ),
                 initialValue: config[category.key],
                 isExpanded: true,
                 decoration: InputDecoration(

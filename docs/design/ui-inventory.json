@@ -458,7 +458,8 @@
         "QR/Clipboard-Fallback"
       ],
       "tests": [
-        "apps/client/test/features/room_entry_test.dart"
+        "apps/client/test/features/room_entry_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
@@ -489,7 +490,8 @@
       "tests": [
         "apps/client/test/application/room_controller_test.dart",
         "apps/client/test/features/host_status_test.dart",
-        "apps/client/test/features/close_room_test.dart"
+        "apps/client/test/features/close_room_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
@@ -522,7 +524,8 @@
       "tests": [
         "apps/client/test/features/lobby_test.dart",
         "apps/client/test/features/online_roster_test.dart",
-        "apps/client/test/features/online_game_progress_test.dart"
+        "apps/client/test/features/online_game_progress_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
@@ -548,7 +551,8 @@
         "Änderungen synchronisiert"
       ],
       "tests": [
-        "apps/client/test/application/online_profile_controller_test.dart"
+        "apps/client/test/application/online_profile_controller_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
@@ -575,7 +579,8 @@
         "Pending/Fehler/Reload"
       ],
       "tests": [
-        "apps/client/test/features/lobby_test.dart"
+        "apps/client/test/features/lobby_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
@@ -603,7 +608,8 @@
         "ab 21 Identitäten Grenze"
       ],
       "tests": [
-        "apps/client/test/features/online_roster_test.dart"
+        "apps/client/test/features/online_roster_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
@@ -646,7 +652,8 @@
         "apps/client/test/features/readiness_test.dart",
         "apps/client/test/features/online_order_test.dart",
         "apps/client/test/features/question_refresh_test.dart",
-        "apps/client/test/features/online_game_progress_test.dart"
+        "apps/client/test/features/online_game_progress_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
@@ -671,7 +678,8 @@
         "lokalisierte feste Fehlertexte"
       ],
       "tests": [
-        "apps/client/test/features/room_entry_test.dart"
+        "apps/client/test/features/room_entry_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
@@ -698,7 +706,8 @@
       ],
       "tests": [
         "apps/client/test/features/close_room_test.dart",
-        "apps/client/test/application/room_controller_test.dart"
+        "apps/client/test/application/room_controller_test.dart",
+        "apps/client/test/features/online_court_actions_test.dart"
       ],
       "targetTask": "TT-077"
     },
