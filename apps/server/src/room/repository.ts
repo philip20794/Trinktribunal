@@ -5,7 +5,6 @@ import type {
   Profile,
   RoomId,
 } from '../protocol/room_message.generated';
-import { protocolMetadata } from '../protocol/room_message.generated';
 import { immutable, type GameState, type Phase, type MutableGameState } from '../domain/game_state';
 import type { LobbyReceipt } from './profile_actions';
 import type { HistoryImportState, HistoryExport } from './history';
@@ -41,12 +40,7 @@ export interface RoomState {
   historyExports?: HistoryExport[];
   historyPageHashes?: Record<number, string>;
 }
-export function roomExpiry(state: Pick<RoomState, 'createdAt' | 'lastDomainActivity'>): number {
-  return Math.min(
-    state.createdAt + protocolMetadata.limits.roomHardMs,
-    state.lastDomainActivity + protocolMetadata.limits.roomIdleMs,
-  );
-}
+export { roomExpiry } from './expiry';
 /** One canonical SQLite row; game, usage, counters and action receipts share its transaction. */
 export class RoomRepository {
   constructor(readonly storage: DurableObjectStorage) {}

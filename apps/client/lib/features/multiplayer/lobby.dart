@@ -10,6 +10,7 @@ import 'invite.dart';
 import 'invitation.dart';
 import 'room_actions.dart';
 import 'game_privacy.dart';
+import 'close_room.dart';
 
 class RoomLobbyScreen extends ConsumerWidget {
   const RoomLobbyScreen({required this.state, super.key});
@@ -23,6 +24,12 @@ class RoomLobbyScreen extends ConsumerWidget {
         appBar: AppBar(
           title: const TText('roomTitle'),
           actions: [
+            if (state.snapshot!.you == state.snapshot!.public.hostId)
+              IconButton(
+                tooltip: context.tr('roomClose'),
+                icon: const Icon(Icons.gavel),
+                onPressed: () => confirmRoomClose(context, ref),
+              ),
             IconButton(
               tooltip: context.tr('roomInviteTitle'),
               icon: const Icon(Icons.qr_code),

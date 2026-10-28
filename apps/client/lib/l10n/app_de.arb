@@ -1,5 +1,9 @@
 {
   "@@locale": "de",
+  "roomRetention": "Raumdaten werden nach 24 Stunden ohne Spielaktivität gelöscht, spätestens 48 Stunden nach Erstellung. Der Host kann den Raum vorher für alle schließen. Reine Verbindungen und Wiederholungen verlängern diese Fristen nicht.",
+  "roomClose": "Raum schließen",
+  "roomCloseTitle": "Raum für alle schließen?",
+  "roomCloseHelp": "Die laufende Partie und privaten Raumdaten werden gelöscht. Alle Teilnehmer verlieren den Zugang zu diesem Raum.",
   "onlineHostGrace": "Der Host ist offline. Nach 90 Sekunden wird die automatische Übergabe geprüft. Der Fall bleibt erhalten.",
   "onlineHostWaiting": "Kein verbundener Nachfolger verfügbar. Der Raum wartet auf eine berechtigte Verbindung.",
   "onlineHostYou": "Du bist jetzt Host ({name}). Richter- und Vorleserrolle bleiben unverändert.",

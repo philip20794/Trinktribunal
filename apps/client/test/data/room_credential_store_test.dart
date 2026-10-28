@@ -11,6 +11,29 @@ import 'package:trinktribunal/domain/models/ids.dart';
 import 'room_test_support.dart';
 
 void main() {
+  test('startup prunes only the proven hard-expired bound and preserves an extensible idle hint', () async {
+    final backend = MemoryCredentialBackend(),
+        credential = testCredential(),
+        expiry = DateTime.parse(credential.message.expiresAtUtc);
+    await RoomCredentialStore(backend).save(credential);
+    expect(
+      (await RoomCredentialStore(
+        backend,
+        clock: () => expiry
+            .add(const Duration(hours: 24))
+            .subtract(const Duration(milliseconds: 1)),
+      ).load()).credentials,
+      hasLength(1),
+    );
+    expect(
+      (await RoomCredentialStore(
+        backend,
+        clock: () => expiry.add(const Duration(hours: 24)),
+      ).load()).credentials,
+      isEmpty,
+    );
+    expect(backend.records, isEmpty);
+  });
   test('an unresponsive secure backend cannot keep the entry screen loading forever', () {
     fakeAsync((clock) {
       final store = RoomCredentialStore(_BlockedBackend());

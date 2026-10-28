@@ -39,6 +39,8 @@ import { RoomRepository, roomExpiry, type RoomState, type Member } from './repos
 import { commitGameAction, isGameAction } from './actions';
 import { reservedSeatIds, synchronizeRoster } from './roster';
 import { reconcileHost, nextHostDeadline } from './host_lifecycle';
+import { purgeRoom } from './expiry';
+import { roomDiagnostic } from './logging';
 import {
   commitHistoryAction,
   isHistoryAction,
@@ -388,6 +390,66 @@ export class Room extends DurableObject<Env> {
           this.socketFailure(socket, 'RATE_LIMITED', 4429);
           return;
         }
+        if (command.type === 'closeRoom') {
+          const outcome = this.ctx.storage.transactionSync(() => {
+            const latest = this.live(Date.now());
+            if (!latest || !this.currentMember(info, latest))
+              return { ok: false as const, code: 'CREDENTIAL_INVALID' as const };
+            if (info.playerId !== latest.hostId)
+              return { ok: false as const, code: 'UNAUTHORIZED_ACTION' as const };
+            if (command.expectedRevision !== latest.revision)
+              return { ok: false as const, code: 'STALE_REVISION' as const };
+            if (
+              latest.game?.receipts.some((r) => r.actionId === command.actionId) ||
+              latest.lobbyReceipts?.some((r) => r.actionId === command.actionId)
+            )
+              return { ok: false as const, code: 'ACTION_ID_CONFLICT' as const };
+            purgeRoom(this.ctx.storage);
+            return { ok: true as const, revision: latest.revision + 1 };
+          });
+          if (!outcome.ok) {
+            sendMessage(
+              socket,
+              createRoomMessage('error', {
+                requestId: RoomIds.request(crypto.randomUUID()),
+                code: outcome.code,
+              }),
+            );
+            return;
+          }
+          try {
+            sendMessage(
+              socket,
+              createRoomMessage('ack', {
+                requestId: RoomIds.request(crypto.randomUUID()),
+                actionId: command.actionId,
+                revision: outcome.revision,
+                outcome: 'closed',
+              }),
+            );
+          } finally {
+            for (const other of this.ctx.getWebSockets()) {
+              if (other !== socket)
+                try {
+                  sendMessage(
+                    other,
+                    attachment(other)?.kind === 'authenticated'
+                      ? createRoomMessage('roomClosed', {
+                          requestId: RoomIds.request(crypto.randomUUID()),
+                        })
+                      : createRoomMessage('error', {
+                          requestId: RoomIds.request(crypto.randomUUID()),
+                          code: 'ROOM_UNAVAILABLE',
+                        }),
+                  );
+                } catch {
+                  /* Already gone. */
+                }
+              closeSocket(other, 1000);
+            }
+          }
+          return;
+        }
         if (isHistoryAction(command)) {
           const connected = new Set<PlayerId>();
           for (const other of this.ctx.getWebSockets()) {
@@ -584,9 +646,10 @@ export class Room extends DurableObject<Env> {
     const state = this.read();
     if (state && now >= roomExpiry(state)) {
       // Retain only an empty reservation: old codes can never address a different party.
-      this.ctx.storage.sql.exec('UPDATE room_record SET state = NULL WHERE singleton = 1');
-      if (this.hasTable('entry_limits')) this.ctx.storage.sql.exec('DELETE FROM entry_limits');
-      if (this.hasTable('action_limits')) this.ctx.storage.sql.exec('DELETE FROM action_limits');
+      purgeRoom(this.ctx.storage);
+      console.info(
+        JSON.stringify(roomDiagnostic({ code: 'ROOM_UNAVAILABLE', revision: state.revision })),
+      );
       for (const socket of this.ctx.getWebSockets()) this.socketFailure(socket, 'ROOM_UNAVAILABLE');
       return null;
     }
@@ -817,6 +880,13 @@ export class Room extends DurableObject<Env> {
 
   override async alarm(): Promise<void> {
     const now = Date.now();
+    const state = this.ctx.storage.transactionSync(() => this.live(now));
+    if (!state) {
+      this.ctx.storage.transactionSync(() => purgeRoom(this.ctx.storage));
+      for (const socket of this.ctx.getWebSockets()) this.socketFailure(socket, 'ROOM_UNAVAILABLE');
+      await this.planAlarm();
+      return;
+    }
     for (const deadline of dueDeadlines(this.ctx.storage.sql, now)) {
       for (const socket of this.ctx.getWebSockets()) {
         const info = attachment(socket);
@@ -825,12 +895,7 @@ export class Room extends DurableObject<Env> {
       }
       removeDeadline(this.ctx.storage.sql, deadline.id);
     }
-    const state = this.ctx.storage.transactionSync(() => this.live(now));
-    if (!state) {
-      for (const socket of this.ctx.getWebSockets()) this.socketFailure(socket, 'ROOM_UNAVAILABLE');
-      if (this.hasTable('entry_limits')) this.ctx.storage.sql.exec('DELETE FROM entry_limits');
-    }
-    if (state) this.broadcastLobby();
+    this.broadcastLobby();
     await this.planAlarm();
   }
 }

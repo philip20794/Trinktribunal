@@ -1,5 +1,9 @@
 {
   "@@locale": "en",
+  "roomRetention": "Room data is deleted after 24 hours without game activity, and at most 48 hours after creation. The host can close the room for everyone earlier. Connections and retries alone do not extend these limits.",
+  "roomClose": "Close room",
+  "roomCloseTitle": "Close this room for everyone?",
+  "roomCloseHelp": "The current game and private room data will be deleted. All participants will lose access to this room.",
   "onlineHostGrace": "The host is offline. Automatic transfer is checked after 90 seconds. The case is preserved.",
   "onlineHostWaiting": "No connected successor is available. The room is waiting for an eligible connection.",
   "onlineHostYou": "You are now the host ({name}). Judge and reader roles stay unchanged.",

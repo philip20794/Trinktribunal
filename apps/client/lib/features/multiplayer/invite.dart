@@ -71,6 +71,8 @@ class RoomInvite extends ConsumerWidget {
           ),
         ] else
           const TText('roomInviteUnavailable'),
+        const SizedBox(height: 12),
+        const TText('roomRetention'),
       ],
     );
   }

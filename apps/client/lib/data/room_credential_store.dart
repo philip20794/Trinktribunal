@@ -70,8 +70,10 @@ final class CredentialLoad {
 }
 
 final class RoomCredentialStore {
-  RoomCredentialStore(this.backend);
+  RoomCredentialStore(this.backend, {DateTime Function()? clock})
+    : _clock = clock ?? DateTime.now;
   final CredentialBackend backend;
+  final DateTime Function() _clock;
   String _encode(RoomCredential value) => jsonEncode({
     'formatVersion': 1,
     'serverOrigin': value.serverOrigin.origin,
@@ -131,15 +133,26 @@ final class RoomCredentialStore {
           credentials = <RoomCredential>[];
       var invalid = false;
       for (final entry in records.entries) {
+        RoomCredential credential;
         try {
-          final credential = _decode(entry.value);
+          credential = _decode(entry.value);
           if (credential.key != entry.key) throw const FormatException();
-          credentials.add(credential);
         } on Object {
           invalid = true;
+          continue;
         }
+        // An observed idle deadline may be extended. However observed expiry >=
+        // creation + 24h, so expiry + 24h is a conservative bound on hard 48h.
+        final definitelyExpired = DateTime.parse(
+          credential.message.expiresAtUtc,
+        ).add(const Duration(hours: 24));
+        if (!_clock().toUtc().isBefore(definitelyExpired)) {
+          await backend.remove(entry.key).timeout(const Duration(seconds: 5));
+          continue;
+        }
+        credentials.add(credential);
       }
-      // Local expiry is only a hint; the server may have extended an active room.
+      // Until the hard bound, the server remains authoritative about idle expiry.
       return CredentialLoad(credentials, invalidRecords: invalid);
     } on Object {
       return CredentialLoad([], unavailable: true);
