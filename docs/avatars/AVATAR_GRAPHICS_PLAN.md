@@ -24,7 +24,7 @@ Die finale Komposition soll beim Editor (ca. 320 px) detailliert sein und auf de
 
 **Bereits vorhanden (bestehendes v2-System, nicht neue Kunst):** Flutter-`CustomPainter` in `apps/client/lib/design/avatar_view.dart`, versioniertes Avatar-Manifest, Konfiguration und lokaler/Online-Editor; TT-060 dokumentiert 53 Auswahloptionen in 14 Kategorien, Tests sowie v1→v2-Migration. Die v2-Grafik wird als **technische Fallback-Implementierung** weitergeführt.
 
-**Bisher visuell erstellt:** generierter Konzeptbogen vom **28.10.2026** mit zehn unterschiedlichen Mugshot-Figuren und modularen Beispielen; der Nutzer hat diese Stilrichtung ausdrücklich bestätigt. Er zeigt markante Köpfe/Körper, Kleidung, festes Schild und gemeinsame Messwand. **Status: Stilrichtung akzeptiert, keine Masterfigur/Einzelebene final abgenommen.** Die verbindliche textuelle Beschreibung steht in [STYLE_GUIDE.md](STYLE_GUIDE.md). Der [freigegebene Konzeptbogen](references/concept-sheet-approved-2026-10-28.png) liegt als Stilreferenz im Repository; er ist nicht mit validierten Laufzeitassets gleichzusetzen. Herkunft: am 28.10.2026 im Projektgespräch KI-generierter Konzeptbogen, vom Nutzer als gewünschte Stilrichtung bestätigt und anschließend in Git hochgeladen. Die Produktionsfreigabe einzelner Ebenen steht weiterhin aus.
+**Bisher visuell erstellt:** generierter Konzeptbogen vom **28.10.2026** mit zehn unterschiedlichen Mugshot-Figuren und modularen Beispielen; der Nutzer hat diese Stilrichtung ausdrücklich bestätigt. Er zeigt markante Köpfe/Körper, Kleidung, festes Schild und gemeinsame Messwand. **Aktueller ART-01-Status (28.10.2026): Sechs Masterfiguren sind im Chat visuell freigegeben (3 männlich, 3 weiblich); nur Master 01 ist bisher im Repository archiviert.** Technisch verwendbare Einzelebenen wurden noch nicht abgenommen. Die verbindliche textuelle Beschreibung steht in [STYLE_GUIDE.md](STYLE_GUIDE.md). Der [freigegebene Konzeptbogen](references/concept-sheet-approved-2026-10-28.png) liegt als Stilreferenz im Repository; er ist nicht mit validierten Laufzeitassets gleichzusetzen. Herkunft: am 28.10.2026 im Projektgespräch KI-generierter Konzeptbogen, vom Nutzer als gewünschte Stilrichtung bestätigt und anschließend in Git hochgeladen. Die Produktionsfreigabe einzelner Ebenen steht weiterhin aus.
 
 **Rechte:** Das vom Nutzer gezeigte ursprüngliche Spielbild dient ausschließlich als *visuelle Inspiration*, nicht als in der App verwendbare oder nachzuzeichnende Grafik. Eigene, neu erzeugte Karikaturfiguren ohne kopierte Texte, Namen und Charakterdesigns erstellen. Herkunft/Verwendung jedes finalen Bildes dokumentieren; das offene Release-Gate **TT-065** bleibt bestehen.
 
@@ -95,7 +95,7 @@ Je nach Teil sind zusätzliche Vor-/Hinterebenen nötig; **das Schild bleibt una
 | ID | Paket / Ziel | Soll | Status 28.10.2026 | Abhängigkeit |
 | --- | --- | ---: | --- | --- |
 | ART-00 | Stilbibel, No-Gos, Referenz-Workflow | 1 | **ENTWURF** – Konzeptstil bestätigt | – |
-| ART-01 | vollständige Masterfiguren, davon 4 männlich / 4 weiblich | 8 | **IN_ARBEIT** – Master 01 (männlich) visuell vom Nutzer freigegeben; Bild noch nicht in Git, daher **0/8 archiviert** | ART-00 |
+| ART-01 | vollständige Masterfiguren, davon 4 männlich / 4 weiblich | 8 | **IN_ARBEIT** – **6/8 visuell freigegeben** (3 männlich / 3 weiblich), davon **1/8 in Git archiviert**; Master 02–06 noch hochzuladen | ART-00 |
 | ART-02 | eine feste Messwand | 1 | OFFEN | ART-01 |
 | ART-03 | ein festes Namensschild, Text-Safe-Area | 1 | OFFEN | ART-01 |
 | ART-04 | Griffsystem: Handrücken/Finger, ggf. Körperfamilien | 1 Basis-Set + nötige Varianten | OFFEN | ART-03 |
@@ -190,19 +190,28 @@ Nächster Schritt: ...
 
 ## 10. Aktueller ART-01-Fortschritt und nächster Auftrag
 
-### Charge 2026-10-28-01 – Masterfigur 01 (männlich)
+**Abgleich mit Git am 28.10.2026:** In `docs/avatars/references/` liegen der freigegebene Konzeptbogen und `master-male-01-approved.png`. Die übrigen Masterbilder 02–06 sind im Chat visuell angenommen, aber **noch nicht im Repository archiviert**. Visuelle Zustimmung ist keine technische Abnahme einer modularen Alpha-Grafik.
 
-- **Visuelle Nutzerentscheidung:** **angenommen** („Sieht gut aus.“). Ein einzelner Charakter, nicht der gesamte Satz oder die modulare Technik, wurde freigegeben.
-- **Motiv:** schlanke männliche Karikatur mit langem Gesicht, sehr großen seitlichen Ohren, großem rötlichem Nasenrücken, unordentlich aufstehendem braunem Haar, missmutiger Mimik, Kinnbart/Stoppeln, violettem T-Shirt und in beiden Händen gehaltenem **leerem** dunklen Schild vor einer cremefarbenen Polizeifoto-Messwand.
-- **Original im Chat erzeugt:** `grimmiger_fahndungsfoto_charakter_mit_massstab.png`, PNG 1122 × 1402; **noch nicht im Git-Repository archiviert**. Der generierte Screenshot ist **keine einzeln freigestellte Alpha-Ebene**.
-- **Vorgesehener Git-Pfad nach Archivierung:** `docs/avatars/references/master-male-01-approved.png`. Nach tatsächlichem Upload den Link und Commit ergänzen; die lokale/Chat-Datei nicht als dauerhaft verfügbaren Git-Pfad ausgeben.
-- **Asset-Status:** Entwurf visuell angenommen, Dateiar­chivierung und spätere Layer-/Kombinationstests noch offen. Die Kennzahl für tatsächlich im Repository vorhandene und visuell bestätigte Masterfiguren beträgt derzeit **0/8**.
+| Charge / Master | Profil | Kennzeichen und bewusster Kontrast | Visuelles Review | Git-Archiv |
+| --- | --- | --- | --- | --- |
+| 2026-10-28-01 / Master 01 | männlich | Sehr schlank; langer Kopf, abstehende Ohren, rote große Nase, braune Wuschelhaare, Bartstoppeln, violettes T-Shirt | **angenommen** | **vorhanden:** [master-male-01-approved.png](references/master-male-01-approved.png) |
+| 2026-10-28-02 / Master 02 | weiblich | Rundes Gesicht, kompakte kurvige Figur; braunes hochgestecktes Haar, dunkles Oberteil, lebendige Augen | **angenommen** | **fehlt:** vorgesehen `master-female-02-approved.png` |
+| 2026-10-28-03 / Master 03 | männlich | Breiter, kantiger Kopf, massiger Oberkörper, dichter dunkler Bart, olivgrünes Hemd, grimmige Mimik | **angenommen** | **fehlt:** vorgesehen `master-male-03-approved.png` |
+| 2026-10-28-04 / Master 04 | weiblich | Extrem dünn, langer kantiger hexenartiger Kopf, ausgeprägte Hakennase, spitze abstehende Ohren, asymmetrisches dunkellila Kurzhaar, dunkle Kleidung | **angenommen** | **fehlt:** vorgesehen `master-female-04-approved.png` |
+| 2026-10-28-05 / Master 05 | männlich | Älter, gedrungen und füllig; fast kahler Kopf, rundes Gesicht, schiefes Lächeln, Hawaiihemd | **angenommen** | **fehlt:** vorgesehen `master-male-05-approved.png` |
+| 2026-10-28-06 / Master 06 | weiblich | Fülliger Punk-Charakter mit breiten Schultern und kräftigen Armen, blondem asymmetrischem Undercut, markant anderen Ohren, Piercings, zerrissenem Oberteil | **angenommen** | **fehlt:** vorgesehen `master-female-06-approved.png` |
+
+### Vorhandenes Original und Archivierungsbedarf
+
+- **Master 01:** Ursprünglich im Chat erzeugt als `grimmiger_fahndungsfoto_charakter_mit_massstab.png` (PNG 1122 × 1402); inzwischen tatsächlich als `docs/avatars/references/master-male-01-approved.png` im Repository vorhanden. Es handelt sich weiterhin um eine vollständige Kompositionsgrafik, **nicht** um eine freigestellte Alpha-Ebene.
+- **Master 02–06:** Bildgenerierungen und explizite Nutzerfreigaben erfolgten im Projektgespräch am 28.10.2026. Der Nutzer lädt die angenommenen Originale selbst nach `docs/avatars/references/` hoch. Die obigen Dateinamen sind **vorgesehen**, bis deren Existenz im Repository geprüft wurde. Beim späteren Abgleich Dateiname, Bildidentität und Quelle kontrollieren und Archivzählung erst dann anpassen.
+- **Zählweise:** **6/8 visuell angenommen** (3 männlich + 3 weiblich), davon **1/8 tatsächlich archiviert**. **0/8 technisch modulare Mastersets abgenommen.** Diese drei Zähler dürfen nicht vermischt werden.
 
 ### Nächste Produktionsschritte
 
-1. **Master 01 archivieren** unter `docs/avatars/references/master-male-01-approved.png`; Bild und Namen/Provenienz prüfen. Erst nach tatsächlichem Upload wird diese Masterfigur im Projektregister als **1/8 archiviert** gezählt.
-2. **ART-01 Masterfigur 02 (weiblich):** im **identischen** warmen, malerisch-organischen Zeichenstil und gleicher Frontalperspektive, aber als deutlicher Gegenpol zur ersten Figur: **sehr breiter/runder Kopf**, kleiner/kurzer Nasentyp, andere Augen/Mimik, **deutlich anderer, kompakter/kurviger Oberkörper**, anderer Kleidungsstil und prägnante weibliche Frisur. Kein Bart. Dasselbe **leere** Schild und dieselbe **Messwand**. Bild als **einzelne vollständige Figur**, keine Collage. Vor dem nächsten Charakter Nutzerreview abwarten.
-3. Weitere sechs Charaktere gezielt mit gegensätzlichen Silhouetten erstellen, bis 4 männliche und 4 weibliche **visuell angenommen und tatsächlich archiviert** sind.
-4. Erst danach feste Hintergrund-/Schild-Vorlagen sowie den Schichtungsprototyp starten; die ganze Figur nicht automatisch als fertige modulare Grafik behandeln.
+1. Fehlende, bereits angenommene Mastergrafiken 02–06 unter den oben vorgesehenen Namen archivieren und ihre Originaldateien im Git prüfen. Anschließend die Archivzählung korrigieren.
+2. **ART-01 Masterfigur 07 (männlich):** deutlicher Gegenpol zu den bisherigen männlichen Figuren, beispielsweise sehr hagerer älterer Mann mit schmalem, dreieckigem Gesicht, anderer Haar-/Augen-/Nasenform und schmalen Schultern. Wieder identische cremefarbene Polizeifoto-Messwand, frontal, beide Hände am **leeren** dunklen Schild. Genau **eine** Figur pro Review.
+3. **ART-01 Masterfigur 08 (weiblich):** weitere klar eigenständige Kopfform, Körperproportion und Kleidung; die ersten vier weiblichen Figuren sollen auch als Silhouetten unterscheidbar bleiben.
+4. Danach Kontaktbogen aller acht **archivierten und angenommenen** Figuren prüfen. Erst nach visuellem Gesamtreview ART-02 (feste Messwand), ART-03 (Schild) und den Schichtungsprototyp angehen.
 
-**Produktionsregel:** Pro Charge genau eine vollständige Masterfigur erzeugen, dem Nutzer zeigen, Freigabe dokumentieren und Original ins Git bringen. Vor jedem folgenden Master Bildreferenz und Stilbibel erneut heranziehen. Kein Eingriff in den produktiven Flutter-Code in ART-01.
+**Produktionsregel:** Pro neuer Charge genau eine vollständige Masterfigur erzeugen und dem Nutzer zeigen. Keine Chat-Grafik ohne tatsächlichen Git-Upload als archiviert markieren. Keine Änderung des produktiven Flutter-Codes in ART-01.
