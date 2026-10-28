@@ -11,6 +11,8 @@ Eine Grundfigur mit beispielsweise 5 Haut-, 8 Haar- und 6 Outfitfarben ergibt **
 
 Verbindlich aus bestehender Planung: lokales Asset-Bundle, kein Bild-Downloadzwang, Flutter Android/Web, dynamisch gerenderter Spielername, stabiler Multiplayer-Datenaustausch über IDs, bestehendes v2-System bis zur geprüften Migration behalten. Der Projekt-Grafikplan wird hinsichtlich der früheren freien modularen Körper-/Kopf-Kombinatorik noch überarbeitet.
 
+**Aktualisierung zum Quellenformat (28.10.2026):** Die Originaldatei wurde per ZIP bytegenau mit dem Git-Blob verifiziert. Der bisherige 1229×1536-Pilot mit violettem Shirt und seine nachfolgenden P1-v1–v3-Masken gehören **nicht** zur originalen Master-09-PNG. Der neue quellgebundene `p1_native_git_master.py` bearbeitet die echte 1198×1313-Grafik mit **Hemd und brauner Lederweste**. [Maßgeblicher Bildbericht](reviews/p1-male09-exact-git-master-2026-10-28.md). Er ist noch **nicht visuell abgenommen**. Für komplexe Outfits können je Figur andere, kleinere Farbrollen nötig sein; die Annahme einer frei einfärbbaren ganzen Kleidung ist bisher nicht erfüllt.
+
 ## Drei Ebenen sauber unterscheiden
 
 1. **Künstlerische Quelle:** fertiges, hochwertiges Masterbild aus `docs/avatars/references/`. Original niemals überschreiben. Mit jeder Figur gelten die Unterschiede in Mimik, Körperbau, Haarform und Outfit als Teil ihres eigenen Designs.
@@ -19,7 +21,7 @@ Verbindlich aus bestehender Planung: lokales Asset-Bundle, kein Bild-Downloadzwa
 
 ### Bestehende konkrete Dateien
 
-- Original-Pilot: `docs/avatars/references/master-male-09-approved.png` (**1229 × 1536**).
+- Tatsächliches unverändertes Git-Original: `docs/avatars/references/master-male-09-approved.png` (**1198 × 1313**, 2.037.786 Bytes, Git-Blob SHA `1fbf3fe02f99fcb4fb03168045ea12d237c09e59`). Die ältere 1229×1536-Pilotgeometrie ist eine **andere Arbeitskopie**, nicht das Original.
 - Generator: `artwork/avatars/v3/prototypes/male_09_color_masks/color_mask_pilot.py`.
 - Validator: `artwork/avatars/v3/prototypes/male_09_color_masks/validate_pilot.py`.
 - Metriken: `artwork/avatars/v3/prototypes/male_09_color_masks/validation_metrics.json`.
