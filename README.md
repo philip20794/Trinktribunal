@@ -74,6 +74,7 @@ Die [englische Fassung mit denselben 491 Aufgaben-IDs](data/questions/top-ten/en
 - [Architektur und Projektstruktur](docs/ARCHITECTURE.md)
 - [Multiplayer-Optimierung und Free-Tier-Limits](docs/MULTIPLAYER_OPTIMIZATION.md)
 - [Visuelles Konzept, Avatare und Screens](docs/VISUAL_DESIGN.md)
+- [Avatar-Grafikproduktion v3: Produktionsplan und Status](docs/avatars/AVATAR_GRAPHICS_PLAN.md) · [Stilbibel](docs/avatars/STYLE_GUIDE.md)
 - [Spielkonzept, Trinkregeln und Einstellungen](docs/GAME_DESIGN.md)
 - [JSON-Format für Trinkregeln und Spieler-Platzhalter](data/rules/README.md)
 - [Screens und Abläufe der drei Spielvarianten](docs/USER_FLOWS.md)
