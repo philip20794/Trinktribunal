@@ -14,6 +14,8 @@ import '../../data/catalogs/catalog_repository.dart';
 import '../../design/avatar_view.dart';
 import '../../design/case_file.dart';
 import '../../design/private_number.dart';
+import '../../design/court_scene.dart';
+import '../../design/court_assets.dart';
 import '../../domain/config/game_config.dart';
 import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
@@ -170,6 +172,98 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     });
   }
 
+  Widget? _primaryAction(SharedGameView view) {
+    if (view.numberStage == SharedNumberStage.recipientHandoff) {
+      return FilledButton(
+        onPressed: () => _act(
+          () => _controller.confirmRecipient(
+            roundId: view.roundId,
+            player: view.recipient!,
+          ),
+        ),
+        child: Text(
+          context.tr('phoneIAm', {'name': _identity(view, view.recipient!)}),
+        ),
+      );
+    }
+    if (view.numberStage == SharedNumberStage.judgeHandoff) {
+      return FilledButton(
+        onPressed: () => _act(
+          () => _controller.confirmJudge(
+            roundId: view.roundId,
+            judge: view.judge!,
+          ),
+        ),
+        child: Text(
+          context.tr('phoneIAm', {'name': _identity(view, view.judge!)}),
+        ),
+      );
+    }
+    if (view.numberStage == SharedNumberStage.caseFile) {
+      return FilledButton(
+        onPressed: () =>
+            _act(() => _controller.beginNumberHandoff(view.roundId)),
+        child: const TText('phoneStartNumbers'),
+      );
+    }
+    if (view.phase == GamePhase.answers) {
+      return FilledButton(
+        onPressed: () => _act(() => _controller.beginOrdering(view.roundId)),
+        child: const TText('phoneBeginOrder'),
+      );
+    }
+    if (view.phase == GamePhase.ordering) {
+      return FilledButton(
+        onPressed: () async {
+          final confirmed = await _confirm(
+            context.tr('confirmOrderTitle'),
+            context.tr('confirmOrderHelp'),
+          );
+          if (mounted) {
+            _act(
+              () =>
+                  _controller.confirmOrder(view.roundId, confirmed: confirmed),
+            );
+          }
+        },
+        child: const TText('phoneConfirmOrder'),
+      );
+    }
+    if (view.phase == GamePhase.revealing) {
+      return FilledButton(
+        onPressed: () => _act(
+          () => _controller.revealNext(
+            view.roundId,
+            expectedCursor: view.revealCursor,
+          ),
+        ),
+        child: const TText('phoneRevealNext'),
+      );
+    }
+    if (view.phase == GamePhase.judged && view.verdict != null) {
+      return FilledButton(
+        onPressed: () =>
+            _act(() => _controller.completeCase(view.roundId, confirmed: true)),
+        child: const TText('phoneComplete'),
+      );
+    }
+    if (view.phase == GamePhase.ruleEvent) {
+      return FilledButton(
+        onPressed: () => _act(
+          () => _controller.continueRule(afterCase: view.completedCases),
+        ),
+        child: const TText('nextCase'),
+      );
+    }
+    if (view.phase == GamePhase.paused) {
+      return FilledButton(
+        onPressed: () => _act(_controller.resumePaused),
+        child: const TText('phoneContinueRoster'),
+      );
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final view = _controller.view!;
@@ -181,76 +275,76 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
             view.question!.entry as Question,
           ).renderFor(view.question!.names(view.names));
     final judge = view.judge == null ? null : view.profiles[view.judge];
+    final primary = _primaryAction(view);
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         _controller.interruptPrivateHandoff();
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const TText('phoneTitle'),
-          actions: [
-            GameRulesButton(
-              beforeOpen: () => _act(_controller.interruptPrivateHandoff),
-            ),
-            IconButton(
-              tooltip: context.tr('phoneManageRoster'),
-              onPressed: _group,
-              icon: const Icon(Icons.groups_outlined),
-            ),
-            IconButton(
-              tooltip: context.tr('activeRules'),
-              onPressed: () {
-                _act(_controller.interruptPrivateHandoff);
-                showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  showDragHandle: true,
-                  builder: (context) => FractionallySizedBox(
-                    heightFactor: 0.7,
-                    child: ListView(
-                      padding: const EdgeInsets.all(24),
-                      children: [
-                        Text(
-                          context.tr('activeRulesCount', {
-                            'count': view.activeRules.length,
-                          }),
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const TText('phoneRuleHelp'),
-                        for (final rule in view.activeRules)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Text(
+      child: CourtScaffold(
+        title: const TText('phoneTitle'),
+        footer: primary == null ? null : CourtActionBar(primary: primary),
+        actions: [
+          GameRulesButton(
+            beforeOpen: () => _act(_controller.interruptPrivateHandoff),
+          ),
+          IconButton(
+            tooltip: context.tr('phoneManageRoster'),
+            onPressed: _group,
+            icon: const Icon(Icons.groups_outlined),
+          ),
+          IconButton(
+            tooltip: context.tr('activeRules'),
+            onPressed: () {
+              _act(_controller.interruptPrivateHandoff);
+              showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                showDragHandle: true,
+                builder: (context) => FractionallySizedBox(
+                  heightFactor: 0.7,
+                  child: ListView(
+                    padding: const EdgeInsets.all(24),
+                    children: [
+                      Text(
+                        context.tr('activeRulesCount', {
+                          'count': view.activeRules.length,
+                        }),
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const TText('phoneRuleHelp'),
+                      for (final rule in view.activeRules)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Text(
+                            localizedRule(
+                              ref.read(catalogsProvider).requireValue,
+                              AppLanguageScope.of(context).language,
+                              rule.entry as DrinkingRule,
+                            ).render(
                               localizedRule(
                                 ref.read(catalogsProvider).requireValue,
                                 AppLanguageScope.of(context).language,
                                 rule.entry as DrinkingRule,
-                              ).render(
-                                localizedRule(
-                                  ref.read(catalogsProvider).requireValue,
-                                  AppLanguageScope.of(context).language,
-                                  rule.entry as DrinkingRule,
-                                ).text,
-                                rule.names(view.names),
-                              ),
+                              ).text,
+                              rule.names(view.names),
                             ),
                           ),
-                        if (view.activeRules.isEmpty)
-                          const TText('phoneRulesEmpty'),
-                      ],
-                    ),
+                        ),
+                      if (view.activeRules.isEmpty)
+                        const TText('phoneRulesEmpty'),
+                    ],
                   ),
-                );
-              },
-              icon: const Icon(Icons.menu_book_outlined),
-            ),
-          ],
-        ),
-        body: Center(
+                ),
+              );
+            },
+            icon: const Icon(Icons.menu_book_outlined),
+          ),
+        ],
+        bodyBuilder: (context) => Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1000),
             child: ListView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               children: [
                 Text(
                   context.tr('casesCompleted', {
@@ -271,7 +365,9 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: TText('phoneRosterNotice'),
                   ),
-                if (judge != null)
+                if (judge != null &&
+                    (view.phase != GamePhase.numbers ||
+                        view.numberStage == SharedNumberStage.caseFile))
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Row(
@@ -287,6 +383,15 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       ],
                     ),
                   ),
+                if (view.numberStage == SharedNumberStage.recipientHandoff ||
+                    view.numberStage == SharedNumberStage.judgeHandoff)
+                  const Center(
+                    child: CourtArt(
+                      CourtAssets.handover,
+                      width: 180,
+                      height: 124,
+                    ),
+                  ),
                 if (view.numberStage == SharedNumberStage.recipientHandoff) ...[
                   AvatarView(
                     config: view.profiles[view.recipient!]!.avatar,
@@ -300,19 +405,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     icon: Icons.phone_android,
                   ),
                   const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: () => _act(
-                      () => _controller.confirmRecipient(
-                        roundId: view.roundId,
-                        player: view.recipient!,
-                      ),
-                    ),
-                    child: Text(
-                      context.tr('phoneIAm', {
-                        'name': _identity(view, view.recipient!),
-                      }),
-                    ),
-                  ),
                 ],
                 if (view.numberStage == SharedNumberStage.recipientNumber) ...[
                   Text(
@@ -351,19 +443,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     icon: Icons.gavel,
                   ),
                   const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: () => _act(
-                      () => _controller.confirmJudge(
-                        roundId: view.roundId,
-                        judge: view.judge!,
-                      ),
-                    ),
-                    child: Text(
-                      context.tr('phoneIAm', {
-                        'name': _identity(view, view.judge!),
-                      }),
-                    ),
-                  ),
                 ],
                 if (rendered != null &&
                     (view.phase != GamePhase.numbers ||
@@ -372,9 +451,10 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       GamePhase.ruleEvent,
                       GamePhase.finished,
                       GamePhase.paused,
+                      GamePhase.judged,
                     ].contains(view.phase)) ...[
                   const SizedBox(height: 16),
-                  CaseFile(
+                  CourtQuestion(
                     animationKey: view.roundId,
                     showRefresh: true,
                     onRefresh:
@@ -394,38 +474,19 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     label: context.tr('caseNumber', {
                       'number': view.completedCases + 1,
                     }),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          rendered.text,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: 16),
-                        Text('1 · ${rendered.green}'),
-                        Text(rendered.connector),
-                        Text(
-                          '${(view.roster.length * view.config.factorTenths + 9) ~/ 10} · ${rendered.red}',
-                        ),
-                      ],
-                    ),
+                    text: rendered.text,
+                    green: rendered.green,
+                    connector: rendered.connector,
+                    red: rendered.red,
+                    maximum:
+                        (view.roster.length * view.config.factorTenths + 9) ~/
+                        10,
                   ),
                 ],
-                if (view.numberStage == SharedNumberStage.caseFile)
-                  FilledButton(
-                    onPressed: () => _act(
-                      () => _controller.beginNumberHandoff(view.roundId),
-                    ),
-                    child: const TText('phoneStartNumbers'),
-                  ),
+
                 if (view.phase == GamePhase.answers) ...[
                   const SizedBox(height: 16),
                   const TText('phoneAnswersHelp'),
-                  FilledButton(
-                    onPressed: () =>
-                        _act(() => _controller.beginOrdering(view.roundId)),
-                    child: const TText('phoneBeginOrder'),
-                  ),
                 ],
                 if ([
                   GamePhase.ordering,
@@ -446,57 +507,28 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                           )
                         : null,
                   ),
-                  if (view.phase == GamePhase.ordering)
-                    FilledButton(
-                      onPressed: () async {
-                        final confirmed = await _confirm(
-                          context.tr('confirmOrderTitle'),
-                          context.tr('confirmOrderHelp'),
-                        );
-                        if (mounted) {
-                          _act(
-                            () => _controller.confirmOrder(
-                              view.roundId,
-                              confirmed: confirmed,
+
+                  if (view.verdict != null)
+                    CaseFile(
+                      label: context.tr('verdictHeading'),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          CourtSeal(
+                            label: context.tr('wrongPositionsCount', {
+                              'count': view.verdict!.errors,
+                            }),
+                          ),
+                          for (final entry in view.verdict!.sips.entries)
+                            Text(
+                              context.tr('sips', {
+                                'name': view.name(entry.key),
+                                'count': entry.value,
+                              }),
                             ),
-                          );
-                        }
-                      },
-                      child: const TText('phoneConfirmOrder'),
-                    ),
-                  if (view.phase == GamePhase.revealing)
-                    FilledButton(
-                      onPressed: () => _act(
-                        () => _controller.revealNext(
-                          view.roundId,
-                          expectedCursor: view.revealCursor,
-                        ),
+                        ],
                       ),
-                      child: const TText('phoneRevealNext'),
                     ),
-                  if (view.verdict != null) ...[
-                    CourtSeal(
-                      label: context.tr('wrongPositionsCount', {
-                        'count': view.verdict!.errors,
-                      }),
-                    ),
-                    for (final entry in view.verdict!.sips.entries)
-                      Text(
-                        context.tr('sips', {
-                          'name': view.name(entry.key),
-                          'count': entry.value,
-                        }),
-                      ),
-                    FilledButton(
-                      onPressed: () => _act(
-                        () => _controller.completeCase(
-                          view.roundId,
-                          confirmed: true,
-                        ),
-                      ),
-                      child: const TText('phoneComplete'),
-                    ),
-                  ],
                 ],
                 if (view.phase == GamePhase.ruleEvent) ...[
                   CaseFile(
@@ -525,24 +557,12 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     ),
                   ),
                   const TText('phoneRuleEventHelp'),
-                  FilledButton(
-                    onPressed: () => _act(
-                      () => _controller.continueRule(
-                        afterCase: view.completedCases,
-                      ),
-                    ),
-                    child: const TText('nextCase'),
-                  ),
                 ],
                 if (view.phase == GamePhase.paused) ...[
                   Text(
                     view.pauseReason == null
                         ? context.tr('gamePaused')
                         : context.feedback(view.pauseReason!),
-                  ),
-                  FilledButton(
-                    onPressed: () => _act(_controller.resumePaused),
-                    child: const TText('phoneContinueRoster'),
                   ),
                 ],
                 if (view.phase == GamePhase.finished)

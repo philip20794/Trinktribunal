@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/data/protocol/room_message.dart';
@@ -82,7 +84,11 @@ void main() {
         expect(bank.order, fixture.room.state.snapshot!.public.frozenRoster);
         expect(bank.revealedNumbers, isEmpty);
         expect(bank.onMove, isNull);
-        await tester.tap(find.text(AppStrings('de').get('phoneRevealNext')));
+        final reveal = find.text(AppStrings('de').get('phoneRevealNext'));
+        await Scrollable.ensureVisible(tester.element(reveal), alignment: .5);
+        await tester.pumpAndSettle();
+        expect(reveal.hitTestable(), findsOneWidget);
+        await tester.tap(reveal);
         await tester.pumpAndSettle();
         expect(
           socket.sent.whereType<RevealNextMessage>().single.expectedCursor,

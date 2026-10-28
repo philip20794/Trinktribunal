@@ -141,3 +141,62 @@ class NamePlate extends StatelessWidget {
     ),
   );
 }
+
+/// Question text is built inside the paper theme, never with a dark-scene style.
+class CourtQuestion extends StatelessWidget {
+  const CourtQuestion({
+    required this.label,
+    required this.text,
+    required this.green,
+    required this.connector,
+    required this.red,
+    required this.maximum,
+    this.animationKey,
+    this.onRefresh,
+    this.showRefresh = false,
+    super.key,
+  });
+  final String label, text, green, connector, red;
+  final int maximum;
+  final Object? animationKey;
+  final VoidCallback? onRefresh;
+  final bool showRefresh;
+  @override
+  Widget build(BuildContext context) => CaseFile(
+    label: label,
+    animationKey: animationKey,
+    onRefresh: onRefresh,
+    showRefresh: showRefresh,
+    child: Builder(
+      builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(text, style: Theme.of(context).textTheme.headlineSmall),
+          const SizedBox(height: 16),
+          _scale('1 · $green', CourtTokens.green),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(connector),
+          ),
+          _scale('$maximum · $red', CourtSceneTokens.crimson),
+        ],
+      ),
+    ),
+  );
+  Widget _scale(String text, Color accent) => DecoratedBox(
+    decoration: BoxDecoration(
+      color: const Color(0xE6FFFBF5),
+      border: Border(left: BorderSide(color: accent, width: 4)),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(12),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: CourtTokens.ink,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ),
+  );
+}

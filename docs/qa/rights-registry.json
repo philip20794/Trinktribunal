@@ -141,7 +141,7 @@
       "files": [
         {
           "path": "apps/client/lib/design/case_file.dart",
-          "sha256": "197511e5816200bfcb33e139dc1530eb6586d57bd2eaa3f89f64c8b66a40b34b"
+          "sha256": "65cf0e98fcd596a75f70e7efa6bd67277432f83387ff347d705f1ca01b792b9b"
         },
         {
           "path": "apps/client/lib/design/court_scene.dart",

@@ -140,7 +140,11 @@ void main() {
         tester.widget<BenchView>(find.byType(BenchView)).revealedNumbers,
         isEmpty,
       );
-      await tester.tap(find.text(AppStrings('de').get('phoneRevealNext')));
+      final reveal = find.text(AppStrings('de').get('phoneRevealNext'));
+      await Scrollable.ensureVisible(tester.element(reveal), alignment: .5);
+      await tester.pumpAndSettle();
+      expect(reveal.hitTestable(), findsOneWidget);
+      await tester.tap(reveal);
       await tester.pumpAndSettle();
       expect(
         socket.sent.whereType<RevealNextMessage>().single.expectedCursor,

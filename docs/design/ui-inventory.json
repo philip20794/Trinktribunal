@@ -259,7 +259,8 @@
       "tests": [
         "apps/client/test/features/direct_next_rules_test.dart",
         "apps/client/test/features/question_refresh_test.dart",
-        "apps/client/test/application/local_marathon_test.dart"
+        "apps/client/test/application/local_marathon_test.dart",
+        "apps/client/test/design/question_card_test.dart"
       ],
       "targetTask": "TT-076"
     },
@@ -301,7 +302,8 @@
         "apps/client/test/features/shared_handoff_flow_test.dart",
         "apps/client/test/application/shared_handoff_test.dart",
         "apps/client/test/design/held_private_number_test.dart",
-        "apps/client/test/application/local_marathon_test.dart"
+        "apps/client/test/application/local_marathon_test.dart",
+        "apps/client/test/design/question_card_test.dart"
       ],
       "targetTask": "TT-075"
     },

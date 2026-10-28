@@ -354,7 +354,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
-        CaseFile(
+        CourtQuestion(
           animationKey: state.currentEventId,
           showRefresh: true,
           onRefresh: () => _act(
@@ -364,34 +364,11 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             'number': state.caseNumber,
             'total': config.targetCases,
           }),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                question.text,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                '1 · ${question.green}',
-                style: const TextStyle(
-                  color: Color(0xFF276044),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(question.connector),
-              ),
-              Text(
-                '${config.maxSecretNumber} · ${question.red}',
-                style: const TextStyle(
-                  color: Color(0xFF874B49),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+          text: question.text,
+          green: question.green,
+          connector: question.connector,
+          red: question.red,
+          maximum: config.maxSecretNumber,
         ),
         const SizedBox(height: 16),
         Text(

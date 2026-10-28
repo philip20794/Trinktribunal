@@ -19,9 +19,16 @@ import '../support/memory_string_store.dart';
 
 Future<void> tap(WidgetTester tester, String text) async {
   final finder = find.text(text);
-  await tester.scrollUntilVisible(finder, 350);
-  await tester.ensureVisible(finder);
+  if (finder.evaluate().isEmpty) {
+    await tester.scrollUntilVisible(
+      finder,
+      350,
+      scrollable: find.byType(Scrollable).first,
+    );
+  }
+  await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
   await tester.pumpAndSettle();
+  expect(finder.hitTestable(), findsOneWidget);
   await tester.tap(finder);
   await tester.pumpAndSettle();
 }
@@ -36,7 +43,7 @@ void main() {
   for (final count in [3, 20]) {
     for (final language in ['de', 'en']) {
       testWidgets(
-        '$count duplicate names, $language, 200 percent: separate case/handoff/hold/judge pages',
+        '$count duplicate names, $language, 200 percent: handoff, private hold and a complete judged case',
         (tester) async {
           await tester.binding.setSurfaceSize(const Size(360, 800));
           addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -101,6 +108,9 @@ void main() {
           expect(find.byType(HeldPrivateNumber), findsOneWidget);
           final hold = find.text(strings.get('phoneHoldNumber'));
           await tester.scrollUntilVisible(hold, 350);
+          await Scrollable.ensureVisible(tester.element(hold), alignment: .5);
+          await tester.pumpAndSettle();
+          expect(hold.hitTestable(), findsOneWidget);
           final gesture = await tester.startGesture(tester.getCenter(hold));
           await tester.pump();
           expect(game.view!.visibleSecret, isNotNull);
@@ -147,6 +157,32 @@ void main() {
           expect(game.view!.phase, GamePhase.answers);
           expect(game.view!.completedCases, 0);
           expect(find.byType(CaseFile), findsOneWidget);
+          Future<void> primary(String key) async {
+            final button = find.text(strings.get(key));
+            expect(button.hitTestable(), findsOneWidget);
+            await tester.tap(button);
+            await tester.pumpAndSettle();
+          }
+
+          await primary('phoneBeginOrder');
+          expect(game.view!.phase, GamePhase.ordering);
+          await primary('phoneConfirmOrder');
+          await tap(tester, strings.get('confirm'));
+          while (game.view!.phase == GamePhase.revealing) {
+            await primary('phoneRevealNext');
+          }
+          expect(game.view!.phase, GamePhase.judged);
+          expect(find.byType(CourtQuestion), findsNothing);
+          expect(
+            find.text(strings.get('verdictHeading').toUpperCase()),
+            findsOneWidget,
+          );
+          final verdict = game.view!.verdict!;
+          expect(verdict.sips.length, count);
+          await primary('phoneComplete');
+          expect(game.view!.completedCases, 1);
+          expect(game.view!.numberStage, SharedNumberStage.caseFile);
+          expect(game.view!.visibleSecret, isNull);
           expect(tester.takeException(), isNull);
         },
       );

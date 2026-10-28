@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../l10n/app_strings.dart';
+import 'court_scene.dart';
+import 'court_assets.dart';
 
 /// Shared local/online presentation; hidden values never enter text or semantics.
 class PrivateNumber extends StatefulWidget {
@@ -40,6 +42,7 @@ class HeldPrivateNumber extends StatefulWidget {
 class _HeldPrivateNumberState extends State<HeldPrivateNumber>
     with WidgetsBindingObserver {
   final _focus = FocusNode(debugLabel: 'hold-private-number');
+  final _holdSurface = GlobalKey();
   int? _pointer;
   LogicalKeyboardKey? _key;
   bool get _held => _pointer != null || _key != null;
@@ -73,18 +76,8 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber>
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      if (widget.number != null && _held)
-        Text(
-          '${widget.number}',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.displayLarge,
-          semanticsLabel: context.tr('secretNumber', {'number': widget.number}),
-        )
-      else
-        const Padding(
-          padding: EdgeInsets.all(24),
-          child: Icon(Icons.lock_outline, size: 48),
-        ),
+      _NumberFace(number: _held ? widget.number : null),
+      const SizedBox(height: 12),
       Semantics(
         button: true,
         label: context.tr('phoneHoldNumber'),
@@ -127,12 +120,18 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber>
                     (event.localPosition.dx < 0 ||
                         event.localPosition.dy < 0 ||
                         event.localPosition.dx > constraints.maxWidth ||
-                        event.localPosition.dy > 56)) {
+                        event.localPosition.dy >
+                            (_holdSurface.currentContext!.findRenderObject()
+                                    as RenderBox)
+                                .size
+                                .height)) {
                   _stop();
                 }
               },
               child: Container(
-                height: 56,
+                key: _holdSurface,
+                constraints: const BoxConstraints(minHeight: 56),
+                padding: const EdgeInsets.all(12),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
@@ -193,6 +192,8 @@ class _PrivateNumberState extends State<PrivateNumber> {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
+      _NumberFace(number: widget.number),
+      const SizedBox(height: 12),
       if (widget.number == null)
         FilledButton(
           focusNode: _reveal,
@@ -200,12 +201,6 @@ class _PrivateNumberState extends State<PrivateNumber> {
           child: const TText('phoneReveal'),
         )
       else ...[
-        Text(
-          '${widget.number}',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.displayLarge,
-          semanticsLabel: context.tr('secretNumber', {'number': widget.number}),
-        ),
         if (widget.onConfirm != null)
           FilledButton(
             focusNode: _confirm,
@@ -219,5 +214,35 @@ class _PrivateNumberState extends State<PrivateNumber> {
         ),
       ],
     ],
+  );
+}
+
+class _NumberFace extends StatelessWidget {
+  const _NumberFace({required this.number});
+  final int? number;
+  @override
+  Widget build(BuildContext context) => CourtPaper(
+    asset: CourtAssets.numberPaper,
+    padding: const EdgeInsets.all(16),
+    child: Builder(
+      builder: (context) => SizedBox(
+        height: 140,
+        width: double.infinity,
+        child: Center(
+          child: number == null
+              ? const ExcludeSemantics(
+                  child: Icon(Icons.lock_outline, size: 48),
+                )
+              : Text(
+                  '$number',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.displayLarge,
+                  semanticsLabel: context.tr('secretNumber', {
+                    'number': number,
+                  }),
+                ),
+        ),
+      ),
+    ),
   );
 }

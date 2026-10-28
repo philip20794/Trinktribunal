@@ -27,7 +27,7 @@ class OnlineReveal extends ConsumerWidget {
             player.playerId: player.profile.name,
         },
         verdict = view.phase == 'judged' ? view.result : null;
-    return ListenableBuilder(
+    final content = ListenableBuilder(
       listenable: game,
       builder: (context, _) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -70,5 +70,8 @@ class OnlineReveal extends ConsumerWidget {
         ],
       ),
     );
+    return view.phase == 'judged'
+        ? CaseFile(label: context.tr('verdictHeading'), child: content)
+        : content;
   }
 }

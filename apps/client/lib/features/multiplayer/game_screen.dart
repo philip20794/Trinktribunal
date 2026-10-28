@@ -86,8 +86,8 @@ class RoomGameScreen extends ConsumerWidget {
               if (reader != null)
                 Text(context.tr('onlineReader', {'name': reader})),
               const TText('rosterFrozen'),
-              if (rendered != null)
-                CaseFile(
+              if (rendered != null && view.phase != 'judged')
+                CourtQuestion(
                   animationKey: view.roundId,
                   showRefresh: true,
                   onRefresh: game.canReroll
@@ -99,21 +99,14 @@ class RoomGameScreen extends ConsumerWidget {
                   label: context.tr('caseNumber', {
                     'number': view.completedCases + 1,
                   }),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        rendered.text,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      const SizedBox(height: 16),
-                      Text('1 · ${rendered.green}'),
-                      Text(rendered.connector),
-                      Text(
-                        '${(view.frozenRoster.length * view.config.factorTenths + 9) ~/ 10} · ${rendered.red}',
-                      ),
-                    ],
-                  ),
+                  text: rendered.text,
+                  green: rendered.green,
+                  connector: rendered.connector,
+                  red: rendered.red,
+                  maximum:
+                      (view.frozenRoster.length * view.config.factorTenths +
+                          9) ~/
+                      10,
                 ),
               if (snapshot.private.ownNumber != null) ...[
                 const TText('onlineOwnNumber'),

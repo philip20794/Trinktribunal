@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4/TT-079–084 abgeschlossen; nächster Meilenstein M7.5 (TT-071–078). Aktiv TT-075; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 140 Node-/507 Flutter-/446 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4/TT-079–084 abgeschlossen; nächster Meilenstein M7.5 (TT-071–078). Aktiv TT-076; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 140 Node-/511 Flutter-/446 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -136,7 +136,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-072 | Gerichtssaal-Designsystem und PNG-Integration | ERLEDIGT | Responsive Hülle/Papier/Aktionsleisten, 15 PNGs mit Cache/Fallback; 486 Flutter-/140 Node-Tests, Analyze/Format und frische Web-/APK-Builds grün · [M7.5](qa/M7_5.md). |
 | TT-073 | Startseite, Profil und Einstellungen neugestalten | ERLEDIGT | Kompakte Moduskarten, v2-Vorschau/live Namensschild, Speichernleiste, responsive Kategorien, Einstellungen und lokale Konfiguration; 494 Flutter-/140 Node-Tests, Analyze/Format grün · [M7.5](qa/M7_5.md). |
 | TT-074 | Personenverwaltung und Schlangen-Sitzbank | ERLEDIGT | Gemeinsame ID-basierte Bank, drei Plätze ab 324 px/sonst zwei, Schlangenrichtung, Personenmenüs und D-17-Alternativen; 507 Flutter-/140 Node-Tests, Analyze/Format grün · [M7.5](qa/M7_5.md). |
-| TT-075 | Übergabe, Richter, Fallakte, Geheimzahl und Urteil | OFFEN | — |
+| TT-075 | Übergabe, Richter, Fallakte, Geheimzahl und Urteil | ERLEDIGT | Gemeinsame Frage/Skala, feste Phasenaktionen, Übergabe-/Zahlen-/Urteilspapier; 511 Flutter-/140 Node-Tests, Analyze/Format, vollständige DE/EN-Widgetrunden grün · [M7.5](qa/M7_5.md). |
 | TT-076 | Kartenmodus, Regeln und lokale UI angleichen | OFFEN | — |
 | TT-077 | Lobby und Multiplayer-Ansichten angleichen | OFFEN | — |
 | TT-078 | UI- und Layout-Regression abschließen | OFFEN | — |
@@ -174,7 +174,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-075 – Übergabe, Fallakte, Geheimzahl und Urteil.** TT-071–074 sind abgeschlossen, M7.4/TT-079–084 abgeschlossen; danach folgen TT-076–078. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-076 – Kartenmodus, Trinkregeln und lokale UI.** TT-071–075 sind abgeschlossen, M7.4/TT-079–084 abgeschlossen; danach folgen TT-077/078. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -197,10 +197,10 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-074-roster-bench auf main be3fcf7; TT-074 fertig geprüft
-Aktueller Beleg: docs/qa/M7_5.md. TT-071–074 abgeschlossen: 140 Node-/507 Flutter-Tests, Analyze/Format grün; Server unverändert mit 446 Tests aus M7.4. Builds zuletzt TT-072; nächste frische Builds im TT-078-Gate.
-Naechster Schritt: TT-075 – gemeinsame dunkle Hülle, Papier/Übergabe/Zahlen/Urteil neu gestalten. D-19-Zustände und Hold vs Online-Tap erhalten, CaseFile-Inhalte müssen lokales helles Paper-Theme nutzen. Vor Änderungen Gitstand prüfen.
-TT-065 extern offen (18 Pakete/123 Dateien, sechs ungeklärte Runtime-Pakete); Avatar v3 separat. Neuer P1-Originaltest scheitert an Bildmaßen 1198×1313 statt1229×1536, keine Masterbilder ändern. Browser/E2E übersprungen, später manuell testen.
+Branch: task/TT-075-case-handoff-verdict auf main 0109f96; TT-075 fertig geprüft
+Aktueller Beleg: docs/qa/M7_5.md. TT-071–075 abgeschlossen: 140 Node-/511 Flutter-Tests, Analyze/Format grün; Server unverändert mit 446 Tests aus M7.4. Builds zuletzt TT-072; frische Gesamtbuilds im TT-078-Gate.
+Naechster Schritt: TT-076 – Kartenmodus, aktive Regeln/Spielregelseite und lokale Fehler-/Resume-Zustände im Court-Stil. Karten-Weiter/Regel-Weiter fest erreichbar halten, _setup/_game/_slider brauchen den richtigen Theme-Kontext. Danach TT-077 und TT-078.
+TT-065 extern offen (18 Pakete/123 Dateien, sechs ungeklärte Runtime-Pakete); Avatar v3 separat, P1-Quellbildkonflikt dokumentiert. Rechtehashes auf LF normalisieren und nach Staging gegen Git-Blobs prüfen. Browser/E2E übersprungen, später manuell testen.
 Größere geprüfte Stände nach main pushen. Keine GitHub Actions oder Cloudflare-Deployments
 ```
 

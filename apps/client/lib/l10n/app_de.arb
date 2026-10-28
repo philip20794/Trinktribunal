@@ -729,5 +729,6 @@
   "retry": "Erneut versuchen",
   "settingsLoadFailed": "Die Einstellungen sind gerade nicht verfügbar. Bitte erneut laden oder zurückgehen.",
   "benchRowDirection": "Sitzfolge {from} bis {to}",
-  "benchControls": "Sortiersteuerung"
+  "benchControls": "Sortiersteuerung",
+  "verdictHeading": "Das Urteil"
 }
