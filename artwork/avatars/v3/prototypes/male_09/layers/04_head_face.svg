@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+ <!-- Distinct long, irregular caricature head with attached ears; no hair or clothing baked in -->
+ <path data-palette="skin.deep" fill="#81423a" stroke="#653b35" stroke-width="8" d="M383 370Q347 318 303 346Q273 363 290 418Q304 454 348 467Q358 511 373 548Q382 644 448 704Q489 733 541 719Q622 697 651 579Q666 532 672 468Q733 480 767 432Q803 377 772 347Q736 320 674 357L648 298Q608 220 494 216Q400 229 377 309Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#683e35" stroke-width="6" d="M390 343Q373 300 350 355Q319 358 327 411Q342 446 372 447Q376 522 394 580Q416 674 480 703Q545 728 595 665Q634 608 650 521L662 438Q709 457 741 422Q771 382 741 369Q710 365 666 403Q658 333 636 295Q595 240 520 235Q430 236 399 288Z"/>
+ <!-- broad asymmetric ears -->
+ <path data-palette="skin.base" fill="#edb08d" stroke="#683e35" stroke-width="6" d="M378 358Q343 330 316 346Q279 365 299 414Q316 460 367 460Z"/>
+ <path data-palette="skin.blush" fill="#da7869" opacity=".67" d="M340 362Q305 367 320 406Q330 427 360 439Q340 405 351 392Z"/>
+ <path fill="none" stroke="#a65d50" stroke-width="6" d="M362 433Q337 429 331 404Q329 386 350 383Q360 384 362 400"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#683e35" stroke-width="6" d="M658 381Q717 327 756 349Q791 369 763 425Q743 463 669 463Z"/>
+ <path data-palette="skin.blush" fill="#da7869" opacity=".7" d="M690 405Q718 358 746 372Q755 387 730 426Q706 446 681 443Z"/>
+ <path fill="none" stroke="#9c554a" stroke-width="7" d="M687 430Q724 426 733 392Q733 377 718 381Q697 389 695 408"/>
+ <!-- face shape shadow: keeps malleable warm skin modeling -->
+ <path data-palette="skin.shadow" fill="#bb6b56" opacity=".30" d="M598 316Q650 400 625 534Q618 644 563 685Q615 648 638 555Q674 425 635 314Z"/>
+ <path data-palette="skin.highlight" fill="#ffcfaa" opacity=".45" d="M403 334Q391 488 412 558Q420 604 435 624Q395 578 389 494Q377 395 403 334Z"/>
+ <!-- strong crooked jaw and chin -->
+ <path fill="none" stroke="#96574a" opacity=".85" stroke-width="4" d="M405 602Q436 694 503 701Q549 710 590 651"/>
+ <path data-palette="skin.shadow" fill="#bb6b56" opacity=".31" d="M414 597 Q460 650 504 655Q563 666 599 610Q566 686 520 700Q439 699 414 597Z"/>
+ <!-- long distinctive protruding nose and warm flushed tip -->
+ <path data-palette="skin.shadow" fill="#bb6b56" opacity=".50" d="M509 376Q512 449 473 531Q456 549 475 561Q512 580 564 553Q577 534 559 519Q548 452 539 385Z"/>
+ <path data-palette="skin.base" fill="#edb08d" stroke="#864a40" stroke-width="5" d="M506 399Q503 465 476 512Q456 544 476 557Q514 576 559 551Q568 543 552 522Q539 457 536 394"/>
+ <path data-palette="skin.blush" fill="#da7869" opacity=".86" d="M474 529Q495 514 539 526Q564 537 545 554Q508 570 479 551Q469 545 474 529Z"/>
+ <path data-palette="skin.highlight" fill="#ffcfaa" opacity=".78" d="M488 527Q504 521 517 526Q510 536 488 537Z"/>
+ <path fill="none" stroke="#8f4a42" stroke-width="5" d="M480 553Q487 562 501 558M542 556Q553 553 556 546"/>
+ <!-- cheeks and blush -->
+ <ellipse data-palette="skin.blush" fill="#da7869" opacity=".21" cx="408" cy="512" rx="37" ry="30"/>
+ <ellipse data-palette="skin.blush" fill="#da7869" opacity=".20" cx="613" cy="509" rx="30" ry="32"/>
+ <path data-palette="skin.highlight" fill="#ffcfaa" opacity=".18" d="M405 478Q438 466 458 482Q432 501 405 497ZM575 487Q610 468 629 480Q617 502 579 506Z"/>
+ <!-- small freckles retained through recoloring -->
+ <g fill="#8e5046" opacity=".46"><circle cx="402" cy="526" r="3"/><circle cx="417" cy="535" r="2.2"/><circle cx="427" cy="523" r="2.5"/><circle cx="595" cy="524" r="3"/><circle cx="614" cy="526" r="2.5"/><circle cx="628" cy="517" r="2"/></g>
+</g></svg>
