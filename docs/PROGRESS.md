@@ -2,7 +2,7 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4 in Arbeit: TT-079–083 erledigt, TT-084 offen; danach M7.5 (TT-071–078). Nächste Aufgabe TT-084; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 137 Node-/473 Flutter-/444 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
+**Aktuell: TT-001–064 und M7 nach Unit-Gates abgeschlossen. M7.4/TT-079–084 abgeschlossen; nächster Meilenstein M7.5 (TT-071–078). Nächste Aufgabe TT-071; TT-065 (Rechteklärung) bleibt wegen fehlender externer Nachweise parallel blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen; kein Folgeaufgabenblocker. 137 Node-/474 Flutter-/446 Server-Tests grün. Worker/SQLite lokal unter Windows gestartet und geprüft · [TT-035](qa/TT-035.md).
 
 ## Statusregeln
 
@@ -145,7 +145,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-081 | Refresh-Aktion in allen drei Spielvarianten | ERLEDIGT | Refresh und Richter-/Vorleserrechte in allen Modi, v2-DTOs und alter Socket-Versionsschutz; synchronisierte private Projektionen, Retry/Rejoin und Erschöpfung geprüft · [M7.4](qa/M7_4.md). |
 | TT-082 | Weiter ohne Strafpopup und allgemeine Spielregeln | ERLEDIGT | Karten-Weiter ohne Strafdialog/erfundene Wertung; getrennte D-07-Bestätigung und allgemeine DE/EN-Regelseite in allen Modi. 440 Flutter-/444 Server-/137 Node-Tests und Builds grün · [M7.4](qa/M7_4.md). |
 | TT-083 | Ein-Handy-Übergabe und Geheimzahl in getrennten Screens | ERLEDIGT | Getrennte Fall-/Übernahme-/Hold-/Richterseiten, versionierte sichere Wiederaufnahme und definierte Reihenfolge; 33 neue Tests, 473 Flutter-Tests, Parität und Builds grün · [M7.4](qa/M7_4.md). |
-| TT-084 | Integration und Regression M7.4 abschließen | OFFEN | — |
+| TT-084 | Integration und Regression M7.4 abschließen | ERLEDIGT | Neue kombinierte lokale/Online-D-19-Regression, kompletter Gesamtcheck mit 474 Flutter-/446 Server-/137 Node-Tests, Parität und Builds grün. M7.4 abgeschlossen · [M7.4](qa/M7_4.md). |
 
 ## Entscheidungen und verbleibende externe Release-Voraussetzungen
 
@@ -174,7 +174,7 @@ Der Inhalt von D-05 ist für Auswahl und Katalogerschöpfung entschieden. **Die 
 | D-17 – Einfügen statt Tauschen | ENTSCHIEDEN | TT-003/020/021 · [D-17](decisions/D-17-reorder-insertion.md) |
 | D-18 – JS-Baseline und Wasm-Bewertung | ENTSCHIEDEN (Messung in TT-062) | TT-029/062/067 · [D-18](decisions/D-18-web-renderer.md) |
 
-**Nächste Implementierung: TT-084 – integrierte M7.4-Regression.** TT-079–083 sind erledigt; darauf folgt TT-084; erst dann TT-071/M7.5. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
+**Nächste Implementierung: TT-071 – vollständiger Screen-/Asset-Bestand für M7.5.** M7.4/TT-079–084 ist nach Gesamtcheck abgeschlossen; danach folgen TT-072–078. Parallel kann TT-065 (Inhalts-/Asset-Nutzungsnachweise) weiterlaufen; TT-069 wartet auf TT-084 und TT-078. TT-064 und M7 nach Unit-Gates abgeschlossen. Browser-/E2E-Prüfungen übersprungen, später manuell testen. Größere geprüfte Stände werden nach main gepusht.
 
 Der [PLAN-004-Prüfbeleg](qa/PLAN_RECONCILIATION.md) beschreibt den historischen Umgebungscheck vor der App-Implementierung. Für den heutigen Stand gelten das Aufgabenregister und die verlinkten neueren QA-Belege.
 
@@ -197,9 +197,9 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-083-private-handoff auf main 7686e20; geprüfter TT-083-Stand wird nach main gepusht
-Aktueller Beleg: docs/qa/M7_4.md; 137 Node-/473 Flutter-/444 Server-Tests, Analyze/Format/Parität und JS-Web/Debug-APK grün. Server unverändert seit TT-081/082 (441 Nachlauf + 3 vorher bestandene Vollspiele).
-Naechster Schritt: TT-084: kombinierte Reroll -> explizite Übergabe -> automatische Wertung -> genau ein Abschluss/Regel-Slot in lokalen/Online-Units; finaler Gesamtcheck/Build-/Offline-Gates, M7.4-Abschluss dokumentieren. Danach TT-071–078. TT-065 extern offen, Rechteinventar 16/107; v3 nur separater künstlerisch nicht abgenommener Grafikprototyp. Browser/E2E übersprungen, später manuell testen.
+Branch: task/TT-084-gameplay-regression auf main 7db43d1; M7.4-Abschluss wird nach main gepusht
+Aktueller Beleg: docs/qa/M7_4.md; vollständiges scripts/check.ps1 -Scope All grün: 137 Node-/474 Flutter-/446 Server-Tests (34 Serverdateien, 278.69 s), Analyze/Format/Typecheck und Parität/Mutationskontrollen. Unveränderter TT-083-Produktcode mit geprüften JS-Web-/Offline-/Debug-APK-Artefakten.
+Naechster Schritt: TT-071: alle Screens/Zustände/Navigation und 33 Gerichtssaal-PNGs + zehn Referenzen inventarisieren, Bilder einzeln prüfen, Abweichungen dokumentieren; danach TT-072 responsive Gerichtssaal-Hülle/PNG-Integration und erst dann TT-073–078. Kein neues Gameplay. TT-065 extern offen (Inventar 16/107); Avatar v3 eigener Grafik-Workstream, bisher v2-Runtime. Browser/E2E übersprungen, später manuell testen.
 Nicht erneut erzeugen: Android/Web/Metadaten sind vorhanden
 Keine GitHub Actions oder Cloudflare-Deployments
 ```
