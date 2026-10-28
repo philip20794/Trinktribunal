@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" aria-label="Trinktribunal Avatar Prototyp: getrennte Ebene"><g stroke-linecap="round" stroke-linejoin="round">
+ 
+ <path data-palette="hair.shadow" fill="#30202a" stroke="#2f2226" stroke-width="3" d="M493 665Q512 657 531 663L545 681Q542 707 522 726Q516 705 502 699Z" />
+ <path data-palette="hair.base" fill="#543328" opacity=".94" d="M505 670Q523 664 534 673L530 694 523 706 515 687Z" />
+ <path fill="none" stroke="#6f4d3c" stroke-width="3" opacity=".6" d="M507 678L519 702M525 675L523 699" />
+ <g fill="#51372f" opacity=".65"><circle cx="453" cy="635" r="2" /><circle cx="460" cy="642" r="2" /><circle cx="563" cy="641" r="2" /><circle cx="574" cy="624" r="1.5" /><circle cx="452" cy="651" r="1.6" /></g>
+</g><g stroke-linecap="round" stroke-linejoin="round">
+<path data-palette="hair.light" fill="#986646" opacity=".33" d="M511 668Q521 667 526 673L519 693Z" />
+<path fill="none" stroke="#38282a" stroke-width="1.5" opacity=".6" d="M498 672q3 12 9 18M536 675q-6 14 -9 22M512 686q4 12 7 24" />
+</g></svg>
