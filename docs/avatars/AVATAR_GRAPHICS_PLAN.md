@@ -1,7 +1,10 @@
 # Avatar-Grafikproduktion v3 – Implementierungs- und Produktionsplan
 
+> **Aktuelle Übergabe (28.10.2026):** Starte mit **[INTRO.md](INTRO.md)**. Danach **[NEXT_STEPS.md](NEXT_STEPS.md)**, **[DECISIONS.md](DECISIONS.md)** und **[ARCHITECTURE.md](ARCHITECTURE.md)** lesen. Dieser ursprüngliche Plan entstand für einen **vollmodularen Avatar-Baukasten**. Die technische Erprobung hat diese Produktionsmethode als Hauptweg zurückgestellt; bevorzugter **noch nicht freigegebener** Kandidat sind **hochwertige fertige Masterfiguren mit Farbmasken**. Alte ART-05–ART-17-Listen, Kombinatorik- und Layer-Vorgaben sind **historischer Planungsstand**, **keine Anweisung zur Massenproduktion**, bis sie nach dem Zweitfiguren-Test ausdrücklich aktualisiert werden. Die Designziele, v2-Fallback und Qualitäts-/Rechtegates gelten weiter.
+
+
 **Projekt:** Trinktribunal · **Stand:** 28.10.2026 · **Dokumentstatus:** Arbeitsplan, v1  
-**Geltungsbereich:** neue, modular zusammensetzbare 2D-Karikaturen für Flutter/Android/Web.  
+**Geltungsbereich:** historischer Workstream für modular zusammensetzbare 2D-Karikaturen; zurzeit Farbmasken-Pilot mit fertigen Masterfiguren als bevorzugter Prüfpfad für Flutter/Android/Web.  
 **Verwandte Dokumente:** [Stilbibel](STYLE_GUIDE.md), [visuelles Gesamtkonzept](../VISUAL_DESIGN.md), [Architektur](../ARCHITECTURE.md), [Avatar-v2-Prüfbeleg](../qa/TT-060.md), [Asset-Herkunft](../qa/asset-sources.md), [Implementierungsplan](../IMPLEMENTATION_PLAN.md).
 
 > **Abgrenzung:** Dieser Plan ist ein **neuer, gesonderter Grafik-Workstream**, keine Behauptung über den Abschluss der bestehenden TT-Aufgaben. Bestehende v2-Avatare/Editor/Server bleiben funktionsfähig, bis v3 separat getestet und umgestellt ist. Kein Asset, Renderer, Build oder Release wird durch das bloße Anlegen dieses Plans fertig.
