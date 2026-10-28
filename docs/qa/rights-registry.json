@@ -359,6 +359,88 @@
           "sha256": "e84aa3b2947dc08c99c234928cc375fc40b3cae1851f4ab39b6cb2eaed57d4c7"
         }
       ]
+    },
+    {
+      "id": "avatar-v3-master-references",
+      "distribution": "reference-only",
+      "status": "unresolved",
+      "provenance": "User-uploaded visually approved master compositions; archived reference files, no modular runtime layers or license clearance.",
+      "evidence": "docs/avatars/AVATAR_GRAPHICS_PLAN.md",
+      "files": [
+        {
+          "path": "docs/avatars/references/master-female-02-approved.png",
+          "sha256": "85945cc01e17aabb2e202b38919f22068593c4016caacd787b09905925dbd194"
+        },
+        {
+          "path": "docs/avatars/references/master-female-04-approved.png",
+          "sha256": "e67dfe21c89977f6662872acb44daf052360a5172aa3039369fceb2728269f47"
+        },
+        {
+          "path": "docs/avatars/references/master-female-06-approved.png",
+          "sha256": "7bacff270e0f9ab4bb43c6c6bc3a9793c3bad2e9ce249d1612be8b0d2d5e6596"
+        },
+        {
+          "path": "docs/avatars/references/master-male-01-approved.png",
+          "sha256": "75fe7f7497e81266dbc31f326e410225d472ba7470365a5544002e4f7d96c531"
+        },
+        {
+          "path": "docs/avatars/references/master-male-03-approved.png",
+          "sha256": "770f0cc52567ae33ef5b4c650f7e9917f9726ccc6c257402b04e700cc5e1af24"
+        },
+        {
+          "path": "docs/avatars/references/master-male-05-approved.png",
+          "sha256": "5db91745afd8abb1d505564cd733762a17a09e0279720a1340f58b01ef1b7d48"
+        }
+      ]
+    },
+    {
+      "id": "ui-screen-references",
+      "distribution": "reference-only",
+      "status": "unresolved",
+      "provenance": "User-approved screen mockups, documentation references only, not production screen images or licensed runtime assets.",
+      "evidence": "docs/design/references/screens/README.md",
+      "files": [
+        {
+          "path": "docs/design/references/screens/01_startseite.png",
+          "sha256": "a653d9dbb2ad9946c8ae7570e1fa8ee406170916d3c62b5911b5803d3e33abb2"
+        },
+        {
+          "path": "docs/design/references/screens/02_profil_bearbeiten.png",
+          "sha256": "ea06b4552d2f7a43a1d74b4b370931a2e533eb21ed321c25e93a78a6b1ccd8eb"
+        },
+        {
+          "path": "docs/design/references/screens/03_platzhalter_freier_screen.png",
+          "sha256": "2a964671e2a6f8de0f5ddf09d2988acfcec4211f38109cb121c3c3ef19d4158b"
+        },
+        {
+          "path": "docs/design/references/screens/04_sitzreihenfolge.png",
+          "sha256": "007b35b2ef81d25c122fc0aa3b10f5dab1888cb4e2f31ef79d625e5a02929a50"
+        },
+        {
+          "path": "docs/design/references/screens/05_spielkonfiguration_handy_karten.png",
+          "sha256": "d910b50133883cdc45f6addd4917cf9ef242d2bcf19389bad893904939eb25e7"
+        },
+        {
+          "path": "docs/design/references/screens/06_handy_weitergeben.png",
+          "sha256": "e25fb8d242bd917b938f3ed34e1bad8ccae10ea7392c8581f50e66e57bc879da"
+        },
+        {
+          "path": "docs/design/references/screens/07_richter_uebergabe.png",
+          "sha256": "a150670d89050e990f887bc6f896a37052d85a3d02968244d5ae87502e9eb831"
+        },
+        {
+          "path": "docs/design/references/screens/08_fallakte_frage.png",
+          "sha256": "09014f113140ceacdad16d1b1c1592b65343dcc8c9e2b36477648f269c4796e1"
+        },
+        {
+          "path": "docs/design/references/screens/09_geheime_nummer.png",
+          "sha256": "4127bd92dbd4e063828cbe6d8e72b1aa8613463e8910084731fcbfac53a15a31"
+        },
+        {
+          "path": "docs/design/references/screens/10_spieler_hinzufuegen.png",
+          "sha256": "ebad3f27749144fde599619d7ed7d28d9a01742400e1c012ed86336bad662bb6"
+        }
+      ]
     }
   ]
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// TT-002: validate repository-local Markdown links and the 70-task register.
+// TT-002: validate repository-local Markdown links and the 84-task register.
 // No dependencies, network access or changes to repository files.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
@@ -83,7 +83,7 @@ if (existsSync(planPath) && existsSync(progressPath)) {
     .map(match => match[1]);
   const rows = [...progress.matchAll(/^\|\s*(TT-\d{3})\s*\|[^\n|]*\|\s*(OFFEN|IN ARBEIT|BLOCKIERT|ERLEDIGT)\s*\|/gm)]
     .map(match => match[1]);
-  const expected = Array.from({ length: 70 }, (_, i) =>
+  const expected = Array.from({ length: 84 }, (_, i) =>
     `TT-${String(i + 1).padStart(3, '0')}`);
 
   for (const [file, actual, name] of [
@@ -99,7 +99,7 @@ if (existsSync(planPath) && existsSync(progressPath)) {
     for (const id of counts.keys()) {
       if (!expected.includes(id)) report(file, `Unexpected ${name}: ${id}`);
     }
-    if (actual.length !== 70) report(file, `Expected 70 ${name}s, found ${actual.length}`);
+    if (actual.length !== 84) report(file, `Expected 84 ${name}s, found ${actual.length}`);
   }
   for (const file of files) {
     const text = readFileSync(file, 'utf8');
@@ -115,4 +115,4 @@ if (errors.length) {
   console.error(`Document checks FAILED: ${errors.length} error(s).`);
   process.exit(1);
 }
-console.log(`Document checks OK: ${files.length} Markdown files, 70 plan tasks and 70 status rows.`);
+console.log(`Document checks OK: ${files.length} Markdown files, 84 plan tasks and 84 status rows.`);

@@ -15,7 +15,7 @@ function fixture(run) {
     mkdirSync(join(root, 'data', 'questions'), { recursive: true });
     mkdirSync(join(root, 'data', 'rules'), { recursive: true });
 
-    const ids = Array.from({ length: 70 }, (_, i) =>
+    const ids = Array.from({ length: 84 }, (_, i) =>
       `TT-${String(i + 1).padStart(3, '0')}`);
     writeFileSync(
       join(root, 'docs', 'IMPLEMENTATION_PLAN.md'),
@@ -42,11 +42,11 @@ function fixture(run) {
   }
 }
 
-test('70 korrekte Aufgaben und lokale Links ergeben Exitcode 0', () => {
+test('84 korrekte Aufgaben und lokale Links ergeben Exitcode 0', () => {
   fixture(({ execute }) => {
     const result = execute();
     assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, /70 plan tasks and 70 status rows/);
+    assert.match(result.stdout, /84 plan tasks and 84 status rows/);
   });
 });
 
@@ -85,10 +85,10 @@ test('fehlender Registereintrag ergibt Exitcode 1', () => {
   fixture(({ root, execute }) => {
     const path = join(root, 'docs', 'PROGRESS.md');
     writeFileSync(path, readFileSync(path, 'utf8')
-      .split('\n').filter(line => !line.startsWith('| TT-070 |')).join('\n'));
+      .split('\n').filter(line => !line.startsWith('| TT-084 |')).join('\n'));
     const result = execute();
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /Missing task status row: TT-070/);
+    assert.match(result.stderr, /Missing task status row: TT-084/);
   });
 });
 
