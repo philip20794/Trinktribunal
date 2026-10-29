@@ -94,10 +94,13 @@ class _RoomMeState extends ConsumerState<RoomMe> {
                   onPressed: editor.dirty ? editor.flush : null,
                   child: const TText('roomProfileFlush'),
                 ),
-                AvatarOptions(
-                  config: editor.avatar,
-                  keyPrefix: 'online-',
-                  onChanged: editor.changeAvatar,
+                SizedBox(
+                  height: 310,
+                  child: AvatarOptions(
+                    config: editor.avatar,
+                    keyPrefix: 'online-',
+                    onChanged: editor.changeAvatar,
+                  ),
                 ),
               ],
             ),
