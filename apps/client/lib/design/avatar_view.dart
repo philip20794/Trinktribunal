@@ -28,6 +28,7 @@ abstract final class TrinkAvatarRenderer {
       'ttHandsVariant': 'holding',
       'ttWallVariant': 'heightChart',
       'ttInitialsVariant': 'blank',
+      'ttInitialsProbability': 0,
       'skinColor': s['skinColor']!,
       'hairColor': s['hairColor']!,
       'outfitColor': s['outfitColor']!,
