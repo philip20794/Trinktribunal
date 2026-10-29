@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/features/profile/avatar_options.dart';
+import 'package:trinktribunal/features/profile/avatar_color_picker.dart';
+import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
 void main() {
@@ -63,12 +65,19 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('avatar-tab-2')));
       await tester.pumpAndSettle();
       final skin=find.byKey(const ValueKey('avatar-option-skinColor:#ecad80'));
-      tester.widget<DropdownButtonFormField<String>>(skin).onChanged!('#763900');
-      await tester.pump();
-      expect(selected['skinColor'],'#763900');
+      expect(skin, findsOneWidget);
+      expect(find.byType(DropdownButtonFormField<String>), findsNothing);
+      await tester.tap(skin);
+      await tester.pumpAndSettle();
+      expect(find.byType(AvatarColorPickerDialog), findsOneWidget);
+      await tester.enterText(find.byType(TextField).last, '#123ABC');
+      await tester.tap(find.text(language == 'de' ? 'Übernehmen' : 'Apply'));
+      await tester.pumpAndSettle();
+      expect(selected['skinColor'],'#123ABC');
       await tester.tap(find.byKey(const ValueKey('avatar-tab-0')));
       await tester.pumpAndSettle();
       expect(tester.widget<DropdownButtonFormField<String>>(find.byKey(const ValueKey('avatar-option-hair:long01'))).initialValue,'long01');
+      expect(find.byType(AvatarPartPreview), findsWidgets);
       expect(tester.takeException(),isNull);
     });
   }
