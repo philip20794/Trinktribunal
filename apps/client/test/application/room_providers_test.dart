@@ -6,10 +6,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/room_controller.dart';
 import 'package:trinktribunal/application/room_providers.dart';
 import 'package:trinktribunal/data/room_credential_store.dart';
+import 'package:trinktribunal/data/room_transport.dart';
 
 import '../data/room_test_support.dart';
 
 void main() {
+  test('compiled server configuration reaches the real room transport', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+    const configured = String.fromEnvironment('API_BASE_URL');
+    if (configured.isEmpty) {
+      expect(() => container.read(roomTransportProvider), throwsA(anything));
+    } else {
+      final transport = container.read(roomTransportProvider);
+      expect(transport, isA<NetworkRoomTransport>());
+      expect(transport.serverOrigin, Uri.parse(configured));
+    }
+  });
+
   test('Riverpod exposes actual transport views and saved-room storage failures independently', () {
     fakeAsync((clock) {
       final transport = FakeRoomTransport(),

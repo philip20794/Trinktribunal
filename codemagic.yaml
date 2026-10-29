@@ -30,6 +30,10 @@ workflows:
         - $HOME/.pub-cache
         - $HOME/.gradle/caches
     scripts:
+      - name: Online-Serverkonfiguration pruefen
+        script: |
+          set -euo pipefail
+          node scripts/write-client-build-config.mjs "$CM_BUILD_DIR/client-build-defines.json"
       - name: Dokumentation, Kataloge und Node-Tests
         script: |
           set -euo pipefail
@@ -73,7 +77,8 @@ workflows:
             echo "Tag $CM_TAG passt nicht zu pubspec-Version v$version" >&2
             exit 1
           fi
-          flutter build apk --release --build-name="$version" --build-number="$BUILD_NUMBER"
+          flutter build apk --release --build-name="$version" --build-number="$BUILD_NUMBER" \
+            --dart-define-from-file="$CM_BUILD_DIR/client-build-defines.json"
           apk=build/app/outputs/flutter-apk/app-release.apk
           test -s "$apk"
           if [ -n "${CM_TAG:-}" ]; then

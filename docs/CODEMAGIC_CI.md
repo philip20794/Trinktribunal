@@ -17,6 +17,14 @@ Die CI-Konfiguration steht im Repository-Root in `codemagic.yaml`. Codemagic bau
 
 ## Automatik und Downloads
 
+### Online-Server in die APK übernehmen
+
+`API_BASE_URL` muss in einer vom Workflow importierten Codemagic-Variablengruppe gesetzt sein, beispielsweise der bereits eingebundenen Gruppe `github_release_credentials`. Der Wert ist die öffentliche HTTPS-Origin des **laufenden** Trinktribunal-Workers, ohne API-Pfad oder Zugangsdaten. `PUBLIC_CLIENT_BASE_URL` ist optional die Origin eines tatsächlich gehosteten Webclients für Einladungslinks; ohne sie bleibt Beitreten per Raumcode möglich. Diese beiden URLs sind öffentliche Konfiguration, keine Signierschlüssel.
+
+Der erste Pipelineschritt erzeugt über `scripts/write-client-build-config.mjs` eine JSON-Datei mit ausschließlich diesen Flutter-Defines. Der Releasebuild übernimmt genau diese Datei mit `--dart-define-from-file`. Fehlende Serveradresse, lokale HTTP-Adresse und `.invalid`-Beispiele brechen den Build vorzeitig ab. Eine Codemagic-Umgebungsvariable allein wird von Flutter nicht automatisch in `String.fromEnvironment` übernommen.
+
+Eine Serveradresse einzutragen stellt keinen Server bereit. Das Repository enthält einen lokalen Worker und Releasebeispiele; die lokale Adresse `127.0.0.1:8787` ist auf einem Handy dessen eigene Loopback-Adresse. Für Onlinepartien auf mehreren Geräten braucht es einen bereitgestellten Worker und anschließend eine **neu gebaute und installierte APK**. Ein bestehendes APK erhält diese Buildkonfiguration nicht nachträglich.
+
 - Push auf `main`: komplette Prüfung und signierte Release-APK als Codemagic-Artefakt `trinktribunal-main-BUILDNUMMER.apk`. Kein GitHub Release.
 - Git-Tag `v0.1.0` (oder künftig eine andere Version nach Aktualisierung von `apps/client/pubspec.yaml`): Prüfungen, signierte APK und automatischer **Pre-Release** unter https://github.com/philip20794/Trinktribunal/releases. Die Versionsangabe im Tag muss mit dem Pubspec übereinstimmen.
 - Codemagics `BUILD_NUMBER` wird als Android-`versionCode` verwendet. Derselbe Signing-Key und eine höhere Buildnummer ermöglichen spätere Updates.
