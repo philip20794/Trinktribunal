@@ -79,11 +79,10 @@ class HomeScreen extends ConsumerWidget {
             tooltip: context.tr('openProfile'),
             icon: profile == null
                 ? const Icon(Icons.person_outline)
-                : AvatarView(
+                : AvatarHeadView(
                     config: profile.avatar,
-                    size: 28,
+                    size: 34,
                     label: profile.player.name,
-                    playerName: profile.player.name,
                   ),
             onPressed: () => _open(context, const ProfileScreen()),
           ),
