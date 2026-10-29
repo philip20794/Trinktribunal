@@ -47,7 +47,8 @@ class RoomLobbyScreen extends ConsumerWidget {
               ? (state.snapshot!.public.config.allJudges ? 3 : 2)
               : 0)
         : (state.snapshot!.public.config.allJudges ? 2 : 1),
-    child: _CaseTabSync(
+    child: Builder(
+      builder: (tabContext) => _CaseTabSync(
       snapshot: state.snapshot!,
       child: RoomGamePrivacy(
         child: CourtScaffold(
@@ -69,7 +70,7 @@ class RoomLobbyScreen extends ConsumerWidget {
               ref.read(onlineGameProvider).hideSecret();
               ref.read(onlineProfileProvider).flush();
               if (requiresName && index != 0) {
-                DefaultTabController.of(context).animateTo(0);
+                DefaultTabController.of(tabContext).animateTo(0);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: TText('roomNameRequired')),
                 );
@@ -142,6 +143,7 @@ class RoomLobbyScreen extends ConsumerWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }
