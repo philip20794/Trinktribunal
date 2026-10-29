@@ -7,6 +7,8 @@ import '../../domain/user_profile.dart';
 import '../bench/bench_view.dart';
 import 'game_progress.dart';
 import 'order_view.dart';
+import 'pending_profile.dart';
+import '../../l10n/app_strings.dart';
 
 class RoomCourtroom extends StatelessWidget {
   const RoomCourtroom({
@@ -41,7 +43,9 @@ class RoomCourtroom extends StatelessWidget {
                 player.playerId: UserProfile(
                   player: Player(
                     id: player.playerId,
-                    name: player.profile.name,
+                    name: needsRoomName(player.profile.name)
+                        ? context.tr('roomUnnamedPlayer')
+                        : player.profile.name,
                   ),
                   avatar: AvatarConfig.fromJson(player.profile.avatar.toJson()),
                 ),
