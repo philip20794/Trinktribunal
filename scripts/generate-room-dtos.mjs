@@ -40,7 +40,7 @@ function dart(s,key='') {
   if(s.type==='integer')return 'int';
   if(s.type==='boolean')return 'bool';
   if(s.type==='array')return `List<${dart(s.items,key)}>`;
-  if(s.type==='object'&&Object.values(s.properties??{}).every(child=>child.enum?.every(value=>typeof value==='string')))return 'Map<String, String>';
+  if(s.type==='object'&&Object.values(s.properties??{}).every(child=>(child.enum?.every(value=>typeof value==='string') || child.type==='string')))return 'Map<String, String>';
   throw new Error('Unsupported generated Dart type: '+JSON.stringify(s));
 }
 function readDart(s,raw,key='') {
