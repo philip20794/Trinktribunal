@@ -18,6 +18,7 @@ import 'game_progress.dart';
 import 'game_settings.dart';
 import 'case_tab.dart';
 import 'room_tools.dart';
+import 'pending_profile.dart';
 import '../../design/hold_action_button.dart';
 import '../verdict/online_reveal.dart';
 import '../rules/game_rules_screen.dart';
@@ -27,7 +28,13 @@ class RoomLobbyScreen extends ConsumerWidget {
   final bool newRoom;
   final RoomSessionState state;
   @override
-  Widget build(BuildContext context, WidgetRef ref) => DefaultTabController(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final snapshot = state.snapshot!;
+    final requiresName = snapshot.public.players.any(
+      (player) =>
+          player.playerId == snapshot.you && needsRoomName(player.profile.name),
+    );
+    return DefaultTabController(
     key: ValueKey((
       state.snapshot!.public.config.allJudges,
       state.snapshot!.you == state.snapshot!.public.hostId,
@@ -35,7 +42,7 @@ class RoomLobbyScreen extends ConsumerWidget {
     length:
         (state.snapshot!.public.config.allJudges ? 3 : 2) +
         (state.snapshot!.you == state.snapshot!.public.hostId ? 1 : 0),
-    initialIndex: state.snapshot!.public.phase == 'lobby'
+    initialIndex: requiresName ? 0 : state.snapshot!.public.phase == 'lobby'
         ? (state.snapshot!.you == state.snapshot!.public.hostId
               ? (state.snapshot!.public.config.allJudges ? 3 : 2)
               : 0)
@@ -58,9 +65,15 @@ class RoomLobbyScreen extends ConsumerWidget {
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
-            onTap: (_) {
+            onTap: (index) {
               ref.read(onlineGameProvider).hideSecret();
               ref.read(onlineProfileProvider).flush();
+              if (requiresName && index != 0) {
+                DefaultTabController.of(context).animateTo(0);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: TText('roomNameRequired')),
+                );
+              }
             },
             tabs: [
               Tab(
@@ -106,6 +119,9 @@ class RoomLobbyScreen extends ConsumerWidget {
                 ),
               Expanded(
                 child: TabBarView(
+                  physics: requiresName
+                      ? const NeverScrollableScrollPhysics()
+                      : null,
                   children: [
                     const RoomMe(),
                     if (state.snapshot!.public.config.allJudges)
@@ -126,8 +142,8 @@ class RoomLobbyScreen extends ConsumerWidget {
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _CaseTabSync extends StatefulWidget {
@@ -145,6 +161,15 @@ class _CaseTabSyncState extends State<_CaseTabSync> {
     final old = oldWidget.snapshot.public, next = widget.snapshot.public;
     final oldGuide = old.config.allJudges ? old.readerId : old.judgeId;
     final nextGuide = next.config.allJudges ? next.readerId : next.judgeId;
+    final wasPending = oldWidget.snapshot.public.players.any(
+      (player) => player.playerId == oldWidget.snapshot.you &&
+          needsRoomName(player.profile.name),
+    );
+    final isPending = widget.snapshot.public.players.any(
+      (player) => player.playerId == widget.snapshot.you &&
+          needsRoomName(player.profile.name),
+    );
+    final completedName = wasPending && !isPending && next.phase == 'lobby';
     final newCase =
         next.gameId != null &&
         (old.gameId != next.gameId ||
@@ -152,7 +177,9 @@ class _CaseTabSyncState extends State<_CaseTabSync> {
             old.completedCases != next.completedCases ||
             oldGuide != nextGuide ||
             old.phase == 'rule_event' && next.phase != 'rule_event');
-    final target = newCase || old.phase != next.phase && next.phase == 'judged'
+    final target = completedName && next.config.allJudges
+        ? 1
+        : newCase || old.phase != next.phase && next.phase == 'judged'
         ? (next.config.allJudges ? 2 : 1)
         : next.config.allJudges &&
               old.phase != next.phase &&
