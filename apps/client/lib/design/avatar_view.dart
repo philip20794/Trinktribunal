@@ -21,9 +21,9 @@ abstract final class TrinkAvatarRenderer {
   static final Future<Style> _style =
       _definition.then((definition) => Style.parse(jsonEncode(definition)));
 
-  static final Map<String, String> _portraitCache = {};
-  static final Map<String, String> _headCache = {};
-  static final Map<String, String> _partCache = {};
+  static final Map<String, Future<String>> _portraitCache = {};
+  static final Map<String, Future<String>> _headCache = {};
+  static final Map<String, Future<String>> _partCache = {};
   static final Map<String, Future<Style>> _previewStyles = {};
   static Future<Style>? _headStyle;
 
@@ -69,29 +69,29 @@ abstract final class TrinkAvatarRenderer {
   static String _key(AvatarConfig config) =>
       '${config.seed}:${config.selections.entries.map((e) => '${e.key}=${e.value}').join(',')}';
 
-  static void _store(Map<String, String> cache, String key, String svg, int max) {
-    if (cache.length >= max) cache.remove(cache.keys.first);
-    cache[key] = svg;
+  static Future<String> _remember(
+    Map<String, Future<String>> cache,
+    String key,
+    int maxEntries,
+    Future<String> Function() render,
+  ) {
+    final cached = cache[key];
+    if (cached != null) return cached;
+    if (cache.length >= maxEntries) cache.remove(cache.keys.first);
+    return cache[key] = render();
   }
 
-  static Future<String> svg(AvatarConfig config) async {
-    final key = _key(config);
-    if (_portraitCache[key] case final String cached) return cached;
-    final result = Avatar(await _style, options(config)).svg;
-    _store(_portraitCache, key, result, 48);
-    return result;
-  }
+  static Future<String> svg(AvatarConfig config) =>
+      _remember(_portraitCache, _key(config), 48,
+          () async => Avatar(await _style, options(config)).svg);
 
   /// A real head-only DiceBear drawing: no body, backdrop, hands or board.
   /// Uses the same selected variants and colors as the full portrait.
-  static Future<String> headSvg(AvatarConfig config) async {
-    final key = _key(config);
-    if (_headCache[key] case final String cached) return cached;
-    final style = await (_headStyle ??= _buildHeadStyle());
-    final result = Avatar(style, options(config)).svg;
-    _store(_headCache, key, result, 36);
-    return result;
-  }
+  static Future<String> headSvg(AvatarConfig config) =>
+      _remember(_headCache, _key(config), 36, () async {
+        final style = await (_headStyle ??= _buildHeadStyle());
+        return Avatar(style, options(config)).svg;
+      });
 
   static Future<Style> _buildHeadStyle() async {
     final source = await _definition;
@@ -119,16 +119,16 @@ abstract final class TrinkAvatarRenderer {
   /// Render the actual option's SVG component rather than a generic icon.
   /// The cropped component is used ONLY in the dropdown menu, not persisted.
   static Future<String> partSvg(
-      AvatarConfig config, String key, String value) async {
-    final sourceName = _componentNames[key];
-    if (sourceName == null || value == 'none') return '';
+      AvatarConfig config, String key, String value) {
+    if (!_componentNames.containsKey(key) || value == 'none') {
+      return Future.value('');
+    }
     final selected = config.withOption(key, value);
-    final cacheKey = '${_key(selected)}:$key';
-    if (_partCache[cacheKey] case final String cached) return cached;
-    final style = await _previewStyles.putIfAbsent(key, () => _buildPartStyle(key));
-    final result = Avatar(style, options(selected)).svg;
-    _store(_partCache, cacheKey, result, 160);
-    return result;
+    return _remember(_partCache, '${_key(selected)}:$key', 160, () async {
+      final style = await _previewStyles.putIfAbsent(
+          key, () => _buildPartStyle(key));
+      return Avatar(style, options(selected)).svg;
+    });
   }
 
   static Future<Style> _buildPartStyle(String key) async {
