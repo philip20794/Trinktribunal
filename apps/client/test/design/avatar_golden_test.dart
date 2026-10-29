@@ -12,6 +12,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: AppLanguageScope(
       language:'de',
       child: Scaffold(body: Column(children: [
+        AvatarHeadView(config: AvatarConfig(seed:'test-small'),size:36,label:'Alex'),
         AvatarView(config: AvatarConfig(seed:'test-small'),size:48,playerName:'Alex'),
         AvatarView(config: AvatarConfig(seed:'test-large'),size:180,playerName:'Alexandra'),
       ])),
@@ -19,6 +20,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
     expect(find.byType(AvatarView),findsNWidgets(2));
+    expect(find.byType(AvatarHeadView), findsOneWidget);
     expect(find.text('Alexandra'),findsOneWidget);
     expect(tester.takeException(),isNull);
   });
