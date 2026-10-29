@@ -83,6 +83,7 @@ class HomeScreen extends ConsumerWidget {
                     config: profile.avatar,
                     size: 28,
                     label: profile.player.name,
+                    playerName: profile.player.name,
                   ),
             onPressed: () => _open(context, const ProfileScreen()),
           ),
