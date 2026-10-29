@@ -19,6 +19,7 @@ import 'package:trinktribunal/features/multiplayer/connection.dart';
 import 'package:trinktribunal/features/multiplayer/invitation.dart';
 import 'package:trinktribunal/features/multiplayer/invite.dart';
 import 'package:trinktribunal/features/multiplayer/join.dart';
+import 'package:trinktribunal/features/multiplayer/pending_profile.dart';
 
 import '../data/room_test_support.dart';
 import '../support/memory_string_store.dart';
@@ -191,7 +192,7 @@ void main() {
     }
   });
   testWidgets(
-    'a refreshed join link fills the normalized code but never automatically joins',
+    'a QR join link immediately joins with a pending name',
     (tester) async {
       final transport = FakeRoomTransport(),
           store = RoomCredentialStore(MemoryCredentialBackend());
@@ -203,29 +204,42 @@ void main() {
           initialRoute: '/join?room=abcd-23%2045',
         ),
       );
-      await tester.pumpAndSettle();
-      expect(
-        (tester
-                .widget<TextField>(find.byKey(const ValueKey('room-code')))
-                .controller!)
-            .text,
-        'ABCD2345',
-      );
-      expect(transport.joins, 0);
-      expect(transport.connections, 0);
-      await tester.enterText(find.byKey(const ValueKey('room-name')), 'Alex');
-      await tester.ensureVisible(find.byKey(const ValueKey('room-submit')));
-      await tester.tap(find.byKey(const ValueKey('room-submit')));
-      await tester.pump();
-      await tester.pump();
+      for (var i = 0; i < 20 && transport.connections == 0; i++) {
+        await tester.pump(const Duration(milliseconds: 50));
+      }
+      expect(find.byKey(const ValueKey('room-code')), findsNothing);
+      expect(find.byKey(const ValueKey('room-submit')), findsNothing);
       expect(transport.joins, 1);
       expect(transport.connections, 1);
-      transport.sockets.last.accepted();
-      await tester.pumpAndSettle();
+      expect(transport.lastProfile!.name, pendingRoomProfileName);
       expect(find.byType(RoomConnectionScreen), findsOneWidget);
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
       await tester.pump();
+    },
+  );
+  testWidgets(
+    'QR link resumes the existing identity instead of creating duplicate players',
+    (tester) async {
+      final transport = FakeRoomTransport(),
+          store = RoomCredentialStore(MemoryCredentialBackend());
+      await store.save(testCredential());
+      await tester.pumpWidget(
+        host(
+          const SizedBox(),
+          transport,
+          store,
+          initialRoute: '/join?room=ABCD2345',
+        ),
+      );
+      for (var i = 0; i < 20 && transport.connections == 0; i++) {
+        await tester.pump(const Duration(milliseconds: 50));
+      }
+      expect(transport.joins, 0);
+      expect(transport.connections, 1);
+      expect((await store.load()).credentials, hasLength(1));
+      expect(find.byType(RoomConnectionScreen), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
     },
   );
   testWidgets(
