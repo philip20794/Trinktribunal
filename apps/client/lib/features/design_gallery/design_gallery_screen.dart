@@ -101,11 +101,10 @@ class _DesignGalleryScreenState extends State<DesignGalleryScreen> {
                     AvatarView(
                       config: AvatarConfig(
                         selections: const {
-                          'hat': 'tricorn',
-                          'top': 'waistcoat',
-                          'extra': 'badge',
-                          'glasses': 'rectangular',
-                          'hairColor': 'copper',
+                          'outfit': 'vest',
+                          'glasses': 'variant01',
+                          'hairColor': '#cb6820',
+                          'outfitColor': '#a36a43',
                         },
                       ),
                       size: 96,
