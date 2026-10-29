@@ -2,7 +2,11 @@
 
 Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 152 Node-/543 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 157 Node-/549 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+
+## Nachtest QR-Dialog, 29.10.2026
+
+Nutzerfehler reproduziert und behoben: `AlertDialog` fragte intrinsische Größen des QR-LayoutBuilders ab; das Layout scheiterte vor der Anzeige. QR-Abmessungen isoliert, Dialogbreite begrenzt und Inhalt scrollbar mit sichtbarem Zurück-Button. Zusätzlich Sprach-Dropdown auf schmalen Ansichten korrigiert. 549 Flutter-/157 Node-Tests, Analyze/Format grün. Wiederholtes Öffnen/Kopieren/Schließen und Mausbewegungen DE/EN bei 200% Textgröße geprüft; [Beleg](qa/qr-invitation-dialog.md). Nutzernachträge bis `b26007e` erhalten. Browser/E2E weiter übersprungen, später manuell testen.
 
 ## Nachtest Online-APK, 29.10.2026
 

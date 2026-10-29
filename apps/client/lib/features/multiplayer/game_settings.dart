@@ -122,6 +122,7 @@ class _RoomGameSettingsState extends ConsumerState<RoomGameSettings> {
                       : (value) => change('allJudges', value),
                 ),
                 DropdownButtonFormField<String>(
+                  isExpanded: true,
                   key: ValueKey('online-language-${_draft.contentLanguage}'),
                   initialValue: _draft.contentLanguage,
                   decoration: InputDecoration(

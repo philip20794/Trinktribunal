@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/room_controller.dart';
@@ -9,6 +11,9 @@ import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/features/multiplayer/connection.dart';
 import 'package:trinktribunal/features/multiplayer/courtroom.dart';
 import 'package:trinktribunal/features/multiplayer/me.dart';
+import 'package:trinktribunal/features/multiplayer/invite.dart';
+import 'package:trinktribunal/l10n/app_strings.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../data/room_test_support.dart';
 
@@ -35,6 +40,9 @@ SnapshotMessage lobbySnapshot(bool host) {
 Future<({RoomController room, FakeRoomTransport transport})> pumpLobby(
   WidgetTester tester, {
   bool host = false,
+  Uri? publicClientBase,
+  String language = 'de',
+  double textScale = 1,
 }) async {
   final transport = FakeRoomTransport(),
       store = RoomCredentialStore(MemoryCredentialBackend()),
@@ -51,10 +59,21 @@ Future<({RoomController room, FakeRoomTransport transport})> pumpLobby(
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        publicClientBaseProvider.overrideWithValue(publicClientBase),
         roomControllerProvider.overrideWithValue(room),
         roomCredentialStoreProvider.overrideWithValue(store),
       ],
-      child: const MaterialApp(home: RoomConnectionScreen()),
+      child: AppLanguageScope(
+        language: language,
+        child: MaterialApp(
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: TextScaler.linear(textScale)),
+            child: child!,
+          ),
+          home: const RoomConnectionScreen(),
+        ),
+      ),
     ),
   );
   await tester.pump();
@@ -70,6 +89,107 @@ Future<({RoomController room, FakeRoomTransport transport})> pumpLobby(
 }
 
 void main() {
+  for (final language in ['de', 'en']) {
+    for (final size in [const Size(320, 640), const Size(1440, 900)]) {
+      testWidgets(
+        'QR dialog opens, copies and closes repeatedly: $language, $size, 200 percent',
+        (tester) async {
+          await tester.binding.setSurfaceSize(size);
+          addTearDown(() => tester.binding.setSurfaceSize(null));
+          final strings = AppStrings(language);
+          String? copied;
+          tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+            SystemChannels.platform,
+            (call) async {
+              if (call.method == 'Clipboard.setData') {
+                copied = (call.arguments as Map)['text'] as String;
+              }
+              if (call.method == 'Clipboard.hasStrings') {
+                return {'value': copied != null};
+              }
+              return null;
+            },
+          );
+          addTearDown(
+            () => tester.binding.defaultBinaryMessenger
+                .setMockMethodCallHandler(SystemChannels.platform, null),
+          );
+          final fixture = await pumpLobby(
+            tester,
+            host: true,
+            publicClientBase: Uri.parse('http://127.0.0.1:7357'),
+            language: language,
+            textScale: 2,
+          );
+          final mouse = await tester.createGesture(
+            kind: PointerDeviceKind.mouse,
+          );
+          await mouse.addPointer(location: const Offset(5, 5));
+          for (var attempt = 0; attempt < 2; attempt++) {
+            await mouse.moveTo(
+              tester.getCenter(find.byTooltip(strings.get('roomInviteTitle'))),
+            );
+            await tester.tap(find.byTooltip(strings.get('roomInviteTitle')));
+            await tester.pumpAndSettle();
+            expect(tester.takeException(), isNull);
+            expect(find.byType(AlertDialog), findsOneWidget);
+            expect(find.byType(QrImageView), findsOneWidget);
+            final link =
+                'http://127.0.0.1:7357/join?room=${fixture.room.roomCode}';
+            expect(
+              tester.widget<SelectableText>(find.byType(SelectableText)).data,
+              link,
+            );
+            final copy = find.text(strings.get('roomCopyLink'));
+            await Scrollable.ensureVisible(tester.element(copy), alignment: .5);
+            await tester.pumpAndSettle();
+            await mouse.moveTo(tester.getCenter(copy));
+            await tester.tap(copy);
+            await tester.pumpAndSettle();
+            expect(copied, link);
+            await tester.tap(
+              find.descendant(
+                of: find.byType(AlertDialog),
+                matching: find.text(strings.get('back')),
+              ),
+            );
+            await tester.pumpAndSettle();
+            await mouse.moveTo(const Offset(5, 5));
+            expect(find.byType(AlertDialog), findsNothing);
+            expect(find.byType(RoomCourtroom), findsOneWidget);
+            expect(tester.takeException(), isNull);
+          }
+          await mouse.removePointer();
+          await tester.pumpWidget(const SizedBox());
+          await tester.pump();
+        },
+      );
+    }
+  }
+  testWidgets('invitation still offers a room code without a hosted client', (
+    tester,
+  ) async {
+    await pumpLobby(tester);
+    await tester.tap(find.byTooltip('Einladung'));
+    await tester.pumpAndSettle();
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.byType(QrImageView), findsNothing);
+    expect(
+      find.text(const AppStrings('de').get('roomInviteUnavailable')),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+    await tester.tap(
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.text(const AppStrings('de').get('back')),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(AlertDialog), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
+  });
   testWidgets(
     'non-host sees live figures and can edit only its own profile in Me',
     (tester) async {

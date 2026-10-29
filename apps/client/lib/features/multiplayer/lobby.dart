@@ -49,8 +49,15 @@ class RoomLobbyScreen extends ConsumerWidget {
               showDialog<void>(
                 context: context,
                 builder: (_) => AlertDialog(
+                  scrollable: true,
                   title: const TText('roomInviteTitle'),
-                  content: SingleChildScrollView(child: RoomInvite(code: code)),
+                  content: SizedBox(width: 360, child: RoomInvite(code: code)),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const TText('back'),
+                    ),
+                  ],
                 ),
               );
             },

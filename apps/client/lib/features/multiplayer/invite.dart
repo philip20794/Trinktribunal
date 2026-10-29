@@ -42,11 +42,16 @@ class RoomInvite extends ConsumerWidget {
         ),
         if (payload != null) ...[
           const SizedBox(height: 12),
-          QrImageView(
-            data: payload,
-            size: 220,
-            backgroundColor: Colors.white,
-            semanticsLabel: context.tr('roomInviteQr'),
+          // AlertDialog measures intrinsic sizes. Isolate QrImageView's
+          // LayoutBuilder behind known dimensions instead of querying it.
+          SizedBox.square(
+            dimension: 220,
+            child: QrImageView(
+              data: payload,
+              size: 220,
+              backgroundColor: Colors.white,
+              semanticsLabel: context.tr('roomInviteQr'),
+            ),
           ),
           SelectableText(payload, textAlign: TextAlign.center),
           const SizedBox(height: 8),
