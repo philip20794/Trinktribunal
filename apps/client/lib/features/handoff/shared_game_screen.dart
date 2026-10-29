@@ -389,7 +389,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Row(
                       children: [
-                        AvatarView(config: judge.avatar, size: 48),
+                        AvatarView(config: judge.avatar, size: 48, playerName: judge.player.name),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
@@ -414,6 +414,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     config: view.profiles[view.recipient!]!.avatar,
                     size: 80,
                     label: _identity(view, view.recipient!),
+                    playerName: _identity(view, view.recipient!),
                   ),
                   CourtSeal(
                     label: context.tr('passPhone', {
@@ -451,6 +452,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     config: judge!.avatar,
                     size: 80,
                     label: _identity(view, view.judge!),
+                    playerName: _identity(view, view.judge!),
                   ),
                   CourtSeal(
                     label: context.tr('phoneBackToJudge', {
