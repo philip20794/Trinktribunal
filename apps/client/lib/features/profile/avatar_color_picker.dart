@@ -73,24 +73,28 @@ class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
   @override
   Widget build(BuildContext context) {
     final english = widget.english;
+    final wheelSize = math.min(236.0,
+        math.max(160.0, MediaQuery.sizeOf(context).width - 96.0));
     return AlertDialog(
       backgroundColor: const Color(0xFF382017),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      contentPadding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
       title: Text(english ? 'Choose colour' : 'Farbe wählen',
           style: const TextStyle(color: Color(0xFFFFF1D7))),
       content: SingleChildScrollView(
         child: SizedBox(
-          width: 270,
+          width: wheelSize,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                width: 236,
-                height: 236,
+                width: wheelSize,
+                height: wheelSize,
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTapDown: (event) => _tapWheel(event.localPosition, 236),
-                  onPanStart: (event) => _tapWheel(event.localPosition, 236),
-                  onPanUpdate: (event) => _tapWheel(event.localPosition, 236),
+                  onTapDown: (event) => _tapWheel(event.localPosition, wheelSize),
+                  onPanStart: (event) => _tapWheel(event.localPosition, wheelSize),
+                  onPanUpdate: (event) => _tapWheel(event.localPosition, wheelSize),
                   child: CustomPaint(
                     painter: _HuePickerPainter(_hsv),
                   ),
