@@ -115,7 +115,7 @@ class _AvatarOptionsState extends State<AvatarOptions> {
                 itemBuilder: (context, index) {
                   final key=keys[index];
                   return DropdownButtonFormField<String>(
-                    key: ValueKey('${widget.keyPrefix}avatar-option-$key'),
+                    key: ValueKey('${widget.keyPrefix}avatar-option-$key:${widget.config[key]}'),
                     initialValue: widget.config[key],
                     isDense: true,
                     isExpanded: true,
