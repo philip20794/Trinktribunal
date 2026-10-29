@@ -35,29 +35,28 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 2,
+            "version": 3,
+            "seed": "fixture-default",
             "selections": {
-              "face": "round",
-              "skin": "light",
-              "eyes": "open",
-              "brows": "calm",
-              "nose": "round",
-              "mouth": "smile",
-              "hair": "short",
-              "hairColor": "brown",
-              "beard": "none",
-              "top": "shirt",
-              "topColor": "blue",
+              "hair": "short03",
+              "eyes": "variant05",
+              "eyebrows": "variant03",
+              "mouth": "variant04",
               "glasses": "none",
-              "hat": "none",
-              "extra": "none"
+              "earrings": "none",
+              "details": "none",
+              "outfit": "tee",
+              "board": "classic",
+              "skinColor": "#ecad80",
+              "hairColor": "#6a4e35",
+              "outfitColor": "#475e74"
             }
           }
         },
         "handshake": {
           "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
-          "avatarVersion": 2
+          "avatarVersion": 3
         }
       },
       "invalid": {
@@ -67,29 +66,28 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 2,
+            "version": 3,
+            "seed": "fixture-default",
             "selections": {
-              "face": "round",
-              "skin": "light",
-              "eyes": "open",
-              "brows": "calm",
-              "nose": "round",
-              "mouth": "smile",
-              "hair": "short",
-              "hairColor": "brown",
-              "beard": "none",
-              "top": "shirt",
-              "topColor": "blue",
+              "hair": "short03",
+              "eyes": "variant05",
+              "eyebrows": "variant03",
+              "mouth": "variant04",
               "glasses": "none",
-              "hat": "none",
-              "extra": "none"
+              "earrings": "none",
+              "details": "none",
+              "outfit": "tee",
+              "board": "classic",
+              "skinColor": "#ecad80",
+              "hairColor": "#6a4e35",
+              "outfitColor": "#475e74"
             }
           }
         },
         "handshake": {
           "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
-          "avatarVersion": 2
+          "avatarVersion": 3
         },
         "actorId": "spoofed"
       }
@@ -105,29 +103,28 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 2,
+            "version": 3,
+            "seed": "fixture-default",
             "selections": {
-              "face": "round",
-              "skin": "light",
-              "eyes": "open",
-              "brows": "calm",
-              "nose": "round",
-              "mouth": "smile",
-              "hair": "short",
-              "hairColor": "brown",
-              "beard": "none",
-              "top": "shirt",
-              "topColor": "blue",
+              "hair": "short03",
+              "eyes": "variant05",
+              "eyebrows": "variant03",
+              "mouth": "variant04",
               "glasses": "none",
-              "hat": "none",
-              "extra": "none"
+              "earrings": "none",
+              "details": "none",
+              "outfit": "tee",
+              "board": "classic",
+              "skinColor": "#ecad80",
+              "hairColor": "#6a4e35",
+              "outfitColor": "#475e74"
             }
           }
         },
         "handshake": {
           "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
-          "avatarVersion": 2
+          "avatarVersion": 3
         }
       },
       "invalid": {
@@ -137,29 +134,28 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 2,
+            "version": 3,
+            "seed": "fixture-default",
             "selections": {
-              "face": "round",
-              "skin": "light",
-              "eyes": "open",
-              "brows": "calm",
-              "nose": "round",
-              "mouth": "smile",
-              "hair": "short",
-              "hairColor": "brown",
-              "beard": "none",
-              "top": "shirt",
-              "topColor": "blue",
+              "hair": "short03",
+              "eyes": "variant05",
+              "eyebrows": "variant03",
+              "mouth": "variant04",
               "glasses": "none",
-              "hat": "none",
-              "extra": "none"
+              "earrings": "none",
+              "details": "none",
+              "outfit": "tee",
+              "board": "classic",
+              "skinColor": "#ecad80",
+              "hairColor": "#6a4e35",
+              "outfitColor": "#475e74"
             }
           }
         },
         "handshake": {
           "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
-          "avatarVersion": 2
+          "avatarVersion": 3
         },
         "actorId": "spoofed"
       }
@@ -202,7 +198,7 @@
         "handshake": {
           "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
-          "avatarVersion": 2
+          "avatarVersion": 3
         }
       },
       "invalid": {
@@ -213,7 +209,7 @@
         "handshake": {
           "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
-          "avatarVersion": 2
+          "avatarVersion": 3
         },
         "actorId": "spoofed"
       }
@@ -233,7 +229,7 @@
         "handshake": {
           "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
-          "avatarVersion": 2
+          "avatarVersion": 3
         }
       },
       "invalid": {
@@ -247,7 +243,7 @@
         "handshake": {
           "protocolVersion": 2,
           "catalogHash": "54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0",
-          "avatarVersion": 2
+          "avatarVersion": 3
         },
         "actorId": "spoofed"
       }
@@ -366,22 +362,21 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 2,
+            "version": 3,
+            "seed": "fixture-default",
             "selections": {
-              "face": "round",
-              "skin": "light",
-              "eyes": "open",
-              "brows": "calm",
-              "nose": "round",
-              "mouth": "smile",
-              "hair": "short",
-              "hairColor": "brown",
-              "beard": "none",
-              "top": "shirt",
-              "topColor": "blue",
+              "hair": "short03",
+              "eyes": "variant05",
+              "eyebrows": "variant03",
+              "mouth": "variant04",
               "glasses": "none",
-              "hat": "none",
-              "extra": "none"
+              "earrings": "none",
+              "details": "none",
+              "outfit": "tee",
+              "board": "classic",
+              "skinColor": "#ecad80",
+              "hairColor": "#6a4e35",
+              "outfitColor": "#475e74"
             }
           }
         }
@@ -394,22 +389,21 @@
         "profile": {
           "name": "Anna",
           "avatar": {
-            "version": 2,
+            "version": 3,
+            "seed": "fixture-default",
             "selections": {
-              "face": "round",
-              "skin": "light",
-              "eyes": "open",
-              "brows": "calm",
-              "nose": "round",
-              "mouth": "smile",
-              "hair": "short",
-              "hairColor": "brown",
-              "beard": "none",
-              "top": "shirt",
-              "topColor": "blue",
+              "hair": "short03",
+              "eyes": "variant05",
+              "eyebrows": "variant03",
+              "mouth": "variant04",
               "glasses": "none",
-              "hat": "none",
-              "extra": "none"
+              "earrings": "none",
+              "details": "none",
+              "outfit": "tee",
+              "board": "classic",
+              "skinColor": "#ecad80",
+              "hairColor": "#6a4e35",
+              "outfitColor": "#475e74"
             }
           }
         },
@@ -952,22 +946,21 @@
               "profile": {
                 "name": "p1",
                 "avatar": {
-                  "version": 2,
+                  "version": 3,
+                  "seed": "fixture-default",
                   "selections": {
-                    "face": "round",
-                    "skin": "light",
-                    "eyes": "open",
-                    "brows": "calm",
-                    "nose": "round",
-                    "mouth": "smile",
-                    "hair": "short",
-                    "hairColor": "brown",
-                    "beard": "none",
-                    "top": "shirt",
-                    "topColor": "blue",
+                    "hair": "short03",
+                    "eyes": "variant05",
+                    "eyebrows": "variant03",
+                    "mouth": "variant04",
                     "glasses": "none",
-                    "hat": "none",
-                    "extra": "none"
+                    "earrings": "none",
+                    "details": "none",
+                    "outfit": "tee",
+                    "board": "classic",
+                    "skinColor": "#ecad80",
+                    "hairColor": "#6a4e35",
+                    "outfitColor": "#475e74"
                   }
                 }
               },
@@ -980,22 +973,21 @@
               "profile": {
                 "name": "p2",
                 "avatar": {
-                  "version": 2,
+                  "version": 3,
+                  "seed": "fixture-default",
                   "selections": {
-                    "face": "round",
-                    "skin": "light",
-                    "eyes": "open",
-                    "brows": "calm",
-                    "nose": "round",
-                    "mouth": "smile",
-                    "hair": "short",
-                    "hairColor": "brown",
-                    "beard": "none",
-                    "top": "shirt",
-                    "topColor": "blue",
+                    "hair": "short03",
+                    "eyes": "variant05",
+                    "eyebrows": "variant03",
+                    "mouth": "variant04",
                     "glasses": "none",
-                    "hat": "none",
-                    "extra": "none"
+                    "earrings": "none",
+                    "details": "none",
+                    "outfit": "tee",
+                    "board": "classic",
+                    "skinColor": "#ecad80",
+                    "hairColor": "#6a4e35",
+                    "outfitColor": "#475e74"
                   }
                 }
               },
@@ -1008,22 +1000,21 @@
               "profile": {
                 "name": "p3",
                 "avatar": {
-                  "version": 2,
+                  "version": 3,
+                  "seed": "fixture-default",
                   "selections": {
-                    "face": "round",
-                    "skin": "light",
-                    "eyes": "open",
-                    "brows": "calm",
-                    "nose": "round",
-                    "mouth": "smile",
-                    "hair": "short",
-                    "hairColor": "brown",
-                    "beard": "none",
-                    "top": "shirt",
-                    "topColor": "blue",
+                    "hair": "short03",
+                    "eyes": "variant05",
+                    "eyebrows": "variant03",
+                    "mouth": "variant04",
                     "glasses": "none",
-                    "hat": "none",
-                    "extra": "none"
+                    "earrings": "none",
+                    "details": "none",
+                    "outfit": "tee",
+                    "board": "classic",
+                    "skinColor": "#ecad80",
+                    "hairColor": "#6a4e35",
+                    "outfitColor": "#475e74"
                   }
                 }
               },
@@ -1080,22 +1071,21 @@
               "profile": {
                 "name": "p1",
                 "avatar": {
-                  "version": 2,
+                  "version": 3,
+                  "seed": "fixture-default",
                   "selections": {
-                    "face": "round",
-                    "skin": "light",
-                    "eyes": "open",
-                    "brows": "calm",
-                    "nose": "round",
-                    "mouth": "smile",
-                    "hair": "short",
-                    "hairColor": "brown",
-                    "beard": "none",
-                    "top": "shirt",
-                    "topColor": "blue",
+                    "hair": "short03",
+                    "eyes": "variant05",
+                    "eyebrows": "variant03",
+                    "mouth": "variant04",
                     "glasses": "none",
-                    "hat": "none",
-                    "extra": "none"
+                    "earrings": "none",
+                    "details": "none",
+                    "outfit": "tee",
+                    "board": "classic",
+                    "skinColor": "#ecad80",
+                    "hairColor": "#6a4e35",
+                    "outfitColor": "#475e74"
                   }
                 }
               },
@@ -1108,22 +1098,21 @@
               "profile": {
                 "name": "p2",
                 "avatar": {
-                  "version": 2,
+                  "version": 3,
+                  "seed": "fixture-default",
                   "selections": {
-                    "face": "round",
-                    "skin": "light",
-                    "eyes": "open",
-                    "brows": "calm",
-                    "nose": "round",
-                    "mouth": "smile",
-                    "hair": "short",
-                    "hairColor": "brown",
-                    "beard": "none",
-                    "top": "shirt",
-                    "topColor": "blue",
+                    "hair": "short03",
+                    "eyes": "variant05",
+                    "eyebrows": "variant03",
+                    "mouth": "variant04",
                     "glasses": "none",
-                    "hat": "none",
-                    "extra": "none"
+                    "earrings": "none",
+                    "details": "none",
+                    "outfit": "tee",
+                    "board": "classic",
+                    "skinColor": "#ecad80",
+                    "hairColor": "#6a4e35",
+                    "outfitColor": "#475e74"
                   }
                 }
               },
@@ -1136,22 +1125,21 @@
               "profile": {
                 "name": "p3",
                 "avatar": {
-                  "version": 2,
+                  "version": 3,
+                  "seed": "fixture-default",
                   "selections": {
-                    "face": "round",
-                    "skin": "light",
-                    "eyes": "open",
-                    "brows": "calm",
-                    "nose": "round",
-                    "mouth": "smile",
-                    "hair": "short",
-                    "hairColor": "brown",
-                    "beard": "none",
-                    "top": "shirt",
-                    "topColor": "blue",
+                    "hair": "short03",
+                    "eyes": "variant05",
+                    "eyebrows": "variant03",
+                    "mouth": "variant04",
                     "glasses": "none",
-                    "hat": "none",
-                    "extra": "none"
+                    "earrings": "none",
+                    "details": "none",
+                    "outfit": "tee",
+                    "board": "classic",
+                    "skinColor": "#ecad80",
+                    "hairColor": "#6a4e35",
+                    "outfitColor": "#475e74"
                   }
                 }
               },
