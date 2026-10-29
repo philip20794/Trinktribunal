@@ -6,6 +6,7 @@ import '../../data/protocol/room_message.dart';
 import '../../data/room_transport.dart';
 import '../../domain/models/ids.dart';
 import '../../l10n/app_strings.dart';
+import 'pending_profile.dart';
 
 List<PlayerId> nextRoomRoster(PublicView view) => view.pendingRoster.isNotEmpty
     ? view.pendingRoster
@@ -31,7 +32,9 @@ class OnlineRosterManagement extends ConsumerWidget {
         for (final player in view.players)
           ListTile(
             key: ValueKey('presence-${player.playerId.value}'),
-            title: Text(player.profile.name),
+            title: Text(needsRoomName(player.profile.name)
+                ? context.tr('roomUnnamedPlayer')
+                : player.profile.name),
             subtitle: TText(
               !next.contains(player.playerId)
                   ? 'onlineRosterLeaving'
@@ -48,7 +51,9 @@ class OnlineRosterManagement extends ConsumerWidget {
             trailing: host && next.contains(player.playerId)
                 ? PopupMenuButton<String>(
                     tooltip: context.tr('roomManagePlayer', {
-                      'name': player.profile.name,
+                      'name': needsRoomName(player.profile.name)
+                          ? context.tr('roomUnnamedPlayer')
+                          : player.profile.name,
                     }),
                     itemBuilder: (_) => [
                       if (next.indexOf(player.playerId) > 0)
@@ -76,7 +81,9 @@ class OnlineRosterManagement extends ConsumerWidget {
                             title: const TText('roomKickTitle'),
                             content: Text(
                               context.tr('roomKickBody', {
-                                'name': player.profile.name,
+                                'name': needsRoomName(player.profile.name)
+                                    ? context.tr('roomUnnamedPlayer')
+                                    : player.profile.name,
                               }),
                             ),
                             actions: [
