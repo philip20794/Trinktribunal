@@ -116,14 +116,43 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         Expanded(
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              key: const ValueKey('avatar-randomize'),
-                              tooltip: context.tr('profileRandom'),
-                              icon: const Icon(Icons.casino_outlined),
-                              onPressed: () => setState(() {
-                                _avatar=AvatarConfig.random(SecureRandomSource());
-                              }),
-                            ),
+                            child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                key: const ValueKey('avatar-randomize'),
+                                tooltip: context.tr('profileRandom'),
+                                icon: const Icon(Icons.casino_outlined),
+                                onPressed: () => setState(() {
+                                  _avatar = AvatarConfig.random(SecureRandomSource());
+                                }),
+                              ),
+                              IconButton(
+                                key: const ValueKey('avatar-credits'),
+                                tooltip: 'Avatar-Lizenz / Avatar credits',
+                                icon: const Icon(Icons.info_outline, size: 19),
+                                onPressed: () => showDialog<void>(
+                                  context: context,
+                                  builder: (dialogContext) => AlertDialog(
+                                    title: const Text('Avatar-Illustrationen'),
+                                    content: const SelectableText(
+                                      'Adventurer: Lisa Wischofsky\n'
+                                      'Lizenz: Creative Commons Attribution 4.0 (CC BY 4.0)\n'
+                                      'https://creativecommons.org/licenses/by/4.0/\n'
+                                      'https://www.figma.com/community/file/1184595184137881796\n'
+                                      'Trinktribunal: eigene Oberkörper, Schilder, Hände und Messwand.',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(dialogContext),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           ),
                         ),
                       ],
