@@ -35,115 +35,116 @@ class RoomLobbyScreen extends ConsumerWidget {
           player.playerId == snapshot.you && needsRoomName(player.profile.name),
     );
     return DefaultTabController(
-    key: ValueKey((
-      state.snapshot!.public.config.allJudges,
-      state.snapshot!.you == state.snapshot!.public.hostId,
-    )),
-    length:
-        (state.snapshot!.public.config.allJudges ? 3 : 2) +
-        (state.snapshot!.you == state.snapshot!.public.hostId ? 1 : 0),
-    initialIndex: requiresName ? 0 : state.snapshot!.public.phase == 'lobby'
-        ? (state.snapshot!.you == state.snapshot!.public.hostId
-              ? (state.snapshot!.public.config.allJudges ? 3 : 2)
-              : 0)
-        : (state.snapshot!.public.config.allJudges ? 2 : 1),
-    child: Builder(
-      builder: (tabContext) => _CaseTabSync(
-      snapshot: state.snapshot!,
-      child: RoomGamePrivacy(
-        child: CourtScaffold(
-          title: const TText('roomTitle'),
-          footer: _RoomPhaseFooter(state: state),
-          actions: [
-            GameRulesButton(
-              beforeOpen: ref.read(onlineGameProvider).hideSecret,
-            ),
-          ],
-          appBarBottom: TabBar(
-            isScrollable: false,
-            labelPadding: const EdgeInsets.symmetric(horizontal: 4),
-            labelStyle: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-            onTap: (index) {
-              ref.read(onlineGameProvider).hideSecret();
-              ref.read(onlineProfileProvider).flush();
-              if (requiresName && index != 0) {
-                DefaultTabController.of(tabContext).animateTo(0);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: TText('roomNameRequired')),
-                );
-              }
-            },
-            tabs: [
-              Tab(
-                child: Text(
-                  context.tr('roomMeTab'),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
+      key: ValueKey((
+        state.snapshot!.public.config.allJudges,
+        state.snapshot!.you == state.snapshot!.public.hostId,
+      )),
+      length:
+          (state.snapshot!.public.config.allJudges ? 3 : 2) +
+          (state.snapshot!.you == state.snapshot!.public.hostId ? 1 : 0),
+      initialIndex: requiresName ? 0 : state.snapshot!.public.phase == 'lobby'
+          ? (state.snapshot!.you == state.snapshot!.public.hostId
+                ? (state.snapshot!.public.config.allJudges ? 3 : 2)
+                : 0)
+          : (state.snapshot!.public.config.allJudges ? 2 : 1),
+      child: Builder(
+        builder: (tabContext) => _CaseTabSync(
+          snapshot: state.snapshot!,
+          child: RoomGamePrivacy(
+            child: CourtScaffold(
+              title: const TText('roomTitle'),
+              footer: _RoomPhaseFooter(state: state),
+              actions: [
+                GameRulesButton(
+                  beforeOpen: ref.read(onlineGameProvider).hideSecret,
                 ),
-              ),
-              if (state.snapshot!.public.config.allJudges)
-                Tab(
-                  child: Text(
-                    context.tr('roomTitle'),
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
+              ],
+              appBarBottom: TabBar(
+                isScrollable: false,
+                labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+                labelStyle: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+                onTap: (index) {
+                  ref.read(onlineGameProvider).hideSecret();
+                  ref.read(onlineProfileProvider).flush();
+                  if (requiresName && index != 0) {
+                    DefaultTabController.of(tabContext).animateTo(0);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: TText('roomNameRequired')),
+                    );
+                  }
+                },
+                tabs: [
+                  Tab(
+                    child: Text(
+                      context.tr('roomMeTab'),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-              Tab(
-                child: Text(
-                  context.tr('caseTabTitle'),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              if (state.snapshot!.you == state.snapshot!.public.hostId)
-                Tab(
-                  child: Text(
-                    context.tr('roomAdminTab'),
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-            ],
-          ),
-          bodyBuilder: (context) => Column(
-            children: [
-              if (state.errorCode != null)
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: StatusNotice(
-                    context.tr(roomErrorKey(state.errorCode)),
-                  ),
-                ),
-              Expanded(
-                child: TabBarView(
-                  physics: requiresName
-                      ? const NeverScrollableScrollPhysics()
-                      : null,
-                  children: [
-                    const RoomMe(),
-                    if (state.snapshot!.public.config.allJudges)
-                      RoomCourtroom(
-                        snapshot: state.snapshot!,
-                        fixedActions: true,
+                  if (state.snapshot!.public.config.allJudges)
+                    Tab(
+                      child: Text(
+                        context.tr('roomTitle'),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
                       ),
-                    RoomCaseTab(snapshot: state.snapshot!),
-                    if (state.snapshot!.you == state.snapshot!.public.hostId)
-                      ListView(
-                        padding: const EdgeInsets.all(12),
-                        children: [RoomTools(snapshot: state.snapshot!)],
+                    ),
+                  Tab(
+                    child: Text(
+                      context.tr('caseTabTitle'),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  if (state.snapshot!.you == state.snapshot!.public.hostId)
+                    Tab(
+                      child: Text(
+                        context.tr('roomAdminTab'),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
-            ],
+              bodyBuilder: (context) => Column(
+                children: [
+                  if (state.errorCode != null)
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: StatusNotice(
+                        context.tr(roomErrorKey(state.errorCode)),
+                      ),
+                    ),
+                  Expanded(
+                    child: TabBarView(
+                      physics: requiresName
+                          ? const NeverScrollableScrollPhysics()
+                          : null,
+                      children: [
+                        const RoomMe(),
+                        if (state.snapshot!.public.config.allJudges)
+                          RoomCourtroom(
+                            snapshot: state.snapshot!,
+                            fixedActions: true,
+                          ),
+                        RoomCaseTab(snapshot: state.snapshot!),
+                        if (state.snapshot!.you == state.snapshot!.public.hostId)
+                          ListView(
+                            padding: const EdgeInsets.all(12),
+                            children: [RoomTools(snapshot: state.snapshot!)],
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 }
