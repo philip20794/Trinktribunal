@@ -6,7 +6,7 @@
 
 ## Umsetzung
 
-Die unveränderten Adventurer-Köpfe aus [DiceBear Adventurer](../../artwork/avatars/v3/prototypes/dicebear_adventurer_trinktribunal/README.md) samt unseren SVG-Erweiterungen sind als vollständige lokale JSON unter `apps/client/assets/avatars/dicebear/trinktribunal-adventurer-v1.json` eingebunden. Weder für Flutter Android noch Web wird ein externer Avatar-Download benötigt. Die JSON enthält die CC-BY-4.0-Urheberangaben (Lisa Wischofsky), ergänzt um `apps/client/assets/avatars/NOTICE.md`; ein kleines Info-Symbol neben dem Zufallsbutton öffnet im Profil bereits einen Dialog mit Urheber, Quelle und CC-BY-4.0-Lizenz.
+Die unveränderten Adventurer-Köpfe aus [DiceBear Adventurer](../../artwork/avatars/v3/prototypes/dicebear_adventurer_trinktribunal/README.md) samt unseren SVG-Erweiterungen sind als vollständige lokale JSON unter `apps/client/assets/avatars/dicebear/trinktribunal-adventurer-v1.json` eingebunden. Weder für Flutter Android noch Web wird ein externer Avatar-Download benötigt. Die JSON enthält die CC-BY-4.0-Urheberangaben (Lisa Wischofsky), ergänzt um `apps/client/assets/avatars/NOTICE.md`; die CC-BY-4.0-Urheberangabe wird über die bestehende Seite **Einstellungen → Lizenzen** angezeigt; das Info-Symbol im Profil wurde entfernt.
 
 `AvatarView` nutzt die gebündelte JSON über `dicebear_core` + `flutter_svg`, lädt sie einmal, rendert anhand des Seeds und der Auswahl eine SVG und hält einen begrenzten 48-Einträge-Cache. Das vollständige Namensschild ist Teil der SVG, der **Spielername wird aber als Flutter-Text an festen Schildkoordinaten** darübergelegt. Die DiceBear-Initialen-Komponente wird hierfür abgeschaltet. In Profil, Startseite, lokaler Spielreihenfolge, Handübergabe und Mehrspieleransichten wird der Avatar entsprechend mit dem aktuellen Namen aufgerufen.
 
@@ -60,3 +60,15 @@ Danach den Browser-/Android-Editor tatsächlich testen: 360×800, 320×568, 200 
 - Verifikation aller mobilen Größen inklusive Safe-Area/Tastatur und Screenreader. Die ursprünglichen zehn gemalten Avatare werden im Git bewahrt; der neue Stil wird nur nach Nutzerreview als Produktstandard übernommen.
 
 **Nächster Auftrag:** Im Branch Flutter-SDK nutzen, Lockfile und Generatoren aktualisieren, Format/Analyse/Tests korrigieren, echte Screenshots erstellen und vom Nutzer abnehmen lassen. `main` nicht vor diesen Gates umstellen.
+
+## UI-Nachbesserung vom 29.10.2026 (gleicher Branch)
+
+- Das Profil-Info-Symbol entfällt. Der Zufallsbutton verwendet `Icons.shuffle_rounded`.
+- Porträts werden auf **762 × 1020** sichtbare Originalkoordinaten gekürzt. Das Schild endet ungefähr bei y=1006; darunter bleiben nur ca. 14 Einheiten Kleidung. Die eigentliche SVG-Quelle bleibt 762 × 1080, sie wird nur per ClipRect zugeschnitten.
+- Die Options-Dropdowns haben ein explizit dunkles Menü und cremefarbene Beschriftungen.
+- Für jeden selektierbaren DiceBear-Baustein gibt es eine isolierte SVG-Komponentenvorschau im Menü (`AvatarPartPreview`). Sie wird aus der gebündelten Definition über einen kleinen, separat gerenderten DiceBear-Style gebildet. Es werden keine zusätzlichen PNGs benötigt.
+- Die drei Farbfelder öffnen nun einen lokalen HSV-Farbkreis samt Sättigungs-/Helligkeitsfläche und HEX-Eingabe. Abbrechen verwirft die Änderung, Übernehmen speichert einen RGB-Wert. Das v3-Avatar-Modell validiert `#RRGGBB`, der Serververtrag und die generierten DTOs erlauben diese Werte; Komponentenvarianten bleiben strikte Enums.
+- `AvatarHeadView` erstellt ein eigenes DiceBear-SVG mit Kopf, Gesicht, Haaren und Accessoires – ohne Messwand, Kleidung, Hände oder Schild – und ersetzt das bislang komplette Avatarbild rechts oben in der Startseite.
+- Die bislang auswählbaren Ohrringe wurden im lokalen Style auch an die Kopfgeometrie angebunden, damit ihre Auswahl tatsächlich sichtbar wird.
+
+**Review noch erforderlich:** In Flutter die tatsächliche Darstellung des Kopfzuschnitts, der Optionsvorschauen und des HSV-Dialogs bei kleinen Bildschirmen prüfen, ebenso das lokale Speichern freier Farben und den Multiplayer-Austausch. Branch darf vor erfolgreichem `flutter pub get`, `dart format`, `flutter analyze`, `flutter test`, Node-/Server-Tests und aktualisiertem `pubspec.lock` nicht als fertig gebaut bezeichnet werden.
