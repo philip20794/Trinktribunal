@@ -10,6 +10,7 @@ Die bisherige Bereinigung vertraute auf den direkten PowerShell-Prozess und eine
 
 - Zwei neue Windows-Regressionstests starten einen lauschenden Enkelprozess, dessen Wrapper vorzeitig endet. Explizites Job-Schließen und Ende des Besitzprozesses geben jeweils den echten TCP-Port frei. Ein fremder Listener bleibt aktiv.
 - Zehn gezielte PowerShell-/Prozessprüfungen grün, einschließlich Parse-, Argument- und Portprüfungen.
+- Vollständiger Docs-/Node-Check auf main-Basis: 159 Tests grün. Der separate Avatar-Branch hatte einen bestehenden Manifest-Hash-Unterschied; dessen Arbeit wurde nicht integriert. Ein durch den lokalen Start aktualisiertes Avatar-Lockfile bleibt außerhalb dieses Fixes erhalten.
 - Zweimal hintereinander `dev-multiplayer.ps1 -StopAfterReady` mit echtem lokalem Worker und Flutter-Client erfolgreich; anschließend Ports erneut bindbar. Kein Browser geöffnet.
 - Anwendungscode unverändert; kein neuer Appbuild erforderlich.
 - Browser/E2E: **ÜBERSPRUNGEN – später manuell testen**.
