@@ -93,7 +93,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               // Keep the portrait visible without consuming the whole phone.
               final portraitHeight=math.min(270.0,math.max(130.0,
                   available * (scale > 1.5 ? .29 : .41)));
-              final portraitWidth=portraitHeight*762/1080;
+              final portraitWidth=portraitHeight*TrinkAvatarRenderer.canvasWidth/TrinkAvatarRenderer.visibleHeight;
               return Column(
                 children: [
                   Padding(
@@ -116,43 +116,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         Expanded(
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                key: const ValueKey('avatar-randomize'),
-                                tooltip: context.tr('profileRandom'),
-                                icon: const Icon(Icons.casino_outlined),
-                                onPressed: () => setState(() {
-                                  _avatar = AvatarConfig.random(SecureRandomSource());
-                                }),
-                              ),
-                              IconButton(
-                                key: const ValueKey('avatar-credits'),
-                                tooltip: 'Avatar-Lizenz / Avatar credits',
-                                icon: const Icon(Icons.info_outline, size: 19),
-                                onPressed: () => showDialog<void>(
-                                  context: context,
-                                  builder: (dialogContext) => AlertDialog(
-                                    title: const Text('Avatar-Illustrationen'),
-                                    content: const SelectableText(
-                                      'Adventurer: Lisa Wischofsky\n'
-                                      'Lizenz: Creative Commons Attribution 4.0 (CC BY 4.0)\n'
-                                      'https://creativecommons.org/licenses/by/4.0/\n'
-                                      'https://www.figma.com/community/file/1184595184137881796\n'
-                                      'Trinktribunal: eigene Oberkörper, Schilder, Hände und Messwand.',
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(dialogContext),
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            child: IconButton(
+                              key: const ValueKey('avatar-randomize'),
+                              tooltip: context.tr('profileRandom'),
+                              icon: const Icon(Icons.shuffle_rounded),
+                              onPressed: () => setState(() {
+                                _avatar = AvatarConfig.random(SecureRandomSource());
+                              }),
+                            ),
                           ),
                         ),
                       ],
