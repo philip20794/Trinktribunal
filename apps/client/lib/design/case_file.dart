@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'court_theme.dart';
 import 'court_scene.dart';
 import 'court_motion.dart';
+import 'illustrated_paper.dart';
 import '../l10n/app_strings.dart';
 
 class CaseFile extends StatelessWidget {
@@ -12,6 +13,7 @@ class CaseFile extends StatelessWidget {
     this.animationKey,
     this.onRefresh,
     this.showRefresh = false,
+    this.illustrated = false,
     super.key,
   });
   final String label;
@@ -19,50 +21,56 @@ class CaseFile extends StatelessWidget {
   final Object? animationKey;
   final VoidCallback? onRefresh;
   final bool showRefresh;
+  final bool illustrated;
 
   @override
   Widget build(BuildContext context) => CourtMotion(
     style: CourtMotionStyle.file,
     replayKey: animationKey ?? label,
-    child: CourtPaper(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Semantics(
-            header: true,
-            child: Row(
+    child: illustrated
+        ? child
+        : CourtPaper(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (showRefresh)
-                  IconButton(
-                    tooltip: context.tr('refreshQuestion'),
-                    onPressed: onRefresh,
-                    icon: const Icon(Icons.refresh),
+                Semantics(
+                  header: true,
+                  child: Row(
+                    children: [
+                      if (showRefresh)
+                        IconButton(
+                          tooltip: context.tr('refreshQuestion'),
+                          onPressed: onRefresh,
+                          icon: const Icon(Icons.refresh),
+                        ),
+                      const Icon(
+                        Icons.folder_open_outlined,
+                        size: 20,
+                        color: CourtTokens.blue,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          label.toUpperCase(),
+                          style: Theme.of(context).textTheme.labelLarge
+                              ?.copyWith(
+                                color: CourtTokens.blue,
+                                letterSpacing: 1.2,
+                              ),
+                        ),
+                      ),
+                    ],
                   ),
-                const Icon(
-                  Icons.folder_open_outlined,
-                  size: 20,
-                  color: CourtTokens.blue,
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    label.toUpperCase(),
-                    style: Theme.of(context).textTheme.labelLarge
-                        ?.copyWith(color: CourtTokens.blue, letterSpacing: 1.2),
-                  ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Divider(color: CourtTokens.border),
                 ),
+                child,
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Divider(color: CourtTokens.border),
-          ),
-          child,
-        ],
-      ),
-    ),
   );
 }
 
@@ -165,69 +173,36 @@ class CourtQuestion extends StatelessWidget {
   Widget build(BuildContext context) => CaseFile(
     label: label,
     animationKey: animationKey,
+    illustrated: true,
     onRefresh: onRefresh,
     showRefresh: showRefresh,
-    child: Builder(
-      builder: (context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(text, style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 16),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: const Color(0xFFE8CDA0),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    context.tr('questionRange', {'max': maximum}),
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  const SizedBox(height: 12),
-                  _scale('1', green),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Divider(height: 1, color: CourtTokens.border),
-                  ),
-                  _scale('$maximum', red),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+    child: IllustratedQuestion(
+      label: label,
+      text: text,
+      low: green,
+      high: red,
+      maximum: maximum,
+      showRefresh: showRefresh,
+      onRefresh: onRefresh,
     ),
   );
-  Widget _scale(String number, String text) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        constraints: const BoxConstraints(minWidth: 30),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        decoration: BoxDecoration(
-          color: CourtSceneTokens.crimson,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          number,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: CourtSceneTokens.cream,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-      const SizedBox(width: 10),
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6),
-          child: Text(text, style: const TextStyle(color: CourtTokens.ink)),
-        ),
-      ),
-    ],
+}
+
+class CourtRule extends StatelessWidget {
+  const CourtRule({
+    required this.text,
+    this.title,
+    this.animationKey,
+    super.key,
+  });
+  final String text;
+  final String? title;
+  final Object? animationKey;
+  @override
+  Widget build(BuildContext context) => CaseFile(
+    label: title ?? context.tr('newRule'),
+    animationKey: animationKey,
+    illustrated: true,
+    child: IllustratedRule(title: title ?? context.tr('newRule'), text: text),
   );
 }

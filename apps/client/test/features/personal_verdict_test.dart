@@ -143,15 +143,21 @@ void main() {
       },
     );
   }
-  testWidgets('reader receives their own result without host reveal controls', (
+  testWidgets('reader receives their own result and can guide reveal', (
     tester,
   ) async {
     final fixture = await normal.pump(
       tester,
       snapshot: personalView(errors: 2, host: false),
     );
-    expect(find.text(AppStrings('de').get('phoneRevealNext')), findsNothing);
-    expect(fixture.socket.sent.whereType<RevealNextMessage>(), isEmpty);
+    final button = find.text(AppStrings('de').get('phoneRevealNext'));
+    await tester.ensureVisible(button);
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+    expect(
+      fixture.socket.sent.whereType<RevealNextMessage>().single.expectedCursor,
+      0,
+    );
     fixture.socket.receive(
       personalView(errors: 2, host: false, cursor: 4, revision: 2),
     );

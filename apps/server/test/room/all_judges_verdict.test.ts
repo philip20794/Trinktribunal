@@ -68,14 +68,19 @@ it('four private verdicts 2/4/0/0 share only the authorized prefix, persist over
     if (cursor < 4) {
       const command = await reveal(cursor);
       const reader = f.members.find((m) => m.credential.playerId === f.initial.readerId)!;
-      reader.peer.send(command);
-      expect(await result(reader.peer)).toMatchObject({
+      const unrelated = f.members.find(
+        (m) =>
+          m.credential.playerId !== f.initial.readerId &&
+          m.credential.playerId !== f.host.snapshot.you,
+      )!;
+      unrelated.peer.send(command);
+      expect(await result(unrelated.peer)).toMatchObject({
         type: 'error',
         code: 'UNAUTHORIZED_ACTION',
       });
-      await f.send(f.host.peer, command);
+      await f.send(reader.peer, command);
       if (cursor === 1) await evictDurableObject(f.room.stub);
-      expect(await f.send(f.host.peer, command)).toMatchObject({ outcome: 'duplicate' });
+      expect(await f.send(reader.peer, command)).toMatchObject({ outcome: 'duplicate' });
       f.host.peer.send(await reveal(cursor));
       expect(await result(f.host.peer)).toMatchObject({
         type: 'error',

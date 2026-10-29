@@ -19,6 +19,56 @@ const config: Config = {
   allJudges: false,
   contentLanguage: 'de',
 };
+
+for (const allJudges of [false, true]) {
+  it(`rotating case guide can advance the round without host privileges: allJudges=${allJudges}`, () => {
+    const dependencies = ports([1]);
+    let state = apply(lobby({ allJudges, requestedRuleEvents: 1 }), 'startGame', dependencies);
+    state = apply(state, 'completeWithoutVerdict', dependencies);
+    const guide = ids[1]!,
+      other = ids[2]!;
+    expect(state.config.allJudges ? state.readerId : state.judgeId).toBe(guide);
+    expect(state.phase).toBe('rule_event');
+    expect(
+      transition(state, other, command(state, 'continueRule', { afterCase: 1 }), dependencies),
+    ).toMatchObject({ ok: false, code: 'UNAUTHORIZED_ACTION' });
+    state = apply(state, 'continueRule', dependencies, { afterCase: 1 }, guide);
+    for (const recipient of state.round!.recipients)
+      state = apply(state, 'acknowledgeNumber', dependencies, {}, recipient);
+    for (const participant of state.round!.roster)
+      state = apply(state, 'readyForOrdering', dependencies, {}, participant);
+    expect(transition(state, other, command(state, 'beginOrdering'), dependencies)).toMatchObject({
+      ok: false,
+      code: 'UNAUTHORIZED_ACTION',
+    });
+    state = apply(state, 'beginOrdering', dependencies, {}, guide);
+    const order = [...state.round!.recipients];
+    for (const participant of allJudges ? order : [guide])
+      state = apply(state, 'submitOrder', dependencies, { order }, participant);
+    expect(state.phase).toBe('revealing');
+    expect(
+      transition(state, other, command(state, 'revealNext', { expectedCursor: 0 }), dependencies),
+    ).toMatchObject({ ok: false, code: 'UNAUTHORIZED_ACTION' });
+    while (state.phase === 'revealing')
+      state = apply(
+        state,
+        'revealNext',
+        dependencies,
+        { expectedCursor: state.round!.revealCursor },
+        guide,
+      );
+    expect(transition(state, other, command(state, 'completeCase'), dependencies)).toMatchObject({
+      ok: false,
+      code: 'UNAUTHORIZED_ACTION',
+    });
+    expect(
+      transition(state, guide, command(state, 'completeWithoutVerdict'), dependencies),
+    ).toMatchObject({ ok: false, code: 'UNAUTHORIZED_ACTION' });
+    state = apply(state, 'completeCase', dependencies, {}, guide);
+    expect(state.completedCases).toBe(2);
+    expect(state.config.allJudges ? state.readerId : state.judgeId).toBe(other);
+  });
+}
 function ports(slots: number[] = [], exclude = false): GamePorts {
   let serial = 0;
   return {

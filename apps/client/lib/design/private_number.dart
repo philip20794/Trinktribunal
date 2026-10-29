@@ -13,12 +13,14 @@ class PrivateNumber extends StatefulWidget {
     required this.onHide,
     this.onConfirm,
     this.confirmKey = 'phoneHideNext',
+    this.compact = false,
     super.key,
   });
   final int? number;
   final VoidCallback onReveal, onHide;
   final VoidCallback? onConfirm;
   final String confirmKey;
+  final bool compact;
   @override
   State<PrivateNumber> createState() => _PrivateNumberState();
 }
@@ -289,32 +291,65 @@ class _PrivateNumberState extends State<PrivateNumber> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      _NumberFace(number: widget.number),
-      const SizedBox(height: 12),
-      if (widget.number == null)
-        FilledButton(
-          focusNode: _reveal,
-          onPressed: widget.onReveal,
-          child: const TText('phoneReveal'),
+  Widget build(BuildContext context) => widget.compact
+      ? Wrap(
+          spacing: 12,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(context.tr('yourNumber')),
+            OutlinedButton.icon(
+              key: const ValueKey('compact-private-number'),
+              focusNode: widget.number == null ? _reveal : _hide,
+              onPressed: widget.number == null
+                  ? widget.onReveal
+                  : widget.onHide,
+              icon: Icon(
+                widget.number == null
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility_outlined,
+                size: 18,
+              ),
+              label: Text(
+                widget.number == null ? '••' : '${widget.number}',
+                semanticsLabel: widget.number == null
+                    ? context.tr('phoneReveal')
+                    : context.tr('secretNumber', {'number': widget.number}),
+              ),
+            ),
+            if (widget.number != null && widget.onConfirm != null)
+              TextButton(
+                focusNode: _confirm,
+                onPressed: widget.onConfirm,
+                child: TText(widget.confirmKey),
+              ),
+          ],
         )
-      else ...[
-        if (widget.onConfirm != null)
-          FilledButton(
-            focusNode: _confirm,
-            onPressed: widget.onConfirm,
-            child: TText(widget.confirmKey),
-          ),
-        TextButton(
-          focusNode: _hide,
-          onPressed: widget.onHide,
-          child: const TText('phoneHide'),
-        ),
-      ],
-    ],
-  );
+      : Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _NumberFace(number: widget.number),
+            const SizedBox(height: 12),
+            if (widget.number == null)
+              FilledButton(
+                focusNode: _reveal,
+                onPressed: widget.onReveal,
+                child: const TText('phoneReveal'),
+              )
+            else ...[
+              if (widget.onConfirm != null)
+                FilledButton(
+                  focusNode: _confirm,
+                  onPressed: widget.onConfirm,
+                  child: TText(widget.confirmKey),
+                ),
+              TextButton(
+                focusNode: _hide,
+                onPressed: widget.onHide,
+                child: const TText('phoneHide'),
+              ),
+            ],
+          ],
+        );
 }
 
 class _NumberFace extends StatelessWidget {

@@ -23,9 +23,16 @@ it('each participant including host/reader gets one number and confirms only the
   for (const member of members) await send(member.peer, await f.command('acknowledgeNumber'));
   for (const member of members) await send(member.peer, await f.command('readyForOrdering'));
   const reader = members.find((m) => m.credential.playerId === initial.readerId)!;
-  reader.peer.send(await f.command('beginOrdering'));
-  expect(await result(reader.peer)).toMatchObject({ type: 'error', code: 'UNAUTHORIZED_ACTION' });
-  await send(host.peer, await f.command('beginOrdering'));
+  const unrelated = members.find(
+    (m) =>
+      m.credential.playerId !== initial.readerId && m.credential.playerId !== host.snapshot.you,
+  )!;
+  unrelated.peer.send(await f.command('beginOrdering'));
+  expect(await result(unrelated.peer)).toMatchObject({
+    type: 'error',
+    code: 'UNAUTHORIZED_ACTION',
+  });
+  await send(reader.peer, await f.command('beginOrdering'));
   const ids = initial.effectiveRoster;
   host.peer.send(await order(ids.slice(0, 2)));
   expect(await result(host.peer)).toMatchObject({ type: 'error', code: 'INVALID_PERMUTATION' });

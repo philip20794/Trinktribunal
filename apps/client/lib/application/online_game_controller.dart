@@ -30,6 +30,16 @@ final class OnlineGameController extends ChangeNotifier {
       : null;
   int? get visibleNumber => _visible ? snapshot?.private.ownNumber : null;
   bool get ackPending => _ackPending;
+  bool get canGuideRound {
+    final view = snapshot;
+    return view != null &&
+        (view.you == view.public.hostId ||
+            view.you ==
+                (view.public.config.allJudges
+                    ? view.public.readerId
+                    : view.public.judgeId));
+  }
+
   bool get canReroll {
     final view = snapshot;
     if (view == null ||
@@ -151,7 +161,7 @@ final class OnlineGameController extends ChangeNotifier {
     final view = snapshot;
     if (view == null ||
         view.public.phase != 'answers' ||
-        view.you != view.public.hostId ||
+        !canGuideRound ||
         view.public.frozenRoster.length < 3) {
       return false;
     }
@@ -187,7 +197,7 @@ final class OnlineGameController extends ChangeNotifier {
     if (view == null ||
         !_sameRound(gameId, roundId) ||
         view.public.phase != 'revealing' ||
-        view.you != view.public.hostId ||
+        !canGuideRound ||
         view.public.revealCursor != expectedCursor) {
       return false;
     }
@@ -207,7 +217,7 @@ final class OnlineGameController extends ChangeNotifier {
     final view = snapshot;
     if (view == null ||
         !_sameRound(gameId, roundId) ||
-        view.you != view.public.hostId ||
+        !canGuideRound ||
         view.public.phase != 'judged') {
       return false;
     }
@@ -226,7 +236,7 @@ final class OnlineGameController extends ChangeNotifier {
     final view = snapshot;
     if (view == null ||
         view.public.gameId != gameId ||
-        view.you != view.public.hostId ||
+        !canGuideRound ||
         view.public.phase != 'rule_event' ||
         view.public.completedCases != afterCase) {
       return false;

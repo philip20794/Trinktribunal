@@ -11,7 +11,7 @@ import '../../l10n/app_strings.dart';
 import 'readiness_view.dart';
 import '../verdict/online_reveal.dart';
 
-/// Game section inside the existing courtroom tab; profiles remain on Me.
+/// Question, own number and result in the dedicated case tab.
 class RoomGameScreen extends ConsumerWidget {
   const RoomGameScreen({
     required this.snapshot,
@@ -72,49 +72,14 @@ class RoomGameScreen extends ConsumerWidget {
               binding.key: profiles[binding.value]!,
         };
         final rendered = question?.renderFor(names);
-        final judge = profiles[view.judgeId];
-        final reader = profiles[view.readerId];
         return ListenableBuilder(
           listenable: game,
           builder: (context, _) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (view.config.allJudges) const TText('onlineAllJudges'),
-              Text(
-                context.tr('casesCompleted', {
-                  'done': view.completedCases,
-                  'total': view.config.targetCases,
-                }),
-              ),
-              if (judge != null)
-                Text(context.tr('onlineJudge', {'name': judge})),
-              if (reader != null)
-                Text(context.tr('onlineReader', {'name': reader})),
-              if (rendered != null && view.phase != 'judged')
-                CourtQuestion(
-                  animationKey: view.roundId,
-                  showRefresh: true,
-                  onRefresh: game.canReroll
-                      ? () => game.rerollCurrentQuestion(
-                          gameId: view.gameId!,
-                          roundId: view.roundId!,
-                        )
-                      : null,
-                  label: context.tr('caseNumber', {
-                    'number': view.completedCases + 1,
-                  }),
-                  text: rendered.text,
-                  green: rendered.green,
-                  connector: rendered.connector,
-                  red: rendered.red,
-                  maximum:
-                      (view.frozenRoster.length * view.config.factorTenths +
-                          9) ~/
-                      10,
-                ),
               if (snapshot.private.ownNumber != null) ...[
-                const TText('onlineOwnNumber'),
                 PrivateNumber(
+                  compact: true,
                   number: game.visibleNumber,
                   onReveal: game.revealOwnNumber,
                   onHide: game.hideSecret,
@@ -130,7 +95,30 @@ class RoomGameScreen extends ConsumerWidget {
                     (game.acknowledged || game.ackPending))
                   const TText('onlineNumberConfirmed'),
               ],
-              ReadinessView(snapshot: snapshot, showActions: !fixedActions),
+              const SizedBox(height: 12),
+              if (rendered != null)
+                CourtQuestion(
+                  animationKey: view.roundId,
+                  showRefresh: true,
+                  onRefresh: game.canReroll
+                      ? () => game.rerollCurrentQuestion(
+                          gameId: view.gameId!,
+                          roundId: view.roundId!,
+                        )
+                      : null,
+                  label: context.tr('caseProgress', {
+                    'number': view.completedCases + 1,
+                    'total': view.config.targetCases,
+                  }),
+                  text: rendered.text,
+                  green: rendered.green,
+                  connector: rendered.connector,
+                  red: rendered.red,
+                  maximum:
+                      (view.frozenRoster.length * view.config.factorTenths +
+                          9) ~/
+                      10,
+                ),
               OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
             ],
           ),

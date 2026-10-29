@@ -1,5 +1,4 @@
 import '../../design/court_scene.dart';
-import '../../design/court_theme.dart';
 import '../../design/status_notice.dart';
 
 import 'dart:math' as math;
@@ -15,6 +14,7 @@ import '../../data/catalogs/catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../../data/catalogs/localized_catalog.dart';
 import '../../design/case_file.dart';
+import '../../design/illustrated_paper.dart';
 import '../../domain/local_game_reducer.dart';
 import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
@@ -70,7 +70,11 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
               primary: FilledButton(
                 onPressed: next,
                 child: TText(
-                  current?.phase == GamePhase.finished ? 'newGame' : 'nextCase',
+                  current?.phase == GamePhase.finished
+                      ? 'newGame'
+                      : current?.phase == GamePhase.ruleEvent
+                      ? 'ruleUnderstood'
+                      : 'nextCase',
                 ),
               ),
             ),
@@ -256,34 +260,15 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             originalQuestion,
           );
     return [
-      Row(
-        children: [
-          Expanded(
-            child: Text(
-              context.tr('casesCompleted', {
-                'done': state.completedCases,
-                'total': config.targetCases,
-              }),
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          IconButton(
-            tooltip: context.tr('activeRules'),
-            onPressed: () => showActiveRules(
-              context,
-              state,
-              ref.read(catalogsProvider).requireValue,
-            ),
-            icon: Badge(
-              label: Text('${state.rules.active.length}'),
-              child: const Icon(Icons.menu_book_outlined),
-            ),
-          ),
-        ],
-      ),
-      LinearProgressIndicator(
-        value: state.completedCases / config.targetCases,
-        semanticsLabel: context.tr('completedCases'),
+      CaseProgressHeader(
+        completed: state.completedCases,
+        total: config.targetCases,
+        rules: state.rules.active.length,
+        onRules: () => showActiveRules(
+          context,
+          state,
+          ref.read(catalogsProvider).requireValue,
+        ),
       ),
       const SizedBox(height: 24),
       if (state.phase == GamePhase.casePresented && question != null) ...[
@@ -306,21 +291,20 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         const SizedBox(height: 16),
       ],
       if (state.phase == GamePhase.ruleEvent) ...[
-        CaseFile(
-          label: context.tr(
-            state.newRule == null ? 'ruleGoalReduced' : 'newDrinkingRule',
-          ),
-          child: Text(
-            (state.newRule == null
-                    ? null
-                    : localizedRule(
-                        ref.read(catalogsProvider).requireValue,
-                        AppLanguageScope.of(context).language,
-                        state.newRule!.entry as DrinkingRule,
-                      ).text) ??
-                context.tr('cardNoRule', {'count': state.effectiveRuleTarget}),
-            style: const TextStyle(color: CourtTokens.ink, fontSize: 20),
-          ),
+        CourtRule(
+          title: state.newRule == null
+              ? context.tr('ruleGoalReduced')
+              : context.tr('newRule'),
+          animationKey: state.currentEventId,
+          text:
+              (state.newRule == null
+                  ? null
+                  : localizedRule(
+                      ref.read(catalogsProvider).requireValue,
+                      AppLanguageScope.of(context).language,
+                      state.newRule!.entry as DrinkingRule,
+                    ).text) ??
+              context.tr('cardNoRule', {'count': state.effectiveRuleTarget}),
         ),
       ],
       if (state.phase == GamePhase.finished) ...[

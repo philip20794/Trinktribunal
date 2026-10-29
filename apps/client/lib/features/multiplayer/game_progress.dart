@@ -135,7 +135,7 @@ class OnlineProgressAction extends ConsumerWidget {
     final game = ref.watch(onlineGameProvider),
         view = snapshot.public,
         gameId = view.gameId;
-    if (gameId == null || snapshot.you != view.hostId) {
+    if (gameId == null || !game.canGuideRound) {
       return const SizedBox.shrink();
     }
     return ListenableBuilder(
@@ -152,7 +152,7 @@ class OnlineProgressAction extends ConsumerWidget {
                       gameId: gameId,
                       roundId: view.roundId!,
                     ),
-              child: const TText('finishCase'),
+              child: const TText('nextJudge'),
             ),
           if (view.phase == 'rule_event')
             FilledButton(
@@ -162,9 +162,9 @@ class OnlineProgressAction extends ConsumerWidget {
                       gameId: gameId,
                       afterCase: view.completedCases,
                     ),
-              child: const TText('backToCase'),
+              child: const TText('ruleUnderstood'),
             ),
-          if (view.phase == 'paused')
+          if (view.phase == 'paused' && snapshot.you == view.hostId)
             FilledButton(
               onPressed:
                   game.pending('resume') ||

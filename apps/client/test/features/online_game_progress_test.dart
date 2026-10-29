@@ -62,11 +62,14 @@ void main() {
       final rule = numbers.catalogs.rules['en']!.withoutPlayers.first;
       expect(find.text(rule.text), findsOneWidget);
       expect(find.textContaining('{player'), findsNothing);
-      await numbers.tapText(tester, AppStrings('de').get('backToCase'));
+      await numbers.tapText(tester, AppStrings('de').get('ruleUnderstood'));
       expect(socket.sent.whereType<ContinueRuleMessage>().single.afterCase, 1);
       expect(fixture.room.state.snapshot!.public.phase, 'rule_event');
       final continueButton = tester.widget<FilledButton>(
-        find.widgetWithText(FilledButton, AppStrings('de').get('backToCase')),
+        find.widgetWithText(
+          FilledButton,
+          AppStrings('de').get('ruleUnderstood'),
+        ),
       );
       expect(continueButton.onPressed, isNull);
       socket.receive(boundary(base, phase: 'finished', revision: 3));
@@ -107,12 +110,16 @@ void main() {
       socket.receive(
         SnapshotMessage.fromJson({
           ...nonHost.toJson(),
-          'public': {...nonHost.public.toJson(), 'hostId': 'p2'},
+          'public': {
+            ...nonHost.public.toJson(),
+            'hostId': 'p2',
+            'judgeId': 'p2',
+          },
         }),
       );
       await tester.pumpAndSettle();
       expect(find.text(AppStrings('de').get('restartGame')), findsNothing);
-      expect(find.text(AppStrings('de').get('backToCase')), findsNothing);
+      expect(find.text(AppStrings('de').get('ruleUnderstood')), findsNothing);
     },
   );
 
@@ -146,7 +153,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
-      find.text(AppStrings('de').get('finishCase')),
+      find.text(AppStrings('de').get('nextJudge')),
       250,
       scrollable: find
           .descendant(
@@ -155,7 +162,7 @@ void main() {
           )
           .first,
     );
-    await numbers.tapText(tester, AppStrings('de').get('finishCase'));
+    await numbers.tapText(tester, AppStrings('de').get('nextJudge'));
     final completion = socket.sent.whereType<CompleteCaseMessage>().single;
     expect(completion.roundId, base.public.roundId);
     expect(completion.gameId, base.public.gameId);

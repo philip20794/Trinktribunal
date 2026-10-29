@@ -572,5 +572,11 @@
   "roomToolsClose": "Close",
   "roomDragPlayer": "Move {name}",
   "roomMoveLeft": "Move position {position} left",
-  "roomMoveRight": "Move position {position} right"
+  "roomMoveRight": "Move position {position} right",
+  "oneSipPerViolation": "1 sip per violation",
+  "ruleUnderstood": "Rule understood",
+  "caseTabTitle": "Case",
+  "caseGuide": "Case leader: {name}",
+  "nextJudge": "Continue · next judge",
+  "goToCourtroom": "Go to courtroom"
 }

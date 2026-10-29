@@ -23,11 +23,12 @@ SnapshotMessage view({
   bool host = false,
   String language = 'de',
   bool own = true,
+  String? playerId,
 }) {
   final base = roomFixture('snapshot') as SnapshotMessage;
   return SnapshotMessage.fromJson({
     ...base.toJson(),
-    'you': host ? 'p1' : 'p2',
+    'you': playerId ?? (host ? 'p1' : 'p2'),
     'public': {
       ...base.public.toJson(),
       'phase': lobby ? 'lobby' : 'numbers',
@@ -57,6 +58,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
   double textScale = 1,
   ThemeData? theme,
   Uri? publicClientBase,
+  String? playerId,
 }) async {
   final transport = FakeRoomTransport(),
       store = RoomCredentialStore(MemoryCredentialBackend()),
@@ -65,7 +67,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
     serverOrigin: testCredential().serverOrigin,
     message: CredentialMessage.fromJson({
       ...testCredential().message.toJson(),
-      'playerId': host ? 'p1' : 'p2',
+      'playerId': playerId ?? (host ? 'p1' : 'p2'),
     }),
   );
   addTearDown(room.dispose);
@@ -100,18 +102,33 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
   transport.sockets.last.receive(
     AuthenticatedMessage.fromJson({
       ...roomFixture('authenticated').toJson(),
-      'playerId': host ? 'p1' : 'p2',
+      'playerId': playerId ?? (host ? 'p1' : 'p2'),
     }),
   );
   transport.sockets.last.receive(
-    view(lobby: lobby, host: host, language: contentLanguage, own: own),
+    view(
+      lobby: lobby,
+      host: host,
+      language: contentLanguage,
+      own: own,
+      playerId: playerId,
+    ),
   );
   await tester.pumpAndSettle();
   return (room: room, transport: transport);
 }
 
 Future<void> tapText(WidgetTester tester, String text) async {
-  final finder = find.text(text);
+  var finder = find.text(text);
+  if (finder.evaluate().isEmpty &&
+      ['de', 'en'].any(
+        (language) => [
+          AppStrings(language).get('phoneReveal'),
+          AppStrings(language).get('phoneHide'),
+        ].contains(text),
+      )) {
+    finder = find.byKey(const ValueKey('compact-private-number'));
+  }
   await tester.ensureVisible(finder);
   await tester.pumpAndSettle();
   await tester.tap(finder);
@@ -306,7 +323,8 @@ void main() {
         await tapText(tester, 'Meine Zahl bewusst öffnen');
         await tester.tap(find.widgetWithText(Tab, 'Ich'));
         await tester.pumpAndSettle();
-        await tester.tap(find.widgetWithText(Tab, 'Gerichtssaal'));
+        await tester.ensureVisible(find.widgetWithText(Tab, 'Fallakte'));
+        await tester.tap(find.widgetWithText(Tab, 'Fallakte'));
         await tester.pumpAndSettle();
         expect(find.text('2'), findsNothing);
         expect(socket.sent.whereType<AcknowledgeNumberMessage>(), isEmpty);

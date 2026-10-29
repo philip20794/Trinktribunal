@@ -73,3 +73,5 @@ apps/client/assets/ui/trinktribunal_spielregeln_assets/** text eol=lf
 apps/client/assets/avatars/dicebear/** text eol=lf
 
 apps/client/assets/avatars/NOTICE.md text eol=lf
+
+apps/client/lib/design/illustrated_paper.dart text eol=lf

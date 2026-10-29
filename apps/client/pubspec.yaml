@@ -68,6 +68,8 @@ flutter:
     - assets/ui/courtroom/backgrounds/courtroom_wood_wall.png
     - assets/ui/courtroom/backgrounds/home_courtroom.png
     - assets/ui/courtroom/paper/case_parchment_blank.png
+    - assets/ui/courtroom/paper/fallakte_pergament_leer.png
+    - assets/ui/courtroom/paper/trinktribunal_regel_pergament_leer.png
     - assets/ui/courtroom/paper/number_card_blank.png
     - assets/ui/courtroom/branding/trinktribunal_logo.png
     - assets/ui/courtroom/illustrations/phone_handover.png

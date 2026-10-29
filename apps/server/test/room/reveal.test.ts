@@ -159,10 +159,18 @@ describe('authoritative reveal prefix and normal verdict', () => {
     expect(completed.game!.history).toEqual(before.game!.history);
     expect(completed.game!.personCounts).toEqual(before.game!.personCounts);
   });
-  it('rejects non-host or stale cursor, replays once after eviction, and preserves verdict on profile changes', async () => {
-    const { room, host, judge, read, reveal, snapshot } = await setup();
-    judge.peer.send(await reveal(0));
-    expect(await result(judge.peer)).toMatchObject({ type: 'error', code: 'UNAUTHORIZED_ACTION' });
+  it('rejects unrelated participants or stale cursor, replays once after eviction, and preserves verdict on profile changes', async () => {
+    const { room, host, judge, members, read, reveal, snapshot } = await setup();
+    const unrelated = members.find(
+      (member) =>
+        member.credential.playerId !== judge.credential.playerId &&
+        member.credential.playerId !== host.snapshot.you,
+    )!;
+    unrelated.peer.send(await reveal(0));
+    expect(await result(unrelated.peer)).toMatchObject({
+      type: 'error',
+      code: 'UNAUTHORIZED_ACTION',
+    });
     const first = await reveal(0);
     host.peer.send(first);
     expect(await result(host.peer)).toMatchObject({ type: 'ack' });

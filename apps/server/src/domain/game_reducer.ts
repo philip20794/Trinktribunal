@@ -318,6 +318,10 @@ function boundary(state: MutableGameState, ports: GamePorts, now: number): void 
 function requireHost(state: MutableGameState, actor: PlayerId): void {
   if (state.hostId !== actor) reject('UNAUTHORIZED_ACTION');
 }
+function requireRoundGuide(state: MutableGameState, actor: PlayerId): void {
+  const guide = state.config.allJudges ? state.readerId : state.judgeId;
+  if (actor !== guide && actor !== state.hostId) reject('UNAUTHORIZED_ACTION');
+}
 function requirePhase(state: MutableGameState, ...phases: Phase[]): void {
   if (!phases.includes(state.phase)) reject('INVALID_PHASE');
 }
@@ -567,7 +571,7 @@ function reduce(
         break;
       }
       case 'beginOrdering':
-        requireHost(next, actor);
+        requireRoundGuide(next, actor);
         requirePhase(next, 'answers');
         if (
           next.round!.roster.some(
@@ -595,7 +599,7 @@ function reduce(
         break;
       }
       case 'revealNext': {
-        requireHost(next, actor);
+        requireRoundGuide(next, actor);
         requirePhase(next, 'revealing');
         const round = next.round!;
         if (command.expectedCursor !== round.revealCursor) reject('STALE_REVISION');
@@ -609,7 +613,7 @@ function reduce(
         break;
       }
       case 'completeCase':
-        requireHost(next, actor);
+        requireRoundGuide(next, actor);
         complete(next, false, ports, now);
         break;
       case 'completeWithoutVerdict':
@@ -617,7 +621,7 @@ function reduce(
         complete(next, true, ports, now);
         break;
       case 'continueRule':
-        requireHost(next, actor);
+        requireRoundGuide(next, actor);
         requirePhase(next, 'rule_event');
         if (command.afterCase !== next.completedCases) reject('STALE_ROUND');
         if (next.pendingRoster) {

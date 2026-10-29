@@ -6,6 +6,7 @@ import '../application/local_data_providers.dart';
 import '../application/settings_controller.dart';
 import 'router.dart';
 import '../design/court_theme.dart';
+import '../design/illustrated_paper.dart';
 import '../l10n/app_strings.dart';
 
 class TrinktribunalApp extends ConsumerWidget {
@@ -35,7 +36,7 @@ class TrinktribunalApp extends ConsumerWidget {
           disableAnimations:
               MediaQuery.disableAnimationsOf(context) || settings.reducedMotion,
         ),
-        child: child ?? const SizedBox.shrink(),
+        child: PaperAssetWarmup(child: child ?? const SizedBox.shrink()),
       ),
     ),
     onGenerateRoute: generateAppRoute,

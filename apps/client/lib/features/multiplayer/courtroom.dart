@@ -13,7 +13,6 @@ import '../bench/bench_view.dart';
 import 'game_settings.dart';
 import 'invite.dart';
 import '../../design/court_scene.dart';
-import 'game_screen.dart';
 import 'game_progress.dart';
 import 'order_view.dart';
 import 'roster_management.dart';
@@ -87,9 +86,7 @@ class _RoomCourtroomState extends ConsumerState<RoomCourtroom> {
                   (p) => p.playerId == snapshot.public.hostId && !p.connected,
                 ))
               OnlineHostStatus(snapshot: snapshot),
-            if (snapshot.public.phase != 'lobby')
-              RoomGameScreen(snapshot: snapshot, fixedActions: fixedActions),
-            if (snapshot.public.phase != 'lobby')
+            if (['paused', 'finished'].contains(snapshot.public.phase))
               OnlineGameProgress(
                 snapshot: snapshot,
                 showActions: !fixedActions,

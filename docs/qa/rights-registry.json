@@ -149,7 +149,7 @@
       "files": [
         {
           "path": "apps/client/lib/design/case_file.dart",
-          "sha256": "79504bbc673d3297729ac739d054ff52a74edf7e2efd779e737879e9392f759c"
+          "sha256": "9c8fd47114e92d3dead7d913f3ef26169999369b14f8d262a07141917615a938"
         },
         {
           "path": "apps/client/lib/design/court_scene.dart",
@@ -157,7 +157,11 @@
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
-          "sha256": "81c231497e94d4660e9b64e92161c962fec329dab56d5984be4dc9268ad910f9"
+          "sha256": "0832b5c10645c794ed702e8fe4ca2a191725ae5697b1b81cde3b381978ae0308"
+        },
+        {
+          "path": "apps/client/lib/design/illustrated_paper.dart",
+          "sha256": "713fa237369438e37c0b65c6cae2151c09bef1838d5afc98cafaca222d0df109"
         }
       ]
     },
@@ -696,6 +700,14 @@
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/geheime_nummer_bg.png",
           "sha256": "190d2234e570a8d6247603ec9a77db672511c696f59a5b239113c3807ee48427"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/fallakte_pergament_leer.png",
+          "sha256": "8256cb377f172d1a25da8439f8fb149d0c9f43729b54789be189cb612ae72e9e"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/paper/trinktribunal_regel_pergament_leer.png",
+          "sha256": "d9e26866524008a09d561dee2d063cd97cf5ab9b39e9514dc7cbb16bccb8e0d7"
         }
       ]
     },

@@ -573,7 +573,8 @@
       "id": "online_lobby",
       "files": [
         "apps/client/lib/features/multiplayer/lobby.dart",
-        "apps/client/lib/features/multiplayer/courtroom.dart"
+        "apps/client/lib/features/multiplayer/courtroom.dart",
+        "apps/client/lib/features/multiplayer/case_tab.dart"
       ],
       "modes": [
         "multiplayer"
@@ -597,14 +598,16 @@
         "Direkte Raumerstellung aus gespeicherter Vorlage oder Standardprofil",
         "Spieleinstellungen auf separatem Screen",
         "QR/Code/Link einklappbar mit schwebendem Pfeil",
-        "Kompakte Avatare mit schwebendem Drag-Griff und Links/Rechts-Aktionen"
+        "Kompakte Avatare mit schwebendem Drag-Griff und Links/Rechts-Aktionen",
+        "dedicated_case_tab_rotating_guide_private_number_and_broadcast_navigation"
       ],
       "tests": [
         "apps/client/test/features/lobby_test.dart",
         "apps/client/test/features/online_roster_test.dart",
         "apps/client/test/features/online_game_progress_test.dart",
         "apps/client/test/features/online_court_actions_test.dart",
-        "apps/client/test/features/online_lobby_layout_test.dart"
+        "apps/client/test/features/online_lobby_layout_test.dart",
+        "apps/client/test/features/case_tab_test.dart"
       ],
       "targetTask": "TT-077",
       "implementation": {
@@ -1591,6 +1594,44 @@
       ],
       "review": "candidate",
       "notes": "Vom Nutzer vorgegebenes Pergament für die feste Geheimzahlfläche; Zahl als eigener Flutter-Text, verborgen nie gerendert."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/paper/fallakte_pergament_leer.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 2541751,
+      "sha256": "8256cb377f172d1a25da8439f8fb149d0c9f43729b54789be189cb612ae72e9e",
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "transparent_pixels": 385326,
+      "nonopaque_pixels": 1572864,
+      "alpha_bbox": [
+        0,
+        39,
+        978,
+        1458
+      ],
+      "review": "candidate",
+      "notes": "Vom Nutzer ausgewähltes Leerpapier; Siegel und Ränder erhalten, nur freie Papiermitte gestreckt. Automatische Textgröße 16–28, lange Texte vergrößern die Fläche; dekodierte Bilder über Routenwechsel gehalten."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/paper/trinktribunal_regel_pergament_leer.png",
+      "width": 768,
+      "height": 1083,
+      "bytes": 1308311,
+      "sha256": "d9e26866524008a09d561dee2d063cd97cf5ab9b39e9514dc7cbb16bccb8e0d7",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 92406,
+      "nonopaque_pixels": 830648,
+      "alpha_bbox": [
+        6,
+        5,
+        762,
+        1077
+      ],
+      "review": "candidate",
+      "notes": "Vom Nutzer ausgewähltes Leerpapier; Siegel und Ränder erhalten, nur freie Papiermitte gestreckt. Automatische Textgröße 16–28, lange Texte vergrößern die Fläche; dekodierte Bilder über Routenwechsel gehalten."
     }
   ],
   "redesign": {

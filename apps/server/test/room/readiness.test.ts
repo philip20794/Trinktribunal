@@ -109,10 +109,18 @@ describe('own phase readiness and conservative D-07 waiting', () => {
     }
     expect((await read()).phase).toBe('answers');
     const judge = members.find((member) => member.credential.playerId === before.game!.judgeId)!;
+    const unrelated = members.find(
+      (member) =>
+        member.credential.playerId !== before.game!.judgeId &&
+        member.credential.playerId !== host.snapshot.you,
+    )!;
+    unrelated.peer.send(await command('beginOrdering'));
+    expect(await result(unrelated.peer)).toMatchObject({
+      type: 'error',
+      code: 'UNAUTHORIZED_ACTION',
+    });
     judge.peer.send(await command('beginOrdering'));
-    expect(await result(judge.peer)).toMatchObject({ type: 'error', code: 'UNAUTHORIZED_ACTION' });
-    host.peer.send(await command('beginOrdering'));
-    expect(await result(host.peer)).toMatchObject({ type: 'ack' });
+    expect(await result(judge.peer)).toMatchObject({ type: 'ack' });
     const after = await read();
     expect(after.phase).toBe('ordering');
     expect(after.game!.round!.orders).toEqual([]);

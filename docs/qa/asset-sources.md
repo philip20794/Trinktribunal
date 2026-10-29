@@ -52,3 +52,8 @@ Nutzercommit `4672141` enthält 33 benannte PNGs unter `apps/client/assets/ui/co
 ## Gerichtssaal-Auswahl für TT-072
 
 15 unveränderte Einzeldateien sind nun explizit im Flutter-Manifest gebündelt: Holz-/Homehintergrund, Logo, Handyübergabe, Fall-/Zahlenpapier und neun Symbole. Die Auswahl steht in `CourtAssets.nativeWidths`, zusammen 5.645.597 Byte. Die übrigen 18 Dateien bleiben Quelle; alle drei quarantänisierten Motive bleiben ausgeschlossen. Die neue Runtime-Gruppe `courtroom-ui-runtime` im Rechteregister ist ausdrücklich ungeklärt. Lokale Implementierung ist keine Veröffentlichungsfreigabe; TT-065 benötigt weiterhin die Herkunfts-/Nutzungsbelege. Neue Web-/Offline- und APK-Größen stehen im [M7.5-Beleg](M7_5.md).
+
+
+## Fallakten- und Regelpapier, 29.10.2026
+
+Die zwei vom Nutzer ausdrücklich ausgewählten Leerpapier-PNGs sind unverändert eingebunden. Dateigenaue Maße, Transparenzdaten und SHA-256 stehen im [UI-Inventar](../design/ui-inventory.json); die Runtime-Gruppe bleibt als ungeklärt eingetragen. Die neue Flutter-Textmessung, Schriftanpassung, Nine-slice-Darstellung und Bildhaltung sind Projektcode. [Umsetzung und Prüfungen](illustrated-case-tabs.md).

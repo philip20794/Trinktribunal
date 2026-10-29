@@ -81,7 +81,7 @@ class OnlineRevealAction extends ConsumerWidget {
         gameId = view.gameId,
         roundId = view.roundId;
     if (view.phase != 'revealing' ||
-        snapshot.you != view.hostId ||
+        !game.canGuideRound ||
         gameId == null ||
         roundId == null) {
       return const SizedBox.shrink();

@@ -145,7 +145,7 @@ class ReadinessActions extends ConsumerWidget {
         roundId = view.roundId,
         gameId = view.gameId;
     if (roundId == null || gameId == null) return const SizedBox.shrink();
-    final answers = view.phase == 'answers', host = snapshot.you == view.hostId;
+    final answers = view.phase == 'answers', host = game.canGuideRound;
     final participants = {
       for (final player in view.players) player.playerId: player,
     };

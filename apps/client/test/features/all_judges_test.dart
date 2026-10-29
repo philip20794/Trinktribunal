@@ -114,7 +114,7 @@ void main() {
           .profile
           .name;
       expect(
-        find.text(AppStrings('de').get('onlineReader', {'name': reader})),
+        find.text(AppStrings('de').get('caseGuide', {'name': reader})),
         findsOneWidget,
       );
       socket.receive(phase('ordering', 4));

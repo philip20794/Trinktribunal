@@ -181,11 +181,18 @@ void main() {
       expect(find.text(AppStrings('de').get('phoneRevealNext')), findsNothing);
     },
   );
-  testWidgets('judge without host role cannot advance the public cursor', (
+  testWidgets('judge without host role advances the committed public cursor', (
     tester,
   ) async {
     final fixture = await pump(tester, host: false);
-    expect(find.text(AppStrings('de').get('phoneRevealNext')), findsNothing);
-    expect(fixture.socket.sent.whereType<RevealNextMessage>(), isEmpty);
+    final button = find.text(AppStrings('de').get('phoneRevealNext'));
+    await tester.ensureVisible(button);
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+    expect(
+      fixture.socket.sent.whereType<RevealNextMessage>().single.expectedCursor,
+      0,
+    );
+    expect(fixture.room.state.snapshot!.public.revealCursor, 0);
   });
 }

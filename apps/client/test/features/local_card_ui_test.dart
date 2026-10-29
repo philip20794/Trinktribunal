@@ -78,7 +78,13 @@ void main() {
         expect(cards.state!.config.requestedRuleEvents, 7);
         expect(container.read(profileProvider).asData?.value.profile, isNull);
         Future<void> next() async {
-          final target = find.text(strings.get('nextCase'));
+          final target = find.text(
+            strings.get(
+              cards.state!.phase == GamePhase.ruleEvent
+                  ? 'ruleUnderstood'
+                  : 'nextCase',
+            ),
+          );
           expect(target.hitTestable(), findsOneWidget);
           await tester.tap(target);
           await tester.pumpAndSettle();

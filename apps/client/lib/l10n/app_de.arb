@@ -848,5 +848,11 @@
   "roomToolsClose": "Schließen",
   "roomDragPlayer": "{name} verschieben",
   "roomMoveLeft": "Position {position} nach links verschieben",
-  "roomMoveRight": "Position {position} nach rechts verschieben"
+  "roomMoveRight": "Position {position} nach rechts verschieben",
+  "oneSipPerViolation": "1 Schluck bei Verstoß",
+  "ruleUnderstood": "Regel verstanden",
+  "caseTabTitle": "Fallakte",
+  "caseGuide": "Fallführer: {name}",
+  "nextJudge": "Weiter · nächster Richter",
+  "goToCourtroom": "Zum Gerichtssaal"
 }

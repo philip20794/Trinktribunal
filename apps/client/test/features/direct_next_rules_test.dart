@@ -108,7 +108,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(cards.toSnapshot(), beforeHelp);
         if (cards.state!.phase == GamePhase.ruleEvent) {
-          await tap(tester, strings.get('nextCase'));
+          await tap(tester, strings.get('ruleUnderstood'));
         }
         expect(find.text(strings.get('withoutVerdict')), findsNothing);
         expect(find.text(strings.get('restartGame')), findsNothing);

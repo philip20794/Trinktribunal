@@ -11,7 +11,7 @@ import '../../application/shared_phone_controller.dart';
 import '../../data/catalogs/catalog.dart';
 import '../../data/catalogs/localized_catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
-import '../../design/avatar_view.dart';
+import '../../design/illustrated_paper.dart';
 import '../../design/case_file.dart';
 import '../../design/private_number.dart';
 import '../../design/court_scene.dart';
@@ -173,6 +173,58 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     });
   }
 
+  void _activeRules(SharedGameView view) {
+    _act(_controller.interruptPrivateHandoff);
+    showModalBottomSheet<void>(
+      backgroundColor: CourtSceneTokens.parchment,
+      useSafeArea: true,
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (context) => Theme(
+        data: courtPaperTheme(),
+        child: DefaultTextStyle(
+          style: courtPaperTheme().textTheme.bodyLarge!,
+          child: Builder(
+            builder: (context) => FractionallySizedBox(
+              heightFactor: 0.7,
+              child: ListView(
+                padding: const EdgeInsets.all(24),
+                children: [
+                  Text(
+                    context.tr('activeRulesCount', {
+                      'count': view.activeRules.length,
+                    }),
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  for (final rule in view.activeRules)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        localizedRule(
+                          ref.read(catalogsProvider).requireValue,
+                          AppLanguageScope.of(context).language,
+                          rule.entry as DrinkingRule,
+                        ).render(
+                          localizedRule(
+                            ref.read(catalogsProvider).requireValue,
+                            AppLanguageScope.of(context).language,
+                            rule.entry as DrinkingRule,
+                          ).text,
+                          rule.names(view.names),
+                        ),
+                      ),
+                    ),
+                  if (view.activeRules.isEmpty) const TText('phoneRulesEmpty'),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget? _primaryAction(SharedGameView view) {
     if (view.numberStage == SharedNumberStage.recipientHandoff) {
       return FilledButton(
@@ -229,7 +281,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
         onPressed: () => _act(
           () => _controller.continueRule(afterCase: view.completedCases),
         ),
-        child: const TText('nextCase'),
+        child: const TText('ruleUnderstood'),
       );
     }
     if (view.phase == GamePhase.finished) {
@@ -257,7 +309,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
             AppLanguageScope.of(context).language,
             view.question!.entry as Question,
           ).renderFor(view.question!.names(view.names));
-    final judge = view.judge == null ? null : view.profiles[view.judge];
     final primary = _primaryAction(view);
     if (view.numberStage == SharedNumberStage.recipientNumber) {
       return PopScope(
@@ -344,64 +395,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
             onPressed: _group,
             icon: const Icon(Icons.groups_outlined),
           ),
-          IconButton(
-            tooltip: context.tr('activeRules'),
-            onPressed: () {
-              _act(_controller.interruptPrivateHandoff);
-              showModalBottomSheet<void>(
-                backgroundColor: CourtSceneTokens.parchment,
-                useSafeArea: true,
-                context: context,
-                isScrollControlled: true,
-                showDragHandle: true,
-                builder: (context) => Theme(
-                  data: courtPaperTheme(),
-                  child: DefaultTextStyle(
-                    style: courtPaperTheme().textTheme.bodyLarge!,
-                    child: Builder(
-                      builder: (context) => FractionallySizedBox(
-                        heightFactor: 0.7,
-                        child: ListView(
-                          padding: const EdgeInsets.all(24),
-                          children: [
-                            Text(
-                              context.tr('activeRulesCount', {
-                                'count': view.activeRules.length,
-                              }),
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            for (final rule in view.activeRules)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                ),
-                                child: Text(
-                                  localizedRule(
-                                    ref.read(catalogsProvider).requireValue,
-                                    AppLanguageScope.of(context).language,
-                                    rule.entry as DrinkingRule,
-                                  ).render(
-                                    localizedRule(
-                                      ref.read(catalogsProvider).requireValue,
-                                      AppLanguageScope.of(context).language,
-                                      rule.entry as DrinkingRule,
-                                    ).text,
-                                    rule.names(view.names),
-                                  ),
-                                ),
-                              ),
-                            if (view.activeRules.isEmpty)
-                              const TText('phoneRulesEmpty'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(Icons.menu_book_outlined),
-          ),
         ],
         bodyBuilder: (context) => Center(
           child: ConstrainedBox(
@@ -409,14 +402,11 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                Text(
-                  context.tr('casesCompleted', {
-                    'done': view.completedCases,
-                    'total': view.config.targetCases,
-                  }),
-                ),
-                LinearProgressIndicator(
-                  value: view.completedCases / view.config.targetCases,
+                CaseProgressHeader(
+                  completed: view.completedCases,
+                  total: view.config.targetCases,
+                  rules: view.activeRules.length,
+                  onRules: () => _activeRules(view),
                 ),
                 if (_error != null)
                   Padding(
@@ -427,28 +417,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: TText('phoneRosterNotice'),
-                  ),
-                if (judge != null &&
-                    (view.phase != GamePhase.numbers ||
-                        view.numberStage == SharedNumberStage.caseFile))
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      children: [
-                        AvatarView(
-                          config: judge.avatar,
-                          size: 48,
-                          playerName: judge.player.name,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            context.tr('judge', {'name': judge.player.name}),
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 if (rendered != null &&
                     (view.phase != GamePhase.numbers ||
@@ -476,8 +444,9 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                             ),
                           )
                         : null,
-                    label: context.tr('caseNumber', {
+                    label: context.tr('caseProgress', {
                       'number': view.completedCases + 1,
+                      'total': view.config.targetCases,
                     }),
                     text: rendered.text,
                     green: rendered.green,
@@ -490,30 +459,29 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 ],
 
                 if (view.phase == GamePhase.ruleEvent) ...[
-                  CaseFile(
-                    label: view.newRule == null
+                  CourtRule(
+                    title: view.newRule == null
                         ? context.tr('ruleGoalReduced')
                         : context.tr('newRule'),
-                    child: Text(
-                      view.newRule == null
-                          ? context.tr('phoneNoRule', {
-                              'count':
-                                  view.config.scheduledRuleEventCount -
-                                  view.skippedRules,
-                            })
-                          : localizedRule(
+                    animationKey: '${view.gameId}:${view.completedCases}',
+                    text: view.newRule == null
+                        ? context.tr('phoneNoRule', {
+                            'count':
+                                view.config.scheduledRuleEventCount -
+                                view.skippedRules,
+                          })
+                        : localizedRule(
+                            ref.read(catalogsProvider).requireValue,
+                            AppLanguageScope.of(context).language,
+                            view.newRule!.entry as DrinkingRule,
+                          ).render(
+                            localizedRule(
                               ref.read(catalogsProvider).requireValue,
                               AppLanguageScope.of(context).language,
                               view.newRule!.entry as DrinkingRule,
-                            ).render(
-                              localizedRule(
-                                ref.read(catalogsProvider).requireValue,
-                                AppLanguageScope.of(context).language,
-                                view.newRule!.entry as DrinkingRule,
-                              ).text,
-                              view.newRule!.names(view.names),
-                            ),
-                    ),
+                            ).text,
+                            view.newRule!.names(view.names),
+                          ),
                   ),
                 ],
                 if (view.phase == GamePhase.paused) ...[

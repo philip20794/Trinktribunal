@@ -284,7 +284,9 @@
         "websocket"
       ],
       "roles": [
-        "host"
+        "host",
+        "judge",
+        "reader"
       ],
       "phases": [
         "answers"
@@ -313,7 +315,9 @@
         "websocket"
       ],
       "roles": [
-        "host"
+        "host",
+        "judge",
+        "reader"
       ],
       "phases": [
         "revealing"
@@ -327,7 +331,9 @@
         "websocket"
       ],
       "roles": [
-        "host"
+        "host",
+        "judge",
+        "reader"
       ],
       "phases": [
         "judged"
@@ -360,7 +366,9 @@
         "websocket"
       ],
       "roles": [
-        "host"
+        "host",
+        "judge",
+        "reader"
       ],
       "phases": [
         "rule_event"

@@ -122,6 +122,9 @@ void main() {
               hasLength(1),
             );
             expect(fixture.room.state.snapshot!.public.phase, 'answers');
+            await tester.ensureVisible(
+              find.widgetWithText(Tab, strings.get('roomMeTab')),
+            );
             await tester.tap(
               find.widgetWithText(Tab, strings.get('roomMeTab')),
             );
@@ -175,7 +178,7 @@ void main() {
             }
             await receive('judged', 6, ownOrder: ownOrder);
             if (host) {
-              await press('finishCase');
+              await press('nextJudge');
               expect(
                 socket.sent
                     .whereType<CompleteCaseMessage>()
@@ -184,7 +187,7 @@ void main() {
                 6,
               );
             } else {
-              expect(find.text(strings.get('finishCase')), findsNothing);
+              expect(find.text(strings.get('nextJudge')), findsNothing);
             }
             expect(fixture.room.state.snapshot!.public.phase, 'judged');
             expect(
