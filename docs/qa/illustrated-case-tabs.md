@@ -1,6 +1,6 @@
 # Fallakten, Regelpapier und Online-Fallführung
 
-Nutzerauftrag vom 29.10.2026, Basis `921a7f3`. Umsetzung vorhanden, abschließende Gesamtgates laufen. Browser/E2E: **ÜBERSPRUNGEN – später manuell testen**.
+Nutzerauftrag vom 29.10.2026, Basis `921a7f3`. **ABGESCHLOSSEN nach Unit-/Buildgates.** Browser/E2E: **ÜBERSPRUNGEN – später manuell testen**.
 
 Die beiden ausdrücklich ausgewählten Leerpapier-PNGs werden in Kartenmodus, Ein-Handy-Modus und Multiplayer durch dieselben Komponenten dargestellt. Frage beziehungsweise Regel liegen als Flutter-Text über dem Papier. Fragen-/Regeltext passt sich zwischen 16 und 28 Punkten an, Skalenenden zwischen 14 und 20. Bei sehr langen Texten oder großer Systemschrift wächst die Papierfläche scrollbar weiter, ohne die Mindestschrift zu unterschreiten. Nine-slice streckt nur freie Papiermitte; Siegel und Ränder bleiben erhalten. Goldener Fortschritt und Regelbuch ersetzen den bisherigen Fortschrittsblock. Neue Regel mit kurzer Schluckangabe und „Regel verstanden“.
 
@@ -13,3 +13,6 @@ Fallführer und Host dürfen Beginn der Sortierung, schrittweises Aufdecken, reg
 Gezielte Prüfungen: Textmessung/Schriftgrenzen, lange Inhalte bei 320/1440 Pixeln und 200 Prozent, tatsächlich dekodierte Bilder, zwölf Fall-/Regel-/Größenwechsel mit genau einem Laden je PNG, Entsorgung ohne Renderfehler. Native Flutter-Renderansichten unter `apps/client/build/ui-review/{case,rule}-paper-{de,en}.png`, deutsche Mobilansichten visuell geprüft. Separate Widgetfälle für alle drei Identitäten, normalen und Alle-Richter-Modus: Tabwechsel, Zahlenschutz, Serverbestätigung und nicht zum Host gehörender Fallführer. Domain- und WebSocket-Tests prüfen die geänderten Rollen auch nach Wiederaufnahme.
 
 Inventar: 23 Bereiche, 39 Featuredateien, 36 PNGs, drei weiterhin quarantänisiert. Rechteverzeichnis: 20 Pakete / 159 Dateien, unverändert sieben ungeklärte Runtime-Pakete. Die Nutzer-PNGs sind zur Implementierung ausgewählt; daraus folgt keine öffentliche Rechtefreigabe. Die während dieser Arbeit separat geänderte Logo-PNG bleibt außerhalb dieses Commits. Gesamtprüfungen und Builds erfolgen gegen einen isolierten Export des Git-Index, damit diese weitere Nutzeränderung erhalten bleibt.
+
+
+610 Flutter-, 163 Node- und 449 Servertests grün; Analyze/Format und Dart-/TypeScript-Parität inklusive Mutationsprüfungen bestanden. Frische Web- und Debug-APK-Builds aus isoliertem Git-Stand, neun HTTP-/CSP-Prüfungen und vollständige Precache-Integrität bestanden. Web: 68 Dateien / 26.872.394 Bytes, Offline: 65 Assets / 26.845.977 Bytes. [Artefakte und Prüfsummen](illustrated-case-builds.json). Kein Deployment; Browser-/E2E-Abnahme bleibt übersprungen. Auch die parallel bearbeiteten Einführungstexte bleiben separat im Workspace.

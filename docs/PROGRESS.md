@@ -2,11 +2,11 @@
 
 Stand: 29.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 163 Node-/601 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 163 Node-/610 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; 449 Servertests. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
 
 ## Illustrierte Fallakten und Online-Falltab, 29.10.2026
 
-**IN PRÜFUNG.** Gemeinsames Fall-/Regelpapier in allen Modi, automatische Schriftgröße und dekodierte Bildwiederverwendung. Online dritter Tab mit eigener verdeckter Zahl und automatischem Wechsel bei Fall-/Richterwechsel. Rotierender Richter beziehungsweise Vorleser führt den Fall auch ohne Hostrolle; jeder Richter sortiert weiter selbst. [Umsetzung, Grenzen und Testbelege](qa/illustrated-case-tabs.md).
+**ABGESCHLOSSEN nach Unit-/Buildgates.** 610 Flutter-/163 Node-/449 Server-Tests, Analyze/Format, Parität und frische Web-/Debug-APK-Builds grün. Gemeinsames Fall-/Regelpapier in allen Modi, automatische Schriftgröße und dekodierte Bildwiederverwendung. Online dritter Tab mit eigener verdeckter Zahl und automatischem Wechsel bei Fall-/Richterwechsel. Rotierender Richter beziehungsweise Vorleser führt den Fall auch ohne Hostrolle; jeder Richter sortiert weiter selbst. [Umsetzung, Grenzen und Testbelege](qa/illustrated-case-tabs.md).
 
 ## Online-Lobby und Avatar-Branch integriert, 29.10.2026
 
