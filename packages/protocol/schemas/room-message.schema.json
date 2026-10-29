@@ -433,40 +433,19 @@
               ]
             },
             "skinColor": {
-              "enum": [
-                "#763900",
-                "#9e5622",
-                "#ecad80",
-                "#f2d3b1"
-              ]
+              "type": "string",
+              "pattern": "^#[A-Fa-f0-9]{6}$",
+              "maxLength": 7
             },
             "hairColor": {
-              "enum": [
-                "#0e0e0e",
-                "#3eac2c",
-                "#562306",
-                "#592454",
-                "#6a4e35",
-                "#796a45",
-                "#85c2c6",
-                "#ab2a18",
-                "#ac6511",
-                "#afafaf",
-                "#b9a05f",
-                "#cb6820",
-                "#dba3be",
-                "#e5d7a3"
-              ]
+              "type": "string",
+              "pattern": "^#[A-Fa-f0-9]{6}$",
+              "maxLength": 7
             },
             "outfitColor": {
-              "enum": [
-                "#87384f",
-                "#475e74",
-                "#405849",
-                "#a36a43",
-                "#6a537c",
-                "#363b43"
-              ]
+              "type": "string",
+              "pattern": "^#[A-Fa-f0-9]{6}$",
+              "maxLength": 7
             }
           }
         }
