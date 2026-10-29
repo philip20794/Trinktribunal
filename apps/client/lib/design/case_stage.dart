@@ -80,9 +80,15 @@ class CaseStage extends StatelessWidget {
 
 /// Secret text is removed immediately on release, including during the flip back.
 class FlipCase extends StatefulWidget {
-  const FlipCase({required this.front, required this.number, super.key});
+  const FlipCase({
+    required this.front,
+    required this.number,
+    this.ownerName,
+    super.key,
+  });
   final Widget front;
   final int? number;
+  final String? ownerName;
   @override
   State<FlipCase> createState() => _FlipCaseState();
 }
@@ -94,6 +100,17 @@ class _FlipCaseState extends State<FlipCase>
     duration: const Duration(milliseconds: 280),
     value: widget.number == null ? 0 : 1,
   );
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _turn.duration = MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : const Duration(milliseconds: 280);
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _turn.value = widget.number == null ? 0 : 1;
+    }
+  }
+
   @override
   void didUpdateWidget(FlipCase oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -124,7 +141,10 @@ class _FlipCaseState extends State<FlipCase>
             ? Transform(
                 alignment: Alignment.center,
                 transform: Matrix4.rotationY(math.pi),
-                child: SecretNumberFace(number: widget.number),
+                child: SecretNumberFace(
+                  number: widget.number,
+                  ownerName: widget.ownerName,
+                ),
               )
             : widget.front,
       );

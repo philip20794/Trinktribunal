@@ -172,7 +172,7 @@ class CourtQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) => CaseFile(
     label: label,
-    animationKey: animationKey,
+    animationKey: (animationKey, text, green, red),
     illustrated: true,
     onRefresh: onRefresh,
     showRefresh: showRefresh,

@@ -11,6 +11,7 @@ import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
 import 'invitation.dart';
 import 'pending_profile.dart';
+import '../../design/setting_label.dart';
 
 class RoomGameSettings extends ConsumerWidget {
   const RoomGameSettings({required this.snapshot, this.session, super.key});
@@ -35,7 +36,12 @@ class RoomGameSettings extends ConsumerWidget {
         ) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(context.tr(label, {'count': value})),
+            SettingLabel(
+              title: Text(context.tr(label, {'count': value})),
+              helpKey: field == 'targetCases'
+                  ? 'localCasesHelp'
+                  : 'localRulesHelp',
+            ),
             Slider(
               value: value.toDouble(),
               min: min.toDouble(),
@@ -51,9 +57,7 @@ class RoomGameSettings extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const TText('localCasesHelp'),
             slider('casesCount', config.targetCases, 1, 491, 'targetCases'),
-            const TText('localRulesHelp'),
             slider(
               'rulesCount',
               config.requestedRuleEvents,
@@ -61,12 +65,14 @@ class RoomGameSettings extends ConsumerWidget {
               25,
               'requestedRuleEvents',
             ),
-            Text(
-              context.tr('factor', {
-                'value': (config.factorTenths / 10).toStringAsFixed(1),
-              }),
+            SettingLabel(
+              helpKey: 'localFactorHelp',
+              title: Text(
+                context.tr('factor', {
+                  'value': (config.factorTenths / 10).toStringAsFixed(1),
+                }),
+              ),
             ),
-            const TText('localFactorHelp'),
             Slider(
               value: config.factorTenths.toDouble(),
               min: 10,

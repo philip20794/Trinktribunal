@@ -51,3 +51,23 @@ String roomErrorKey(String? code) => switch (code) {
   'SERVER_NOT_CONFIGURED' || 'WRONG_SERVER' => 'roomErrorServer',
   _ => 'roomErrorGeneric',
 };
+
+/// A scan may identify a room, never select another server or arbitrary route.
+String? codeFromScannedInvite(String raw, Uri? publicClientBase) {
+  if (raw.length > 256) return null;
+  try {
+    return normalizedRoomCode(raw);
+  } catch (_) {
+    /* Try an invitation URL. */
+  }
+  final uri = Uri.tryParse(raw);
+  if (uri == null ||
+      publicClientBase == null ||
+      !uri.hasAuthority ||
+      uri.userInfo.isNotEmpty ||
+      uri.hasFragment ||
+      uri.origin != publicClientBase.origin) {
+    return null;
+  }
+  return codeFromJoinRoute('${uri.path}?${uri.query}');
+}

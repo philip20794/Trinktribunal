@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../domain/avatar_config.dart';
+
 import '../data/preferences_string_store.dart';
 import '../data/profile_store.dart';
 import '../data/string_store.dart';
@@ -67,6 +69,19 @@ final rosterControllerProvider = Provider<RosterController>(
 final rosterProvider = FutureProvider<RosterController>((ref) async {
   final controller = ref.watch(rosterControllerProvider);
   await controller.load();
+  final profile = await ref.watch(profileProvider.future);
+  if (profile.profile == null) {
+    final settings = await ref.read(settingsProvider.future);
+    if (!await profile.save(
+      name: settings.value.language == 'en' ? 'Me' : 'Ich',
+      avatar: AvatarConfig(),
+    )) {
+      throw StateError('LOCAL_PROFILE_UNAVAILABLE');
+    }
+  }
+  if (!await controller.ensureOwner(profile.profile!)) {
+    throw StateError('ROSTER_STORAGE_UNAVAILABLE');
+  }
   return controller;
 }, retry: (count, error) => null);
 final profileControllerProvider = Provider<ProfileController>(

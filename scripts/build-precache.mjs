@@ -10,7 +10,7 @@ export function buildPrecache(root=webRoot) {
   writeFileSync(resolve(root,'offline.js'),readFileSync(new URL('../apps/client/web/offline.js',import.meta.url),'utf8').replace("'PAGE_VERSION'",JSON.stringify(pageVersion)));
   // Only generated, public application assets. No runtime/API responses enter this list.
   const files=listBundleFiles(root).filter(f=>!['service-worker.js','precache-manifest.json','flutter_service_worker.js'].includes(f.path));
-  for(const f of files) if(!/^(?:index\.html|flutter(?:_bootstrap)?\.js|main\.dart\.js|version\.json|manifest\.json|favicon\.png|offline\.js|icons\/[\w.-]+|assets\/[\w./-]+|canvaskit\/[\w./-]+)$/.test(f.path)||f.path.split('/').includes('..')) throw new Error('Non-public precache path: '+f.path);
+  for(const f of files) if(!/^(?:index\.html|flutter(?:_bootstrap)?\.js|main\.dart\.js|version\.json|manifest\.json|favicon\.png|offline\.js|icons\/[\w.-]+|scanner\/(?:zxing-0\.23\.0\.min\.js|LICENSE)|assets\/[\w./-]+|canvaskit\/[\w./-]+)$/.test(f.path)||f.path.split('/').includes('..')) throw new Error('Non-public precache path: '+f.path);
   for(const required of ['index.html','main.dart.js','offline.js','canvaskit/canvaskit.wasm','assets/FontManifest.json','assets/assets/catalogs/manifest.json']) if(!files.some(f=>f.path===required)) throw new Error('Missing offline asset: '+required);
   const version=digest(JSON.stringify(files));
   const manifest={formatVersion:1,version,pageVersion,bytes:files.reduce((n,f)=>n+f.bytes,0),files};

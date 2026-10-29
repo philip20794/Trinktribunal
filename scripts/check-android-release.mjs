@@ -25,7 +25,7 @@ export function checkAndroidRelease({ pubspec, gradle, mainManifest, debugManife
   if (!mainActivity.startsWith(`package ${namespace}\n`) && !mainActivity.startsWith(`package ${namespace}\r\n`))
     throw new Error('Android activity namespace mismatch');
   const permissions = [...mainManifest.matchAll(/<uses-permission\s+android:name="([^"]+)"/g)].map(m => m[1]);
-  if (permissions.length !== 1 || permissions[0] !== 'android.permission.INTERNET' ||
+  if (permissions.length !== 2 || !['android.permission.INTERNET', 'android.permission.CAMERA'].every(p => permissions.includes(p)) ||
       !mainManifest.includes('android:usesCleartextTraffic="false"') ||
       !debugManifest.includes('android:usesCleartextTraffic="true"') ||
       !debugManifest.includes('tools:replace="android:usesCleartextTraffic"') ||

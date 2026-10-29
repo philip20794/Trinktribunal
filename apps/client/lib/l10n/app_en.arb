@@ -601,5 +601,18 @@
   "roomUnnamedPlayer": "Name missing",
   "revealedNumber": "{number}",
   "orderStillPending": "Order not confirmed yet",
-  "drinkPersonalSips": "Drink {count} sips!"
+  "drinkPersonalSips": "Drink {count} sips!",
+  "holdToReveal": "Press and hold",
+  "numberOfName": "Number for {name}",
+  "ownPlayer": "You",
+  "roomOpenCamera": "Open camera",
+  "roomScanHint": "Place the room QR code in the camera view. You will join automatically.",
+  "roomScanInvalid": "This QR code does not identify a valid room.",
+  "roomCameraPermission": "Allow camera access to scan QR codes, or enter the room code instead.",
+  "roomCameraUnavailable": "The camera is unavailable here. Enter the room code instead.",
+  "roomShareLink": "Share link",
+  "roomShareFailed": "Sharing is unavailable here. You can copy the link.",
+  "replaceHostedRoomTitle": "Replace your open room?",
+  "replaceHostedRoomHelp": "You still own room {codes}. Creating a new room deletes your previous room for everyone.",
+  "replaceHostedRoomConfirm": "Delete room and create new"
 }

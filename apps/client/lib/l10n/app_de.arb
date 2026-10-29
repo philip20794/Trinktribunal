@@ -876,6 +876,19 @@
   "roomStartPendingNames": "Spielstart nicht möglich. Spieler ohne Namen: {count}.",
   "roomUnnamedPlayer": "Name fehlt",
   "revealedNumber": "{number}",
-  "orderStillPending": "Reihenfolge noch nicht best\u00e4tigt",
-  "drinkPersonalSips": "Trinke {count} Schl\u00fccke!"
+  "orderStillPending": "Reihenfolge noch nicht bestätigt",
+  "drinkPersonalSips": "Trinke {count} Schlücke!",
+  "holdToReveal": "Drücken und halten",
+  "numberOfName": "Zahl von {name}",
+  "ownPlayer": "Du",
+  "roomOpenCamera": "Kamera öffnen",
+  "roomScanHint": "Halte den QR-Code des Raums in das Kamerafeld. Du trittst automatisch bei.",
+  "roomScanInvalid": "Dieser QR-Code gehört nicht zu einem gültigen Raum.",
+  "roomCameraPermission": "Erlaube den Kamerazugriff, um QR-Codes zu scannen. Du kannst auch den Raumcode eingeben.",
+  "roomCameraUnavailable": "Die Kamera ist hier nicht verfügbar. Gib stattdessen den Raumcode ein.",
+  "roomShareLink": "Link teilen",
+  "roomShareFailed": "Teilen ist hier nicht verfügbar. Du kannst den Link kopieren.",
+  "replaceHostedRoomTitle": "Offenen Raum ersetzen?",
+  "replaceHostedRoomHelp": "Du besitzt noch den Raum {codes}. Wenn du einen neuen Raum erstellst, wird der bisherige Raum für alle gelöscht.",
+  "replaceHostedRoomConfirm": "Raum löschen und neu erstellen"
 }

@@ -128,7 +128,7 @@
         },
         {
           "path": "apps/client/lib/design/avatar_view.dart",
-          "sha256": "43094c630507521b1c711e668ec650e0c78fa11c6b289b7e8beb537821b7fcee"
+          "sha256": "e1bb79679241cdcc75ffd6b4ecdebccc1383018ac8d8c0210735b8cb81925770"
         },
         {
           "path": "apps/client/assets/avatars/dicebear/trinktribunal-adventurer-v1.json",
@@ -149,11 +149,11 @@
       "files": [
         {
           "path": "apps/client/lib/design/case_file.dart",
-          "sha256": "9c8fd47114e92d3dead7d913f3ef26169999369b14f8d262a07141917615a938"
+          "sha256": "733cf47d9c96a178473f45da56a7830a79aa41edacc5d03fb57c55d4f6914b88"
         },
         {
           "path": "apps/client/lib/design/court_scene.dart",
-          "sha256": "2c9e4b0c923d68111e6c748c46922939cca46e1f3f744a631c1e8be21025f22a"
+          "sha256": "0bf57bcd40269bd0328a402589079d48a6de94b5faac07acfda0afe3daffc78f"
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
@@ -161,7 +161,7 @@
         },
         {
           "path": "apps/client/lib/design/illustrated_paper.dart",
-          "sha256": "31b6682c53443f485386feaa59de573bec01d690ddae8c0bcf6cb99fbbe3efff"
+          "sha256": "91fda24c617daef14f2a8e0bc47f2d10c425caca46e54baeffb18ff494d48f0d"
         }
       ]
     },
@@ -833,6 +833,25 @@
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/Richter-Namensplakette-mit-Avatar.png",
           "sha256": "cb3f0a3a464942bdf8e3e5542edeffff9349ce1a905727376efa6c96125aec42"
+        }
+      ]
+    },
+    {
+      "id": "zxing-web-scanner",
+      "distribution": "runtime",
+      "status": "licensed",
+      "provenance": "Unmodified @zxing/library 0.23.0 UMD build, obtained from its pinned npm release via unpkg; local fallback for the QR scanner. https://github.com/zxing-js/library",
+      "evidence": "apps/client/web/scanner/LICENSE",
+      "licenseId": "Apache-2.0",
+      "licenseFile": "apps/client/web/scanner/LICENSE",
+      "files": [
+        {
+          "path": "apps/client/web/scanner/zxing-0.23.0.min.js",
+          "sha256": "3ede94153fb0c5b67a12d7adff6decd827c2b22714fdc6faecf27a8f20937ea6"
+        },
+        {
+          "path": "apps/client/web/scanner/LICENSE",
+          "sha256": "849b3ff4527ff587eecc78736b5685bbba7a44b071f3b944da914e832292f6c0"
         }
       ]
     }

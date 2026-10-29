@@ -85,7 +85,10 @@ void main() {
         expect(cards.state!.judge!.player.name, 'Alex');
         expect(cards.state!.config.targetCases, 50);
         expect(cards.state!.config.requestedRuleEvents, 7);
-        expect(container.read(profileProvider).asData?.value.profile, isNull);
+        expect(
+          container.read(profileProvider).asData?.value.profile,
+          isNotNull,
+        );
         Future<void> next() async {
           final target = find.text(
             strings.get(

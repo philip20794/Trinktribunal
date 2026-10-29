@@ -255,7 +255,7 @@ void main() {
 
           expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, isNull);
           await reviewImage(tester, 'case-fitted-${size.width.toInt()}');
-          final target = find.text(AppStrings('de').get('showNumber'));
+          final target = find.text(AppStrings('de').get('holdToReveal'));
           final gesture = await startChargedHold(tester, target);
           expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, 2);
           await tester.pump();
@@ -313,7 +313,7 @@ void main() {
       await tester.pumpAndSettle();
       final secret = find.widgetWithText(
         HoldActionButton,
-        AppStrings('de').get('showNumber'),
+        AppStrings('de').get('holdToReveal'),
       );
       final next = find.widgetWithText(
         HoldActionButton,
@@ -327,7 +327,7 @@ void main() {
       expect(next.hitTestable(), findsOneWidget);
       final early = await tester.startGesture(tester.getCenter(next));
       await tester.pump();
-      await tester.pump(const Duration(milliseconds: 1199));
+      await tester.pump(const Duration(milliseconds: 799));
       await early.up();
       await tester.pumpAndSettle();
       expect(

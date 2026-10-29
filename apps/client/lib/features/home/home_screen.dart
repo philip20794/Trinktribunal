@@ -132,6 +132,7 @@ class HomeScreen extends ConsumerWidget {
       background: CourtAssets.home,
       maxWidth: 1056,
       title: const Text('Trinktribunal'),
+      centerTitle: false,
       actions: [
         IconButton(
           tooltip: context.tr('openSettings'),
@@ -139,14 +140,15 @@ class HomeScreen extends ConsumerWidget {
           onPressed: () => _open(context, const SettingsScreen()),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 12),
-          child: IconButton.filledTonal(
+          padding: const EdgeInsets.only(right: 4),
+          child: IconButton(
             tooltip: context.tr('openProfile'),
             icon: profile == null
                 ? const Icon(Icons.person_outline)
                 : AvatarHeadView(
                     config: profile.avatar,
                     size: 34,
+                    filledBackground: false,
                     label: profile.player.name,
                   ),
             onPressed: () => _open(context, const ProfileScreen()),

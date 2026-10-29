@@ -4,6 +4,7 @@ import '../l10n/app_strings.dart';
 import 'court_scene.dart';
 import 'court_assets.dart';
 import 'hold_action_button.dart';
+import 'case_stage.dart';
 
 /// Shared local/online presentation; hidden values never enter text or semantics.
 class PrivateNumber extends StatefulWidget {
@@ -34,10 +35,12 @@ class HeldPrivateNumber extends StatefulWidget {
     required this.onHide,
     required this.onDone,
     this.fullScreen = false,
+    this.ownerName,
     super.key,
   });
   final int? number;
   final bool fullScreen;
+  final String? ownerName;
   final VoidCallback onReveal, onHide, onDone;
   @override
   State<HeldPrivateNumber> createState() => _HeldPrivateNumberState();
@@ -59,11 +62,11 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber> {
       mainAxisSize: MainAxisSize.min,
       children: [
         HoldActionButton(
-          duration: const Duration(milliseconds: 800),
+          duration: const Duration(milliseconds: 600),
           key: const ValueKey('hold-private-number'),
           focusNode: _focus,
           icon: Icons.visibility_outlined,
-          label: context.tr('showNumber'),
+          label: context.tr('holdToReveal'),
           onCompleted: () {
             setState(() {
               _seen = true;
@@ -90,7 +93,11 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber> {
         leading: const SizedBox.shrink(),
         body: Padding(
           padding: const EdgeInsets.all(4),
-          child: SecretNumberFace(number: _revealed ? widget.number : null),
+          child: FlipCase(
+            ownerName: widget.ownerName,
+            front: SecretNumberFace(number: null, ownerName: widget.ownerName),
+            number: _revealed ? widget.number : null,
+          ),
         ),
         footer: CourtActionBar(primary: controls),
       );
@@ -107,8 +114,9 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber> {
 }
 
 class SecretNumberFace extends StatelessWidget {
-  const SecretNumberFace({required this.number, super.key});
+  const SecretNumberFace({required this.number, this.ownerName, super.key});
   final int? number;
+  final String? ownerName;
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => Stack(
@@ -117,13 +125,26 @@ class SecretNumberFace extends StatelessWidget {
         const CourtArt(CourtAssets.secretPaper, fit: BoxFit.contain),
         Center(
           child: number == null
-              ? const ExcludeSemantics(
-                  child: Icon(
-                    Icons.lock_outline,
-                    size: 64,
-                    color: CourtSceneTokens.crimson,
-                  ),
-                )
+              ? ownerName != null
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 48),
+                        child: Text(
+                          context.tr('numberOfName', {'name': ownerName}),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                            color: CourtSceneTokens.crimson,
+                          ),
+                        ),
+                      )
+                    : const ExcludeSemantics(
+                        child: Icon(
+                          Icons.lock_outline,
+                          size: 64,
+                          color: CourtSceneTokens.crimson,
+                        ),
+                      )
               : SizedBox(
                   width: constraints.maxWidth * .55,
                   height: constraints.maxHeight * .5,

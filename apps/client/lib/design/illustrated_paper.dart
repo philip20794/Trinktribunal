@@ -385,9 +385,7 @@ class IllustratedQuestion extends StatelessWidget {
             width * 1.5,
             top + headerHeight + 26 + bodyHeight + 16 + scaleHeight + bottom,
           );
-          final height = viewport == null
-              ? naturalHeight
-              : math.min(naturalHeight, viewport);
+          final height = viewport ?? naturalHeight;
           final contentHeight =
               headerHeight +
               (viewport == null ? 26 : 16) +
@@ -608,9 +606,7 @@ class IllustratedRule extends StatelessWidget {
             top + heading + 28 + body + 28 + penaltyHeight + bottom,
           );
           final viewport = CasePaperScope.heightOf(context);
-          final height = viewport == null
-              ? naturalHeight
-              : math.min(naturalHeight, viewport);
+          final height = viewport ?? naturalHeight;
           return IllustratedPaper(
             rule: true,
             growToContent: viewport == null,

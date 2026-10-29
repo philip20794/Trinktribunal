@@ -1,6 +1,6 @@
 # Cloudflare-Backend und Codemagic
 
-Stand: 29.10.2026. Einrichtung auf ausdrücklichen Nutzerauftrag durchgeführt. Die bisherige Beschränkung auf lokale Deploy-Dry-Runs wird für dieses Backend damit bewusst erweitert.
+Stand: 30.10.2026. Einrichtung auf ausdrücklichen Nutzerauftrag durchgeführt. Die bisherige Beschränkung auf lokale Deploy-Dry-Runs wird für dieses Backend damit bewusst erweitert.
 
 ## Laufender Server
 
@@ -8,7 +8,7 @@ Stand: 29.10.2026. Einrichtung auf ausdrücklichen Nutzerauftrag durchgeführt. 
 - Gesundheitsprüfung: https://trinktribunal-api.philip20794.workers.dev/health
 - Worker: `trinktribunal-api`; Konto `65e9e550015ea5d5779bce08f59f4e40`.
 - Produktionskonfiguration: [wrangler.production.jsonc](../apps/server/wrangler.production.jsonc); öffentliche Clientkonfiguration: [production.json](config/production.json).
-- Aktive Worker-Version bei der Einrichtung: `6ac398f1-6630-4268-9342-b09d628abf67`.
+- Aktive Worker-Version bei der Einrichtung: `7e6193b8-fb0c-406f-89df-c69015854a38`.
 - Durable Object: Binding `ROOMS`, Klasse `Room`, SQLite-Migration `v1` mit `new_sqlite_classes`. Vorhandene Architektur mit einem Raum je Objekt und WebSocket-Hibernation bleibt erhalten.
 - Separates lokales Setup: `apps/server/wrangler.jsonc`. Es wird durch das Produktionsdeployment nicht umkonfiguriert.
 - `workers_dev=true`, Vorschau-URLs deaktiviert, Wrangler-Telemetrie aus. Die bereits deaktivierten Cloudflare-Git-Builds bleiben deaktiviert; das Deployment erfolgt explizit mit Wrangler und der Produktionsdatei.
@@ -21,9 +21,9 @@ Wrangler wurde per OAuth im bereits angemeldeten Konto autorisiert. Die Berechti
 
 ## Android und Browser-Origins
 
-`CLIENT_ORIGINS` ist aktuell leer. Native Android-/Dart-Clients ohne Browser-Origin können die API verwenden; fremde Browser-Origins werden mit 403 abgewiesen. Das ersetzt keine Token-Authentifizierung: private Raumdaten werden weiterhin erst nach gültiger WebSocket-Authentifizierung ausgeliefert.
+Der bestehende Pages-Webclient ist unter **https://trinktribunal.pages.dev** erreichbar. `PUBLIC_CLIENT_BASE_URL` verwendet diese Origin; QR-Codes und Teilen-Links verweisen auf `/join?room=...`. Der Worker erlaubt diese eine Browser-Origin in `CLIENT_ORIGINS`. Native Android-Clients ohne Browser-Origin verwenden weiterhin dieselbe API und Token-Authentifizierung.
 
-Ein öffentlicher Flutter-Webclient wurde mit diesem Auftrag nicht bereitgestellt. Deshalb ist `PUBLIC_CLIENT_BASE_URL` nicht gesetzt und es werden keine erfundenen Browser-Einladungslinks konfiguriert. Beitreten per Raumcode funktioniert. Für einen späteren echten Webclient dessen HTTPS-Origin in `CLIENT_ORIGINS`, `docs/config/production.json` und Codemagics optionalem `PUBLIC_CLIENT_BASE_URL` konsistent ergänzen; keine Wildcard verwenden.
+Das bereits vorhandene Git-Pages-Projekt wird direkt mit Wrangler beliefert. Die pausierten automatischen Pages-Git-Builds bleiben pausiert. Der Webclient hat einen lokalen QR-Decoder als Fallback; Kamerabilder werden nicht hochgeladen. Kamerazugriff ist durch `Permissions-Policy: camera=(self)` auf die eigene Origin begrenzt. Die OAuth-Berechtigung `pages:write` wurde zur bestehenden lokalen Wrangler-Anmeldung hinzugefuegt; weiterhin keine Secrets im Repository.
 
 ## Wiederholbares Deployment
 
@@ -78,3 +78,17 @@ flutter test --no-pub --dart-define=TT_DEMO_SERVER=https://trinktribunal-api.phi
 ```
 
 Dieser Test erzeugt echte temporäre Räume und ist daher im normalen Testlauf ohne `TT_DEMO_SERVER` deaktiviert. Kein Installationstest auf einem physischen Android-Gerät wurde daraus abgeleitet.
+
+## Pages aktualisieren
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-web-release.ps1 -ConfigPath docs/config/production.json -WorkerConfigPath apps/server/wrangler.production.jsonc
+```
+
+Anschliessend in `apps/server`:
+
+```powershell
+node node_modules/wrangler/bin/wrangler.js pages deploy ../client/build/web --project-name trinktribunal --branch main
+```
+
+Die eindeutige Deployment-Vorschau ist nicht als API-CORS-Origin freigegeben. Fuer Multiplayer die Produktionsadresse `https://trinktribunal.pages.dev` verwenden. Der kostenlose Tarif wurde beibehalten; es wurde kein zusaetzlicher Worker fuer das Frontend angelegt.

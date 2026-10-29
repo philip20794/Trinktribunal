@@ -15,6 +15,8 @@ final class RosterController {
   final StringStore storage;
   final RandomSource _random;
   final String Function()? newId;
+  PlayerId? _ownerId;
+  bool isOwner(PlayerId id) => id == _ownerId;
   List<UserProfile> _members = const [];
   List<UserProfile> get members => _members;
   String? error;
@@ -32,7 +34,7 @@ final class RosterController {
       final loaded = (data['members'] as List)
           .map((m) => UserProfile.fromJson(m as Map<String, dynamic>))
           .toList();
-      if (loaded.length > 20 ||
+      if (loaded.length > (data['ownerId'] is String ? 21 : 20) ||
           loaded.map((m) => m.player.id).toSet().length != loaded.length) {
         throw const FormatException('roster');
       }
@@ -43,6 +45,25 @@ final class RosterController {
     } on Object {
       error = 'Die Gruppe konnte nicht geladen werden. Bitte erneut versuchen oder neu anlegen.';
     }
+  }
+
+  Future<bool> ensureOwner(UserProfile owner) async {
+    final previous = _ownerId;
+    _ownerId = owner.player.id;
+    final existing = _members.where((m) => m.player.id == owner.player.id);
+    if (existing.isNotEmpty &&
+        jsonEncode(existing.first.toJson()) == jsonEncode(owner.toJson())) {
+      return true;
+    }
+    final saved = await _change(
+      () => [
+        if (existing.isEmpty) owner,
+        for (final member in _members)
+          member.player.id == owner.player.id ? owner : member,
+      ],
+    );
+    if (!saved) _ownerId = previous;
+    return saved;
   }
 
   Future<bool> add(String name, {AvatarConfig? avatar}) => _change(() {
@@ -86,10 +107,16 @@ final class RosterController {
         ];
       });
 
-  Future<bool> remove(PlayerId id) => _change(() {
-    if (!_members.any((m) => m.player.id == id)) _invalid('Unbekannte Person.');
-    return _members.where((m) => m.player.id != id).toList();
-  });
+  Future<bool> remove(PlayerId id) {
+    if (isOwner(id)) return Future.value(false);
+    return _change(() {
+      if (isOwner(id)) return _members;
+      if (!_members.any((m) => m.player.id == id)) {
+        _invalid('Unbekannte Person.');
+      }
+      return _members.where((m) => m.player.id != id).toList();
+    });
+  }
 
   Future<bool> restore(UserProfile member, int index) => _change(() {
     if (_members.length >= 20 ||
@@ -128,6 +155,7 @@ final class RosterController {
         key,
         jsonEncode({
           'version': 1,
+          if (_ownerId != null) 'ownerId': _ownerId!.value,
           'members': next.map((m) => m.toJson()).toList(),
         }),
       );

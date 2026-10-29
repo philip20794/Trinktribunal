@@ -326,12 +326,12 @@ class _RoomPhaseFooter extends ConsumerWidget {
               if (showNumber)
                 Expanded(
                   child: HoldActionButton(
-                    duration: const Duration(milliseconds: 800),
+                    duration: const Duration(milliseconds: 600),
                     key: ValueKey(
                       'online-number-${snapshot.roomId}:${view.roundId}',
                     ),
                     icon: Icons.visibility_outlined,
-                    label: context.tr('showNumber'),
+                    label: context.tr('holdToReveal'),
                     onCompleted: game.revealOwnNumber,
                     onReleased: () {
                       if (!context.mounted) return;

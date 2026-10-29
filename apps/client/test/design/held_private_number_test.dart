@@ -34,7 +34,7 @@ Future<void> pump(WidgetTester tester) => tester.pumpWidget(
     child: MaterialApp(home: Scaffold(body: _Harness())),
   ),
 );
-Finder get hold => find.text(const AppStrings('de').get('showNumber'));
+Finder get hold => find.text(const AppStrings('de').get('holdToReveal'));
 
 void main() {
   testWidgets(

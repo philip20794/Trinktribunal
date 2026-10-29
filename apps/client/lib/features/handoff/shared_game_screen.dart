@@ -240,6 +240,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     ].contains(view.phase)) {
       return HoldActionButton(
         key: ValueKey('shared-next-${view.roundId}'),
+        duration: const Duration(milliseconds: 800),
         icon: Icons.arrow_forward_rounded,
         label: context.tr('phoneComplete'),
         onCompleted: () => _act(
@@ -291,6 +292,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
         child: HeldPrivateNumber(
           key: ValueKey('${view.roundId}:${view.recipient!.value}'),
           fullScreen: true,
+          ownerName: _identity(view, view.recipient!),
           number: view.visibleSecret,
           onReveal: () => _showSecret(view),
           onHide: () {

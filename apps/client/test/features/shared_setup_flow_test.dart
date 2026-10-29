@@ -81,14 +81,14 @@ void main() {
             phone = container.read(sharedPhoneControllerProvider);
         cards.start(
           cards.configure(
-            playerCount: 3,
+            playerCount: roster.members.length,
             targetCases: 3,
             requestedRuleEvents: 1,
           ),
         );
         phone.start(
           config: phone.configure(
-            playerCount: 3,
+            playerCount: roster.members.length,
             targetCases: 3,
             requestedRuleEvents: 1,
           ),
@@ -128,7 +128,7 @@ void main() {
           cardMode ? phone.view!.roundId : cards.state!.currentEventId,
           cardMode ? phoneId : cardId,
         );
-        expect(roster.members.length, 3);
+        expect(roster.members.length, 4);
         await tester.tap(find.text(strings.get('introContinue')));
         await tester.pumpAndSettle();
         expect(find.byType(PlayerRosterScreen), findsOneWidget);
@@ -190,7 +190,7 @@ void main() {
             tester,
             'phone-secret-hidden-$language-${scale.toInt()}',
           );
-          final reveal = find.text(strings.get('showNumber'));
+          final reveal = find.text(strings.get('holdToReveal'));
           expect(reveal.hitTestable(), findsOneWidget);
           expect(done.hitTestable(), findsOneWidget);
           final gesture = await startChargedHold(tester, reveal);
@@ -253,6 +253,7 @@ void main() {
       expect(roster.members.map((p) => p.player.id), [
         before[1].player.id,
         before[2].player.id,
+        before[3].player.id,
         before[0].player.id,
       ]);
       expect(tester.takeException(), isNull);
@@ -275,7 +276,7 @@ void main() {
       await tester.pumpAndSettle();
       FocusManager.instance.primaryFocus?.unfocus();
       await tester.pumpAndSettle();
-      final person = roster.members.single;
+      final person = roster.members.last;
       final storage = container.read(stringStoreProvider) as MemoryStringStore;
       storage.failWrite = true;
       await tester.drag(
@@ -283,7 +284,7 @@ void main() {
         const Offset(500, 0),
       );
       await tester.pumpAndSettle();
-      expect(roster.members.single.player.id, person.player.id);
+      expect(roster.members.last.player.id, person.player.id);
       expect(find.text('Rückgängig'), findsNothing);
       storage.failWrite = false;
       await tester.drag(
@@ -291,7 +292,8 @@ void main() {
         const Offset(-500, 0),
       );
       await tester.pumpAndSettle();
-      expect(roster.members, isEmpty);
+      expect(roster.members, hasLength(1));
+      expect(roster.isOwner(roster.members.single.player.id), isTrue);
       expect(
         tester.widget<SnackBar>(find.byType(SnackBar)).duration,
         const Duration(seconds: 3),

@@ -20,13 +20,13 @@ test('real HTTPS origins must agree with worker CORS before a production build',
   assert.equal(checkProductionConfig(config, worker, { requireRealOrigins: true }).exampleOnly, false);
 });
 
-test('the real APK backend uses its matching workers.dev URL and denies browser origins until a web client exists', () => {
+test('the deployed API and public invitation client use matching HTTPS origins', () => {
   const config = read('docs/config/production.json');
   const worker = read('apps/server/wrangler.production.jsonc');
   const checked = checkProductionConfig(config, worker, { requireRealOrigins: true });
   assert.equal(checked.exampleOnly, false);
-  assert.equal(checked.publicClientOrigin, null);
-  assert.equal(worker.vars.CLIENT_ORIGINS, '');
+  assert.equal(checked.publicClientOrigin, 'https://trinktribunal.pages.dev');
+  assert.equal(worker.vars.CLIENT_ORIGINS, config.publicClientBaseUrl);
   assert.equal(worker.workers_dev, true);
   assert.equal(worker.preview_urls, false);
   assert.equal(worker.name, 'trinktribunal-api');

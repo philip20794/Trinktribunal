@@ -169,12 +169,15 @@ void main() {
         tester.testTextInput.hide();
         await tester.pumpAndSettle();
         expect(find.byType(BenchView), findsNothing);
-        final before = roster.members.map((p) => p.player.id).toList();
+        final owner = roster.members.first;
+        expect(roster.isOwner(owner.player.id), isTrue);
+        final before = roster.members.skip(1).map((p) => p.player.id).toList();
         tester
             .widget<ReorderableListView>(find.byType(ReorderableListView))
-            .onReorderItem!(0, 2);
+            .onReorderItem!(1, 3);
         await tester.pumpAndSettle();
         expect(roster.members.map((p) => p.player.id), [
+          owner.player.id,
           before[1],
           before[2],
           before[0],
@@ -195,7 +198,7 @@ void main() {
         await tester.tap(find.text(strings.get('rosterApply')));
         await tester.pumpAndSettle();
         expect(roster.members.last.player.id, before[0]);
-        final person = roster.members.first;
+        final person = roster.members[1];
         final deleteRow = find.byKey(ValueKey(person.player.id));
         await showInScroll(tester, deleteRow);
         await tester.drag(deleteRow, const Offset(700, 0));
@@ -206,8 +209,8 @@ void main() {
         );
         await tester.tap(find.text(strings.get('undo')));
         await tester.pumpAndSettle();
-        expect(roster.members.first.player.id, person.player.id);
-        expect(roster.members.first.avatar.toJson(), person.avatar.toJson());
+        expect(roster.members[1].player.id, person.player.id);
+        expect(roster.members[1].avatar.toJson(), person.avatar.toJson());
         expect(tester.takeException(), isNull);
       },
     );

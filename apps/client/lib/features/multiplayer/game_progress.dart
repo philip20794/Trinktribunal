@@ -142,6 +142,7 @@ class OnlineProgressAction extends ConsumerWidget {
         children: [
           if (view.phase == 'judged' && view.roundId != null)
             HoldActionButton(
+              duration: const Duration(milliseconds: 800),
               key: ValueKey('next-judge-${view.roundId}'),
               icon: Icons.arrow_forward_rounded,
               label: context.tr('nextJudge'),
@@ -188,6 +189,7 @@ class OnlineNextCaseAction extends ConsumerWidget {
     return ListenableBuilder(
       listenable: game,
       builder: (context, _) => HoldActionButton(
+        duration: const Duration(milliseconds: 800),
         key: ValueKey('next-judge-${view.roundId}'),
         icon: Icons.arrow_forward_rounded,
         label: context.tr('nextJudge'),

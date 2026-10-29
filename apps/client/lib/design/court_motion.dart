@@ -1,10 +1,12 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import 'court_theme.dart';
 
 enum CourtMotionStyle { file, stamp }
 
-/// A short decoration only: content and controls are available on the first frame.
+/// A brief paper turn without vertical translation, or a decorative verdict stamp.
 class CourtMotion extends StatelessWidget {
   const CourtMotion({
     required this.child,
@@ -24,13 +26,18 @@ class CourtMotion extends StatelessWidget {
     if (reduced) return child;
     return TweenAnimationBuilder<double>(
       key: ValueKey(replayKey),
-      duration: CourtTokens.motionDuration(false),
+      duration: style == CourtMotionStyle.file
+          ? const Duration(milliseconds: 220)
+          : CourtTokens.motionDuration(false),
       tween: Tween(begin: 0, end: 1),
       curve: Curves.easeOutCubic,
       child: child,
       builder: (context, value, content) => style == CourtMotionStyle.file
-          ? Transform.translate(
-              offset: Offset(0, (1 - value) * 8),
+          ? Transform(
+              alignment: Alignment.centerRight,
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, .001)
+                ..rotateY((1 - value) * -math.pi / 2),
               child: content,
             )
           : Transform.rotate(

@@ -274,11 +274,13 @@ class AvatarHeadView extends StatelessWidget {
     required this.config,
     this.size = 36,
     this.label = 'Avatar',
+    this.filledBackground = true,
     super.key,
   });
   final AvatarConfig config;
   final double size;
   final String label;
+  final bool filledBackground;
 
   @override
   Widget build(BuildContext context) => Semantics(
@@ -288,7 +290,9 @@ class AvatarHeadView extends StatelessWidget {
       dimension: size,
       child: ClipOval(
         child: ColoredBox(
-          color: const Color(0xFFF2DFBE),
+          color: filledBackground
+              ? const Color(0xFFF2DFBE)
+              : Colors.transparent,
           child: FutureBuilder<String>(
             future: TrinkAvatarRenderer.headSvg(config),
             builder: (context, snapshot) {

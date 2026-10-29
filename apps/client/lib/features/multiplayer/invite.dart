@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../l10n/app_strings.dart';
 import 'invitation.dart';
@@ -60,6 +61,31 @@ class RoomInvite extends ConsumerWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
+          Builder(
+            builder: (context) => FilledButton.icon(
+              icon: const Icon(Icons.share_outlined),
+              label: const TText('roomShareLink'),
+              onPressed: () async {
+                final box = context.findRenderObject() as RenderBox?;
+                try {
+                  await SharePlus.instance.share(
+                    ShareParams(
+                      uri: link,
+                      sharePositionOrigin: box == null
+                          ? null
+                          : box.localToGlobal(Offset.zero) & box.size,
+                    ),
+                  );
+                } catch (_) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: TText('roomShareFailed')),
+                    );
+                  }
+                }
+              },
+            ),
+          ),
           OutlinedButton.icon(
             icon: const Icon(Icons.copy),
             label: const TText('roomCopyLink'),

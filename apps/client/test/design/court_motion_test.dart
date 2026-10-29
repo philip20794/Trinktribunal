@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/design/court_motion.dart';
-import 'package:trinktribunal/design/court_theme.dart';
 
 void main() {
   testWidgets(
@@ -24,9 +23,10 @@ void main() {
         ),
       );
       expect(find.text('Continue'), findsOneWidget);
+      await tester.pump(const Duration(milliseconds: 220));
       await tester.tap(find.text('Continue'));
       expect(taps, 1);
-      await tester.pump(CourtTokens.motionDuration(false));
+      await tester.pump(const Duration(milliseconds: 220));
       final transform = tester.widget<Transform>(
         find
             .descendant(

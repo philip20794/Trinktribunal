@@ -18,7 +18,7 @@ export async function createReleaseServer({root=defaultRoot}={}) {
     response.setHeader('Content-Security-Policy',policy+"; frame-ancestors 'none'");
     response.setHeader('X-Frame-Options','DENY');
     response.setHeader('Referrer-Policy','no-referrer');
-    response.setHeader('Permissions-Policy','camera=(), microphone=(), geolocation=()');
+    response.setHeader('Permissions-Policy','camera=(self), microphone=(), geolocation=()');
     response.setHeader('Cache-Control','no-store');
     const fail = (code) => { response.writeHead(code,{'Content-Type':'text/plain; charset=utf-8'}); response.end(code===404?'Not found':'Request rejected'); };
     if (!['GET','HEAD'].includes(request.method)) { response.setHeader('Allow','GET, HEAD'); fail(405); return; }

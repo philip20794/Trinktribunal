@@ -1,5 +1,6 @@
 import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
+import '../../design/setting_label.dart';
 
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ import '../profile/avatar_options.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../handoff/shared_game_screen.dart';
 import 'card_mode_screen.dart';
+import '../profile/profile_screen.dart';
 
 class PlayerRosterScreen extends ConsumerStatefulWidget {
   const PlayerRosterScreen({
@@ -63,6 +65,12 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
   }
 
   Future<void> _edit(RosterController controller, UserProfile member) async {
+    if (controller.isOwner(member.player.id)) {
+      await Navigator.of(context)
+          .push<void>(MaterialPageRoute(builder: (_) => const ProfileScreen()));
+      if (mounted) ref.invalidate(rosterProvider);
+      return;
+    }
     final result = await showDialog<({String name, AvatarConfig avatar})>(
       context: context,
       builder: (_) => Theme(
@@ -266,7 +274,9 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
             for (var index = 0; index < controller.members.length; index++)
               Dismissible(
                 key: ValueKey(controller.members[index].player.id),
-                direction: _busy
+                direction:
+                    _busy ||
+                        controller.isOwner(controller.members[index].player.id)
                     ? DismissDirection.none
                     : DismissDirection.horizontal,
                 dismissThresholds: const {
@@ -291,6 +301,10 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                         size: 40,
                       ),
                     ),
+                    subtitle:
+                        controller.isOwner(controller.members[index].player.id)
+                        ? const TText('ownPlayer')
+                        : null,
                     title: Text(
                       controller.members[index].player.name,
                       maxLines: 1,
@@ -370,11 +384,13 @@ class _LocalGameOptionsScreenState extends State<LocalGameOptionsScreen> {
             builder: (context) => Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  context.tr('casesCount', {'count': _cases}),
-                  style: Theme.of(context).textTheme.titleLarge,
+                SettingLabel(
+                  helpKey: 'localCasesHelp',
+                  title: Text(
+                    context.tr('casesCount', {'count': _cases}),
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
-                const TText('localCasesHelp'),
                 Slider(
                   value: _cases.toDouble(),
                   min: 1,
@@ -386,11 +402,13 @@ class _LocalGameOptionsScreenState extends State<LocalGameOptionsScreen> {
                     if (_rules >= _cases) _rules = _cases - 1;
                   }),
                 ),
-                Text(
-                  context.tr('rulesCount', {'count': _rules}),
-                  style: Theme.of(context).textTheme.titleLarge,
+                SettingLabel(
+                  helpKey: 'localRulesHelp',
+                  title: Text(
+                    context.tr('rulesCount', {'count': _rules}),
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
-                const TText('localRulesHelp'),
                 Slider(
                   value: _rules.toDouble(),
                   min: 0,
@@ -403,13 +421,15 @@ class _LocalGameOptionsScreenState extends State<LocalGameOptionsScreen> {
                       ? (v) => setState(() => _rules = v.round())
                       : null,
                 ),
-                Text(
-                  context.tr('factor', {
-                    'value': (_factor / 10).toStringAsFixed(1),
-                  }),
-                  style: Theme.of(context).textTheme.titleLarge,
+                SettingLabel(
+                  helpKey: 'localFactorHelp',
+                  title: Text(
+                    context.tr('factor', {
+                      'value': (_factor / 10).toStringAsFixed(1),
+                    }),
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
-                const TText('localFactorHelp'),
                 Slider(
                   value: _factor.toDouble(),
                   min: 10,

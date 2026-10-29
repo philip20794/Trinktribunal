@@ -15,6 +15,8 @@ import 'connection.dart';
 import 'invitation.dart';
 import 'join.dart';
 import 'saved_rooms.dart';
+import '../../application/hosted_room_controller.dart';
+import '../../data/room_transport.dart';
 
 class MultiplayerEntryScreen extends StatefulWidget {
   const MultiplayerEntryScreen({super.key});
@@ -96,6 +98,40 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
       if (retry && _retrySave) {
         success = await controller.retrySavingCredential();
       } else {
+        final permitted =
+            await HostedRoomController(
+              controller,
+              ref.read(roomCredentialStoreProvider),
+            ).prepareNewRoom((codes) async {
+              if (!mounted) return false;
+              return await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const TText('replaceHostedRoomTitle'),
+                      content: Text(
+                        context.tr('replaceHostedRoomHelp', {
+                          'codes': codes.join(', '),
+                        }),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const TText('cancel'),
+                        ),
+                        FilledButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const TText('replaceHostedRoomConfirm'),
+                        ),
+                      ],
+                    ),
+                  ) ??
+                  false;
+            });
+        if (!mounted) return;
+        if (!permitted) {
+          if (Navigator.of(context).canPop()) Navigator.pop(context);
+          return;
+        }
         final saved = (await ref.read(profileProvider.future)).profile;
         if (!mounted) return;
         success = await controller.create(
@@ -123,6 +159,8 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
               controller.roomCode != null;
         });
       }
+    } on RoomTransportException catch (error) {
+      if (mounted) setState(() => _error = roomErrorKey(error.code));
     } on Object {
       if (mounted) setState(() => _error = 'roomErrorServer');
     } finally {

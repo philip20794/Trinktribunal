@@ -13,6 +13,9 @@ Future<TestGesture> startChargedHold(WidgetTester tester, Finder target) async {
         );
   await tester.pump(button.duration);
   await tester.pumpAndSettle();
+  if (button.duration == const Duration(milliseconds: 600)) {
+    await tester.pump(const Duration(milliseconds: 300));
+  }
   return gesture;
 }
 

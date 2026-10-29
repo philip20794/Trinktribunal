@@ -18,7 +18,7 @@ export function flutterBuilds(root) {
 export function listBundleFiles(root, directory='') {
   const result=[];
   for(const name of readdirSync(join(root,directory)).sort()) {
-    if(name.startsWith('.')||name==='build-info.json') continue;
+    if(name.startsWith('.')||name==='build-info.json'||name==='_headers') continue;
     const relative=directory?directory+'/'+name:name;
     const full=join(root,relative); if(lstatSync(full).isSymbolicLink()) throw new Error('Symlinks are not release assets');
     if(statSync(full).isDirectory()) result.push(...listBundleFiles(root,relative));

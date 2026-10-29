@@ -73,18 +73,17 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(const ValueKey('room-name')), findsNothing);
       expect(find.byKey(const ValueKey('room-submit')), findsNothing);
+      expect(transport.creates, 0);
+      backend.fail = false;
+      await tester.tap(find.byKey(const ValueKey('room-create-retry')));
+      await tester.pump();
+      await tester.pump();
       expect(transport.creates, 1);
       expect(transport.lastProfile!.name, 'Saved Alex');
       expect(
         transport.lastProfile!.avatar.selections,
         AvatarConfig.feminine().selections,
       );
-      expect(transport.connections, 0);
-      backend.fail = false;
-      await tester.tap(find.text('Speichern und fortsetzen'));
-      await tester.pump();
-      await tester.pump();
-      expect(transport.creates, 1);
       expect(transport.connections, 1);
       transport.sockets.last.accepted();
       await tester.pumpAndSettle();
@@ -109,7 +108,6 @@ void main() {
         host(const JoinRoomScreen(initialCode: 'ABCD2345'), transport, store),
       );
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(const ValueKey('room-name')), 'Alex');
       await tester.scrollUntilVisible(
         find.byKey(const ValueKey('room-submit')),
         100,
@@ -246,7 +244,7 @@ void main() {
     },
   );
   testWidgets(
-    'saved identities resume explicitly; a deliberate new join preserves both credentials',
+    'manual code entry resumes the stored identity without creating a duplicate',
     (tester) async {
       final backend = MemoryCredentialBackend(),
           store = RoomCredentialStore(backend),
@@ -290,23 +288,24 @@ void main() {
         host(const JoinRoomScreen(initialCode: 'ABCD2345'), transport, store),
       );
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(const ValueKey('room-name')), 'Alex');
-      await tester.scrollUntilVisible(
-        find.byKey(const ValueKey('room-submit')),
-        150,
-        scrollable: find
-            .descendant(
-              of: find.byType(ListView).last,
-              matching: find.byType(Scrollable),
-            )
-            .first,
-      );
+      await tester.ensureVisible(find.byKey(const ValueKey('room-submit')));
       await tester.tap(find.byKey(const ValueKey('room-submit')));
       await tester.pump();
       await tester.pump();
-      expect(transport.joins, 1);
-      expect((await store.load()).credentials, hasLength(2));
-      transport.sockets.last.accepted();
+      expect(transport.joins, 0);
+      expect((await store.load()).credentials, hasLength(1));
+      transport.sockets.last.receive(
+        AuthenticatedMessage.fromJson({
+          ...roomFixture('authenticated').toJson(),
+          'playerId': 'previous',
+        }),
+      );
+      transport.sockets.last.receive(
+        SnapshotMessage.fromJson({
+          ...roomFixture('snapshot').toJson(),
+          'you': 'previous',
+        }),
+      );
       await tester.pumpAndSettle();
       await tester.pumpWidget(const SizedBox());
       await tester.pump();
@@ -321,7 +320,6 @@ void main() {
         host(const JoinRoomScreen(initialCode: 'ABCD2345'), transport, store),
       );
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(const ValueKey('room-name')), 'Alex');
       await tester.ensureVisible(find.byKey(const ValueKey('room-submit')));
       await tester.tap(find.byKey(const ValueKey('room-submit')));
       await tester.pumpAndSettle();

@@ -126,7 +126,7 @@ test('prepared HTML and release responses use the same API policy and preserve o
     assert.equal(response.headers['content-security-policy'],webSecurityPolicy(apiBaseUrl)+"; frame-ancestors 'none'");
     assert.equal(response.headers['referrer-policy'],'no-referrer');
     assert.equal(response.headers['x-frame-options'],'DENY');
-    assert.equal(response.headers['permissions-policy'],'camera=(), microphone=(), geolocation=()');
+    assert.equal(response.headers['permissions-policy'],'camera=(self), microphone=(), geolocation=()');
   }
   assert.deepEqual(buildPrecache(root),manifest);
 });

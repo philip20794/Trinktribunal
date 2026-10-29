@@ -322,7 +322,7 @@ void main() {
     (tester) async {
       final fixture = await pump(tester),
           socket = fixture.transport.sockets.last;
-      final target = find.text(AppStrings('de').get('showNumber'));
+      final target = find.text(AppStrings('de').get('holdToReveal'));
       var gesture = await startChargedHold(tester, target);
       expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, 2);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);

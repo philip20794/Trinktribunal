@@ -210,23 +210,15 @@ void main() {
         accessibilityHost(const JoinRoomScreen(), transport: transport),
       );
       await tester.pumpAndSettle();
-      final name = find.byKey(const ValueKey('room-name')),
-          code = find.byKey(const ValueKey('room-code'));
-      await tester.ensureVisible(name);
-      await tester.tap(name);
-      await tester.testTextInput.receiveAction(TextInputAction.done);
+      final code = find.byKey(const ValueKey('room-code'));
+      expect(find.byKey(const ValueKey('room-name')), findsNothing);
+      expect(find.byKey(const ValueKey('room-submit')), findsNothing);
+      await tester.enterText(code, 'ABC');
+      await tester.testTextInput.receiveAction(TextInputAction.go);
       await tester.pumpAndSettle();
-      expect(tester.widget<TextField>(name).focusNode!.hasFocus, isTrue);
       expect(transport.joins, 0);
-      await tester.enterText(name, 'Alex');
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-      await tester.pumpAndSettle();
-      expect(tester.widget<TextField>(code).focusNode!.hasFocus, isTrue);
       await tester.enterText(code, 'ABCD2345');
-      await tester.testTextInput.receiveAction(TextInputAction.next);
-      await tester.pumpAndSettle();
-      expect(tester.widget<TextField>(name).focusNode!.hasFocus, isTrue);
-      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.testTextInput.receiveAction(TextInputAction.go);
       await tester.pumpAndSettle();
       expect(transport.joins, 1);
       expect(find.text(AppStrings('de').get('roomErrorRate')), findsOneWidget);
@@ -259,10 +251,6 @@ void main() {
               ),
             );
             await tester.pumpAndSettle();
-            await tester.enterText(
-              find.byKey(const ValueKey('room-name')),
-              'Alex',
-            );
             final submit = find.byKey(const ValueKey('room-submit'));
             await tester.ensureVisible(submit);
             await tester.tap(submit);
@@ -276,7 +264,14 @@ void main() {
               tester.getSemantics(notice),
               matchesSemantics(label: message, isLiveRegion: true),
             );
-            expect(tester.widget<FilledButton>(submit).onPressed, isNotNull);
+            expect(
+              tester
+                  .widget<FilledButton>(
+                    find.byKey(const ValueKey('direct-join-retry')),
+                  )
+                  .onPressed,
+              isNotNull,
+            );
             expect(
               find.textContaining('private-platform-detail'),
               findsNothing,

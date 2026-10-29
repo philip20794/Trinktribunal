@@ -186,6 +186,7 @@ class CourtScaffold extends StatelessWidget {
     this.body,
     this.bodyBuilder,
     this.title,
+    this.centerTitle,
     this.actions,
     this.leading,
     this.appBarBottom,
@@ -197,6 +198,7 @@ class CourtScaffold extends StatelessWidget {
   final Widget? body;
   final WidgetBuilder? bodyBuilder;
   final Widget? title, leading, footer;
+  final bool? centerTitle;
   final List<Widget>? actions;
   final PreferredSizeWidget? appBarBottom;
   final String? background;
@@ -238,6 +240,7 @@ class CourtScaffold extends StatelessWidget {
                 ? null
                 : AppBar(
                     title: title,
+                    centerTitle: centerTitle,
                     leading: leading,
                     actions: actions,
                     bottom: appBarBottom,

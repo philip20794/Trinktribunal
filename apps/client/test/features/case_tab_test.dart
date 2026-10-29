@@ -68,7 +68,7 @@ void main() {
           expect(tabs.index, allJudges ? 2 : 1);
           final holding = await startChargedHold(
             tester,
-            find.text(AppStrings('de').get('showNumber')),
+            find.text(AppStrings('de').get('holdToReveal')),
           );
           expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, 2);
           tabs.animateTo(0);

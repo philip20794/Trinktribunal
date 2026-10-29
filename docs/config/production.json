@@ -1,4 +1,5 @@
 {
   "formatVersion": 1,
-  "apiBaseUrl": "https://trinktribunal-api.philip20794.workers.dev"
+  "apiBaseUrl": "https://trinktribunal-api.philip20794.workers.dev",
+  "publicClientBaseUrl": "https://trinktribunal.pages.dev"
 }

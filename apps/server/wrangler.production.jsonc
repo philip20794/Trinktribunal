@@ -9,7 +9,7 @@
   "preview_urls": false,
   "send_metrics": false,
   "vars": {
-    "CLIENT_ORIGINS": ""
+    "CLIENT_ORIGINS": "https://trinktribunal.pages.dev"
   },
   "durable_objects": {
     "bindings": [{ "name": "ROOMS", "class_name": "Room" }]

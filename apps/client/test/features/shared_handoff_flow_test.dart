@@ -104,7 +104,7 @@ void main() {
           final first = game.view!;
           expect(find.byType(CaseFile), findsNothing);
           expect(find.byType(HeldPrivateNumber), findsOneWidget);
-          final hold = find.text(strings.get('showNumber'));
+          final hold = find.text(strings.get('holdToReveal'));
           await tester.scrollUntilVisible(hold, 350);
           await Scrollable.ensureVisible(tester.element(hold), alignment: .5);
           await tester.pumpAndSettle();
@@ -126,7 +126,7 @@ void main() {
           await gesture.up();
           await tap(tester, strings.get('phoneIAm', {'name': identity()}));
           Future<void> look() async {
-            final hold = find.text(strings.get('showNumber'));
+            final hold = find.text(strings.get('holdToReveal'));
             final gesture = await startChargedHold(tester, hold);
             await tester.pump();
             await gesture.up();
