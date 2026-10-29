@@ -21,7 +21,6 @@ import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
 import '../../domain/models/ids.dart';
 import '../../domain/user_profile.dart';
-import '../bench/bench_view.dart';
 import '../setup/player_roster.dart';
 import '../rules/game_rules_screen.dart';
 
@@ -208,44 +207,20 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
         child: const TText('phoneStartNumbers'),
       );
     }
-    if (view.phase == GamePhase.answers) {
-      return FilledButton(
-        onPressed: () => _act(() => _controller.beginOrdering(view.roundId)),
-        child: const TText('phoneBeginOrder'),
-      );
-    }
-    if (view.phase == GamePhase.ordering) {
-      return FilledButton(
-        onPressed: () async {
-          final confirmed = await _confirm(
-            context.tr('confirmOrderTitle'),
-            context.tr('confirmOrderHelp'),
-          );
-          if (mounted) {
-            _act(
-              () =>
-                  _controller.confirmOrder(view.roundId, confirmed: confirmed),
-            );
-          }
-        },
-        child: const TText('phoneConfirmOrder'),
-      );
-    }
-    if (view.phase == GamePhase.revealing) {
+    if ([
+      GamePhase.answers,
+      GamePhase.ordering,
+      GamePhase.revealing,
+      GamePhase.judged,
+    ].contains(view.phase)) {
       return FilledButton(
         onPressed: () => _act(
-          () => _controller.revealNext(
+          () => _controller.completeCase(
             view.roundId,
-            expectedCursor: view.revealCursor,
+            confirmed: true,
+            withoutVerdict: true,
           ),
         ),
-        child: const TText('phoneRevealNext'),
-      );
-    }
-    if (view.phase == GamePhase.judged && view.verdict != null) {
-      return FilledButton(
-        onPressed: () =>
-            _act(() => _controller.completeCase(view.roundId, confirmed: true)),
         child: const TText('phoneComplete'),
       );
     }
@@ -478,7 +453,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       GamePhase.ruleEvent,
                       GamePhase.finished,
                       GamePhase.paused,
-                      GamePhase.judged,
                     ].contains(view.phase)) ...[
                   const SizedBox(height: 16),
                   CourtQuestion(
@@ -511,46 +485,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   ),
                 ],
 
-                if ([
-                  GamePhase.ordering,
-                  GamePhase.revealing,
-                  GamePhase.judged,
-                ].contains(view.phase)) ...[
-                  const SizedBox(height: 16),
-                  if (view.verdict != null)
-                    CaseFile(
-                      label: context.tr('verdictHeading'),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          CourtSeal(
-                            label: context.tr('wrongPositionsCount', {
-                              'count': view.verdict!.errors,
-                            }),
-                          ),
-                          for (final entry in view.verdict!.sips.entries)
-                            Text(
-                              context.tr('sips', {
-                                'name': view.name(entry.key),
-                                'count': entry.value,
-                              }),
-                            ),
-                        ],
-                      ),
-                    ),
-                  const SizedBox(height: 16),
-                  BenchView(
-                    order: view.order,
-                    profiles: view.profiles,
-                    revealedNumbers: view.revealedNumbers,
-                    incorrect: view.incorrectRevealed,
-                    onMove: view.phase == GamePhase.ordering
-                        ? (from, to) => _act(
-                            () => _controller.move(view.roundId, from, to),
-                          )
-                        : null,
-                  ),
-                ],
                 if (view.phase == GamePhase.ruleEvent) ...[
                   CaseFile(
                     label: view.newRule == null

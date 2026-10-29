@@ -316,22 +316,18 @@
         "04"
       ],
       "states": [
-        "Fallakte",
+        "Start direkt in private Hold-Zahl",
         "Empfängerübergabe mit Sitzplatzidentität",
         "Übernahme bestätigen",
-        "private Hold-Zahl",
-        "Richterübergabe",
-        "Antworten",
-        "Sortieren",
-        "öffentlich schrittweise aufdecken",
-        "automatisches Urteil",
+        "Fertig erst nach erster Zahlenansicht",
+        "Richterübergabe zur Fallakte",
+        "Fragenwechsel behält Zahlen und abgeschlossene Übergabe",
+        "Fall manuell abschließen und Richter wechseln",
+        "Nächste Zahlenrunde beginnt beim bisherigen Richter",
         "Regelereignis/Pause/Ende",
-        "D-07/Neustart/Abbruch",
         "Roster/Spielhilfe/aktive Regeln verdecken",
-        "sicheres Resume derselben Person",
-        "29.10: selective continue/new-game prompt",
-        "29.10: compact ordered roster and separate configuration",
-        "29.10: focused handoff and held secret number; Done gated by first reveal"
+        "Sicheres Resume derselben Person",
+        "Fortsetzen/Neu-Auswahl und kompakte Gruppe mit getrennten Einstellungen"
       ],
       "tests": [
         "apps/client/test/features/shared_handoff_flow_test.dart",

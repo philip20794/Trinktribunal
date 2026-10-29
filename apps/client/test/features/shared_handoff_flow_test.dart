@@ -43,7 +43,7 @@ void main() {
   for (final count in [3, 20]) {
     for (final language in ['de', 'en']) {
       testWidgets(
-        '$count duplicate names, $language, 200 percent: handoff, private hold and a complete judged case',
+        '$count duplicate names, $language, 200 percent: handoff, private hold and question rerolls and manual judge change',
         (tester) async {
           await tester.binding.setSurfaceSize(const Size(360, 800));
           addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -89,11 +89,8 @@ void main() {
             ),
           );
           await tester.pumpAndSettle();
-          expect(find.byType(CaseFile), findsOneWidget);
-          expect(find.byType(HeldPrivateNumber), findsNothing);
-          await tap(tester, strings.get('phoneStartNumbers'));
           expect(find.byType(CaseFile), findsNothing);
-          expect(find.byType(HeldPrivateNumber), findsNothing);
+          expect(find.byType(HeldPrivateNumber), findsOneWidget);
           String identity() => strings.get('phoneIdentity', {
             'name': 'Alex',
             'seat':
@@ -102,7 +99,6 @@ void main() {
                 ) +
                 1,
           });
-          await tap(tester, strings.get('phoneIAm', {'name': identity()}));
           final first = game.view!;
           expect(find.byType(CaseFile), findsNothing);
           expect(find.byType(HeldPrivateNumber), findsOneWidget);
@@ -174,35 +170,23 @@ void main() {
             await tester.pumpAndSettle();
           }
 
-          await primary('phoneBeginOrder');
-          expect(game.view!.phase, GamePhase.ordering);
-          await primary('phoneConfirmOrder');
-          await tap(tester, strings.get('confirm'));
-          while (game.view!.phase == GamePhase.revealing) {
-            await primary('phoneRevealNext');
+          final numbers = game.toSnapshot()!['numbers'];
+          for (var i = 0; i < 3; i++) {
+            final refresh = find.byTooltip(strings.get('refreshQuestion'));
+            await tester.ensureVisible(refresh);
+            await tester.tap(refresh);
+            await tester.pumpAndSettle();
+            expect(game.view!.phase, GamePhase.answers);
+            expect(game.toSnapshot()!['numbers'], numbers);
+            expect(find.byType(HeldPrivateNumber), findsNothing);
+            expect(find.text(strings.get('phoneBeginOrder')), findsNothing);
           }
-          expect(game.view!.phase, GamePhase.judged);
-          expect(find.byType(CourtQuestion), findsNothing);
-          tester
-              .state<ScrollableState>(find.byType(Scrollable).first)
-              .position
-              .jumpTo(0);
-          await tester.pumpAndSettle();
-          await tester.scrollUntilVisible(
-            find.text(strings.get('verdictHeading').toUpperCase()),
-            200,
-            scrollable: find.byType(Scrollable).first,
-          );
-          await tester.pumpAndSettle();
-          expect(
-            find.text(strings.get('verdictHeading').toUpperCase()),
-            findsOneWidget,
-          );
-          final verdict = game.view!.verdict!;
-          expect(verdict.sips.length, count);
+          expect(game.view!.verdict, isNull);
           await primary('phoneComplete');
           expect(game.view!.completedCases, 1);
-          expect(game.view!.numberStage, SharedNumberStage.caseFile);
+          expect(game.view!.numberStage, SharedNumberStage.recipientNumber);
+          expect(game.view!.recipient, first.judge);
+          expect(find.byType(HeldPrivateNumber), findsOneWidget);
           expect(game.view!.visibleSecret, isNull);
           expect(tester.takeException(), isNull);
         },

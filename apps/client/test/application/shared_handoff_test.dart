@@ -24,7 +24,7 @@ final histories = <SharedPhoneController, ContentHistoryStore>{};
 SharedPhoneController session(int count) {
   final history = ContentHistoryStore();
   final game = SharedPhoneController(
-    questions: questions([for (var i = 1; i <= 4; i++) questionJson('00$i-a')]),
+    questions: questions([for (var i = 1; i <= 8; i++) questionJson('00$i-a')]),
     rules: rules([ruleJson('unused_rule')]),
     random: TestRandom(),
     clock: () => now,
@@ -49,10 +49,65 @@ void restore(SharedPhoneController game, Map<String, dynamic> json) => game
     .restoreValidated(game.validateSnapshot(json, histories[game]!.history));
 
 void main() {
+  test('rerolls preserve completed handoff through restores; manual completion changes judge once', () {
+    final game = session(4);
+    finishSharedNumbers(game);
+    final before = saved(game);
+    final initialQuestion = game.view!.question;
+    for (var i = 0; i < 3; i++) {
+      final previousRound = game.view!.roundId;
+      expect(game.rerollCurrentQuestion(roundId: previousRound), isTrue);
+      expect(game.rerollCurrentQuestion(roundId: previousRound), isFalse);
+      restore(game, saved(game));
+      expect(game.view!.phase, GamePhase.answers);
+      expect(game.view!.completedCases, 0);
+      expect(game.view!.judge, PlayerId('p0'));
+      expect(game.view!.question, isNot(initialQuestion));
+      expect(game.toSnapshot()!['numbers'], before['numbers']);
+      expect(game.toSnapshot()!['handoffIndex'], before['handoffIndex']);
+      expect(game.toSnapshot()!['recipients'], before['recipients']);
+      expect(game.view!.verdict, isNull);
+      expect(game.view!.order, isEmpty);
+      expect(game.view!.visibleSecret, isNull);
+    }
+    final round = game.view!.roundId;
+    game.completeCase(round, confirmed: true, withoutVerdict: true);
+    final after = saved(game);
+    game.completeCase(round, confirmed: true, withoutVerdict: true);
+    expect(saved(game), after);
+    expect(game.view!.completedCases, 1);
+    expect(game.view!.judge, PlayerId('p1'));
+    expect(game.view!.recipient, PlayerId('p0'));
+    expect(game.view!.numberStage, SharedNumberStage.recipientNumber);
+    expect((after['numbers'] as Map).keys, contains('p0'));
+    expect((after['numbers'] as Map).keys, isNot(contains('p1')));
+  });
+
+  test('manual completion reaches the configured end without ordering or a verdict', () {
+    final game = session(4);
+    for (var i = 0; i < 3; i++) {
+      expect(game.view!.numberStage, SharedNumberStage.recipientNumber);
+      finishSharedNumbers(game);
+      expect(game.view!.phase, GamePhase.answers);
+      expect(game.view!.order, isEmpty);
+      expect(game.view!.verdict, isNull);
+      game.completeCase(
+        game.view!.roundId,
+        confirmed: true,
+        withoutVerdict: true,
+      );
+      expect(game.view!.completedCases, i + 1);
+    }
+    expect(game.view!.phase, GamePhase.finished);
+    expect(game.toSnapshot()!['numbers'], isNull);
+    restore(game, saved(game));
+    expect(game.view!.phase, GamePhase.finished);
+  });
+
   test('restore retains case/handoff/judge stages; private restore requires the same person to take over again', () {
     final game = session(4);
     restore(game, saved(game));
-    expect(game.view!.numberStage, SharedNumberStage.caseFile);
+    expect(game.view!.numberStage, SharedNumberStage.recipientHandoff);
     final view = openSharedRecipient(game);
     game.revealOwnNumber(roundId: view.roundId, player: view.recipient!);
     final json = saved(game);
@@ -142,7 +197,7 @@ void main() {
       (s) => s['handoffVersion'] = 3,
       (s) => s['numberStage'] = 'recipientNumber',
       (s) => s['numberStage'] = 'judgeHandoff',
-      (s) => s['handoffIndex'] = 1,
+      (s) => s['handoffIndex'] = 99,
       (s) => s['recipients'] = ['p2', 'p1', 'p3'],
       (s) => s['previousJudge'] = 'unknown',
     ]) {
@@ -169,7 +224,7 @@ void main() {
     game.rerollCurrentQuestion(roundId: view.roundId);
     expect(game.toSnapshot()!['numbers'], before['numbers']);
     expect(game.toSnapshot()!['recipients'], before['recipients']);
-    expect(game.view!.numberStage, SharedNumberStage.caseFile);
+    expect(game.view!.numberStage, SharedNumberStage.recipientHandoff);
     expect(
       () =>
           game.revealOwnNumber(roundId: view.roundId, player: view.recipient!),
@@ -181,12 +236,12 @@ void main() {
       '$count people: first case is cyclic, next case starts with previous judge, doubles skip nobody',
       () {
         final game = session(count), first = game.view!;
-        expect(first.numberStage, SharedNumberStage.caseFile);
-        expect(first.recipient, isNull);
+        expect(first.numberStage, SharedNumberStage.recipientNumber);
+        expect(first.recipient, PlayerId('p1'));
         expect(game.toSnapshot()!['recipients'], [
           for (var i = 1; i < count; i++) 'p$i',
         ]);
-        expect(game.beginNumberHandoff(first.roundId), isTrue);
+        expect(game.beginNumberHandoff(first.roundId), isFalse);
         expect(game.beginNumberHandoff(first.roundId), isFalse);
         final recipient = game.view!.recipient!;
         expect(
@@ -195,7 +250,7 @@ void main() {
         );
         expect(
           game.confirmRecipient(roundId: first.roundId, player: recipient),
-          isTrue,
+          isFalse,
         );
         expect(
           game.confirmRecipient(roundId: first.roundId, player: recipient),
@@ -215,7 +270,7 @@ void main() {
           'p0',
           for (var i = 2; i < count; i++) 'p$i',
         ]);
-        expect(game.view!.numberStage, SharedNumberStage.caseFile);
+        expect(game.view!.numberStage, SharedNumberStage.recipientNumber);
         expect(game.view!.visibleSecret, isNull);
       },
     );

@@ -34,7 +34,10 @@ void main() {
       expect(device.phone.view!.roundId, phoneId);
       expect(device.phone.toSnapshot()!['numbers'], numbers);
       expect(device.phone.view!.judge, judge);
-      expect(device.phone.view!.numberStage, SharedNumberStage.caseFile);
+      expect(
+        device.phone.view!.numberStage,
+        SharedNumberStage.recipientHandoff,
+      );
       expect(device.phone.view!.visibleSecret, isNull);
       expect(device.phone.view!.completedCases, 0);
       expect(device.cards.state!.completedCases, 0);

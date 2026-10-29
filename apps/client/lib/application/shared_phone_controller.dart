@@ -304,7 +304,7 @@ final class SharedPhoneController {
         previousJudge: _previousJudge,
       );
       _handoffIndex = 0;
-      _numberStage = SharedNumberStage.caseFile;
+      _numberStage = SharedNumberStage.recipientNumber;
       _legacyHandoffOrder = false;
       _phase = GamePhase.numbers;
       _order = [];
@@ -427,13 +427,11 @@ final class SharedPhoneController {
     _question = selected.assignments[id];
     _numbers = numbers;
     _roundId = id;
-    _phase = GamePhase.numbers;
-    _handoffIndex = 0;
-    _numberStage = SharedNumberStage.caseFile;
+    if (_phase != GamePhase.numbers) _phase = GamePhase.answers;
     _order = [];
     _revealCursor = 0;
     _verdict = null;
-    hideSecret();
+    interruptPrivateHandoff();
     return true;
   }
 

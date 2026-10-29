@@ -66,6 +66,10 @@ void main() {
               ),
             );
           }
+          if (shared) {
+            phone.start(config: config, roster: roster);
+            finishSharedNumbers(phone);
+          }
           final container = ProviderContainer(
             overrides: [
               catalogsProvider.overrideWith((_) async => catalogs),
@@ -120,14 +124,6 @@ void main() {
             expect(cards.state!.currentEventId, isNot(before));
             expect(cards.state!.completedCases, 0);
             expect(cards.history.entries, hasLength(3));
-          }
-          if (shared) {
-            openSharedRecipient(phone);
-            phone.revealOwnNumber(
-              roundId: phone.view!.roundId,
-              player: phone.view!.recipient!,
-            );
-            expect(phone.view!.visibleSecret, isNotNull);
           }
           final saved = shared ? phone.toSnapshot() : cards.toSnapshot();
           await tester.tap(

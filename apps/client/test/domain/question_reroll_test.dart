@@ -212,7 +212,7 @@ void main() {
       final previous = session.view!;
       final numbers = copy(session.toSnapshot())['numbers'];
       session.rerollCurrentQuestion(roundId: previous.roundId);
-      expect(session.view!.phase, GamePhase.numbers);
+      expect(session.view!.phase, GamePhase.answers);
       expect(session.view!.order, isEmpty);
       expect(session.toSnapshot()!['numbers'], numbers);
       expect(

@@ -2,7 +2,11 @@
 
 Stand: 29.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 160 Node-/587 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 160 Node-/589 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+
+## Ein Handy: feste Zahlen und manueller Abschluss, 29.10.2026
+
+**ABGESCHLOSSEN nach Unit-Gates.** Start direkt zur ersten geheimen Zahl, anschließend Übergaben und Fallakte. Neue Fragen behalten Zahlen und die abgeschlossene Übergabe. Fallabschluss mit Richterwechsel führt ohne Sortierung oder Schluckanzeige direkt zur nächsten Zahlenrunde beim bisherigen Richter. DE/EN-Moduseinführung und UI-Inventar aktualisiert; [Beleg](qa/shared-phone-manual-rounds.md).
 
 ## Multiplayer-Testskript: wiederholter Start, 29.10.2026
 
@@ -223,11 +227,11 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Aktueller Schwerpunkt: Spielregelbildschirm nach Nutzerreferenz abgeschlossen. Belege docs/qa/illustrated-rules.md + illustrated-rules-builds.json.
-587 Flutter-/157 Node-Tests, Analyze/Format, 24 native Regelansichten mit echten Schriften; frische Web-/Debug-APK-Builds und HTTP-/Offlineintegrität grün.
-Deutsche Texte aus neuestem Nutzer-JSON, englische Übersetzung; Spielkern unverändert. Vier Papierkarten mit Ablauf, Wertungsbeispiel und Zusatzregeln. Elf bereitgestellte SVGs plus Lizenzhinweis explizit gebündelt, übrige Quelldateien nur dokumentiert.
-Inventar unverändert 34 PNG-Motive/3 Quarantänen; Rechte: 20 Pakete/154 Dateien, sechs Runtime-Pakete extern ungeklärt. Avatar-Prototyp-Nachträge bleiben erhalten; separate Nutzerarbeit auf feature/dicebear-avatar-editor nicht ungefragt integriert.
-Vorherige Ein-Handy- und Fortsetzen-Überarbeitung bleibt erhalten (docs/qa/shared-phone-redesign.md).
+Aktueller Schwerpunkt: Ein-Handy-Spielablauf nach neuer Nutzervorgabe abgeschlossen. Beleg docs/qa/shared-phone-manual-rounds.md.
+589 Flutter-/160 Node-Tests, Analyze/Format grün. Neue Fragen erhalten Zahlen, Richter und Übergabefortschritt. Start und Fallabschluss führen direkt zur verdeckten ersten Zahl; weitere Personen per Übergabe, zuletzt zurück zum Richter und zur Fallakte.
+Ein-Handy-Screen ohne Sortierbank oder automatische Wertung. Bestehende Legacy-Controller-/Snapshot-Pfade bleiben kompatibel. Andere Modi unverändert; Trinkregelereignisse, Gruppenwechsel und Partieende bleiben an Rundengrenzen.
+UI-Inventar: 23 Abschnitte/37 Featuredateien/34 PNG-Motive/3 Quarantänen. Rechte: 20 Pakete/154 Dateien, sechs Runtime-Pakete extern ungeklärt. Keine neuen Assets, kein neuer Servercode.
+Spielregel- und Multiplayer-Harness-Korrekturen bleiben erhalten. Avatar-Arbeit auf separatem Nutzerbranch nicht integriert.
 TT-065 und TT-066 warten auf Rechte beziehungsweise echten produktionssignierten Codemagic-Artefaktbeleg; TT-069/070 bleiben davon abhängig. Kein Backenddeploy, keine zusätzlichen Signierschlüssel. Serverruntime unverändert (446 Tests aus TT-067).
 Browser/E2E/Gerät: ÜBERSPRUNGEN – später manuell testen. Lokales Testskript neu starten, damit der Webserver den aktuellen Quellcode kompiliert.
 ```

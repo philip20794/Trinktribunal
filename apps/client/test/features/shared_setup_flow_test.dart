@@ -179,22 +179,8 @@ void main() {
           await tester.pumpAndSettle();
           final game = container.read(sharedPhoneControllerProvider);
           expect(game.view!.config.targetCases, 3);
-          await reviewImage(
-            tester,
-            'phone-question-$language-${scale.toInt()}',
-          );
-          expect(find.text('bis'), findsNothing);
-          expect(
-            find.text(strings.get('questionRange', {'max': 5})),
-            findsOneWidget,
-          );
-          await tapVisible(tester, find.text(strings.get('phoneStartNumbers')));
-          expect(game.view!.numberStage, SharedNumberStage.recipientHandoff);
-          await reviewImage(tester, 'phone-handoff-$language-${scale.toInt()}');
+          expect(game.view!.numberStage, SharedNumberStage.recipientNumber);
           expect(find.byType(CourtQuestion), findsNothing);
-          final name = game.view!.name(game.view!.recipient!);
-          await tester.tap(find.text(strings.get('phoneIAm', {'name': name})));
-          await tester.pumpAndSettle();
           expect(find.text(strings.get('yourNumber')), findsOneWidget);
           final done = find.widgetWithText(
             FilledButton,
