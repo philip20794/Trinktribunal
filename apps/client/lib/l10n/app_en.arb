@@ -597,6 +597,6 @@
   "roomDemoAdding": "Demo player is joining ...",
   "roomDemoHelp": "For testing: One click adds a player with a random avatar. Demo players take their turns automatically.",
   "roomNameRequired": "Enter your name before opening another tab.",
-  "roomStartPendingNames": "Cannot start: {count} players have not entered a name yet.",
+  "roomStartPendingNames": "Cannot start yet. Players without names: {count}.",
   "roomUnnamedPlayer": "Name missing"
 }
