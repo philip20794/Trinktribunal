@@ -6,7 +6,7 @@
 
 ## Umsetzung
 
-Die unveränderten Adventurer-Köpfe aus [DiceBear Adventurer](../../artwork/avatars/v3/prototypes/dicebear_adventurer_trinktribunal/README.md) samt unseren SVG-Erweiterungen sind als vollständige lokale JSON unter `apps/client/assets/avatars/dicebear/trinktribunal-adventurer-v1.json` eingebunden. Weder für Flutter Android noch Web wird ein externer Avatar-Download benötigt. Die JSON enthält die CC-BY-4.0-Urheberangaben (Lisa Wischofsky), ergänzt um `apps/client/assets/avatars/NOTICE.md`; diese Namensnennung muss im ausgelieferten Lizenz-/Rechtshinweis der App sichtbar erreichbar sein.
+Die unveränderten Adventurer-Köpfe aus [DiceBear Adventurer](../../artwork/avatars/v3/prototypes/dicebear_adventurer_trinktribunal/README.md) samt unseren SVG-Erweiterungen sind als vollständige lokale JSON unter `apps/client/assets/avatars/dicebear/trinktribunal-adventurer-v1.json` eingebunden. Weder für Flutter Android noch Web wird ein externer Avatar-Download benötigt. Die JSON enthält die CC-BY-4.0-Urheberangaben (Lisa Wischofsky), ergänzt um `apps/client/assets/avatars/NOTICE.md`; ein kleines Info-Symbol neben dem Zufallsbutton öffnet im Profil bereits einen Dialog mit Urheber, Quelle und CC-BY-4.0-Lizenz.
 
 `AvatarView` nutzt die gebündelte JSON über `dicebear_core` + `flutter_svg`, lädt sie einmal, rendert anhand des Seeds und der Auswahl eine SVG und hält einen begrenzten 48-Einträge-Cache. Das vollständige Namensschild ist Teil der SVG, der **Spielername wird aber als Flutter-Text an festen Schildkoordinaten** darübergelegt. Die DiceBear-Initialen-Komponente wird hierfür abgeschaltet. In Profil, Startseite, lokaler Spielreihenfolge, Handübergabe und Mehrspieleransichten wird der Avatar entsprechend mit dem aktuellen Namen aufgerufen.
 
@@ -55,7 +55,7 @@ Danach den Browser-/Android-Editor tatsächlich testen: 360×800, 320×568, 200 
 
 ## Noch nicht abgeschlossen
 
-- Flutter-/Server-Build und Integrationstests, Lockfile-Regeneration, App-Lizenzseite.
+- Flutter-/Server-Build und Integrationstests, Lockfile-Regeneration, finale Prüfung des Lizenzdialogs auf Android/Web.
 - Sichttest des neuen SVG-Renderers: Kompatibilität sehr langer Adventurer-Haare mit Kragen, Schild und Vorderhänden; Brillen-/Ohrring-/Details-Regeln. Der fertige JSON-Stil hat die DiceBear-Style-Schemaprüfung bestanden, aber das ist keine optische App-Abnahme.
 - Verifikation aller mobilen Größen inklusive Safe-Area/Tastatur und Screenreader. Die ursprünglichen zehn gemalten Avatare werden im Git bewahrt; der neue Stil wird nur nach Nutzerreview als Produktstandard übernommen.
 
