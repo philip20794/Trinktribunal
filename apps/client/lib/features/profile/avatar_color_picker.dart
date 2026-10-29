@@ -64,8 +64,8 @@ class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
       _update(_hsv.withHue(degrees));
     } else if (point.dx >= squareLeft && point.dx <= squareLeft + squareSide &&
         point.dy >= squareLeft && point.dy <= squareLeft + squareSide) {
-      final saturation = ((point.dx - squareLeft) / squareSide).clamp(0.0, 1.0);
-      final value = (1 - (point.dy - squareLeft) / squareSide).clamp(0.0, 1.0);
+      final saturation = ((point.dx - squareLeft) / squareSide).clamp(0.0, 1.0).toDouble();
+      final value = (1 - (point.dy - squareLeft) / squareSide).clamp(0.0, 1.0).toDouble();
       _update(_hsv.withSaturation(saturation).withValue(value));
     }
   }
