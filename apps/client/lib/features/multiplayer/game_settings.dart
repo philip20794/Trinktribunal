@@ -10,6 +10,7 @@ import '../../l10n/app_strings.dart';
 import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
 import 'invitation.dart';
+import 'pending_profile.dart';
 
 class RoomGameSettings extends ConsumerWidget {
   const RoomGameSettings({required this.snapshot, this.session, super.key});
@@ -188,42 +189,68 @@ class _RoomStartActionState extends ConsumerState<RoomStartAction> {
     final editor = ref.watch(onlineProfileProvider);
     final settings = ref.watch(onlineSettingsProvider);
     final demos = ref.watch(demoPlayersProvider);
+    final missingNames = view.public.players.where(
+      (player) => player.active != false && needsRoomName(player.profile.name),
+    ).length;
     return ListenableBuilder(
       listenable: Listenable.merge([editor, settings, demos]),
-      builder: (context, _) => FilledButton(
-        onPressed:
-            !_pending &&
-                view.public.players.length >= 3 &&
-                !editor.dirty &&
-                !editor.saving &&
-                !settings.dirty &&
-                !settings.saving &&
-                !demos.adding
-            ? () {
-                if (_pending ||
-                    settings.dirty ||
-                    settings.saving ||
-                    demos.adding) {
-                  return;
-                }
-                final controller = ref.read(roomControllerProvider),
-                    latest = ref.read(roomControllerProvider).state.snapshot;
-                if (latest == null ||
-                    latest.public.phase != 'lobby' ||
-                    latest.you != latest.public.hostId) {
-                  return;
-                }
-                if (controller.sendAction(
-                  StartGameMessage.create(
-                    actionId: ActionId(newRoomRequestId()),
-                    expectedRevision: latest.revision,
-                  ),
-                )) {
-                  setState(() => _pending = true);
-                }
-              }
-            : null,
-        child: const TText('startHearing'),
+      builder: (context, _) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (missingNames > 0)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: StatusNotice(
+                context.tr('roomStartPendingNames', {'count': missingNames}),
+              ),
+            ),
+          FilledButton(
+            onPressed: !_pending &&
+                    view.public.players.length >= 3 &&
+                    !editor.dirty &&
+                    !editor.saving &&
+                    !settings.dirty &&
+                    !settings.saving &&
+                    !demos.adding
+                ? () {
+                    final controller = ref.read(roomControllerProvider);
+                    final latest = controller.state.snapshot;
+                    if (latest == null ||
+                        latest.public.phase != 'lobby' ||
+                        latest.you != latest.public.hostId) {
+                      return;
+                    }
+                    final incomplete = latest.public.players.where(
+                      (player) =>
+                          player.active != false &&
+                          needsRoomName(player.profile.name),
+                    ).length;
+                    if (incomplete > 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            context.tr('roomStartPendingNames', {
+                              'count': incomplete,
+                            }),
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    if (controller.sendAction(
+                      StartGameMessage.create(
+                        actionId: ActionId(newRoomRequestId()),
+                        expectedRevision: latest.revision,
+                      ),
+                    )) {
+                      setState(() => _pending = true);
+                    }
+                  }
+                : null,
+            child: const TText('startHearing'),
+          ),
+        ],
       ),
     );
   }
