@@ -21,8 +21,8 @@ void main() {
     testWidgets('portrait options are compact and accessible at text scale $scale',(tester) async {
       addTearDown(() => tester.binding.setSurfaceSize(null));
       await host(tester,scale:scale);
-      final first=tester.getRect(find.byKey(const ValueKey('avatar-option-hair')));
-      final second=tester.getRect(find.byKey(const ValueKey('avatar-option-eyes')));
+      final first=tester.getRect(find.byKey(const ValueKey('avatar-option-hair:short03')));
+      final second=tester.getRect(find.byKey(const ValueKey('avatar-option-eyes:variant05')));
       if(scale==1.0) {
         expect(second.top,first.top);
         expect(second.left,greaterThan(first.left));
@@ -48,7 +48,7 @@ void main() {
         )),
       )));
       await tester.pumpAndSettle();
-      final hair=find.byKey(const ValueKey('avatar-option-hair'));
+      final hair=find.byKey(const ValueKey('avatar-option-hair:short03'));
       expect(hair,findsOneWidget);
       final hairField=tester.widget<DropdownButtonFormField<String>>(hair);
       hairField.onChanged!('long01');
@@ -56,19 +56,19 @@ void main() {
       expect(selected['hair'],'long01');
       await tester.tap(find.byKey(const ValueKey('avatar-tab-1')));
       await tester.pumpAndSettle();
-      final outfit=find.byKey(const ValueKey('avatar-option-outfit'));
+      final outfit=find.byKey(const ValueKey('avatar-option-outfit:tee'));
       tester.widget<DropdownButtonFormField<String>>(outfit).onChanged!('hoodie');
       await tester.pump();
       expect(selected['outfit'],'hoodie');
       await tester.tap(find.byKey(const ValueKey('avatar-tab-2')));
       await tester.pumpAndSettle();
-      final skin=find.byKey(const ValueKey('avatar-option-skinColor'));
+      final skin=find.byKey(const ValueKey('avatar-option-skinColor:#ecad80'));
       tester.widget<DropdownButtonFormField<String>>(skin).onChanged!('#763900');
       await tester.pump();
       expect(selected['skinColor'],'#763900');
       await tester.tap(find.byKey(const ValueKey('avatar-tab-0')));
       await tester.pumpAndSettle();
-      expect(tester.widget<DropdownButtonFormField<String> >(hair).initialValue,'long01');
+      expect(tester.widget<DropdownButtonFormField<String>>(find.byKey(const ValueKey('avatar-option-hair:long01'))).initialValue,'long01');
       expect(tester.takeException(),isNull);
     });
   }
