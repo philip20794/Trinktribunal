@@ -422,7 +422,7 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AvatarView(config: _avatar, size: 96),
+            AvatarView(config: _avatar, size: 96, playerName: _name.text),
             const SizedBox(height: 16),
             TextField(
               controller: _name,
@@ -432,9 +432,12 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
                 errorText: _error,
               ),
             ),
-            AvatarOptions(
-              config: _avatar,
-              onChanged: (next) => setState(() => _avatar = next),
+            SizedBox(
+              height: 280,
+              child: AvatarOptions(
+                config: _avatar,
+                onChanged: (next) => setState(() => _avatar = next),
+              ),
             ),
           ],
         ),

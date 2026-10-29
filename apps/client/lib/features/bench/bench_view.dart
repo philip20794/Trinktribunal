@@ -301,6 +301,7 @@ class _BenchViewState extends State<BenchView> {
                           config: profile.avatar,
                           size: 76,
                           label: profile.player.name,
+                          playerName: profile.player.name,
                         ),
                       NamePlate(name: profile.player.name, position: index + 1),
                     ],
@@ -384,6 +385,7 @@ class _BenchViewState extends State<BenchView> {
           config: profile.avatar,
           size: 76,
           label: profile.player.name,
+          playerName: profile.player.name,
         ),
         if (editable) ...[
           Positioned(

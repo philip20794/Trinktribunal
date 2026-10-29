@@ -26,7 +26,7 @@ void main() {
       expect(
         await controller.save(
           name: '  Alex  ',
-          avatar: AvatarConfig.feminine(),
+          avatar: AvatarConfig(seed:'old',selections:{'hair':'long01'}),
         ),
         true,
       );
@@ -36,7 +36,7 @@ void main() {
       );
       await again.load();
       expect(again.profile!.player.name, 'Alex');
-      expect(again.profile!.avatar['hair'], 'long');
+      expect(again.profile!.avatar['hair'], 'long01');
       expect(
         await again.save(name: 'Ä', avatar: AvatarConfig.masculine()),
         true,
@@ -83,9 +83,9 @@ void main() {
     'read failure is reported; unsaved editor changes never mutate profile',
     () async {
       await controller.save(name: 'Alex', avatar: AvatarConfig());
-      final edited = controller.profile!.avatar.withOption('hair', 'long');
-      expect(edited['hair'], 'long');
-      expect(controller.profile!.avatar['hair'], 'short');
+      final edited = controller.profile!.avatar.withOption('hair', 'long01');
+      expect(edited['hair'], 'long01');
+      expect(controller.profile!.avatar['hair'], 'short03');
       storage.failRead = true;
       await controller.load();
       expect(controller.profile!.player.name, 'Alex');

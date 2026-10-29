@@ -61,7 +61,7 @@ void main() {
       clock.flushMicrotasks();
       expect(editor.available, isTrue);
       expect(editor.dirty, isFalse);
-      editor.changeAvatar(editor.avatar.withOption('hair', 'long'));
+      editor.changeAvatar(editor.avatar.withOption('hair', 'long01'));
       editor.rename('Alpha');
       editor.rename('Beta');
       clock.elapse(const Duration(milliseconds: 349));
@@ -70,7 +70,7 @@ void main() {
       clock.flushMicrotasks();
       final first = socket.sent.whereType<EditOwnProfileMessage>().single;
       expect(first.profile.name, 'Beta');
-      expect(first.profile.avatar.selections['hair'], 'long');
+      expect(first.profile.avatar.selections['hair'], 'long01');
       expect(editor.saving, isTrue);
       editor.rename('Gamma');
       editor.flush();

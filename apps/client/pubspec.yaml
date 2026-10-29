@@ -9,6 +9,8 @@ environment:
 
 dependencies:
   crypto: 3.0.8
+  dicebear_core: 10.7.0
+  flutter_svg: 2.3.2
   characters: ^1.4.1
   cupertino_icons: ^2.0.0
   flutter:
@@ -25,7 +27,6 @@ dependencies:
   web_socket_channel: 3.0.3
   flutter_secure_storage: 11.2.0
   qr_flutter: 4.1.0
-  flutter_svg: 2.0.16
 
 dev_dependencies:
   fake_async: 1.3.3
@@ -58,6 +59,7 @@ flutter:
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/x.svg
     - assets/ui/trinktribunal_spielregeln_assets/LIZENZ-HINWEIS.txt
     - assets/avatars/manifest.json
+    - assets/avatars/dicebear/trinktribunal-adventurer-v1.json
     - assets/fonts/roboto_license.txt
     - assets/catalogs/manifest.json
     - assets/catalogs/questions/

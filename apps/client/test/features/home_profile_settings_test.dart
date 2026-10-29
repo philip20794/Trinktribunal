@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/local_data_providers.dart';
-import 'package:trinktribunal/design/case_file.dart';
+import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/features/home/home_screen.dart';
 import 'package:trinktribunal/features/home/mode_preview_screen.dart';
 import 'package:trinktribunal/features/multiplayer/create.dart';
@@ -106,13 +106,11 @@ void main() {
         await tester.enterText(field, name);
         await tester.testTextInput.receiveAction(TextInputAction.done);
         await tester.pumpAndSettle();
-        await tester.scrollUntilVisible(
-          find.byType(NamePlate),
-          -200,
-          scrollable: find.byType(Scrollable).first,
-        );
         await tester.pumpAndSettle();
-        expect(tester.widget<NamePlate>(find.byType(NamePlate)).name, name);
+        expect(
+          tester.widget<AvatarView>(find.byKey(const ValueKey('profile-avatar-preview'))).playerName,
+          name,
+        );
         await tester.tap(save);
         await tester.pumpAndSettle();
         expect(
@@ -123,11 +121,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byTooltip(strings.get('openProfile')));
         await tester.pumpAndSettle();
-        await tester.scrollUntilVisible(
-          find.byType(TextField),
-          200,
-          scrollable: find.byType(Scrollable).first,
-        );
+        // Name entry is now fixed above the scrolling avatar options.
         expect(
           tester.widget<TextField>(find.byType(TextField)).controller!.text,
           name,

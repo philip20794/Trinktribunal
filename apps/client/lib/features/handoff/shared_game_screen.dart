@@ -435,7 +435,11 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Row(
                       children: [
-                        AvatarView(config: judge.avatar, size: 48),
+                        AvatarView(
+                          config: judge.avatar,
+                          size: 48,
+                          playerName: judge.player.name,
+                        ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(

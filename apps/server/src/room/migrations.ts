@@ -265,16 +265,38 @@ export function migrateRoomState(raw: string): { state: RoomState; migrated: boo
       for (const member of root.members) {
         if (!record(member) || !record(member.profile) || !record(member.profile.avatar)) continue;
         const avatar = member.profile.avatar;
-        if (avatar.version !== 1) continue;
+        if (avatar.version !== 1 && avatar.version !== 2) continue;
+        const oldOptions = avatar.version === 1
+          ? avatarManifest.legacyOptionsV1
+          : avatarManifest.legacyOptionsV2;
         const selections = avatar.selections;
         requireState(
           record(selections) &&
-            Object.keys(selections).length === Object.keys(avatarManifest.legacyOptionsV1).length,
+            Object.keys(selections).length === Object.keys(oldOptions).length,
         );
-        for (const [key, values] of Object.entries(avatarManifest.legacyOptionsV1)) {
+        for (const [key, values] of Object.entries(oldOptions)) {
           requireState(values.includes((selections as Record<string, unknown>)[key] as string));
         }
+        // Stable 32-bit hash, equivalent to the Dart local-profile upgrade.
+        const oldValues = Object.keys(oldOptions)
+          .map((key) => String((selections as Record<string, unknown>)[key])).join('-');
+        let hash = 2166136261;
+        for (let i = 0; i < oldValues.length; i++) {
+          hash = Math.imul(hash ^ oldValues.charCodeAt(i), 16777619) >>> 0;
+        }
         avatar.version = protocolMetadata.avatarVersion;
+        avatar.seed = 'migrated-' + hash.toString(16);
+        avatar.selections = Object.fromEntries(
+          Object.entries(avatarManifest.options).map(([key, values]) => [
+            key, ({
+              hair: 'short03', eyes: 'variant05', eyebrows: 'variant03',
+              mouth: 'variant04', glasses: 'none', earrings: 'none',
+              details: 'none', outfit: 'tee', board: 'classic',
+              skinColor: '#ecad80', hairColor: '#6a4e35',
+              outfitColor: '#475e74',
+            } as Record<string,string>)[key] ?? values[0],
+          ]),
+        );
         migrated = true;
       }
     }

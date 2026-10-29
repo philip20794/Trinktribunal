@@ -144,6 +144,7 @@ class _RoomProfileFormState extends ConsumerState<RoomProfileForm> {
                   config: _avatar,
                   size: 112,
                   label: context.tr('profilePreview'),
+                  playerName: _name.text,
                 ),
                 const SizedBox(height: 16),
                 TextField(

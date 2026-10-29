@@ -16,7 +16,7 @@ const defs={
   revision:integer(0),
   config:object({targetCases:integer(1,491),requestedRuleEvents:integer(0,25),factorTenths:integer(10,30),allJudges:{type:'boolean'},contentLanguage:{enum:['de','en']}}),
   handshake:object({protocolVersion:{const:2},catalogHash:ref('hash'),avatarVersion:{const:avatarManifest.version}}),
-  avatar:object({version:{const:avatarManifest.version},selections:object(Object.fromEntries(Object.entries(avatarManifest.options).map(([key,values])=>[key,{enum:values}])))}),
+  avatar:object({version:{const:avatarManifest.version},seed:text('^[A-Za-z0-9_-]{1,64}$',64),selections:object(Object.fromEntries(Object.entries(avatarManifest.options).map(([key,values])=>[key,key.endsWith('Color') ? {type:'string',pattern:'^#[A-Fa-f0-9]{6}$',maxLength:7} : {enum:values}])))}),
   profile:object({name:{type:'string',minLength:1},avatar:ref('avatar')}),
   historyEvent:object({eventId:ref('id'),kind:{enum:['question','rule']},contentId:text('^[A-Za-z0-9_-]{1,64}$'),timestampUtc:ref('utc')}),
   historyOffer:object({importId:ref('id'),count:integer(0,ROOM_LIMITS.historyEvents),sha256:ref('hash')}),
