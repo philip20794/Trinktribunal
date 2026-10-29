@@ -121,11 +121,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byTooltip(strings.get('openProfile')));
         await tester.pumpAndSettle();
-        await tester.scrollUntilVisible(
-          find.byType(TextField),
-          200,
-          scrollable: find.byType(Scrollable).first,
-        );
+        // Name entry is now fixed above the scrolling avatar options.
         expect(
           tester.widget<TextField>(find.byType(TextField)).controller!.text,
           name,
