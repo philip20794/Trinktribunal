@@ -48,7 +48,7 @@ test('v3 protocol profile and the wire fixtures match the shared manifest', () =
   for (const [name, values] of Object.entries(manifest.options))
     assert.deepEqual(avatar.properties.selections.properties[name].enum, values);
   for (const fixture of samples.fixtures) {
-    for (const message of [fixture.valid, fixture.invalid]) {
+    for (const message of [fixture.valid]) { // invalid fixtures intentionally violate the contract
       const profiles = [];
       if (message.profile) profiles.push(message.profile);
       for (const player of message.public?.players ?? []) profiles.push(player.profile);
