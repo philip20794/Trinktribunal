@@ -67,3 +67,5 @@ artwork/avatars/v3/prototypes/male_09_color_masks/p1_native_git_master.py text e
 artwork/avatars/v3/prototypes/male_09_color_masks/test_p1_native_git_master.py text eol=lf
 artwork/avatars/v3/prototypes/male_09_color_masks/verify_master_source.py text eol=lf
 artwork/avatars/v3/prototypes/male_09_color_masks/test_verify_master_source.py text eol=lf
+
+apps/client/assets/ui/trinktribunal_spielregeln_assets/** text eol=lf

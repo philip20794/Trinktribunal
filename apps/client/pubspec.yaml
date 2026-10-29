@@ -25,6 +25,7 @@ dependencies:
   web_socket_channel: 3.0.3
   flutter_secure_storage: 11.2.0
   qr_flutter: 4.1.0
+  flutter_svg: 2.0.16
 
 dev_dependencies:
   fake_async: 1.3.3
@@ -44,6 +45,18 @@ flutter:
         - asset: assets/fonts/roboto-bold.ttf
           weight: 700
   assets:
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/hash.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/message-circle.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/arrow-down-up.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/wine.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/scale.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/users.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/book-open.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/arrow-left.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/circle-help.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/check.svg
+    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/x.svg
+    - assets/ui/trinktribunal_spielregeln_assets/LIZENZ-HINWEIS.txt
     - assets/avatars/manifest.json
     - assets/fonts/roboto_license.txt
     - assets/catalogs/manifest.json

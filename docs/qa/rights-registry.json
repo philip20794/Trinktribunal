@@ -145,7 +145,7 @@
         },
         {
           "path": "apps/client/lib/design/court_scene.dart",
-          "sha256": "e275333ab99dbc570190665a48cde9deae1053668dbe169bc422db524cf8bc30"
+          "sha256": "2c9e4b0c923d68111e6c748c46922939cca46e1f3f744a631c1e8be21025f22a"
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
@@ -688,6 +688,118 @@
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/geheime_nummer_bg.png",
           "sha256": "190d2234e570a8d6247603ec9a77db672511c696f59a5b239113c3807ee48427"
+        }
+      ]
+    },
+    {
+      "id": "game-rules-svg-icons",
+      "distribution": "runtime",
+      "status": "licensed",
+      "licenseId": "ISC AND MIT",
+      "licenseFile": "apps/client/assets/ui/trinktribunal_spielregeln_assets/LIZENZ-HINWEIS.txt",
+      "provenance": "User-supplied SVG icon bundle. Lucide/Feather attribution and ISC/MIT terms supplied in its notice are retained; no remote icon service.",
+      "evidence": "docs/qa/illustrated-rules.md",
+      "files": [
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/hash.svg",
+          "sha256": "70cfc08796948f48112c4d266d496fa99e55118dc33cf4bb3c26b117131af11e"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/message-circle.svg",
+          "sha256": "393d739d02571ee5f3900949f2ba47c2e69ed7a4292b61587f3a522f36b6d2d3"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/arrow-down-up.svg",
+          "sha256": "7dc596406cb02df745225853406c0471e2f9d758558a06096295e0cc18120a57"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/wine.svg",
+          "sha256": "f5223990074a3b7f976873d449f5649e926cafcb88cc56863fe5ce6a780192a0"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/scale.svg",
+          "sha256": "ea97fb028a1171c81c853b69112e98da7d1d983c05032cee01e82b316b4b9b9a"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/users.svg",
+          "sha256": "cde92453716c2ecd1b6ec8d6b29a2e3499c4b47de5a83c3b3ee398e91edcd60c"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/book-open.svg",
+          "sha256": "36b3d8d470bdf08461817bfbf15d49bc3d03b6a46e9a505b73d8dc416bca809f"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/arrow-left.svg",
+          "sha256": "10eb2b061b9cd2939f15020c2d72e76d46ceb6a7316778080797562f0f107681"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/circle-help.svg",
+          "sha256": "5610757e67c0e5decb7d4367c98f756a5478ad7dc4bffd0540e975072fdc190f"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/check.svg",
+          "sha256": "b9034a076cdfedfadca86510042c9ba799867bc8425ba0c05a8ebd6fc2b574e9"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/x.svg",
+          "sha256": "3bfde5660f68acb8e7f4a530a9e2e67d47022d4240d1faa9aa2fc86251e046ca"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/LIZENZ-HINWEIS.txt",
+          "sha256": "f90bdf1a65670db333d96f69b20fcf8dbf449b2609b718da72e7fe53b1942673"
+        }
+      ]
+    },
+    {
+      "id": "game-rules-design-source",
+      "distribution": "source-only",
+      "status": "unresolved",
+      "provenance": "Unused supplied SVG variants, bundle README and original German text references. Not bundled in the app; current UI wording comes from the latest user JSON.",
+      "evidence": "docs/qa/illustrated-rules.md",
+      "files": [
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/contact-round.svg",
+          "sha256": "8c3e7374567e9da772b01f2c07a612096b7e17dd99e26a92ca4a53617a402bca"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/gavel.svg",
+          "sha256": "ab9e5c2dac51115f65bfff703577422f8b378db4940d1af9ebdf6bf35fff9471"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/list-ordered.svg",
+          "sha256": "909237d929c2f6bd0bb096d521c6843a29b985e9850de79315099e157ea33570"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/messages-square.svg",
+          "sha256": "4e5a4893de534fd99ddecc64baedc9d62dd8981e0df1b75795ab0a68f0f9ff64"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/schritt-1.svg",
+          "sha256": "ba9a7bbbca59210bceda05e734709c818c07227b630fa5dd9327635436e044e5"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/schritt-2.svg",
+          "sha256": "5a46cfb7f5f5f57d9cf3fd246a231bea30bb5e628b838c6346bc286551dde3b0"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/schritt-3.svg",
+          "sha256": "36c0be635bfc0e408f41be2bc8652d4ae0913619ad571c645518cb83a563c18b"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/schritt-4.svg",
+          "sha256": "f07ac75a55f9e8acca96abb097dd1cb7d92dbedd20a95f319206710937aff91a"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/README.md",
+          "sha256": "f8e0f6ef848610a5125ae12db37ec7fd1a71377712845209f37eac6265aa21c5"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/texte/spielregeln.de.json",
+          "sha256": "ec7e7cc24c9724a8a9f2f719caef8400eb40ea42daf009ccc7de8eb09da03f44"
+        },
+        {
+          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/texte/spielregeln.de.md",
+          "sha256": "88e7be6c5b4e3f4d49f2417396604e4a1b61c062548c8d264e48155e4e57c389"
         }
       ]
     }

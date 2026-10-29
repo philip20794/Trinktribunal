@@ -49,8 +49,16 @@ void main() {
         await tap(tester, strings.get('gameRules'));
         await tester.pumpAndSettle();
         expect(find.byType(GameRulesScreen), findsOneWidget);
-        for (final section in gameRuleSections) {
-          final finder = find.text(strings.get('gameRules${section}Body'));
+        for (final key in [
+          'rulesStep1Body',
+          'rulesStep2Body',
+          'rulesStep3Body',
+          'rulesStep4Body',
+          'rulesScoringTitle',
+          'gameRulesAllJudgesBody',
+          'gameRulesExtraRulesBody',
+        ]) {
+          final finder = find.text(strings.get(key));
           await tester.scrollUntilVisible(
             finder,
             400,
@@ -96,7 +104,7 @@ void main() {
         await tester.tap(find.byTooltip(strings.get('gameRules')));
         await tester.pumpAndSettle();
         expect(find.byType(GameRulesScreen), findsOneWidget);
-        await tester.tap(find.byType(BackButton));
+        await tester.tap(find.byKey(const ValueKey('rules-back')));
         await tester.pumpAndSettle();
         expect(cards.toSnapshot(), beforeHelp);
         if (cards.state!.phase == GamePhase.ruleEvent) {

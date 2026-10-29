@@ -136,7 +136,7 @@ void main() {
           await tester.pumpAndSettle();
           expect(find.byType(GameRulesScreen), findsOneWidget);
           expect(phone.view?.visibleSecret, isNull);
-          await tester.tap(find.byType(BackButton));
+          await tester.tap(find.byKey(const ValueKey('rules-back')));
           await tester.pumpAndSettle();
           expect(shared ? phone.toSnapshot() : cards.toSnapshot(), saved);
         },
@@ -196,7 +196,7 @@ void main() {
           await tester.pumpAndSettle();
           expect(game.visibleNumber, isNull);
           expect(find.byType(GameRulesScreen), findsOneWidget);
-          await tester.tap(find.byType(BackButton));
+          await tester.tap(find.byKey(const ValueKey('rules-back')));
           await tester.pumpAndSettle();
           expect(f.room.state.snapshot!.toJson(), beforeRules);
         },

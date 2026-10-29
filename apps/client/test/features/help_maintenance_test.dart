@@ -73,7 +73,7 @@ void main() {
         expect(find.byType(HelpScreen), findsOneWidget);
         await tapVisible(tester, find.text(strings.get('gameRules')));
         expect(find.byType(GameRulesScreen), findsOneWidget);
-        await tester.tap(find.byType(BackButton));
+        await tester.tap(find.byKey(const ValueKey('rules-back')));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();

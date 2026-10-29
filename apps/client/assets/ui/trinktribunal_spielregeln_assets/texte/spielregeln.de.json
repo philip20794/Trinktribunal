@@ -1,0 +1,85 @@
+{
+  "screen": "spielregeln",
+  "language": "de",
+  "header": {
+    "title": "Spielregeln",
+    "backAccessibilityLabel": "Zurück",
+    "helpAccessibilityLabel": "Hilfe"
+  },
+  "intro": {
+    "title": "So läuft eine Runde",
+    "subtitle": "In vier Schritten"
+  },
+  "steps": [
+    {
+      "number": 1,
+      "icon": "hash",
+      "title": "Geheime Zahl erhalten",
+      "description": "Alle (außer dem Richter) erhalten eine geheime Zahl von 1 bis X (~ Spieleranzahl * 1.5)."
+    },
+    {
+      "number": 2,
+      "icon": "message-circle",
+      "title": "Frage beantworten",
+      "description": "Alle antworten auf dieselbe Frage – passend zu ihrer Zahl."
+    },
+    {
+      "number": 3,
+      "icon": "arrow-down-up",
+      "title": "Antworten sortieren",
+      "description": "Der Richter ordnet die Antworten von der niedrigsten zur höchsten Zahl."
+    },
+    {
+      "number": 4,
+      "icon": "wine",
+      "title": "Fehler zählen & trinken",
+      "description": "Jede falsch platzierte Person zählt als ein Schluck."
+    }
+  ],
+  "scoringExample": {
+    "icon": "scale",
+    "title": "Wer muss trinken?",
+    "intro": "Beispiel mit drei Antworten:",
+    "correctOrderTitle": "Richtige Reihenfolge",
+    "correctOrder": [
+      2,
+      7,
+      11
+    ],
+    "judgeOrderTitle": "So hat der Richter sortiert",
+    "judgeOrder": [
+      7,
+      2,
+      11
+    ],
+    "correctLabel": "Richtig",
+    "incorrectLabel": "Falsch",
+    "result": "Ergebnis: 2 Fehler",
+    "drinking": [
+      {
+        "role": "Richter",
+        "amount": "2 Schlucke"
+      },
+      {
+        "role": "Spieler mit 7 und 2",
+        "amount": "Je 2 Schlucke"
+      },
+      {
+        "role": "Spieler mit 11",
+        "amount": "0 Schlucke"
+      }
+    ]
+  },
+  "extraRules": [
+    {
+      "icon": "users",
+      "title": "Alle sind Richter",
+      "description": "Optional bei 'alle Handy': Jeder sortiert die gesamte Gruppe selbst und trinkt nur für Fehler seiner eigenen Reihenfolge."
+    },
+    {
+      "icon": "book-open",
+      "title": "Zusätzliche Trinkregeln",
+      "description": "Neue Regeln gelten sofort bis zum Ende der Runde. Jeder eigenständige Verstoß kostet einen Schluck."
+    }
+  ]
+}

@@ -199,7 +199,7 @@ class CourtScaffold extends StatelessWidget {
   final Widget? title, leading, footer;
   final List<Widget>? actions;
   final PreferredSizeWidget? appBarBottom;
-  final String background;
+  final String? background;
   final double maxWidth;
   @override
   Widget build(BuildContext context) => Theme(
@@ -209,11 +209,12 @@ class CourtScaffold extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           const ColoredBox(color: CourtSceneTokens.night),
-          Positioned.fill(
-            child: IgnorePointer(
-              child: CourtArt(background, fit: BoxFit.cover),
+          if (background != null)
+            Positioned.fill(
+              child: IgnorePointer(
+                child: CourtArt(background!, fit: BoxFit.cover),
+              ),
             ),
-          ),
           const Positioned.fill(
             child: IgnorePointer(
               child: DecoratedBox(

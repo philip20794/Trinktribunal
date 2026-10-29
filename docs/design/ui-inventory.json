@@ -437,13 +437,17 @@
         "sieben allgemeine Regelabschnitte DE/EN",
         "von Home und allen Modi erreichbar",
         "Zurück ohne Fallabschluss",
-        "Geheimnisse beim Öffnen verdeckt"
+        "Geheimnisse beim Öffnen verdeckt",
+        "Four illustrated steps and 2/7/11 versus 7/2/11 scoring example",
+        "Real SVG back/help controls; all-judges and extra-rule cards",
+        "DE/EN, 320/390/1440 widths and 100/200% text scaling"
       ],
       "tests": [
         "apps/client/test/features/direct_next_rules_test.dart",
         "apps/client/test/features/question_refresh_test.dart",
         "apps/client/test/accessibility/screen_matrix_test.dart",
-        "apps/client/test/features/ui_cleanup_test.dart"
+        "apps/client/test/features/ui_cleanup_test.dart",
+        "apps/client/test/features/illustrated_rules_test.dart"
       ],
       "targetTask": "TT-076",
       "implementation": {

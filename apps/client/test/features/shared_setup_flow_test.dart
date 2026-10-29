@@ -100,7 +100,7 @@ void main() {
         );
         await tapVisible(tester, entry);
         expect(find.byType(AlertDialog), findsOneWidget);
-      await reviewImage(tester, 'phone-resume-$cardMode');
+        await reviewImage(tester, 'phone-resume-$cardMode');
         await tester.tap(find.text(strings.get('cancel')));
         await tester.pumpAndSettle();
         expect(cards.state!.currentEventId, cardId);

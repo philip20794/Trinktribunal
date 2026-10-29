@@ -2,7 +2,11 @@
 
 Stand: 29.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 157 Node-/571 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 157 Node-/587 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+
+## Spielregeln nach neuer Referenz, 29.10.2026
+
+**ABGESCHLOSSEN nach Unit-/Buildgates.** Vier Papierkarten auf ruhigem dunklem Hintergrund, nummerierter Ablauf und Wertungsbeispiel mit Zahlenreihen, Haken/Kreuzen und Schlucktabelle. Neuester deutscher Nutzertext, englische Übersetzung und elf lokale SVGs samt Lizenzhinweis eingebunden. Hilfe/Zurück funktionieren; große Schrift und schmale Displays geprüft. Spielkern unverändert. [Umsetzung und Belege](qa/illustrated-rules.md).
 
 ## Ein-Handy-Überarbeitung und Fortsetzen-Auswahl, 29.10.2026
 
@@ -215,12 +219,11 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Aktueller Schwerpunkt: Fortsetzen/Neu-Auswahl und Ein-Handy-Einrichtung/Übergabe abgeschlossen. Branch feat/shared-phone-setup-and-handoff; Belege docs/qa/shared-phone-redesign.md + shared-phone-builds.json.
-571 Flutter-/157 Node-Tests, Analyze/Format, 26 native Ansichten mit echten Schriften; frische Web-/Debug-APK-Builds und HTTP-/Offlineintegrität grün. Node-/Rechtegate in isoliertem Git-Prüfstand ohne den zusätzlichen unversionierten Spielregel-Assetimport ausgeführt.
-Neue Partie setzt nur den gewählten lokalen Modus plus Recoverykopie zurück. Andere Partie, Gruppe/Profil und Ziehhistorie bleiben erhalten. Bei Speicherfehler wird der vorangegangene Partiezustand im Arbeitsspeicher wiederhergestellt.
-Einrichtung: kompakte Reorder-Liste, Name+Plus/Enter, zufälliger Avatar, Wischlöschung/3s-Rücknahme. Einstellungen auf separatem Screen. Übergabe groß/mittig, Geheimzahl mit eigenem Pergament und unterem Hold-/Fertig-Bereich; Fertig erst nach tatsächlicher Ansicht, Unterbrechung verlangt erneute Übergabe. Skala als gemeinsamer Zahlenrahmen ohne Rot/Grün.
-Nutzer-PNG geheime_nummer_bg.png explizit eingebunden. Inventar: 34 Motive/3 Quarantänen, Rechte: 18 Pakete/131 Dateien, sechs Runtime-Pakete weiter extern ungeklärt.
-Unversionierter Ordner apps/client/assets/ui/trinktribunal_spielregeln_assets bleibt unangetastet für separate Nutzerarbeit; nicht in diesen Build integriert. Avatar-Prototyp-Nachträge bis 19aca25 erhalten, Runtime bleibt v2.
+Aktueller Schwerpunkt: Spielregelbildschirm nach Nutzerreferenz abgeschlossen. Belege docs/qa/illustrated-rules.md + illustrated-rules-builds.json.
+587 Flutter-/157 Node-Tests, Analyze/Format, 24 native Regelansichten mit echten Schriften; frische Web-/Debug-APK-Builds und HTTP-/Offlineintegrität grün.
+Deutsche Texte aus neuestem Nutzer-JSON, englische Übersetzung; Spielkern unverändert. Vier Papierkarten mit Ablauf, Wertungsbeispiel und Zusatzregeln. Elf bereitgestellte SVGs plus Lizenzhinweis explizit gebündelt, übrige Quelldateien nur dokumentiert.
+Inventar unverändert 34 PNG-Motive/3 Quarantänen; Rechte: 20 Pakete/154 Dateien, sechs Runtime-Pakete extern ungeklärt. Avatar-Prototyp-Nachträge bleiben erhalten; separate Nutzerarbeit auf feature/dicebear-avatar-editor nicht ungefragt integriert.
+Vorherige Ein-Handy- und Fortsetzen-Überarbeitung bleibt erhalten (docs/qa/shared-phone-redesign.md).
 TT-065 und TT-066 warten auf Rechte beziehungsweise echten produktionssignierten Codemagic-Artefaktbeleg; TT-069/070 bleiben davon abhängig. Kein Backenddeploy, keine zusätzlichen Signierschlüssel. Serverruntime unverändert (446 Tests aus TT-067).
 Browser/E2E/Gerät: ÜBERSPRUNGEN – später manuell testen. Lokales Testskript neu starten, damit der Webserver den aktuellen Quellcode kompiliert.
 ```

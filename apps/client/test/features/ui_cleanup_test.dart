@@ -81,9 +81,9 @@ void main() {
         await reviewImage(tester, 'cleanup-home-$language');
         await tapVisible(tester, find.text(strings.get('gameRules')));
         expect(find.byType(GameRulesScreen), findsOneWidget);
-        expect(gameRuleSections.length, 4);
+        expect(rulesStepIcons.length, 4);
         await reviewImage(tester, 'cleanup-rules-$language');
-        await tester.tap(find.byType(BackButton));
+        await tester.tap(find.byKey(const ValueKey('rules-back')));
         await tester.pumpAndSettle();
         await tapVisible(tester, find.text(strings.get('modeCards')));
         expect(find.byType(ModePreviewScreen), findsOneWidget);

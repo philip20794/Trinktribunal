@@ -13,6 +13,12 @@ void main() {
     yield LicenseEntryWithLineBreaks([
       'CourtRoboto',
     ], await rootBundle.loadString('assets/fonts/roboto_license.txt'));
+    yield LicenseEntryWithLineBreaks(
+      ['Spielregeln icons (Lucide/Feather)'],
+      await rootBundle.loadString(
+        'assets/ui/trinktribunal_spielregeln_assets/LIZENZ-HINWEIS.txt',
+      ),
+    );
   });
   runApp(const ProviderScope(child: TrinktribunalApp()));
 }
