@@ -8,6 +8,7 @@ import '../../design/avatar_view.dart';
 import '../profile/avatar_options.dart';
 import '../../l10n/app_strings.dart';
 import 'invitation.dart';
+import 'pending_profile.dart';
 
 class RoomMe extends ConsumerStatefulWidget {
   const RoomMe({super.key});
@@ -32,10 +33,12 @@ class _RoomMeState extends ConsumerState<RoomMe> {
         if (!editor.available) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (_name.text != editor.name) {
+        final pending = needsRoomName(editor.name);
+        final displayName = pending ? '' : editor.name;
+        if (_name.text != displayName) {
           _name.value = TextEditingValue(
-            text: editor.name,
-            selection: TextSelection.collapsed(offset: editor.name.length),
+            text: displayName,
+            selection: TextSelection.collapsed(offset: displayName.length),
           );
         }
         return Center(
@@ -48,8 +51,8 @@ class _RoomMeState extends ConsumerState<RoomMe> {
                   child: AvatarView(
                     config: editor.avatar,
                     size: 200,
-                    label: editor.name,
-                    playerName: editor.name,
+                    label: pending ? context.tr('roomUnnamedPlayer') : editor.name,
+                    playerName: pending ? context.tr('roomUnnamedPlayer') : editor.name,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -57,9 +60,13 @@ class _RoomMeState extends ConsumerState<RoomMe> {
                 TextField(
                   key: const ValueKey('online-name'),
                   controller: _name,
+                  autofocus: pending,
                   maxLength: 24,
                   decoration: InputDecoration(
                     labelText: context.tr('profileName'),
+                    errorText: pending && _name.text.trim().isEmpty
+                        ? context.tr('roomNameRequired')
+                        : null,
                   ),
                   onChanged: editor.rename,
                   onEditingComplete: editor.flush,
