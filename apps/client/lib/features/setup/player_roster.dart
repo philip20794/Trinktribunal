@@ -310,9 +310,12 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
                 errorText: _error,
               ),
             ),
-            AvatarOptions(
-              config: _avatar,
-              onChanged: (next) => setState(() => _avatar = next),
+            SizedBox(
+              height: 280,
+              child: AvatarOptions(
+                config: _avatar,
+                onChanged: (next) => setState(() => _avatar = next),
+              ),
             ),
           ],
         ),
