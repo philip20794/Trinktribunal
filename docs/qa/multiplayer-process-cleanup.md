@@ -14,3 +14,11 @@ Die bisherige Bereinigung vertraute auf den direkten PowerShell-Prozess und eine
 - Zweimal hintereinander `dev-multiplayer.ps1 -StopAfterReady` mit echtem lokalem Worker und Flutter-Client erfolgreich; anschließend Ports erneut bindbar. Kein Browser geöffnet.
 - Anwendungscode unverändert; kein neuer Appbuild erforderlich.
 - Browser/E2E: **ÜBERSPRUNGEN – später manuell testen**.
+
+## Nachtest: Client-Kompilierung
+
+Der Nutzerlauf `run-16d2873ef9a740acbd18c3f11cd6f7eb` endete wegen `avatar_view.dart:117: Error: The class 'Color' is abstract and can't be instantiated.` DiceBear exportierte ebenfalls `Color`; der Import im separaten Avatar-Branch wurde auf `Avatar, Style` begrenzt. Dieser branchspezifische Fix ist nicht als Avatar-Merge in main enthalten.
+
+Die bisherige HTTP-Prüfung konnte bereits vor dem Kompilieren erfolgreich sein. Das erklärt, warum ein Start erst nach „Client bereit“ abbrach; die vorherigen StopAfterReady-Zyklen belegten lediglich HTTP-Verfügbarkeit und Prozessbereinigung. Jetzt muss zusätzlich Flutters `is being served at` für die konkrete Client-URL im aktuellen Lauf stehen. Compilerfehler werden mit Quellzeile aus dem Fehlerlog gemeldet. Ein neuer Regressionstest deckt fehlende Logs, HTTP-Hülle ohne fertige Kompilierung, falschen Port, Erfolg und Compilerfehler ab.
+
+Nach dem Importfix ist `run-188484cd5d3243b0b5b84e676880fa0c` einschließlich tatsächlicher Web-Kompilierung und anschließend freier Ports 7357/8787 erfolgreich. Analyze der Avatar-Datei grün; fünf Avatar-Unit-Tests grün. Breiterer Avatar-Branch-Testlauf: zwölf bestanden, drei Profil-/Editor-Tests scheitern an nicht sichtbarem Tab beziehungsweise `pumpAndSettle`-Timeout; diese werden nicht als bestanden ausgewiesen. Keine Browserabnahme.
