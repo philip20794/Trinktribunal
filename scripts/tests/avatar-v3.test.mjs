@@ -49,31 +49,7 @@ test('v3 protocol profile and the wire fixtures match the shared manifest', () =
     const selected = avatar.properties.selections.properties[name];
     if (name.endsWith('Color')) {
       assert.equal(selected.type, 'string');
-      assert.equal(selected.pattern, '^#[A-Fa-f0-9]{6}
-  for (const fixture of samples.fixtures) {
-    for (const message of [fixture.valid]) { // invalid fixtures intentionally violate the contract
-      const profiles = [];
-      if (message.profile) profiles.push(message.profile);
-      for (const player of message.public?.players ?? []) profiles.push(player.profile);
-      if (message.handshake?.avatarVersion)
-        assert.equal(message.handshake.avatarVersion, 3);
-      for (const profile of profiles) {
-        assert.equal(profile.avatar.version, 3);
-        assert.equal(typeof profile.avatar.seed, 'string');
-        assert.deepEqual(Object.keys(profile.avatar.selections), Object.keys(manifest.options));
-      }
-    }
-  }
-});
-
-test('original Adventurer parts, nameplate and license remain in bundled style', () => {
-  for (const name of ['head','eyes','eyebrows','mouth','hair','ttOutfit','ttWall',
-      'ttBoard','ttHands','ttInitials']) assert.ok(style.components[name], name);
-  assert.ok(style.meta.license.name.includes('CC BY'));
-  assert.ok(style.canvas.elements.some(e => e.name === 'ttBoard'));
-  assert.ok(style.components.ttInitials.variants.blank);
-});
-);
+      assert.equal(selected.pattern, '^#[A-Fa-f0-9]{6}$');
       assert.equal(selected.maxLength, 7);
     } else {
       assert.deepEqual(selected.enum, values);
