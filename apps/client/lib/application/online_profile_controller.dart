@@ -32,6 +32,7 @@ final class OnlineProfileController extends ChangeNotifier {
   bool get dirty =>
       _server != null &&
       (name.trim() != _server!.name ||
+          avatar.seed != _server!.avatar.seed ||
           !mapEquals(avatar.selections, _server!.avatar.selections));
   void _notify() {
     if (!_disposed) notifyListeners();
@@ -111,7 +112,7 @@ final class OnlineProfileController extends ChangeNotifier {
           mapEquals(
             _inFlight!.profile.avatar.selections,
             profile.avatar.selections,
-          )) {
+          ) && _inFlight!.profile.avatar.seed == profile.avatar.seed) {
         _inFlight = null;
       }
       if (!wasDirty && _inFlight == null) {
