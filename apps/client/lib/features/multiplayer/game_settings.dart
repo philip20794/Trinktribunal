@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/room_providers.dart';
+import '../../application/room_controller.dart';
 import '../../data/protocol/room_message.dart';
 import '../../data/room_transport.dart';
 import '../../domain/models/ids.dart';
@@ -12,8 +13,9 @@ import '../../design/status_notice.dart';
 import 'invitation.dart';
 
 class RoomGameSettings extends ConsumerStatefulWidget {
-  const RoomGameSettings({required this.snapshot, super.key});
+  const RoomGameSettings({required this.snapshot, this.session, super.key});
   final SnapshotMessage snapshot;
+  final RoomSessionState? session;
   @override
   ConsumerState<RoomGameSettings> createState() => _RoomGameSettingsState();
 }
@@ -37,6 +39,10 @@ class _RoomGameSettingsState extends ConsumerState<RoomGameSettings> {
       _draft = widget.snapshot.public.config;
     }
     if (oldWidget.snapshot.revision != widget.snapshot.revision) {
+      _pending = false;
+    }
+    if (oldWidget.session != widget.session &&
+        widget.session?.errorCode != null) {
       _pending = false;
     }
   }
@@ -151,6 +157,7 @@ class _RoomGameSettingsState extends ConsumerState<RoomGameSettings> {
                     onPressed:
                         dirty && !_pending && !editor.dirty && !editor.saving
                         ? () {
+                            if (_pending) return;
                             final latest = controller.state.snapshot;
                             if (latest == null ||
                                 latest.public.phase != 'lobby') {
@@ -225,8 +232,14 @@ class RoomSettingsScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               children: [
                 if (state.errorCode != null)
-                  StatusNotice(context.tr(roomErrorKey(state.errorCode))),
-                RoomGameSettings(snapshot: state.snapshot!),
+                  StatusNotice(context.tr(roomErrorKey(state.errorCode)))
+                else
+                  const SizedBox.shrink(),
+                RoomGameSettings(
+                  key: const ValueKey('room-settings-editor'),
+                  snapshot: state.snapshot!,
+                  session: state,
+                ),
               ],
             ),
     );
@@ -234,8 +247,9 @@ class RoomSettingsScreen extends ConsumerWidget {
 }
 
 class RoomStartAction extends ConsumerStatefulWidget {
-  const RoomStartAction({required this.snapshot, super.key});
+  const RoomStartAction({required this.snapshot, this.session, super.key});
   final SnapshotMessage snapshot;
+  final RoomSessionState? session;
   @override
   ConsumerState<RoomStartAction> createState() => _RoomStartActionState();
 }
@@ -246,6 +260,10 @@ class _RoomStartActionState extends ConsumerState<RoomStartAction> {
   void didUpdateWidget(RoomStartAction oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.snapshot.revision != widget.snapshot.revision) {
+      _pending = false;
+    }
+    if (oldWidget.session != widget.session &&
+        widget.session?.errorCode != null) {
       _pending = false;
     }
   }
@@ -271,6 +289,7 @@ class _RoomStartActionState extends ConsumerState<RoomStartAction> {
                 !editor.dirty &&
                 !editor.saving
             ? () {
+                if (_pending) return;
                 final controller = ref.read(roomControllerProvider),
                     latest = ref.read(roomControllerProvider).state.snapshot;
                 if (latest == null ||

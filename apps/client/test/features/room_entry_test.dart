@@ -73,7 +73,10 @@ void main() {
       expect(find.byKey(const ValueKey('room-submit')), findsNothing);
       expect(transport.creates, 1);
       expect(transport.lastProfile!.name, 'Saved Alex');
-      expect(transport.lastProfile!.avatar.selections['hair'], 'long');
+      expect(
+        transport.lastProfile!.avatar.selections,
+        AvatarConfig.feminine().selections,
+      );
       expect(transport.connections, 0);
       backend.fail = false;
       await tester.tap(find.text('Speichern und fortsetzen'));

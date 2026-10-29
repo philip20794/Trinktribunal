@@ -19,14 +19,9 @@ void main() {
         'assets/ui/trinktribunal_spielregeln_assets/LIZENZ-HINWEIS.txt',
       ),
     );
-    yield LicenseEntryWithLineBreaks(
-      ['Adventurer – DiceBear Avatar'],
-      'Originalillustrationen: Lisa Wischofsky.\n'
-      'Quelle: https://www.figma.com/community/file/1184595184137881796\n'
-      'Lizenz: Creative Commons Attribution 4.0 International (CC BY 4.0).\n'
-      'https://creativecommons.org/licenses/by/4.0/\n'
-      'Anpassungen durch Trinktribunal: Oberkörper, Messwand, Schild und Hände.',
-    );
+    yield LicenseEntryWithLineBreaks([
+      'Adventurer – DiceBear Avatar',
+    ], await rootBundle.loadString('assets/avatars/NOTICE.md'));
   });
   runApp(const ProviderScope(child: TrinktribunalApp()));
 }

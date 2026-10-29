@@ -32,19 +32,34 @@ it('known v1 avatar migration preserves player and game identities while convert
   const before = await f.read();
   const legacy = JSON.parse(JSON.stringify(before));
   const old = {
-    face:'round',skin:'light',eyes:'open',brows:'calm',nose:'round',
-    mouth:'smile',hair:'short',hairColor:'brown',beard:'none',
-    top:'shirt',topColor:'blue',glasses:'none',hat:'none',extra:'none',
+    face: 'round',
+    skin: 'light',
+    eyes: 'open',
+    brows: 'calm',
+    nose: 'round',
+    mouth: 'smile',
+    hair: 'short',
+    hairColor: 'brown',
+    beard: 'none',
+    top: 'shirt',
+    topColor: 'blue',
+    glasses: 'none',
+    hat: 'none',
+    extra: 'none',
   };
   for (const member of legacy.members) {
-    member.profile.avatar = { version:1,selections:old };
+    member.profile.avatar = { version: 1, selections: old };
   }
   const migrated = migrateRoomState(JSON.stringify(legacy));
   expect(migrated.migrated).toBe(true);
-  expect(migrated.state.members.map(m => m.playerId)).toEqual(before.members.map(m => m.playerId));
-  expect(migrated.state.members.every(m =>
-    m.profile?.avatar.version === 3 &&
-    m.profile.avatar.seed.startsWith('migrated-'))).toBe(true);
+  expect(migrated.state.members.map((m) => m.playerId)).toEqual(
+    before.members.map((m) => m.playerId),
+  );
+  expect(
+    migrated.state.members.every(
+      (m) => m.profile?.avatar.version === 3 && m.profile.avatar.seed.startsWith('migrated-'),
+    ),
+  ).toBe(true);
   expect(migrated.state.game).toEqual(before.game);
   expect(migrateRoomState(JSON.stringify(migrated.state)).migrated).toBe(false);
   await runInDurableObject(f.room.stub, (_room, ctx) => {
@@ -55,30 +70,53 @@ it('known v1 avatar migration preserves player and game identities while convert
 });
 
 it('stored v2 avatars also migrate with deterministic stable seeds', async () => {
-  const f=await roomInPhase(false, 'numbers');
-  const previous=JSON.parse(JSON.stringify(await f.read()));
+  const f = await roomInPhase(false, 'numbers');
+  const previous = JSON.parse(JSON.stringify(await f.read()));
   const old = {
-    face:'square',skin:'olive',eyes:'wink',brows:'stern',nose:'button',
-    mouth:'smirk',hair:'ponytail',hairColor:'copper',beard:'moustache',
-    top:'waistcoat',topColor:'plum',glasses:'rectangular',hat:'tricorn',extra:'badge',
+    face: 'square',
+    skin: 'olive',
+    eyes: 'wink',
+    brows: 'stern',
+    nose: 'button',
+    mouth: 'smirk',
+    hair: 'ponytail',
+    hairColor: 'copper',
+    beard: 'moustache',
+    top: 'waistcoat',
+    topColor: 'plum',
+    glasses: 'rectangular',
+    hat: 'tricorn',
+    extra: 'badge',
   };
-  for(const member of previous.members) member.profile.avatar={version:2,selections:old};
-  const migrated=migrateRoomState(JSON.stringify(previous));
+  for (const member of previous.members) member.profile.avatar = { version: 2, selections: old };
+  const migrated = migrateRoomState(JSON.stringify(previous));
   expect(migrated.migrated).toBe(true);
   expect(migrated.state.members[0]!.profile?.avatar.seed).toMatch(/^migrated-/);
-  expect(migrateRoomState(JSON.stringify(previous)).state.members[0]!.profile?.avatar.seed)
-    .toBe(migrated.state.members[0]!.profile?.avatar.seed);
+  expect(migrateRoomState(JSON.stringify(previous)).state.members[0]!.profile?.avatar.seed).toBe(
+    migrated.state.members[0]!.profile?.avatar.seed,
+  );
 });
 
 it('a new option pretending to be a legacy avatar is not guessed or migrated', async () => {
   const f = await roomInPhase(false, 'numbers');
   const legacy = JSON.parse(JSON.stringify(await f.read()));
   legacy.members[0].profile.avatar = {
-    version:1,
-    selections:{
-      face:'round',skin:'light',eyes:'open',brows:'calm',nose:'round',
-      mouth:'smile',hair:'short',hairColor:'brown',beard:'none',
-      top:'shirt',topColor:'blue',glasses:'none',hat:'tricorn',extra:'none',
+    version: 1,
+    selections: {
+      face: 'round',
+      skin: 'light',
+      eyes: 'open',
+      brows: 'calm',
+      nose: 'round',
+      mouth: 'smile',
+      hair: 'short',
+      hairColor: 'brown',
+      beard: 'none',
+      top: 'shirt',
+      topColor: 'blue',
+      glasses: 'none',
+      hat: 'tricorn',
+      extra: 'none',
     },
   };
   expect(() => migrateRoomState(JSON.stringify(legacy))).toThrow('ROOM_UNAVAILABLE');

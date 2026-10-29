@@ -31,8 +31,8 @@ void main() {
                         children: [
                           AvatarView(
                             config: AvatarConfig().withOption(
-                              'hat',
-                              i.isEven ? 'tricorn' : 'none',
+                              'hair',
+                              i.isEven ? 'short01' : 'long01',
                             ),
                             size: 76,
                           ),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dicebear_core/dicebear_core.dart';
+import 'package:dicebear_core/dicebear_core.dart' show Avatar, Style;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,8 +18,9 @@ abstract final class TrinkAvatarRenderer {
   static final Future<Map<String, dynamic>> _definition = rootBundle
       .loadString('assets/avatars/dicebear/trinktribunal-adventurer-v1.json')
       .then((raw) => jsonDecode(raw) as Map<String, dynamic>);
-  static final Future<Style> _style =
-      _definition.then((definition) => Style.parse(jsonEncode(definition)));
+  static final Future<Style> _style = _definition.then(
+    (definition) => Style.parse(jsonEncode(definition)),
+  );
 
   static final Map<String, Future<String>> _portraitCache = {};
   static final Map<String, Future<String>> _headCache = {};
@@ -81,9 +82,12 @@ abstract final class TrinkAvatarRenderer {
     return cache[key] = render();
   }
 
-  static Future<String> svg(AvatarConfig config) =>
-      _remember(_portraitCache, _key(config), 48,
-          () async => Avatar(await _style, options(config)).svg);
+  static Future<String> svg(AvatarConfig config) => _remember(
+    _portraitCache,
+    _key(config),
+    48,
+    () async => Avatar(await _style, options(config)).svg,
+  );
 
   /// A real head-only DiceBear drawing: no body, backdrop, hands or board.
   /// Uses the same selected variants and colors as the full portrait.
@@ -99,34 +103,46 @@ abstract final class TrinkAvatarRenderer {
     final parts = (canvas['elements'] as List).where((item) {
       if (item is! Map) return false;
       return const {
-        'head', 'eyes', 'eyebrows', 'mouth',
-        'details', 'glasses', 'hair', 'earrings',
+        'head',
+        'eyes',
+        'eyebrows',
+        'mouth',
+        'details',
+        'glasses',
+        'hair',
+        'earrings',
       }.contains(item['name']);
     }).toList();
-    final revised = {...source, 'canvas': {
-      'width': 610, 'height': 610,
-      'elements': [
-        {
-          'type': 'element', 'name': 'g',
-          'attributes': {'transform': 'translate(-77 -43)'},
-          'children': parts,
-        },
-      ],
-    }};
+    final revised = {
+      ...source,
+      'canvas': {
+        'width': 610,
+        'height': 610,
+        'elements': [
+          {
+            'type': 'element',
+            'name': 'g',
+            'attributes': {'transform': 'translate(-77 -43)'},
+            'children': parts,
+          },
+        ],
+      },
+    };
     return Style.parse(jsonEncode(revised));
   }
 
   /// Render the actual option's SVG component rather than a generic icon.
   /// The cropped component is used ONLY in the dropdown menu, not persisted.
-  static Future<String> partSvg(
-      AvatarConfig config, String key, String value) {
+  static Future<String> partSvg(AvatarConfig config, String key, String value) {
     if (!_componentNames.containsKey(key) || value == 'none') {
       return Future.value('');
     }
     final selected = config.withOption(key, value);
     return _remember(_partCache, '${_key(selected)}:$key', 160, () async {
       final style = await _previewStyles.putIfAbsent(
-          key, () => _buildPartStyle(key));
+        key,
+        () => _buildPartStyle(key),
+      );
       return Avatar(style, options(selected)).svg;
     });
   }
@@ -141,17 +157,22 @@ abstract final class TrinkAvatarRenderer {
     final crop = key == 'outfit'
         ? (left: 100.0, top: 592.0, width: 560.0, height: 290.0)
         : key == 'board'
-            ? (left: 90.0, top: 776.0, width: 585.0, height: 238.0)
-            : (left: 0.0, top: 0.0, width: w, height: h);
+        ? (left: 90.0, top: 776.0, width: 585.0, height: 238.0)
+        : (left: 0.0, top: 0.0, width: w, height: h);
     final element = <String, Object?>{
-      'type': 'component', 'name': componentName,
+      'type': 'component',
+      'name': componentName,
       if (crop.left != 0 || crop.top != 0)
         'attributes': {'transform': 'translate(-${crop.left} -${crop.top})'},
     };
-    final revised = {...source, 'canvas': {
-      'width': crop.width, 'height': crop.height,
-      'elements': [element],
-    }};
+    final revised = {
+      ...source,
+      'canvas': {
+        'width': crop.width,
+        'height': crop.height,
+        'elements': [element],
+      },
+    };
     return Style.parse(jsonEncode(revised));
   }
 }
@@ -174,14 +195,20 @@ class AvatarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name = label == 'Menschliche Spielfigur'
-        ? context.tr('humanCharacter') : label;
-    final fullHeight = size * TrinkAvatarRenderer.canvasHeight /
+        ? context.tr('humanCharacter')
+        : label;
+    final fullHeight =
+        size *
+        TrinkAvatarRenderer.canvasHeight /
         TrinkAvatarRenderer.canvasWidth;
-    final croppedHeight = size * TrinkAvatarRenderer.visibleHeight /
+    final croppedHeight =
+        size *
+        TrinkAvatarRenderer.visibleHeight /
         TrinkAvatarRenderer.canvasWidth;
     return Semantics(
       label: config.isFallback
-          ? context.tr('avatarFallback', {'name': name}) : name,
+          ? context.tr('avatarFallback', {'name': name})
+          : name,
       image: true,
       child: SizedBox(
         width: size,
@@ -191,7 +218,10 @@ class AvatarView extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             children: [
               Positioned(
-                top: 0, left: 0, width: size, height: fullHeight,
+                top: 0,
+                left: 0,
+                width: size,
+                height: fullHeight,
                 child: FutureBuilder<String>(
                   future: TrinkAvatarRenderer.svg(config),
                   builder: (context, snapshot) {
@@ -199,7 +229,7 @@ class AvatarView extends StatelessWidget {
                       return const Icon(Icons.person_outline);
                     }
                     if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                      return const Center(child: Icon(Icons.person_outline));
                     }
                     return SvgPicture.string(
                       snapshot.requireData,

@@ -148,7 +148,8 @@
       "id": "profile",
       "files": [
         "apps/client/lib/features/profile/profile_screen.dart",
-        "apps/client/lib/features/profile/avatar_options.dart"
+        "apps/client/lib/features/profile/avatar_options.dart",
+        "apps/client/lib/features/profile/avatar_color_picker.dart"
       ],
       "modes": [
         "cards",
@@ -166,7 +167,8 @@
         "Name leer/24 Grapheme",
         "große Avatar-v2-Vorschau",
         "14 Kategorien/53 Optionen",
-        "Speichern/Fehler/Zurück"
+        "Speichern/Fehler/Zurück",
+        "DiceBear v3: Varianten, HEX/HSV-Farbe, Namensschild und Kopfporträt"
       ],
       "tests": [
         "apps/client/test/application/profile_controller_test.dart",
@@ -591,13 +593,18 @@
         "Hoststart/konfigurieren",
         "berechtigtes Resume/Pause",
         "aktive Regeln/Spielhilfe",
-        "Start/Neustart bestätigen"
+        "Start/Neustart bestätigen",
+        "Direkte Raumerstellung aus gespeicherter Vorlage oder Standardprofil",
+        "Spieleinstellungen auf separatem Screen",
+        "QR/Code/Link einklappbar mit schwebendem Pfeil",
+        "Kompakte Avatare mit schwebendem Drag-Griff und Links/Rechts-Aktionen"
       ],
       "tests": [
         "apps/client/test/features/lobby_test.dart",
         "apps/client/test/features/online_roster_test.dart",
         "apps/client/test/features/online_game_progress_test.dart",
-        "apps/client/test/features/online_court_actions_test.dart"
+        "apps/client/test/features/online_court_actions_test.dart",
+        "apps/client/test/features/online_lobby_layout_test.dart"
       ],
       "targetTask": "TT-077",
       "implementation": {

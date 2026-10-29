@@ -130,7 +130,10 @@ class _RoomPhaseFooter extends StatelessWidget {
       builder: (context, _) {
         if (tabs.index != 1) return const SizedBox.shrink();
         final Widget? action = switch (view.phase) {
-          'lobby' when host => RoomStartAction(snapshot: snapshot),
+          'lobby' when host => RoomStartAction(
+            snapshot: snapshot,
+            session: state,
+          ),
           'answers' when host || view.frozenRoster.contains(snapshot.you) =>
             ReadinessActions(snapshot: snapshot),
           'ordering'

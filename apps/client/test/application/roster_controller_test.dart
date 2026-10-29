@@ -45,7 +45,10 @@ void main() {
     final restored = RosterController(storage);
     await restored.load();
     expect(restored.members[2].player.name, 'Renamed');
-    expect(restored.members[2].avatar['hair'], 'long');
+    expect(
+      restored.members[2].avatar.selections,
+      AvatarConfig.feminine().selections,
+    );
     expect(await controller.remove(ids[1]), true);
     expect(controller.members.length, 3);
     expect(() => controller.members.clear(), throwsUnsupportedError);

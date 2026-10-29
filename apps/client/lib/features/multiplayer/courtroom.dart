@@ -33,7 +33,7 @@ class RoomCourtroom extends ConsumerStatefulWidget {
 
 class _RoomCourtroomState extends ConsumerState<RoomCourtroom> {
   bool _expanded = true;
-  final _scroll = ScrollController();
+  final _scroll = ScrollController(keepScrollOffset: false);
   final _toggleFocus = FocusNode();
   @override
   void dispose() {
@@ -77,17 +77,17 @@ class _RoomCourtroomState extends ConsumerState<RoomCourtroom> {
     return Stack(
       children: [
         ListView(
+          key: ValueKey('room-contents-$_expanded'),
           controller: _scroll,
           padding: const EdgeInsets.all(16),
           children: [
+            if (snapshot.public.phase == 'lobby' && _expanded) _tools(context),
             if (snapshot.public.hostRevision > 0 ||
                 players.any(
                   (p) => p.playerId == snapshot.public.hostId && !p.connected,
                 ))
               OnlineHostStatus(snapshot: snapshot),
-            if (snapshot.public.phase == 'lobby')
-              if (_expanded) _tools(context) else const SizedBox.shrink()
-            else
+            if (snapshot.public.phase != 'lobby')
               RoomGameScreen(snapshot: snapshot, fixedActions: fixedActions),
             if (snapshot.public.phase != 'lobby')
               OnlineGameProgress(

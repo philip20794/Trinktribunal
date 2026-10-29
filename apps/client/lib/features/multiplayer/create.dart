@@ -16,8 +16,26 @@ import 'invitation.dart';
 import 'join.dart';
 import 'saved_rooms.dart';
 
-class MultiplayerEntryScreen extends StatelessWidget {
+class MultiplayerEntryScreen extends StatefulWidget {
   const MultiplayerEntryScreen({super.key});
+  @override
+  State<MultiplayerEntryScreen> createState() => _MultiplayerEntryScreenState();
+}
+
+class _MultiplayerEntryScreenState extends State<MultiplayerEntryScreen> {
+  bool _creating = false;
+  Future<void> _create() async {
+    if (_creating) return;
+    setState(() => _creating = true);
+    try {
+      await Navigator.of(
+        context,
+      ).push<void>(MaterialPageRoute(builder: (_) => const CreateRoomScreen()));
+    } finally {
+      if (mounted) setState(() => _creating = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) => CourtScaffold(
     title: const TText('modeMulti'),
@@ -32,11 +50,7 @@ class MultiplayerEntryScreen extends StatelessWidget {
             FilledButton.icon(
               icon: const Icon(Icons.add),
               label: const TText('roomCreate'),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const CreateRoomScreen(),
-                ),
-              ),
+              onPressed: _creating ? null : _create,
             ),
             const SizedBox(height: 12),
             OutlinedButton.icon(

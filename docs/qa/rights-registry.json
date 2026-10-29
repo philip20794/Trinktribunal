@@ -116,19 +116,27 @@
       ]
     },
     {
-      "id": "avatar-v2",
+      "id": "avatar-v3-runtime",
       "distribution": "runtime",
-      "status": "original",
-      "provenance": "Project-created vector geometry and option manifest; no imported character images.",
-      "evidence": "docs/qa/TT-060.md",
+      "status": "unresolved",
+      "provenance": "User-supplied DiceBear Adventurer derivative, replacing original v2 runtime. Supplied attribution names Lisa Wischofsky / CC BY 4.0 and project modifications; source and distribution evidence still require review.",
+      "evidence": "docs/qa/online-lobby-avatar-merge.md",
       "files": [
         {
           "path": "apps/client/assets/avatars/manifest.json",
-          "sha256": "0d1081fc8d17092064ff8097e7c33e9ce8f76f8a06a05805f7e5ac2109949fda"
+          "sha256": "25cc8bc5bc199505fb1cd441f8b551a076274fe97d17b84a5116359f3fb61a4a"
         },
         {
           "path": "apps/client/lib/design/avatar_view.dart",
-          "sha256": "6c02f6716dffaba5c199fced38a883ab5e92929b33e281f999e0105a13cad84a"
+          "sha256": "43094c630507521b1c711e668ec650e0c78fa11c6b289b7e8beb537821b7fcee"
+        },
+        {
+          "path": "apps/client/assets/avatars/dicebear/trinktribunal-adventurer-v1.json",
+          "sha256": "c1ba04080298557939cfa8a6b13037efa8782d6fcd1a45e4c9fc986f9864ad08"
+        },
+        {
+          "path": "apps/client/assets/avatars/NOTICE.md",
+          "sha256": "fbc0d059354ce6de06fbb559f72d36198101fe506dcaca1f735832b68bdeaa56"
         }
       ]
     },

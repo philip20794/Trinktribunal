@@ -92,7 +92,7 @@ void main() {
   for (final language in ['de', 'en']) {
     for (final size in [const Size(320, 640), const Size(1440, 900)]) {
       testWidgets(
-        'QR dialog opens, copies and closes repeatedly: $language, $size, 200 percent',
+        'inline QR opens, copies and closes repeatedly: $language, $size, 200 percent',
         (tester) async {
           await tester.binding.setSurfaceSize(size);
           addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -126,13 +126,6 @@ void main() {
           );
           await mouse.addPointer(location: const Offset(5, 5));
           for (var attempt = 0; attempt < 2; attempt++) {
-            await mouse.moveTo(
-              tester.getCenter(find.byTooltip(strings.get('roomInviteTitle'))),
-            );
-            await tester.tap(find.byTooltip(strings.get('roomInviteTitle')));
-            await tester.pumpAndSettle();
-            expect(tester.takeException(), isNull);
-            expect(find.byType(AlertDialog), findsOneWidget);
             expect(find.byType(QrImageView), findsOneWidget);
             final link =
                 'http://127.0.0.1:7357/join?room=${fixture.room.roomCode}';
@@ -147,15 +140,16 @@ void main() {
             await tester.tap(copy);
             await tester.pumpAndSettle();
             expect(copied, link);
-            await tester.tap(
-              find.descendant(
-                of: find.byType(AlertDialog),
-                matching: find.text(strings.get('back')),
-              ),
-            );
+            final close = find.byKey(const ValueKey('room-tools-close'));
+            await tester.ensureVisible(close);
             await tester.pumpAndSettle();
-            await mouse.moveTo(const Offset(5, 5));
-            expect(find.byType(AlertDialog), findsNothing);
+            await tester.tap(close);
+            await tester.pumpAndSettle();
+            expect(find.byType(QrImageView), findsNothing);
+            final toggle = find.byKey(const ValueKey('room-tools-toggle'));
+            await mouse.moveTo(tester.getCenter(toggle));
+            await tester.tap(toggle);
+            await tester.pumpAndSettle();
             expect(find.byType(RoomCourtroom), findsOneWidget);
             expect(tester.takeException(), isNull);
           }
@@ -170,23 +164,12 @@ void main() {
     tester,
   ) async {
     await pumpLobby(tester);
-    await tester.tap(find.byTooltip('Einladung'));
-    await tester.pumpAndSettle();
-    expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.byType(QrImageView), findsNothing);
     expect(
       find.text(const AppStrings('de').get('roomInviteUnavailable')),
       findsOneWidget,
     );
     expect(tester.takeException(), isNull);
-    await tester.tap(
-      find.descendant(
-        of: find.byType(AlertDialog),
-        matching: find.text(const AppStrings('de').get('back')),
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(find.byType(AlertDialog), findsNothing);
     await tester.pumpWidget(const SizedBox());
     await tester.pump();
   });

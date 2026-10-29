@@ -26,7 +26,7 @@ void main() {
       expect(
         await controller.save(
           name: '  Alex  ',
-          avatar: AvatarConfig(seed:'old',selections:{'hair':'long01'}),
+          avatar: AvatarConfig(seed: 'old', selections: {'hair': 'long01'}),
         ),
         true,
       );

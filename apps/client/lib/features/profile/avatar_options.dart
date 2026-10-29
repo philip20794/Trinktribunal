@@ -109,15 +109,21 @@ class _AvatarOptionsState extends State<AvatarOptions> {
         onTap: () => _chooseColor(key, english),
         child: InputDecorator(
           decoration: _decoration(label).copyWith(
-            suffixIcon: const Icon(Icons.color_lens_outlined,
-                size: 19, color: _gold),
+            suffixIcon: const Icon(
+              Icons.color_lens_outlined,
+              size: 19,
+              color: _gold,
+            ),
             suffixIconConstraints: const BoxConstraints(
-                minWidth: 29, minHeight: 38),
+              minWidth: 29,
+              minHeight: 38,
+            ),
           ),
           child: Row(
             children: [
               Container(
-                width: 23, height: 23,
+                width: 23,
+                height: 23,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: color,
@@ -183,7 +189,9 @@ class _AvatarOptionsState extends State<AvatarOptions> {
             ),
         ],
         onChanged: (value) {
-          if (value != null) widget.onChanged(widget.config.withOption(key, value));
+          if (value != null) {
+            widget.onChanged(widget.config.withOption(key, value));
+          }
         },
       ),
     );
@@ -221,7 +229,10 @@ class _AvatarOptionsState extends State<AvatarOptions> {
           child: LayoutBuilder(
             builder: (context, bounds) {
               final columns = bounds.maxWidth >= 680 && scale < 25
-                  ? 3 : bounds.maxWidth >= 290 && scale < 26 ? 2 : 1;
+                  ? 3
+                  : bounds.maxWidth >= 290 && scale < 26
+                  ? 2
+                  : 1;
               final keys = _tabs[_tab];
               return GridView.builder(
                 key: ValueKey('avatar-option-list-$_tab'),

@@ -41,9 +41,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     setState(() => _saving = false);
     if (saved) {
       ref.invalidate(profileProvider);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.tr('profileSaved'))),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(context.tr('profileSaved'))));
     } else {
       setState(() {});
     }
@@ -51,7 +50,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state=ref.watch(profileProvider);
+    final state = ref.watch(profileProvider);
     return CourtScaffold(
       title: const TText('profileTitle'),
       footer: CourtActionBar(
@@ -66,7 +65,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             CourtPrimaryButton(
               onPressed: _saving || state.asData == null
-                  ? null : () => _save(state.requireValue),
+                  ? null
+                  : () => _save(state.requireValue),
               child: TText(_saving ? 'profileSaving' : 'profileSave'),
             ),
           ],
@@ -88,12 +88,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           }
           return LayoutBuilder(
             builder: (context, constraints) {
-              final scale=MediaQuery.textScalerOf(context).scale(16) / 16;
-              final available=constraints.maxHeight;
+              final scale = MediaQuery.textScalerOf(context).scale(16) / 16;
+              final available = constraints.maxHeight;
               // Keep the portrait visible without consuming the whole phone.
-              final portraitHeight=math.min(270.0,math.max(130.0,
-                  available * (scale > 1.5 ? .29 : .41)));
-              final portraitWidth=portraitHeight*TrinkAvatarRenderer.canvasWidth/TrinkAvatarRenderer.visibleHeight;
+              final portraitHeight = math.min(
+                270.0,
+                math.max(130.0, available * (scale > 1.5 ? .29 : .41)),
+              );
+              final portraitWidth =
+                  portraitHeight *
+                  TrinkAvatarRenderer.canvasWidth /
+                  TrinkAvatarRenderer.visibleHeight;
               return Column(
                 children: [
                   Padding(
@@ -121,7 +126,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               tooltip: context.tr('profileRandom'),
                               icon: const Icon(Icons.shuffle_rounded),
                               onPressed: () => setState(() {
-                                _avatar = AvatarConfig.random(SecureRandomSource());
+                                _avatar = AvatarConfig.random(
+                                  SecureRandomSource(),
+                                );
                               }),
                             ),
                           ),
@@ -145,7 +152,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         counterText: '',
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 12),
+                          horizontal: 12,
+                          vertical: 12,
+                        ),
                       ),
                     ),
                   ),

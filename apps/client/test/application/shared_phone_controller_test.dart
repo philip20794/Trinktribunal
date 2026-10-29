@@ -164,7 +164,10 @@ void main() {
         );
         session.applyRoster(changed);
         expect(session.view!.roster.length, 4);
-        expect(session.view!.profiles[players[1]]!.avatar['hair'], 'long');
+        expect(
+          session.view!.profiles[players[1]]!.avatar.selections,
+          AvatarConfig.feminine().selections,
+        );
       }
       session.confirmOrder(round, confirmed: true);
       final count = session.view!.order.length;

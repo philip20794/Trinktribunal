@@ -69,3 +69,7 @@ artwork/avatars/v3/prototypes/male_09_color_masks/verify_master_source.py text e
 artwork/avatars/v3/prototypes/male_09_color_masks/test_verify_master_source.py text eol=lf
 
 apps/client/assets/ui/trinktribunal_spielregeln_assets/** text eol=lf
+
+apps/client/assets/avatars/dicebear/** text eol=lf
+
+apps/client/assets/avatars/NOTICE.md text eol=lf

@@ -6,10 +6,9 @@ import 'selection/random_source.dart';
 abstract final class AvatarCatalog {
   static const version = 3;
   static const colorKeys = {'skinColor', 'hairColor', 'outfitColor'};
-  static bool accepts(String key, String value) =>
-      colorKeys.contains(key)
-          ? RegExp(r'^#[0-9a-fA-F]{6}$').hasMatch(value)
-          : (options[key]?.contains(value) ?? false);
+  static bool accepts(String key, String value) => colorKeys.contains(key)
+      ? RegExp(r'^#[0-9a-fA-F]{6}$').hasMatch(value)
+      : (options[key]?.contains(value) ?? false);
   static const style = 'tt-adventurer-1';
   static const options = <String, List<String>>{
     'hair': [
@@ -57,7 +56,7 @@ abstract final class AvatarCatalog {
       'short16',
       'short17',
       'short18',
-      'short19'
+      'short19',
     ],
     'eyes': [
       'variant01',
@@ -85,7 +84,7 @@ abstract final class AvatarCatalog {
       'variant23',
       'variant24',
       'variant25',
-      'variant26'
+      'variant26',
     ],
     'eyebrows': [
       'variant01',
@@ -102,7 +101,7 @@ abstract final class AvatarCatalog {
       'variant12',
       'variant13',
       'variant14',
-      'variant15'
+      'variant15',
     ],
     'mouth': [
       'variant01',
@@ -134,7 +133,7 @@ abstract final class AvatarCatalog {
       'variant27',
       'variant28',
       'variant29',
-      'variant30'
+      'variant30',
     ],
     'glasses': [
       'none',
@@ -142,7 +141,7 @@ abstract final class AvatarCatalog {
       'variant02',
       'variant03',
       'variant04',
-      'variant05'
+      'variant05',
     ],
     'earrings': [
       'none',
@@ -151,32 +150,12 @@ abstract final class AvatarCatalog {
       'variant03',
       'variant04',
       'variant05',
-      'variant06'
+      'variant06',
     ],
-    'details': [
-      'none',
-      'birthmark',
-      'blush',
-      'freckles',
-      'mustache'
-    ],
-    'outfit': [
-      'tee',
-      'hoodie',
-      'suit',
-      'vest',
-      'sport'
-    ],
-    'board': [
-      'classic',
-      'gilded'
-    ],
-    'skinColor': [
-      '#763900',
-      '#9e5622',
-      '#ecad80',
-      '#f2d3b1'
-    ],
+    'details': ['none', 'birthmark', 'blush', 'freckles', 'mustache'],
+    'outfit': ['tee', 'hoodie', 'suit', 'vest', 'sport'],
+    'board': ['classic', 'gilded'],
+    'skinColor': ['#763900', '#9e5622', '#ecad80', '#f2d3b1'],
     'hairColor': [
       '#0e0e0e',
       '#3eac2c',
@@ -191,7 +170,7 @@ abstract final class AvatarCatalog {
       '#b9a05f',
       '#cb6820',
       '#dba3be',
-      '#e5d7a3'
+      '#e5d7a3',
     ],
     'outfitColor': [
       '#87384f',
@@ -199,7 +178,7 @@ abstract final class AvatarCatalog {
       '#405849',
       '#a36a43',
       '#6a537c',
-      '#363b43'
+      '#363b43',
     ],
   };
   static const defaults = <String, String>{
@@ -220,27 +199,35 @@ abstract final class AvatarCatalog {
   // The original v2 IDs are retained only for reading existing local profiles.
   static const oldV2Options = <String, List<String>>{
     'face': ['round', 'square', 'long', 'heart'],
-    'skin': ['light','medium','brown','dark','olive'],
-    'eyes': ['open','sleepy','wink'],
-    'brows': ['calm','raised','stern'],
-    'nose': ['round','long','button'],
-    'mouth': ['smile','neutral','surprised','smirk'],
-    'hair': ['short','curly','long','bald','ponytail'],
-    'hairColor': ['brown','black','gold','gray','copper'],
-    'beard': ['none','stubble','full','moustache'],
-    'top': ['shirt','jacket','waistcoat'],
-    'topColor': ['blue','red','green','brown','plum'],
-    'glasses': ['none','round','rectangular'],
-    'hat': ['none','cap','tricorn'],
-    'extra': ['none','bowtie','badge']
+    'skin': ['light', 'medium', 'brown', 'dark', 'olive'],
+    'eyes': ['open', 'sleepy', 'wink'],
+    'brows': ['calm', 'raised', 'stern'],
+    'nose': ['round', 'long', 'button'],
+    'mouth': ['smile', 'neutral', 'surprised', 'smirk'],
+    'hair': ['short', 'curly', 'long', 'bald', 'ponytail'],
+    'hairColor': ['brown', 'black', 'gold', 'gray', 'copper'],
+    'beard': ['none', 'stubble', 'full', 'moustache'],
+    'top': ['shirt', 'jacket', 'waistcoat'],
+    'topColor': ['blue', 'red', 'green', 'brown', 'plum'],
+    'glasses': ['none', 'round', 'rectangular'],
+    'hat': ['none', 'cap', 'tricorn'],
+    'extra': ['none', 'bowtie', 'badge'],
   };
   static const legacyOptionsV1 = <String, List<String>>{
-    'face': ['round','square','long'], 'skin': ['light','medium','brown','dark'],
-    'eyes': ['open','sleepy'], 'brows': ['calm','raised'], 'nose': ['round','long'],
-    'mouth': ['smile','neutral','surprised'], 'hair': ['short','curly','long','bald'],
-    'hairColor': ['brown','black','gold','gray'], 'beard': ['none','stubble','full'],
-    'top': ['shirt','jacket'], 'topColor': ['blue','red','green','brown'],
-    'glasses': ['none','round'], 'hat': ['none','cap'], 'extra': ['none','bowtie']
+    'face': ['round', 'square', 'long'],
+    'skin': ['light', 'medium', 'brown', 'dark'],
+    'eyes': ['open', 'sleepy'],
+    'brows': ['calm', 'raised'],
+    'nose': ['round', 'long'],
+    'mouth': ['smile', 'neutral', 'surprised'],
+    'hair': ['short', 'curly', 'long', 'bald'],
+    'hairColor': ['brown', 'black', 'gold', 'gray'],
+    'beard': ['none', 'stubble', 'full'],
+    'top': ['shirt', 'jacket'],
+    'topColor': ['blue', 'red', 'green', 'brown'],
+    'glasses': ['none', 'round'],
+    'hat': ['none', 'cap'],
+    'extra': ['none', 'bowtie'],
   };
 }
 
@@ -251,78 +238,95 @@ final class AvatarConfig {
     String seed = 'trinktribunal',
     Map<String, String> selections = const {},
   }) {
-    if (!_validSeed(seed) || selections.entries.any(
-      (e) => !AvatarCatalog.accepts(e.key, e.value),
-    )) {
+    if (!_validSeed(seed) ||
+        selections.entries.any((e) => !AvatarCatalog.accepts(e.key, e.value))) {
       throw const DomainException(
-        DomainErrorCode.invalidConfig, 'Ungültige Avatar-Auswahl.',
+        DomainErrorCode.invalidConfig,
+        'Ungültige Avatar-Auswahl.',
       );
     }
     return AvatarConfig._(
-      seed, Map.unmodifiable({...AvatarCatalog.defaults, ...selections}), false,
+      seed,
+      Map.unmodifiable({...AvatarCatalog.defaults, ...selections}),
+      false,
     );
   }
   const AvatarConfig._(this.seed, this.selections, this.isFallback);
   final String seed;
-  final Map<String,String> selections;
+  final Map<String, String> selections;
   final bool isFallback;
   static bool _validSeed(String value) =>
-      value.isNotEmpty && value.length <= 64 &&
+      value.isNotEmpty &&
+      value.length <= 64 &&
       RegExp(r'^[A-Za-z0-9_-]+$').hasMatch(value);
 
   String operator [](String key) => selections[key]!;
   AvatarConfig withOption(String key, String value) =>
-      AvatarConfig(seed:seed, selections:{...selections,key:value});
+      AvatarConfig(seed: seed, selections: {...selections, key: value});
   AvatarConfig withSeed(String value) =>
-      AvatarConfig(seed:value, selections:selections);
-  Map<String,Object> toJson() => {
-    'version':AvatarCatalog.version, 'seed':seed,
-    'selections': Map<String,String>.of(selections),
+      AvatarConfig(seed: value, selections: selections);
+  Map<String, Object> toJson() => {
+    'version': AvatarCatalog.version,
+    'seed': seed,
+    'selections': Map<String, String>.of(selections),
   };
 
   factory AvatarConfig.fromJson(Object? raw) {
-    if (raw is! Map || raw['selections'] is! Map) return AvatarConfig.fallback();
-    final version=raw['version'];
-    final options=version == 1 ? AvatarCatalog.legacyOptionsV1 :
-        version == 2 ? AvatarCatalog.oldV2Options : AvatarCatalog.options;
+    if (raw is! Map || raw['selections'] is! Map) {
+      return AvatarConfig.fallback();
+    }
+    final version = raw['version'];
+    final options = version == 1
+        ? AvatarCatalog.legacyOptionsV1
+        : version == 2
+        ? AvatarCatalog.oldV2Options
+        : AvatarCatalog.options;
     if (version != 1 && version != 2 && version != 3) {
       return AvatarConfig.fallback();
     }
-    final values=raw['selections'] as Map;
+    final values = raw['selections'] as Map;
     if (values.length != options.length ||
-        values.entries.any((e) =>
-            e.key is! String || e.value is! String ||
-            !(version == 3
-                ? AvatarCatalog.accepts(e.key as String, e.value as String)
-                : (options[e.key]?.contains(e.value) ?? false)))) {
+        values.entries.any(
+          (e) =>
+              e.key is! String ||
+              e.value is! String ||
+              !(version == 3
+                  ? AvatarCatalog.accepts(e.key as String, e.value as String)
+                  : (options[e.key]?.contains(e.value) ?? false)),
+        )) {
       return AvatarConfig.fallback();
     }
     if (version == 3) {
-      final seed=raw['seed'];
+      final seed = raw['seed'];
       if (seed is! String || !_validSeed(seed)) return AvatarConfig.fallback();
-      return AvatarConfig(seed:seed,
-        selections:values.cast<String,String>());
+      return AvatarConfig(
+        seed: seed,
+        selections: values.cast<String, String>(),
+      );
     }
     // Old saved portraits cannot be reconstructed in the new illustration
     // system. Derive a stable replacement seed without discarding the profile.
-    final serialized=options.keys.map((k) => values[k]).join('-');
-    var hash=2166136261;
+    final serialized = options.keys.map((k) => values[k]).join('-');
+    var hash = 2166136261;
     for (final unit in serialized.codeUnits) {
-      hash=((hash ^ unit)*16777619)&0xffffffff;
+      hash = ((hash ^ unit) * 16777619) & 0xffffffff;
     }
-    return AvatarConfig(seed:'migrated-${hash.toRadixString(16)}');
+    return AvatarConfig(seed: 'migrated-${hash.toRadixString(16)}');
   }
 
   factory AvatarConfig.fallback() => AvatarConfig._(
-    'fallback', Map.unmodifiable(AvatarCatalog.defaults), true);
+    'fallback',
+    Map.unmodifiable(AvatarCatalog.defaults),
+    true,
+  );
   factory AvatarConfig.random(RandomSource random) => AvatarConfig(
-    seed:'tt-${random.nextInt(0x7fffffff).toRadixString(16)}',
+    seed: 'tt-${random.nextInt(0x7fffffff).toRadixString(16)}',
     selections: {
       for (final e in AvatarCatalog.options.entries)
-        e.key: choose(e.value,random),
+        e.key: choose(e.value, random),
     },
   );
   // Legacy helpers kept for existing call sites but no gender restrictions.
-  factory AvatarConfig.masculine() => AvatarConfig(seed:'starter-1');
-  factory AvatarConfig.feminine() => AvatarConfig(seed:'starter-2');
+  factory AvatarConfig.masculine() => AvatarConfig(seed: 'starter-1');
+  factory AvatarConfig.feminine() => AvatarConfig(seed: 'starter-2');
 }

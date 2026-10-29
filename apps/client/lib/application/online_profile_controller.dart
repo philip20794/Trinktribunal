@@ -112,7 +112,8 @@ final class OnlineProfileController extends ChangeNotifier {
           mapEquals(
             _inFlight!.profile.avatar.selections,
             profile.avatar.selections,
-          ) && _inFlight!.profile.avatar.seed == profile.avatar.seed) {
+          ) &&
+          _inFlight!.profile.avatar.seed == profile.avatar.seed) {
         _inFlight = null;
       }
       if (!wasDirty && _inFlight == null) {

@@ -11,6 +11,7 @@ import 'package:trinktribunal/data/room_credential_store.dart';
 import 'package:trinktribunal/design/private_number.dart';
 import 'package:trinktribunal/design/court_theme.dart';
 import 'package:trinktribunal/features/multiplayer/connection.dart';
+import 'package:trinktribunal/features/multiplayer/invite.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 import 'package:trinktribunal/domain/models/ids.dart';
 
@@ -55,6 +56,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
   bool own = true,
   double textScale = 1,
   ThemeData? theme,
+  Uri? publicClientBase,
 }) async {
   final transport = FakeRoomTransport(),
       store = RoomCredentialStore(MemoryCredentialBackend()),
@@ -71,19 +73,24 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        if (publicClientBase != null)
+          publicClientBaseProvider.overrideWithValue(publicClientBase),
         roomControllerProvider.overrideWithValue(room),
         roomCredentialStoreProvider.overrideWithValue(store),
         catalogsProvider.overrideWith((_) async => catalogs),
       ],
-      child: AppLanguageScope(
-        language: uiLanguage,
-        child: MaterialApp(
-          theme: theme,
-          home: const RoomConnectionScreen(),
-          builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: TextScaler.linear(textScale)),
-            child: child!,
+      child: RepaintBoundary(
+        key: const ValueKey('scene-review'),
+        child: AppLanguageScope(
+          language: uiLanguage,
+          child: MaterialApp(
+            theme: theme,
+            home: const RoomConnectionScreen(),
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: TextScaler.linear(textScale)),
+              child: child!,
+            ),
           ),
         ),
       ),
@@ -200,6 +207,7 @@ void main() {
     (tester) async {
       final fixture = await pump(tester, lobby: true, host: true),
           socket = fixture.transport.sockets.last;
+      await tapText(tester, AppStrings('de').get('localGameOptions'));
       tester.widgetList<Slider>(find.byType(Slider)).first.onChanged!(7);
       await tester.pump();
       await tapText(tester, 'Einstellungen übernehmen');
@@ -210,6 +218,14 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
+      expect(
+        tester
+            .widget<OutlinedButton>(
+              find.widgetWithText(OutlinedButton, 'Einstellungen übernehmen'),
+            )
+            .onPressed,
+        isNotNull,
+      );
       await tapText(tester, 'Einstellungen übernehmen');
       expect(socket.sent.whereType<SetConfigMessage>(), hasLength(2));
     },
@@ -319,6 +335,7 @@ void main() {
     (tester) async {
       final fixture = await pump(tester, lobby: true, host: true),
           socket = fixture.transport.sockets.last;
+      await tapText(tester, AppStrings('de').get('localGameOptions'));
       final sliders = tester.widgetList<Slider>(find.byType(Slider)).toList();
       sliders.first.onChanged!(7);
       await tester.pump();
@@ -340,6 +357,8 @@ void main() {
         }),
       );
       await tester.pumpAndSettle();
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
       await tapText(tester, 'Verhandlung starten');
       expect(
         socket.sent.whereType<StartGameMessage>().single.expectedRevision,
@@ -353,6 +372,7 @@ void main() {
     'non-host sees frozen settings summary without editable options or start',
     (tester) async {
       await pump(tester, lobby: true);
+      await tapText(tester, AppStrings('de').get('localGameOptions'));
       expect(find.byType(Slider), findsNothing);
       expect(find.text('Verhandlung starten'), findsNothing);
       expect(

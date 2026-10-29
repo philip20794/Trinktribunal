@@ -58,6 +58,7 @@ flutter:
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/check.svg
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/x.svg
     - assets/ui/trinktribunal_spielregeln_assets/LIZENZ-HINWEIS.txt
+    - assets/avatars/NOTICE.md
     - assets/avatars/manifest.json
     - assets/avatars/dicebear/trinktribunal-adventurer-v1.json
     - assets/fonts/roboto_license.txt

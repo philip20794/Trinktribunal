@@ -164,7 +164,7 @@ describe('confirmed live profiles', () => {
       before = await revision(room.stub);
     const message = edit(before, 'Neue Person', {
       ...profile.avatar,
-      selections: { ...profile.avatar.selections, hair: 'long' },
+      selections: { ...profile.avatar.selections, hair: 'long01' },
     });
     author.peer.send(message);
     expect(await nextType(author.peer, 'ack')).toMatchObject({
@@ -179,7 +179,7 @@ describe('confirmed live profiles', () => {
       expect(
         delta.publicChanges.players?.find((p) => p.playerId === author.credential.playerId)
           ?.profile,
-      ).toMatchObject({ name: 'Neue Person', avatar: { selections: { hair: 'long' } } });
+      ).toMatchObject({ name: 'Neue Person', avatar: { selections: { hair: 'long01' } } });
       expect(
         delta.publicChanges.players?.find((p) => p.playerId === room.credential.playerId)?.profile
           .name,

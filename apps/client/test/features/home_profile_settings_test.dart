@@ -108,7 +108,11 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         expect(
-          tester.widget<AvatarView>(find.byKey(const ValueKey('profile-avatar-preview'))).playerName,
+          tester
+              .widget<AvatarView>(
+                find.byKey(const ValueKey('profile-avatar-preview')),
+              )
+              .playerName,
           name,
         );
         await tester.tap(save);

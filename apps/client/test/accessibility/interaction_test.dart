@@ -175,10 +175,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      final target = find.ancestor(
-        of: find.textContaining('Alex'),
-        matching: find.byType(DragTarget<PlayerId>),
-      );
+      final target = find.byKey(ValueKey(PlayerId('a')));
       final focus = find
           .descendant(
             of: target,
