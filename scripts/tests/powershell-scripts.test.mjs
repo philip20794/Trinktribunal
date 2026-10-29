@@ -121,3 +121,65 @@ test('Multiplayer alternate supported origin keeps stable profile locations and 
   assert.equal(plan.browser,'edge');assert.equal(plan.persistentProfiles,true);
   assert.doesNotMatch(result.stdout,/resumeToken|requestId|roomId|playerId/);
 });
+
+for (const shutdown of ['dispose', 'owner-exit']) {
+  test(`Service job releases a listening grandchild after its wrapper exits: ${shutdown}`, { skip: !windows }, async context => {
+    const setup = fixture(context);
+    const leaf = join(setup.root, 'leaf.ps1');
+    const wrapper = join(setup.root, 'wrapper.ps1');
+    const owner = join(setup.root, 'owner.ps1');
+    const ready = join(setup.root, 'ready.txt');
+    writeFileSync(leaf, `
+$listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback,0)
+$listener.Start()
+[IO.File]::WriteAllText($env:JOB_READY,[string]$listener.LocalEndpoint.Port)
+while ($true) { Start-Sleep -Milliseconds 100 }
+`);
+    writeFileSync(wrapper, `
+$ErrorActionPreference = 'Stop'
+Add-Type -Path $env:JOB_SOURCE
+[OwnedServiceJob]::Join($env:JOB_NAME)
+Start-Process -FilePath $env:JOB_POWERSHELL -ArgumentList ('-NoProfile -File "' + $env:JOB_LEAF + '"') -WindowStyle Hidden -RedirectStandardOutput ($env:JOB_READY + '.leaf.out') -RedirectStandardError ($env:JOB_READY + '.leaf.err')
+exit 0
+`);
+    writeFileSync(owner, `
+$ErrorActionPreference = 'Stop'
+Add-Type -Path $env:JOB_SOURCE
+$job = [OwnedServiceJob]::new($env:JOB_NAME)
+$wrapper = Start-Process -FilePath $env:JOB_POWERSHELL -ArgumentList ('-NoProfile -File "' + $env:JOB_WRAPPER + '"') -WindowStyle Hidden -RedirectStandardOutput ($env:JOB_READY + '.wrapper.out') -RedirectStandardError ($env:JOB_READY + '.wrapper.err') -PassThru
+$null = $wrapper.Handle
+if (-not $wrapper.WaitForExit(10000) -or $wrapper.ExitCode -ne 0) { throw ('Wrapper failed: ' + (Get-Content ($env:JOB_READY + '.wrapper.err') -Raw)) }
+$watch = [Diagnostics.Stopwatch]::StartNew()
+while (-not (Test-Path -LiteralPath $env:JOB_READY)) {
+    if ($watch.Elapsed.TotalSeconds -gt 10) { throw 'Grandchild not listening' }
+    Start-Sleep -Milliseconds 50
+}
+if ($env:JOB_SHUTDOWN -eq 'dispose') { $job.Dispose() }
+`);
+    const unrelated = createServer();
+    await new Promise(done => unrelated.listen(0, '127.0.0.1', done));
+    context.after(() => new Promise(done => unrelated.close(done)));
+    const result = spawnSync(powershell, ['-NoProfile', '-File', owner], {
+      env: { ...setup.env, JOB_SOURCE: join(scripts, 'OwnedServiceJob.cs'),
+        JOB_NAME: `Trinktribunal-test-${basename(setup.root)}`, JOB_POWERSHELL: powershell,
+        JOB_LEAF: leaf, JOB_WRAPPER: wrapper, JOB_READY: ready, JOB_SHUTDOWN: shutdown },
+      encoding: 'utf8', timeout: 25000,
+    });
+    assert.equal(result.status, 0, result.stderr || result.stdout);
+    const port = Number(readFileSync(ready, 'utf8'));
+    assert.ok(port > 0);
+    // Kernel teardown may finish just after the owner exits. Verify socket
+    // reuse rather than trusting process-parent IDs or a cleanup message.
+    let released = false;
+    for (let attempt = 0; attempt < 50 && !released; attempt++) {
+      const probe = createServer();
+      released = await new Promise(done => {
+        probe.once('error', () => done(false));
+        probe.listen(port, '127.0.0.1', () => probe.close(() => done(true)));
+      });
+      if (!released) await new Promise(done => setTimeout(done, 100));
+    }
+    assert.ok(released, `Orphaned service still occupies port ${port}`);
+    assert.ok(unrelated.listening, 'Unrelated listener must remain untouched');
+  });
+}

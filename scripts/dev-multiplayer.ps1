@@ -66,6 +66,7 @@ if ($OpenBrowsers) {
     if (-not $BrowserPath -or -not (Test-Path -LiteralPath $BrowserPath -PathType Leaf)) { throw 'Browser nicht gefunden. -BrowserPath auf die installierte EXE setzen.' }
 }
 $lock = $null
+$serviceJob = $null
 $ownedServices = [System.Collections.Generic.List[System.Diagnostics.Process]]::new()
 $ownedBrowsers = [System.Collections.Generic.List[System.Diagnostics.Process]]::new()
 $runId = [Guid]::NewGuid().ToString('N')
@@ -73,7 +74,21 @@ $logRoot = Join-Path $localRoot "run-$runId"
 $powerShellExe = Join-Path $PSHOME 'powershell.exe'
 function Start-ServiceScript([string]$Name,[string[]]$Arguments) {
     $commandArguments = @('-NoProfile','-ExecutionPolicy','Bypass','-File') + $Arguments
-    $escaped = @($commandArguments | ForEach-Object { Quote-Argument $_ }) -join ' '
+    # Join before any service process is spawned. The bootstrap must not retain
+    # a job handle, otherwise closing the harness would not be the last close.
+    $jobSource = (Join-Path $PSScriptRoot 'OwnedServiceJob.cs').Replace("'","''")
+    $commandJson = ConvertTo-Json -InputObject $commandArguments -Compress
+    $payload = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($commandJson))
+    $bootstrap = @"
+`$ErrorActionPreference = 'Stop'
+Add-Type -Path '$jobSource'
+[OwnedServiceJob]::Join('Trinktribunal-$runId')
+`$serviceArguments = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('$payload')) | ConvertFrom-Json
+& '$($powerShellExe.Replace("'","''"))' @serviceArguments
+exit `$LASTEXITCODE
+"@
+    $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($bootstrap))
+    $escaped = "-NoProfile -ExecutionPolicy Bypass -EncodedCommand $encoded"
     $process = Start-Process -FilePath $powerShellExe -ArgumentList $escaped -WorkingDirectory $root -WindowStyle Hidden -RedirectStandardOutput (Join-Path $logRoot "$Name.out.log") -RedirectStandardError (Join-Path $logRoot "$Name.err.log") -PassThru
     $ownedServices.Add($process)
     return $process
@@ -102,6 +117,8 @@ function Stop-OwnedProcess([System.Diagnostics.Process]$Process) {
 }
 try {
     $lock = [IO.File]::Open((Join-Path $localRoot 'session.lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
+    Add-Type -Path (Join-Path $PSScriptRoot 'OwnedServiceJob.cs')
+    $serviceJob = [OwnedServiceJob]::new("Trinktribunal-$runId")
     New-Item -ItemType Directory -Path $logRoot | Out-Null
     $worker = Start-ServiceScript 'worker' @((Join-Path $PSScriptRoot 'dev-server.ps1'),'-Port',"$ServerPort")
     Wait-Endpoint "$serverUrl/health" $worker
@@ -126,8 +143,15 @@ try {
         Start-Sleep -Milliseconds 500
     }
 } finally {
+    # One Windows job owns the complete service trees, including grandchildren
+    # whose PowerShell/cmd wrapper has already exited. Never select global PIDs.
+    if ($null -ne $serviceJob) { $serviceJob.Dispose() }
     foreach ($process in $ownedBrowsers) { Stop-OwnedProcess $process }
-    foreach ($process in $ownedServices) { Stop-OwnedProcess $process }
+    foreach ($process in $ownedServices) {
+        try {
+            if (-not $process.WaitForExit(5000)) { Write-Warning "Dienst-Bootstrap $($process.Id) wird noch beendet." }
+        } finally { $process.Dispose() }
+    }
     if ($null -ne $lock) { $lock.Dispose() }
     Write-Host 'Eigene Harness-Prozesse beendet. Persistente Testprofile bleiben erhalten; kein globales Browser-/Node-Aufraeumen.'
 }

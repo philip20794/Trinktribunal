@@ -176,6 +176,8 @@ powershell -NoProfile -File .\scripts\check.ps1 -Scope All
 
 Die Skripte verwenden lokale Lockfiles, prüfen erlaubte `API_BASE_URL`/Origins und laden bei normalen Checks keine Pakete heimlich nach. `npm.cmd ci`/`flutter pub get` sind bewusste Einrichtungsschritte. Hintergrundhilfen nur mit bekanntem Prozesshandle und unter Windows verborgen starten; bei Fehlern eigene Prozesse stoppen, keine fremden Browser/Node-Prozesse pauschal beenden.
 
+Der Multiplayer-Harness verwendet für seine Dienste einen Windows-Job. Beim Beenden werden auch Flutter-/Node-Nachfahren geschlossen, deren Zwischenprozess bereits beendet ist; die Ports sind beim nächsten Start wiederverwendbar. Testprofile bleiben gespeichert. [Regression und Nachweis](qa/multiplayer-process-cleanup.md).
+
 ## 4. Tägliche UI-Arbeit und responsive Vorschau
 
 1. `PROGRESS.md` und Task mit Abhängigkeiten lesen, Gitstatus prüfen, Aufgabe auf IN ARBEIT setzen.
