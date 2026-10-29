@@ -22,6 +22,9 @@ import type { PlayerId, RoomMessage } from '../protocol/room_message.generated';
 import { protocolMetadata } from '../protocol/room_message.generated';
 import { RoomRepository, roomExpiry, type RoomState } from './repository';
 
+// This reserved, valid wire name marks a QR guest whose real name is not confirmed yet.
+// Keep in sync with apps/client/lib/features/multiplayer/pending_profile.dart.
+const PENDING_ROOM_NAME = '[name pending]';
 const types = gameActions;
 type GameCommand = Extract<RoomMessage, { type: (typeof types)[number] }>;
 export function isGameAction(command: RoomMessage): command is GameCommand {
@@ -96,6 +99,11 @@ function mutate(
     return { state, result: { ok: false, code: 'RATE_LIMITED' } };
   if ((command.type === 'startGame' || command.type === 'restartGame') && state.historyOffer)
     return { state, result: { ok: false, code: 'INVALID_PHASE' } };
+  if (
+    (command.type === 'startGame' || command.type === 'restartGame') &&
+    state.members.some((member) => !member.revoked && member.profile?.name === PENDING_ROOM_NAME)
+  )
+    return { state, result: { ok: false, code: 'INVALID_NAME' } };
   const game = synchronizedGame(state, connected, now);
   const outcome = (internalReroll ? rerollCurrentQuestion : transition)(
     immutable(game),
