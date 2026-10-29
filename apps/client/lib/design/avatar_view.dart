@@ -229,6 +229,7 @@ class AvatarView extends StatelessWidget {
                         ],
                       ),
                     ),
+                  ),
                 ),
             ],
           ),
