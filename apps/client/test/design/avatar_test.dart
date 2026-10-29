@@ -71,6 +71,14 @@ void main() {
     }
     expect(() => AvatarConfig(selections:{'skinColor':'#NOTHEX'}),
         throwsA(isA<DomainException>()));
+    final custom = AvatarConfig(selections:{
+      'skinColor':'#123ABC', 'hairColor':'#102030', 'outfitColor':'#ABCDEF',
+    });
+    expect(AvatarConfig.fromJson(custom.toJson()).selections, custom.selections);
+    for(final value in ['#12345', '#1234567', '#XFFFFF']) {
+      expect(() => AvatarConfig(selections:{'skinColor':value}),
+        throwsA(isA<DomainException>()));
+    }
     final config=AvatarConfig();
     final copied=config.toJson();
     (copied['selections'] as Map)['hair']='short08';
@@ -88,6 +96,11 @@ void main() {
     expect(svg1,contains('762'));
     expect(TrinkAvatarRenderer.options(one)['ttInitialsVariant'],'blank');
     expect(TrinkAvatarRenderer.options(one)['ttWallVariant'],'heightChart');
+    final part=await TrinkAvatarRenderer.partSvg(one, 'mouth', 'variant04');
+    expect(part,contains('<svg'));
+    final head=await TrinkAvatarRenderer.headSvg(one);
+    expect(head,contains('<svg'));
+    expect(TrinkAvatarRenderer.options(one.withOption('skinColor','#123ABC'))['skinColor'], '#123ABC');
     expect(TrinkAvatarRenderer.options(one)['glassesProbability'],0);
     expect(TrinkAvatarRenderer.options(one.withOption('glasses','variant01'))['glassesProbability'],100);
   });
