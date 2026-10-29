@@ -72,6 +72,7 @@ $ownedBrowsers = [System.Collections.Generic.List[System.Diagnostics.Process]]::
 $runId = [Guid]::NewGuid().ToString('N')
 $logRoot = Join-Path $localRoot "run-$runId"
 $powerShellExe = Join-Path $PSHOME 'powershell.exe'
+. (Join-Path $PSScriptRoot 'dev-multiplayer-readiness.ps1')
 function Start-ServiceScript([string]$Name,[string[]]$Arguments) {
     $commandArguments = @('-NoProfile','-ExecutionPolicy','Bypass','-File') + $Arguments
     # Join before any service process is spawned. The bootstrap must not retain
@@ -93,10 +94,12 @@ exit `$LASTEXITCODE
     $ownedServices.Add($process)
     return $process
 }
-function Wait-Endpoint([string]$Url,[System.Diagnostics.Process]$Process) {
+function Wait-Endpoint([string]$Url,[System.Diagnostics.Process]$Process,[switch]$Client) {
     $watch = [Diagnostics.Stopwatch]::StartNew()
     while ($watch.Elapsed.TotalSeconds -lt 90) {
+        $compiled = -not $Client -or (Test-WebClientCompilation (Join-Path $logRoot 'client.out.log') (Join-Path $logRoot 'client.err.log') $Url)
         if ($Process.HasExited) { throw "Lokaler Dienst wurde beendet. Logs: $logRoot" }
+        if (-not $compiled) { Start-Sleep -Milliseconds 200; continue }
         try {
             $response = Invoke-WebRequest -UseBasicParsing -Uri $Url -TimeoutSec 2
             if ($response.StatusCode -eq 200) { return }
@@ -124,7 +127,7 @@ try {
     Wait-Endpoint "$serverUrl/health" $worker
     Write-Host 'Worker bereit.'
     $client = Start-ServiceScript 'client' @((Join-Path $PSScriptRoot 'dev-client.ps1'),'-Device','web-server','-Port',"$ClientPort",'-ApiBaseUrl',$serverUrl,'-PublicClientBaseUrl',$clientUrl)
-    Wait-Endpoint $clientUrl $client
+    Wait-Endpoint $clientUrl $client -Client
     Write-Host "Client bereit. Logs: $logRoot"
     if ($StopAfterReady) { Write-Host 'Lokaler Start geprueft; eigene Prozesse werden beendet.'; exit 0 }
     if ($OpenBrowsers) {

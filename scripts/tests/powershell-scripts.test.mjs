@@ -122,6 +122,38 @@ test('Multiplayer alternate supported origin keeps stable profile locations and 
   assert.doesNotMatch(result.stdout,/resumeToken|requestId|roomId|playerId/);
 });
 
+test('Client readiness waits for successful compilation and surfaces the actual compiler error', { skip: !windows }, context => {
+  const setup = fixture(context);
+  const script = join(setup.root, 'readiness.ps1');
+  writeFileSync(script, `
+$ErrorActionPreference = 'Stop'
+. $env:READINESS_SOURCE
+$out = Join-Path $env:READINESS_ROOT 'client.out'
+$err = Join-Path $env:READINESS_ROOT 'client.err'
+$url = 'http://127.0.0.1:7357'
+if (Test-WebClientCompilation $out $err $url) { throw 'Missing logs accepted' }
+Set-Content $out 'Waiting for connection from debug service on Web Server...'
+if (Test-WebClientCompilation $out $err $url) { throw 'Uncompiled HTTP shell accepted' }
+Set-Content $out 'lib/main.dart is being served at http://127.0.0.1:8080'
+if (Test-WebClientCompilation $out $err $url) { throw 'Wrong endpoint accepted' }
+Set-Content $out 'lib/main.dart is being served at http://127.0.0.1:7357'
+if (-not (Test-WebClientCompilation $out $err $url)) { throw 'Compiled client rejected' }
+Set-Content $err "avatar_view.dart:117: Error: Color is abstract\nFailed to compile application."
+$failed = $false
+try { Test-WebClientCompilation $out $err $url | Out-Null }
+catch {
+    if ($_.Exception.Message -notmatch 'avatar_view.dart:117: Error: Color is abstract') { throw }
+    $failed = $true
+}
+if (-not $failed) { throw 'Compiler failure accepted' }
+`);
+  const result = spawnSync(powershell, ['-NoProfile', '-File', script], {
+    env: { ...setup.env, READINESS_SOURCE: join(scripts, 'dev-multiplayer-readiness.ps1'), READINESS_ROOT: setup.root },
+    encoding: 'utf8', timeout: 15000,
+  });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
 for (const shutdown of ['dispose', 'owner-exit']) {
   test(`Service job releases a listening grandchild after its wrapper exits: ${shutdown}`, { skip: !windows }, async context => {
     const setup = fixture(context);
