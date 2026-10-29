@@ -565,5 +565,12 @@
   "rulesTwoSips": "2 sips",
   "rulesTwoSipsEach": "2 sips each",
   "rulesNoSips": "0 sips",
-  "rulesExampleCell": "Position {position}: number {number}, {status}"
+  "rulesExampleCell": "Position {position}: number {number}, {status}",
+  "roomDefaultName": "Player",
+  "roomToolsExpand": "Expand invitation and settings",
+  "roomToolsCollapse": "Collapse invitation and settings",
+  "roomToolsClose": "Close",
+  "roomDragPlayer": "Move {name}",
+  "roomMoveLeft": "Move position {position} left",
+  "roomMoveRight": "Move position {position} right"
 }

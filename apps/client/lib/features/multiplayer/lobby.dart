@@ -17,6 +17,7 @@ import 'close_room.dart';
 import 'readiness_view.dart';
 import 'order_view.dart';
 import 'game_progress.dart';
+import 'game_settings.dart';
 import '../verdict/online_reveal.dart';
 import '../rules/game_rules_screen.dart';
 
@@ -40,29 +41,33 @@ class RoomLobbyScreen extends ConsumerWidget {
               icon: const Icon(Icons.gavel),
               onPressed: () => confirmRoomClose(context, ref),
             ),
-          IconButton(
-            tooltip: context.tr('roomInviteTitle'),
-            icon: const Icon(Icons.qr_code),
-            onPressed: () {
-              ref.read(onlineGameProvider).hideSecret();
-              final code = ref.read(roomControllerProvider).roomCode;
-              if (code == null) return;
-              showDialog<void>(
-                context: context,
-                builder: (_) => AlertDialog(
-                  scrollable: true,
-                  title: const TText('roomInviteTitle'),
-                  content: SizedBox(width: 360, child: RoomInvite(code: code)),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const TText('back'),
+          if (state.snapshot!.public.phase != 'lobby')
+            IconButton(
+              tooltip: context.tr('roomInviteTitle'),
+              icon: const Icon(Icons.qr_code),
+              onPressed: () {
+                ref.read(onlineGameProvider).hideSecret();
+                final code = ref.read(roomControllerProvider).roomCode;
+                if (code == null) return;
+                showDialog<void>(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    scrollable: true,
+                    title: const TText('roomInviteTitle'),
+                    content: SizedBox(
+                      width: 360,
+                      child: RoomInvite(code: code),
                     ),
-                  ],
-                ),
-              );
-            },
-          ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const TText('back'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           IconButton(
             tooltip: context.tr('roomLeave'),
             icon: const Icon(Icons.logout),
@@ -125,6 +130,7 @@ class _RoomPhaseFooter extends StatelessWidget {
       builder: (context, _) {
         if (tabs.index != 1) return const SizedBox.shrink();
         final Widget? action = switch (view.phase) {
+          'lobby' when host => RoomStartAction(snapshot: snapshot),
           'answers' when host || view.frozenRoster.contains(snapshot.you) =>
             ReadinessActions(snapshot: snapshot),
           'ordering'

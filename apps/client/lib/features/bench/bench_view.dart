@@ -16,11 +16,13 @@ class BenchView extends StatefulWidget {
     required this.order,
     required this.profiles,
     this.onMove,
+    this.compactControls = false,
     this.actionsBuilder,
     this.revealedNumbers = const {},
     this.incorrect = const {},
     super.key,
   });
+  final bool compactControls;
   final List<PlayerId> order;
   final Map<PlayerId, UserProfile> profiles;
   final void Function(int from, int to)? onMove;
@@ -97,13 +99,26 @@ class _BenchViewState extends State<BenchView> {
     data: courtPaperTheme(),
     child: LayoutBuilder(
       builder: (context, constraints) {
-        final columns = CourtTokens.bankColumns(
-          constraints.maxWidth,
-          MediaQuery.textScalerOf(context).scale(16) / 16,
-        );
+        final columns = widget.compactControls
+            ? (constraints.maxWidth >= 480 &&
+                      MediaQuery.textScalerOf(context).scale(16) <= 24
+                  ? 3
+                  : 2)
+            : CourtTokens.bankColumns(
+                constraints.maxWidth,
+                MediaQuery.textScalerOf(context).scale(16) / 16,
+              );
         final rows = (widget.order.length + columns - 1) ~/ columns;
-        return SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.62,
+        int tileIndex(int row, int col) => widget.compactControls
+            ? row * columns + col
+            : snakeIndex(row, col, columns);
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: widget.compactControls
+                ? 0
+                : MediaQuery.sizeOf(context).height * .62,
+            maxHeight: MediaQuery.sizeOf(context).height * .62,
+          ),
           child: Scrollbar(
             controller: _scroll,
             thumbVisibility: true,
@@ -135,10 +150,14 @@ class _BenchViewState extends State<BenchView> {
                                 child: Text(
                                   [
                                     for (var col = 0; col < columns; col++)
-                                      if (snakeIndex(row, col, columns) <
+                                      if (tileIndex(row, col) <
                                           widget.order.length)
-                                        '${snakeIndex(row, col, columns) + 1}',
-                                  ].join(row.isEven ? ' → ' : ' ← '),
+                                        '${tileIndex(row, col) + 1}',
+                                  ].join(
+                                    widget.compactControls || row.isEven
+                                        ? ' → '
+                                        : ' ← ',
+                                  ),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     color: CourtSceneTokens.cream,
@@ -157,9 +176,9 @@ class _BenchViewState extends State<BenchView> {
                                       horizontal: 4,
                                     ),
                                     child:
-                                        snakeIndex(row, col, columns) <
+                                        tileIndex(row, col) <
                                             widget.order.length
-                                        ? _tile(snakeIndex(row, col, columns))
+                                        ? _tile(tileIndex(row, col))
                                         : const SizedBox.shrink(),
                                   ),
                                 ),
@@ -230,9 +249,16 @@ class _BenchViewState extends State<BenchView> {
                 !HardwareKeyboard.instance.isAltPressed) {
               return KeyEventResult.ignored;
             }
-            final delta = event.logicalKey == LogicalKeyboardKey.arrowUp
+            final delta =
+                event.logicalKey ==
+                    (widget.compactControls
+                        ? LogicalKeyboardKey.arrowLeft
+                        : LogicalKeyboardKey.arrowUp)
                 ? -1
-                : event.logicalKey == LogicalKeyboardKey.arrowDown
+                : event.logicalKey ==
+                      (widget.compactControls
+                          ? LogicalKeyboardKey.arrowRight
+                          : LogicalKeyboardKey.arrowDown)
                 ? 1
                 : 0;
             if (delta == 0 ||
@@ -247,7 +273,7 @@ class _BenchViewState extends State<BenchView> {
             duration: CourtTokens.motionDuration(
               MediaQuery.disableAnimationsOf(context),
             ),
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(widget.compactControls ? 4 : 8),
             decoration: BoxDecoration(
               color: CourtTokens.file,
               borderRadius: BorderRadius.circular(12),
@@ -268,11 +294,14 @@ class _BenchViewState extends State<BenchView> {
                   onTap: editable ? () => _tap(id) : null,
                   child: Column(
                     children: [
-                      AvatarView(
-                        config: profile.avatar,
-                        size: 76,
-                        label: profile.player.name,
-                      ),
+                      if (widget.compactControls)
+                        _compactPortrait(profile, index, id, editable)
+                      else
+                        AvatarView(
+                          config: profile.avatar,
+                          size: 76,
+                          label: profile.player.name,
+                        ),
                       NamePlate(name: profile.player.name, position: index + 1),
                     ],
                   ),
@@ -291,7 +320,7 @@ class _BenchViewState extends State<BenchView> {
                   ),
                 if (widget.actionsBuilder != null)
                   widget.actionsBuilder!(context, profile, index),
-                if (editable) ...[
+                if (editable && !widget.compactControls) ...[
                   LongPressDraggable<PlayerId>(
                     data: id,
                     feedback: Material(
@@ -340,4 +369,84 @@ class _BenchViewState extends State<BenchView> {
       ),
     );
   }
+
+  Widget _compactPortrait(
+    UserProfile profile,
+    int index,
+    PlayerId id,
+    bool editable,
+  ) => SizedBox(
+    height: 112,
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        AvatarView(
+          config: profile.avatar,
+          size: 76,
+          label: profile.player.name,
+        ),
+        if (editable) ...[
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Tooltip(
+              message: context.tr('roomDragPlayer', {
+                'name': profile.player.name,
+              }),
+              child: LongPressDraggable<PlayerId>(
+                key: ValueKey('compact-drag-${id.value}'),
+                data: id,
+                feedback: Material(
+                  elevation: 4,
+                  child: SizedBox(
+                    width: 120,
+                    child: NamePlate(
+                      name: profile.player.name,
+                      position: index + 1,
+                    ),
+                  ),
+                ),
+                child: SizedBox.square(
+                  dimension: 48,
+                  child: Center(
+                    child: DecoratedBox(
+                      decoration: const BoxDecoration(
+                        color: CourtTokens.file,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(Icons.drag_indicator, size: 18),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(bottom: 0, left: 0, child: _floatingMove(id, index, -1)),
+          Positioned(bottom: 0, right: 0, child: _floatingMove(id, index, 1)),
+        ],
+      ],
+    ),
+  );
+  Widget _floatingMove(PlayerId id, int index, int delta) => IconButton(
+    key: ValueKey('compact-move-${delta < 0 ? 'left' : 'right'}-${id.value}'),
+    tooltip: context.tr(delta < 0 ? 'roomMoveLeft' : 'roomMoveRight', {
+      'position': index + 1,
+    }),
+    onPressed: index + delta >= 0 && index + delta < widget.order.length
+        ? () => _move(id: id, from: index, to: index + delta)
+        : null,
+    icon: DecoratedBox(
+      decoration: const BoxDecoration(
+        color: CourtTokens.file,
+        shape: BoxShape.circle,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(3),
+        child: Icon(delta < 0 ? Icons.arrow_left : Icons.arrow_right, size: 22),
+      ),
+    ),
+  );
 }

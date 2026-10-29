@@ -36,10 +36,6 @@ class RoomInvite extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          context.tr('roomInviteCode', {'code': code}),
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
         if (payload != null) ...[
           const SizedBox(height: 12),
           // AlertDialog measures intrinsic sizes. Isolate QrImageView's
@@ -53,6 +49,11 @@ class RoomInvite extends ConsumerWidget {
               semanticsLabel: context.tr('roomInviteQr'),
             ),
           ),
+          Text(
+            context.tr('roomInviteCode', {'code': code}),
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
           SelectableText(payload, textAlign: TextAlign.center),
           const SizedBox(height: 8),
           OutlinedButton.icon(
@@ -74,10 +75,13 @@ class RoomInvite extends ConsumerWidget {
               }
             },
           ),
-        ] else
+        ] else ...[
+          Text(
+            context.tr('roomInviteCode', {'code': code}),
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           const TText('roomInviteUnavailable'),
-        const SizedBox(height: 12),
-        const TText('roomRetention'),
+        ],
       ],
     );
   }

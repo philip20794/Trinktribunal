@@ -841,5 +841,12 @@
   "rulesTwoSips": "2 Schlucke",
   "rulesTwoSipsEach": "Je 2 Schlucke",
   "rulesNoSips": "0 Schlucke",
-  "rulesExampleCell": "Position {position}: Zahl {number}, {status}"
+  "rulesExampleCell": "Position {position}: Zahl {number}, {status}",
+  "roomDefaultName": "Spieler",
+  "roomToolsExpand": "Einladung und Einstellungen aufklappen",
+  "roomToolsCollapse": "Einladung und Einstellungen zuklappen",
+  "roomToolsClose": "Schließen",
+  "roomDragPlayer": "{name} verschieben",
+  "roomMoveLeft": "Position {position} nach links verschieben",
+  "roomMoveRight": "Position {position} nach rechts verschieben"
 }

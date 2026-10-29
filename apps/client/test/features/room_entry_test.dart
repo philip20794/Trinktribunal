@@ -69,26 +69,12 @@ void main() {
         host(const CreateRoomScreen(), transport, store, profileStorage: local),
       );
       await tester.pumpAndSettle();
-      expect(
-        tester
-            .widget<TextField>(find.byKey(const ValueKey('room-name')))
-            .controller!
-            .text,
-        'Saved Alex',
-      );
-      await tester.ensureVisible(find.byKey(const ValueKey('room-submit')));
-      await tester.tap(find.byKey(const ValueKey('room-submit')));
-      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('room-name')), findsNothing);
+      expect(find.byKey(const ValueKey('room-submit')), findsNothing);
       expect(transport.creates, 1);
       expect(transport.lastProfile!.name, 'Saved Alex');
       expect(transport.lastProfile!.avatar.selections['hair'], 'long');
       expect(transport.connections, 0);
-      expect(
-        tester
-            .widget<FilledButton>(find.byKey(const ValueKey('room-submit')))
-            .onPressed,
-        isNull,
-      );
       backend.fail = false;
       await tester.tap(find.text('Speichern und fortsetzen'));
       await tester.pump();

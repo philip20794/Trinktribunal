@@ -57,6 +57,7 @@ void main() {
             own: false,
           ),
           socket = fixture.transport.sockets.last;
+      await numbers.tapText(tester, AppStrings('de').get('localGameOptions'));
       tester.widget<SwitchListTile>(find.byType(SwitchListTile)).onChanged!(
         true,
       );
@@ -72,6 +73,8 @@ void main() {
           'public': {...base.public.toJson(), 'config': config.toJson()},
         }),
       );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       await numbers.tapText(tester, AppStrings('de').get('startHearing'));
       expect(socket.sent.whereType<StartGameMessage>(), hasLength(1));

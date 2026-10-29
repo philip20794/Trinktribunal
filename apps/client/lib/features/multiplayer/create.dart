@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
 import '../../design/court_scene.dart';
-import 'entry_profile.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../application/local_data_providers.dart';
+import '../../application/room_providers.dart';
+import '../../data/protocol/room_message.dart' as protocol;
+import '../../domain/avatar_config.dart';
+import '../../domain/selection/random_source.dart';
+import '../../design/status_notice.dart';
+import 'connection.dart';
+import 'invitation.dart';
 import 'join.dart';
 import 'saved_rooms.dart';
 
@@ -45,15 +55,85 @@ class MultiplayerEntryScreen extends StatelessWidget {
   );
 }
 
-class CreateRoomScreen extends StatelessWidget {
+class CreateRoomScreen extends ConsumerStatefulWidget {
   const CreateRoomScreen({super.key});
+  @override
+  ConsumerState<CreateRoomScreen> createState() => _CreateRoomScreenState();
+}
+
+class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
+  bool _busy = true, _retrySave = false;
+  String? _error;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _create());
+  }
+
+  Future<void> _create({bool retry = false}) async {
+    if (!mounted) return;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    try {
+      final controller = ref.read(roomControllerProvider);
+      bool success;
+      if (retry && _retrySave) {
+        success = await controller.retrySavingCredential();
+      } else {
+        final saved = (await ref.read(profileProvider.future)).profile;
+        if (!mounted) return;
+        success = await controller.create(
+          protocol.Profile.fromJson({
+            'name': saved?.player.name ?? context.tr('roomDefaultName'),
+            'avatar':
+                (saved?.avatar ?? AvatarConfig.random(SecureRandomSource()))
+                    .toJson(),
+          }),
+        );
+      }
+      ref.invalidate(savedRoomsProvider);
+      if (!mounted) return;
+      if (success) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute<void>(builder: (_) => const RoomConnectionScreen()),
+        );
+      } else {
+        setState(() {
+          _error = roomErrorKey(controller.state.errorCode);
+          _retrySave =
+              controller.state.errorCode == 'CREDENTIAL_STORAGE_UNAVAILABLE' &&
+              controller.roomCode != null;
+        });
+      }
+    } on Object {
+      if (mounted) setState(() => _error = 'roomErrorServer');
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) => CourtScaffold(
     title: const TText('roomCreate'),
-    bodyBuilder: (context) => Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600),
-        child: const RoomProfileForm(create: true),
+    body: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: _busy
+            ? const CircularProgressIndicator()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_error != null) StatusNotice(context.tr(_error!)),
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    key: const ValueKey('room-create-retry'),
+                    onPressed: () => _create(retry: true),
+                    child: TText(_retrySave ? 'roomSaveRetry' : 'roomRetry'),
+                  ),
+                ],
+              ),
       ),
     ),
   );
