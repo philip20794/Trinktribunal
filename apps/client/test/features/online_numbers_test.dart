@@ -1,3 +1,8 @@
+import '../support/hold_action.dart';
+
+import 'package:trinktribunal/design/hold_action_button.dart';
+import 'package:trinktribunal/design/case_stage.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -20,6 +25,7 @@ import '../data/room_test_support.dart';
 late Catalogs catalogs;
 SnapshotMessage view({
   bool lobby = false,
+  bool allJudges = false,
   bool host = false,
   String language = 'de',
   bool own = true,
@@ -34,7 +40,8 @@ SnapshotMessage view({
       'phase': lobby ? 'lobby' : 'numbers',
       'gameId': lobby ? null : 'game_1',
       'roundId': lobby ? null : 'round_1',
-      'judgeId': lobby ? null : 'p1',
+      'judgeId': lobby || allJudges ? null : 'p1',
+      'readerId': !lobby && allJudges ? 'p1' : null,
       'question': lobby
           ? null
           : {
@@ -42,7 +49,11 @@ SnapshotMessage view({
               'bindings': {'player1': 'p2'},
             },
       'frozenRoster': lobby ? [] : ['p1', 'p2', 'p3'],
-      'config': {...base.public.config.toJson(), 'contentLanguage': language},
+      'config': {
+        ...base.public.config.toJson(),
+        'contentLanguage': language,
+        'allJudges': allJudges,
+      },
     },
     'private': !lobby && own ? {'ownNumber': 2} : <String, Object?>{},
   });
@@ -51,10 +62,12 @@ SnapshotMessage view({
 Future<({RoomController room, FakeRoomTransport transport})> pump(
   WidgetTester tester, {
   bool lobby = false,
+  bool allJudges = false,
   bool host = false,
   String uiLanguage = 'de',
   String contentLanguage = 'de',
   bool own = true,
+  bool newRoom = false,
   double textScale = 1,
   ThemeData? theme,
   Uri? publicClientBase,
@@ -87,7 +100,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
           language: uiLanguage,
           child: MaterialApp(
             theme: theme,
-            home: const RoomConnectionScreen(),
+            home: RoomConnectionScreen(newRoom: newRoom),
             builder: (context, child) => MediaQuery(
               data: MediaQuery.of(context)
                   .copyWith(textScaler: TextScaler.linear(textScale)),
@@ -108,6 +121,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
   transport.sockets.last.receive(
     view(
       lobby: lobby,
+      allJudges: allJudges,
       host: host,
       language: contentLanguage,
       own: own,
@@ -129,9 +143,25 @@ Future<void> tapText(WidgetTester tester, String text) async {
       )) {
     finder = find.byKey(const ValueKey('compact-private-number'));
   }
+  if (finder.evaluate().isEmpty &&
+      [
+        'de',
+        'en',
+      ].any((lang) => text == AppStrings(lang).get('localGameOptions'))) {
+    await tester.ensureVisible(find.byType(Tab).last);
+    await tester.tap(find.byType(Tab).last);
+    await tester.pumpAndSettle();
+  }
   await tester.ensureVisible(finder);
   await tester.pumpAndSettle();
-  await tester.tap(finder);
+  if (find
+      .ancestor(of: finder, matching: find.byType(HoldActionButton))
+      .evaluate()
+      .isNotEmpty) {
+    await holdAction(tester, finder);
+  } else {
+    await tester.tap(finder);
+  }
   await tester.pumpAndSettle();
 }
 
@@ -203,13 +233,7 @@ void main() {
         }),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.byTooltip('Partieoptionen'));
-      await tester.pumpAndSettle();
-      await tester.ensureVisible(find.text('Fall ohne Urteil abschließen'));
-      await tester.tap(find.text('Fall ohne Urteil abschließen'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(FilledButton, 'Fall abschließen'));
-      await tester.pumpAndSettle();
+      await tapText(tester, AppStrings('de').get('nextJudge'));
       expect(
         socket.sent
             .whereType<CompleteWithoutVerdictMessage>()
@@ -219,34 +243,33 @@ void main() {
       );
     },
   );
-  testWidgets(
-    'a rejected settings save releases the pending control for a deliberate retry',
-    (tester) async {
-      final fixture = await pump(tester, lobby: true, host: true),
-          socket = fixture.transport.sockets.last;
-      await tapText(tester, AppStrings('de').get('localGameOptions'));
-      tester.widgetList<Slider>(find.byType(Slider)).first.onChanged!(7);
-      await tester.pump();
-      await tapText(tester, 'Einstellungen übernehmen');
-      socket.receive(
-        ErrorMessage.create(
-          requestId: RequestId('settings_error'),
-          code: 'RATE_LIMITED',
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(
-        tester
-            .widget<OutlinedButton>(
-              find.widgetWithText(OutlinedButton, 'Einstellungen übernehmen'),
-            )
-            .onPressed,
-        isNotNull,
-      );
-      await tapText(tester, 'Einstellungen übernehmen');
-      expect(socket.sent.whereType<SetConfigMessage>(), hasLength(2));
-    },
-  );
+  testWidgets('a rejected automatic settings save offers a deliberate retry', (
+    tester,
+  ) async {
+    final fixture = await pump(tester, lobby: true, host: true),
+        socket = fixture.transport.sockets.last;
+    await tapText(tester, AppStrings('de').get('localGameOptions'));
+    tester.widgetList<Slider>(find.byType(Slider)).first.onChanged!(7);
+    await tester.pump(const Duration(milliseconds: 350));
+    await tester.pumpAndSettle();
+    expect(socket.sent.whereType<SetConfigMessage>(), hasLength(1));
+    socket.receive(
+      ErrorMessage.create(
+        requestId: RequestId('settings_error'),
+        code: 'RATE_LIMITED',
+      ),
+    );
+    await tester.pumpAndSettle();
+    final retry = AppStrings('de').get('retry');
+    expect(
+      tester
+          .widget<TextButton>(find.widgetWithText(TextButton, retry))
+          .onPressed,
+      isNotNull,
+    );
+    await tapText(tester, retry);
+    expect(socket.sent.whereType<SetConfigMessage>(), hasLength(2));
+  });
   setUpAll(() async {
     catalogs = await CatalogRepository(
       read: (path) => File(path).readAsString(),
@@ -274,10 +297,7 @@ void main() {
         expect(find.text(rendered.green), findsOneWidget);
         expect(find.text(rendered.red), findsOneWidget);
         expect(find.textContaining('{player1}'), findsNothing);
-        expect(
-          tester.widget<PrivateNumber>(find.byType(PrivateNumber)).number,
-          isNull,
-        );
+        expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, isNull);
         expect(
           fixture.transport.sockets.last.sent
               .whereType<AcknowledgeNumberMessage>(),
@@ -287,57 +307,37 @@ void main() {
     );
   }
   testWidgets(
-    'own number hides on lifecycle and tab changes, acknowledgement is explicit and bound to round',
+    'charged number is hidden on release, background and tab changes',
     (tester) async {
-      final semantics = tester.ensureSemantics();
-      try {
-        final fixture = await pump(tester),
-            socket = fixture.transport.sockets.last;
-        expect(
-          find.bySemanticsLabel(RegExp('Deine geheime Zahl: 2')),
-          findsNothing,
-        );
-        await tapText(tester, 'Meine Zahl bewusst öffnen');
-        expect(find.text('2'), findsOneWidget);
-        await tester.ensureVisible(find.text('2'));
-        await tester.pumpAndSettle();
-        expect(
-          tester.getSemantics(find.text('2')).getSemanticsData().label,
-          contains('Deine geheime Zahl: 2'),
-        );
-        tester.binding.handleAppLifecycleStateChanged(
-          AppLifecycleState.inactive,
-        );
-        await tester.pump();
-        expect(find.text('2'), findsNothing);
-        expect(
-          find.bySemanticsLabel(RegExp('Deine geheime Zahl: 2')),
-          findsNothing,
-        );
-        tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-        tester.binding.handleAppLifecycleStateChanged(
-          AppLifecycleState.resumed,
-        );
-        await tester.pump();
-        expect(find.text('2'), findsNothing);
-        await tapText(tester, 'Meine Zahl bewusst öffnen');
-        await tester.tap(find.widgetWithText(Tab, 'Ich'));
-        await tester.pumpAndSettle();
-        await tester.ensureVisible(find.widgetWithText(Tab, 'Fallakte'));
-        await tester.tap(find.widgetWithText(Tab, 'Fallakte'));
-        await tester.pumpAndSettle();
-        expect(find.text('2'), findsNothing);
-        expect(socket.sent.whereType<AcknowledgeNumberMessage>(), isEmpty);
-        await tapText(tester, 'Meine Zahl bewusst öffnen');
-        await tapText(tester, 'Zahl merken und bestätigen');
-        expect(find.text('2'), findsNothing);
-        final action = socket.sent.whereType<AcknowledgeNumberMessage>().single;
-        expect(action.roundId, fixture.room.state.snapshot!.public.roundId);
-        expect(action.expectedRevision, 1);
-        expect(tester.takeException(), isNull);
-      } finally {
-        semantics.dispose();
-      }
+      final fixture = await pump(tester),
+          socket = fixture.transport.sockets.last;
+      final target = find.text(AppStrings('de').get('showNumber'));
+      var gesture = await startChargedHold(tester, target);
+      expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, 2);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      await tester.pumpAndSettle();
+      expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, isNull);
+      await gesture.up();
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+      gesture = await startChargedHold(tester, target);
+      await tester.tap(
+        find.widgetWithText(Tab, AppStrings('de').get('roomMeTab')),
+      );
+      await tester.pumpAndSettle();
+      await gesture.up();
+      await tester.tap(
+        find.widgetWithText(Tab, AppStrings('de').get('caseTabTitle')),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, isNull);
+      gesture = await startChargedHold(tester, target);
+      expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, 2);
+      await gesture.up();
+      await tester.pumpAndSettle();
+      expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, isNull);
+      expect(socket.sent.whereType<AcknowledgeNumberMessage>(), hasLength(1));
+      expect(tester.takeException(), isNull);
     },
   );
   testWidgets('normal judge gets no secret-number controls', (tester) async {
@@ -349,7 +349,7 @@ void main() {
     );
   });
   testWidgets(
-    'host saves explicit integer configuration before start, without optimistic game transition',
+    'host automatically saves integer settings before start, without optimistic game transition',
     (tester) async {
       final fixture = await pump(tester, lobby: true, host: true),
           socket = fixture.transport.sockets.last;
@@ -358,7 +358,8 @@ void main() {
       sliders.first.onChanged!(7);
       await tester.pump();
       expect(socket.sent.whereType<SetConfigMessage>(), isEmpty);
-      await tapText(tester, 'Einstellungen übernehmen');
+      await tester.pump(const Duration(milliseconds: 350));
+      await tester.pumpAndSettle();
       final config = socket.sent.whereType<SetConfigMessage>().single;
       expect(config.config.targetCases, 7);
       expect(config.expectedRevision, 1);
@@ -375,7 +376,6 @@ void main() {
         }),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       await tapText(tester, 'Verhandlung starten');
       expect(
@@ -390,13 +390,9 @@ void main() {
     'non-host sees frozen settings summary without editable options or start',
     (tester) async {
       await pump(tester, lobby: true);
-      await tapText(tester, AppStrings('de').get('localGameOptions'));
-      expect(find.byType(Slider), findsNothing);
+      expect(find.byKey(const PageStorageKey('host-room-tools')), findsNothing);
       expect(find.text('Verhandlung starten'), findsNothing);
-      expect(
-        find.text('Der Host richtet die Partie ein und startet sie.'),
-        findsOneWidget,
-      );
+      expect(find.byType(Slider), findsNothing);
     },
   );
 }

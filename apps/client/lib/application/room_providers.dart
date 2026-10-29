@@ -7,6 +7,8 @@ import '../data/room_credential_store.dart';
 import '../data/room_transport.dart';
 import 'room_controller.dart';
 import 'online_profile_controller.dart';
+import 'online_settings_controller.dart';
+import 'demo_players_controller.dart';
 import 'online_game_controller.dart';
 import 'online_order_controller.dart';
 import 'online_history_controller.dart';
@@ -83,4 +85,22 @@ final onlineHistoryProvider = Provider<OnlineHistoryController>((ref) {
   );
   ref.onDispose(history.dispose);
   return history;
+});
+
+final onlineSettingsProvider = Provider<OnlineSettingsController>((ref) {
+  final controller = OnlineSettingsController(
+    ref.watch(roomControllerProvider),
+  );
+  ref.onDispose(controller.dispose);
+  return controller;
+});
+
+final demoPlayersProvider = Provider<DemoPlayersController>((ref) {
+  final host = ref.watch(roomControllerProvider);
+  final controller = DemoPlayersController(
+    host,
+    createTransport: () => NetworkRoomTransport(host.transport.serverOrigin),
+  );
+  ref.onDispose(controller.dispose);
+  return controller;
 });

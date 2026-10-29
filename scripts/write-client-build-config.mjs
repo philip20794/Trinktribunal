@@ -9,7 +9,7 @@ export function clientBuildDefines(env) {
   for (const key of ['API_BASE_URL', 'PUBLIC_CLIENT_BASE_URL']) {
     const value = env[key]?.trim();
     if (!value) {
-      if (key === 'API_BASE_URL') throw new Error('API_BASE_URL fehlt: HTTPS-Adresse des laufenden Online-Servers in Codemagic konfigurieren.');
+      if (key === 'API_BASE_URL') throw new Error('API_BASE_URL fehlt: Codemagic > Applications > Trinktribunal > Environment variables: Variable API_BASE_URL mit der HTTPS-Origin des laufenden Workers in Gruppe online_server anlegen (siehe docs/CODEMAGIC_CI.md).');
       continue;
     }
     try {

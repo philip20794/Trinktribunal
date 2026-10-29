@@ -72,7 +72,7 @@ message('beginOrdering',round,{roles:['host','judge','reader'],phases:['answers'
 message('submitOrder',{...round,order:array(ref('id'),20,2),confirmed:{const:true}},{roles:['judge','allJudgesParticipant'],phases:['ordering'],action:true});
 message('revealNext',{...round,expectedCursor:integer(0,19)},{roles:['host','judge','reader'],phases:['revealing'],action:true});
 message('completeCase',round,{roles:['host','judge','reader'],phases:['judged'],action:true});
-message('completeWithoutVerdict',{...round,confirmed:{const:true}},{...host,phases:['numbers','answers','ordering','revealing','judged','paused'],action:true});
+message('completeWithoutVerdict',{...round,confirmed:{const:true}},{...host,roles:['host','judge'],phases:['numbers','answers','ordering','revealing','judged','paused'],action:true});
 message('continueRule',{gameId:ref('id'),afterCase:integer(1,490)},{roles:['host','judge','reader'],phases:['rule_event'],action:true});
 message('resumePaused',{gameId:ref('id')},{...host,phases:['paused'],action:true});
 message('historyImport',{importId:ref('id'),page:integer(0,ROOM_LIMITS.historyEvents/ROOM_LIMITS.historyPageEntries-1),events:array(ref('historyEvent'),ROOM_LIMITS.historyPageEntries,1)},{...host,...lobby});

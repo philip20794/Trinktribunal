@@ -1,3 +1,5 @@
+import '../support/hold_action.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/data/protocol/room_message.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
+import 'package:trinktribunal/features/bench/placement_bank.dart';
 
 import 'online_numbers_test.dart' as numbers;
 
@@ -80,6 +83,7 @@ void main() {
             final fixture = await numbers.pump(
               tester,
               host: host,
+              allJudges: allJudges,
               own: false,
               uiLanguage: language,
               textScale: 2,
@@ -110,11 +114,29 @@ void main() {
               final target = find.text(strings.get(key));
               expect(target, findsOneWidget);
               expect(target.hitTestable(), findsOneWidget);
-              await tester.tap(target);
+              if (key == 'nextJudge') {
+                await holdAction(tester, target);
+              } else {
+                await tester.tap(target);
+              }
               await tester.pumpAndSettle();
               expect(tester.takeException(), isNull);
             }
 
+            if (!allJudges) {
+              await receive('answers', 2);
+              if (host) {
+                await press('nextJudge');
+                expect(
+                  socket.sent.whereType<CompleteWithoutVerdictMessage>(),
+                  hasLength(1),
+                );
+              } else {
+                expect(find.text(strings.get('nextJudge')), findsNothing);
+              }
+              expect(find.byType(Tab), findsNWidgets(host ? 3 : 2));
+              return;
+            }
             await receive('answers', 2);
             await press('onlineAnswerReady');
             expect(
@@ -151,6 +173,14 @@ void main() {
             final ownsOrder = host || allJudges;
             List<String>? ownOrder;
             if (ownsOrder) {
+              final bank = tester.widget<PlacementBank>(
+                find.byType(PlacementBank),
+              );
+              final pool = List.of(bank.unplaced);
+              for (var i = 0; i < pool.length; i++) {
+                bank.onPlace!(pool[i], i);
+              }
+              await tester.pumpAndSettle();
               await press('phoneConfirmOrder');
               await tester.tap(
                 find.text(strings.get('phoneConfirmOrder')).last,

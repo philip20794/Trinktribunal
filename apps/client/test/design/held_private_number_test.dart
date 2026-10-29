@@ -34,7 +34,7 @@ Future<void> pump(WidgetTester tester) => tester.pumpWidget(
     child: MaterialApp(home: Scaffold(body: _Harness())),
   ),
 );
-Finder get hold => find.text('Nummer anzeigen');
+Finder get hold => find.text(const AppStrings('de').get('showNumber'));
 
 void main() {
   testWidgets(
@@ -58,9 +58,11 @@ void main() {
       expect(find.text('37'), findsNothing);
       final gesture = await tester.startGesture(tester.getCenter(hold));
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       expect(find.text('37'), findsOneWidget);
       await gesture.up();
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       expect(find.text('37'), findsNothing);
     },
   );
@@ -76,26 +78,34 @@ void main() {
         expect(find.bySemanticsLabel(label), findsNothing);
         var gesture = await tester.startGesture(tester.getCenter(hold));
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsOneWidget);
         expect(find.bySemanticsLabel(label), findsOneWidget);
         await gesture.up();
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsNothing);
         gesture = await tester.startGesture(tester.getCenter(hold));
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         await gesture.cancel();
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsNothing);
         gesture = await tester.startGesture(tester.getCenter(hold));
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         await gesture.moveTo(const Offset(-10, -10));
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsNothing);
         await gesture.moveTo(tester.getCenter(hold));
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsNothing);
         await gesture.up();
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(
           tester.state<_HarnessState>(find.byType(_Harness)).completions,
           0,
@@ -103,9 +113,11 @@ void main() {
         final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
         await mouse.down(tester.getCenter(hold));
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsOneWidget);
         await mouse.up();
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsNothing);
       } finally {
         semantics.dispose();
@@ -119,15 +131,19 @@ void main() {
         await pump(tester);
         await tester.sendKeyEvent(LogicalKeyboardKey.tab);
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         await tester.sendKeyDownEvent(key);
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsOneWidget);
         await tester.sendKeyRepeatEvent(key);
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsOneWidget);
         expect(tester.state<_HarnessState>(find.byType(_Harness)).reveals, 1);
         await tester.sendKeyUpEvent(key);
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1200));
         expect(find.text('37'), findsNothing);
       },
     );
@@ -138,21 +154,26 @@ void main() {
       await pump(tester);
       var gesture = await tester.startGesture(tester.getCenter(hold));
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       FocusManager.instance.primaryFocus!.unfocus();
       await tester.pumpAndSettle();
       expect(find.text('37'), findsNothing);
       await gesture.up();
       gesture = await tester.startGesture(tester.getCenter(hold));
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       expect(find.text('37'), findsNothing);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       expect(find.text('37'), findsNothing);
       await gesture.up();
       gesture = await tester.startGesture(tester.getCenter(hold));
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       final context = tester.element(find.byType(_Harness));
       final dialog = showDialog<void>(
         context: context,
@@ -173,6 +194,7 @@ void main() {
       await dialog;
       await gesture.up();
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       expect(find.text('37'), findsNothing);
     },
   );
@@ -187,11 +209,14 @@ void main() {
       expect(tester.widget<FilledButton>(done).onPressed, isNull);
       final gesture = await tester.startGesture(tester.getCenter(hold));
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       await gesture.up();
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       expect(tester.widget<FilledButton>(done).onPressed, isNotNull);
       await tester.tap(done);
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1200));
       final state = tester.state<_HarnessState>(find.byType(_Harness));
       expect(state.shown, isFalse);
       expect(state.reveals, 1);

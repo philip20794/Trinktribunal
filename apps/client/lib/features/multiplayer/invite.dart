@@ -54,7 +54,11 @@ class RoomInvite extends ConsumerWidget {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 8),
-          SelectableText(payload, textAlign: TextAlign.center),
+          SelectableText(
+            payload,
+            key: const PageStorageKey('room-invite-link'),
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 8),
           OutlinedButton.icon(
             icon: const Icon(Icons.copy),

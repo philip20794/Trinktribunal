@@ -63,7 +63,7 @@ for (const allJudges of [false, true]) {
     });
     expect(
       transition(state, guide, command(state, 'completeWithoutVerdict'), dependencies),
-    ).toMatchObject({ ok: false, code: 'UNAUTHORIZED_ACTION' });
+    ).toMatchObject(allJudges ? { ok: false, code: 'UNAUTHORIZED_ACTION' } : { ok: true });
     state = apply(state, 'completeCase', dependencies, {}, guide);
     expect(state.completedCases).toBe(2);
     expect(state.config.allJudges ? state.readerId : state.judgeId).toBe(other);
@@ -310,7 +310,7 @@ describe('authority, phase rights and atomic rejection', () => {
     expect(state.hostId).toBe(ids[2]);
     for (const [actor, type, extra, code] of [
       [ids[0], 'restartGame', { config }, 'UNAUTHORIZED_ACTION'],
-      [ids[0], 'completeWithoutVerdict', {}, 'UNAUTHORIZED_ACTION'],
+      [ids[1], 'completeWithoutVerdict', {}, 'UNAUTHORIZED_ACTION'],
       [ids[2], 'completeWithoutVerdict', { gameId: 'old_game' }, 'STALE_ROUND'],
       [ids[2], 'completeWithoutVerdict', { roundId: 'old_round' }, 'STALE_ROUND'],
       [ids[2], 'completeWithoutVerdict', { expectedRevision: 0 }, 'STALE_REVISION'],

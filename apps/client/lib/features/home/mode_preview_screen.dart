@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
 import '../../design/court_scene.dart';
-import '../setup/card_mode_screen.dart';
 import '../setup/player_roster.dart';
 import '../multiplayer/create.dart';
 import 'home_screen.dart';
@@ -30,7 +29,7 @@ class ModePreviewScreen extends StatelessWidget {
           onPressed: () => Navigator.of(context).pushReplacement<void, void>(
             MaterialPageRoute(
               builder: (_) => switch (mode) {
-                GameMode.cards => const CardModeScreen(),
+                GameMode.cards => const PlayerRosterScreen(cardMode: true),
                 GameMode.sharedPhone => const PlayerRosterScreen(),
                 GameMode.multiplayer => const MultiplayerEntryScreen(),
               },

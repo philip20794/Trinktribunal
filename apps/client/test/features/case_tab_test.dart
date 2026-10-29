@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/data/protocol/room_message.dart';
-import 'package:trinktribunal/design/private_number.dart';
+import 'package:trinktribunal/design/case_stage.dart';
+
+import '../support/hold_action.dart';
+
 import 'package:trinktribunal/features/multiplayer/game_privacy.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
@@ -22,7 +25,11 @@ void main() {
       testWidgets(
         'broadcast case changes select case tab and conceal number: $player / allJudges=$allJudges',
         (tester) async {
-          final fixture = await numbers.pump(tester, playerId: player);
+          final fixture = await numbers.pump(
+            tester,
+            playerId: player,
+            allJudges: allJudges,
+          );
           final socket = fixture.transport.sockets.last,
               base = fixture.room.state.snapshot!;
           final tabs = DefaultTabController.of(
@@ -57,22 +64,23 @@ void main() {
             });
           }
 
-          expect(tabs.length, 3);
-          expect(tabs.index, 2);
-          await numbers.tapText(tester, AppStrings('de').get('phoneReveal'));
-          expect(
-            tester.widget<PrivateNumber>(find.byType(PrivateNumber)).number,
-            2,
+          expect(tabs.length, (allJudges ? 3 : 2) + (player == 'p1' ? 1 : 0));
+          expect(tabs.index, allJudges ? 2 : 1);
+          final holding = await startChargedHold(
+            tester,
+            find.text(AppStrings('de').get('showNumber')),
           );
+          expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, 2);
           tabs.animateTo(0);
           await tester.pumpAndSettle();
+          await holding.up();
           // Server commits next case and rotates to a non-host guide.
           socket.receive(next('numbers', 2));
           await tester.pumpAndSettle();
-          expect(tabs.index, 2);
-          if (find.byType(PrivateNumber).evaluate().isNotEmpty) {
+          expect(tabs.index, allJudges ? 2 : 1);
+          if (find.byType(FlipCase).evaluate().isNotEmpty) {
             expect(
-              tester.widget<PrivateNumber>(find.byType(PrivateNumber)).number,
+              tester.widget<FlipCase>(find.byType(FlipCase)).number,
               isNull,
             );
           }
@@ -84,14 +92,14 @@ void main() {
           expect(tabs.index, 0);
           socket.receive(next('ordering', 4));
           await tester.pumpAndSettle();
-          expect(tabs.index, 1);
+          expect(tabs.index, allJudges ? 1 : 0);
           socket.receive(next('judged', 5));
           await tester.pumpAndSettle();
-          expect(tabs.index, 2);
+          expect(tabs.index, allJudges ? 2 : 1);
           final advance = find.text(AppStrings('de').get('nextJudge'));
-          if (player == 'p1' || player == 'p2') {
+          if (player == 'p2') {
             expect(advance.hitTestable(), findsOneWidget);
-            await tester.tap(advance);
+            await holdAction(tester, advance);
             await tester.pumpAndSettle();
             expect(
               socket.sent
@@ -108,7 +116,7 @@ void main() {
           await tester.pumpAndSettle();
           socket.receive(next('numbers', 6, completed: 2));
           await tester.pumpAndSettle();
-          expect(tabs.index, 2);
+          expect(tabs.index, allJudges ? 2 : 1);
           expect(tester.takeException(), isNull);
         },
       );

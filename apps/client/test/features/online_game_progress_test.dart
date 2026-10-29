@@ -152,16 +152,6 @@ void main() {
       }),
     );
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(
-      find.text(AppStrings('de').get('nextJudge')),
-      250,
-      scrollable: find
-          .descendant(
-            of: find.byType(ListView).first,
-            matching: find.byType(Scrollable),
-          )
-          .first,
-    );
     await numbers.tapText(tester, AppStrings('de').get('nextJudge'));
     final completion = socket.sent.whereType<CompleteCaseMessage>().single;
     expect(completion.roundId, base.public.roundId);

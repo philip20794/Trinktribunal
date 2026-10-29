@@ -12,6 +12,7 @@ final class OnlineGameController extends ChangeNotifier {
   OnlineGameController(this.room, {String Function()? newId})
     : _newId = newId ?? newRoomRequestId {
     _subscription = room.states.listen((_) {
+      if (_disposed) return;
       _visible = false;
       _ackPending = false;
       _pending.clear();
@@ -21,11 +22,11 @@ final class OnlineGameController extends ChangeNotifier {
   final RoomController room;
   final String Function() _newId;
   late final StreamSubscription<RoomSessionState> _subscription;
-  bool _visible = false, _ackPending = false;
+  bool _visible = false, _ackPending = false, _disposed = false;
   final Set<String> _pending = {};
   bool pending(String action) => _pending.contains(action);
   SnapshotMessage? get snapshot =>
-      room.state.status == RoomConnectionStatus.online
+      !_disposed && room.state.status == RoomConnectionStatus.online
       ? room.state.snapshot
       : null;
   int? get visibleNumber => _visible ? snapshot?.private.ownNumber : null;
@@ -301,7 +302,8 @@ final class OnlineGameController extends ChangeNotifier {
     if (!confirmed ||
         view == null ||
         !_sameRound(gameId, roundId) ||
-        view.you != view.public.hostId ||
+        !(view.you == view.public.hostId ||
+            !view.public.config.allJudges && canGuideRound) ||
         ![
           'numbers',
           'answers',
@@ -326,6 +328,11 @@ final class OnlineGameController extends ChangeNotifier {
 
   @override
   void dispose() {
+    if (_disposed) return;
+    _disposed = true;
+    _visible = false;
+    _ackPending = false;
+    _pending.clear();
     unawaited(_subscription.cancel());
     super.dispose();
   }

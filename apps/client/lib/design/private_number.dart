@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../l10n/app_strings.dart';
 import 'court_scene.dart';
 import 'court_assets.dart';
+import 'hold_action_button.dart';
 
 /// Shared local/online presentation; hidden values never enter text or semantics.
 class PrivateNumber extends StatefulWidget {
@@ -26,7 +26,7 @@ class PrivateNumber extends StatefulWidget {
 }
 
 /// A shared-device value is visible only during an active pointer/key hold.
-/// Online PrivateNumber intentionally keeps its separate tap interaction.
+/// The same charged hold control is used for online and shared-device reveals.
 class HeldPrivateNumber extends StatefulWidget {
   const HeldPrivateNumber({
     required this.number,
@@ -43,42 +43,11 @@ class HeldPrivateNumber extends StatefulWidget {
   State<HeldPrivateNumber> createState() => _HeldPrivateNumberState();
 }
 
-class _HeldPrivateNumberState extends State<HeldPrivateNumber>
-    with WidgetsBindingObserver {
+class _HeldPrivateNumberState extends State<HeldPrivateNumber> {
   final _focus = FocusNode(debugLabel: 'hold-private-number');
-  final _holdSurface = GlobalKey();
-  bool _seen = false;
-  int? _pointer;
-  LogicalKeyboardKey? _key;
-  bool get _held => _pointer != null || _key != null;
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didUpdateWidget(HeldPrivateNumber oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (_held && widget.number != null) _seen = true;
-  }
-
-  void _stop() {
-    if (!_held) return;
-    _pointer = null;
-    _key = null;
-    if (mounted) setState(() {});
-    widget.onHide();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state != AppLifecycleState.resumed) _stop();
-  }
-
+  bool _seen = false, _revealed = false;
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     _focus.dispose();
     super.dispose();
   }
@@ -87,124 +56,41 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber>
   Widget build(BuildContext context) {
     final controls = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Semantics(
-          button: true,
-          label: context.tr('phoneHoldNumber'),
-          hint: context.tr('phoneHoldHelp'),
-          child: Focus(
-            focusNode: _focus,
-            onFocusChange: (focused) {
-              if (!focused) _stop();
-              if (mounted) setState(() {});
-            },
-            onKeyEvent: (_, event) {
-              final key = event.logicalKey;
-              if (key != LogicalKeyboardKey.space &&
-                  key != LogicalKeyboardKey.enter) {
-                return KeyEventResult.ignored;
-              }
-              if (event is KeyDownEvent && !_held) {
-                setState(() {
-                  _key = key;
-                  _seen = _seen || widget.number != null;
-                });
-                widget.onReveal();
-              }
-              if (event is KeyUpEvent && _key == key) _stop();
-              return KeyEventResult.handled;
-            },
-            child: LayoutBuilder(
-              builder: (context, constraints) => Listener(
-                onPointerDown: (event) {
-                  if (_held || event.buttons != 1) return;
-                  setState(() {
-                    _pointer = event.pointer;
-                    _seen = _seen || widget.number != null;
-                  });
-                  _focus.requestFocus();
-                  widget.onReveal();
-                },
-                onPointerUp: (event) {
-                  if (_pointer == event.pointer) _stop();
-                },
-                onPointerCancel: (event) {
-                  if (_pointer == event.pointer) _stop();
-                },
-                onPointerMove: (event) {
-                  if (_pointer == event.pointer &&
-                      (event.localPosition.dx < 0 ||
-                          event.localPosition.dy < 0 ||
-                          event.localPosition.dx > constraints.maxWidth ||
-                          event.localPosition.dy >
-                              (_holdSurface.currentContext!.findRenderObject()
-                                      as RenderBox)
-                                  .size
-                                  .height)) {
-                    _stop();
-                  }
-                },
-                child: Container(
-                  key: _holdSurface,
-                  constraints: const BoxConstraints(minHeight: 56),
-                  padding: const EdgeInsets.all(12),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: widget.fullScreen
-                        ? Colors.transparent
-                        : Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(
-                      widget.fullScreen ? 28 : 12,
-                    ),
-                    border: Border.all(
-                      color: widget.fullScreen
-                          ? CourtSceneTokens.gold
-                          : _focus.hasFocus
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.transparent,
-                      width: 2,
-                    ),
-                  ),
-                  child: ExcludeSemantics(
-                    child: widget.fullScreen
-                        ? const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.visibility_outlined,
-                                color: CourtSceneTokens.cream,
-                              ),
-                              SizedBox(width: 10),
-                              Flexible(child: TText('phoneHoldNumber')),
-                            ],
-                          )
-                        : const TText('phoneHoldNumber'),
-                  ),
-                ),
-              ),
-            ),
-          ),
+        HoldActionButton(
+          duration: const Duration(milliseconds: 800),
+          key: const ValueKey('hold-private-number'),
+          focusNode: _focus,
+          icon: Icons.visibility_outlined,
+          label: context.tr('showNumber'),
+          onCompleted: () {
+            setState(() {
+              _seen = true;
+              _revealed = true;
+            });
+            widget.onReveal();
+          },
+          onReleased: () {
+            if (!mounted) return;
+            setState(() => _revealed = false);
+            widget.onHide();
+          },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         FilledButton(
-          onPressed: _seen
-              ? () {
-                  _stop();
-                  widget.onDone();
-                }
-              : null,
+          onPressed: _seen && !_revealed ? widget.onDone : null,
           child: const TText('phoneDoneNext'),
         ),
       ],
     );
-    final visible = _held ? widget.number : null;
     if (widget.fullScreen) {
       return CourtScaffold(
         title: const TText('yourNumber'),
         leading: const SizedBox.shrink(),
         body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: _SecretPaper(number: visible),
+          padding: const EdgeInsets.all(4),
+          child: SecretNumberFace(number: _revealed ? widget.number : null),
         ),
         footer: CourtActionBar(primary: controls),
       );
@@ -212,7 +98,7 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _NumberFace(number: visible),
+        _NumberFace(number: _revealed ? widget.number : null),
         const SizedBox(height: 12),
         controls,
       ],
@@ -220,8 +106,8 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber>
   }
 }
 
-class _SecretPaper extends StatelessWidget {
-  const _SecretPaper({required this.number});
+class SecretNumberFace extends StatelessWidget {
+  const SecretNumberFace({required this.number, super.key});
   final int? number;
   @override
   Widget build(BuildContext context) => LayoutBuilder(

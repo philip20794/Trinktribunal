@@ -1,3 +1,5 @@
+import '../support/roster_setup.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -66,14 +68,21 @@ void main() {
         }
 
         var container = await mount();
+        await addTestPlayers(tester);
         final start = find.text(strings.get('startHearing'));
-        await tester.scrollUntilVisible(start, 300);
+        await tester.ensureVisible(start);
         await Scrollable.ensureVisible(tester.element(start), alignment: .5);
         await tester.pumpAndSettle();
         expect(start.hitTestable(), findsOneWidget);
         await tester.tap(start);
         await tester.pumpAndSettle();
         var cards = container.read(localSessionProvider);
+        expect(cards.state!.roster.map((p) => p.player.name), [
+          'Alex',
+          'Bea',
+          'Cleo',
+        ]);
+        expect(cards.state!.judge!.player.name, 'Alex');
         expect(cards.state!.config.targetCases, 50);
         expect(cards.state!.config.requestedRuleEvents, 7);
         expect(container.read(profileProvider).asData?.value.profile, isNull);
@@ -88,6 +97,10 @@ void main() {
           expect(target.hitTestable(), findsOneWidget);
           await tester.tap(target);
           await tester.pumpAndSettle();
+          expect(
+            cards.state!.judge,
+            cards.state!.roster[cards.state!.completedCases % 3],
+          );
           expect(find.byType(AlertDialog), findsNothing);
           expect(tester.takeException(), isNull);
         }

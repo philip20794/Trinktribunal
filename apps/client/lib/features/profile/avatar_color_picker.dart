@@ -21,19 +21,11 @@ class AvatarColorPickerDialog extends StatefulWidget {
 
 class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
   late HSVColor _hsv;
-  late final TextEditingController _hex;
 
   @override
   void initState() {
     super.initState();
     _hsv = HSVColor.fromColor(_fromHex(widget.initialHex));
-    _hex = TextEditingController(text: _toHex(_hsv.toColor()));
-  }
-
-  @override
-  void dispose() {
-    _hex.dispose();
-    super.dispose();
   }
 
   static Color _fromHex(String hex) =>
@@ -50,7 +42,6 @@ class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
   void _update(HSVColor value) {
     setState(() {
       _hsv = value;
-      _hex.text = _toHex(_hsv.toColor());
     });
   }
 
@@ -114,42 +105,14 @@ class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
                 ),
               ),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  Container(
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      color: _hsv.toColor(),
-                      borderRadius: BorderRadius.circular(9),
-                      border: Border.all(color: const Color(0xFFE9BC73)),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextField(
-                      controller: _hex,
-                      maxLength: 7,
-                      textCapitalization: TextCapitalization.characters,
-                      style: const TextStyle(color: Color(0xFFFFF1D7)),
-                      decoration: InputDecoration(
-                        labelText: 'HEX',
-                        counterText: '',
-                        filled: true,
-                        fillColor: const Color(0xFF26130D),
-                        isDense: true,
-                        border: const OutlineInputBorder(),
-                      ),
-                      onChanged: (value) {
-                        if (RegExp(r'^#[A-Fa-f0-9]{6}$').hasMatch(value)) {
-                          setState(
-                            () => _hsv = HSVColor.fromColor(_fromHex(value)),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ],
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: _hsv.toColor(),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFE9BC73)),
+                ),
               ),
             ],
           ),

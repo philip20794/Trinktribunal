@@ -6,7 +6,7 @@
   "endOfLine": "lf",
   "overrides": [
     {
-      "files": ["wrangler.jsonc", "wrangler.release.example.jsonc"],
+      "files": ["wrangler.jsonc", "wrangler.release.example.jsonc", "wrangler.production.jsonc"],
       "options": {
         "trailingComma": "none"
       }

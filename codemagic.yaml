@@ -1,6 +1,7 @@
 # Trinktribunal: kostenlose macOS-M2-CI ohne GitHub Actions.
 # Vor dem ersten Build: Codemagic-Keystore trinktribunal_release und
-# Environment-Group github_release_credentials (GITHUB_TOKEN) anlegen.
+# Environment-Groups github_release_credentials (GITHUB_TOKEN) und
+# online_server (API_BASE_URL=https://<dein-laufender-worker>) anlegen.
 workflows:
   android-apk:
     name: Android APK (main und Versions-Tags)
@@ -14,6 +15,7 @@ workflows:
         - trinktribunal_release
       groups:
         - github_release_credentials
+        - online_server
     triggering:
       events:
         - push

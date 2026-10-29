@@ -617,7 +617,8 @@ function reduce(
         complete(next, false, ports, now);
         break;
       case 'completeWithoutVerdict':
-        requireHost(next, actor);
+        if (next.config.allJudges || actor === next.hostId) requireHost(next, actor);
+        else requireRoundGuide(next, actor);
         complete(next, true, ports, now);
         break;
       case 'continueRule':

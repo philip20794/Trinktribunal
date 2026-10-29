@@ -80,8 +80,10 @@ class _AvatarOptionsState extends State<AvatarOptions> {
     enabledBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: _gold),
     ),
-    isDense: true,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
+    filled: true,
+    fillColor: const Color(0xFF714A32),
+    isDense: false,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
   );
 
   Future<void> _chooseColor(String key, bool english) async {
@@ -107,36 +109,24 @@ class _AvatarOptionsState extends State<AvatarOptions> {
         key: ValueKey('${widget.keyPrefix}avatar-option-$key:$hex'),
         borderRadius: BorderRadius.circular(5),
         onTap: () => _chooseColor(key, english),
-        child: InputDecorator(
-          decoration: _decoration(label).copyWith(
-            suffixIcon: const Icon(
-              Icons.color_lens_outlined,
-              size: 19,
-              color: _gold,
-            ),
-            suffixIconConstraints: const BoxConstraints(
-              minWidth: 29,
-              minHeight: 38,
-            ),
-          ),
-          child: Row(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: _cream, fontSize: 13),
+              ),
+              const SizedBox(height: 8),
               Container(
-                width: 23,
-                height: 23,
+                width: 34,
+                height: 34,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: color,
-                  border: Border.all(color: _cream.withValues(alpha: .65)),
-                ),
-              ),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  hex.toUpperCase(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: _cream, fontSize: 12),
+                  border: Border.all(color: _gold, width: 2),
                 ),
               ),
             ],
@@ -157,13 +147,25 @@ class _AvatarOptionsState extends State<AvatarOptions> {
       child: DropdownButtonFormField<String>(
         key: ValueKey('${widget.keyPrefix}avatar-option-$key:$selected'),
         initialValue: selected,
-        isDense: true,
+        isDense: false,
         isExpanded: true,
+        itemHeight: 64,
         menuMaxHeight: 360,
-        dropdownColor: _dark,
+        dropdownColor: const Color(0xFF714A32),
         iconEnabledColor: _gold,
         style: const TextStyle(color: _cream, fontSize: 13),
         decoration: _decoration(_labels[key]![english ? 1 : 0]),
+        selectedItemBuilder: (context) => [
+          for (final value in values)
+            Center(
+              child: AvatarPartPreview(
+                config: widget.config,
+                category: key,
+                variant: value,
+                size: 52,
+              ),
+            ),
+        ],
         items: [
           for (final value in values)
             DropdownMenuItem<String>(
@@ -174,7 +176,7 @@ class _AvatarOptionsState extends State<AvatarOptions> {
                     config: widget.config,
                     category: key,
                     variant: value,
-                    size: 35,
+                    size: 48,
                   ),
                   const SizedBox(width: 5),
                   Expanded(
@@ -220,6 +222,11 @@ class _AvatarOptionsState extends State<AvatarOptions> {
               label: Text(tabs[index]),
               selected: _tab == index,
               onSelected: (_) => setState(() => _tab = index),
+              backgroundColor: _dark,
+              selectedColor: const Color(0xFF704626),
+              labelStyle: const TextStyle(color: _cream),
+              checkmarkColor: _gold,
+              side: const BorderSide(color: _gold),
               visualDensity: VisualDensity.compact,
             ),
           ),
@@ -228,7 +235,7 @@ class _AvatarOptionsState extends State<AvatarOptions> {
         Expanded(
           child: LayoutBuilder(
             builder: (context, bounds) {
-              final columns = bounds.maxWidth >= 680 && scale < 25
+              final columns = bounds.maxWidth >= 280 && scale < 25
                   ? 3
                   : bounds.maxWidth >= 290 && scale < 26
                   ? 2
@@ -242,7 +249,7 @@ class _AvatarOptionsState extends State<AvatarOptions> {
                   crossAxisCount: columns,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  mainAxisExtent: scale >= 26 ? 76 : 62,
+                  mainAxisExtent: _tab == 2 ? 120 : (scale >= 26 ? 100 : 94),
                 ),
                 itemBuilder: (context, index) {
                   final key = keys[index];

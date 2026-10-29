@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/local_data_providers.dart';
 import 'package:trinktribunal/design/case_file.dart';
+import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/design/court_scene.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/domain/bench_order.dart';
@@ -67,7 +68,8 @@ void main() {
             if (position.row == 0) expect(rect.top, base.top);
             if (position.row > 0) expect(rect.top, greaterThan(base.top));
           }
-          expect(find.byType(NamePlate), findsNWidgets(count));
+          expect(find.byType(NamePlate), findsNothing);
+          expect(find.byType(AvatarView), findsNWidgets(count));
           expect(find.byType(DragTarget<PlayerId>), findsNWidgets(count));
           expect(tester.takeException(), isNull);
         },

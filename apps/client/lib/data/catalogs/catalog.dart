@@ -103,8 +103,13 @@ class Catalog<T extends CatalogEntry> {
     : entries = List.unmodifiable(entries);
   final String language;
   final List<T> entries;
-  List<T> get withoutPlayers =>
-      List.unmodifiable(entries.where((e) => e.players.isEmpty));
+  late final Map<String, T> byId = Map.unmodifiable({
+    for (final entry in entries) entry.id: entry,
+  });
+  late final List<T> _withoutPlayers = List.unmodifiable(
+    entries.where((e) => e.players.isEmpty),
+  );
+  List<T> get withoutPlayers => _withoutPlayers;
 }
 
 Map<String, PlayerRole> _roles(dynamic value, List<String> texts, String path) {

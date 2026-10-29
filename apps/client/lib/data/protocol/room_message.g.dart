@@ -33,7 +33,8 @@ final class Avatar extends JsonDto {
   }
   int get version => _json['version'] as int;
   String get seed => _json['seed'] as String;
-  Map<String, String> get selections => Map<String, String>.unmodifiable((_json['selections'] as Map<String, Object?>).map((key, value) => MapEntry(key, value as String)));
+  late final Map<String, String> _selections = Map<String, String>.unmodifiable((_json['selections'] as Map<String, Object?>).map((key, value) => MapEntry(key, value as String)));
+  Map<String, String> get selections => _selections;
 }
 final class Profile extends JsonDto {
   Profile._(super.json) : super._();
@@ -41,14 +42,16 @@ final class Profile extends JsonDto {
     return Profile._(_validateDto('profile', json));
   }
   String get name => _json['name'] as String;
-  Avatar get avatar => Avatar._(_json['avatar'] as Map<String, Object?>);
+  late final Avatar _avatar = Avatar._(_json['avatar'] as Map<String, Object?>);
+  Avatar get avatar => _avatar;
 }
 final class HistoryEvent extends JsonDto {
   HistoryEvent._(super.json) : super._();
   factory HistoryEvent.fromJson(Map<String, Object?> json) {
     return HistoryEvent._(_validateDto('historyEvent', json));
   }
-  EventId get eventId => EventId(_json['eventId'] as String);
+  late final EventId _eventId = EventId(_json['eventId'] as String);
+  EventId get eventId => _eventId;
   String get kind => _json['kind'] as String;
   String get contentId => _json['contentId'] as String;
   String get timestampUtc => _json['timestampUtc'] as String;
@@ -58,7 +61,8 @@ final class HistoryOffer extends JsonDto {
   factory HistoryOffer.fromJson(Map<String, Object?> json) {
     return HistoryOffer._(_validateDto('historyOffer', json));
   }
-  ImportId get importId => ImportId(_json['importId'] as String);
+  late final ImportId _importId = ImportId(_json['importId'] as String);
+  ImportId get importId => _importId;
   int get count => _json['count'] as int;
   String get sha256 => _json['sha256'] as String;
 }
@@ -67,7 +71,8 @@ final class Revealed extends JsonDto {
   factory Revealed.fromJson(Map<String, Object?> json) {
     return Revealed._(_validateDto('revealed', json));
   }
-  PlayerId get playerId => PlayerId(_json['playerId'] as String);
+  late final PlayerId _playerId = PlayerId(_json['playerId'] as String);
+  PlayerId get playerId => _playerId;
   int get number => _json['number'] as int;
 }
 final class Binding extends JsonDto {
@@ -75,7 +80,8 @@ final class Binding extends JsonDto {
   factory Binding.fromJson(Map<String, Object?> json) {
     return Binding._(_validateDto('binding', json));
   }
-  Map<String, PlayerId> get values => Map.unmodifiable(_json.map((key, value) => MapEntry(key, PlayerId(value as String))));
+  late final Map<String, PlayerId> _values = Map.unmodifiable(_json.map((key, value) => MapEntry(key, PlayerId(value as String))));
+  Map<String, PlayerId> get values => _values;
 }
 final class Assignment extends JsonDto {
   Assignment._(super.json) : super._();
@@ -83,15 +89,18 @@ final class Assignment extends JsonDto {
     return Assignment._(_validateDto('assignment', json));
   }
   String get contentId => _json['contentId'] as String;
-  Binding get bindings => Binding._(_json['bindings'] as Map<String, Object?>);
+  late final Binding _bindings = Binding._(_json['bindings'] as Map<String, Object?>);
+  Binding get bindings => _bindings;
 }
 final class Participant extends JsonDto {
   Participant._(super.json) : super._();
   factory Participant.fromJson(Map<String, Object?> json) {
     return Participant._(_validateDto('participant', json));
   }
-  PlayerId get playerId => PlayerId(_json['playerId'] as String);
-  Profile get profile => Profile._(_json['profile'] as Map<String, Object?>);
+  late final PlayerId _playerId = PlayerId(_json['playerId'] as String);
+  PlayerId get playerId => _playerId;
+  late final Profile _profile = Profile._(_json['profile'] as Map<String, Object?>);
+  Profile get profile => _profile;
   bool get connected => _json['connected'] as bool;
   bool get ready => _json['ready'] as bool;
   bool get orderSubmitted => _json['orderSubmitted'] as bool;
@@ -102,7 +111,8 @@ final class Penalty extends JsonDto {
   factory Penalty.fromJson(Map<String, Object?> json) {
     return Penalty._(_validateDto('penalty', json));
   }
-  PlayerId get playerId => PlayerId(_json['playerId'] as String);
+  late final PlayerId _playerId = PlayerId(_json['playerId'] as String);
+  PlayerId get playerId => _playerId;
   int get sips => _json['sips'] as int;
 }
 final class PublicResult extends JsonDto {
@@ -111,7 +121,8 @@ final class PublicResult extends JsonDto {
     return PublicResult._(_validateDto('publicResult', json));
   }
   int get errors => _json['errors'] as int;
-  List<Penalty> get penalties => List<Penalty>.unmodifiable((_json['penalties'] as List).map((value) => Penalty._(value as Map<String, Object?>)));
+  late final List<Penalty> _penalties = List<Penalty>.unmodifiable((_json['penalties'] as List).map((value) => Penalty._(value as Map<String, Object?>)));
+  List<Penalty> get penalties => _penalties;
 }
 final class OwnResult extends JsonDto {
   OwnResult._(super.json) : super._();
@@ -127,8 +138,10 @@ final class PrivateView extends JsonDto {
     return PrivateView._(_validateDto('privateView', json));
   }
   int? get ownNumber => _json['ownNumber'] == null ? null : _json['ownNumber'] as int;
-  List<PlayerId>? get ownOrder => _json['ownOrder'] == null ? null : List<PlayerId>.unmodifiable((_json['ownOrder'] as List).map((value) => PlayerId(value as String)));
-  OwnResult? get ownResult => _json['ownResult'] == null ? null : OwnResult._(_json['ownResult'] as Map<String, Object?>);
+  late final List<PlayerId>? _ownOrder = _json['ownOrder'] == null ? null : List<PlayerId>.unmodifiable((_json['ownOrder'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId>? get ownOrder => _ownOrder;
+  late final OwnResult? _ownResult = _json['ownResult'] == null ? null : OwnResult._(_json['ownResult'] as Map<String, Object?>);
+  OwnResult? get ownResult => _ownResult;
 }
 final class PublicView extends JsonDto {
   PublicView._(super.json) : super._();
@@ -136,23 +149,37 @@ final class PublicView extends JsonDto {
     return PublicView._(_validateDto('publicView', json));
   }
   String get phase => _json['phase'] as String;
-  PlayerId get hostId => PlayerId(_json['hostId'] as String);
+  late final PlayerId _hostId = PlayerId(_json['hostId'] as String);
+  PlayerId get hostId => _hostId;
   int get hostRevision => _json['hostRevision'] as int;
-  Config get config => Config._(_json['config'] as Map<String, Object?>);
-  List<Participant> get players => List<Participant>.unmodifiable((_json['players'] as List).map((value) => Participant._(value as Map<String, Object?>)));
-  List<PlayerId> get frozenRoster => List<PlayerId>.unmodifiable((_json['frozenRoster'] as List).map((value) => PlayerId(value as String)));
-  List<PlayerId> get pendingRoster => List<PlayerId>.unmodifiable((_json['pendingRoster'] as List).map((value) => PlayerId(value as String)));
-  GameId? get gameId => _json['gameId'] == null ? null : GameId(_json['gameId'] as String);
-  RoundId? get roundId => _json['roundId'] == null ? null : RoundId(_json['roundId'] as String);
-  PlayerId? get judgeId => _json['judgeId'] == null ? null : PlayerId(_json['judgeId'] as String);
-  PlayerId? get readerId => _json['readerId'] == null ? null : PlayerId(_json['readerId'] as String);
-  Assignment? get question => _json['question'] == null ? null : Assignment._(_json['question'] as Map<String, Object?>);
-  List<Assignment> get activeRules => List<Assignment>.unmodifiable((_json['activeRules'] as List).map((value) => Assignment._(value as Map<String, Object?>)));
+  late final Config _config = Config._(_json['config'] as Map<String, Object?>);
+  Config get config => _config;
+  late final List<Participant> _players = List<Participant>.unmodifiable((_json['players'] as List).map((value) => Participant._(value as Map<String, Object?>)));
+  List<Participant> get players => _players;
+  late final List<PlayerId> _frozenRoster = List<PlayerId>.unmodifiable((_json['frozenRoster'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId> get frozenRoster => _frozenRoster;
+  late final List<PlayerId> _pendingRoster = List<PlayerId>.unmodifiable((_json['pendingRoster'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId> get pendingRoster => _pendingRoster;
+  late final GameId? _gameId = _json['gameId'] == null ? null : GameId(_json['gameId'] as String);
+  GameId? get gameId => _gameId;
+  late final RoundId? _roundId = _json['roundId'] == null ? null : RoundId(_json['roundId'] as String);
+  RoundId? get roundId => _roundId;
+  late final PlayerId? _judgeId = _json['judgeId'] == null ? null : PlayerId(_json['judgeId'] as String);
+  PlayerId? get judgeId => _judgeId;
+  late final PlayerId? _readerId = _json['readerId'] == null ? null : PlayerId(_json['readerId'] as String);
+  PlayerId? get readerId => _readerId;
+  late final Assignment? _question = _json['question'] == null ? null : Assignment._(_json['question'] as Map<String, Object?>);
+  Assignment? get question => _question;
+  late final List<Assignment> _activeRules = List<Assignment>.unmodifiable((_json['activeRules'] as List).map((value) => Assignment._(value as Map<String, Object?>)));
+  List<Assignment> get activeRules => _activeRules;
   int get completedCases => _json['completedCases'] as int;
   int get revealCursor => _json['revealCursor'] as int;
-  List<Revealed> get revealed => List<Revealed>.unmodifiable((_json['revealed'] as List).map((value) => Revealed._(value as Map<String, Object?>)));
-  List<PlayerId>? get judgeOrder => _json['judgeOrder'] == null ? null : List<PlayerId>.unmodifiable((_json['judgeOrder'] as List).map((value) => PlayerId(value as String)));
-  PublicResult? get result => _json['result'] == null ? null : PublicResult._(_json['result'] as Map<String, Object?>);
+  late final List<Revealed> _revealed = List<Revealed>.unmodifiable((_json['revealed'] as List).map((value) => Revealed._(value as Map<String, Object?>)));
+  List<Revealed> get revealed => _revealed;
+  late final List<PlayerId>? _judgeOrder = _json['judgeOrder'] == null ? null : List<PlayerId>.unmodifiable((_json['judgeOrder'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId>? get judgeOrder => _judgeOrder;
+  late final PublicResult? _result = _json['result'] == null ? null : PublicResult._(_json['result'] as Map<String, Object?>);
+  PublicResult? get result => _result;
   String? get pauseReason => _json['pauseReason'] == null ? null : _json['pauseReason'] as String;
   String get expiresAtUtc => _json['expiresAtUtc'] as String;
   String? get pausedFrom => _json['pausedFrom'] == null ? null : _json['pausedFrom'] as String;
@@ -163,23 +190,37 @@ final class PublicChanges extends JsonDto {
     return PublicChanges._(_validateDto('publicChanges', json));
   }
   String? get phase => _json['phase'] == null ? null : _json['phase'] as String;
-  PlayerId? get hostId => _json['hostId'] == null ? null : PlayerId(_json['hostId'] as String);
+  late final PlayerId? _hostId = _json['hostId'] == null ? null : PlayerId(_json['hostId'] as String);
+  PlayerId? get hostId => _hostId;
   int? get hostRevision => _json['hostRevision'] == null ? null : _json['hostRevision'] as int;
-  Config? get config => _json['config'] == null ? null : Config._(_json['config'] as Map<String, Object?>);
-  List<Participant>? get players => _json['players'] == null ? null : List<Participant>.unmodifiable((_json['players'] as List).map((value) => Participant._(value as Map<String, Object?>)));
-  List<PlayerId>? get frozenRoster => _json['frozenRoster'] == null ? null : List<PlayerId>.unmodifiable((_json['frozenRoster'] as List).map((value) => PlayerId(value as String)));
-  List<PlayerId>? get pendingRoster => _json['pendingRoster'] == null ? null : List<PlayerId>.unmodifiable((_json['pendingRoster'] as List).map((value) => PlayerId(value as String)));
-  GameId? get gameId => _json['gameId'] == null ? null : GameId(_json['gameId'] as String);
-  RoundId? get roundId => _json['roundId'] == null ? null : RoundId(_json['roundId'] as String);
-  PlayerId? get judgeId => _json['judgeId'] == null ? null : PlayerId(_json['judgeId'] as String);
-  PlayerId? get readerId => _json['readerId'] == null ? null : PlayerId(_json['readerId'] as String);
-  Assignment? get question => _json['question'] == null ? null : Assignment._(_json['question'] as Map<String, Object?>);
-  List<Assignment>? get activeRules => _json['activeRules'] == null ? null : List<Assignment>.unmodifiable((_json['activeRules'] as List).map((value) => Assignment._(value as Map<String, Object?>)));
+  late final Config? _config = _json['config'] == null ? null : Config._(_json['config'] as Map<String, Object?>);
+  Config? get config => _config;
+  late final List<Participant>? _players = _json['players'] == null ? null : List<Participant>.unmodifiable((_json['players'] as List).map((value) => Participant._(value as Map<String, Object?>)));
+  List<Participant>? get players => _players;
+  late final List<PlayerId>? _frozenRoster = _json['frozenRoster'] == null ? null : List<PlayerId>.unmodifiable((_json['frozenRoster'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId>? get frozenRoster => _frozenRoster;
+  late final List<PlayerId>? _pendingRoster = _json['pendingRoster'] == null ? null : List<PlayerId>.unmodifiable((_json['pendingRoster'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId>? get pendingRoster => _pendingRoster;
+  late final GameId? _gameId = _json['gameId'] == null ? null : GameId(_json['gameId'] as String);
+  GameId? get gameId => _gameId;
+  late final RoundId? _roundId = _json['roundId'] == null ? null : RoundId(_json['roundId'] as String);
+  RoundId? get roundId => _roundId;
+  late final PlayerId? _judgeId = _json['judgeId'] == null ? null : PlayerId(_json['judgeId'] as String);
+  PlayerId? get judgeId => _judgeId;
+  late final PlayerId? _readerId = _json['readerId'] == null ? null : PlayerId(_json['readerId'] as String);
+  PlayerId? get readerId => _readerId;
+  late final Assignment? _question = _json['question'] == null ? null : Assignment._(_json['question'] as Map<String, Object?>);
+  Assignment? get question => _question;
+  late final List<Assignment>? _activeRules = _json['activeRules'] == null ? null : List<Assignment>.unmodifiable((_json['activeRules'] as List).map((value) => Assignment._(value as Map<String, Object?>)));
+  List<Assignment>? get activeRules => _activeRules;
   int? get completedCases => _json['completedCases'] == null ? null : _json['completedCases'] as int;
   int? get revealCursor => _json['revealCursor'] == null ? null : _json['revealCursor'] as int;
-  List<Revealed>? get revealed => _json['revealed'] == null ? null : List<Revealed>.unmodifiable((_json['revealed'] as List).map((value) => Revealed._(value as Map<String, Object?>)));
-  List<PlayerId>? get judgeOrder => _json['judgeOrder'] == null ? null : List<PlayerId>.unmodifiable((_json['judgeOrder'] as List).map((value) => PlayerId(value as String)));
-  PublicResult? get result => _json['result'] == null ? null : PublicResult._(_json['result'] as Map<String, Object?>);
+  late final List<Revealed>? _revealed = _json['revealed'] == null ? null : List<Revealed>.unmodifiable((_json['revealed'] as List).map((value) => Revealed._(value as Map<String, Object?>)));
+  List<Revealed>? get revealed => _revealed;
+  late final List<PlayerId>? _judgeOrder = _json['judgeOrder'] == null ? null : List<PlayerId>.unmodifiable((_json['judgeOrder'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId>? get judgeOrder => _judgeOrder;
+  late final PublicResult? _result = _json['result'] == null ? null : PublicResult._(_json['result'] as Map<String, Object?>);
+  PublicResult? get result => _result;
   String? get pauseReason => _json['pauseReason'] == null ? null : _json['pauseReason'] as String;
   String? get expiresAtUtc => _json['expiresAtUtc'] == null ? null : _json['expiresAtUtc'] as String;
   String? get pausedFrom => _json['pausedFrom'] == null ? null : _json['pausedFrom'] as String;
@@ -202,10 +243,14 @@ final class CreateMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  Profile get profile => Profile._(_json['profile'] as Map<String, Object?>);
-  Handshake get handshake => Handshake._(_json['handshake'] as Map<String, Object?>);
-  HistoryOffer? get historyOffer => _json['historyOffer'] == null ? null : HistoryOffer._(_json['historyOffer'] as Map<String, Object?>);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final Profile _profile = Profile._(_json['profile'] as Map<String, Object?>);
+  Profile get profile => _profile;
+  late final Handshake _handshake = Handshake._(_json['handshake'] as Map<String, Object?>);
+  Handshake get handshake => _handshake;
+  late final HistoryOffer? _historyOffer = _json['historyOffer'] == null ? null : HistoryOffer._(_json['historyOffer'] as Map<String, Object?>);
+  HistoryOffer? get historyOffer => _historyOffer;
 }
 final class JoinMessage extends RoomMessage {
   JoinMessage._(super.json) : super._();
@@ -224,9 +269,12 @@ final class JoinMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  Profile get profile => Profile._(_json['profile'] as Map<String, Object?>);
-  Handshake get handshake => Handshake._(_json['handshake'] as Map<String, Object?>);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final Profile _profile = Profile._(_json['profile'] as Map<String, Object?>);
+  Profile get profile => _profile;
+  late final Handshake _handshake = Handshake._(_json['handshake'] as Map<String, Object?>);
+  Handshake get handshake => _handshake;
 }
 final class CredentialMessage extends RoomMessage {
   CredentialMessage._(super.json) : super._();
@@ -248,10 +296,13 @@ final class CredentialMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
   String get roomCode => _json['roomCode'] as String;
-  RoomId get roomId => RoomId(_json['roomId'] as String);
-  PlayerId get playerId => PlayerId(_json['playerId'] as String);
+  late final RoomId _roomId = RoomId(_json['roomId'] as String);
+  RoomId get roomId => _roomId;
+  late final PlayerId _playerId = PlayerId(_json['playerId'] as String);
+  PlayerId get playerId => _playerId;
   String get resumeToken => _json['resumeToken'] as String;
   String get expiresAtUtc => _json['expiresAtUtc'] as String;
 }
@@ -272,9 +323,11 @@ final class AuthenticateMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
   String get resumeToken => _json['resumeToken'] as String;
-  Handshake get handshake => Handshake._(_json['handshake'] as Map<String, Object?>);
+  late final Handshake _handshake = Handshake._(_json['handshake'] as Map<String, Object?>);
+  Handshake get handshake => _handshake;
 }
 final class LeaveHttpMessage extends RoomMessage {
   LeaveHttpMessage._(super.json) : super._();
@@ -294,9 +347,11 @@ final class LeaveHttpMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
   String get resumeToken => _json['resumeToken'] as String;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   bool get confirmed => _json['confirmed'] as bool;
 }
 final class AuthenticatedMessage extends RoomMessage {
@@ -319,12 +374,16 @@ final class AuthenticatedMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  RoomId get roomId => RoomId(_json['roomId'] as String);
-  PlayerId get playerId => PlayerId(_json['playerId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final RoomId _roomId = RoomId(_json['roomId'] as String);
+  RoomId get roomId => _roomId;
+  late final PlayerId _playerId = PlayerId(_json['playerId'] as String);
+  PlayerId get playerId => _playerId;
   int get generation => _json['generation'] as int;
   String get expiresAtUtc => _json['expiresAtUtc'] as String;
-  Handshake get handshake => Handshake._(_json['handshake'] as Map<String, Object?>);
+  late final Handshake _handshake = Handshake._(_json['handshake'] as Map<String, Object?>);
+  Handshake get handshake => _handshake;
 }
 final class RequestSnapshotMessage extends RoomMessage {
   RequestSnapshotMessage._(super.json) : super._();
@@ -341,7 +400,8 @@ final class RequestSnapshotMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
 }
 final class SetConfigMessage extends RoomMessage {
   SetConfigMessage._(super.json) : super._();
@@ -360,9 +420,11 @@ final class SetConfigMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  Config get config => Config._(_json['config'] as Map<String, Object?>);
+  late final Config _config = Config._(_json['config'] as Map<String, Object?>);
+  Config get config => _config;
 }
 final class StartGameMessage extends RoomMessage {
   StartGameMessage._(super.json) : super._();
@@ -380,7 +442,8 @@ final class StartGameMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
 }
 final class RestartGameMessage extends RoomMessage {
@@ -402,10 +465,13 @@ final class RestartGameMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  Config get config => Config._(_json['config'] as Map<String, Object?>);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final Config _config = Config._(_json['config'] as Map<String, Object?>);
+  Config get config => _config;
   bool get confirmed => _json['confirmed'] as bool;
 }
 final class EditOwnProfileMessage extends RoomMessage {
@@ -425,9 +491,11 @@ final class EditOwnProfileMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  Profile get profile => Profile._(_json['profile'] as Map<String, Object?>);
+  late final Profile _profile = Profile._(_json['profile'] as Map<String, Object?>);
+  Profile get profile => _profile;
 }
 final class ReorderRosterMessage extends RoomMessage {
   ReorderRosterMessage._(super.json) : super._();
@@ -446,9 +514,11 @@ final class ReorderRosterMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  List<PlayerId> get playerIds => List<PlayerId>.unmodifiable((_json['playerIds'] as List).map((value) => PlayerId(value as String)));
+  late final List<PlayerId> _playerIds = List<PlayerId>.unmodifiable((_json['playerIds'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId> get playerIds => _playerIds;
 }
 final class KickMessage extends RoomMessage {
   KickMessage._(super.json) : super._();
@@ -468,9 +538,11 @@ final class KickMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  PlayerId get targetPlayerId => PlayerId(_json['targetPlayerId'] as String);
+  late final PlayerId _targetPlayerId = PlayerId(_json['targetPlayerId'] as String);
+  PlayerId get targetPlayerId => _targetPlayerId;
   bool get confirmed => _json['confirmed'] as bool;
 }
 final class LeaveMessage extends RoomMessage {
@@ -490,7 +562,8 @@ final class LeaveMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
   bool get confirmed => _json['confirmed'] as bool;
 }
@@ -511,7 +584,8 @@ final class CloseRoomMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
   bool get confirmed => _json['confirmed'] as bool;
 }
@@ -533,10 +607,13 @@ final class RerollCurrentQuestionMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  RoundId get roundId => RoundId(_json['roundId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final RoundId _roundId = RoundId(_json['roundId'] as String);
+  RoundId get roundId => _roundId;
 }
 final class AcknowledgeNumberMessage extends RoomMessage {
   AcknowledgeNumberMessage._(super.json) : super._();
@@ -556,10 +633,13 @@ final class AcknowledgeNumberMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  RoundId get roundId => RoundId(_json['roundId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final RoundId _roundId = RoundId(_json['roundId'] as String);
+  RoundId get roundId => _roundId;
 }
 final class ReadyForOrderingMessage extends RoomMessage {
   ReadyForOrderingMessage._(super.json) : super._();
@@ -579,10 +659,13 @@ final class ReadyForOrderingMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  RoundId get roundId => RoundId(_json['roundId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final RoundId _roundId = RoundId(_json['roundId'] as String);
+  RoundId get roundId => _roundId;
 }
 final class BeginOrderingMessage extends RoomMessage {
   BeginOrderingMessage._(super.json) : super._();
@@ -602,10 +685,13 @@ final class BeginOrderingMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  RoundId get roundId => RoundId(_json['roundId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final RoundId _roundId = RoundId(_json['roundId'] as String);
+  RoundId get roundId => _roundId;
 }
 final class SubmitOrderMessage extends RoomMessage {
   SubmitOrderMessage._(super.json) : super._();
@@ -627,11 +713,15 @@ final class SubmitOrderMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  RoundId get roundId => RoundId(_json['roundId'] as String);
-  List<PlayerId> get order => List<PlayerId>.unmodifiable((_json['order'] as List).map((value) => PlayerId(value as String)));
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final RoundId _roundId = RoundId(_json['roundId'] as String);
+  RoundId get roundId => _roundId;
+  late final List<PlayerId> _order = List<PlayerId>.unmodifiable((_json['order'] as List).map((value) => PlayerId(value as String)));
+  List<PlayerId> get order => _order;
   bool get confirmed => _json['confirmed'] as bool;
 }
 final class RevealNextMessage extends RoomMessage {
@@ -653,10 +743,13 @@ final class RevealNextMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  RoundId get roundId => RoundId(_json['roundId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final RoundId _roundId = RoundId(_json['roundId'] as String);
+  RoundId get roundId => _roundId;
   int get expectedCursor => _json['expectedCursor'] as int;
 }
 final class CompleteCaseMessage extends RoomMessage {
@@ -677,10 +770,13 @@ final class CompleteCaseMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  RoundId get roundId => RoundId(_json['roundId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final RoundId _roundId = RoundId(_json['roundId'] as String);
+  RoundId get roundId => _roundId;
 }
 final class CompleteWithoutVerdictMessage extends RoomMessage {
   CompleteWithoutVerdictMessage._(super.json) : super._();
@@ -701,10 +797,13 @@ final class CompleteWithoutVerdictMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
-  RoundId get roundId => RoundId(_json['roundId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
+  late final RoundId _roundId = RoundId(_json['roundId'] as String);
+  RoundId get roundId => _roundId;
   bool get confirmed => _json['confirmed'] as bool;
 }
 final class ContinueRuleMessage extends RoomMessage {
@@ -725,9 +824,11 @@ final class ContinueRuleMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
   int get afterCase => _json['afterCase'] as int;
 }
 final class ResumePausedMessage extends RoomMessage {
@@ -747,9 +848,11 @@ final class ResumePausedMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get expectedRevision => _json['expectedRevision'] as int;
-  GameId get gameId => GameId(_json['gameId'] as String);
+  late final GameId _gameId = GameId(_json['gameId'] as String);
+  GameId get gameId => _gameId;
 }
 final class HistoryImportMessage extends RoomMessage {
   HistoryImportMessage._(super.json) : super._();
@@ -769,10 +872,13 @@ final class HistoryImportMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  ImportId get importId => ImportId(_json['importId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final ImportId _importId = ImportId(_json['importId'] as String);
+  ImportId get importId => _importId;
   int get page => _json['page'] as int;
-  List<HistoryEvent> get events => List<HistoryEvent>.unmodifiable((_json['events'] as List).map((value) => HistoryEvent._(value as Map<String, Object?>)));
+  late final List<HistoryEvent> _events = List<HistoryEvent>.unmodifiable((_json['events'] as List).map((value) => HistoryEvent._(value as Map<String, Object?>)));
+  List<HistoryEvent> get events => _events;
 }
 final class HistoryBeginMessage extends RoomMessage {
   HistoryBeginMessage._(super.json) : super._();
@@ -790,8 +896,10 @@ final class HistoryBeginMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  HistoryOffer get offer => HistoryOffer._(_json['offer'] as Map<String, Object?>);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final HistoryOffer _offer = HistoryOffer._(_json['offer'] as Map<String, Object?>);
+  HistoryOffer get offer => _offer;
 }
 final class HistoryStatusMessage extends RoomMessage {
   HistoryStatusMessage._(super.json) : super._();
@@ -813,10 +921,13 @@ final class HistoryStatusMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  ImportId get importId => ImportId(_json['importId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final ImportId _importId = ImportId(_json['importId'] as String);
+  ImportId get importId => _importId;
   String get status => _json['status'] as String;
-  List<int> get receivedPages => List<int>.unmodifiable((_json['receivedPages'] as List).map((value) => value as int));
+  late final List<int> _receivedPages = List<int>.unmodifiable((_json['receivedPages'] as List).map((value) => value as int));
+  List<int> get receivedPages => _receivedPages;
   int get receivedEvents => _json['receivedEvents'] as int;
   String? get sha256 => _json['sha256'] == null ? null : _json['sha256'] as String;
 }
@@ -836,8 +947,10 @@ final class CancelHistoryImportMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  ImportId get importId => ImportId(_json['importId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final ImportId _importId = ImportId(_json['importId'] as String);
+  ImportId get importId => _importId;
 }
 final class HistoryPullMessage extends RoomMessage {
   HistoryPullMessage._(super.json) : super._();
@@ -855,8 +968,10 @@ final class HistoryPullMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  HistoryCursor? get cursor => _json['cursor'] == null ? null : HistoryCursor(_json['cursor'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final HistoryCursor? _cursor = _json['cursor'] == null ? null : HistoryCursor(_json['cursor'] as String);
+  HistoryCursor? get cursor => _cursor;
 }
 final class HistoryEventsMessage extends RoomMessage {
   HistoryEventsMessage._(super.json) : super._();
@@ -876,10 +991,13 @@ final class HistoryEventsMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  HistoryCursor get cursor => HistoryCursor(_json['cursor'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final HistoryCursor _cursor = HistoryCursor(_json['cursor'] as String);
+  HistoryCursor get cursor => _cursor;
   bool get hasMore => _json['hasMore'] as bool;
-  List<HistoryEvent> get events => List<HistoryEvent>.unmodifiable((_json['events'] as List).map((value) => HistoryEvent._(value as Map<String, Object?>)));
+  late final List<HistoryEvent> _events = List<HistoryEvent>.unmodifiable((_json['events'] as List).map((value) => HistoryEvent._(value as Map<String, Object?>)));
+  List<HistoryEvent> get events => _events;
 }
 final class HistoryReceiptMessage extends RoomMessage {
   HistoryReceiptMessage._(super.json) : super._();
@@ -897,8 +1015,10 @@ final class HistoryReceiptMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  HistoryCursor get cursor => HistoryCursor(_json['cursor'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final HistoryCursor _cursor = HistoryCursor(_json['cursor'] as String);
+  HistoryCursor get cursor => _cursor;
 }
 final class AckMessage extends RoomMessage {
   AckMessage._(super.json) : super._();
@@ -918,8 +1038,10 @@ final class AckMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  ActionId get actionId => ActionId(_json['actionId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final ActionId _actionId = ActionId(_json['actionId'] as String);
+  ActionId get actionId => _actionId;
   int get revision => _json['revision'] as int;
   String get outcome => _json['outcome'] as String;
 }
@@ -939,7 +1061,8 @@ final class ErrorMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
   String get code => _json['code'] as String;
 }
 final class SessionReplacedMessage extends RoomMessage {
@@ -957,7 +1080,8 @@ final class SessionReplacedMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
 }
 final class RoomClosedMessage extends RoomMessage {
   RoomClosedMessage._(super.json) : super._();
@@ -974,7 +1098,8 @@ final class RoomClosedMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
 }
 final class PingMessage extends RoomMessage {
   PingMessage._(super.json) : super._();
@@ -991,7 +1116,8 @@ final class PingMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
 }
 final class PongMessage extends RoomMessage {
   PongMessage._(super.json) : super._();
@@ -1008,7 +1134,8 @@ final class PongMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
 }
 final class SnapshotMessage extends RoomMessage {
   SnapshotMessage._(super.json) : super._();
@@ -1030,12 +1157,17 @@ final class SnapshotMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  RoomId get roomId => RoomId(_json['roomId'] as String);
-  PlayerId get you => PlayerId(_json['you'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final RoomId _roomId = RoomId(_json['roomId'] as String);
+  RoomId get roomId => _roomId;
+  late final PlayerId _you = PlayerId(_json['you'] as String);
+  PlayerId get you => _you;
   int get revision => _json['revision'] as int;
-  PublicView get public => PublicView._(_json['public'] as Map<String, Object?>);
-  PrivateView get private => PrivateView._(_json['private'] as Map<String, Object?>);
+  late final PublicView _public = PublicView._(_json['public'] as Map<String, Object?>);
+  PublicView get public => _public;
+  late final PrivateView _private = PrivateView._(_json['private'] as Map<String, Object?>);
+  PrivateView get private => _private;
 }
 final class DeltaMessage extends RoomMessage {
   DeltaMessage._(super.json) : super._();
@@ -1058,13 +1190,18 @@ final class DeltaMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  RoomId get roomId => RoomId(_json['roomId'] as String);
-  PlayerId get you => PlayerId(_json['you'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final RoomId _roomId = RoomId(_json['roomId'] as String);
+  RoomId get roomId => _roomId;
+  late final PlayerId _you = PlayerId(_json['you'] as String);
+  PlayerId get you => _you;
   int get revision => _json['revision'] as int;
   int get baseRevision => _json['baseRevision'] as int;
-  PublicChanges get publicChanges => PublicChanges._(_json['publicChanges'] as Map<String, Object?>);
-  PrivateView get private => PrivateView._(_json['private'] as Map<String, Object?>);
+  late final PublicChanges _publicChanges = PublicChanges._(_json['publicChanges'] as Map<String, Object?>);
+  PublicChanges get publicChanges => _publicChanges;
+  late final PrivateView _private = PrivateView._(_json['private'] as Map<String, Object?>);
+  PrivateView get private => _private;
 }
 final class ProjectionStartMessage extends RoomMessage {
   ProjectionStartMessage._(super.json) : super._();
@@ -1086,8 +1223,10 @@ final class ProjectionStartMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  TransferId get transferId => TransferId(_json['transferId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final TransferId _transferId = TransferId(_json['transferId'] as String);
+  TransferId get transferId => _transferId;
   int get revision => _json['revision'] as int;
   int get chunks => _json['chunks'] as int;
   int get bytes => _json['bytes'] as int;
@@ -1111,8 +1250,10 @@ final class ProjectionChunkMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  TransferId get transferId => TransferId(_json['transferId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final TransferId _transferId = TransferId(_json['transferId'] as String);
+  TransferId get transferId => _transferId;
   int get index => _json['index'] as int;
   String get data => _json['data'] as String;
 }
@@ -1132,8 +1273,10 @@ final class ProjectionEndMessage extends RoomMessage {
   String get type => _json['type'] as String;
   @override
   int get protocolVersion => _json['protocolVersion'] as int;
-  RequestId get requestId => RequestId(_json['requestId'] as String);
-  TransferId get transferId => TransferId(_json['transferId'] as String);
+  late final RequestId _requestId = RequestId(_json['requestId'] as String);
+  RequestId get requestId => _requestId;
+  late final TransferId _transferId = TransferId(_json['transferId'] as String);
+  TransferId get transferId => _transferId;
 }
 RoomMessage _messageFromValidated(Map<String, Object?> json) => switch (json['type']) {
   'create' => CreateMessage._(json),

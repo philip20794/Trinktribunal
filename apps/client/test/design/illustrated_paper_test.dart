@@ -130,7 +130,19 @@ void main() {
       });
       await tester.pumpAndSettle();
       expect(
-        tester.widget<RawImage>(find.byType(RawImage).last).image,
+        (tester
+                    .widget<CustomPaint>(
+                      find
+                          .byWidgetPredicate(
+                            (w) =>
+                                w is CustomPaint &&
+                                w.painter is PaperBackgroundPainter,
+                          )
+                          .last,
+                    )
+                    .painter
+                as PaperBackgroundPainter)
+            .image,
         isNotNull,
       );
       await reviewImage(tester, 'case-paper-$language');
@@ -150,7 +162,19 @@ void main() {
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
         expect(
-          tester.widget<RawImage>(find.byType(RawImage).last).image,
+          (tester
+                      .widget<CustomPaint>(
+                        find
+                            .byWidgetPredicate(
+                              (w) =>
+                                  w is CustomPaint &&
+                                  w.painter is PaperBackgroundPainter,
+                            )
+                            .last,
+                      )
+                      .painter
+                  as PaperBackgroundPainter)
+              .image,
           isNotNull,
         );
         final fitted = tester.widgetList<Text>(

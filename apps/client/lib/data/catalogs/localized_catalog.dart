@@ -10,9 +10,8 @@ Question localizedQuestion(
 ) {
   final catalog = catalogs.questions[language];
   if (catalog == null) throw StateError('Missing $language questions');
-  for (final question in catalog.entries) {
-    if (question.id == original.id) return question;
-  }
+  final question = catalog.byId[original.id];
+  if (question != null) return question;
   throw StateError('Missing question ID ${original.id} in $language');
 }
 
@@ -23,8 +22,7 @@ DrinkingRule localizedRule(
 ) {
   final catalog = catalogs.rules[language];
   if (catalog == null) throw StateError('Missing $language rules');
-  for (final rule in catalog.entries) {
-    if (rule.id == original.id) return rule;
-  }
+  final rule = catalog.byId[original.id];
+  if (rule != null) return rule;
   throw StateError('Missing rule ID ${original.id} in $language');
 }

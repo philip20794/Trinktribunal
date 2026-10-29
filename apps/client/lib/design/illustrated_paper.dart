@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,20 @@ import 'court_assets.dart';
 import 'court_theme.dart';
 import 'court_scene.dart';
 import '../l10n/app_strings.dart';
+
+class CasePaperScope extends InheritedWidget {
+  const CasePaperScope({
+    required this.maxHeight,
+    required super.child,
+    super.key,
+  });
+  final double maxHeight;
+  static double? heightOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<CasePaperScope>()?.maxHeight;
+  @override
+  bool updateShouldNotify(CasePaperScope oldWidget) =>
+      maxHeight != oldWidget.maxHeight;
+}
 
 abstract final class PaperImages {
   static const caseImage = AssetImage(CourtAssets.caseSheet);
@@ -66,8 +81,10 @@ class IllustratedPaper extends StatefulWidget {
     required this.rule,
     required this.height,
     required this.child,
+    this.growToContent = false,
     super.key,
   });
+  final bool growToContent;
   final bool rule;
   final double height;
   final Widget child;
@@ -133,59 +150,43 @@ class _IllustratedPaperState extends State<IllustratedPaper> {
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    height: widget.height,
-    child: LayoutBuilder(
+  Widget build(BuildContext context) {
+    final content = LayoutBuilder(
       builder: (context, constraints) {
         final image = _image?.image;
-        final scale = image == null ? 1.0 : image.width / constraints.maxWidth;
         final slice = widget.rule
             ? const Rect.fromLTRB(120, 400, 640, 800)
             : const Rect.fromLTRB(150, 600, 870, 1100);
         return Stack(
-          fit: StackFit.expand,
+          fit: widget.growToContent ? StackFit.loose : StackFit.expand,
           children: [
-            if (image != null)
-              ExcludeSemantics(
-                child: RawImage(
-                  image: image,
-                  scale: scale,
-                  fit: BoxFit.fill,
-                  centerSlice: Rect.fromLTRB(
-                    slice.left / scale,
-                    slice.top / scale,
-                    slice.right / scale,
-                    slice.bottom / scale,
-                  ),
-                ),
-              )
-            else
-              const Padding(
-                padding: EdgeInsets.all(12),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: CourtSceneTokens.parchment,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                ),
-              ),
-            Theme(
-              data: courtPaperTheme(),
-              child: DefaultTextStyle(
-                style: courtPaperTheme().textTheme.bodyLarge!,
-                child: widget.child,
-              ),
+            Positioned.fill(
+              child: image != null
+                  ? ExcludeSemantics(
+                      child: CustomPaint(
+                        painter: PaperBackgroundPainter(image, slice),
+                      ),
+                    )
+                  : const ColoredBox(color: CourtSceneTokens.parchment),
             ),
+            widget.child,
           ],
         );
       },
-    ),
-  );
+    );
+    return widget.growToContent
+        ? ConstrainedBox(
+            constraints: BoxConstraints(minHeight: widget.height),
+            child: content,
+          )
+        : SizedBox(height: widget.height, child: content);
+  }
 }
 
 const paperInk = CourtTokens.ink;
 TextStyle paperTextStyle(double size, {FontWeight weight = FontWeight.w500}) =>
     TextStyle(
+      inherit: false,
       fontFamily: 'CourtRoboto',
       fontSize: size,
       height: 1.25,
@@ -318,7 +319,7 @@ class IllustratedQuestion extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth,
-              pad = width * .12,
+              pad = width * .15,
               inner = width - pad * 2;
           final scaler = MediaQuery.textScalerOf(context),
               direction = Directionality.of(context);
@@ -368,80 +369,117 @@ class IllustratedQuestion extends StatelessWidget {
               lowHeight +
               highHeight +
               44;
+          final viewport = CasePaperScope.heightOf(context);
           final headerHeight = math.max(
-            48.0,
+            viewport == null ? 48.0 : 28.0,
             measurePaperText(
               label.toUpperCase(),
-              inner - (showRefresh ? 48 : 0),
+              inner,
               14,
               scaler,
               direction,
             ).height,
           );
           final top = width * .33, bottom = width * .14;
-          final height = math.max(
+          final naturalHeight = math.max(
             width * 1.5,
             top + headerHeight + 26 + bodyHeight + 16 + scaleHeight + bottom,
           );
-          return IllustratedPaper(
-            rule: false,
-            height: height,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(pad, top, pad, bottom),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: headerHeight,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (showRefresh)
-                          IconButton(
-                            tooltip: context.tr('refreshQuestion'),
-                            onPressed: onRefresh,
-                            icon: const Icon(
-                              Icons.refresh,
-                              color: Color(0xFF8D6C43),
+          final height = viewport == null
+              ? naturalHeight
+              : math.min(naturalHeight, viewport);
+          final contentHeight =
+              headerHeight +
+              (viewport == null ? 26 : 16) +
+              bodyHeight +
+              (viewport == null ? 16 : 10) +
+              scaleHeight;
+          return Stack(
+            children: [
+              IllustratedPaper(
+                rule: false,
+                height: height,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(pad, top, pad, bottom),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: inner,
+                      height: contentHeight,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: headerHeight,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    label.toUpperCase(),
+                                    style: paperTextStyle(
+                                      14,
+                                      weight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        Expanded(
-                          child: Text(
-                            label.toUpperCase(),
-                            style: paperTextStyle(14, weight: FontWeight.w700),
-                            textAlign: TextAlign.center,
+                          SizedBox(
+                            height: viewport == null ? 18 : 12,
+                            child: const PaperDivider(),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: viewport == null ? 8 : 4),
+                          FittedPaperText(text, height: bodyHeight),
+                          SizedBox(height: viewport == null ? 16 : 10),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: const Color(0x2DB18548),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: const Color(0x668D6C43),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  context.tr('questionRange', {'max': maximum}),
+                                  style: paperTextStyle(
+                                    14,
+                                    weight: FontWeight.w700,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                _endpoint('1', low, lowHeight),
+                                const SizedBox(height: 8),
+                                _endpoint('$maximum', high, highHeight),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 18, child: PaperDivider()),
-                  const SizedBox(height: 8),
-                  FittedPaperText(text, height: bodyHeight),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: const Color(0x2DB18548),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0x668D6C43)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          context.tr('questionRange', {'max': maximum}),
-                          style: paperTextStyle(14, weight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 8),
-                        _endpoint('1', low, lowHeight),
-                        const SizedBox(height: 8),
-                        _endpoint('$maximum', high, highHeight),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              if (showRefresh)
+                Positioned(
+                  top: top - 18,
+                  right: pad,
+                  child: IconButton(
+                    key: const ValueKey('case-paper-refresh'),
+                    tooltip: context.tr('refreshQuestion'),
+                    onPressed: onRefresh,
+                    color: Colors.black,
+                    disabledColor: Colors.black38,
+                    icon: const Icon(Icons.refresh),
+                  ),
+                ),
+            ],
           );
         },
       ),
@@ -543,7 +581,7 @@ class IllustratedRule extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth,
-              pad = width * .11,
+              pad = width * .14,
               inner = width - pad * 2;
           final scaler = MediaQuery.textScalerOf(context),
               direction = Directionality.of(context);
@@ -565,42 +603,56 @@ class IllustratedRule extends StatelessWidget {
             width * .48,
             measurePaperText(text, inner, 16, scaler, direction).height,
           );
-          final height = math.max(
+          final naturalHeight = math.max(
             width * 1083 / 768,
             top + heading + 28 + body + 28 + penaltyHeight + bottom,
           );
+          final viewport = CasePaperScope.heightOf(context);
+          final height = viewport == null
+              ? naturalHeight
+              : math.min(naturalHeight, viewport);
           return IllustratedPaper(
             rule: true,
+            growToContent: viewport == null,
             height: height,
             child: Padding(
               padding: EdgeInsets.fromLTRB(pad, top, pad, bottom),
-              child: Column(
-                children: [
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: paperTextStyle(
-                      26,
-                      weight: FontWeight.w700,
-                    ).copyWith(color: const Color(0xFF79152A)),
-                  ),
-                  const SizedBox(height: 20, child: PaperDivider()),
-                  const SizedBox(height: 8),
-                  FittedPaperText(text, height: body),
-                  const SizedBox(height: 28),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: SizedBox(
+                  width: inner,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
-                        Icons.sports_bar_outlined,
-                        size: 28,
-                        color: paperInk,
+                      Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        style: paperTextStyle(
+                          26,
+                          weight: FontWeight.w700,
+                        ).copyWith(color: const Color(0xFF79152A)),
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(child: Text(penalty, style: paperTextStyle(14))),
+                      const SizedBox(height: 20, child: PaperDivider()),
+                      const SizedBox(height: 8),
+                      FittedPaperText(text, height: body),
+                      const SizedBox(height: 28),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.sports_bar_outlined,
+                            size: 28,
+                            color: paperInk,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(penalty, style: paperTextStyle(14)),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           );
@@ -608,4 +660,28 @@ class IllustratedRule extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// Scale the nine-slice canvas directly to avoid float equality in paintImage.
+class PaperBackgroundPainter extends CustomPainter {
+  const PaperBackgroundPainter(this.image, this.slice);
+  final ui.Image image;
+  final Rect slice;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final scale = size.width / image.width;
+    canvas.save();
+    canvas.scale(scale);
+    canvas.drawImageNine(
+      image,
+      slice,
+      Rect.fromLTWH(0, 0, image.width.toDouble(), size.height / scale),
+      Paint()..filterQuality = FilterQuality.medium,
+    );
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(PaperBackgroundPainter oldDelegate) =>
+      oldDelegate.image != image || oldDelegate.slice != slice;
 }

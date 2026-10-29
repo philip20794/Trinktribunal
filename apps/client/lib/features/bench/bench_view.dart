@@ -275,13 +275,13 @@ class _BenchViewState extends State<BenchView> {
             ),
             padding: EdgeInsets.all(widget.compactControls ? 4 : 8),
             decoration: BoxDecoration(
-              color: CourtTokens.file,
+              color: Colors.transparent,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color:
                     candidates.isNotEmpty || _selected == id || _focused == id
                     ? CourtTokens.red
-                    : CourtTokens.border,
+                    : Colors.transparent,
                 width:
                     candidates.isNotEmpty || _selected == id || _focused == id
                     ? 3
@@ -303,7 +303,6 @@ class _BenchViewState extends State<BenchView> {
                           label: profile.player.name,
                           playerName: profile.player.name,
                         ),
-                      NamePlate(name: profile.player.name, position: index + 1),
                     ],
                   ),
                 ),

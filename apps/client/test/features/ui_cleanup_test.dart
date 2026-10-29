@@ -1,3 +1,5 @@
+import '../support/roster_setup.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +9,6 @@ import 'package:trinktribunal/data/catalogs/catalog.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/design/case_file.dart';
 import 'package:trinktribunal/design/court_scene.dart';
-import 'package:trinktribunal/design/court_theme.dart';
 import 'package:trinktribunal/domain/models/game_mode.dart' as domain;
 import 'package:trinktribunal/features/home/home_screen.dart';
 import 'package:trinktribunal/features/home/mode_preview_screen.dart';
@@ -145,10 +146,11 @@ void main() {
             size: const Size(390, 844),
           );
           await reviewImage(tester, 'cleanup-setup-$language-${scale.toInt()}');
-          final sliders = tester
-              .widgetList<Slider>(find.byType(Slider))
-              .toList();
-          sliders[1].onChanged!(3);
+          await addTestPlayers(tester);
+          await tapVisible(tester, find.text(strings.get('localGameOptions')));
+          tester.widgetList<Slider>(find.byType(Slider)).first.onChanged!(3);
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(strings.get('rosterApply')));
           await tester.pumpAndSettle();
           await tapVisible(tester, find.text(strings.get('startHearing')));
           final container = ProviderScope.containerOf(
@@ -200,7 +202,7 @@ void main() {
           expect(empty, findsOneWidget);
           expect(
             DefaultTextStyle.of(tester.element(empty)).style.color,
-            CourtTokens.ink,
+            CourtSceneTokens.cream,
           );
           expect(find.text(strings.get('rulesHelp')), findsNothing);
           await reviewImage(
@@ -237,7 +239,7 @@ void main() {
             DefaultTextStyle.of(tester.element(find.text(rule.text).last))
                 .style
                 .color,
-            CourtTokens.ink,
+            CourtSceneTokens.cream,
           );
           await reviewImage(
             tester,

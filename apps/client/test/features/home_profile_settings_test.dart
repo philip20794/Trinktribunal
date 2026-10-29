@@ -8,7 +8,6 @@ import 'package:trinktribunal/features/home/mode_preview_screen.dart';
 import 'package:trinktribunal/features/multiplayer/create.dart';
 import 'package:trinktribunal/features/profile/profile_screen.dart';
 import 'package:trinktribunal/features/settings/settings_screen.dart';
-import 'package:trinktribunal/features/setup/card_mode_screen.dart';
 import 'package:trinktribunal/features/setup/player_roster.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
@@ -42,6 +41,30 @@ Future<void> host(
 }
 
 Future<void> tapVisible(WidgetTester tester, Finder finder) async {
+  if (finder.evaluate().isEmpty &&
+      find.byType(SettingsScreen).evaluate().isNotEmpty) {
+    final advanced = find.byType(ExpansionTile);
+    if (advanced.evaluate().isEmpty) {
+      await tester.scrollUntilVisible(
+        advanced,
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+    }
+    if (advanced.evaluate().isNotEmpty) {
+      await tester.ensureVisible(advanced);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(of: advanced, matching: find.byType(ListTile)).first,
+      );
+      await tester.pumpAndSettle();
+    }
+  }
+  if (finder.evaluate().isEmpty) {
+    final scroll = tester.state<ScrollableState>(find.byType(Scrollable).first);
+    scroll.position.jumpTo(0);
+    await tester.pumpAndSettle();
+  }
   if (finder.hitTestable().evaluate().isEmpty) {
     await tester.scrollUntilVisible(
       finder,
@@ -64,7 +87,7 @@ void main() {
         final strings = AppStrings(language);
         await host(tester, const HomeScreen(), language);
         for (final entry in {
-          'modeCards': CardModeScreen,
+          'modeCards': PlayerRosterScreen,
           'modePhone': PlayerRosterScreen,
           'modeMulti': MultiplayerEntryScreen,
         }.entries) {

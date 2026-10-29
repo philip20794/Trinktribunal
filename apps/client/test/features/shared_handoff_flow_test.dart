@@ -1,3 +1,5 @@
+import '../support/hold_action.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -102,12 +104,12 @@ void main() {
           final first = game.view!;
           expect(find.byType(CaseFile), findsNothing);
           expect(find.byType(HeldPrivateNumber), findsOneWidget);
-          final hold = find.text(strings.get('phoneHoldNumber'));
+          final hold = find.text(strings.get('showNumber'));
           await tester.scrollUntilVisible(hold, 350);
           await Scrollable.ensureVisible(tester.element(hold), alignment: .5);
           await tester.pumpAndSettle();
           expect(hold.hitTestable(), findsOneWidget);
-          final gesture = await tester.startGesture(tester.getCenter(hold));
+          final gesture = await startChargedHold(tester, hold);
           await tester.pump();
           expect(game.view!.visibleSecret, isNotNull);
           tester.binding.handleAppLifecycleStateChanged(
@@ -124,8 +126,8 @@ void main() {
           await gesture.up();
           await tap(tester, strings.get('phoneIAm', {'name': identity()}));
           Future<void> look() async {
-            final hold = find.text(strings.get('phoneHoldNumber'));
-            final gesture = await tester.startGesture(tester.getCenter(hold));
+            final hold = find.text(strings.get('showNumber'));
+            final gesture = await startChargedHold(tester, hold);
             await tester.pump();
             await gesture.up();
             await tester.pump();
@@ -166,7 +168,7 @@ void main() {
           Future<void> primary(String key) async {
             final button = find.text(strings.get(key));
             expect(button.hitTestable(), findsOneWidget);
-            await tester.tap(button);
+            await holdAction(tester, button);
             await tester.pumpAndSettle();
           }
 

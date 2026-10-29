@@ -1,8 +1,6 @@
 import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
 
-import 'dart:math' as math;
-
 import '../../l10n/app_strings.dart';
 
 import 'package:flutter/material.dart';
@@ -14,7 +12,9 @@ import '../../data/catalogs/catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../../data/catalogs/localized_catalog.dart';
 import '../../design/case_file.dart';
-import '../../design/illustrated_paper.dart';
+import '../../design/judge_plate.dart';
+import 'player_roster.dart';
+import '../../design/case_stage.dart';
 import '../../domain/local_game_reducer.dart';
 import '../../domain/models/domain_error.dart';
 import '../../domain/models/game_mode.dart';
@@ -29,10 +29,6 @@ class CardModeScreen extends ConsumerStatefulWidget {
 }
 
 class _CardModeScreenState extends ConsumerState<CardModeScreen> {
-  int _players = 8;
-  int _cases = 50;
-  int _rules = 7;
-  int _factor = 15;
   String? _error;
   String? _storageWarning;
 
@@ -63,6 +59,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         : current?.phase == GamePhase.ruleEvent
         ? () => _act(() => loaded!.continueAfterRule(current!.currentEventId))
         : null;
+    if (loaded != null && current == null) {
+      return const PlayerRosterScreen(cardMode: true);
+    }
     return CourtScaffold(
       footer: next == null
           ? null
@@ -113,137 +112,37 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           }
           final controller = ref.watch(localSessionProvider);
           final state = controller.state;
-          return Align(
-            alignment: Alignment.topCenter,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 760),
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  if (_storageWarning != null)
-                    StatusNotice(context.feedback(_storageWarning!)),
-                  if (_error != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: StatusNotice(context.feedback(_error!)),
-                    ),
-                  if (state == null)
-                    ..._setup(controller)
-                  else
-                    ..._game(context, controller, state),
-                ],
-              ),
+          if (state == null) return const SizedBox.shrink();
+          return CaseStage(
+            judge: state.judge == null
+                ? null
+                : JudgePlate(profile: state.judge!),
+            rules: state.rules.active.length,
+            onRules: () => showActiveRules(
+              context,
+              state,
+              ref.read(catalogsProvider).requireValue,
+            ),
+            notice: _storageWarning == null && _error == null
+                ? null
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_storageWarning != null)
+                        StatusNotice(context.feedback(_storageWarning!)),
+                      if (_error != null)
+                        StatusNotice(context.feedback(_error!)),
+                    ],
+                  ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: _game(context, controller, state),
             ),
           );
         },
       ),
     );
   }
-
-  List<Widget> _setup(LocalSessionController controller) {
-    final maxCases = math.min(431, controller.capacity.questions);
-    final maxRules = math.min(
-      math.min(22, controller.capacity.rules),
-      math.min(_cases, maxCases) - 1,
-    );
-    if (maxCases < 1) {
-      return [const TText('cardNoQuestions')];
-    }
-    final cases = math.min(_cases, maxCases);
-    final rules = math.min(_rules, maxRules);
-    return [
-      CourtPaper(
-        padding: const EdgeInsets.all(16),
-        child: Builder(
-          builder: (context) => Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TText(
-                'nextHearing',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 12),
-              _slider(
-                context,
-                context.tr('playersLabel'),
-                _players,
-                3,
-                20,
-                (n) => _players = n,
-              ),
-              _slider(context, context.tr('cases'), cases, 1, maxCases, (n) {
-                _cases = n;
-                _rules = math.min(_rules, n - 1);
-              }),
-              _slider(
-                context,
-                context.tr('additionalRules'),
-                rules,
-                0,
-                math.max(0, maxRules),
-                (n) => _rules = n,
-              ),
-              _slider(
-                context,
-                context.tr('factorLabel'),
-                _factor,
-                10,
-                30,
-                (n) => _factor = n,
-                display: AppLanguageScope.of(context).language == 'de'
-                    ? (_factor / 10).toStringAsFixed(1).replaceAll('.', ',')
-                    : (_factor / 10).toStringAsFixed(1),
-              ),
-              const SizedBox(height: 12),
-              FilledButton.icon(
-                onPressed: () => _act(
-                  () => controller.start(
-                    controller.configure(
-                      playerCount: _players,
-                      targetCases: cases,
-                      requestedRuleEvents: rules,
-                      factorTenths: _factor,
-                    ),
-                  ),
-                ),
-                icon: const Icon(Icons.gavel),
-                label: const TText('startHearing'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ];
-  }
-
-  Widget _slider(
-    BuildContext context,
-    String label,
-    int value,
-    int min,
-    int max,
-    void Function(int) update, {
-    String? display,
-  }) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        '$label: ${display ?? value}',
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-      Slider(
-        value: value.toDouble(),
-        min: min.toDouble(),
-        max: max.toDouble(),
-        divisions: max > min ? max - min : null,
-        label: display ?? '$value',
-        semanticFormatterCallback: (v) => label == context.tr('factorLabel')
-            ? (v / 10).toStringAsFixed(1)
-            : '${v.round()}',
-        onChanged: max > min ? (v) => setState(() => update(v.round())) : null,
-      ),
-    ],
-  );
 
   List<Widget> _game(
     BuildContext context,
@@ -260,17 +159,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             originalQuestion,
           );
     return [
-      CaseProgressHeader(
-        completed: state.completedCases,
-        total: config.targetCases,
-        rules: state.rules.active.length,
-        onRules: () => showActiveRules(
-          context,
-          state,
-          ref.read(catalogsProvider).requireValue,
-        ),
-      ),
-      const SizedBox(height: 24),
       if (state.phase == GamePhase.casePresented && question != null) ...[
         CourtQuestion(
           animationKey: state.currentEventId,
@@ -288,7 +176,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           red: question.red,
           maximum: config.maxSecretNumber,
         ),
-        const SizedBox(height: 16),
       ],
       if (state.phase == GamePhase.ruleEvent) ...[
         CourtRule(

@@ -7,15 +7,23 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 export function checkProductionConfig(config, worker, { requireRealOrigins = false } = {}) {
   if (config.formatVersion !== 1 || Object.keys(config).some(key => !['formatVersion','apiBaseUrl','publicClientBaseUrl'].includes(key)))
     throw new Error('Invalid public production configuration');
-  const workerKeys = ['$schema','name','main','compatibility_date','compatibility_flags','workers_dev','send_metrics',
+  const workerKeys = ['$schema','name','main','compatibility_date','compatibility_flags','workers_dev','preview_urls','send_metrics',
     'vars','durable_objects','migrations','account_id','routes','route','dev','kv_namespaces','d1_databases','r2_buckets','services'];
   if (Object.keys(worker).some(key => !workerKeys.includes(key))) throw new Error('Invalid public worker configuration');
-  const apiOrigin = httpsOrigin(config.apiBaseUrl), publicClientOrigin = httpsOrigin(config.publicClientBaseUrl);
-  if (!apiOrigin || !publicClientOrigin) throw new Error('Missing public HTTPS origins');
-  const placeholder = [apiOrigin, publicClientOrigin].some(origin => new URL(origin).hostname.endsWith('.invalid'));
+  const apiOrigin = httpsOrigin(config.apiBaseUrl);
+  const publicClientOrigin = config.publicClientBaseUrl == null ? null : httpsOrigin(config.publicClientBaseUrl);
+  if (!apiOrigin) throw new Error('Missing public HTTPS origins');
+  const placeholder = [apiOrigin, publicClientOrigin].filter(Boolean).some(origin => new URL(origin).hostname.endsWith('.invalid'));
   if (requireRealOrigins && placeholder) throw new Error('Replace example origins before building a production package');
-  if (worker.workers_dev !== false || worker.send_metrics !== false || worker.dev ||
-      worker.vars?.CLIENT_ORIGINS !== publicClientOrigin ||
+  const workerDevHost = new URL(apiOrigin).hostname;
+  const workerDevMatches = workerDevHost.startsWith(`${worker.name}.`) &&
+    /^[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev$/.test(workerDevHost);
+  if (![true, false].includes(worker.workers_dev) ||
+      (worker.workers_dev === true) !== workerDevHost.endsWith('.workers.dev') ||
+      worker.workers_dev && !workerDevMatches ||
+      worker.preview_urls != null && worker.preview_urls !== false ||
+      worker.send_metrics !== false || worker.dev ||
+      worker.vars?.CLIENT_ORIGINS !== (publicClientOrigin ?? '') ||
       Object.keys(worker.vars ?? {}).some(key => key !== 'CLIENT_ORIGINS')) throw new Error('Production worker origin/telemetry policy mismatch');
   const bindings = worker.durable_objects?.bindings;
   if (!Array.isArray(bindings) || bindings.length !== 1 || bindings[0].name !== 'ROOMS' || bindings[0].class_name !== 'Room' || bindings[0].remote || bindings[0].script_name ||

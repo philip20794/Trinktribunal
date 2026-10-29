@@ -1,3 +1,4 @@
+import '../rules/active_rules_sheet.dart';
 import '../../design/status_notice.dart';
 
 import 'package:flutter/material.dart';
@@ -11,8 +12,10 @@ import '../../application/shared_phone_controller.dart';
 import '../../data/catalogs/catalog.dart';
 import '../../data/catalogs/localized_catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
-import '../../design/illustrated_paper.dart';
+import '../../design/case_stage.dart';
+import '../../design/hold_action_button.dart';
 import '../../design/case_file.dart';
+import '../../design/judge_plate.dart';
 import '../../design/private_number.dart';
 import '../../design/court_scene.dart';
 import '../../design/court_assets.dart';
@@ -175,53 +178,23 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
 
   void _activeRules(SharedGameView view) {
     _act(_controller.interruptPrivateHandoff);
-    showModalBottomSheet<void>(
-      backgroundColor: CourtSceneTokens.parchment,
-      useSafeArea: true,
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (context) => Theme(
-        data: courtPaperTheme(),
-        child: DefaultTextStyle(
-          style: courtPaperTheme().textTheme.bodyLarge!,
-          child: Builder(
-            builder: (context) => FractionallySizedBox(
-              heightFactor: 0.7,
-              child: ListView(
-                padding: const EdgeInsets.all(24),
-                children: [
-                  Text(
-                    context.tr('activeRulesCount', {
-                      'count': view.activeRules.length,
-                    }),
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  for (final rule in view.activeRules)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
-                        localizedRule(
-                          ref.read(catalogsProvider).requireValue,
-                          AppLanguageScope.of(context).language,
-                          rule.entry as DrinkingRule,
-                        ).render(
-                          localizedRule(
-                            ref.read(catalogsProvider).requireValue,
-                            AppLanguageScope.of(context).language,
-                            rule.entry as DrinkingRule,
-                          ).text,
-                          rule.names(view.names),
-                        ),
-                      ),
-                    ),
-                  if (view.activeRules.isEmpty) const TText('phoneRulesEmpty'),
-                ],
-              ),
-            ),
+    showActiveRuleList(
+      context,
+      rules: [
+        for (final rule in view.activeRules)
+          localizedRule(
+            ref.read(catalogsProvider).requireValue,
+            AppLanguageScope.of(context).language,
+            rule.entry as DrinkingRule,
+          ).render(
+            localizedRule(
+              ref.read(catalogsProvider).requireValue,
+              AppLanguageScope.of(context).language,
+              rule.entry as DrinkingRule,
+            ).text,
+            rule.names(view.names),
           ),
-        ),
-      ),
+      ],
     );
   }
 
@@ -265,15 +238,17 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
       GamePhase.revealing,
       GamePhase.judged,
     ].contains(view.phase)) {
-      return FilledButton(
-        onPressed: () => _act(
+      return HoldActionButton(
+        key: ValueKey('shared-next-${view.roundId}'),
+        icon: Icons.arrow_forward_rounded,
+        label: context.tr('phoneComplete'),
+        onCompleted: () => _act(
           () => _controller.completeCase(
             view.roundId,
             confirmed: true,
             withoutVerdict: true,
           ),
         ),
-        child: const TText('phoneComplete'),
       );
     }
     if (view.phase == GamePhase.ruleEvent) {
@@ -396,105 +371,103 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
             icon: const Icon(Icons.groups_outlined),
           ),
         ],
-        bodyBuilder: (context) => Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1000),
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                CaseProgressHeader(
-                  completed: view.completedCases,
-                  total: view.config.targetCases,
-                  rules: view.activeRules.length,
-                  onRules: () => _activeRules(view),
+        bodyBuilder: (context) => CaseStage(
+          judge: view.judge == null
+              ? null
+              : JudgePlate(
+                  profile: view.roster.firstWhere(
+                    (p) => p.player.id == view.judge,
+                  ),
                 ),
-                if (_error != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: StatusNotice(context.feedback(_error!)),
-                  ),
-                if (view.pendingRoster != null)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: TText('phoneRosterNotice'),
-                  ),
-                if (rendered != null &&
-                    (view.phase != GamePhase.numbers ||
-                        view.numberStage == SharedNumberStage.caseFile) &&
-                    ![
-                      GamePhase.ruleEvent,
-                      GamePhase.finished,
-                      GamePhase.paused,
-                    ].contains(view.phase)) ...[
-                  const SizedBox(height: 16),
-                  CourtQuestion(
-                    animationKey: view.roundId,
-                    showRefresh: true,
-                    onRefresh:
-                        [
-                              GamePhase.numbers,
-                              GamePhase.answers,
-                              GamePhase.ordering,
-                              GamePhase.revealing,
-                            ].contains(view.phase) &&
-                            view.revealCursor == 0
-                        ? () => _act(
-                            () => _controller.rerollCurrentQuestion(
-                              roundId: view.roundId,
-                            ),
-                          )
-                        : null,
-                    label: context.tr('caseProgress', {
-                      'number': view.completedCases + 1,
-                      'total': view.config.targetCases,
-                    }),
-                    text: rendered.text,
-                    green: rendered.green,
-                    connector: rendered.connector,
-                    red: rendered.red,
-                    maximum:
-                        (view.roster.length * view.config.factorTenths + 9) ~/
-                        10,
-                  ),
-                ],
+          rules: view.activeRules.length,
+          onRules: () => _activeRules(view),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_error != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: StatusNotice(context.feedback(_error!)),
+                ),
+              if (view.pendingRoster != null)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: TText('phoneRosterNotice'),
+                ),
+              if (rendered != null &&
+                  (view.phase != GamePhase.numbers ||
+                      view.numberStage == SharedNumberStage.caseFile) &&
+                  ![
+                    GamePhase.ruleEvent,
+                    GamePhase.finished,
+                    GamePhase.paused,
+                  ].contains(view.phase)) ...[
+                CourtQuestion(
+                  animationKey: view.roundId,
+                  showRefresh: true,
+                  onRefresh:
+                      [
+                            GamePhase.numbers,
+                            GamePhase.answers,
+                            GamePhase.ordering,
+                            GamePhase.revealing,
+                          ].contains(view.phase) &&
+                          view.revealCursor == 0
+                      ? () => _act(
+                          () => _controller.rerollCurrentQuestion(
+                            roundId: view.roundId,
+                          ),
+                        )
+                      : null,
+                  label: context.tr('caseProgress', {
+                    'number': view.completedCases + 1,
+                    'total': view.config.targetCases,
+                  }),
+                  text: rendered.text,
+                  green: rendered.green,
+                  connector: rendered.connector,
+                  red: rendered.red,
+                  maximum:
+                      (view.roster.length * view.config.factorTenths + 9) ~/ 10,
+                ),
+              ],
 
-                if (view.phase == GamePhase.ruleEvent) ...[
-                  CourtRule(
-                    title: view.newRule == null
-                        ? context.tr('ruleGoalReduced')
-                        : context.tr('newRule'),
-                    animationKey: '${view.gameId}:${view.completedCases}',
-                    text: view.newRule == null
-                        ? context.tr('phoneNoRule', {
-                            'count':
-                                view.config.scheduledRuleEventCount -
-                                view.skippedRules,
-                          })
-                        : localizedRule(
+              if (view.phase == GamePhase.ruleEvent) ...[
+                CourtRule(
+                  title: view.newRule == null
+                      ? context.tr('ruleGoalReduced')
+                      : context.tr('newRule'),
+                  animationKey: '${view.gameId}:${view.completedCases}',
+                  text: view.newRule == null
+                      ? context.tr('phoneNoRule', {
+                          'count':
+                              view.config.scheduledRuleEventCount -
+                              view.skippedRules,
+                        })
+                      : localizedRule(
+                          ref.read(catalogsProvider).requireValue,
+                          AppLanguageScope.of(context).language,
+                          view.newRule!.entry as DrinkingRule,
+                        ).render(
+                          localizedRule(
                             ref.read(catalogsProvider).requireValue,
                             AppLanguageScope.of(context).language,
                             view.newRule!.entry as DrinkingRule,
-                          ).render(
-                            localizedRule(
-                              ref.read(catalogsProvider).requireValue,
-                              AppLanguageScope.of(context).language,
-                              view.newRule!.entry as DrinkingRule,
-                            ).text,
-                            view.newRule!.names(view.names),
-                          ),
-                  ),
-                ],
-                if (view.phase == GamePhase.paused) ...[
-                  Text(
-                    view.pauseReason == null
-                        ? context.tr('gamePaused')
-                        : context.feedback(view.pauseReason!),
-                  ),
-                ],
-                if (view.phase == GamePhase.finished)
-                  CourtSeal(label: context.tr('endHearing')),
+                          ).text,
+                          view.newRule!.names(view.names),
+                        ),
+                ),
               ],
-            ),
+              if (view.phase == GamePhase.paused) ...[
+                Text(
+                  view.pauseReason == null
+                      ? context.tr('gamePaused')
+                      : context.feedback(view.pauseReason!),
+                ),
+              ],
+              if (view.phase == GamePhase.finished)
+                CourtSeal(label: context.tr('endHearing')),
+            ],
           ),
         ),
       ),

@@ -15,6 +15,7 @@ import 'package:trinktribunal/data/room_credential_store.dart';
 import 'package:trinktribunal/data/profile_store.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/features/multiplayer/create.dart';
+import 'package:trinktribunal/features/multiplayer/connection.dart';
 import 'package:trinktribunal/features/multiplayer/invitation.dart';
 import 'package:trinktribunal/features/multiplayer/invite.dart';
 import 'package:trinktribunal/features/multiplayer/join.dart';
@@ -221,7 +222,7 @@ void main() {
       expect(transport.connections, 1);
       transport.sockets.last.accepted();
       await tester.pumpAndSettle();
-      expect(find.text('Mit dem Gerichtssaal verbunden'), findsOneWidget);
+      expect(find.byType(RoomConnectionScreen), findsOneWidget);
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
       await tester.pump();

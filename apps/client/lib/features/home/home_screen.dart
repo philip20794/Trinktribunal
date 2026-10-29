@@ -15,7 +15,6 @@ import '../../design/court_assets.dart';
 
 import '../profile/profile_screen.dart';
 import '../settings/settings_screen.dart';
-import '../multiplayer/saved_rooms.dart';
 import '../rules/game_rules_screen.dart';
 import 'mode_preview_screen.dart';
 import '../setup/card_mode_screen.dart';
@@ -180,11 +179,6 @@ class HomeScreen extends ConsumerWidget {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
-                      if (transaction?.restored == true)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: const TText('homeResume'),
-                        ),
                       if (transaction?.error != null)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 16),
@@ -255,8 +249,6 @@ class HomeScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
-                      const SavedRooms(),
                     ],
                   ),
                 ),

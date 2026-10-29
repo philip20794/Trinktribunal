@@ -548,3 +548,7 @@ Bestehende Codemagic-Signierung und App-ID bleiben erhalten. `node scripts/check
 Einstellungen verlinken die DE/EN-Spielhilfe und den tatsächlichen Datenschutz-/Speicherfluss. Siehe [Spielhilfe](USER_GUIDE.md), [Datenschutz](PRIVACY.md) und [Prüfbeleg](qa/help-privacy.md). Profilvorlage und beide lokalen Partien lassen sich getrennt nach Bestätigung löschen. Die Partielöschung bereinigt beide Zustandsslots, hält die Schreibreihenfolge ein und behält die Sechs-Stunden-Ziehhistorie. Fehlgeschlagene Speicherung darf nicht als bestätigte Löschung gelten. Online-Identität/Hostschließung bleiben eigenständige Aktionen.
 
 Gezielt: `flutter test test/data/local_data_deletion_test.dart test/features/help_maintenance_test.dart` in `apps/client`; danach `scripts/check.ps1 -Scope Client` und `-Scope Docs`. Browser-/E2E-Abnahme: **ÜBERSPRUNGEN – später manuell testen**. Betreiber-/Kontakt-/Hostingdaten vor öffentlicher Verteilung anhand der wirklichen Konfiguration ergänzen.
+
+## Ausdrücklich eingerichtetes Online-Backend (29.10.2026)
+
+Auf Nutzerauftrag ist der separate Produktionsworker nun auf Cloudflare Free veröffentlicht. Für diesen bewussten Livegang gelten [Deployment-Anleitung und Testbelege](CLOUDFLARE_DEPLOYMENT.md); normale lokale Checks laden weiterhin nichts hoch. `apps/server/wrangler.jsonc` bleibt lokal. Der echte Deploy verwendet ausschließlich `wrangler.production.jsonc`. Die Server-URL wurde in Codemagic als `API_BASE_URL`/Gruppe `online_server` hinterlegt.

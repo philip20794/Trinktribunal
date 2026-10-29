@@ -110,7 +110,11 @@ void main() {
           final numbers = phone.toSnapshot()?['numbers'];
           final tooltip = AppStrings(language).get('refreshQuestion');
           for (var i = 0; i < 2; i++) {
-            await tester.ensureVisible(find.byTooltip(tooltip));
+            await Scrollable.ensureVisible(
+              tester.element(find.byTooltip(tooltip)),
+              alignment: .5,
+            );
+            await tester.pumpAndSettle();
             await tester.tap(find.byTooltip(tooltip));
             await tester.pumpAndSettle();
             expect(tester.takeException(), isNull);
@@ -153,7 +157,8 @@ void main() {
                 widget is IconButton &&
                 widget.tooltip == AppStrings(language).get('refreshQuestion'),
           );
-          await tester.ensureVisible(button);
+          await Scrollable.ensureVisible(tester.element(button), alignment: .5);
+          await tester.pumpAndSettle();
           expect(tester.widget<IconButton>(button).onPressed != null, judge);
           if (judge) {
             await tester.tap(button);

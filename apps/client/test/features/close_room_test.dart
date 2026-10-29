@@ -20,17 +20,26 @@ void main() {
       final f = await numbers.pump(tester, host: true, own: false),
           socket = f.transport.sockets.last,
           label = AppStrings('de').get('roomClose');
-      await tester.tap(find.byTooltip(label));
+      await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
       await tester.tap(find.text(AppStrings('de').get('cancel')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<CloseRoomMessage>(), isEmpty);
-      await tester.tap(find.byTooltip(label));
+      await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(FilledButton, label));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<CloseRoomMessage>(), hasLength(1));
       expect(f.room.state.snapshot, isNotNull);
+      socket.receive(
+        RoomClosedMessage.fromJson({
+          'type': 'roomClosed',
+          'protocolVersion': 2,
+          'requestId': 'close_ack',
+        }),
+      );
+      await tester.pumpAndSettle();
+      expect(f.room.state.snapshot, isNull);
     },
   );
 }

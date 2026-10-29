@@ -111,7 +111,9 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
       if (!mounted) return;
       if (success) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute<void>(builder: (_) => const RoomConnectionScreen()),
+          MaterialPageRoute<void>(
+            builder: (_) => const RoomConnectionScreen(newRoom: true),
+          ),
         );
       } else {
         setState(() {

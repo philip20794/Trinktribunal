@@ -1,3 +1,5 @@
+import '../support/hold_action.dart';
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -129,10 +131,7 @@ void main() {
         expect(roster.members.length, 3);
         await tester.tap(find.text(strings.get('introContinue')));
         await tester.pumpAndSettle();
-        expect(
-          find.byType(cardMode ? CardModeScreen : PlayerRosterScreen),
-          findsOneWidget,
-        );
+        expect(find.byType(PlayerRosterScreen), findsOneWidget);
         expect(tester.takeException(), isNull);
       },
     );
@@ -191,10 +190,10 @@ void main() {
             tester,
             'phone-secret-hidden-$language-${scale.toInt()}',
           );
-          final reveal = find.text(strings.get('phoneHoldNumber'));
+          final reveal = find.text(strings.get('showNumber'));
           expect(reveal.hitTestable(), findsOneWidget);
           expect(done.hitTestable(), findsOneWidget);
-          final gesture = await tester.startGesture(tester.getCenter(reveal));
+          final gesture = await startChargedHold(tester, reveal);
           await tester.pump();
           expect(game.view!.visibleSecret, isNotNull);
           await reviewImage(

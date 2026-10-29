@@ -68,7 +68,8 @@ test('fixed verifier vectors bind the same synthetic credential to its own room'
 });
 test('role and phase matrix does not make a host the judge or a judge the host',()=>{
   assert.throws(()=>validateRoomMessage(sample('submitOrder'),{roles:['host'],phase:'ordering'}),/UNAUTHORIZED/);
-  assert.throws(()=>validateRoomMessage(sample('completeWithoutVerdict'),{roles:['judge'],phase:'ordering'}),/UNAUTHORIZED/);
+  assert.doesNotThrow(()=>validateRoomMessage(sample('completeWithoutVerdict'),{roles:['judge'],phase:'ordering'}));
+  assert.throws(()=>validateRoomMessage(sample('completeWithoutVerdict'),{roles:['reader'],phase:'ordering'}),/UNAUTHORIZED/);
   assert.throws(()=>validateRoomMessage(sample('startGame'),{roles:['host'],phase:'numbers'}),/INVALID_PHASE/);
   assert.doesNotThrow(()=>validateRoomMessage(sample('submitOrder'),{roles:['allJudgesParticipant'],phase:'ordering'}));
   assert.throws(()=>validateRoomMessage(sample('requestSnapshot'),{roles:['unauthenticated']}),/UNAUTHORIZED/);

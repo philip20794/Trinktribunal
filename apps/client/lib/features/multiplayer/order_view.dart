@@ -8,6 +8,7 @@ import '../../domain/models/player.dart';
 import '../../domain/user_profile.dart';
 import '../../l10n/app_strings.dart';
 import '../bench/bench_view.dart';
+import '../bench/placement_bank.dart';
 
 class OnlineOrderView extends ConsumerWidget {
   const OnlineOrderView({
@@ -46,20 +47,21 @@ class OnlineOrderView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (view.config.allJudges)
-              for (final id in view.frozenRoster)
-                ListTile(
-                  title: Text(
-                    profiles[id]?.player.name ??
-                        context.tr('onlineRemovedParticipant'),
-                  ),
-                  subtitle: TText(
-                    view.players.any(
-                          (p) => p.playerId == id && p.orderSubmitted,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  context.tr('onlineOrdersCount', {
+                    'done': view.players
+                        .where(
+                          (p) =>
+                              view.frozenRoster.contains(p.playerId) &&
+                              p.orderSubmitted,
                         )
-                        ? 'onlineOrderSubmitted'
-                        : 'onlineOrderNotSubmitted',
-                  ),
+                        .length,
+                    'total': view.frozenRoster.length,
+                  }),
                 ),
+              ),
             if (!ownsOrder && !view.config.allJudges)
               TText(
                 view.players.any(
@@ -73,20 +75,35 @@ class OnlineOrderView extends ConsumerWidget {
             if (controller.pending) const TText('onlineOrderSending'),
             if (ownsOrder && controller.confirmed)
               const TText('onlineOrderConfirmed'),
-            BenchView(
-              order: order,
-              profiles: profiles,
-              revealedNumbers: {
-                for (final entry in view.revealed) entry.playerId: entry.number,
-              },
-              incorrect: {
-                if (view.phase == 'judged' && view.result != null)
-                  for (final penalty in view.result!.penalties)
-                    if (penalty.sips > 0 && penalty.playerId != view.judgeId)
-                      penalty.playerId,
-              },
-              onMove: ownsOrder && controller.canEdit ? controller.move : null,
-            ),
+            if (view.config.allJudges &&
+                ['numbers', 'answers', 'ordering'].contains(view.phase) &&
+                ownsOrder &&
+                !controller.confirmed)
+              PlacementBank(
+                slots: controller.slots,
+                unplaced: controller.unplaced,
+                profiles: profiles,
+                onPlace: controller.canEdit ? controller.place : null,
+                onRemove: controller.unplace,
+              )
+            else
+              BenchView(
+                order: order,
+                profiles: profiles,
+                revealedNumbers: {
+                  for (final entry in view.revealed)
+                    entry.playerId: entry.number,
+                },
+                incorrect: {
+                  if (view.phase == 'judged' && view.result != null)
+                    for (final penalty in view.result!.penalties)
+                      if (penalty.sips > 0 && penalty.playerId != view.judgeId)
+                        penalty.playerId,
+                },
+                onMove: ownsOrder && controller.canEdit
+                    ? controller.move
+                    : null,
+              ),
             if (showActions) OnlineOrderAction(snapshot: snapshot),
           ],
         );
@@ -108,7 +125,9 @@ class OnlineOrderAction extends ConsumerWidget {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) => FilledButton(
-        onPressed: controller.canEdit
+        onPressed:
+            controller.canEdit &&
+                (!view.config.allJudges || controller.complete)
             ? () async {
                 final gameId = view.gameId, roundId = view.roundId;
                 if (gameId == null || roundId == null) return;

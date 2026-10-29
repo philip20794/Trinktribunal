@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/data/protocol/room_message.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
-import 'package:trinktribunal/design/private_number.dart';
+import 'package:trinktribunal/design/case_stage.dart';
 import 'package:trinktribunal/features/bench/bench_view.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
+import 'package:trinktribunal/features/bench/placement_bank.dart';
+import 'package:trinktribunal/features/multiplayer/courtroom.dart';
+import 'package:trinktribunal/design/judge_plate.dart';
+import 'package:trinktribunal/domain/models/ids.dart';
 
 import '../application/online_order_controller_test.dart' show orderingView;
 import 'online_order_test.dart' as normal;
@@ -47,9 +51,118 @@ void main() {
       read: (path) => File(path).readAsString(),
     ).load();
   });
+  for (final phase in ['numbers', 'answers', 'ordering']) {
+    testWidgets(
+      'touch drag places an avatar during $phase without submitting an order',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(360, 800));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final fixture = await numbers.pump(tester, allJudges: true);
+        if (phase != 'numbers') {
+          final base = fixture.room.state.snapshot!;
+          fixture.transport.sockets.last.receive(
+            SnapshotMessage.fromJson({
+              ...base.toJson(),
+              'revision': 2,
+              'public': {...base.public.toJson(), 'phase': phase},
+            }),
+          );
+          await tester.pumpAndSettle();
+        }
+        await tester.tap(find.byType(Tab).at(1));
+        await tester.pumpAndSettle();
+        final source = find.byKey(const ValueKey('unplaced-p2'));
+        final target = find.byKey(const ValueKey('order-seat-0'));
+        await tester.ensureVisible(source);
+        await tester.pumpAndSettle();
+        await tester.drag(
+          source,
+          tester.getCenter(target) - tester.getCenter(source),
+        );
+        await tester.pumpAndSettle();
+        final bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
+        expect(bank.slots.first, PlayerId('p2'));
+        expect(bank.unplaced, isNot(contains(PlayerId('p2'))));
+        expect(
+          fixture.transport.sockets.last.sent.whereType<SubmitOrderMessage>(),
+          isEmpty,
+        );
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+  testWidgets(
+    'a twenty-player bank scrolls upward while an avatar is dragged to an earlier seat',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(360, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final fixture = await numbers.pump(tester, allJudges: true);
+      final base = fixture.room.state.snapshot!;
+      fixture.transport.sockets.last.receive(
+        SnapshotMessage.fromJson({
+          ...base.toJson(),
+          'revision': 2,
+          'public': {
+            ...base.public.toJson(),
+            'roundId': 'round_many',
+            'phase': 'ordering',
+            'frozenRoster': [for (var i = 1; i <= 20; i++) 'p$i'],
+            'players': [
+              for (var i = 1; i <= 20; i++)
+                {
+                  ...base.public.players.first.toJson(),
+                  'playerId': 'p$i',
+                  'profile': {
+                    ...base.public.players.first.profile.toJson(),
+                    'name': 'Player $i',
+                  },
+                },
+            ],
+          },
+        }),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(Tab).at(1));
+      await tester.pumpAndSettle();
+      final scrollable = find
+          .descendant(
+            of: find.byType(RoomCourtroom),
+            matching: find.byType(Scrollable),
+          )
+          .first;
+      final source = find.byKey(const ValueKey('unplaced-p20'));
+      await tester.scrollUntilVisible(source, 350, scrollable: scrollable);
+      await tester.pumpAndSettle();
+      final scroll = tester.state<ScrollableState>(scrollable);
+      final before = scroll.position.pixels;
+      final gesture = await tester.startGesture(tester.getCenter(source));
+      await gesture.moveBy(const Offset(0, -25));
+      await tester.pump();
+      final bounds = tester.getRect(find.byType(RoomCourtroom));
+      await gesture.moveTo(Offset(bounds.center.dx, bounds.top + 8));
+      for (var i = 0; i < 100 && scroll.position.pixels > 0; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+      }
+      expect(scroll.position.pixels, lessThan(before));
+      expect(scroll.position.pixels, 0);
+      await gesture.moveTo(
+        tester.getCenter(find.byKey(const ValueKey('order-seat-0'))),
+      );
+      await tester.pump();
+      await gesture.up();
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<PlacementBank>(find.byType(PlacementBank)).slots.first,
+        PlayerId('p20'),
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
   testWidgets(
     'lobby option and server start connect every own figure in the actual courtroom',
     (tester) async {
+      await tester.binding.setSurfaceSize(const Size(320, 640));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
       final fixture = await numbers.pump(
             tester,
             lobby: true,
@@ -62,7 +175,8 @@ void main() {
         true,
       );
       await tester.pumpAndSettle();
-      await numbers.tapText(tester, AppStrings('de').get('onlineSaveSettings'));
+      await tester.pump(const Duration(milliseconds: 350));
+      await tester.pumpAndSettle();
       final config = socket.sent.whereType<SetConfigMessage>().single.config;
       expect(config.allJudges, isTrue);
       final base = fixture.room.state.snapshot!;
@@ -74,8 +188,12 @@ void main() {
         }),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(BackButton));
-      await tester.pumpAndSettle();
+      final courtroomTab = find.widgetWithText(
+        Tab,
+        AppStrings('de').get('roomTitle'),
+      );
+      expect(courtroomTab.hitTestable(), findsOneWidget);
+      expect(tester.widget<TabBar>(find.byType(TabBar)).isScrollable, isFalse);
       await numbers.tapText(tester, AppStrings('de').get('startHearing'));
       expect(socket.sent.whereType<StartGameMessage>(), hasLength(1));
       final started = numbers.view(host: true);
@@ -95,43 +213,24 @@ void main() {
       socket.receive(phase('numbers', 3));
       await tester.pumpAndSettle();
       expect(fixture.room.state.snapshot!.public.phase, 'numbers');
-      await tester.scrollUntilVisible(
-        find.byType(PrivateNumber),
-        -250,
-        scrollable: find
-            .descendant(
-              of: find.byType(ListView).first,
-              matching: find.byType(Scrollable),
-            )
-            .first,
-      );
-      expect(
-        tester.widget<PrivateNumber>(find.byType(PrivateNumber)).number,
-        isNull,
-      );
+      expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, isNull);
       final reader = started.public.players
           .firstWhere((p) => p.playerId.value == 'p2')
           .profile
           .name;
       expect(
-        find.text(AppStrings('de').get('caseGuide', {'name': reader})),
+        find.byWidgetPredicate(
+          (w) => w is JudgePlate && w.profile.player.name == reader,
+        ),
         findsOneWidget,
       );
       socket.receive(phase('ordering', 4));
       await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(
-        find.byType(BenchView),
-        250,
-        scrollable: find
-            .descendant(
-              of: find.byType(ListView).first,
-              matching: find.byType(Scrollable),
-            )
-            .first,
-      );
-      final bank = tester.widget<BenchView>(find.byType(BenchView));
-      expect(bank.onMove, isNotNull);
-      expect(bank.order.map((id) => id.value), ['p1', 'p2', 'p3']);
+      expect(find.byType(PlacementBank), findsOneWidget);
+      final bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
+      expect(bank.onPlace, isNotNull);
+      expect(bank.unplaced.map((id) => id.value), ['p1', 'p2', 'p3']);
+      expect(bank.slots, everyElement(isNull));
     },
   );
   testWidgets(
@@ -139,26 +238,26 @@ void main() {
     (tester) async {
       final socket = await normal.pump(tester, snapshot: allJudgesView()),
           frames = socket.sent.length;
-      var bank = tester.widget<BenchView>(find.byType(BenchView));
-      expect(bank.order.map((id) => id.value), ['p1', 'p2', 'p3', 'p4']);
-      expect(bank.onMove, isNotNull);
+      var bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
+      expect(bank.unplaced.map((id) => id.value), ['p1', 'p2', 'p3', 'p4']);
       for (var index = 0; index < 100; index++) {
-        bank.onMove!(0, 3);
+        bank.onPlace!(PlayerId('p1'), index % 4);
+      }
+      final expected = [
+        PlayerId('p2'),
+        PlayerId('p3'),
+        PlayerId('p4'),
+        PlayerId('p1'),
+      ];
+      for (var i = 0; i < expected.length; i++) {
+        bank.onPlace!(expected[i], i);
       }
       await tester.pumpAndSettle();
       expect(socket.sent.length, frames);
-      bank = tester.widget<BenchView>(find.byType(BenchView));
-      bank.onMove!(0, 3);
-      await tester.pumpAndSettle();
       socket.receive(allJudgesView(revision: 2));
       await tester.pumpAndSettle();
-      expect(
-        tester
-            .widget<BenchView>(find.byType(BenchView))
-            .order
-            .map((id) => id.value),
-        ['p2', 'p3', 'p4', 'p1'],
-      );
+      bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
+      expect(bank.slots, expected);
       final confirm = AppStrings('de').get('phoneConfirmOrder');
       await normal.tapText(tester, confirm);
       await tester.tap(find.text(AppStrings('de').get('cancel')));
@@ -175,7 +274,10 @@ void main() {
       final sent = socket.sent.whereType<SubmitOrderMessage>().single;
       expect(sent.order.map((id) => id.value), ['p2', 'p3', 'p4', 'p1']);
       expect(sent.expectedRevision, 2);
-      expect(tester.widget<BenchView>(find.byType(BenchView)).onMove, isNull);
+      expect(
+        tester.widget<PlacementBank>(find.byType(PlacementBank)).onPlace,
+        isNull,
+      );
       socket.receive(
         allJudgesView(
           revision: 3,
@@ -188,7 +290,9 @@ void main() {
         findsOneWidget,
       );
       expect(
-        find.text(AppStrings('de').get('onlineOrderSubmitted')),
+        find.text(
+          AppStrings('de').get('onlineOrdersCount', {'done': 1, 'total': 4}),
+        ),
         findsOneWidget,
       );
       expect(tester.widget<BenchView>(find.byType(BenchView)).onMove, isNull);
@@ -202,7 +306,7 @@ void main() {
         snapshot: allJudgesView(reader: true),
       );
       expect(
-        tester.widget<BenchView>(find.byType(BenchView)).onMove,
+        tester.widget<PlacementBank>(find.byType(PlacementBank)).onPlace,
         isNotNull,
       );
       socket.receive(allJudgesView(revision: 2, pending: true));

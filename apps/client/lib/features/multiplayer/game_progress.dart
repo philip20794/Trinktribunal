@@ -5,6 +5,7 @@ import '../../application/room_providers.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../../data/protocol/room_message.dart';
 import '../../design/case_file.dart';
+import '../../design/hold_action_button.dart';
 import '../../l10n/app_strings.dart';
 
 class OnlineGameProgress extends ConsumerWidget {
@@ -54,15 +55,10 @@ class OnlineGameProgress extends ConsumerWidget {
                 for (final assignment in view.activeRules)
                   Builder(
                     builder: (context) {
-                      final matches = catalogs
+                      final rule = catalogs
                           ?.rules[view.config.contentLanguage]
-                          ?.entries
-                          .where((r) => r.id == assignment.contentId)
-                          .toList();
-                      if (matches == null || matches.isEmpty) {
-                        return const TText('roomErrorGeneric');
-                      }
-                      final rule = matches.single;
+                          ?.byId[assignment.contentId];
+                      if (rule == null) return const TText('roomErrorGeneric');
                       if (assignment.bindings.values.length !=
                               rule.players.length ||
                           !assignment.bindings.values.keys.toSet().containsAll(
@@ -145,14 +141,16 @@ class OnlineProgressAction extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (view.phase == 'judged' && view.roundId != null)
-            FilledButton(
-              onPressed: game.pending('complete')
+            HoldActionButton(
+              key: ValueKey('next-judge-${view.roundId}'),
+              icon: Icons.arrow_forward_rounded,
+              label: context.tr('nextJudge'),
+              onCompleted: game.pending('complete')
                   ? null
                   : () => game.completeCase(
                       gameId: gameId,
                       roundId: view.roundId!,
                     ),
-              child: const TText('nextJudge'),
             ),
           if (view.phase == 'rule_event')
             FilledButton(
@@ -175,6 +173,41 @@ class OnlineProgressAction extends ConsumerWidget {
               child: const TText('roomContinue'),
             ),
         ],
+      ),
+    );
+  }
+}
+
+/// The judge closes a case played at the table, without a digital verdict.
+class OnlineNextCaseAction extends ConsumerWidget {
+  const OnlineNextCaseAction({required this.snapshot, super.key});
+  final SnapshotMessage snapshot;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final game = ref.watch(onlineGameProvider), view = snapshot.public;
+    return ListenableBuilder(
+      listenable: game,
+      builder: (context, _) => HoldActionButton(
+        key: ValueKey('next-judge-${view.roundId}'),
+        icon: Icons.arrow_forward_rounded,
+        label: context.tr('nextJudge'),
+        onCompleted: game.pending('complete')
+            ? null
+            : () {
+                if (view.gameId == null || view.roundId == null) return;
+                if (view.phase == 'judged') {
+                  game.completeCase(
+                    gameId: view.gameId!,
+                    roundId: view.roundId!,
+                  );
+                } else {
+                  game.completeWithoutVerdict(
+                    gameId: view.gameId!,
+                    roundId: view.roundId!,
+                    confirmed: true,
+                  );
+                }
+              },
       ),
     );
   }

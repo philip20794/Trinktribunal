@@ -95,7 +95,6 @@ class SettingsScreen extends ConsumerWidget {
                                 current.update(audioEnabled: value),
                           ),
                           const SizedBox(height: 12),
-                          Text(context.tr('localContentLanguageHelp')),
                           if (current.error != null)
                             Padding(
                               padding: const EdgeInsets.only(top: 12),
@@ -122,9 +121,16 @@ class SettingsScreen extends ConsumerWidget {
                             icon: const Icon(Icons.privacy_tip_outlined),
                             label: const TText('privacyTitle'),
                           ),
-                          const DataMaintenance(),
-                          const SizedBox(height: 16),
-                          const OfflineSettings(),
+                          const Divider(height: 32),
+                          ExpansionTile(
+                            tilePadding: EdgeInsets.zero,
+                            title: const TText('advancedSettings'),
+                            subtitle: const TText('advancedSettingsHelp'),
+                            children: const [
+                              DataMaintenance(),
+                              OfflineSettings(),
+                            ],
+                          ),
                           TextButton(
                             onPressed: () => showLicensePage(
                               context: context,

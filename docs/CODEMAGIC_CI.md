@@ -19,7 +19,20 @@ Die CI-Konfiguration steht im Repository-Root in `codemagic.yaml`. Codemagic bau
 
 ### Online-Server in die APK übernehmen
 
-`API_BASE_URL` muss in einer vom Workflow importierten Codemagic-Variablengruppe gesetzt sein, beispielsweise der bereits eingebundenen Gruppe `github_release_credentials`. Der Wert ist die öffentliche HTTPS-Origin des **laufenden** Trinktribunal-Workers, ohne API-Pfad oder Zugangsdaten. `PUBLIC_CLIENT_BASE_URL` ist optional die Origin eines tatsächlich gehosteten Webclients für Einladungslinks; ohne sie bleibt Beitreten per Raumcode möglich. Diese beiden URLs sind öffentliche Konfiguration, keine Signierschlüssel.
+Der Workflow importiert die Gruppe `online_server` explizit. Bei `API_BASE_URL fehlt` diese Einrichtung vornehmen:
+
+Die Meldung bedeutet, dass der Buildprozess keinen nichtleeren Wert für `API_BASE_URL` erhält. Die Gruppe in YAML allein legt die Variable nicht an. Auch eine lokal gesetzte Variable wird nicht an Codemagic übertragen. Die Adresse muss einmal in den App-Einstellungen hinterlegt werden. Bleibt der Fehler danach bestehen, Gruppennamen und App-Zugriff prüfen und einen neuen Build starten; ein alter Build-Log ändert sich dadurch nicht.
+
+1. In Codemagic **Applications > Trinktribunal > Settings > Environment variables** öffnen (bei geöffneten App-Einstellungen direkt den Reiter **Environment variables**).
+2. **Variable name:** `API_BASE_URL`.
+3. **Variable value:** die echte öffentliche HTTPS-Origin des bereits laufenden Trinktribunal-Workers, zum Beispiel im Format `https://trinktribunal.<dein-subdomain>.workers.dev` oder die eigene API-Domain. Den Beispieltext mit der tatsächlichen Adresse ersetzen. Kein `/api`, `/rooms`, Querystring, Zugangsdaten oder Anführungszeichen anhängen; kein `localhost` oder `127.0.0.1`.
+4. **Group:** `online_server` eingeben und die Gruppe erstellen/auswählen. **Secret** ist für diese öffentliche URL nicht erforderlich. **Add** klicken.
+5. Falls die Variable bisher in `github_release_credentials` liegt, dort entfernen und nur in `online_server` führen, damit kein zweiter Wert die Adresse überschreibt. Bei einer Team-Gruppe unter **Team settings > Global variables and secrets** zusätzlich den App-Zugriff auf Trinktribunal erlauben.
+6. Einen neuen Build des aktualisierten Commits starten, Workflow **Android APK (main und Versions-Tags)**. Die neu gebaute APK installieren.
+
+Optional in derselben Gruppe `PUBLIC_CLIENT_BASE_URL` mit der HTTPS-Origin des tatsächlich gehosteten Webclients hinzufügen. Diese Adresse erzeugt QR-Einladungslinks; ohne sie bleibt Beitreten per Raumcode möglich. Beide URLs sind öffentliche Konfiguration, keine Signierschlüssel. [Offizielle Codemagic-Anleitung](https://docs.codemagic.io/yaml-basic-configuration/configuring-environment-variables/).
+
+Der Online-Server wurde am 29.10.2026 unter **https://trinktribunal-api.philip20794.workers.dev** eingerichtet und öffentlich getestet. Diese Adresse steht als `API_BASE_URL` in Codemagics Gruppe `online_server`. Die getrennte Produktionskonfiguration verwendet Workers Free und SQLite-Durable-Objects. [Deployment, Wiederholung und Testbelege](CLOUDFLARE_DEPLOYMENT.md). `CLIENT_ORIGINS` ist für den derzeitigen APK-Betrieb leer; eine tatsächliche Webclient-Origin muss vor Browserbetrieb ergänzt werden.
 
 Der erste Pipelineschritt erzeugt über `scripts/write-client-build-config.mjs` eine JSON-Datei mit ausschließlich diesen Flutter-Defines. Der Releasebuild übernimmt genau diese Datei mit `--dart-define-from-file`. Fehlende Serveradresse, lokale HTTP-Adresse und `.invalid`-Beispiele brechen den Build vorzeitig ab. Eine Codemagic-Umgebungsvariable allein wird von Flutter nicht automatisch in `String.fromEnvironment` übernommen.
 
@@ -33,7 +46,7 @@ Eine Serveradresse einzutragen stellt keinen Server bereit. Das Repository enth�
 
 ## Wichtige Grenzen
 
-Für Main-Commit `9e6b176` meldet der GitHub-Check „Android APK (main und Versions-Tags)“ Erfolg: [Codemagic-Lauf](https://codemagic.io/app/6ae050b402a1af3f59928ac3/build/6ae057d9206ce93970c66072). Die Einrichtung oben beschreibt Voraussetzungen und Wiederherstellung. Für neuere Main-Pushes wird der automatische Lauf separat beobachtet; noch kein neuer Check nachgewiesen. Keine GitHub Actions, kein Cloudflare-Deploy und keine Veröffentlichung im Play Store.
+Für Main-Commit `9e6b176` meldet der GitHub-Check „Android APK (main und Versions-Tags)“ Erfolg: [Codemagic-Lauf](https://codemagic.io/app/6ae050b402a1af3f59928ac3/build/6ae057d9206ce93970c66072). Die Einrichtung oben beschreibt Voraussetzungen und Wiederherstellung. Für neuere Main-Pushes wird der automatische Lauf separat beobachtet; noch kein neuer Check nachgewiesen. Keine GitHub Actions und keine Veröffentlichung im Play Store. Der spätere Cloudflare-Livegang ist in [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md) dokumentiert.
 
 Die Android-App-ID steht derzeit noch auf `com.example.trinktribunal`. Vor einer dauerhaft verteilten Version die endgültige ID festlegen. Android-Installationen mit altem Debug-Schlüssel lassen sich nicht als Update mit dem neuen Release-Key ersetzen; bei Bedarf zuerst deinstallieren (lokale Spieldaten gehen dabei verloren). Die im Entwicklungsplan dokumentierte Rechteprüfung für Inhalte und Assets bleibt vor einer öffentlichen Veröffentlichung erforderlich.
 

@@ -60,7 +60,7 @@ void main() {
           final refresh = find.byType(IconButton);
           expect(
             tester.getCenter(refresh).dx,
-            lessThan(tester.getCenter(find.text('AKTE 1')).dx),
+            greaterThan(tester.getCenter(find.text('AKTE 1')).dx),
           );
           await tester.tap(refresh);
           await tester.pumpAndSettle();

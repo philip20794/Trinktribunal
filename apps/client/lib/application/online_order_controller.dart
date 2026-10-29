@@ -23,13 +23,18 @@ final class OnlineOrderController extends ChangeNotifier {
   RoomId? _roomId;
   PlayerId? _playerId;
   List<PlayerId> _draft = [];
-  bool _pending = false, _confirmed = false;
+  List<PlayerId?> _slots = [];
+  List<PlayerId?> get slots => List.unmodifiable(_slots);
+  List<PlayerId> get unplaced =>
+      _draft.where((id) => !_slots.contains(id)).toList();
+  bool get complete => _slots.isNotEmpty && !_slots.contains(null);
+  bool _pending = false, _confirmed = false, _disposed = false;
   List<PlayerId> get order =>
       snapshot == null ? const [] : List.unmodifiable(_draft);
   bool get pending => _pending;
   bool get confirmed => _confirmed;
   SnapshotMessage? get snapshot =>
-      room.state.status == RoomConnectionStatus.online
+      !_disposed && room.state.status == RoomConnectionStatus.online
       ? room.state.snapshot
       : null;
   bool get canEdit {
@@ -39,7 +44,9 @@ final class OnlineOrderController extends ChangeNotifier {
         view.public.roundId == _roundId &&
         view.public.frozenRoster.contains(view.you) &&
         (view.public.config.allJudges || view.you == view.public.judgeId) &&
-        view.public.phase == 'ordering' &&
+        (view.public.phase == 'ordering' ||
+            view.public.config.allJudges &&
+                ['numbers', 'answers'].contains(view.public.phase)) &&
         !_pending &&
         !_confirmed &&
         _draft.length ==
@@ -48,6 +55,7 @@ final class OnlineOrderController extends ChangeNotifier {
   }
 
   void _receive(RoomSessionState state) {
+    if (_disposed) return;
     // Keep an unconfirmed intention during a transient outage, hidden and
     // uneditable until an authoritative snapshot confirms the same scope.
     if (state.status == RoomConnectionStatus.reconnecting) {
@@ -60,12 +68,19 @@ final class OnlineOrderController extends ChangeNotifier {
     if (view == null ||
         !view.public.frozenRoster.contains(view.you) ||
         (!view.public.config.allJudges && view.you != view.public.judgeId) ||
-        !['ordering', 'revealing', 'judged'].contains(view.public.phase)) {
+        ![
+          'numbers',
+          'answers',
+          'ordering',
+          'revealing',
+          'judged',
+        ].contains(view.public.phase)) {
       _gameId = null;
       _roundId = null;
       _roomId = null;
       _playerId = null;
       _draft = [];
+      _slots = [];
       _pending = false;
       _confirmed = false;
       notifyListeners();
@@ -84,12 +99,14 @@ final class OnlineOrderController extends ChangeNotifier {
             (id) => view.public.config.allJudges || id != view.public.judgeId,
           )
           .toList();
+      _slots = List<PlayerId?>.filled(_draft.length, null);
       _pending = false;
       _confirmed = false;
     }
     final own = view.private.ownOrder;
     if (own != null) {
       _draft = List.of(own);
+      _slots = List.of(own);
       _confirmed = true;
       _pending = false;
     } else if (state.errorCode != null) {
@@ -110,6 +127,31 @@ final class OnlineOrderController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void place(PlayerId id, int index) {
+    if (!canEdit ||
+        !_draft.contains(id) ||
+        index < 0 ||
+        index >= _slots.length) {
+      return;
+    }
+    final previous = _slots.indexOf(id), displaced = _slots[index];
+    if (previous >= 0) _slots[previous] = displaced;
+    _slots[index] = id;
+    _draft = [
+      ..._slots.whereType<PlayerId>(),
+      ..._draft.where((p) => !_slots.contains(p)),
+    ];
+    notifyListeners();
+  }
+
+  void unplace(PlayerId id) {
+    if (!canEdit) return;
+    final index = _slots.indexOf(id);
+    if (index < 0) return;
+    _slots[index] = null;
+    notifyListeners();
+  }
+
   bool confirm({
     required GameId gameId,
     required RoundId roundId,
@@ -118,6 +160,8 @@ final class OnlineOrderController extends ChangeNotifier {
     final view = snapshot;
     if (!confirmed ||
         !canEdit ||
+        view?.public.phase != 'ordering' ||
+        view != null && view.public.config.allJudges && !complete ||
         view == null ||
         view.public.gameId != gameId ||
         view.public.roundId != roundId) {
@@ -129,7 +173,9 @@ final class OnlineOrderController extends ChangeNotifier {
         expectedRevision: view.revision,
         gameId: gameId,
         roundId: roundId,
-        order: List.of(_draft),
+        order: view.public.config.allJudges
+            ? _slots.whereType<PlayerId>().toList()
+            : List.of(_draft),
         confirmed: true,
       ),
     );
@@ -142,6 +188,12 @@ final class OnlineOrderController extends ChangeNotifier {
 
   @override
   void dispose() {
+    if (_disposed) return;
+    _disposed = true;
+    _draft = [];
+    _slots = [];
+    _pending = false;
+    _confirmed = false;
     unawaited(_subscription.cancel());
     super.dispose();
   }

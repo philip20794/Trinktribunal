@@ -555,6 +555,10 @@ final class RoomController {
   Future<void> dispose() async {
     if (_disposed) return;
     _disposed = true;
+    state = const RoomSessionState();
+    _credential = null;
+    _pending.clear();
+    _serverError = null;
     ++_session;
     await _closeNetwork();
     transport.dispose();

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/room_providers.dart';
-import '../../data/catalogs/catalog.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../../data/protocol/room_message.dart';
 import '../../design/case_file.dart';
-import '../../design/private_number.dart';
 import '../../l10n/app_strings.dart';
 import 'readiness_view.dart';
 import '../verdict/online_reveal.dart';
@@ -35,16 +33,10 @@ class RoomGameScreen extends ConsumerWidget {
       ),
       data: (catalogs) {
         final assignment = view.question;
-        Question? question;
-        if (assignment != null) {
-          for (final candidate
-              in catalogs.questions[view.config.contentLanguage]!.entries) {
-            if (candidate.id == assignment.contentId) {
-              question = candidate;
-              break;
-            }
-          }
-        }
+        final question = assignment == null
+            ? null
+            : catalogs.questions[view.config.contentLanguage]!.byId[assignment
+                  .contentId];
         final profiles = {
           for (final player in view.players)
             player.playerId: player.profile.name,
@@ -77,25 +69,6 @@ class RoomGameScreen extends ConsumerWidget {
           builder: (context, _) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (snapshot.private.ownNumber != null) ...[
-                PrivateNumber(
-                  compact: true,
-                  number: game.visibleNumber,
-                  onReveal: game.revealOwnNumber,
-                  onHide: game.hideSecret,
-                  onConfirm:
-                      view.phase == 'numbers' &&
-                          !game.acknowledged &&
-                          !game.ackPending
-                      ? game.acknowledgeNumber
-                      : null,
-                  confirmKey: 'onlineConfirmNumber',
-                ),
-                if (view.phase == 'numbers' &&
-                    (game.acknowledged || game.ackPending))
-                  const TText('onlineNumberConfirmed'),
-              ],
-              const SizedBox(height: 12),
               if (rendered != null)
                 CourtQuestion(
                   animationKey: view.roundId,

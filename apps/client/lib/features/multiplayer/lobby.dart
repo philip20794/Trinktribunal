@@ -10,33 +10,36 @@ import '../../l10n/app_strings.dart';
 import '../../design/court_scene.dart';
 import 'courtroom.dart';
 import 'me.dart';
-import 'invite.dart';
 import 'invitation.dart';
-import 'room_actions.dart';
 import 'game_privacy.dart';
-import 'close_room.dart';
 import 'readiness_view.dart';
 import 'order_view.dart';
 import 'game_progress.dart';
 import 'game_settings.dart';
 import 'case_tab.dart';
+import 'room_tools.dart';
+import '../../design/hold_action_button.dart';
 import '../verdict/online_reveal.dart';
 import '../rules/game_rules_screen.dart';
 
 class RoomLobbyScreen extends ConsumerWidget {
-  const RoomLobbyScreen({required this.state, super.key});
+  const RoomLobbyScreen({required this.state, this.newRoom = false, super.key});
+  final bool newRoom;
   final RoomSessionState state;
   @override
   Widget build(BuildContext context, WidgetRef ref) => DefaultTabController(
-    length: 3,
-    initialIndex:
-        [
-          'lobby',
-          'ordering',
-          'revealing',
-        ].contains(state.snapshot!.public.phase)
-        ? 1
-        : 2,
+    key: ValueKey((
+      state.snapshot!.public.config.allJudges,
+      state.snapshot!.you == state.snapshot!.public.hostId,
+    )),
+    length:
+        (state.snapshot!.public.config.allJudges ? 3 : 2) +
+        (state.snapshot!.you == state.snapshot!.public.hostId ? 1 : 0),
+    initialIndex: state.snapshot!.public.phase == 'lobby'
+        ? (state.snapshot!.you == state.snapshot!.public.hostId
+              ? (state.snapshot!.public.config.allJudges ? 3 : 2)
+              : 0)
+        : (state.snapshot!.public.config.allJudges ? 2 : 1),
     child: _CaseTabSync(
       snapshot: state.snapshot!,
       child: RoomGamePrivacy(
@@ -44,74 +47,56 @@ class RoomLobbyScreen extends ConsumerWidget {
           title: const TText('roomTitle'),
           footer: _RoomPhaseFooter(state: state),
           actions: [
-            RoomSkipMenu(snapshot: state.snapshot!),
             GameRulesButton(
               beforeOpen: ref.read(onlineGameProvider).hideSecret,
             ),
-            if (state.snapshot!.you == state.snapshot!.public.hostId)
-              IconButton(
-                tooltip: context.tr('roomClose'),
-                icon: const Icon(Icons.gavel),
-                onPressed: () => confirmRoomClose(context, ref),
-              ),
-            if (state.snapshot!.public.phase != 'lobby')
-              IconButton(
-                tooltip: context.tr('roomInviteTitle'),
-                icon: const Icon(Icons.qr_code),
-                onPressed: () {
-                  ref.read(onlineGameProvider).hideSecret();
-                  final code = ref.read(roomControllerProvider).roomCode;
-                  if (code == null) return;
-                  showDialog<void>(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      scrollable: true,
-                      title: const TText('roomInviteTitle'),
-                      content: SizedBox(
-                        width: 360,
-                        child: RoomInvite(code: code),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const TText('back'),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            IconButton(
-              tooltip: context.tr('roomLeave'),
-              icon: const Icon(Icons.logout),
-              onPressed: () {
-                ref.read(onlineGameProvider).hideSecret();
-                confirmRoomLeave(context, ref);
-              },
-            ),
           ],
           appBarBottom: TabBar(
-            isScrollable: true,
-            tabAlignment: TabAlignment.start,
+            isScrollable: false,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+            labelStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
             onTap: (_) {
               ref.read(onlineGameProvider).hideSecret();
               ref.read(onlineProfileProvider).flush();
             },
             tabs: [
-              Tab(text: context.tr('roomMeTab')),
-              Tab(text: context.tr('roomTitle')),
-              Tab(text: context.tr('caseTabTitle')),
+              Tab(
+                child: Text(
+                  context.tr('roomMeTab'),
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              if (state.snapshot!.public.config.allJudges)
+                Tab(
+                  child: Text(
+                    context.tr('roomTitle'),
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              Tab(
+                child: Text(
+                  context.tr('caseTabTitle'),
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              if (state.snapshot!.you == state.snapshot!.public.hostId)
+                Tab(
+                  child: Text(
+                    context.tr('roomAdminTab'),
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
             ],
           ),
           bodyBuilder: (context) => Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: TText(
-                  'roomOnline',
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-              ),
               if (state.errorCode != null)
                 Padding(
                   padding: const EdgeInsets.all(12),
@@ -123,11 +108,17 @@ class RoomLobbyScreen extends ConsumerWidget {
                 child: TabBarView(
                   children: [
                     const RoomMe(),
-                    RoomCourtroom(
-                      snapshot: state.snapshot!,
-                      fixedActions: true,
-                    ),
+                    if (state.snapshot!.public.config.allJudges)
+                      RoomCourtroom(
+                        snapshot: state.snapshot!,
+                        fixedActions: true,
+                      ),
                     RoomCaseTab(snapshot: state.snapshot!),
+                    if (state.snapshot!.you == state.snapshot!.public.hostId)
+                      ListView(
+                        padding: const EdgeInsets.all(12),
+                        children: [RoomTools(snapshot: state.snapshot!)],
+                      ),
                   ],
                 ),
               ),
@@ -157,12 +148,15 @@ class _CaseTabSyncState extends State<_CaseTabSync> {
     final newCase =
         next.gameId != null &&
         (old.gameId != next.gameId ||
+            old.roundId != next.roundId && next.phase == 'numbers' ||
             old.completedCases != next.completedCases ||
             oldGuide != nextGuide ||
             old.phase == 'rule_event' && next.phase != 'rule_event');
     final target = newCase || old.phase != next.phase && next.phase == 'judged'
-        ? 2
-        : old.phase != next.phase && next.phase == 'ordering'
+        ? (next.config.allJudges ? 2 : 1)
+        : next.config.allJudges &&
+              old.phase != next.phase &&
+              next.phase == 'ordering'
         ? 1
         : null;
     if (target != null) {
@@ -183,42 +177,111 @@ class _RoomPhaseFooter extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tabs = DefaultTabController.of(context),
         snapshot = state.snapshot!,
-        view = state.snapshot!.public;
+        view = snapshot.public;
     final host = snapshot.you == view.hostId;
+    final game = ref.watch(onlineGameProvider);
     return AnimatedBuilder(
-      animation: tabs,
+      animation: Listenable.merge([tabs, game]),
       builder: (context, _) {
-        if (tabs.index == 0) return const SizedBox.shrink();
-        final guide = ref.read(onlineGameProvider).canGuideRound;
-        if (tabs.index == 2 && view.phase == 'ordering') {
-          return CourtActionBar(
-            primary: FilledButton.icon(
-              onPressed: () => tabs.animateTo(1),
-              icon: const Icon(Icons.sort),
-              label: const TText('goToCourtroom'),
+        final caseIndex = view.config.allJudges ? 2 : 1;
+        if (host && tabs.index == caseIndex + 1) {
+          return view.phase == 'lobby'
+              ? CourtActionBar(
+                  primary: RoomStartAction(snapshot: snapshot, session: state),
+                )
+              : const SizedBox.shrink();
+        }
+        if (tabs.index == 0) {
+          final editor = ref.watch(onlineProfileProvider);
+          return ListenableBuilder(
+            listenable: editor,
+            builder: (context, _) => CourtActionBar(
+              primary: FilledButton(
+                onPressed: editor.available && editor.dirty && !editor.saving
+                    ? editor.flush
+                    : null,
+                child: TText(
+                  editor.saving ? 'roomProfileSaving' : 'roomProfileFlush',
+                ),
+              ),
             ),
           );
         }
-        final Widget? action = switch (view.phase) {
-          'lobby' when host => RoomStartAction(
-            snapshot: snapshot,
-            session: state,
+        final guide =
+            snapshot.you ==
+            (view.config.allJudges ? view.readerId : view.judgeId);
+        Widget? action;
+        if (tabs.index == caseIndex &&
+            view.config.allJudges &&
+            view.phase == 'ordering') {
+          action = FilledButton.icon(
+            onPressed: () => tabs.animateTo(1),
+            icon: const Icon(Icons.sort),
+            label: const TText('goToCourtroom'),
+          );
+        } else if (!view.config.allJudges &&
+            guide &&
+            [
+              'numbers',
+              'answers',
+              'ordering',
+              'revealing',
+              'judged',
+            ].contains(view.phase)) {
+          action = OnlineNextCaseAction(snapshot: snapshot);
+        } else {
+          action = switch (view.phase) {
+            'lobby' when host => RoomStartAction(
+              snapshot: snapshot,
+              session: state,
+            ),
+            'answers' when guide || view.frozenRoster.contains(snapshot.you) =>
+              ReadinessActions(snapshot: snapshot),
+            'ordering'
+                when view.frozenRoster.contains(snapshot.you) &&
+                    (view.config.allJudges || snapshot.you == view.judgeId) =>
+              OnlineOrderAction(snapshot: snapshot),
+            'revealing' when guide => OnlineRevealAction(snapshot: snapshot),
+            'judged' ||
+            'rule_event' ||
+            'paused' when guide => OnlineProgressAction(snapshot: snapshot),
+            _ => null,
+          };
+        }
+        final showNumber =
+            tabs.index == caseIndex && snapshot.private.ownNumber != null;
+        if (action == null && !showNumber) return const SizedBox.shrink();
+        return CourtActionBar(
+          primary: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (showNumber)
+                Expanded(
+                  child: HoldActionButton(
+                    duration: const Duration(milliseconds: 800),
+                    key: ValueKey(
+                      'online-number-${snapshot.roomId}:${view.roundId}',
+                    ),
+                    icon: Icons.visibility_outlined,
+                    label: context.tr('showNumber'),
+                    onCompleted: game.revealOwnNumber,
+                    onReleased: () {
+                      if (!context.mounted) return;
+                      if (game.snapshot?.public.roundId != view.roundId) return;
+                      if (view.phase == 'numbers' &&
+                          !game.acknowledged &&
+                          !game.ackPending) {
+                        game.acknowledgeNumber();
+                      }
+                      game.hideSecret();
+                    },
+                  ),
+                ),
+              if (showNumber && action != null) const SizedBox(width: 8),
+              if (action != null) Expanded(child: action),
+            ],
           ),
-          'answers' when guide || view.frozenRoster.contains(snapshot.you) =>
-            ReadinessActions(snapshot: snapshot),
-          'ordering'
-              when view.frozenRoster.contains(snapshot.you) &&
-                  (view.config.allJudges || snapshot.you == view.judgeId) =>
-            OnlineOrderAction(snapshot: snapshot),
-          'revealing' when guide => OnlineRevealAction(snapshot: snapshot),
-          'judged' ||
-          'rule_event' ||
-          'paused' when guide => OnlineProgressAction(snapshot: snapshot),
-          _ => null,
-        };
-        return action == null
-            ? const SizedBox.shrink()
-            : CourtActionBar(primary: action);
+        );
       },
     );
   }

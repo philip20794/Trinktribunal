@@ -107,10 +107,17 @@ void main() {
         await tester.tap(skin);
         await tester.pumpAndSettle();
         expect(find.byType(AvatarColorPickerDialog), findsOneWidget);
-        await tester.enterText(find.byType(TextField).last, '#123ABC');
+        expect(find.byType(TextField), findsNothing);
+        final picker = find
+            .descendant(
+              of: find.byType(AvatarColorPickerDialog),
+              matching: find.byType(GestureDetector),
+            )
+            .first;
+        await tester.tapAt(tester.getCenter(picker) + const Offset(95, 0));
         await tester.tap(find.text(language == 'de' ? 'Übernehmen' : 'Apply'));
         await tester.pumpAndSettle();
-        expect(selected['skinColor'], '#123ABC');
+        expect(selected['skinColor'], isNot('#ecad80'));
         await tester.ensureVisible(find.byKey(const ValueKey('avatar-tab-0')));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(const ValueKey('avatar-tab-0')));

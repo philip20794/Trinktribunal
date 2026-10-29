@@ -66,3 +66,7 @@ Web-Bundlehash: `71ca6e50fba631085e449e579afcaa269decf3699495acf147016af5dfaf0f8
 ## Nachtrag M7.5 / TT-078
 
 Die obigen TT-062-Zahlen bleiben der historische JS/Wasm-Vergleich. Das neue UI bündelt 15 ausgewählte Court-PNGs; der aktuelle [M7.5-Buildbeleg](M7_5-builds.json) misst 19.678.987 Byte Offlineinhalt in 48 Dateien. Bilddekodierung ist begrenzt, alle Dateien bleiben offline gebündelt. Neue Widget-/Build-Smokes sind in [M7.5](M7_5.md) belegt. Daraus werden keine neuen Browser-/Geräte-Startzeiten, Frame- oder Heapwerte abgeleitet; diese bleiben auf Nutzerwunsch manuell offen.
+
+## Laufzeitoptimierungen vom 29.10.2026
+
+[CPU-Vergleich, Speicherfreigabe und Regressionen](runtime-performance-2026-10-29.md): zwischengespeicherte unveränderliche Online-Daten, Katalogindizes, schlankere Halteanimation und Freigabe beendeter Sitzungen. Die Messungen betreffen lokale CPU-Codepfade; neue Android-Frame- oder Heapwerte werden daraus nicht abgeleitet.

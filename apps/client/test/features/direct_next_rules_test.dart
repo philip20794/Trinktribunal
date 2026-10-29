@@ -1,3 +1,5 @@
+import '../support/roster_setup.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -77,6 +79,7 @@ void main() {
           accessibilityHost(const CardModeScreen(), language: language),
         );
         await tester.pumpAndSettle();
+        await addTestPlayers(tester);
         await tap(tester, strings.get('startHearing'));
         final container = ProviderScope.containerOf(
           tester.element(find.byType(CardModeScreen)),

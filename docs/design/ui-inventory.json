@@ -349,7 +349,8 @@
     {
       "id": "bench",
       "files": [
-        "apps/client/lib/features/bench/bench_view.dart"
+        "apps/client/lib/features/bench/bench_view.dart",
+        "apps/client/lib/features/bench/placement_bank.dart"
       ],
       "modes": [
         "shared_phone",
@@ -401,12 +402,14 @@
         "leere/aktive Liste",
         "lokalisierter Inhalt",
         "übersprungene Regeln/Zielreduktion",
-        "zurück zum unveränderten Fall"
+        "zurück zum unveränderten Fall",
+        "dark_rule_cards_with_cream_text_and_fixed_close_button_in_every_mode"
       ],
       "tests": [
         "apps/client/test/domain/card_game_test.dart",
         "apps/client/test/features/direct_next_rules_test.dart",
-        "apps/client/test/features/ui_cleanup_test.dart"
+        "apps/client/test/features/ui_cleanup_test.dart",
+        "apps/client/test/features/active_rules_sheet_test.dart"
       ],
       "targetTask": "TT-076",
       "implementation": {
@@ -537,7 +540,8 @@
       "files": [
         "apps/client/lib/features/multiplayer/connection.dart",
         "apps/client/lib/features/multiplayer/game_privacy.dart",
-        "apps/client/lib/features/multiplayer/host_status.dart"
+        "apps/client/lib/features/multiplayer/host_status.dart",
+        "apps/client/lib/features/multiplayer/room_back.dart"
       ],
       "modes": [
         "multiplayer"
@@ -574,7 +578,8 @@
       "files": [
         "apps/client/lib/features/multiplayer/lobby.dart",
         "apps/client/lib/features/multiplayer/courtroom.dart",
-        "apps/client/lib/features/multiplayer/case_tab.dart"
+        "apps/client/lib/features/multiplayer/case_tab.dart",
+        "apps/client/lib/features/multiplayer/room_tools.dart"
       ],
       "modes": [
         "multiplayer"
@@ -596,10 +601,16 @@
         "aktive Regeln/Spielhilfe",
         "Start/Neustart bestätigen",
         "Direkte Raumerstellung aus gespeicherter Vorlage oder Standardprofil",
-        "Spieleinstellungen auf separatem Screen",
-        "QR/Code/Link einklappbar mit schwebendem Pfeil",
+        "Spieleinstellungen unter QR-Code mit automatischem Speichern",
+        "QR/Code/Link in dauerhaft geöffneter Raumverwaltung",
         "Kompakte Avatare mit schwebendem Drag-Griff und Links/Rechts-Aktionen",
-        "dedicated_case_tab_rotating_guide_private_number_and_broadcast_navigation"
+        "dedicated_case_tab_rotating_guide_private_number_and_broadcast_navigation",
+        "owner_only_administration_tab_with_qr_and_room_settings",
+        "charged_800ms_number_and_1200ms_next_judge_footer_actions",
+        "fixed_case_viewport_without_progress_header",
+        "host_demo_players_join_with_random_avatars_and_automated_round_actions",
+        "touch_seating_from_numbers_phase_with_edge_scrolling_for_twenty_players",
+        "debounced_settings_keep_newer_edits_and_rebase_stale_server_revisions"
       ],
       "tests": [
         "apps/client/test/features/lobby_test.dart",
@@ -607,7 +618,11 @@
         "apps/client/test/features/online_game_progress_test.dart",
         "apps/client/test/features/online_court_actions_test.dart",
         "apps/client/test/features/online_lobby_layout_test.dart",
-        "apps/client/test/features/case_tab_test.dart"
+        "apps/client/test/features/case_tab_test.dart",
+        "apps/client/test/application/online_settings_controller_test.dart",
+        "apps/client/test/application/demo_players_controller_test.dart",
+        "apps/client/test/application/demo_players_live_test.dart",
+        "apps/client/test/features/all_judges_test.dart"
       ],
       "targetTask": "TT-077",
       "implementation": {
@@ -1046,22 +1061,22 @@
     },
     {
       "path": "apps/client/assets/ui/courtroom/branding/trinktribunal_logo.png",
-      "width": 1024,
-      "height": 840,
-      "bytes": 819768,
-      "sha256": "8c707f5dafe1edd6a410e9d5d8c65e1b82656a9cbd66ca504ead71241ddf40e2",
+      "width": 1774,
+      "height": 887,
+      "bytes": 1329700,
+      "sha256": "91c3ab134863ba0b592505793b3df9c1882f6c17ded0c7ff9596026ac827e55f",
       "alpha_min": 0,
       "alpha_max": 255,
-      "transparent_pixels": 368256,
-      "nonopaque_pixels": 422664,
+      "transparent_pixels": 888071,
+      "nonopaque_pixels": 1570876,
       "alpha_bbox": [
-        20,
-        43,
-        1003,
-        796
+        57,
+        14,
+        1706,
+        872
       ],
       "review": "candidate",
-      "notes": "Transparenter vollständiger Wortmarkenentwurf, genügend Detail bei ca. 280–340 logischen px. Deutscher Slogan ist eingebrannt; Branding, keine interaktive Anleitung."
+      "notes": "User-supplied replacement logo; dimensions and transparency rechecked on 2026-10-29."
     },
     {
       "path": "apps/client/assets/ui/courtroom/decorations/beer_foam.png",
@@ -1632,6 +1647,25 @@
       ],
       "review": "candidate",
       "notes": "Vom Nutzer ausgewähltes Leerpapier; Siegel und Ränder erhalten, nur freie Papiermitte gestreckt. Automatische Textgröße 16–28, lange Texte vergrößern die Fläche; dekodierte Bilder über Routenwechsel gehalten."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Richter-Namensplakette-mit-Avatar.png",
+      "review": "candidate",
+      "notes": "Supplied by the user on 2026-10-29. Inspected as symbol, circular head portrait and player name plate; composed by JudgePlate.",
+      "width": 2172,
+      "height": 724,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 907461,
+      "nonopaque_pixels": 1570536,
+      "alpha_bbox": [
+        32,
+        33,
+        2124,
+        724
+      ],
+      "sha256": "cb3f0a3a464942bdf8e3e5542edeffff9349ce1a905727376efa6c96125aec42",
+      "bytes": 1185173
     }
   ],
   "redesign": {

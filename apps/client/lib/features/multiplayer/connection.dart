@@ -10,11 +10,16 @@ import '../../design/court_scene.dart';
 import 'invitation.dart';
 import 'invite.dart';
 import 'lobby.dart';
+import 'room_back.dart';
 
 class RoomConnectionScreen extends ConsumerWidget {
-  const RoomConnectionScreen({super.key});
+  const RoomConnectionScreen({this.newRoom = false, super.key});
+  final bool newRoom;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) =>
+      RoomBackGuard(child: _build(context, ref));
+
+  Widget _build(BuildContext context, WidgetRef ref) {
     ref.listen(roomSessionProvider, (previous, next) {
       final status = next.asData?.value.status;
       if (status == RoomConnectionStatus.closed ||
@@ -26,7 +31,8 @@ class RoomConnectionScreen extends ConsumerWidget {
         controller = ref.read(roomControllerProvider);
     final state = session.asData?.value ?? controller.state;
     if (state.status == RoomConnectionStatus.online && state.snapshot != null) {
-      return RoomLobbyScreen(state: state);
+      ref.watch(onlineHistoryProvider);
+      return RoomLobbyScreen(state: state, newRoom: newRoom);
     }
     return CourtScaffold(
       title: const TText('roomTitle'),

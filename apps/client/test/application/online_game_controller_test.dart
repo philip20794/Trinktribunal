@@ -12,6 +12,58 @@ import '../data/room_test_support.dart';
 import 'online_order_controller_test.dart' show orderingView;
 
 void main() {
+  test('disposed game/order/session facades release private values and reject actions', () {
+    fakeAsync((clock) {
+      final transport = FakeRoomTransport();
+      final room = RoomController(
+        transport: transport,
+        credentials: RoomCredentialStore(MemoryCredentialBackend()),
+      );
+      final game = OnlineGameController(room);
+      final order = OnlineOrderController(room);
+      unawaited(room.resume(testCredential()));
+      clock.flushMicrotasks();
+      final socket = transport.sockets.single;
+      socket.receive(roomFixture('authenticated'));
+      final base = orderingView();
+      final snapshot = SnapshotMessage.fromJson({
+        ...base.toJson(),
+        'public': {
+          ...base.public.toJson(),
+          'config': {...base.public.config.toJson(), 'allJudges': true},
+          'judgeId': null,
+          'readerId': base.you.value,
+        },
+        'private': {'ownNumber': 7},
+      });
+      socket.receive(snapshot);
+      clock.flushMicrotasks();
+      game.revealOwnNumber();
+      expect(game.visibleNumber, 7);
+      expect(order.canEdit, isTrue);
+      final sent = socket.sent.length;
+      game.dispose();
+      order.dispose();
+      expect(game.visibleNumber, isNull);
+      expect(game.snapshot, isNull);
+      expect(order.snapshot, isNull);
+      expect(order.slots, isEmpty);
+      expect(order.canEdit, isFalse);
+      expect(
+        game.rerollCurrentQuestion(
+          gameId: snapshot.public.gameId!,
+          roundId: snapshot.public.roundId!,
+        ),
+        isFalse,
+      );
+      expect(socket.sent, hasLength(sent));
+      unawaited(room.dispose());
+      expect(room.state.snapshot, isNull);
+      expect(room.roomCode, isNull);
+      clock.flushMicrotasks();
+      expect(clock.pendingTimers, isEmpty);
+    });
+  });
   for (final allJudges in [false, true]) {
     test(
       'reroll hides own value, blocks duplicates and discards old order scope; allJudges=$allJudges',
@@ -79,7 +131,8 @@ void main() {
           });
           socket.receive(next);
           clock.flushMicrotasks();
-          expect(order.order, isEmpty);
+          expect(order.slots, everyElement(isNull));
+          expect(order.unplaced, hasLength(allJudges ? 4 : 3));
           expect(game.visibleNumber, isNull);
           expect(
             game.rerollCurrentQuestion(

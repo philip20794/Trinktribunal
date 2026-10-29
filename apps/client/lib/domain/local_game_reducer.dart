@@ -1,5 +1,6 @@
 import '../data/catalogs/catalog.dart';
 import 'config/game_config.dart';
+import 'user_profile.dart';
 import 'event_schedule.dart';
 import 'models/content_history.dart';
 import 'models/domain_error.dart';
@@ -26,6 +27,7 @@ final class CardGameState {
     required this.currentEventId,
     required this.currentQuestion,
     required Set<String> completedEventIds,
+    this.roster = const [],
     this.lastCompletion,
     this.manualErrors,
     this.pauseReason,
@@ -33,6 +35,9 @@ final class CardGameState {
   }) : completedEventIds = Set.unmodifiable(completedEventIds),
        questionDraws = freezeQuestionDraws(questionDraws);
 
+  final List<UserProfile> roster;
+  UserProfile? get judge =>
+      roster.isEmpty ? null : roster[completedCases % roster.length];
   final GameId id;
   final GameConfig config;
   final EventSchedule schedule;
@@ -53,6 +58,7 @@ final class CardGameState {
   ContentAssignment? get newRule => rules.activations[currentEventId];
 
   Map<String, Object?> toSnapshot() => {
+    'roster': roster.map((p) => p.toJson()).toList(),
     'id': id.value,
     'config': config.toJson(),
     'slots': schedule.slots,
@@ -199,7 +205,16 @@ final class LocalGameReducer {
                 errors > config.playerCount - 1))) {
       throw const FormatException('Ungültige manuelle Wertung');
     }
+    final roster = (json['roster'] as List? ?? const [])
+        .map((p) => UserProfile.fromJson(p as Map<String, dynamic>))
+        .toList();
+    if (roster.isNotEmpty &&
+        (roster.length != config.playerCount ||
+            roster.map((p) => p.player.id).toSet().length != roster.length)) {
+      throw const FormatException('Invalid card roster');
+    }
     return CardGameState._(
+      roster: List.unmodifiable(roster),
       id: id,
       config: config,
       schedule: schedule,
@@ -220,9 +235,15 @@ final class LocalGameReducer {
     required GameId id,
     required GameConfig config,
     required ContentHistory history,
+    List<UserProfile> roster = const [],
   }) {
     if (config.mode != GameMode.physicalCards) {
       _invalid('Dieser Ablauf benötigt den Kartenmodus.');
+    }
+    if (roster.isNotEmpty &&
+        (roster.length != config.playerCount ||
+            roster.map((p) => p.player.id).toSet().length != roster.length)) {
+      _invalid('Invalid card roster');
     }
     final schedule = EventSchedule.plan(
       targetCases: config.targetCases,
@@ -230,6 +251,7 @@ final class LocalGameReducer {
       random: random,
     );
     final initial = CardGameState._(
+      roster: List.unmodifiable(roster),
       id: id,
       config: config,
       schedule: schedule,
@@ -393,6 +415,7 @@ final class LocalGameReducer {
     String? pauseReason,
     Map<String, List<String>>? questionDraws,
   }) => CardGameState._(
+    roster: state.roster,
     id: state.id,
     config: state.config,
     schedule: state.schedule,

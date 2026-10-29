@@ -12,55 +12,119 @@ Future<void> showActiveRules(
   BuildContext context,
   CardGameState state,
   Catalogs catalogs,
-) => showModalBottomSheet<void>(
+) => showActiveRuleList(
+  context,
+  emptyKey: 'rulesNone',
+  rules: [
+    for (final rule in state.rules.active)
+      localizedRule(
+        catalogs,
+        AppLanguageScope.of(context).language,
+        rule.entry as DrinkingRule,
+      ).text,
+  ],
+  note: state.rules.skippedEvents.isEmpty
+      ? null
+      : context.tr('ruleSkipping', {
+          'count': state.rules.skippedEvents.length,
+          'max': state.effectiveRuleTarget,
+        }),
+);
+
+Future<void> showActiveRuleList(
+  BuildContext context, {
+  required List<String> rules,
+  String? note,
+  String emptyKey = 'phoneRulesEmpty',
+}) => showModalBottomSheet<void>(
   context: context,
   isScrollControlled: true,
   showDragHandle: true,
   useSafeArea: true,
-  backgroundColor: CourtSceneTokens.parchment,
+  backgroundColor: CourtSceneTokens.night,
   builder: (context) => Theme(
-    data: courtPaperTheme(),
+    data: courtSceneTheme().copyWith(
+      bottomSheetTheme: const BottomSheetThemeData(
+        dragHandleColor: CourtSceneTokens.gold,
+      ),
+    ),
     child: DefaultTextStyle(
-      style: courtPaperTheme().textTheme.bodyLarge!,
-      child: Builder(
-        builder: (context) => FractionallySizedBox(
-          heightFactor: 0.8,
-          child: ListView(
-            padding: const EdgeInsets.all(24),
+      style: courtSceneTheme().textTheme.bodyLarge!.copyWith(height: 1.45),
+      child: FractionallySizedBox(
+        heightFactor: .8,
+        child: SafeArea(
+          top: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                context.tr('activeRulesCount', {
-                  'count': state.rules.active.length,
-                }),
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 16),
-              if (state.rules.active.isEmpty) const TText('rulesNone'),
-              for (final rule in state.rules.active)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: CourtPaper(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      localizedRule(
-                        catalogs,
-                        AppLanguageScope.of(context).language,
-                        rule.entry as DrinkingRule,
-                      ).text,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.menu_book_outlined,
+                      color: CourtSceneTokens.gold,
                     ),
-                  ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        context.tr('activeRulesCount', {'count': rules.length}),
+                        style: courtSceneTheme().textTheme.titleLarge,
+                      ),
+                    ),
+                  ],
                 ),
-              if (state.rules.skippedEvents.isNotEmpty)
-                Text(
-                  context.tr('ruleSkipping', {
-                    'count': state.rules.skippedEvents.length,
-                    'max': state.effectiveRuleTarget,
-                  }),
+              ),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  children: [
+                    if (rules.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: TText(emptyKey),
+                      ),
+                    for (var i = 0; i < rules.length; i++)
+                      Container(
+                        key: ValueKey('active-rule-$i'),
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: CourtSceneTokens.panel,
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: CourtSceneTokens.gold.withValues(alpha: .3),
+                          ),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${i + 1}.',
+                              style: const TextStyle(
+                                color: CourtSceneTokens.gold,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(child: Text(rules[i])),
+                          ],
+                        ),
+                      ),
+                    if (note != null)
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(note),
+                      ),
+                  ],
                 ),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () => Navigator.pop(context),
-                child: const TText('backToCase'),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: FilledButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const TText('backToCase'),
+                ),
               ),
             ],
           ),

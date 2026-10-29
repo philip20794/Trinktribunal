@@ -9,8 +9,8 @@ import 'package:trinktribunal/data/protocol/room_message.dart';
 import 'package:trinktribunal/data/room_credential_store.dart';
 import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/features/multiplayer/connection.dart';
-import 'package:trinktribunal/features/multiplayer/courtroom.dart';
 import 'package:trinktribunal/features/multiplayer/me.dart';
+import 'package:trinktribunal/features/multiplayer/room_tools.dart';
 import 'package:trinktribunal/features/multiplayer/invite.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -25,6 +25,7 @@ SnapshotMessage lobbySnapshot(bool host) {
     'public': {
       ...base.public.toJson(),
       'phase': 'lobby',
+      'config': {...base.public.config.toJson(), 'allJudges': true},
       'gameId': null,
       'roundId': null,
       'judgeId': null,
@@ -71,7 +72,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pumpLobby(
                 .copyWith(textScaler: TextScaler.linear(textScale)),
             child: child!,
           ),
-          home: const RoomConnectionScreen(),
+          home: const RoomConnectionScreen(newRoom: true),
         ),
       ),
     ),
@@ -140,17 +141,15 @@ void main() {
             await tester.tap(copy);
             await tester.pumpAndSettle();
             expect(copied, link);
-            final close = find.byKey(const ValueKey('room-tools-close'));
-            await tester.ensureVisible(close);
-            await tester.pumpAndSettle();
-            await tester.tap(close);
-            await tester.pumpAndSettle();
-            expect(find.byType(QrImageView), findsNothing);
-            final toggle = find.byKey(const ValueKey('room-tools-toggle'));
-            await mouse.moveTo(tester.getCenter(toggle));
-            await tester.tap(toggle);
-            await tester.pumpAndSettle();
-            expect(find.byType(RoomCourtroom), findsOneWidget);
+            expect(
+              find.byKey(const ValueKey('room-tools-close')),
+              findsNothing,
+            );
+            expect(
+              find.byKey(const ValueKey('room-tools-toggle')),
+              findsNothing,
+            );
+            expect(find.byType(RoomTools), findsOneWidget);
             expect(tester.takeException(), isNull);
           }
           await mouse.removePointer();
@@ -163,7 +162,7 @@ void main() {
   testWidgets('invitation still offers a room code without a hosted client', (
     tester,
   ) async {
-    await pumpLobby(tester);
+    await pumpLobby(tester, host: true);
     expect(find.byType(QrImageView), findsNothing);
     expect(
       find.text(const AppStrings('de').get('roomInviteUnavailable')),
@@ -241,8 +240,22 @@ void main() {
     (tester) async {
       final fixture = await pumpLobby(tester, host: true),
           socket = fixture.transport.sockets.last;
+      await tester.scrollUntilVisible(
+        find.byKey(const PageStorageKey('room-presence')),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.tap(
+        find
+            .descendant(
+              of: find.byKey(const PageStorageKey('room-presence')),
+              matching: find.byType(ListTile),
+            )
+            .first,
+      );
+      await tester.pumpAndSettle();
       final list = find.descendant(
-        of: find.byType(RoomCourtroom),
+        of: find.byType(TabBarView),
         matching: find.byType(ListView),
       );
       await tester.scrollUntilVisible(
@@ -252,12 +265,11 @@ void main() {
             .descendant(of: list, matching: find.byType(Scrollable))
             .first,
       );
-      final outer = tester.state<ScrollableState>(
-        find.descendant(of: list, matching: find.byType(Scrollable)).first,
+      await Scrollable.ensureVisible(
+        tester.element(find.byTooltip('p2 verwalten')),
+        alignment: .5,
       );
-      outer.position.jumpTo(outer.position.maxScrollExtent);
       await tester.pumpAndSettle();
-      expect(find.text('Host'), findsOneWidget);
       await tester.tap(find.byTooltip('p2 verwalten'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Teilnehmer entfernen'));
@@ -266,6 +278,11 @@ void main() {
       await tester.tap(find.text('Abbrechen'));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<KickMessage>(), isEmpty);
+      await Scrollable.ensureVisible(
+        tester.element(find.byTooltip('p2 verwalten')),
+        alignment: .5,
+      );
+      await tester.pumpAndSettle();
       await tester.tap(find.byTooltip('p2 verwalten'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Teilnehmer entfernen'));

@@ -1,5 +1,6 @@
 import '../data/catalogs/catalog.dart';
 import '../domain/config/game_config.dart';
+import '../domain/user_profile.dart';
 import '../domain/local_game_reducer.dart';
 import '../domain/models/content_history.dart';
 import '../domain/models/domain_error.dart';
@@ -67,7 +68,11 @@ final class LocalSessionController {
     contentLanguage: contentLanguage,
   );
 
-  void start(GameConfig config, {bool confirmedRestart = false}) {
+  void start(
+    GameConfig config, {
+    bool confirmedRestart = false,
+    List<UserProfile> roster = const [],
+  }) {
     if (_state != null && !confirmedRestart) {
       throw const DomainException(
         DomainErrorCode.invalidState,
@@ -83,7 +88,12 @@ final class LocalSessionController {
       );
     }
     _accept(
-      _reducer.start(id: GameId(_newId()), config: validated, history: history),
+      _reducer.start(
+        id: GameId(_newId()),
+        config: validated,
+        history: history,
+        roster: roster,
+      ),
     );
   }
 

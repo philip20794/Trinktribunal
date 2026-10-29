@@ -8,6 +8,8 @@ abstract final class CourtAssets {
       'assets/ui/courtroom/paper/trinktribunal_regel_pergament_leer.png';
   static const numberPaper = 'assets/ui/courtroom/paper/number_card_blank.png';
   static const logo = 'assets/ui/courtroom/branding/trinktribunal_logo.png';
+  static const judgePlate =
+      'assets/ui/courtroom/illustrations/Richter-Namensplakette-mit-Avatar.png';
   static const handover =
       'assets/ui/courtroom/illustrations/phone_handover.png';
   static const secretPaper =
@@ -30,7 +32,8 @@ abstract final class CourtAssets {
     caseSheet: 1024,
     ruleSheet: 768,
     numberPaper: 690,
-    logo: 1024,
+    logo: 1774,
+    judgePlate: 2172,
     handover: 1774,
     secretPaper: 1086,
     cards: 420,

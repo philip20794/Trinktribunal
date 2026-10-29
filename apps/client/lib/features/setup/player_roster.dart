@@ -16,10 +16,16 @@ import '../../domain/user_profile.dart';
 import '../profile/avatar_options.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../handoff/shared_game_screen.dart';
+import 'card_mode_screen.dart';
 
 class PlayerRosterScreen extends ConsumerStatefulWidget {
-  const PlayerRosterScreen({this.allowStart = true, super.key});
+  const PlayerRosterScreen({
+    this.allowStart = true,
+    this.cardMode = false,
+    super.key,
+  });
   final bool allowStart;
+  final bool cardMode;
   @override
   ConsumerState<PlayerRosterScreen> createState() => _PlayerRosterScreenState();
 }
@@ -104,6 +110,8 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
       context,
       MaterialPageRoute(
         builder: (_) => LocalGameOptionsScreen(
+          maxCases: widget.cardMode ? 431 : 491,
+          maxRules: widget.cardMode ? 22 : 25,
           cases: _cases,
           rules: _rules,
           factor: _factor,
@@ -126,17 +134,41 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
     final session = catalogs.hasValue
         ? ref.watch(sharedPhoneControllerProvider)
         : null;
-    final existing = session?.view;
+    final cardSession = catalogs.hasValue
+        ? ref.watch(localSessionProvider)
+        : null;
+    final existing = widget.cardMode ? cardSession?.state : session?.view;
     return CourtScaffold(
-      title: const TText('modePhone'),
+      title: TText(widget.cardMode ? 'modeCards' : 'modePhone'),
       footer: widget.allowStart && controller != null && session != null
           ? CourtActionBar(
               primary: FilledButton(
                 onPressed: !_busy && (existing != null || controller.canStart)
                     ? () {
                         _nameFocus.unfocus();
+                        if (widget.cardMode) {
+                          if (cardSession!.state == null) {
+                            cardSession.start(
+                              cardSession.configure(
+                                playerCount: controller.members.length,
+                                targetCases: _cases,
+                                requestedRuleEvents: _rules,
+                                factorTenths: _factor,
+                              ),
+                              roster: controller.members,
+                            );
+                          }
+                          ref.read(localStateTransactionProvider).save();
+                          Navigator.push<void>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const CardModeScreen(),
+                            ),
+                          );
+                          return;
+                        }
                         final config =
-                            existing?.config ??
+                            session.view?.config ??
                             session.configure(
                               playerCount: controller.members.length,
                               targetCases: _cases,
@@ -304,9 +336,11 @@ class LocalGameOptionsScreen extends StatefulWidget {
     required this.cases,
     required this.rules,
     required this.factor,
+    this.maxCases = 491,
+    this.maxRules = 25,
     super.key,
   });
-  final int cases, rules, factor;
+  final int cases, rules, factor, maxCases, maxRules;
   @override
   State<LocalGameOptionsScreen> createState() => _LocalGameOptionsScreenState();
 }
@@ -344,8 +378,8 @@ class _LocalGameOptionsScreenState extends State<LocalGameOptionsScreen> {
                 Slider(
                   value: _cases.toDouble(),
                   min: 1,
-                  max: 491,
-                  divisions: 490,
+                  max: widget.maxCases.toDouble(),
+                  divisions: widget.maxCases - 1,
                   label: '$_cases',
                   onChanged: (v) => setState(() {
                     _cases = v.round();
@@ -360,8 +394,10 @@ class _LocalGameOptionsScreenState extends State<LocalGameOptionsScreen> {
                 Slider(
                   value: _rules.toDouble(),
                   min: 0,
-                  max: (_cases - 1).clamp(0, 25).toDouble(),
-                  divisions: _cases > 1 ? (_cases - 1).clamp(1, 25) : null,
+                  max: (_cases - 1).clamp(0, widget.maxRules).toDouble(),
+                  divisions: _cases > 1
+                      ? (_cases - 1).clamp(1, widget.maxRules)
+                      : null,
                   label: '$_rules',
                   onChanged: _cases > 1
                       ? (v) => setState(() => _rules = v.round())

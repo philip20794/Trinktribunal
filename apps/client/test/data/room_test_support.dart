@@ -7,19 +7,33 @@ import 'package:trinktribunal/data/room_credential_store.dart';
 import 'package:trinktribunal/data/room_transport.dart';
 import 'package:trinktribunal/domain/models/ids.dart';
 
+final _credentialExpiry = DateTime.fromMillisecondsSinceEpoch(
+  DateTime.now().toUtc().add(const Duration(hours: 6)).millisecondsSinceEpoch,
+  isUtc: true,
+).toIso8601String();
 final _fixtures =
     (jsonDecode(
           File('../../packages/protocol/fixtures/messages/room-v2.json')
               .readAsStringSync(),
         ) as Map)['fixtures']
         as List;
-RoomMessage roomFixture(String type) => decodeRoomMessage(
-  jsonEncode(
-    (_fixtures.cast<Map>().firstWhere(
-      (row) => (row['valid'] as Map)['type'] == type,
-    ))['valid'],
-  ),
-);
+RoomMessage roomFixture(String type) {
+  final message = decodeRoomMessage(
+    jsonEncode(
+      (_fixtures.cast<Map>().firstWhere(
+        (row) => (row['valid'] as Map)['type'] == type,
+      ))['valid'],
+    ),
+  );
+  if (message is CredentialMessage) {
+    return CredentialMessage.fromJson({
+      ...message.toJson(),
+      'expiresAtUtc': _credentialExpiry,
+    });
+  }
+  return message;
+}
+
 RoomCredential testCredential() => RoomCredential(
   serverOrigin: Uri.parse('http://localhost:8787'),
   message: roomFixture('credential') as CredentialMessage,

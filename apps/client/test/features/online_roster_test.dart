@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/data/protocol/room_message.dart';
-import 'package:trinktribunal/features/bench/bench_view.dart';
 import 'package:trinktribunal/features/multiplayer/roster_management.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
@@ -110,20 +109,25 @@ void main() {
       });
       socket.receive(view());
       await tester.pumpAndSettle();
-      final scrollable = find
-          .descendant(
-            of: find.byType(ListView).first,
-            matching: find.byType(Scrollable),
-          )
-          .first;
+      expect(f.room.state.snapshot!.public.frozenRoster.map((id) => id.value), [
+        'p1',
+        'p2',
+        'p3',
+      ]);
+      await tester.ensureVisible(find.byType(Tab).last);
+      await tester.tap(find.byType(Tab).last);
+      await tester.pumpAndSettle();
+      final presence = find.byKey(const PageStorageKey('room-presence'));
       await tester.scrollUntilVisible(
-        find.byType(BenchView),
-        250,
-        scrollable: scrollable,
+        presence,
+        200,
+        scrollable: find.byType(Scrollable).first,
       );
-      final bank = tester.widget<BenchView>(find.byType(BenchView));
-      expect(bank.order.map((id) => id.value), ['p2', 'p3']);
-      expect(bank.order.any((id) => id.value == 'p4'), isFalse);
+      await tester.tap(
+        find.descendant(of: presence, matching: find.byType(ListTile)).first,
+      );
+      await tester.pumpAndSettle();
+      final scrollable = find.byType(Scrollable).first;
       await tester.scrollUntilVisible(
         find.byType(OnlineRosterManagement),
         250,
@@ -149,7 +153,8 @@ void main() {
       final hostMenu = find.byTooltip(
         AppStrings('de').get('roomManagePlayer', {'name': host}),
       );
-      await tester.ensureVisible(hostMenu);
+      await Scrollable.ensureVisible(tester.element(hostMenu), alignment: .5);
+      await tester.pumpAndSettle();
       await tester.tap(hostMenu);
       await tester.pumpAndSettle();
       await tester.tap(find.text(AppStrings('de').get('roomMoveUp')));
@@ -170,7 +175,8 @@ void main() {
         final menu = find.byTooltip(
           AppStrings('de').get('roomManagePlayer', {'name': other}),
         );
-        await tester.ensureVisible(menu);
+        await Scrollable.ensureVisible(tester.element(menu), alignment: .5);
+        await tester.pumpAndSettle();
         await tester.tap(menu);
         await tester.pumpAndSettle();
         await tester.tap(find.text(AppStrings('de').get('roomKick')));

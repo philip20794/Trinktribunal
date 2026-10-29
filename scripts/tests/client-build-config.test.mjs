@@ -55,6 +55,7 @@ test('Codemagic validates configuration before work and passes that same file in
   const yaml = readFileSync(new URL('../../codemagic.yaml', import.meta.url), 'utf8');
   const prepare = 'node scripts/write-client-build-config.mjs "$CM_BUILD_DIR/client-build-defines.json"';
   assert.ok(yaml.includes(prepare));
+  assert.match(yaml, /groups:\s*\n\s*- github_release_credentials\s*\n\s*- online_server/);
   assert.ok(yaml.indexOf(prepare) < yaml.indexOf('flutter pub get'));
   assert.match(yaml, /flutter build apk --release[^\n]*\\\r?\n\s+--dart-define-from-file="\$CM_BUILD_DIR\/client-build-defines\.json"/);
 });

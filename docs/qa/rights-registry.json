@@ -157,11 +157,11 @@
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
-          "sha256": "0832b5c10645c794ed702e8fe4ca2a191725ae5697b1b81cde3b381978ae0308"
+          "sha256": "d026b0c3a6d88087ddc3cce3f704997f42c251fb1f28d6e8240c7b6ae64edb20"
         },
         {
           "path": "apps/client/lib/design/illustrated_paper.dart",
-          "sha256": "713fa237369438e37c0b65c6cae2151c09bef1838d5afc98cafaca222d0df109"
+          "sha256": "31b6682c53443f485386feaa59de573bec01d690ddae8c0bcf6cb99fbbe3efff"
         }
       ]
     },
@@ -647,7 +647,7 @@
         },
         {
           "path": "apps/client/assets/ui/courtroom/branding/trinktribunal_logo.png",
-          "sha256": "8c707f5dafe1edd6a410e9d5d8c65e1b82656a9cbd66ca504ead71241ddf40e2"
+          "sha256": "91c3ab134863ba0b592505793b3df9c1882f6c17ded0c7ff9596026ac827e55f"
         },
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/phone_handover.png",
@@ -820,6 +820,19 @@
         {
           "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/texte/spielregeln.de.md",
           "sha256": "88e7be6c5b4e3f4d49f2417396604e4a1b61c062548c8d264e48155e4e57c389"
+        }
+      ]
+    },
+    {
+      "id": "user-supplied-judge-plate",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "Supplied by the project owner in the task on 2026-10-29 for the current judge header.",
+      "evidence": "docs/qa/rights.md",
+      "files": [
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/Richter-Namensplakette-mit-Avatar.png",
+          "sha256": "cb3f0a3a464942bdf8e3e5542edeffff9349ce1a905727376efa6c96125aec42"
         }
       ]
     }

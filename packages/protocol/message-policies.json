@@ -347,7 +347,8 @@
         "websocket"
       ],
       "roles": [
-        "host"
+        "host",
+        "judge"
       ],
       "phases": [
         "numbers",
