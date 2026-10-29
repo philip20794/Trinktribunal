@@ -55,6 +55,7 @@ flutter:
     - assets/ui/courtroom/paper/number_card_blank.png
     - assets/ui/courtroom/branding/trinktribunal_logo.png
     - assets/ui/courtroom/illustrations/phone_handover.png
+    - assets/ui/courtroom/illustrations/geheime_nummer_bg.png
     - assets/ui/courtroom/symbols/playing_cards.png
     - assets/ui/courtroom/symbols/smartphone.png
     - assets/ui/courtroom/symbols/player_group.png

@@ -1,5 +1,4 @@
 import '../../design/court_scene.dart';
-import '../bench/bench_view.dart';
 import '../../design/status_notice.dart';
 
 import 'package:flutter/material.dart';
@@ -26,246 +25,369 @@ class PlayerRosterScreen extends ConsumerStatefulWidget {
 }
 
 class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
+  final _name = TextEditingController();
+  final _nameFocus = FocusNode();
   bool _busy = false;
-  int _cases = 50;
-  int _rules = 7;
-  int _factor = 15;
-  Future<void> _act(Future<bool> Function() action) async {
-    if (_busy) return;
-    setState(() => _busy = true);
-    await action();
-    if (mounted) setState(() => _busy = false);
+  int _cases = 50, _rules = 7, _factor = 15;
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _undo;
+  @override
+  void dispose() {
+    _undo?.close();
+    _name.dispose();
+    _nameFocus.dispose();
+    super.dispose();
   }
 
-  Future<void> _edit(RosterController controller, [UserProfile? member]) async {
+  Future<bool> _act(Future<bool> Function() action) async {
+    if (_busy || !mounted) return false;
+    setState(() => _busy = true);
+    try {
+      return await action();
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _add(RosterController controller) async {
+    if (await _act(() => controller.add(_name.text))) {
+      if (!mounted) return;
+      _name.clear();
+      if (mounted) _nameFocus.requestFocus();
+    }
+  }
+
+  Future<void> _edit(RosterController controller, UserProfile member) async {
     final result = await showDialog<({String name, AvatarConfig avatar})>(
       context: context,
-      builder: (context) => Theme(
+      builder: (_) => Theme(
         data: courtPaperTheme(),
         child: _RosterEditDialog(member: member),
       ),
     );
-    if (!mounted || result == null) return;
-    await _act(
-      () => member == null
-          ? controller.add(result.name, avatar: result.avatar)
-          : controller.update(member.player.id, result.name, result.avatar),
+    if (mounted && result != null) {
+      await _act(
+        () => controller.update(member.player.id, result.name, result.avatar),
+      );
+    }
+  }
+
+  Future<bool> _remove(
+    RosterController controller,
+    UserProfile member,
+    int index,
+  ) async {
+    final removed = await _act(() => controller.remove(member.player.id));
+    if (!mounted || !removed) return false;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    _undo = ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        persist: false,
+        duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.fromLTRB(16, 0, 16, widget.allowStart ? 90 : 16),
+        content: Text(member.player.name, style: const TextStyle(fontSize: 13)),
+        action: SnackBarAction(
+          label: context.tr('undo'),
+          onPressed: () => _act(() => controller.restore(member, index)),
+        ),
+      ),
     );
+    final shown = _undo;
+    shown!.closed.then((_) {
+      if (identical(_undo, shown)) _undo = null;
+    });
+    return true;
+  }
+
+  Future<void> _options() async {
+    final result = await Navigator.push<({int cases, int rules, int factor})>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => LocalGameOptionsScreen(
+          cases: _cases,
+          rules: _rules,
+          factor: _factor,
+        ),
+      ),
+    );
+    if (mounted && result != null) {
+      setState(() {
+        _cases = result.cases;
+        _rules = result.rules;
+        _factor = result.factor;
+      });
+    }
   }
 
   @override
-  Widget build(BuildContext context) => CourtScaffold(
-    title: const TText('modePhone'),
-    bodyBuilder: (context) => ref
-        .watch(rosterProvider)
-        .when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => Center(
-            child: FilledButton(
-              onPressed: () => ref.invalidate(rosterProvider),
-              child: const TText('rosterReload'),
-            ),
-          ),
-          data: (controller) {
-            final own = ref.watch(profileProvider).asData?.value.profile;
-            final catalogs = ref.watch(catalogsProvider);
-            final session = catalogs.hasValue
-                ? ref.watch(sharedPhoneControllerProvider)
-                : null;
-            final existing = session?.view;
-            return Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 760),
-                child: ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    TText(
-                      'rosterOrder',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      context.tr('rosterCount', {
-                        'count': controller.members.length,
-                      }),
-                    ),
-                    FilledButton(
-                      onPressed: !_busy && controller.members.length < 20
-                          ? () => _edit(controller)
-                          : null,
-                      child: const TText('rosterAdd'),
-                    ),
-                    if (own != null)
-                      OutlinedButton(
-                        onPressed: !_busy && controller.members.length < 20
-                            ? () => _act(
-                                () => controller.add(
-                                  own.player.name,
-                                  avatar: own.avatar,
-                                ),
-                              )
-                            : null,
-                        child: const TText('rosterImport'),
-                      ),
-                    ExpansionTile(
-                      tilePadding: EdgeInsets.zero,
-                      title: const TText('benchControls'),
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 12),
-                          child: TText('rosterOrderHelp'),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    if (controller.error != null)
-                      StatusNotice(context.feedback(controller.error!)),
-                    if (controller.members.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 24),
-                        child: TText('rosterEmpty'),
-                      ),
-                    if (controller.members.isNotEmpty)
-                      BenchView(
-                        order: [
-                          for (final member in controller.members)
-                            member.player.id,
-                        ],
-                        profiles: {
-                          for (final member in controller.members)
-                            member.player.id: member,
-                        },
-                        onMove: _busy
-                            ? null
-                            : (from, to) =>
-                                  _act(() => controller.move(from, to)),
-                        actionsBuilder: (context, member, index) =>
-                            PopupMenuButton<String>(
-                              tooltip:
-                                  '${context.tr('rosterEditPerson')}: ${member.player.name} · ${index + 1}',
-                              enabled: !_busy,
-                              onSelected: (action) {
-                                if (action == 'edit') {
-                                  _edit(controller, member);
-                                } else {
-                                  _act(
-                                    () => controller.remove(member.player.id),
-                                  );
-                                }
-                              },
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  value: 'edit',
-                                  child: const TText('rosterEdit'),
-                                ),
-                                PopupMenuItem(
-                                  value: 'remove',
-                                  child: const TText('rosterRemove'),
-                                ),
-                              ],
-                              icon: const Icon(Icons.more_horiz),
+  Widget build(BuildContext context) {
+    final loaded = ref.watch(rosterProvider), controller = loaded.asData?.value;
+    final catalogs = ref.watch(catalogsProvider);
+    final session = catalogs.hasValue
+        ? ref.watch(sharedPhoneControllerProvider)
+        : null;
+    final existing = session?.view;
+    return CourtScaffold(
+      title: const TText('modePhone'),
+      footer: widget.allowStart && controller != null && session != null
+          ? CourtActionBar(
+              primary: FilledButton(
+                onPressed: !_busy && (existing != null || controller.canStart)
+                    ? () {
+                        _nameFocus.unfocus();
+                        final config =
+                            existing?.config ??
+                            session.configure(
+                              playerCount: controller.members.length,
+                              targetCases: _cases,
+                              requestedRuleEvents: _rules,
+                              factorTenths: _factor,
+                            );
+                        Navigator.push<void>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SharedGameScreen(
+                              config: config,
+                              roster: controller.members,
                             ),
-                      ),
-                    const SizedBox(height: 16),
-                    const SizedBox(height: 12),
-                    if (controller.canStart) const TText('rosterReady'),
-                    if (widget.allowStart && session != null) ...[
-                      if (existing == null)
-                        CourtPaper(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              const SizedBox(height: 16),
-                              Text(context.tr('casesCount', {'count': _cases})),
-                              Slider(
-                                value: _cases.toDouble(),
-                                min: 1,
-                                max: 491,
-                                divisions: 490,
-                                label: '$_cases',
-                                onChanged: (v) => setState(() {
-                                  _cases = v.round();
-                                  if (_rules >= _cases) _rules = _cases - 1;
-                                }),
-                              ),
-                              Text(context.tr('rulesCount', {'count': _rules})),
-                              Slider(
-                                value: _rules.toDouble(),
-                                min: 0,
-                                max: (_cases - 1).clamp(0, 25).toDouble(),
-                                divisions: _cases > 1
-                                    ? (_cases - 1).clamp(1, 25)
-                                    : null,
-                                label: '$_rules',
-                                onChanged: _cases > 1
-                                    ? (v) => setState(() => _rules = v.round())
-                                    : null,
-                              ),
-                              Text(
-                                context.tr('factor', {
-                                  'value': (_factor / 10).toStringAsFixed(1),
-                                }),
-                              ),
-                              Slider(
-                                value: _factor.toDouble(),
-                                min: 10,
-                                max: 30,
-                                divisions: 20,
-                                label: (_factor / 10).toStringAsFixed(1),
-                                onChanged: (v) =>
-                                    setState(() => _factor = v.round()),
-                              ),
-                            ],
                           ),
-                        )
-                      else
-                        const TText('rosterFrozen'),
-                      FilledButton(
-                        onPressed:
-                            !_busy && (existing != null || controller.canStart)
-                            ? () {
-                                final config =
-                                    existing?.config ??
-                                    session.configure(
-                                      playerCount: controller.members.length,
-                                      targetCases: _cases,
-                                      requestedRuleEvents: _rules,
-                                      factorTenths: _factor,
-                                    );
-                                Navigator.push<void>(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => SharedGameScreen(
-                                      config: config,
-                                      roster: controller.members,
-                                    ),
-                                  ),
-                                );
-                              }
-                            : null,
-                        child: Text(
-                          existing == null
-                              ? context.tr('startHearing')
-                              : 'Verhandlung fortsetzen',
+                        );
+                      }
+                    : null,
+                child: TText(existing == null ? 'startHearing' : 'resumeGame'),
+              ),
+            )
+          : null,
+      bodyBuilder: (context) => loaded.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (_, _) => Center(
+          child: FilledButton(
+            onPressed: () => ref.invalidate(rosterProvider),
+            child: const TText('rosterReload'),
+          ),
+        ),
+        data: (controller) => ReorderableListView(
+          padding: const EdgeInsets.all(16),
+          buildDefaultDragHandles: false,
+          onReorderItem: (from, to) => _act(() => controller.move(from, to)),
+          header: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (widget.allowStart && existing == null) ...[
+                OutlinedButton.icon(
+                  onPressed: _busy ? null : _options,
+                  icon: const Icon(Icons.tune),
+                  label: const TText('localGameOptions'),
+                ),
+                const SizedBox(height: 20),
+              ],
+              Text(
+                context.tr('rosterCount', {'count': controller.members.length}),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      key: const ValueKey('quick-player-name'),
+                      controller: _name,
+                      focusNode: _nameFocus,
+                      enabled: !_busy && controller.members.length < 20,
+                      textCapitalization: TextCapitalization.words,
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        labelText: context.tr('playerName'),
+                      ),
+                      onSubmitted: (_) => _add(controller),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton.filled(
+                    tooltip: context.tr('rosterAdd'),
+                    onPressed: !_busy && controller.members.length < 20
+                        ? () => _add(controller)
+                        : null,
+                    icon: const Icon(Icons.add),
+                  ),
+                ],
+              ),
+              if (controller.error != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: StatusNotice(context.feedback(controller.error!)),
+                ),
+              if (controller.members.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24),
+                  child: TText('rosterEmpty'),
+                ),
+              if (catalogs.hasError)
+                TextButton(
+                  onPressed: () => ref.invalidate(catalogsProvider),
+                  child: const TText('retryCases'),
+                ),
+              const SizedBox(height: 12),
+            ],
+          ),
+          children: [
+            for (var index = 0; index < controller.members.length; index++)
+              Dismissible(
+                key: ValueKey(controller.members[index].player.id),
+                direction: _busy
+                    ? DismissDirection.none
+                    : DismissDirection.horizontal,
+                dismissThresholds: const {
+                  DismissDirection.startToEnd: .6,
+                  DismissDirection.endToStart: .6,
+                },
+                background: _deleteBackground(Alignment.centerLeft),
+                secondaryBackground: _deleteBackground(Alignment.centerRight),
+                confirmDismiss: (_) =>
+                    _remove(controller, controller.members[index], index),
+                child: Card(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 2,
+                    ),
+                    leading: SizedBox.square(
+                      dimension: 40,
+                      child: AvatarView(
+                        config: controller.members[index].avatar,
+                        size: 40,
+                      ),
+                    ),
+                    title: Text(
+                      controller.members[index].player.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: _busy
+                        ? null
+                        : () => _edit(controller, controller.members[index]),
+                    trailing: ReorderableDragStartListener(
+                      index: index,
+                      enabled: !_busy,
+                      child: Tooltip(
+                        message: context.tr('reorderPlayer'),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Icon(Icons.drag_handle),
                         ),
                       ),
-                    ],
-                    if (widget.allowStart && catalogs.hasError)
-                      TextButton(
-                        onPressed: () => ref.invalidate(catalogsProvider),
-                        child: const TText('retryCases'),
-                      ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const TText('backToSelection'),
                     ),
-                  ],
+                  ),
                 ),
               ),
-            );
-          },
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _deleteBackground(Alignment alignment) => Container(
+    margin: const EdgeInsets.only(bottom: 8),
+    alignment: alignment,
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    decoration: BoxDecoration(
+      color: CourtSceneTokens.crimson,
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: const Icon(Icons.delete_outline, color: CourtSceneTokens.cream),
+  );
+}
+
+class LocalGameOptionsScreen extends StatefulWidget {
+  const LocalGameOptionsScreen({
+    required this.cases,
+    required this.rules,
+    required this.factor,
+    super.key,
+  });
+  final int cases, rules, factor;
+  @override
+  State<LocalGameOptionsScreen> createState() => _LocalGameOptionsScreenState();
+}
+
+class _LocalGameOptionsScreenState extends State<LocalGameOptionsScreen> {
+  late int _cases = widget.cases,
+      _rules = widget.rules,
+      _factor = widget.factor;
+  @override
+  Widget build(BuildContext context) => CourtScaffold(
+    title: const TText('localGameOptions'),
+    footer: CourtActionBar(
+      primary: FilledButton(
+        onPressed: () => Navigator.pop(context, (
+          cases: _cases,
+          rules: _rules,
+          factor: _factor,
+        )),
+        child: const TText('rosterApply'),
+      ),
+    ),
+    bodyBuilder: (context) => ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        CourtPaper(
+          child: Builder(
+            builder: (context) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  context.tr('casesCount', {'count': _cases}),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const TText('localCasesHelp'),
+                Slider(
+                  value: _cases.toDouble(),
+                  min: 1,
+                  max: 491,
+                  divisions: 490,
+                  label: '$_cases',
+                  onChanged: (v) => setState(() {
+                    _cases = v.round();
+                    if (_rules >= _cases) _rules = _cases - 1;
+                  }),
+                ),
+                Text(
+                  context.tr('rulesCount', {'count': _rules}),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const TText('localRulesHelp'),
+                Slider(
+                  value: _rules.toDouble(),
+                  min: 0,
+                  max: (_cases - 1).clamp(0, 25).toDouble(),
+                  divisions: _cases > 1 ? (_cases - 1).clamp(1, 25) : null,
+                  label: '$_rules',
+                  onChanged: _cases > 1
+                      ? (v) => setState(() => _rules = v.round())
+                      : null,
+                ),
+                Text(
+                  context.tr('factor', {
+                    'value': (_factor / 10).toStringAsFixed(1),
+                  }),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const TText('localFactorHelp'),
+                Slider(
+                  value: _factor.toDouble(),
+                  min: 10,
+                  max: 30,
+                  divisions: 20,
+                  label: (_factor / 10).toStringAsFixed(1),
+                  onChanged: (v) => setState(() => _factor = v.round()),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }
 

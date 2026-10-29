@@ -6,6 +6,9 @@
 
 **UI-Nachtrag vom 29.10.2026 nach Nutzerscreenshots:** Spielhinweise kommen vor die Moduseinrichtung; laufende Spielflächen enthalten Spielinhalt und nötige Aktionen. Hauptmenü mit drei Modi plus kurzen Spielregeln, ohne Diagnose/Galerie. Mitwachsende deckende Papierflächen ersetzen überlagerte PNG-Rahmen. Dauerhaft sichtbare D-07-/Neustart-/Rückkehr-Zusatzbuttons entfallen gemäß neuer Nutzervorgabe; Online-Ausnahmeaktionen bleiben im Optionsmenü. [Umsetzung und Prüfung](qa/ui-cleanup.md).
 
+**Weiterer Ein-Handy-Nachtrag:** Bei aktiver lokaler Partie erst Fortsetzen/Neu auswählen. Gruppe als kompakte umordnungsfähige Liste mit Schnellanlage, Wischen und dreisekündiger Rücknahme; Parameter auf separater Seite. Übergabe/Geheimzahl nach Referenz, Fertig bis zum ersten Anzeigen gesperrt. Skalen ohne Rot/Grün mit gemeinsamem Zahlenrahmen. [Prüfung](qa/shared-phone-redesign.md).
+
+
 
 Stand: 26.10.2026. **D-01 bis D-18 fachlich beschlossen; M0 wird umgesetzt.** Eine lokal startbare Flutter-/Riverpod-App-Shell, Android-/Web-Gerüst, Tests und Windows-Skripte sind im Entwicklungsbranch vorhanden. Der aktuelle Abnahmestand steht ausschließlich in [PROGRESS.md](PROGRESS.md) und [M0](qa/M0.md); die 70 Aufgaben und ihre Abnahmekriterien bleiben maßgeblich. Geprüfte Quellen: `main` (`0d8cd2d`) und `task/TT-001-flutter-shell` (`251a788`), integriert in `3bc0000`. Nutzungsrechte bleiben das gesonderte Release-Gate TT-065.
 

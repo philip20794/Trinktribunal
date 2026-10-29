@@ -177,14 +177,24 @@ void main() {
     },
   );
   testWidgets(
-    'Done is available while concealed, hides first and completes once per activation',
+    'Done stays disabled until a real reveal, then remains available while concealed',
     (tester) async {
       await pump(tester);
-      await tester.tap(find.text('Fertig – weiter zum nächsten Spieler'));
+      final done = find.widgetWithText(
+        FilledButton,
+        'Fertig – weiter zum nächsten Spieler',
+      );
+      expect(tester.widget<FilledButton>(done).onPressed, isNull);
+      final gesture = await tester.startGesture(tester.getCenter(hold));
+      await tester.pump();
+      await gesture.up();
+      await tester.pump();
+      expect(tester.widget<FilledButton>(done).onPressed, isNotNull);
+      await tester.tap(done);
       await tester.pump();
       final state = tester.state<_HarnessState>(find.byType(_Harness));
       expect(state.shown, isFalse);
-      expect(state.reveals, 0);
+      expect(state.reveals, 1);
       expect(state.completions, 1);
     },
   );

@@ -91,6 +91,16 @@ final class RosterController {
     return _members.where((m) => m.player.id != id).toList();
   });
 
+  Future<bool> restore(UserProfile member, int index) => _change(() {
+    if (_members.length >= 20 ||
+        _members.any((m) => m.player.id == member.player.id)) {
+      _invalid('Die Person kann nicht wiederhergestellt werden.');
+    }
+    final next = List<UserProfile>.of(_members);
+    next.insert(index.clamp(0, next.length), member);
+    return next;
+  });
+
   Future<bool> move(int oldIndex, int newIndex) => _change(() {
     if (oldIndex < 0 ||
         newIndex < 0 ||

@@ -173,30 +173,61 @@ class CourtQuestion extends StatelessWidget {
         children: [
           Text(text, style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 16),
-          _scale('1 · $green', CourtTokens.green),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(connector),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: const Color(0xFFE8CDA0),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    context.tr('questionRange', {'max': maximum}),
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  const SizedBox(height: 12),
+                  _scale('1', green),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Divider(height: 1, color: CourtTokens.border),
+                  ),
+                  _scale('$maximum', red),
+                ],
+              ),
+            ),
           ),
-          _scale('$maximum · $red', CourtSceneTokens.crimson),
         ],
       ),
     ),
   );
-  Widget _scale(String text, Color accent) => DecoratedBox(
-    decoration: BoxDecoration(
-      color: const Color(0xE6FFFBF5),
-      border: Border(left: BorderSide(color: accent, width: 4)),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(12),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: CourtTokens.ink,
-          fontWeight: FontWeight.w500,
+  Widget _scale(String number, String text) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        constraints: const BoxConstraints(minWidth: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        decoration: BoxDecoration(
+          color: CourtSceneTokens.crimson,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          number,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: CourtSceneTokens.cream,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
-    ),
+      const SizedBox(width: 10),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Text(text, style: const TextStyle(color: CourtTokens.ink)),
+        ),
+      ),
+    ],
   );
 }

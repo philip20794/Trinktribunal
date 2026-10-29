@@ -127,6 +127,15 @@ void main() {
           await tester.pump();
           await gesture.up();
           await tap(tester, strings.get('phoneIAm', {'name': identity()}));
+          Future<void> look() async {
+            final hold = find.text(strings.get('phoneHoldNumber'));
+            final gesture = await tester.startGesture(tester.getCenter(hold));
+            await tester.pump();
+            await gesture.up();
+            await tester.pump();
+          }
+
+          await look();
           final done = find.ancestor(
             of: find.text(strings.get('phoneDoneNext')),
             matching: find.byType(FilledButton),
@@ -141,6 +150,7 @@ void main() {
             expect(find.byType(CaseFile), findsNothing);
             expect(find.byType(HeldPrivateNumber), findsNothing);
             await tap(tester, strings.get('phoneIAm', {'name': identity()}));
+            await look();
             await tap(tester, strings.get('phoneDoneNext'));
             expect(game.view!.visibleSecret, isNull);
           }

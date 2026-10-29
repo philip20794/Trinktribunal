@@ -238,8 +238,8 @@ void main() {
                 .name;
         final rendered = question.renderFor({'player1': name});
         expect(find.text(rendered.text), findsOneWidget);
-        expect(find.text('1 · ${rendered.green}'), findsOneWidget);
-        expect(find.text('5 · ${rendered.red}'), findsOneWidget);
+        expect(find.text(rendered.green), findsOneWidget);
+        expect(find.text(rendered.red), findsOneWidget);
         expect(find.textContaining('{player1}'), findsNothing);
         expect(
           tester.widget<PrivateNumber>(find.byType(PrivateNumber)).number,

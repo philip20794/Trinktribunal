@@ -141,7 +141,7 @@
       "files": [
         {
           "path": "apps/client/lib/design/case_file.dart",
-          "sha256": "65cf0e98fcd596a75f70e7efa6bd67277432f83387ff347d705f1ca01b792b9b"
+          "sha256": "79504bbc673d3297729ac739d054ff52a74edf7e2efd779e737879e9392f759c"
         },
         {
           "path": "apps/client/lib/design/court_scene.dart",
@@ -149,7 +149,7 @@
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
-          "sha256": "d4a2831792253e87c18b8b3f57082329808764967578db8e4ad3dd9cc9da1254"
+          "sha256": "81c231497e94d4660e9b64e92161c962fec329dab56d5984be4dc9268ad910f9"
         }
       ]
     },
@@ -684,6 +684,10 @@
         {
           "path": "apps/client/assets/ui/courtroom/symbols/smartphone.png",
           "sha256": "ea544b5210f955a38d38fd50be1e00b0ecfed766add31d4f02258d2b3ac49023"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/geheime_nummer_bg.png",
+          "sha256": "190d2234e570a8d6247603ec9a77db672511c696f59a5b239113c3807ee48427"
         }
       ]
     }

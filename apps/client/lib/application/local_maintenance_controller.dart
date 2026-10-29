@@ -53,4 +53,25 @@ class LocalMaintenanceController extends Notifier<LocalMaintenanceState> {
     }
     return deleted;
   }
+
+  Future<bool> resetGame({required bool cardMode}) async {
+    if (state.busy) return false;
+    state = const LocalMaintenanceState(busy: true);
+    var success = false;
+    try {
+      await ref.read(localResumeProvider.future);
+      if (_disposed) return false;
+      success = await ref
+          .read(localStateTransactionProvider)
+          .resetGame(cardMode: cardMode);
+    } on Object {
+      success = false;
+    }
+    if (!_disposed) {
+      state = LocalMaintenanceState(
+        feedback: success ? null : 'maintenanceFailed',
+      );
+    }
+    return success;
+  }
 }

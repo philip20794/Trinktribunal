@@ -523,5 +523,23 @@
   "introOnline1": "One person creates a room. Others join by room code or invitation link, each with their own name and phone. A server connection is required.",
   "introOnline2": "View and confirm your own number. Take turns answering without saying it. The judge sorts; with All are judges, everyone submits their own order.",
   "introOnline3": "Normal: the judge and wrongly placed people each drink one sip per error. All are judges: drink only for errors in your own order. New rules last until the game ends; each breach costs one extra sip.",
-  "gameOptions": "Game options"
+  "gameOptions": "Game options",
+  "resumeGameTitle": "Continue your game?",
+  "resumeGameBody": "There is a game in progress. Continue or start again? A new game clears only this mode’s progress. Your group and draw history stay.",
+  "resumeGame": "Return to game",
+  "undo": "Undo",
+  "reorderPlayer": "Change order",
+  "localGameOptions": "Game settings",
+  "localCasesHelp": "The number of questions in this game. Drinking-rule events do not count as questions.",
+  "localRulesHelp": "Extra drinking rules introduced between cases. They stay active until the game ends.",
+  "localFactorHelp": "Sets the highest secret number: player count × factor, rounded up. A higher factor widens the number range.",
+  "yourNumber": "Your number",
+  "roundOf": "Round {number} of {total}",
+  "passPhoneTo": "Pass the phone to {name}.",
+  "questionRange": "From 1 to {max}",
+  "playerName": "Name",
+  "feedbackRosterRestore": "This person could not be restored.",
+  "@feedbackRosterRestore": {
+    "source": "Die Person kann nicht wiederhergestellt werden."
+  }
 }

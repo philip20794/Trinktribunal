@@ -126,12 +126,16 @@
         "gespeicherte Raumidentitäten",
         "Profil/Einstellungen/Spielregeln",
         "Four menu items: three modes and concise rules",
-        "No catalog diagnostics or design gallery in home navigation"
+        "No catalog diagnostics or design gallery in home navigation",
+        "29.10: selective continue/new-game prompt",
+        "29.10: compact ordered roster and separate configuration",
+        "29.10: focused handoff and held secret number; Done gated by first reveal"
       ],
       "tests": [
         "apps/client/test/accessibility/screen_matrix_test.dart",
         "apps/client/test/widget_test.dart",
-        "apps/client/test/features/home_profile_settings_test.dart"
+        "apps/client/test/features/home_profile_settings_test.dart",
+        "apps/client/test/features/shared_setup_flow_test.dart"
       ],
       "targetTask": "TT-073",
       "implementation": {
@@ -234,12 +238,16 @@
         "Profil übernehmen",
         "ab drei Personen starten",
         "laufende Besetzung nur zur Fallgrenze",
-        "Konfiguration/Resume/Katalogfehler"
+        "Konfiguration/Resume/Katalogfehler",
+        "29.10: selective continue/new-game prompt",
+        "29.10: compact ordered roster and separate configuration",
+        "29.10: focused handoff and held secret number; Done gated by first reveal"
       ],
       "tests": [
         "apps/client/test/application/roster_controller_test.dart",
         "apps/client/test/accessibility/screen_matrix_test.dart",
-        "apps/client/test/features/roster_bench_test.dart"
+        "apps/client/test/features/roster_bench_test.dart",
+        "apps/client/test/features/shared_setup_flow_test.dart"
       ],
       "targetTask": "TT-074",
       "implementation": {
@@ -320,14 +328,18 @@
         "Regelereignis/Pause/Ende",
         "D-07/Neustart/Abbruch",
         "Roster/Spielhilfe/aktive Regeln verdecken",
-        "sicheres Resume derselben Person"
+        "sicheres Resume derselben Person",
+        "29.10: selective continue/new-game prompt",
+        "29.10: compact ordered roster and separate configuration",
+        "29.10: focused handoff and held secret number; Done gated by first reveal"
       ],
       "tests": [
         "apps/client/test/features/shared_handoff_flow_test.dart",
         "apps/client/test/application/shared_handoff_test.dart",
         "apps/client/test/design/held_private_number_test.dart",
         "apps/client/test/application/local_marathon_test.dart",
-        "apps/client/test/design/question_card_test.dart"
+        "apps/client/test/design/question_card_test.dart",
+        "apps/client/test/features/shared_setup_flow_test.dart"
       ],
       "targetTask": "TT-075",
       "implementation": {
@@ -1553,6 +1565,25 @@
       ],
       "review": "candidate",
       "notes": "Als kleine Dekoration (~32–64 logische px) geeignet; echte Buttons mit 48-px-Zielen und übersetzter Semantik, keine Funktion aus dem Bild."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/geheime_nummer_bg.png",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 1609230,
+      "sha256": "190d2234e570a8d6247603ec9a77db672511c696f59a5b239113c3807ee48427",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 416996,
+      "nonopaque_pixels": 1571817,
+      "alpha_bbox": [
+        50,
+        82,
+        1054,
+        1366
+      ],
+      "review": "candidate",
+      "notes": "Vom Nutzer vorgegebenes Pergament für die feste Geheimzahlfläche; Zahl als eigener Flutter-Text, verborgen nie gerendert."
     }
   ],
   "redesign": {

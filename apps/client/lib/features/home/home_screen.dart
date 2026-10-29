@@ -18,6 +18,9 @@ import '../settings/settings_screen.dart';
 import '../multiplayer/saved_rooms.dart';
 import '../rules/game_rules_screen.dart';
 import 'mode_preview_screen.dart';
+import '../setup/card_mode_screen.dart';
+import '../handoff/shared_game_screen.dart';
+import '../../domain/models/game_mode.dart' as domain;
 
 enum GameMode {
   cards(
@@ -53,6 +56,69 @@ class HomeScreen extends ConsumerWidget {
 
   void _open(BuildContext context, Widget page) {
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
+  }
+
+  Future<void> _enterMode(
+    BuildContext context,
+    WidgetRef ref,
+    GameMode mode,
+  ) async {
+    if (mode != GameMode.multiplayer) {
+      final cards = mode == GameMode.cards;
+      final cardGame = ref.read(localSessionProvider).state;
+      final phoneGame = ref.read(sharedPhoneControllerProvider).view;
+      final phase = cards ? cardGame?.phase : phoneGame?.phase;
+      if (phase != null && phase != domain.GamePhase.finished) {
+        final choice = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            scrollable: true,
+            title: const TText('resumeGameTitle'),
+            content: const TText('resumeGameBody'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const TText('cancel'),
+              ),
+              OutlinedButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const TText('resumeGame'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const TText('newGame'),
+              ),
+            ],
+          ),
+        );
+        if (!context.mounted || choice == null) return;
+        if (!choice) {
+          _open(
+            context,
+            cards
+                ? const CardModeScreen()
+                : SharedGameScreen(
+                    config: phoneGame!.config,
+                    roster: phoneGame.pendingRoster ?? phoneGame.roster,
+                  ),
+          );
+          return;
+        }
+      }
+      if (phase != null) {
+        final success = await ref
+            .read(localMaintenanceProvider.notifier)
+            .resetGame(cardMode: cards);
+        if (!context.mounted) return;
+        if (!success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(context.tr('maintenanceFailed'))),
+          );
+          return;
+        }
+      }
+    }
+    if (context.mounted) _open(context, ModePreviewScreen(mode: mode));
   }
 
   @override
@@ -176,7 +242,7 @@ class HomeScreen extends ConsumerWidget {
                                           true) {
                                     return;
                                   }
-                                  _open(context, ModePreviewScreen(mode: mode));
+                                  await _enterMode(context, ref, mode);
                                 },
                               ),
                             ),

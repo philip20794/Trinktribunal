@@ -69,7 +69,7 @@ void main() {
           await tester.tap(find.text('Weiter'));
           expect(advances, 1);
           final endpoint = find.text(
-            '60 · Ein ebenso ausführliches rotes Skalenende',
+            'Ein ebenso ausführliches rotes Skalenende',
           );
           await tester.scrollUntilVisible(
             endpoint,

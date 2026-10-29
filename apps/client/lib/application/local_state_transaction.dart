@@ -160,4 +160,30 @@ final class LocalStateTransaction {
     restored = false;
     return _commit(resetBackup: true);
   }
+
+  Future<bool> resetGame({required bool cardMode}) async {
+    final previousCard = cards.state;
+    final previousPhone = cardMode
+        ? null
+        : shared.validateSnapshot(
+            shared.toSnapshot()?.cast<String, dynamic>(),
+            history.history,
+          );
+    if (cardMode) {
+      cards.abort(confirmed: true);
+    } else {
+      shared.abort(confirmed: true);
+    }
+    restored = cards.state != null || shared.view != null;
+    final success = await _commit(resetBackup: true);
+    if (!success) {
+      if (cardMode) {
+        cards.restoreValidated(previousCard);
+      } else {
+        shared.restoreValidated(previousPhone);
+      }
+      restored = cards.state != null || shared.view != null;
+    }
+    return success;
+  }
 }

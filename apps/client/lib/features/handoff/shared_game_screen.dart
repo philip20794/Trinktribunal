@@ -83,10 +83,12 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
   }
 
   String _identity(SharedGameView view, PlayerId id) =>
-      context.tr('phoneIdentity', {
-        'name': view.name(id),
-        'seat': view.roster.indexWhere((p) => p.player.id == id) + 1,
-      });
+      view.roster.where((p) => p.player.name == view.name(id)).length > 1
+      ? context.tr('phoneIdentity', {
+          'name': view.name(id),
+          'seat': view.roster.indexWhere((p) => p.player.id == id) + 1,
+        })
+      : view.name(id);
 
   void _showSecret(SharedGameView view) {
     try {
@@ -282,6 +284,75 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
           ).renderFor(view.question!.names(view.names));
     final judge = view.judge == null ? null : view.profiles[view.judge];
     final primary = _primaryAction(view);
+    if (view.numberStage == SharedNumberStage.recipientNumber) {
+      return PopScope(
+        onPopInvokedWithResult: (_, _) => _controller.interruptPrivateHandoff(),
+        child: HeldPrivateNumber(
+          key: ValueKey('${view.roundId}:${view.recipient!.value}'),
+          fullScreen: true,
+          number: view.visibleSecret,
+          onReveal: () => _showSecret(view),
+          onHide: () {
+            if (mounted) setState(_controller.hideSecret);
+          },
+          onDone: () => _act(
+            () => _controller.acknowledgeNumber(
+              roundId: view.roundId,
+              player: view.recipient!,
+            ),
+          ),
+        ),
+      );
+    }
+    if (view.numberStage == SharedNumberStage.recipientHandoff ||
+        view.numberStage == SharedNumberStage.judgeHandoff) {
+      final person = view.numberStage == SharedNumberStage.recipientHandoff
+          ? view.recipient!
+          : view.judge!;
+      return PopScope(
+        onPopInvokedWithResult: (_, _) => _controller.interruptPrivateHandoff(),
+        child: CourtScaffold(
+          title: Text(
+            context.tr('roundOf', {
+              'number': view.completedCases + 1,
+              'total': view.config.targetCases,
+            }),
+          ),
+          footer: CourtActionBar(primary: primary!),
+          bodyBuilder: (context) => LayoutBuilder(
+            builder: (context, constraints) => SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          context.tr('passPhoneTo', {
+                            'name': _identity(view, person),
+                          }),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      CourtArt(
+                        CourtAssets.handover,
+                        width: constraints.maxWidth,
+                        height: constraints.maxHeight * .4,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         _controller.interruptPrivateHandoff();
@@ -400,66 +471,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       ],
                     ),
                   ),
-                if (view.numberStage == SharedNumberStage.recipientHandoff ||
-                    view.numberStage == SharedNumberStage.judgeHandoff)
-                  const Center(
-                    child: CourtArt(
-                      CourtAssets.handover,
-                      width: 180,
-                      height: 124,
-                    ),
-                  ),
-                if (view.numberStage == SharedNumberStage.recipientHandoff) ...[
-                  AvatarView(
-                    config: view.profiles[view.recipient!]!.avatar,
-                    size: 80,
-                    label: _identity(view, view.recipient!),
-                  ),
-                  CourtSeal(
-                    label: context.tr('passPhone', {
-                      'name': _identity(view, view.recipient!),
-                    }),
-                    icon: Icons.phone_android,
-                  ),
-                  const SizedBox(height: 16),
-                ],
-                if (view.numberStage == SharedNumberStage.recipientNumber) ...[
-                  Text(
-                    context.tr('phonePrivateFor', {
-                      'name': _identity(view, view.recipient!),
-                    }),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 16),
-                  HeldPrivateNumber(
-                    key: ValueKey('${view.roundId}:${view.recipient!.value}'),
-                    number: view.visibleSecret,
-                    onReveal: () => _showSecret(view),
-                    onHide: () {
-                      if (mounted) setState(_controller.hideSecret);
-                    },
-                    onDone: () => _act(
-                      () => _controller.acknowledgeNumber(
-                        roundId: view.roundId,
-                        player: view.recipient!,
-                      ),
-                    ),
-                  ),
-                ],
-                if (view.numberStage == SharedNumberStage.judgeHandoff) ...[
-                  AvatarView(
-                    config: judge!.avatar,
-                    size: 80,
-                    label: _identity(view, view.judge!),
-                  ),
-                  CourtSeal(
-                    label: context.tr('phoneBackToJudge', {
-                      'name': _identity(view, view.judge!),
-                    }),
-                    icon: Icons.gavel,
-                  ),
-                  const SizedBox(height: 16),
-                ],
                 if (rendered != null &&
                     (view.phase != GamePhase.numbers ||
                         view.numberStage == SharedNumberStage.caseFile) &&

@@ -2,7 +2,11 @@
 
 Stand: 29.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 157 Node-/561 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 157 Node-/571 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+
+## Ein-Handy-Überarbeitung und Fortsetzen-Auswahl, 29.10.2026
+
+**ABGESCHLOSSEN nach Unit-/Buildgates.** Hauptmenüauswahl Fortsetzen/Neu für beide lokalen Modi; selektiver Recovery-sicherer Neustart. Separate Spieleinstellungen, kompakte Gruppe mit Schnellanlage, Drag-and-drop, Wischlöschung/3s-Rücknahme. Übergabe und Geheimzahl als fokussierte Ansichten nach Referenz; Fertig erst nach Anzeigen der Zahl. Ruhige gemeinsame Zahlenskala. 571 Clienttests/Analyze/Format, 157 Node-Tests im isolierten Git-Prüfstand, 26 native Ansichten und frische Web-/Debug-APK-/HTTP-/Offlinegates grün; [Beleg](qa/shared-phone-redesign.md).
 
 ## UI-Nacharbeit nach Nutzerscreenshots, 29.10.2026
 
@@ -140,7 +144,7 @@ Die jeweilige Aufgabenbeschreibung steht unter der identischen ID im [Entwicklun
 | TT-062 | Web-/Android-Performance messen und Wasm entscheiden | ERLEDIGT | Beide Builds kompilieren; JS bleibt D-18-Releaseweg, Offlinepaket −68,6 %, 20-Figuren-/50-Umsortierungs-Units grün; Gerätebudgets übersprungen, später manuell testen · [Performance](qa/performance.md). |
 | TT-063 | Nachrichten, Storage und Free-Tier-Budget messen | ERLEDIGT | Lokale SQL-/Frame-/Alarmzähler, beide 8×50+7-Modi und zehn parallele Achterräume: p95 199 ms; Kostenmodell mit 50 % Reserve und ungemessenem Edge-Billing · [Beleg](qa/cost-model.md). |
 | TT-064 | Bedienbarkeit, Fehler- und Leerzustände final prüfen | ERLEDIGT | 56 neue Semantik-/Tastatur-/Fehler-/200%-Tests, Live-Fehlertexte, personengebundener Fokus, Dialog-Escape und Wiederholungsweg; 411 Flutter-Tests und Builds grün · [M7](qa/M7.md). |
-| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 18 Paketen/130 Dateien und Releasegate geprüft; sechs Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
+| TT-065 | Inhalte und Asset-Nutzungsnachweise abschließen | BLOCKIERT | Register mit 18 Paketen/131 Dateien und Releasegate geprüft; sechs Runtime-Pakete ohne externe Nachweise, Nutzerantwort offen. Lokale TT-066–068 unabhängig möglich · [Rechte](qa/rights.md). |
 | TT-066 | Android-Releaseartefakte und Signierung vorbereiten | BLOCKIERT | Vorbereitung/Signatur- und HTTPS-Gates fertig, 145 Node-Tests/Debugbuild grün; echter signierter APK/AAB-Beleg aus bestehender Codemagic-Signierung fehlt · [TT-066](qa/android-release.md). |
 | TT-067 | Pages-Webpaket und Worker lokal releasefertig prüfen | ERLEDIGT | Getrennte HTTPS-Beispiele, Worker-Dry-run und neun HTTP-Releaseprüfungen; 152 Node-/446 Server-Tests, Format/Typen grün, kein Upload · [TT-067](qa/web-release.md). |
 | TT-068 | Spielhilfe, Datenschutz und lokale Wartung dokumentieren | ERLEDIGT | DE/EN-Hilfe/Datenschutz und bestätigte Löschaktionen inklusive Backups; 543 Flutter-/152 Node-Tests, Analyze/Format, Web-/Debug-APK-/HTTP-Gate grün. [Beleg](qa/help-privacy.md). |
@@ -211,12 +215,12 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: fix/ui-paper-and-game-flow auf main 72ae370; UI-Nacharbeit zu acht Nutzerscreenshots abgeschlossen.
-Belege: docs/qa/ui-cleanup.md + ui-cleanup-builds.json. 561 Flutter-/157 Node-Tests, Analyze/Format, frische Web-/Debug-APK-Builds, HTTP-/Offlineintegrität grün. 32 native UI-Bilder mit echten Schriften unter build/ui-review/cleanup-*.png. Keine Browser-/E2E-Abnahme.
-Hauptmenü: drei Modi plus kurze Spielregeln, keine Diagnose/Galerie. Moduseinführung vor Setup; saubere deckende Papierflächen. Keine permanenten Spielhinweise oder Zusatzbuttons; Online-Ausnahmeaktion im Optionsmenü, Neue Partie erst nach Abschluss.
-Neue phone_handover.png aus dem Workspace erhalten und geprüft; native Breite 1774, Inventar/Hashregister synchron. Rechte weiterhin ungeklärt, keine Freigabe erfunden.
-TT-065: sechs externe Rechte-/Provenienznachweise offen. TT-066: echter produktionssignierter APK/AAB-Beleg aus bestehendem Codemagic offen, keine neuen lokalen Schlüssel. TT-069/070 warten auf diese Abhängigkeiten.
-TT-067/068 abgeschlossen. Serverruntime unverändert seit TT-067 (446 Tests). Online-APK braucht eine konfigurierte laufende Backend-Origin und Neubau; Pipelineweitergabe korrigiert, kein Backenddeploy erfolgt.
-Nutzer-Nachträge bis b26007e erhalten. Avatar-v3-Master/Prototypen erhalten, Runtime bleibt v2.
-Laufende Web-Serverprozesse kompilieren Git-/Dateiänderungen nicht automatisch neu: Testskript neu starten, nicht nur Browserseite neu laden.
+Aktueller Schwerpunkt: Fortsetzen/Neu-Auswahl und Ein-Handy-Einrichtung/Übergabe abgeschlossen. Branch feat/shared-phone-setup-and-handoff; Belege docs/qa/shared-phone-redesign.md + shared-phone-builds.json.
+571 Flutter-/157 Node-Tests, Analyze/Format, 26 native Ansichten mit echten Schriften; frische Web-/Debug-APK-Builds und HTTP-/Offlineintegrität grün. Node-/Rechtegate in isoliertem Git-Prüfstand ohne den zusätzlichen unversionierten Spielregel-Assetimport ausgeführt.
+Neue Partie setzt nur den gewählten lokalen Modus plus Recoverykopie zurück. Andere Partie, Gruppe/Profil und Ziehhistorie bleiben erhalten. Bei Speicherfehler wird der vorangegangene Partiezustand im Arbeitsspeicher wiederhergestellt.
+Einrichtung: kompakte Reorder-Liste, Name+Plus/Enter, zufälliger Avatar, Wischlöschung/3s-Rücknahme. Einstellungen auf separatem Screen. Übergabe groß/mittig, Geheimzahl mit eigenem Pergament und unterem Hold-/Fertig-Bereich; Fertig erst nach tatsächlicher Ansicht, Unterbrechung verlangt erneute Übergabe. Skala als gemeinsamer Zahlenrahmen ohne Rot/Grün.
+Nutzer-PNG geheime_nummer_bg.png explizit eingebunden. Inventar: 34 Motive/3 Quarantänen, Rechte: 18 Pakete/131 Dateien, sechs Runtime-Pakete weiter extern ungeklärt.
+Unversionierter Ordner apps/client/assets/ui/trinktribunal_spielregeln_assets bleibt unangetastet für separate Nutzerarbeit; nicht in diesen Build integriert. Avatar-Prototyp-Nachträge bis 19aca25 erhalten, Runtime bleibt v2.
+TT-065 und TT-066 warten auf Rechte beziehungsweise echten produktionssignierten Codemagic-Artefaktbeleg; TT-069/070 bleiben davon abhängig. Kein Backenddeploy, keine zusätzlichen Signierschlüssel. Serverruntime unverändert (446 Tests aus TT-067).
+Browser/E2E/Gerät: ÜBERSPRUNGEN – später manuell testen. Lokales Testskript neu starten, damit der Webserver den aktuellen Quellcode kompiliert.
 ```

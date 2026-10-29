@@ -6,6 +6,8 @@ abstract final class CourtAssets {
   static const logo = 'assets/ui/courtroom/branding/trinktribunal_logo.png';
   static const handover =
       'assets/ui/courtroom/illustrations/phone_handover.png';
+  static const secretPaper =
+      'assets/ui/courtroom/illustrations/geheime_nummer_bg.png';
   static const cards = 'assets/ui/courtroom/symbols/playing_cards.png';
   static const phone = 'assets/ui/courtroom/symbols/smartphone.png';
   static const people = 'assets/ui/courtroom/symbols/player_group.png';
@@ -24,6 +26,7 @@ abstract final class CourtAssets {
     numberPaper: 690,
     logo: 1024,
     handover: 1774,
+    secretPaper: 1086,
     cards: 420,
     phone: 420,
     people: 420,

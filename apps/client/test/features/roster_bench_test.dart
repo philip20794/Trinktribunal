@@ -142,7 +142,7 @@ void main() {
 
   for (final language in ['de', 'en']) {
     testWidgets(
-      'roster CRUD and insertion through the shared bank, $language',
+      'compact roster quick add, reorder, edit, swipe and undo, $language',
       (tester) async {
         final strings = AppStrings(language);
         await tester.pumpWidget(
@@ -156,48 +156,56 @@ void main() {
           tester.element(find.byType(PlayerRosterScreen)),
         );
         final roster = container.read(rosterProvider).requireValue;
-        Future<void> press(String key) async {
-          final target = find.text(strings.get(key));
-          await showInScroll(tester, target);
-          await tester.tap(target);
+        for (final name in ['Alex', 'Alex', 'Cleo']) {
+          await tester.enterText(
+            find.byKey(const ValueKey('quick-player-name')),
+            name,
+          );
+          await tester.testTextInput.receiveAction(TextInputAction.done);
           await tester.pumpAndSettle();
         }
-
-        for (final name in ['Alex', 'Alex', 'Cleo']) {
-          await press('rosterAdd');
-          await tester.enterText(find.byType(TextField), name);
-          await press('rosterApply');
-        }
+        tester.testTextInput.hide();
+        await tester.pumpAndSettle();
+        expect(find.byType(BenchView), findsNothing);
         final before = roster.members.map((p) => p.player.id).toList();
-        final bench = tester.widget<BenchView>(find.byType(BenchView));
-        bench.onMove!(0, 2);
+        tester
+            .widget<ReorderableListView>(find.byType(ReorderableListView))
+            .onReorderItem!(0, 2);
         await tester.pumpAndSettle();
         expect(roster.members.map((p) => p.player.id), [
           before[1],
           before[2],
           before[0],
         ]);
-        Future<void> menu(PlayerId id) async {
-          final target = find.descendant(
-            of: find.byKey(ValueKey(id)),
-            matching: find.byType(PopupMenuButton<String>),
-          );
-          await showInScroll(tester, target);
-          await tester.tap(target);
-          await tester.pumpAndSettle();
-        }
-
-        await menu(before[0]);
-        await tester.tap(find.text(strings.get('rosterEdit')));
+        final row = find.byKey(ValueKey(before[0]));
+        await showInScroll(tester, row);
+        await tester.tap(
+          find.descendant(of: row, matching: find.byType(ListTile)),
+        );
         await tester.pumpAndSettle();
-        await tester.enterText(find.byType(TextField), 'Renamed');
-        await press('rosterApply');
+        await tester.enterText(
+          find.descendant(
+            of: find.byType(AlertDialog),
+            matching: find.byType(TextField),
+          ),
+          'Renamed',
+        );
+        await tester.tap(find.text(strings.get('rosterApply')));
+        await tester.pumpAndSettle();
         expect(roster.members.last.player.id, before[0]);
-        expect(roster.members.last.player.name, 'Renamed');
-        await menu(before[1]);
-        await tester.tap(find.text(strings.get('rosterRemove')));
+        final person = roster.members.first;
+        final deleteRow = find.byKey(ValueKey(person.player.id));
+        await showInScroll(tester, deleteRow);
+        await tester.drag(deleteRow, const Offset(700, 0));
         await tester.pumpAndSettle();
-        expect(roster.members.map((p) => p.player.id), [before[2], before[0]]);
+        expect(
+          roster.members.any((p) => p.player.id == person.player.id),
+          isFalse,
+        );
+        await tester.tap(find.text(strings.get('undo')));
+        await tester.pumpAndSettle();
+        expect(roster.members.first.player.id, person.player.id);
+        expect(roster.members.first.avatar.toJson(), person.avatar.toJson());
         expect(tester.takeException(), isNull);
       },
     );

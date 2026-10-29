@@ -799,5 +799,23 @@
   "introOnline1": "Eine Person erstellt einen Saal. Die anderen treten per Raumcode oder Einladungslink bei – jeder mit eigenem Namen und Handy. Eine Verbindung zum Server ist nötig.",
   "introOnline2": "Seht und bestätigt eure eigene Zahl. Antwortet reihum, ohne die Zahl zu nennen. Der Richter sortiert; bei „Alle sind Richter“ gibt jeder eine eigene Reihenfolge ab.",
   "introOnline3": "Normal: Richter und falsch Platzierte trinken je einen Schluck pro Fehler. Alle sind Richter: Jeder trinkt nur für Fehler der eigenen Reihenfolge. Neue Regeln gelten bis Partieende; pro Verstoß ein Extraschluck.",
-  "gameOptions": "Partieoptionen"
+  "gameOptions": "Partieoptionen",
+  "resumeGameTitle": "Partie fortsetzen?",
+  "resumeGameBody": "Hier läuft noch eine Partie. Fortsetzen oder neu starten? Eine neue Partie verwirft nur den Fortschritt dieses Modus. Gruppe und Ziehhistorie bleiben erhalten.",
+  "resumeGame": "Zum Spiel zurück",
+  "undo": "Rückgängig",
+  "reorderPlayer": "Reihenfolge ändern",
+  "localGameOptions": "Spieleinstellungen",
+  "localCasesHelp": "So viele Fragen spielt ihr in dieser Partie. Trinkregel-Ereignisse zählen nicht als Frage.",
+  "localRulesHelp": "So viele zusätzliche Trinkregeln werden zwischen den Fällen eingeführt. Sie gelten bis Partieende.",
+  "localFactorHelp": "Bestimmt die höchste Geheimzahl: Personenanzahl × Faktor, aufgerundet. Ein größerer Faktor vergrößert den Zahlenraum.",
+  "yourNumber": "Deine Zahl",
+  "roundOf": "Runde {number} von {total}",
+  "passPhoneTo": "Reicht das Handy an {name}.",
+  "questionRange": "Von 1 bis {max}",
+  "playerName": "Name",
+  "feedbackRosterRestore": "Die Person kann nicht wiederhergestellt werden.",
+  "@feedbackRosterRestore": {
+    "source": "Die Person kann nicht wiederhergestellt werden."
+  }
 }
