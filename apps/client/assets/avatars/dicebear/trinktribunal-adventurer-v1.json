@@ -86,6 +86,13 @@
         }
       },
       {
+        "type": "component",
+        "name": "earrings",
+        "attributes": {
+          "transform": "translate(555 340)"
+        }
+      },
+      {
         "name": "hair",
         "type": "component",
         "attributes": {
