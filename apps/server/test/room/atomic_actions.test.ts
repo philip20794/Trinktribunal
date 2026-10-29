@@ -69,6 +69,31 @@ async function send(peer: Peer, command: unknown) {
 }
 
 describe('atomic authoritative game actions in actual SQLite/hibernating room', () => {
+  it('blocks starts with a pending QR guest until their name is confirmed', async () => {
+    const { room, host, guests } = await group();
+    await runInDurableObject(room.stub, (_room, ctx) => {
+      const repository = new RoomRepository(ctx.storage),
+        state = repository.read()!,
+        guest = state.members.find((member) => member.playerId === guests[0]!.credential.playerId)!;
+      guest.profile = { ...profile, name: '[name pending]' };
+      repository.write(state);
+    });
+    const before = await read(room.stub);
+    host.peer.send(action(before, 'startGame'));
+    expect(await outcome(host.peer)).toMatchObject({ type: 'error', code: 'INVALID_NAME' });
+    expect(await read(room.stub)).toEqual(before);
+
+    guests[0]!.peer.send(createRoomMessage('editOwnProfile', {
+      actionId: RoomIds.action(crypto.randomUUID()),
+      expectedRevision: before.revision,
+      profile: { ...profile, name: 'Alex' },
+    }));
+    expect(await outcome(guests[0]!.peer)).toMatchObject({ type: 'ack', outcome: 'committed' });
+    const updated = await read(room.stub);
+    host.peer.send(action(updated, 'startGame'));
+    expect(await outcome(host.peer)).toMatchObject({ type: 'ack', outcome: 'committed' });
+  });
+
   it('bounds the shared action journal while credential revocation remains available', async () => {
     const { room, host } = await group();
     await runInDurableObject(room.stub, (_room, ctx) => {
