@@ -39,9 +39,9 @@ class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
       Color(int.parse('FF${hex.substring(1)}', radix: 16));
 
   static String _toHex(Color color) {
-    final r = (color.r * 255).round().clamp(0, 255);
-    final g = (color.g * 255).round().clamp(0, 255);
-    final b = (color.b * 255).round().clamp(0, 255);
+    final r = (color.r * 255).round().clamp(0, 255).toInt();
+    final g = (color.g * 255).round().clamp(0, 255).toInt();
+    final b = (color.b * 255).round().clamp(0, 255).toInt();
     return '#${r.toRadixString(16).padLeft(2, '0')}${g.toRadixString(16).padLeft(2, '0')}${b.toRadixString(16).padLeft(2, '0')}'.toUpperCase();
   }
 
