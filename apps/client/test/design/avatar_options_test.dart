@@ -68,7 +68,7 @@ void main() {
       expect(selected['skinColor'],'#763900');
       await tester.tap(find.byKey(const ValueKey('avatar-tab-0')));
       await tester.pumpAndSettle();
-      expect(tester.widget<DropdownButtonFormField<String>>(hair).value,'long01');
+      expect(tester.widget<DropdownButtonFormField<String> >(hair).initialValue,'long01');
       expect(tester.takeException(),isNull);
     });
   }
