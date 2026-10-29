@@ -89,12 +89,7 @@ void main() {
       expect(bank.slots, everyElement(isNull));
       expect(bank.unplaced, hasLength(3));
       final label = AppStrings('de').get('phoneConfirmOrder');
-      expect(
-        tester
-            .widget<FilledButton>(find.widgetWithText(FilledButton, label))
-            .onPressed,
-        isNull,
-      );
+      expect(find.widgetWithText(FilledButton, label), findsNothing);
       final pool = List<PlayerId>.of(bank.unplaced);
       for (var index = 0; index < pool.length; index++) {
         bank.onPlace!(pool[index], index);
@@ -256,13 +251,7 @@ void main() {
           );
           expect(find.byType(CaseProgressHeader), findsNothing);
           final refresh = find.byKey(const ValueKey('case-paper-refresh'));
-          expect(refresh, findsOneWidget);
-          expect(tester.widget<IconButton>(refresh).color, Colors.black);
-          final refreshBounds = tester.getRect(refresh);
-          expect(refreshBounds.center.dx, greaterThan(paperBounds.center.dx));
-          expect(refreshBounds.top, greaterThan(paperBounds.top));
-          expect(refreshBounds.bottom, lessThan(paperBounds.bottom));
-          expect(refreshBounds.width, greaterThanOrEqualTo(48));
+          expect(refresh, findsNothing);
 
           expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, isNull);
           await reviewImage(tester, 'case-fitted-${size.width.toInt()}');
@@ -295,7 +284,7 @@ void main() {
     );
   }
   testWidgets(
-    'reader gets secret and next-judge holds side by side in the fixed footer',
+    'reader gets the next-judge hold instead of the secret after the verdict',
     (tester) async {
       await tester.binding.setSurfaceSize(const Size(360, 800));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -330,13 +319,12 @@ void main() {
         HoldActionButton,
         AppStrings('de').get('nextJudge'),
       );
-      expect(secret.hitTestable(), findsOneWidget);
-      expect(next.hitTestable(), findsOneWidget);
-      expect(
-        tester.getRect(secret).center.dy,
-        closeTo(tester.getRect(next).center.dy, 1),
+      expect(secret, findsNothing);
+      await tester.tap(
+        find.widgetWithText(Tab, AppStrings('de').get('caseTabTitle')),
       );
-      expect(tester.getRect(secret).right, lessThan(tester.getRect(next).left));
+      await tester.pumpAndSettle();
+      expect(next.hitTestable(), findsOneWidget);
       final early = await tester.startGesture(tester.getCenter(next));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 1199));

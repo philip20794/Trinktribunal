@@ -9,7 +9,10 @@ import 'package:trinktribunal/features/bench/bench_view.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
 import '../application/online_order_controller_test.dart' show orderingView;
-import 'online_reveal_test.dart' as normal;
+import 'online_numbers_test.dart' as numbers;
+
+import 'package:trinktribunal/design/court_celebration.dart';
+import 'package:trinktribunal/design/pending_order_avatar.dart';
 
 SnapshotMessage personalView({
   required int errors,
@@ -59,43 +62,32 @@ SnapshotMessage personalView({
 
 void main() {
   setUpAll(() async {
-    normal.catalogs = await CatalogRepository(
+    numbers.catalogs = await CatalogRepository(
       read: (path) => File(path).readAsString(),
     ).load();
   });
-  final vector = [2, 4, 0, 0];
-  for (var index = 0; index < vector.length; index++) {
-    final errors = vector[index];
+  for (final errors in [2, 4, 0]) {
     testWidgets(
-      'personal result ${index + 1} displays only own $errors after full committed reveal',
+      'court displays the private $errors-error order and its matching verdict',
       (tester) async {
-        final fixture = await normal.pump(
-              tester,
-              snapshot: personalView(errors: errors),
-            ),
-            socket = fixture.socket;
+        final fixture = await numbers.pump(tester, allJudges: true);
+        final socket = fixture.transport.sockets.last;
+        socket.receive(personalView(errors: errors, revision: 2));
+        await tester.pumpAndSettle();
+        await tester.tap(
+          find.widgetWithText(Tab, AppStrings('de').get('roomTitle')),
+        );
+        await tester.pumpAndSettle();
         expect(
-          find.text(
-            AppStrings('de').get('onlinePersonalErrors', {'count': errors}),
-          ),
+          tester.widget<BenchView>(find.byType(BenchView)).order,
+          fixture.room.state.snapshot!.private.ownOrder,
+        );
+        expect(
+          find.text(AppStrings('de').get('phoneRevealNext')),
           findsNothing,
         );
-        var bank = tester.widget<BenchView>(find.byType(BenchView));
-        expect(bank.order, fixture.room.state.snapshot!.public.frozenRoster);
-        expect(bank.revealedNumbers, isEmpty);
-        expect(bank.onMove, isNull);
-        final reveal = find.text(AppStrings('de').get('phoneRevealNext'));
-        await Scrollable.ensureVisible(tester.element(reveal), alignment: .5);
-        await tester.pumpAndSettle();
-        expect(reveal.hitTestable(), findsOneWidget);
-        await tester.tap(reveal);
-        await tester.pumpAndSettle();
-        expect(
-          socket.sent.whereType<RevealNextMessage>().single.expectedCursor,
-          0,
-        );
-        expect(fixture.room.state.snapshot!.public.revealCursor, 0);
-        socket.receive(personalView(errors: errors, cursor: 1, revision: 2));
+        expect(find.text(AppStrings('de').get('verdictHeading')), findsNothing);
+        socket.receive(personalView(errors: errors, cursor: 1, revision: 3));
         await tester.pumpAndSettle();
         expect(
           tester
@@ -105,66 +97,46 @@ void main() {
           1,
         );
         expect(
-          find.text(
-            AppStrings('de').get('onlinePersonalSips', {'count': errors}),
-          ),
-          findsNothing,
+          tester.widget<BenchView>(find.byType(BenchView)).showPositionResult,
+          isFalse,
         );
-        socket.receive(personalView(errors: errors, cursor: 4, revision: 3));
+        socket.receive(personalView(errors: errors, cursor: 4, revision: 4));
         await tester.pumpAndSettle();
+        final bank = tester.widget<BenchView>(find.byType(BenchView));
+        expect(bank.incorrect, hasLength(errors));
+        expect(bank.order, fixture.room.state.snapshot!.private.ownOrder);
+        expect(bank.showPositionResult, isTrue);
+        expect(bank.pending, isEmpty);
         expect(
-          find.text(
-            AppStrings('de').get('onlinePersonalErrors', {'count': errors}),
-          ),
-          findsOneWidget,
+          find
+              .byType(PendingOrderAvatar)
+              .evaluate()
+              .every((e) => !(e.widget as PendingOrderAvatar).pending),
+          isTrue,
         );
-        expect(
-          find.text(
-            AppStrings('de').get('onlinePersonalSips', {'count': errors}),
-          ),
-          findsOneWidget,
-        );
-        for (final other in {0, 2, 4}.difference({errors})) {
+        if (errors == 0) {
+          expect(find.byType(CourtCelebration), findsOneWidget);
+        } else {
           expect(
             find.text(
-              AppStrings('de').get('onlinePersonalSips', {'count': other}),
+              AppStrings('de').get('drinkPersonalSips', {'count': errors}),
+            ),
+            findsOneWidget,
+          );
+          await tester.tap(
+            find.byTooltip(AppStrings('de').get('roomToolsClose')),
+          );
+          await tester.pumpAndSettle();
+          expect(
+            find.text(
+              AppStrings('de').get('drinkPersonalSips', {'count': errors}),
             ),
             findsNothing,
           );
         }
-        bank = tester.widget<BenchView>(find.byType(BenchView));
-        expect(bank.revealedNumbers.length, 4);
-        expect(bank.incorrect, isEmpty);
-        expect(fixture.room.state.snapshot!.public.result, isNull);
-        expect(
-          find.text(AppStrings('de').get('phoneRevealNext')),
-          findsNothing,
-        );
+        expect(socket.sent.whereType<RevealNextMessage>(), isEmpty);
+        expect(tester.takeException(), isNull);
       },
     );
   }
-  testWidgets('reader receives their own result and can guide reveal', (
-    tester,
-  ) async {
-    final fixture = await normal.pump(
-      tester,
-      snapshot: personalView(errors: 2, host: false),
-    );
-    final button = find.text(AppStrings('de').get('phoneRevealNext'));
-    await tester.ensureVisible(button);
-    await tester.tap(button);
-    await tester.pumpAndSettle();
-    expect(
-      fixture.socket.sent.whereType<RevealNextMessage>().single.expectedCursor,
-      0,
-    );
-    fixture.socket.receive(
-      personalView(errors: 2, host: false, cursor: 4, revision: 2),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      find.text(AppStrings('de').get('onlinePersonalSips', {'count': 2})),
-      findsOneWidget,
-    );
-  });
 }

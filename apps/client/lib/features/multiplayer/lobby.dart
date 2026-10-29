@@ -42,7 +42,9 @@ class RoomLobbyScreen extends ConsumerWidget {
       length:
           (state.snapshot!.public.config.allJudges ? 3 : 2) +
           (state.snapshot!.you == state.snapshot!.public.hostId ? 1 : 0),
-      initialIndex: requiresName ? 0 : state.snapshot!.public.phase == 'lobby'
+      initialIndex: requiresName
+          ? 0
+          : state.snapshot!.public.phase == 'lobby'
           ? (state.snapshot!.you == state.snapshot!.public.hostId
                 ? (state.snapshot!.public.config.allJudges ? 3 : 2)
                 : 0)
@@ -80,6 +82,13 @@ class RoomLobbyScreen extends ConsumerWidget {
                   Tab(
                     child: Text(
                       context.tr('roomMeTab'),
+                      style: snapshot.public.phase == 'lobby'
+                          ? null
+                          : TextStyle(
+                              color: CourtSceneTokens.cream.withValues(
+                                alpha: .45,
+                              ),
+                            ),
                       maxLines: 2,
                       textAlign: TextAlign.center,
                     ),
@@ -103,6 +112,13 @@ class RoomLobbyScreen extends ConsumerWidget {
                     Tab(
                       child: Text(
                         context.tr('roomAdminTab'),
+                        style: snapshot.public.phase == 'lobby'
+                            ? null
+                            : TextStyle(
+                                color: CourtSceneTokens.cream.withValues(
+                                  alpha: .45,
+                                ),
+                              ),
                         maxLines: 2,
                         textAlign: TextAlign.center,
                       ),
@@ -119,19 +135,29 @@ class RoomLobbyScreen extends ConsumerWidget {
                       ),
                     ),
                   Expanded(
-                    child: TabBarView(
-                      physics: requiresName
-                          ? const NeverScrollableScrollPhysics()
-                          : null,
+                    child: _RoomTabPages(
+                      requiresName: requiresName,
+                      playing: snapshot.public.phase != 'lobby',
+                      allJudges: snapshot.public.config.allJudges,
                       children: [
                         const RoomMe(),
                         if (state.snapshot!.public.config.allJudges)
-                          RoomCourtroom(
-                            snapshot: state.snapshot!,
-                            fixedActions: true,
+                          Builder(
+                            builder: (context) {
+                              final tabs = DefaultTabController.of(context);
+                              return AnimatedBuilder(
+                                animation: tabs,
+                                builder: (_, _) => RoomCourtroom(
+                                  snapshot: state.snapshot!,
+                                  active: tabs.index == 1,
+                                  fixedActions: true,
+                                ),
+                              );
+                            },
                           ),
                         RoomCaseTab(snapshot: state.snapshot!),
-                        if (state.snapshot!.you == state.snapshot!.public.hostId)
+                        if (state.snapshot!.you ==
+                            state.snapshot!.public.hostId)
                           ListView(
                             padding: const EdgeInsets.all(12),
                             children: [RoomTools(snapshot: state.snapshot!)],
@@ -165,11 +191,13 @@ class _CaseTabSyncState extends State<_CaseTabSync> {
     final oldGuide = old.config.allJudges ? old.readerId : old.judgeId;
     final nextGuide = next.config.allJudges ? next.readerId : next.judgeId;
     final wasPending = oldWidget.snapshot.public.players.any(
-      (player) => player.playerId == oldWidget.snapshot.you &&
+      (player) =>
+          player.playerId == oldWidget.snapshot.you &&
           needsRoomName(player.profile.name),
     );
     final isPending = widget.snapshot.public.players.any(
-      (player) => player.playerId == widget.snapshot.you &&
+      (player) =>
+          player.playerId == widget.snapshot.you &&
           needsRoomName(player.profile.name),
     );
     final completedName = wasPending && !isPending && next.phase == 'lobby';
@@ -181,6 +209,10 @@ class _CaseTabSyncState extends State<_CaseTabSync> {
             oldGuide != nextGuide ||
             old.phase == 'rule_event' && next.phase != 'rule_event');
     final target = completedName && next.config.allJudges
+        ? 1
+        : next.config.allJudges &&
+              old.phase != next.phase &&
+              ['revealing', 'judged'].contains(next.phase)
         ? 1
         : newCase || old.phase != next.phase && next.phase == 'judged'
         ? (next.config.allJudges ? 2 : 1)
@@ -265,21 +297,27 @@ class _RoomPhaseFooter extends ConsumerWidget {
               snapshot: snapshot,
               session: state,
             ),
-            'answers' when guide || view.frozenRoster.contains(snapshot.you) =>
+            'answers'
+                when !view.config.allJudges &&
+                    (guide || view.frozenRoster.contains(snapshot.you)) =>
               ReadinessActions(snapshot: snapshot),
             'ordering'
                 when view.frozenRoster.contains(snapshot.you) &&
                     (view.config.allJudges || snapshot.you == view.judgeId) =>
               OnlineOrderAction(snapshot: snapshot),
-            'revealing' when guide => OnlineRevealAction(snapshot: snapshot),
-            'judged' ||
-            'rule_event' ||
-            'paused' when guide => OnlineProgressAction(snapshot: snapshot),
+            'revealing' when guide && !view.config.allJudges =>
+              OnlineRevealAction(snapshot: snapshot),
+            'judged' || 'rule_event' || 'paused'
+                when guide &&
+                    (!view.config.allJudges || tabs.index == caseIndex) =>
+              OnlineProgressAction(snapshot: snapshot),
             _ => null,
           };
         }
         final showNumber =
-            tabs.index == caseIndex && snapshot.private.ownNumber != null;
+            tabs.index == caseIndex &&
+            snapshot.private.ownNumber != null &&
+            !(view.config.allJudges && view.phase == 'judged');
         if (action == null && !showNumber) return const SizedBox.shrink();
         return CourtActionBar(
           primary: Row(
@@ -313,6 +351,49 @@ class _RoomPhaseFooter extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// Only the two game pages participate in swiping during a running game.
+class _RoomTabPages extends StatefulWidget {
+  const _RoomTabPages({
+    required this.requiresName,
+    required this.playing,
+    required this.allJudges,
+    required this.children,
+  });
+  final bool requiresName, playing, allJudges;
+  final List<Widget> children;
+  @override
+  State<_RoomTabPages> createState() => _RoomTabPagesState();
+}
+
+class _RoomTabPagesState extends State<_RoomTabPages> {
+  double _drag = 0;
+  @override
+  Widget build(BuildContext context) {
+    final pages = TabBarView(
+      physics: widget.requiresName || widget.playing
+          ? const NeverScrollableScrollPhysics()
+          : null,
+      children: widget.children,
+    );
+    if (!widget.playing || widget.requiresName || !widget.allJudges) {
+      return pages;
+    }
+    return GestureDetector(
+      onHorizontalDragStart: (_) => _drag = 0,
+      onHorizontalDragUpdate: (details) => _drag += details.primaryDelta ?? 0,
+      onHorizontalDragEnd: (details) {
+        final tabs = DefaultTabController.of(context);
+        final velocity = details.primaryVelocity ?? 0;
+        if (_drag.abs() < 40 && velocity.abs() < 200) return;
+        final left = velocity.abs() >= 200 ? velocity < 0 : _drag < 0;
+        if (tabs.index == 1 && left) tabs.animateTo(2);
+        if (tabs.index == 2 && !left) tabs.animateTo(1);
+      },
+      child: pages,
     );
   }
 }

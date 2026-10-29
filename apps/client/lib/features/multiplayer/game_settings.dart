@@ -189,9 +189,12 @@ class _RoomStartActionState extends ConsumerState<RoomStartAction> {
     final editor = ref.watch(onlineProfileProvider);
     final settings = ref.watch(onlineSettingsProvider);
     final demos = ref.watch(demoPlayersProvider);
-    final missingNames = view.public.players.where(
-      (player) => player.active != false && needsRoomName(player.profile.name),
-    ).length;
+    final missingNames = view.public.players
+        .where(
+          (player) =>
+              player.active != false && needsRoomName(player.profile.name),
+        )
+        .length;
     return ListenableBuilder(
       listenable: Listenable.merge([editor, settings, demos]),
       builder: (context, _) => Column(
@@ -206,7 +209,8 @@ class _RoomStartActionState extends ConsumerState<RoomStartAction> {
               ),
             ),
           FilledButton(
-            onPressed: !_pending &&
+            onPressed:
+                !_pending &&
                     view.public.players.length >= 3 &&
                     !editor.dirty &&
                     !editor.saving &&
@@ -216,16 +220,22 @@ class _RoomStartActionState extends ConsumerState<RoomStartAction> {
                 ? () {
                     final controller = ref.read(roomControllerProvider);
                     final latest = controller.state.snapshot;
-                    if (latest == null ||
+                    if (_pending ||
+                        settings.dirty ||
+                        settings.saving ||
+                        demos.adding ||
+                        latest == null ||
                         latest.public.phase != 'lobby' ||
                         latest.you != latest.public.hostId) {
                       return;
                     }
-                    final incomplete = latest.public.players.where(
-                      (player) =>
-                          player.active != false &&
-                          needsRoomName(player.profile.name),
-                    ).length;
+                    final incomplete = latest.public.players
+                        .where(
+                          (player) =>
+                              player.active != false &&
+                              needsRoomName(player.profile.name),
+                        )
+                        .length;
                     if (incomplete > 0) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

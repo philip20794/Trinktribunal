@@ -117,24 +117,8 @@ void main() {
       expect(order.complete, isTrue);
       game.revealOwnNumber();
       expect(game.acknowledgeNumber(), isTrue);
-      final answers = await until(host, (view) => view.phase == 'answers');
-      expect(order.slots, pool);
-      expect(
-        game.readyForOrdering(
-          gameId: answers.public.gameId!,
-          roundId: answers.public.roundId!,
-        ),
-        isTrue,
-      );
-      await until(host, (view) => view.players.every((p) => p.ready));
-      expect(
-        game.beginOrdering(
-          gameId: answers.public.gameId!,
-          roundId: answers.public.roundId!,
-        ),
-        isTrue,
-      );
       await until(host, (view) => view.phase == 'ordering');
+      expect(order.slots, pool);
       expect(
         order.confirm(
           gameId: numbers.public.gameId!,
@@ -144,17 +128,6 @@ void main() {
         isTrue,
       );
       await until(host, (view) => view.phase == 'revealing');
-      for (var cursor = 0; cursor < 3; cursor++) {
-        expect(
-          game.revealNext(
-            gameId: numbers.public.gameId!,
-            roundId: numbers.public.roundId!,
-            expectedCursor: cursor,
-          ),
-          isTrue,
-        );
-        await until(host, (view) => view.revealCursor == cursor + 1);
-      }
       final judged = await until(host, (view) => view.phase == 'judged');
       expect(
         judged.public.players.where((p) => p.orderSubmitted),
@@ -174,6 +147,21 @@ void main() {
             view.phase == 'numbers' && view.roundId != judged.public.roundId,
       );
       expect(next.public.readerId, isNot(next.you));
+      final readerName = next.public.players
+          .firstWhere((p) => p.playerId == next.public.readerId)
+          .profile
+          .name;
+      expect(readerName, 'Demo 1');
+      // Reproduce the reported join during case 2: the new member must wait
+      // outside this frozen round, then enter case 3 without a missing order.
+      await demos.add();
+      expect(demos.errorCode, isNull);
+      final joinedDuringCase = await until(
+        host,
+        (view) => view.players.length == 4,
+      );
+      expect(joinedDuringCase.public.frozenRoster, hasLength(3));
+
       expect(order.slots, everyElement(isNull));
       final nextPool = List<PlayerId>.of(order.unplaced);
       for (var i = 0; i < nextPool.length; i++) {
@@ -181,15 +169,6 @@ void main() {
       }
       game.revealOwnNumber();
       expect(game.acknowledgeNumber(), isTrue);
-      await until(host, (view) => view.phase == 'answers');
-      expect(
-        game.readyForOrdering(
-          gameId: next.public.gameId!,
-          roundId: next.public.roundId!,
-        ),
-        isTrue,
-      );
-      // This time the demo reader begins ordering and reveals the verdict itself.
       await until(host, (view) => view.phase == 'ordering');
       expect(
         order.confirm(
@@ -202,6 +181,23 @@ void main() {
       final nextJudged = await until(host, (view) => view.phase == 'judged');
       expect(nextJudged.public.completedCases, 1);
       expect(nextJudged.private.ownResult, isNotNull);
+      // Demo guides intentionally stop at the verdict; adding people did not
+      // corrupt the round. The host's authorized server command still advances.
+      await Future<void>.delayed(const Duration(milliseconds: 800));
+      expect(host.state.snapshot!.public.phase, 'judged');
+      expect(
+        game.completeCase(
+          gameId: nextJudged.public.gameId!,
+          roundId: nextJudged.public.roundId!,
+        ),
+        isTrue,
+      );
+      final third = await until(
+        host,
+        (view) => view.completedCases == 2 && view.phase == 'numbers',
+      );
+      expect(third.public.frozenRoster, hasLength(4));
+      expect(order.slots, everyElement(isNull));
     },
     skip: _server.isEmpty
         ? 'Run with --dart-define=TT_DEMO_SERVER=http://127.0.0.1:8795 and a local worker.'

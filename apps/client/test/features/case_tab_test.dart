@@ -95,7 +95,11 @@ void main() {
           expect(tabs.index, allJudges ? 1 : 0);
           socket.receive(next('judged', 5));
           await tester.pumpAndSettle();
-          expect(tabs.index, allJudges ? 2 : 1);
+          expect(tabs.index, 1);
+          if (allJudges) {
+            tabs.animateTo(2);
+            await tester.pumpAndSettle();
+          }
           final advance = find.text(AppStrings('de').get('nextJudge'));
           if (player == 'p2') {
             expect(advance.hitTestable(), findsOneWidget);

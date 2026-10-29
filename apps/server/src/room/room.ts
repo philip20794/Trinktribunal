@@ -33,6 +33,7 @@ import {
   SOCKET_LIMITS,
   type SocketAttachment,
 } from './sockets';
+import { scheduleAutomaticRound, advanceAutomaticRound } from './automatic_round';
 import { putDeadline, removeDeadline, dueDeadlines, nextDeadline } from './deadlines';
 import { lobbySnapshot, playersHash } from './projection';
 import { applyLobbyAction, lobbyFingerprint, type LobbyReceipt } from './profile_actions';
@@ -139,6 +140,12 @@ export class Room extends DurableObject<Env> {
   private async planAlarm(): Promise<void> {
     const state = this.readIfAvailable();
     if (state === undefined) return;
+    scheduleAutomaticRound(
+      roomSql(this.ctx.storage),
+      state,
+      Date.now(),
+      state ? this.connectedPlayers(state) : new Set(),
+    );
     const hostDue = state ? nextHostDeadline(state) : null;
     let next = nextDeadline(
       roomSql(this.ctx.storage),
@@ -984,6 +991,15 @@ export class Room extends DurableObject<Env> {
       return;
     }
     for (const deadline of dueDeadlines(roomSql(this.ctx.storage), now)) {
+      if (deadline.kind === 'game') {
+        removeDeadline(roomSql(this.ctx.storage), deadline.id);
+        advanceAutomaticRound(
+          new RoomRepository(this.ctx.storage),
+          this.connectedPlayers(state),
+          deadline.id,
+        );
+        continue;
+      }
       for (const socket of this.ctx.getWebSockets()) {
         const info = attachment(socket);
         if (info?.kind === 'pending' && info.socketId === deadline.id)

@@ -69,9 +69,9 @@ class _DirectJoinRoomScreenState extends ConsumerState<DirectJoinRoomScreen> {
             widget.code,
             protocol.Profile.fromJson({
               'name': pendingRoomProfileName,
-              'avatar': (local?.avatar ??
-                      AvatarConfig.random(SecureRandomSource()))
-                  .toJson(),
+              'avatar':
+                  (local?.avatar ?? AvatarConfig.random(SecureRandomSource()))
+                      .toJson(),
             }),
           );
         }
@@ -80,9 +80,7 @@ class _DirectJoinRoomScreenState extends ConsumerState<DirectJoinRoomScreen> {
       if (!mounted) return;
       if (success) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute<void>(
-            builder: (_) => const RoomConnectionScreen(),
-          ),
+          MaterialPageRoute<void>(builder: (_) => const RoomConnectionScreen()),
         );
       } else {
         setState(() {

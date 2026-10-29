@@ -54,7 +54,8 @@ class RoomGameScreen extends ConsumerWidget {
             children: [
               const TText('roomErrorGeneric'),
               ReadinessView(snapshot: snapshot, showActions: !fixedActions),
-              OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
+              if (!view.config.allJudges)
+                OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
             ],
           );
         }
@@ -72,7 +73,9 @@ class RoomGameScreen extends ConsumerWidget {
               if (rendered != null)
                 CourtQuestion(
                   animationKey: view.roundId,
-                  showRefresh: true,
+                  showRefresh:
+                      snapshot.you ==
+                      (view.config.allJudges ? view.readerId : view.judgeId),
                   onRefresh: game.canReroll
                       ? () => game.rerollCurrentQuestion(
                           gameId: view.gameId!,
@@ -92,7 +95,8 @@ class RoomGameScreen extends ConsumerWidget {
                           9) ~/
                       10,
                 ),
-              OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
+              if (!view.config.allJudges)
+                OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
             ],
           ),
         );

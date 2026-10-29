@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../design/avatar_view.dart';
+import '../../design/pending_order_avatar.dart';
 import '../../design/court_scene.dart';
 import '../../domain/models/ids.dart';
 import '../../domain/user_profile.dart';
@@ -16,8 +17,10 @@ class PlacementBank extends StatefulWidget {
     required this.profiles,
     required this.onPlace,
     required this.onRemove,
+    this.pending = const {},
     super.key,
   });
+  final Set<PlayerId> pending;
   final List<PlayerId?> slots;
   final List<PlayerId> unplaced;
   final Map<PlayerId, UserProfile> profiles;
@@ -75,11 +78,14 @@ class _PlacementBankState extends State<PlacementBank> {
     super.dispose();
   }
 
-  Widget _portrait(PlayerId id) => AvatarView(
-    config: widget.profiles[id]!.avatar,
-    size: 82,
-    label: widget.profiles[id]!.player.name,
-    playerName: widget.profiles[id]!.player.name,
+  Widget _portrait(PlayerId id) => PendingOrderAvatar(
+    pending: widget.pending.contains(id),
+    child: AvatarView(
+      config: widget.profiles[id]!.avatar,
+      size: 82,
+      label: widget.profiles[id]!.player.name,
+      playerName: widget.profiles[id]!.player.name,
+    ),
   );
   Widget _person(PlayerId id) => Draggable<PlayerId>(
     data: id,
@@ -115,8 +121,6 @@ class _PlacementBankState extends State<PlacementBank> {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      const TText('placePlayersHelp'),
-      const SizedBox(height: 12),
       LayoutBuilder(
         builder: (context, bounds) => GridView.builder(
           shrinkWrap: true,

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/semantics.dart';
 
 import '../../design/avatar_view.dart';
+import '../../design/pending_order_avatar.dart';
 import '../../l10n/app_strings.dart';
 import '../../design/case_file.dart';
 import '../../design/court_theme.dart';
@@ -20,6 +21,8 @@ class BenchView extends StatefulWidget {
     this.actionsBuilder,
     this.revealedNumbers = const {},
     this.incorrect = const {},
+    this.pending = const {},
+    this.showPositionResult = true,
     super.key,
   });
   final bool compactControls;
@@ -30,6 +33,8 @@ class BenchView extends StatefulWidget {
   actionsBuilder;
   final Map<PlayerId, int> revealedNumbers;
   final Set<PlayerId> incorrect;
+  final Set<PlayerId> pending;
+  final bool showPositionResult;
   @override
   State<BenchView> createState() => _BenchViewState();
 }
@@ -297,11 +302,14 @@ class _BenchViewState extends State<BenchView> {
                       if (widget.compactControls)
                         _compactPortrait(profile, index, id, editable)
                       else
-                        AvatarView(
-                          config: profile.avatar,
-                          size: 76,
-                          label: profile.player.name,
-                          playerName: profile.player.name,
+                        PendingOrderAvatar(
+                          pending: widget.pending.contains(id),
+                          child: AvatarView(
+                            config: profile.avatar,
+                            size: 76,
+                            label: profile.player.name,
+                            playerName: profile.player.name,
+                          ),
                         ),
                     ],
                   ),
@@ -309,12 +317,41 @@ class _BenchViewState extends State<BenchView> {
                 if (widget.revealedNumbers.containsKey(id))
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      context.tr(
-                        widget.incorrect.contains(id)
-                            ? 'wrongPosition'
-                            : 'rightPosition',
+                    child: Semantics(
+                      label: context.tr(
+                        widget.showPositionResult
+                            ? widget.incorrect.contains(id)
+                                  ? 'wrongPosition'
+                                  : 'rightPosition'
+                            : 'revealedNumber',
                         {'number': widget.revealedNumbers[id]},
+                      ),
+                      child: ExcludeSemantics(
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 6,
+                          children: [
+                            Text(
+                              '${widget.revealedNumbers[id]}',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                                color: CourtSceneTokens.cream,
+                              ),
+                            ),
+                            if (widget.showPositionResult)
+                              Icon(
+                                widget.incorrect.contains(id)
+                                    ? Icons.cancel
+                                    : Icons.check_circle,
+                                size: 22,
+                                color: widget.incorrect.contains(id)
+                                    ? const Color(0xFFFFA69D)
+                                    : const Color(0xFFA8DBA8),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -247,7 +247,7 @@ final class _DemoPlayer {
         order: order,
         confirmed: true,
       );
-    } else if (view.phase == 'revealing' && guide) {
+    } else if (view.phase == 'revealing' && guide && !view.config.allJudges) {
       action = RevealNextMessage.create(
         actionId: actionId,
         expectedRevision: snapshot.revision,

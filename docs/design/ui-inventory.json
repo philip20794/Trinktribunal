@@ -501,6 +501,8 @@
         "apps/client/lib/features/multiplayer/create.dart",
         "apps/client/lib/features/multiplayer/join.dart",
         "apps/client/lib/features/multiplayer/entry_profile.dart",
+        "apps/client/lib/features/multiplayer/direct_join.dart",
+        "apps/client/lib/features/multiplayer/pending_profile.dart",
         "apps/client/lib/features/multiplayer/saved_rooms.dart"
       ],
       "modes": [

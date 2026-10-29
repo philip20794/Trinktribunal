@@ -199,15 +199,23 @@ void main() {
     final fixture = await pumpLobby(tester, pendingGuest: true);
     final input = find.byKey(const ValueKey('online-name'));
     expect(tester.widget<TextField>(input).controller!.text, isEmpty);
-    expect(find.text(const AppStrings('de').get('roomNameRequired')), findsWidgets);
+    expect(
+      find.text(const AppStrings('de').get('roomNameRequired')),
+      findsWidgets,
+    );
     await tester.tap(find.widgetWithText(Tab, 'Gerichtssaal'));
     await tester.pumpAndSettle();
     expect(DefaultTabController.of(tester.element(input)).index, 0);
-    expect(find.text(const AppStrings('de').get('roomNameRequired')), findsWidgets);
+    expect(
+      find.text(const AppStrings('de').get('roomNameRequired')),
+      findsWidgets,
+    );
 
     await tester.enterText(input, 'Alex');
     await tester.pump(const Duration(milliseconds: 400));
-    final edit = fixture.transport.sockets.last.sent.whereType<EditOwnProfileMessage>().single;
+    final edit = fixture.transport.sockets.last.sent
+        .whereType<EditOwnProfileMessage>()
+        .single;
     expect(edit.profile.name, 'Alex');
     // Typing alone does not unlock the other tabs: the server must acknowledge.
     await tester.tap(find.widgetWithText(Tab, 'Gerichtssaal'));
@@ -242,16 +250,20 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('host sees missing names and cannot start a game', (tester) async {
+  testWidgets('host sees missing names and cannot start a game', (
+    tester,
+  ) async {
     final fixture = await pumpLobby(tester, host: true, pendingGuest: true);
-    final message = const AppStrings('de').get('roomStartPendingNames', {
-      'count': 1,
-    });
+    final message = const AppStrings('de')
+        .get('roomStartPendingNames', {'count': 1});
     expect(find.text(message), findsWidgets);
     await tester.tap(find.widgetWithText(FilledButton, 'Verhandlung starten'));
     await tester.pumpAndSettle();
     expect(find.text(message), findsWidgets);
-    expect(fixture.transport.sockets.last.sent.whereType<StartGameMessage>(), isEmpty);
+    expect(
+      fixture.transport.sockets.last.sent.whereType<StartGameMessage>(),
+      isEmpty,
+    );
   });
 
   testWidgets(

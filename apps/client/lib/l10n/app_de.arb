@@ -874,5 +874,8 @@
   "roomDemoHelp": "Zum Testen: Ein Klick fügt einen Spieler mit zufälligem Avatar hinzu. Demospieler spielen automatisch mit.",
   "roomNameRequired": "Bitte gib deinen Namen ein, bevor du einen anderen Tab öffnest.",
   "roomStartPendingNames": "Spielstart nicht möglich. Spieler ohne Namen: {count}.",
-  "roomUnnamedPlayer": "Name fehlt"
+  "roomUnnamedPlayer": "Name fehlt",
+  "revealedNumber": "{number}",
+  "orderStillPending": "Reihenfolge noch nicht best\u00e4tigt",
+  "drinkPersonalSips": "Trinke {count} Schl\u00fccke!"
 }

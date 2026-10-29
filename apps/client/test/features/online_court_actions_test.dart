@@ -138,12 +138,7 @@ void main() {
               return;
             }
             await receive('answers', 2);
-            await press('onlineAnswerReady');
-            expect(
-              socket.sent.whereType<ReadyForOrderingMessage>(),
-              hasLength(1),
-            );
-            expect(fixture.room.state.snapshot!.public.phase, 'answers');
+            expect(find.text(strings.get('onlineAnswerReady')), findsNothing);
             await tester.ensureVisible(
               find.widgetWithText(Tab, strings.get('roomMeTab')),
             );
@@ -157,18 +152,7 @@ void main() {
             );
             await tester.pumpAndSettle();
             await receive('answers', 3, ready: true);
-            if (host) {
-              await press('phoneBeginOrder');
-              expect(
-                socket.sent
-                    .whereType<BeginOrderingMessage>()
-                    .single
-                    .expectedRevision,
-                3,
-              );
-            } else {
-              expect(find.text(strings.get('phoneBeginOrder')), findsNothing);
-            }
+            expect(find.text(strings.get('phoneBeginOrder')), findsNothing);
             await receive('ordering', 4);
             final ownsOrder = host || allJudges;
             List<String>? ownOrder;
@@ -194,19 +178,12 @@ void main() {
               expect(find.text(strings.get('phoneConfirmOrder')), findsNothing);
             }
             await receive('revealing', 5, ownOrder: ownOrder);
-            if (host) {
-              await press('phoneRevealNext');
-              expect(
-                socket.sent
-                    .whereType<RevealNextMessage>()
-                    .single
-                    .expectedCursor,
-                0,
-              );
-            } else {
-              expect(find.text(strings.get('phoneRevealNext')), findsNothing);
-            }
+            expect(find.text(strings.get('phoneRevealNext')), findsNothing);
             await receive('judged', 6, ownOrder: ownOrder);
+            await tester.tap(
+              find.widgetWithText(Tab, strings.get('caseTabTitle')),
+            );
+            await tester.pumpAndSettle();
             if (host) {
               await press('nextJudge');
               expect(

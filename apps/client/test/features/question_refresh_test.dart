@@ -157,9 +157,16 @@ void main() {
                 widget is IconButton &&
                 widget.tooltip == AppStrings(language).get('refreshQuestion'),
           );
-          await Scrollable.ensureVisible(tester.element(button), alignment: .5);
-          await tester.pumpAndSettle();
-          expect(tester.widget<IconButton>(button).onPressed != null, judge);
+          if (judge) {
+            await Scrollable.ensureVisible(
+              tester.element(button),
+              alignment: .5,
+            );
+            await tester.pumpAndSettle();
+            expect(tester.widget<IconButton>(button).onPressed, isNotNull);
+          } else {
+            expect(button, findsNothing);
+          }
           if (judge) {
             await tester.tap(button);
             await tester.pump();

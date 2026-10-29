@@ -83,11 +83,13 @@ describe('atomic authoritative game actions in actual SQLite/hibernating room', 
     expect(await outcome(host.peer)).toMatchObject({ type: 'error', code: 'INVALID_NAME' });
     expect(await read(room.stub)).toEqual(before);
 
-    guests[0]!.peer.send(createRoomMessage('editOwnProfile', {
-      actionId: RoomIds.action(crypto.randomUUID()),
-      expectedRevision: before.revision,
-      profile: { ...profile, name: 'Alex' },
-    }));
+    guests[0]!.peer.send(
+      createRoomMessage('editOwnProfile', {
+        actionId: RoomIds.action(crypto.randomUUID()),
+        expectedRevision: before.revision,
+        profile: { ...profile, name: 'Alex' },
+      }),
+    );
     expect(await outcome(guests[0]!.peer)).toMatchObject({ type: 'ack', outcome: 'committed' });
     const updated = await read(room.stub);
     host.peer.send(action(updated, 'startGame'));

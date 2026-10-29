@@ -19,7 +19,12 @@ export async function result(peer: Peer) {
   }
   throw new Error('NO_RESULT');
 }
-export async function allJudgesRoom(count = 3, allJudges = true, startGame = true) {
+export async function allJudgesRoom(
+  count = 3,
+  allJudges = true,
+  startGame = true,
+  automatic = false,
+) {
   const room = await socketRoom(),
     host = await authenticated(room.code, room.credential),
     members = [{ ...host, credential: room.credential }];
@@ -43,6 +48,14 @@ export async function allJudgesRoom(count = 3, allJudges = true, startGame = tru
     expect(ack, JSON.stringify({ command: command.type, ack })).toMatchObject({ type: 'ack' });
     await runInDurableObject(room.stub, (_room, ctx) => {
       ctx.storage.sql.exec('UPDATE action_limits SET updated = ?', Date.now() - 1000);
+      // Phase fixtures explicitly hold game alarms; automatic_round.test exercises
+      // the production cadence without this deterministic fixture clock.
+      if (!automatic) {
+        ctx.storage.sql.exec(
+          "UPDATE deadlines SET due = ? WHERE kind = 'game'",
+          Date.now() + 60_000,
+        );
+      }
     });
     return ack;
   }

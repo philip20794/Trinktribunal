@@ -287,13 +287,14 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.text(AppStrings('de').get('onlineOrderConfirmed')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
-        find.text(
-          AppStrings('de').get('onlineOrdersCount', {'done': 1, 'total': 4}),
-        ),
-        findsOneWidget,
+        tester
+            .widget<BenchView>(find.byType(BenchView))
+            .pending
+            .map((p) => p.value),
+        ['p1', 'p3', 'p4'],
       );
       expect(tester.widget<BenchView>(find.byType(BenchView)).onMove, isNull);
     },

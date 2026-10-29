@@ -80,7 +80,8 @@ class OnlineRevealAction extends ConsumerWidget {
         view = snapshot.public,
         gameId = view.gameId,
         roundId = view.roundId;
-    if (view.phase != 'revealing' ||
+    if (view.config.allJudges ||
+        view.phase != 'revealing' ||
         !game.canGuideRound ||
         gameId == null ||
         roundId == null) {

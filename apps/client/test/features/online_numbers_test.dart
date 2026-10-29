@@ -21,6 +21,9 @@ import 'package:trinktribunal/l10n/app_strings.dart';
 import 'package:trinktribunal/domain/models/ids.dart';
 
 import '../data/room_test_support.dart';
+import '../support/memory_string_store.dart';
+
+import 'package:trinktribunal/application/local_data_providers.dart';
 
 late Catalogs catalogs;
 SnapshotMessage view({
@@ -72,6 +75,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
   ThemeData? theme,
   Uri? publicClientBase,
   String? playerId,
+  MemoryStringStore? tutorialStore,
 }) async {
   final transport = FakeRoomTransport(),
       store = RoomCredentialStore(MemoryCredentialBackend()),
@@ -88,6 +92,11 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        stringStoreProvider.overrideWithValue(
+          tutorialStore ??
+              (MemoryStringStore()
+                ..values['online.courtTutorialSeen.v1'] = 'true'),
+        ),
         if (publicClientBase != null)
           publicClientBaseProvider.overrideWithValue(publicClientBase),
         roomControllerProvider.overrideWithValue(room),
@@ -102,8 +111,10 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
             theme: theme,
             home: RoomConnectionScreen(newRoom: newRoom),
             builder: (context, child) => MediaQuery(
-              data: MediaQuery.of(context)
-                  .copyWith(textScaler: TextScaler.linear(textScale)),
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.linear(textScale),
+                disableAnimations: true,
+              ),
               child: child!,
             ),
           ),

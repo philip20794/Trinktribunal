@@ -1,4 +1,4 @@
-export type Deadline = { id: string; kind: 'auth'; due: number };
+export type Deadline = { id: string; kind: 'auth' | 'game'; due: number };
 function exists(sql: SqlStorage): boolean {
   return (
     sql.exec("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'deadlines'").toArray()

@@ -51,8 +51,12 @@ class _RoomMeState extends ConsumerState<RoomMe> {
                   child: AvatarView(
                     config: editor.avatar,
                     size: 200,
-                    label: pending ? context.tr('roomUnnamedPlayer') : editor.name,
-                    playerName: pending ? context.tr('roomUnnamedPlayer') : editor.name,
+                    label: pending
+                        ? context.tr('roomUnnamedPlayer')
+                        : editor.name,
+                    playerName: pending
+                        ? context.tr('roomUnnamedPlayer')
+                        : editor.name,
                   ),
                 ),
                 const SizedBox(height: 8),

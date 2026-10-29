@@ -45,13 +45,20 @@ Future<FakeRoomSocket> pump(
         roomControllerProvider.overrideWithValue(room),
         roomCredentialStoreProvider.overrideWithValue(store),
       ],
-      child: const MaterialApp(home: _Surface()),
+      child: MaterialApp(
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(disableAnimations: true),
+          child: child!,
+        ),
+        home: const _Surface(),
+      ),
     ),
   );
   final socket = transport.sockets.single;
   socket.receive(roomFixture('authenticated'));
   socket.receive(snapshot ?? orderingView(judge: judge));
-  await tester.pumpAndSettle();
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 350));
   return socket;
 }
 

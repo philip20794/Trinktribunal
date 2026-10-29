@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../data/protocol/room_message.dart';
-import '../../design/case_file.dart';
+import '../../design/illustrated_paper.dart';
+import '../../design/court_scene.dart';
 import '../../l10n/app_strings.dart';
 
 /// A display of this authenticated recipient's committed result, with no local scoring.
@@ -16,15 +17,23 @@ class PersonalVerdict extends StatelessWidget {
         result == null) {
       return const SizedBox.shrink();
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        CourtSeal(
-          label: context.tr('onlinePersonalErrors', {'count': result.errors}),
+    if (result.sips == 0) return const SizedBox.shrink();
+    return Theme(
+      data: courtPaperTheme(),
+      child: IllustratedPaper(
+        rule: true,
+        height: 260,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 48),
+          child: Center(
+            child: Text(
+              context.tr('drinkPersonalSips', {'count': result.sips}),
+              textAlign: TextAlign.center,
+              style: paperTextStyle(28, weight: FontWeight.w800),
+            ),
+          ),
         ),
-        Text(context.tr('onlinePersonalSips', {'count': result.sips})),
-        const TText('onlinePersonalHelp'),
-      ],
+      ),
     );
   }
 }

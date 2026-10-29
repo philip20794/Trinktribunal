@@ -191,33 +191,34 @@ void main() {
       );
     }
   });
-  testWidgets(
-    'a QR join link immediately joins with a pending name',
-    (tester) async {
-      final transport = FakeRoomTransport(),
-          store = RoomCredentialStore(MemoryCredentialBackend());
-      await tester.pumpWidget(
-        host(
-          const SizedBox(),
-          transport,
-          store,
-          initialRoute: '/join?room=abcd-23%2045',
-        ),
-      );
-      for (var i = 0; i < 20 && transport.connections == 0; i++) {
-        await tester.pump(const Duration(milliseconds: 50));
-      }
-      expect(find.byKey(const ValueKey('room-code')), findsNothing);
-      expect(find.byKey(const ValueKey('room-submit')), findsNothing);
-      expect(transport.joins, 1);
-      expect(transport.connections, 1);
-      expect(transport.lastProfile!.name, pendingRoomProfileName);
-      expect(find.byType(RoomConnectionScreen), findsOneWidget);
-      expect(tester.takeException(), isNull);
-      await tester.pumpWidget(const SizedBox());
-      await tester.pump();
-    },
-  );
+  testWidgets('a QR join link immediately joins with a pending name', (
+    tester,
+  ) async {
+    final transport = FakeRoomTransport(),
+        store = RoomCredentialStore(MemoryCredentialBackend());
+    await tester.pumpWidget(
+      host(
+        const SizedBox(),
+        transport,
+        store,
+        initialRoute: '/join?room=abcd-23%2045',
+      ),
+    );
+    for (var i = 0; i < 20 && transport.connections == 0; i++) {
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+    expect(find.byKey(const ValueKey('room-code')), findsNothing);
+    expect(find.byKey(const ValueKey('room-submit')), findsNothing);
+    expect(transport.joins, 1);
+    expect(transport.connections, 1);
+    expect(transport.lastProfile!.name, pendingRoomProfileName);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 350));
+    expect(find.byType(RoomConnectionScreen), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
+  });
   testWidgets(
     'QR link resumes the existing identity instead of creating duplicate players',
     (tester) async {
@@ -238,6 +239,8 @@ void main() {
       expect(transport.joins, 0);
       expect(transport.connections, 1);
       expect((await store.load()).credentials, hasLength(1));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 350));
       expect(find.byType(RoomConnectionScreen), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     },

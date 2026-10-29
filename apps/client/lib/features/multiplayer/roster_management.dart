@@ -32,9 +32,11 @@ class OnlineRosterManagement extends ConsumerWidget {
         for (final player in view.players)
           ListTile(
             key: ValueKey('presence-${player.playerId.value}'),
-            title: Text(needsRoomName(player.profile.name)
-                ? context.tr('roomUnnamedPlayer')
-                : player.profile.name),
+            title: Text(
+              needsRoomName(player.profile.name)
+                  ? context.tr('roomUnnamedPlayer')
+                  : player.profile.name,
+            ),
             subtitle: TText(
               !next.contains(player.playerId)
                   ? 'onlineRosterLeaving'
