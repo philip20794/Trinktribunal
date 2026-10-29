@@ -46,18 +46,10 @@ void main() {
           accessibilityHost(const HomeScreen(), language: language),
         );
         await tester.pumpAndSettle();
-        await tester.tap(find.byTooltip(strings.get('gameRules')));
+        await tap(tester, strings.get('gameRules'));
         await tester.pumpAndSettle();
         expect(find.byType(GameRulesScreen), findsOneWidget);
-        for (final section in [
-          'Setup',
-          'Errors',
-          'Normal',
-          'AllJudges',
-          'Rotation',
-          'ExtraRules',
-          'Next',
-        ]) {
+        for (final section in gameRuleSections) {
           final finder = find.text(strings.get('gameRules${section}Body'));
           await tester.scrollUntilVisible(
             finder,
@@ -70,7 +62,7 @@ void main() {
       },
     );
     testWidgets(
-      'physical Next has no penalty dialog; separate D-07 and help preserve state, $language',
+      'physical Next and help preserve state without extra play controls, $language',
       (tester) async {
         final strings = AppStrings(language);
         await tester.pumpWidget(
@@ -110,12 +102,10 @@ void main() {
         if (cards.state!.phase == GamePhase.ruleEvent) {
           await tap(tester, strings.get('nextCase'));
         }
-        final active = cards.state!.currentEventId;
-        await tap(tester, strings.get('withoutVerdict'));
-        expect(find.byType(AlertDialog), findsOneWidget);
-        await tap(tester, strings.get('cancel'));
-        expect(cards.state!.currentEventId, active);
-        expect(cards.state!.completedCases, 1);
+        expect(find.text(strings.get('withoutVerdict')), findsNothing);
+        expect(find.text(strings.get('restartGame')), findsNothing);
+        expect(find.text(strings.get('cardRestartSetup')), findsNothing);
+        expect(find.text(strings.get('cardsDistribution')), findsNothing);
       },
     );
   }

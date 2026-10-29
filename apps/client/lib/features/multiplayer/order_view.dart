@@ -45,7 +45,6 @@ class OnlineOrderView extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (ownsOrder && controller.canEdit) const TText('phoneOrderHelp'),
             if (view.config.allJudges)
               for (final id in view.frozenRoster)
                 ListTile(

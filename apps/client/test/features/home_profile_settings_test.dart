@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/local_data_providers.dart';
 import 'package:trinktribunal/design/case_file.dart';
 import 'package:trinktribunal/features/home/home_screen.dart';
+import 'package:trinktribunal/features/home/mode_preview_screen.dart';
 import 'package:trinktribunal/features/multiplayer/create.dart';
 import 'package:trinktribunal/features/profile/profile_screen.dart';
 import 'package:trinktribunal/features/settings/settings_screen.dart';
@@ -70,6 +71,9 @@ void main() {
           final mode = find.text(strings.get(entry.key));
           expect(mode.hitTestable(), findsOneWidget);
           await tester.tap(mode);
+          await tester.pumpAndSettle();
+          expect(find.byType(ModePreviewScreen), findsOneWidget);
+          await tester.tap(find.text(strings.get('introContinue')));
           await tester.pumpAndSettle();
           expect(find.byType(entry.value), findsOneWidget);
           await tester.tap(find.byType(BackButton));

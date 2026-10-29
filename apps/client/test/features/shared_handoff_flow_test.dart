@@ -173,6 +173,17 @@ void main() {
           }
           expect(game.view!.phase, GamePhase.judged);
           expect(find.byType(CourtQuestion), findsNothing);
+          tester
+              .state<ScrollableState>(find.byType(Scrollable).first)
+              .position
+              .jumpTo(0);
+          await tester.pumpAndSettle();
+          await tester.scrollUntilVisible(
+            find.text(strings.get('verdictHeading').toUpperCase()),
+            200,
+            scrollable: find.byType(Scrollable).first,
+          );
+          await tester.pumpAndSettle();
           expect(
             find.text(strings.get('verdictHeading').toUpperCase()),
             findsOneWidget,

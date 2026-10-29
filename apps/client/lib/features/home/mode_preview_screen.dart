@@ -2,62 +2,76 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
 import '../../design/court_scene.dart';
-
+import '../setup/card_mode_screen.dart';
+import '../setup/player_roster.dart';
+import '../multiplayer/create.dart';
 import 'home_screen.dart';
 
+/// The explanation belongs before setup, never over the live playing surface.
 class ModePreviewScreen extends StatelessWidget {
   const ModePreviewScreen({required this.mode, super.key});
-
   final GameMode mode;
 
   @override
   Widget build(BuildContext context) {
+    final prefix = switch (mode) {
+      GameMode.cards => 'introCards',
+      GameMode.sharedPhone => 'introPhone',
+      GameMode.multiplayer => 'introOnline',
+    };
     return CourtScaffold(
-      title: Text(
-        context.tr(switch (mode) {
-          GameMode.cards => 'modeCards',
-          GameMode.sharedPhone => 'modePhone',
-          GameMode.multiplayer => 'modeMulti',
-        }),
-      ),
-      bodyBuilder: (context) => Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 640),
-          child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(24),
-            children: [
-              Icon(mode.icon, size: 72),
-              const SizedBox(height: 24),
-              Text(
-                context.tr(switch (mode) {
-                  GameMode.cards => 'modeCards',
-                  GameMode.sharedPhone => 'modePhone',
-                  GameMode.multiplayer => 'modeMulti',
-                }),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                context.tr(switch (mode) {
-                  GameMode.cards => 'modeCardsDescription',
-                  GameMode.sharedPhone => 'modePhoneDescription',
-                  GameMode.multiplayer => 'modeMultiDescription',
-                }),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 28),
-              Text(context.tr('modeUnavailable'), textAlign: TextAlign.center),
-              const SizedBox(height: 28),
-              OutlinedButton.icon(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Icons.arrow_back),
-                label: const TText('backToSelection'),
-              ),
-            ],
+      title: TText(switch (mode) {
+        GameMode.cards => 'modeCards',
+        GameMode.sharedPhone => 'modePhone',
+        GameMode.multiplayer => 'modeMulti',
+      }),
+      footer: CourtActionBar(
+        primary: FilledButton(
+          onPressed: () => Navigator.of(context).pushReplacement<void, void>(
+            MaterialPageRoute(
+              builder: (_) => switch (mode) {
+                GameMode.cards => const CardModeScreen(),
+                GameMode.sharedPhone => const PlayerRosterScreen(),
+                GameMode.multiplayer => const MultiplayerEntryScreen(),
+              },
+            ),
           ),
+          child: const TText('introContinue'),
         ),
+      ),
+      bodyBuilder: (context) => ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          CourtPaper(
+            child: Builder(
+              builder: (context) => Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TText(
+                    'introTitle',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 24),
+                  for (var step = 1; step <= 3; step++)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '$step.',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(child: TText('$prefix$step')),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

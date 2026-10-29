@@ -23,7 +23,7 @@ abstract final class CourtAssets {
     paper: 920,
     numberPaper: 690,
     logo: 1024,
-    handover: 878,
+    handover: 1774,
     cards: 420,
     phone: 420,
     people: 420,

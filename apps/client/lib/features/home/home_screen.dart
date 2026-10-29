@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
@@ -14,16 +13,11 @@ import '../../design/home_layout.dart';
 import '../../design/court_scene.dart';
 import '../../design/court_assets.dart';
 
-import '../../data/catalogs/catalog_diagnostics.dart';
-
 import '../profile/profile_screen.dart';
 import '../settings/settings_screen.dart';
-import '../setup/card_mode_screen.dart';
-import '../setup/player_roster.dart';
-import '../design_gallery/design_gallery_screen.dart';
-import '../multiplayer/create.dart';
 import '../multiplayer/saved_rooms.dart';
 import '../rules/game_rules_screen.dart';
+import 'mode_preview_screen.dart';
 
 enum GameMode {
   cards(
@@ -74,13 +68,6 @@ class HomeScreen extends ConsumerWidget {
       maxWidth: 1056,
       title: const Text('Trinktribunal'),
       actions: [
-        const GameRulesButton(),
-        if (kDebugMode)
-          IconButton(
-            tooltip: context.tr('openDesign'),
-            onPressed: () => _open(context, const DesignGalleryScreen()),
-            icon: const Icon(Icons.palette_outlined),
-          ),
         IconButton(
           tooltip: context.tr('openSettings'),
           icon: const Icon(Icons.settings_outlined),
@@ -118,7 +105,7 @@ class HomeScreen extends ConsumerWidget {
                     children: [
                       Center(
                         child: CourtBrandMark(
-                          width: constraints.maxWidth < 600 ? 190 : 250,
+                          width: constraints.maxWidth < 600 ? 150 : 200,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -189,22 +176,21 @@ class HomeScreen extends ConsumerWidget {
                                           true) {
                                     return;
                                   }
-                                  _open(
-                                    context,
-                                    mode == GameMode.cards
-                                        ? const CardModeScreen()
-                                        : mode == GameMode.sharedPhone
-                                        ? const PlayerRosterScreen()
-                                        : const MultiplayerEntryScreen(),
-                                  );
+                                  _open(context, ModePreviewScreen(mode: mode));
                                 },
                               ),
                             ),
+                          SizedBox(
+                            width: cardWidth,
+                            child: _ModeCard(
+                              onTap: () =>
+                                  _open(context, const GameRulesScreen()),
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 24),
                       const SavedRooms(),
-                      const CatalogDiagnostics(),
                     ],
                   ),
                 ),
@@ -218,9 +204,9 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class _ModeCard extends StatelessWidget {
-  const _ModeCard({required this.mode, required this.onTap});
+  const _ModeCard({this.mode, required this.onTap});
 
-  final GameMode mode;
+  final GameMode? mode;
   final VoidCallback onTap;
 
   @override
@@ -229,11 +215,13 @@ class _ModeCard extends StatelessWidget {
       GameMode.cards => 'modeCards',
       GameMode.sharedPhone => 'modePhone',
       GameMode.multiplayer => 'modeMulti',
+      null => 'gameRules',
     });
     final description = context.tr(switch (mode) {
       GameMode.cards => 'modeCardsDescription',
       GameMode.sharedPhone => 'modePhoneDescription',
       GameMode.multiplayer => 'modeMultiDescription',
+      null => 'rulesMenuDescription',
     });
     return Semantics(
       button: true,
@@ -246,16 +234,23 @@ class _ModeCard extends StatelessWidget {
             padding: const EdgeInsets.all(14),
             child: Row(
               children: [
-                CourtArt(
-                  switch (mode) {
-                    GameMode.cards => CourtAssets.cards,
-                    GameMode.sharedPhone => CourtAssets.phone,
-                    GameMode.multiplayer => CourtAssets.people,
-                  },
-                  width: 48,
-                  height: 48,
-                  fallback: Icon(mode.icon, size: 36),
-                ),
+                if (mode == null)
+                  const SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Icon(Icons.menu_book_outlined, size: 36),
+                  )
+                else
+                  CourtArt(
+                    switch (mode!) {
+                      GameMode.cards => CourtAssets.cards,
+                      GameMode.sharedPhone => CourtAssets.phone,
+                      GameMode.multiplayer => CourtAssets.people,
+                    },
+                    width: 48,
+                    height: 48,
+                    fallback: Icon(mode!.icon, size: 36),
+                  ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

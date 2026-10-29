@@ -1,6 +1,6 @@
 # Trinktribunal – Spielhilfe
 
-Stand: TT-068, 28.10.2026. Dieselben Hinweise stehen in der App unter Einstellungen → Spielhilfe in Deutsch und Englisch. Die vollständigen Spielregeln sind von dort erreichbar.
+Stand: TT-068, 28.10.2026. Dieselben Hinweise stehen in der App unter Einstellungen → Spielhilfe in Deutsch und Englisch. Das Hauptmenü bietet außerdem Spielregeln als vierten Eintrag. Jeder Modus beginnt mit einer kurzen Einführung vor der Einrichtung.
 
 ## Modi
 
@@ -24,7 +24,7 @@ Die Bank folgt einer Schlange: 1→2→3, danach 6←5←4. Zum Einfügen ziehen
 
 Android enthält die lokalen Spielinhalte. Im Web unter Einstellungen den vollständigen Offline-Download und dessen bestätigten Status abwarten. Privater Modus, Speicherlimits oder gelöschte Browserdaten können Offlinebetrieb und Wiederaufnahme verhindern. Cachewechsel/-entfernung warten während einer aktiven lokalen Partie. Onlinepartien benötigen eine Verbindung. Audio bleibt optional; das Spiel verlangt keine Tonausgabe.
 
-Die Rückkehr zur Auswahl behält lokale Partien. Ein bestätigter Neustart verwirft den Fortschritt, behält aber Profil und sechs Stunden Ziehhistorie. Einstellungen bieten getrennte, bestätigte Aktionen für Profilvorlage und beide lokalen Partien. Die Partielöschung ersetzt auch Sicherungskopien; Gruppe, Profil und Ziehhistorie bleiben bestehen. Eine Profilvorlage zu löschen entfernt keine bereits in Gruppen/Partien übernommenen Personen. Die lokale Gruppe lässt sich separat über Personenverwaltung bearbeiten.
+Die Rückkehr zur Auswahl behält lokale Partien. Nach Abschluss lässt sich eine neue Partie starten. Zum Zurücksetzen einer laufenden lokalen Partie Einstellungen → Lokale Partien löschen verwenden; Profil und sechs Stunden Ziehhistorie bleiben erhalten. Einstellungen bieten getrennte, bestätigte Aktionen für Profilvorlage und beide lokalen Partien. Die Partielöschung ersetzt auch Sicherungskopien; Gruppe, Profil und Ziehhistorie bleiben bestehen. Eine Profilvorlage zu löschen entfernt keine bereits in Gruppen/Partien übernommenen Personen. Die lokale Gruppe lässt sich separat über Personenverwaltung bearbeiten.
 
 Online verfallen Räume nach 24 Stunden ohne echte Spielaktivität, spätestens 48 Stunden nach Erstellung. Reconnects und Wiederholungen verlängern diese Fristen nicht. „Verlassen“ widerruft die eigene Identität auf dem Server; nur der Host darf den Raum schließen. „Lokal vergessen“ ist keine bestätigte serverseitige Löschung. Lokale Partielöschung verlässt und schließt keine Online-Räume.
 

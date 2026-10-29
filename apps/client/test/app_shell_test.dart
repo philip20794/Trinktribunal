@@ -42,9 +42,7 @@ void main() {
       await tester.tap(entry);
       await tester.pumpAndSettle();
       expect(find.text(title), findsAtLeastNWidgets(1));
-      if (title == 'Handy + Karten') {
-        expect(find.text('Eure nächste Verhandlung'), findsOneWidget);
-      }
+      expect(find.text('Kurz erklärt'), findsOneWidget);
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       expect(find.byType(HomeScreen), findsOneWidget);

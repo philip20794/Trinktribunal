@@ -20,7 +20,7 @@ class ReadinessView extends ConsumerWidget {
         roundId = view.roundId,
         gameId = view.gameId;
     if (roundId == null || gameId == null) return const SizedBox.shrink();
-    final host = snapshot.you == view.hostId, answers = view.phase == 'answers';
+    final answers = view.phase == 'answers';
     final participants = {
       for (final player in view.players) player.playerId: player,
     };
@@ -33,7 +33,6 @@ class ReadinessView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (['numbers', 'answers'].contains(view.phase)) ...[
-            if (answers) const TText('phoneAnswersHelp'),
             ExpansionTile(
               initiallyExpanded: recipients.length <= 5,
               tilePadding: EdgeInsets.zero,
@@ -62,48 +61,74 @@ class ReadinessView extends ConsumerWidget {
             if (showActions) ReadinessActions(snapshot: snapshot),
             if (game.pending('ready')) const TText('onlineReadySending'),
           ],
-          if (host &&
-              [
-                'numbers',
-                'answers',
-                'ordering',
-                'revealing',
-                'judged',
-                'paused',
-              ].contains(view.phase))
-            OutlinedButton(
-              onPressed: game.pending('complete')
-                  ? null
-                  : () async {
-                      game.hideSecret();
-                      final confirmed = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const TText('skipCaseTitle'),
-                          content: const TText('onlineSkipHelp'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const TText('cancel'),
-                            ),
-                            FilledButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const TText('finishCase'),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (context.mounted && confirmed == true) {
-                        game.completeWithoutVerdict(
-                          gameId: gameId,
-                          roundId: roundId,
-                          confirmed: true,
-                        );
-                      }
-                    },
-              child: const TText('withoutVerdict'),
-            ),
+          if (showActions) RoomSkipMenu(snapshot: snapshot),
         ],
+      ),
+    );
+  }
+}
+
+/// Exceptional recovery stays in a menu rather than a permanent play button.
+class RoomSkipMenu extends ConsumerWidget {
+  const RoomSkipMenu({required this.snapshot, super.key});
+  final SnapshotMessage snapshot;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final view = snapshot.public;
+    if (snapshot.you != view.hostId ||
+        view.gameId == null ||
+        view.roundId == null ||
+        ![
+          'numbers',
+          'answers',
+          'ordering',
+          'revealing',
+          'judged',
+          'paused',
+        ].contains(view.phase)) {
+      return const SizedBox.shrink();
+    }
+    final game = ref.watch(onlineGameProvider);
+    return ListenableBuilder(
+      listenable: game,
+      builder: (context, _) => PopupMenuButton<String>(
+        tooltip: context.tr('gameOptions'),
+        icon: const Icon(Icons.more_horiz),
+        onOpened: game.hideSecret,
+        itemBuilder: (_) => [
+          PopupMenuItem(
+            value: 'skip',
+            enabled: !game.pending('complete'),
+            child: const TText('withoutVerdict'),
+          ),
+        ],
+        onSelected: (_) async {
+          game.hideSecret();
+          final confirmed = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const TText('skipCaseTitle'),
+              content: const TText('onlineSkipHelp'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const TText('cancel'),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const TText('finishCase'),
+                ),
+              ],
+            ),
+          );
+          if (context.mounted && confirmed == true) {
+            game.completeWithoutVerdict(
+              gameId: view.gameId!,
+              roundId: view.roundId!,
+              confirmed: true,
+            );
+          }
+        },
       ),
     );
   }

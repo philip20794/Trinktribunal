@@ -32,6 +32,7 @@ class RoomLobbyScreen extends ConsumerWidget {
         title: const TText('roomTitle'),
         footer: _RoomPhaseFooter(state: state),
         actions: [
+          RoomSkipMenu(snapshot: state.snapshot!),
           GameRulesButton(beforeOpen: ref.read(onlineGameProvider).hideSecret),
           if (state.snapshot!.you == state.snapshot!.public.hostId)
             IconButton(

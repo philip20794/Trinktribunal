@@ -90,7 +90,6 @@ class RoomGameScreen extends ConsumerWidget {
                 Text(context.tr('onlineJudge', {'name': judge})),
               if (reader != null)
                 Text(context.tr('onlineReader', {'name': reader})),
-              const TText('rosterFrozen'),
               if (rendered != null && view.phase != 'judged')
                 CourtQuestion(
                   animationKey: view.roundId,
@@ -130,9 +129,7 @@ class RoomGameScreen extends ConsumerWidget {
                 if (view.phase == 'numbers' &&
                     (game.acknowledged || game.ackPending))
                   const TText('onlineNumberConfirmed'),
-              ] else if (view.phase == 'numbers' &&
-                  view.judgeId == snapshot.you)
-                const TText('onlineJudgeNoNumber'),
+              ],
               ReadinessView(snapshot: snapshot, showActions: !fixedActions),
               OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
             ],

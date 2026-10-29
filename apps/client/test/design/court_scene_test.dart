@@ -171,7 +171,6 @@ void main() {
               children: [
                 const CourtBrandMark(),
                 CourtPaper(
-                  asset: 'assets/missing-paper.png',
                   child: Column(
                     children: [
                       const Text('Lesbarer Inhalt'),

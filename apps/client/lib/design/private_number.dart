@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../l10n/app_strings.dart';
 import 'court_scene.dart';
-import 'court_assets.dart';
 
 /// Shared local/online presentation; hidden values never enter text or semantics.
 class PrivateNumber extends StatefulWidget {
@@ -222,7 +221,6 @@ class _NumberFace extends StatelessWidget {
   final int? number;
   @override
   Widget build(BuildContext context) => CourtPaper(
-    asset: CourtAssets.numberPaper,
     padding: const EdgeInsets.all(16),
     child: Builder(
       builder: (context) => SizedBox(

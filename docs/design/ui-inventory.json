@@ -121,12 +121,12 @@
       ],
       "states": [
         "Profil/Restore laden",
-        "drei Spielmodi",
         "gültige Wiederaufnahme",
         "defekter lokaler Stand mit bestätigtem Verwerfen",
         "gespeicherte Raumidentitäten",
         "Profil/Einstellungen/Spielregeln",
-        "Debuggalerie nur Debug"
+        "Four menu items: three modes and concise rules",
+        "No catalog diagnostics or design gallery in home navigation"
       ],
       "tests": [
         "apps/client/test/accessibility/screen_matrix_test.dart",
@@ -278,7 +278,8 @@
         "apps/client/test/features/question_refresh_test.dart",
         "apps/client/test/application/local_marathon_test.dart",
         "apps/client/test/design/question_card_test.dart",
-        "apps/client/test/features/local_card_ui_test.dart"
+        "apps/client/test/features/local_card_ui_test.dart",
+        "apps/client/test/features/ui_cleanup_test.dart"
       ],
       "targetTask": "TT-076",
       "implementation": {
@@ -394,7 +395,8 @@
       ],
       "tests": [
         "apps/client/test/domain/card_game_test.dart",
-        "apps/client/test/features/direct_next_rules_test.dart"
+        "apps/client/test/features/direct_next_rules_test.dart",
+        "apps/client/test/features/ui_cleanup_test.dart"
       ],
       "targetTask": "TT-076",
       "implementation": {
@@ -428,7 +430,8 @@
       "tests": [
         "apps/client/test/features/direct_next_rules_test.dart",
         "apps/client/test/features/question_refresh_test.dart",
-        "apps/client/test/accessibility/screen_matrix_test.dart"
+        "apps/client/test/accessibility/screen_matrix_test.dart",
+        "apps/client/test/features/ui_cleanup_test.dart"
       ],
       "targetTask": "TT-076",
       "implementation": {
@@ -835,7 +838,7 @@
       }
     },
     {
-      "id": "legacy_preview",
+      "id": "mode_intro",
       "files": [
         "apps/client/lib/features/home/mode_preview_screen.dart"
       ],
@@ -845,13 +848,18 @@
         "multiplayer"
       ],
       "roles": [
-        "unreachable_legacy"
+        "local_user"
       ],
       "references": [],
       "states": [
-        "alte Vorschau ohne produktiven Aufrufer; nicht als fehlende Funktion neu anbieten"
+        "Three-step DE/EN introduction for all three modes",
+        "Continue replaces intro with the real setup",
+        "Back returns to the four-item home menu"
       ],
-      "tests": [],
+      "tests": [
+        "apps/client/test/features/home_profile_settings_test.dart",
+        "apps/client/test/features/ui_cleanup_test.dart"
+      ],
       "targetTask": "TT-073",
       "implementation": {
         "task": "TT-073",
@@ -1263,22 +1271,22 @@
     },
     {
       "path": "apps/client/assets/ui/courtroom/illustrations/phone_handover.png",
-      "width": 878,
-      "height": 601,
-      "bytes": 560351,
-      "sha256": "de227803b5dc94ad174d26cf727ca0ebacab84380dcbdd6e74c422185688cbcf",
+      "width": 1774,
+      "height": 887,
+      "bytes": 1224697,
+      "sha256": "8075a4faf1d1e61da8ec637651a31a91d5eb8192e5ce292a2f44e4e478cb308d",
       "alpha_min": 0,
       "alpha_max": 255,
-      "transparent_pixels": 314876,
-      "nonopaque_pixels": 325149,
+      "transparent_pixels": 768249,
+      "nonopaque_pixels": 1571912,
       "alpha_bbox": [
-        26,
-        28,
-        852,
-        575
+        0,
+        3,
+        1774,
+        887
       ],
       "review": "candidate",
-      "notes": "Sauberes transparentes Übergabemotiv mit Innenluft; mit Contain und begrenzter Höhe einsetzbar. Text/Übernahmeaktion bleiben unabhängig."
+      "notes": "Aktualisiertes Übergabemotiv aus dem Workspace, visuell geprüft: transparent, ohne eingebetteten Spieltext; Contain, feste Anzeigehöhe. Separate Aktion bleibt echter Flutter-Button."
     },
     {
       "path": "apps/client/assets/ui/courtroom/paper/case_parchment_blank.png",

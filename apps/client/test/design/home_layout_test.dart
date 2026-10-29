@@ -7,13 +7,10 @@ void main() {
       expect(homeCardWidth(width), 0.0, reason: 'viewport $width');
     }
   });
-  test(
-    'phone fills padded width; desktop keeps three equal bounded columns',
-    () {
-      expect(homeCardWidth(360), 320);
-      expect(homeCardWidth(840), 256);
-      expect(homeCardWidth(1056), 328);
-      expect(homeCardWidth(1440), 328);
-    },
-  );
+  test('phone fills padded width; desktop keeps two equal bounded columns', () {
+    expect(homeCardWidth(360), 320);
+    expect(homeCardWidth(840), 394);
+    expect(homeCardWidth(1056), 502);
+    expect(homeCardWidth(1440), 502);
+  });
 }

@@ -23,7 +23,11 @@ ThemeData _buildSceneTheme() {
   final base = courtTheme();
   return base.copyWith(
     brightness: Brightness.dark,
+    iconTheme: const IconThemeData(color: CourtSceneTokens.cream),
     scaffoldBackgroundColor: CourtSceneTokens.night,
+    bottomSheetTheme: const BottomSheetThemeData(
+      dragHandleColor: CourtSceneTokens.panel,
+    ),
     colorScheme: const ColorScheme.dark(
       primary: CourtSceneTokens.gold,
       onPrimary: CourtSceneTokens.night,
@@ -277,17 +281,15 @@ class CourtScaffold extends StatelessWidget {
   );
 }
 
-/// Opaque ink-safe backing also makes transparent paper edges and image failure safe.
+/// Content-sized opaque paper. Framed PNGs must never sit behind live text.
 class CourtPaper extends StatelessWidget {
   const CourtPaper({
     required this.child,
     this.padding = const EdgeInsets.all(24),
-    this.asset = CourtAssets.paper,
     super.key,
   });
   final Widget child;
   final EdgeInsetsGeometry padding;
-  final String asset;
   @override
   Widget build(BuildContext context) => Theme(
     data: courtPaperTheme(),
@@ -308,17 +310,7 @@ class CourtPaper extends StatelessWidget {
             ),
           ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(14),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: IgnorePointer(child: CourtArt(asset, fit: BoxFit.cover)),
-              ),
-              Padding(padding: padding, child: child),
-            ],
-          ),
-        ),
+        child: Padding(padding: padding, child: child),
       ),
     ),
   );

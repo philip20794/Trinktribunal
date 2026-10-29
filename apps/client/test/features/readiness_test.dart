@@ -175,11 +175,15 @@ void main() {
             .onPressed,
         isNull,
       );
+      await tester.tap(find.byTooltip('Partieoptionen'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Fall ohne Urteil abschließen'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Abbrechen'));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<CompleteWithoutVerdictMessage>(), isEmpty);
+      await tester.tap(find.byTooltip('Partieoptionen'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Fall ohne Urteil abschließen'));
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(FilledButton, 'Fall abschließen'));
@@ -197,6 +201,8 @@ void main() {
     (tester) async {
       final fixture = await pump(tester),
           socket = fixture.transport.sockets.last;
+      await tester.tap(find.byTooltip('Partieoptionen'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Fall ohne Urteil abschließen'));
       await tester.pumpAndSettle();
       socket.receive(answerView(revision: 2, roundId: 'round_2'));

@@ -1,8 +1,12 @@
 # Fortschritt und Übergabe
 
-Stand: 28.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
+Stand: 29.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 157 Node-/549 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 157 Node-/561 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+
+## UI-Nacharbeit nach Nutzerscreenshots, 29.10.2026
+
+**ABGESCHLOSSEN nach Unit-/Buildgates.** Acht Befunde umgesetzt: mitwachsende deckende Papierflächen, klare Fall-/Regelkarten und dunkle Regelblatt-Schrift, Spielhinweise in drei vorgeschaltete Moduseinführungen verschoben, Spieloberflächen und Buttons bereinigt, vierte Hauptmenükarte Spielregeln, Diagnose/Galerie entfernt und Regeln auf vier kurze Abschnitte gekürzt. 561 Flutter-/157 Node-Tests, Analyze/Format, zwölf native Render-Tests mit 32 Bildern und frische Web-/Debug-APK-/HTTP-/Offlinegates grün; [Beleg](qa/ui-cleanup.md). Aktualisierte Übergabegrafik im Workspace erhalten, Decode-/Inventar-/Hashangaben abgeglichen. Online-Ausnahmeaktion zum bestätigten Überspringen im Optionsmenü; keine permanenten Zusatzbuttons.
 
 ## Nachtest QR-Dialog, 29.10.2026
 
@@ -207,10 +211,12 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Branch: task/TT-068-help-privacy-maintenance auf main 7bb04ad; Nutzerstand 4030196 vollständig erhalten.
-TT-068: abgeschlossen. Hilfe/Datenschutz DE/EN, getrennte bestätigte Profil-/Partielöschung inklusive Backupbereinigung. 543 Flutter-/152 Node-Tests, Analyze/Format, frische Web-/Debug-APK-Builds und HTTP-/Offlineintegrität grün. Beleg docs/qa/help-privacy.md + TT-068-builds.json.
-TT-065: sechs externe Rechte-/Provenienznachweise offen. TT-066: echter produktionssignierter APK/AAB-Beleg aus bestehendem Codemagic offen, keine neuen lokalen Schlüssel.
-TT-067: abgeschlossen, 152 Node-/446 Server-Tests, Worker-Dry-run und Web-HTTP-Prüfung; keine Uploads. Serverruntime seitdem unverändert.
-Avatar v3: Nutzer-Master/prototypen erhalten, Runtime v2 bleibt; sieben native Quell-/Isolationstests bestanden, visuelle Masken nicht freigegeben.
-Nach TT-068: TT-069/070 bleiben bis zu erfüllten Abhängigkeiten offen. Keine Browser-/E2E-/Geräteabnahme: ÜBERSPRUNGEN – später manuell testen.
+Branch: fix/ui-paper-and-game-flow auf main 72ae370; UI-Nacharbeit zu acht Nutzerscreenshots abgeschlossen.
+Belege: docs/qa/ui-cleanup.md + ui-cleanup-builds.json. 561 Flutter-/157 Node-Tests, Analyze/Format, frische Web-/Debug-APK-Builds, HTTP-/Offlineintegrität grün. 32 native UI-Bilder mit echten Schriften unter build/ui-review/cleanup-*.png. Keine Browser-/E2E-Abnahme.
+Hauptmenü: drei Modi plus kurze Spielregeln, keine Diagnose/Galerie. Moduseinführung vor Setup; saubere deckende Papierflächen. Keine permanenten Spielhinweise oder Zusatzbuttons; Online-Ausnahmeaktion im Optionsmenü, Neue Partie erst nach Abschluss.
+Neue phone_handover.png aus dem Workspace erhalten und geprüft; native Breite 1774, Inventar/Hashregister synchron. Rechte weiterhin ungeklärt, keine Freigabe erfunden.
+TT-065: sechs externe Rechte-/Provenienznachweise offen. TT-066: echter produktionssignierter APK/AAB-Beleg aus bestehendem Codemagic offen, keine neuen lokalen Schlüssel. TT-069/070 warten auf diese Abhängigkeiten.
+TT-067/068 abgeschlossen. Serverruntime unverändert seit TT-067 (446 Tests). Online-APK braucht eine konfigurierte laufende Backend-Origin und Neubau; Pipelineweitergabe korrigiert, kein Backenddeploy erfolgt.
+Nutzer-Nachträge bis b26007e erhalten. Avatar-v3-Master/Prototypen erhalten, Runtime bleibt v2.
+Laufende Web-Serverprozesse kompilieren Git-/Dateiänderungen nicht automatisch neu: Testskript neu starten, nicht nur Browserseite neu laden.
 ```

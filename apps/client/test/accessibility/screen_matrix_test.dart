@@ -25,6 +25,7 @@ import '../support/memory_string_store.dart';
 Widget accessibilityHost(
   Widget screen, {
   String language = 'de',
+  double textScale = 2,
   Size size = const Size(360, 800),
   FakeRoomTransport? transport,
 }) => ProviderScope(
@@ -42,11 +43,12 @@ Widget accessibilityHost(
   child: AppLanguageScope(
     language: language,
     child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: courtTheme(),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
           size: size,
-          textScaler: const TextScaler.linear(2),
+          textScaler: TextScaler.linear(textScale),
           disableAnimations: true,
         ),
         child: child!,

@@ -179,6 +179,8 @@ void main() {
         }),
       );
       await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Partieoptionen'));
+      await tester.pumpAndSettle();
       await tester.ensureVisible(find.text('Fall ohne Urteil abschließen'));
       await tester.tap(find.text('Fall ohne Urteil abschließen'));
       await tester.pumpAndSettle();
@@ -309,7 +311,7 @@ void main() {
     expect(find.byType(PrivateNumber), findsNothing);
     expect(
       find.text('Als Richter bekommst du in diesem Fall keine Geheimzahl.'),
-      findsOneWidget,
+      findsNothing,
     );
   });
   testWidgets(

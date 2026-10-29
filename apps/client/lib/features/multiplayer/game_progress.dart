@@ -39,10 +39,7 @@ class OnlineGameProgress extends ConsumerWidget {
               }),
             ),
           ],
-          if (view.phase == 'rule_event') ...[
-            const TText('newDrinkingRule'),
-            const TText('ruleEventHelp'),
-          ],
+          if (view.phase == 'rule_event') ...[const TText('newDrinkingRule')],
           if (view.activeRules.isNotEmpty)
             ExpansionTile(
               key: ValueKey('${view.gameId}:${view.phase == 'rule_event'}'),
@@ -54,7 +51,6 @@ class OnlineGameProgress extends ConsumerWidget {
                 }),
               ),
               children: [
-                const TText('rulesHelp'),
                 for (final assignment in view.activeRules)
                   Builder(
                     builder: (context) {
@@ -96,7 +92,7 @@ class OnlineGameProgress extends ConsumerWidget {
               const TText('onlinePausePlayers'),
           ],
           if (showActions) OnlineProgressAction(snapshot: snapshot),
-          if (host)
+          if (host && view.phase == 'finished')
             OutlinedButton(
               onPressed: game.pending('restart') || game.activeCount < 3
                   ? null

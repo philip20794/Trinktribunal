@@ -145,11 +145,11 @@
         },
         {
           "path": "apps/client/lib/design/court_scene.dart",
-          "sha256": "7c69d0949e059799611c34fc0f0a2d6fc33410b64a55623fabac55df7aa3c305"
+          "sha256": "e275333ab99dbc570190665a48cde9deae1053668dbe169bc422db524cf8bc30"
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
-          "sha256": "a2bdb201369e9c334f9e9cdac53eaf84c9d5818ede242e1eff366d785d1e37da"
+          "sha256": "d4a2831792253e87c18b8b3f57082329808764967578db8e4ad3dd9cc9da1254"
         }
       ]
     },
@@ -639,7 +639,7 @@
         },
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/phone_handover.png",
-          "sha256": "de227803b5dc94ad174d26cf727ca0ebacab84380dcbdd6e74c422185688cbcf"
+          "sha256": "8075a4faf1d1e61da8ec637651a31a91d5eb8192e5ce292a2f44e4e478cb308d"
         },
         {
           "path": "apps/client/assets/ui/courtroom/paper/case_parchment_blank.png",

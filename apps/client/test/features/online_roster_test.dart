@@ -63,17 +63,7 @@ void main() {
         AppStrings('de').get('roomContinue'),
       );
       expect(tester.widget<FilledButton>(resume).onPressed, isNull);
-      expect(
-        tester
-            .widget<OutlinedButton>(
-              find.widgetWithText(
-                OutlinedButton,
-                AppStrings('de').get('restartGame'),
-              ),
-            )
-            .onPressed,
-        isNull,
-      );
+      expect(find.text(AppStrings('de').get('restartGame')), findsNothing);
       socket.receive(paused(added: true));
       await tester.pumpAndSettle();
       await numbers.tapText(tester, AppStrings('de').get('roomContinue'));

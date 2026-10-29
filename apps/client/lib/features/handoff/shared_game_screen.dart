@@ -255,6 +255,12 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
         child: const TText('nextCase'),
       );
     }
+    if (view.phase == GamePhase.finished) {
+      return FilledButton(
+        onPressed: () => _restart(view),
+        child: const TText('newGame'),
+      );
+    }
     if (view.phase == GamePhase.paused) {
       return FilledButton(
         onPressed: () => _act(_controller.resumePaused),
@@ -304,40 +310,44 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 showDragHandle: true,
                 builder: (context) => Theme(
                   data: courtPaperTheme(),
-                  child: Builder(
-                    builder: (context) => FractionallySizedBox(
-                      heightFactor: 0.7,
-                      child: ListView(
-                        padding: const EdgeInsets.all(24),
-                        children: [
-                          Text(
-                            context.tr('activeRulesCount', {
-                              'count': view.activeRules.length,
-                            }),
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const TText('phoneRuleHelp'),
-                          for (final rule in view.activeRules)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: Text(
-                                localizedRule(
-                                  ref.read(catalogsProvider).requireValue,
-                                  AppLanguageScope.of(context).language,
-                                  rule.entry as DrinkingRule,
-                                ).render(
+                  child: DefaultTextStyle(
+                    style: courtPaperTheme().textTheme.bodyLarge!,
+                    child: Builder(
+                      builder: (context) => FractionallySizedBox(
+                        heightFactor: 0.7,
+                        child: ListView(
+                          padding: const EdgeInsets.all(24),
+                          children: [
+                            Text(
+                              context.tr('activeRulesCount', {
+                                'count': view.activeRules.length,
+                              }),
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            for (final rule in view.activeRules)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                                child: Text(
                                   localizedRule(
                                     ref.read(catalogsProvider).requireValue,
                                     AppLanguageScope.of(context).language,
                                     rule.entry as DrinkingRule,
-                                  ).text,
-                                  rule.names(view.names),
+                                  ).render(
+                                    localizedRule(
+                                      ref.read(catalogsProvider).requireValue,
+                                      AppLanguageScope.of(context).language,
+                                      rule.entry as DrinkingRule,
+                                    ).text,
+                                    rule.names(view.names),
+                                  ),
                                 ),
                               ),
-                            ),
-                          if (view.activeRules.isEmpty)
-                            const TText('phoneRulesEmpty'),
-                        ],
+                            if (view.activeRules.isEmpty)
+                              const TText('phoneRulesEmpty'),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -421,7 +431,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
-                  const TText('phoneHoldHelp'),
                   HeldPrivateNumber(
                     key: ValueKey('${view.roundId}:${view.recipient!.value}'),
                     number: view.visibleSecret,
@@ -491,30 +500,12 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                   ),
                 ],
 
-                if (view.phase == GamePhase.answers) ...[
-                  const SizedBox(height: 16),
-                  const TText('phoneAnswersHelp'),
-                ],
                 if ([
                   GamePhase.ordering,
                   GamePhase.revealing,
                   GamePhase.judged,
                 ].contains(view.phase)) ...[
                   const SizedBox(height: 16),
-                  if (view.phase == GamePhase.ordering)
-                    const TText('phoneOrderHelp'),
-                  BenchView(
-                    order: view.order,
-                    profiles: view.profiles,
-                    revealedNumbers: view.revealedNumbers,
-                    incorrect: view.incorrectRevealed,
-                    onMove: view.phase == GamePhase.ordering
-                        ? (from, to) => _act(
-                            () => _controller.move(view.roundId, from, to),
-                          )
-                        : null,
-                  ),
-
                   if (view.verdict != null)
                     CaseFile(
                       label: context.tr('verdictHeading'),
@@ -536,6 +527,18 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                         ],
                       ),
                     ),
+                  const SizedBox(height: 16),
+                  BenchView(
+                    order: view.order,
+                    profiles: view.profiles,
+                    revealedNumbers: view.revealedNumbers,
+                    incorrect: view.incorrectRevealed,
+                    onMove: view.phase == GamePhase.ordering
+                        ? (from, to) => _act(
+                            () => _controller.move(view.roundId, from, to),
+                          )
+                        : null,
+                  ),
                 ],
                 if (view.phase == GamePhase.ruleEvent) ...[
                   CaseFile(
@@ -563,7 +566,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                             ),
                     ),
                   ),
-                  const TText('phoneRuleEventHelp'),
                 ],
                 if (view.phase == GamePhase.paused) ...[
                   Text(
@@ -574,34 +576,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                 ],
                 if (view.phase == GamePhase.finished)
                   CourtSeal(label: context.tr('endHearing')),
-                if (![
-                  GamePhase.ruleEvent,
-                  GamePhase.finished,
-                  GamePhase.paused,
-                ].contains(view.phase))
-                  OutlinedButton(
-                    onPressed: () async {
-                      final confirmed = await _confirm(
-                        context.tr('skipCaseTitle'),
-                        context.tr('skipPhoneCaseHelp'),
-                      );
-                      if (mounted) {
-                        _act(
-                          () => _controller.completeCase(
-                            view.roundId,
-                            confirmed: confirmed,
-                            withoutVerdict: true,
-                          ),
-                        );
-                      }
-                    },
-                    child: const TText('withoutVerdict'),
-                  ),
-                const SizedBox(height: 24),
-                OutlinedButton(
-                  onPressed: () => _restart(view),
-                  child: const TText('restartGame'),
-                ),
               ],
             ),
           ),

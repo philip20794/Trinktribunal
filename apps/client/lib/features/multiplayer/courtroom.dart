@@ -69,11 +69,6 @@ class RoomCourtroom extends ConsumerWidget {
           }),
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        if (host)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: TText('roomHostControls'),
-          ),
         const SizedBox(height: 12),
         if (['ordering', 'revealing', 'judged'].contains(snapshot.public.phase))
           OnlineOrderView(snapshot: snapshot, showActions: !fixedActions)

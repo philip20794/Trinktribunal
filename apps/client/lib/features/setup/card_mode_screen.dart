@@ -33,7 +33,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
   int _cases = 50;
   int _rules = 7;
   int _factor = 15;
-  bool _dialogOpen = false;
   String? _error;
   String? _storageWarning;
 
@@ -50,75 +49,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     }
   }
 
-  Future<bool> _confirm(String title, String message, String action) async {
-    if (_dialogOpen) return false;
-    _dialogOpen = true;
-    try {
-      return await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(title),
-              content: Text(message),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const TText('cancel'),
-                ),
-                FilledButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: Text(action),
-                ),
-              ],
-            ),
-          ) ??
-          false;
-    } finally {
-      _dialogOpen = false;
-    }
-  }
-
-  Future<void> _skip(
-    LocalSessionController controller,
-    CardGameState state,
-  ) async {
-    final confirmed = await _confirm(
-      context.tr('skipCaseTitle'),
-      context.tr('skipCaseHelp'),
-      context.tr('finishCase'),
-    );
-    if (mounted) {
-      _act(
-        () => controller.completeCase(
-          roundId: state.currentEventId,
-          confirmed: confirmed,
-        ),
-      );
-    }
-  }
-
-  Future<void> _restart(
-    LocalSessionController controller,
-    CardGameState state,
-  ) async {
-    final confirmed = await _confirm(
-      context.tr('restartTitle'),
-      context.tr('restartHelp'),
-      context.tr('restartAction'),
-    );
-    if (mounted && confirmed) {
-      _act(() => controller.start(state.config, confirmedRestart: true));
-    }
-  }
-
-  Future<void> _abort(LocalSessionController controller) async {
-    final confirmed = await _confirm(
-      context.tr('endGameTitle'),
-      context.tr('endGameHelp'),
-      context.tr('endGameAction'),
-    );
-    if (mounted && confirmed) _act(() => controller.abort(confirmed: true));
-  }
-
   @override
   Widget build(BuildContext context) {
     final catalogs = ref.watch(catalogsProvider);
@@ -126,7 +56,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ? ref.watch(localSessionProvider)
         : null;
     final current = loaded?.state;
-    final VoidCallback? next = current?.phase == GamePhase.casePresented
+    final VoidCallback? next = current?.phase == GamePhase.finished
+        ? () => _act(() => loaded!.abort(confirmed: true))
+        : current?.phase == GamePhase.casePresented
         ? () => _act(() => loaded!.advancePlayedCase(current!.currentEventId))
         : current?.phase == GamePhase.ruleEvent
         ? () => _act(() => loaded!.continueAfterRule(current!.currentEventId))
@@ -137,7 +69,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           : CourtActionBar(
               primary: FilledButton(
                 onPressed: next,
-                child: const TText('nextCase'),
+                child: TText(
+                  current?.phase == GamePhase.finished ? 'newGame' : 'nextCase',
+                ),
               ),
             ),
       title: const TText('modeCards'),
@@ -193,16 +127,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                     ..._setup(controller)
                   else
                     ..._game(context, controller, state),
-                  const SizedBox(height: 20),
-                  TextButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back),
-                    label: Text(
-                      state == null
-                          ? context.tr('backToSelection')
-                          : context.tr('backToSelectionKeepGame'),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -235,8 +159,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 12),
-              const TText('cardIntro'),
-              const SizedBox(height: 12),
               _slider(
                 context,
                 context.tr('playersLabel'),
@@ -267,13 +189,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                 display: AppLanguageScope.of(context).language == 'de'
                     ? (_factor / 10).toStringAsFixed(1).replaceAll('.', ',')
                     : (_factor / 10).toStringAsFixed(1),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                context.tr('cardsPrepare', {
-                  'max': (_players * _factor + 9) ~/ 10,
-                  'count': _players - 1,
-                }),
               ),
               const SizedBox(height: 12),
               FilledButton.icon(
@@ -371,24 +286,7 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         semanticsLabel: context.tr('completedCases'),
       ),
       const SizedBox(height: 24),
-      if (state.lastCompletion != null) ...[
-        Text(switch (state.lastCompletion!) {
-          CaseCompletion.withoutVerdict => context.tr('lastNoVerdict'),
-          CaseCompletion.playedWithoutRecordedVerdict => context.tr(
-            'lastPlayedCase',
-          ),
-          CaseCompletion.judged => context.tr('manualVerdictSummary', {
-            'count': state.manualErrors,
-          }),
-        }),
-        const SizedBox(height: 16),
-      ],
       if (state.phase == GamePhase.casePresented && question != null) ...[
-        Text(
-          context.tr('caseNumber', {'number': state.caseNumber}),
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        const SizedBox(height: 16),
         CourtQuestion(
           animationKey: state.currentEventId,
           showRefresh: true,
@@ -406,27 +304,12 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           maximum: config.maxSecretNumber,
         ),
         const SizedBox(height: 16),
-        Text(
-          context.tr('cardsDistribution', {
-            'count': config.numberRecipients,
-            'max': config.maxSecretNumber,
-          }),
-        ),
-        const SizedBox(height: 16),
-        OutlinedButton(
-          onPressed: () => _skip(controller, state),
-          child: const TText('withoutVerdict'),
-        ),
       ],
       if (state.phase == GamePhase.ruleEvent) ...[
-        Text(
-          context.tr(
+        CaseFile(
+          label: context.tr(
             state.newRule == null ? 'ruleGoalReduced' : 'newDrinkingRule',
           ),
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        const SizedBox(height: 16),
-        CourtPaper(
           child: Text(
             (state.newRule == null
                     ? null
@@ -439,8 +322,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
             style: const TextStyle(color: CourtTokens.ink, fontSize: 20),
           ),
         ),
-        const SizedBox(height: 16),
-        const TText('ruleEventHelp'),
       ],
       if (state.phase == GamePhase.finished) ...[
         TText('endHearing', style: Theme.of(context).textTheme.headlineMedium),
@@ -458,19 +339,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
               ? context.tr('gamePaused')
               : context.feedback(state.pauseReason!),
         ),
-      if (state.completedCases > 0 && state.phase != GamePhase.finished) ...[
-        const SizedBox(height: 16),
-        const TText('cardRotateHelp'),
-      ],
-      const SizedBox(height: 24),
-      OutlinedButton(
-        onPressed: () => _restart(controller, state),
-        child: const TText('restartGame'),
-      ),
-      TextButton(
-        onPressed: () => _abort(controller),
-        child: const TText('cardRestartSetup'),
-      ),
     ];
   }
 }

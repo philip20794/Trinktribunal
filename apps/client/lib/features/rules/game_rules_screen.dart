@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_strings.dart';
 import '../../design/court_scene.dart';
 
+const gameRuleSections = ['Setup', 'Normal', 'AllJudges', 'ExtraRules'];
+
 Future<void> showGameRules(BuildContext context) =>
     Navigator.of(context)
         .push<void>(MaterialPageRoute(builder: (_) => const GameRulesScreen()));
@@ -32,15 +34,7 @@ class GameRulesScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            for (final section in [
-              'Setup',
-              'Errors',
-              'Normal',
-              'AllJudges',
-              'Rotation',
-              'ExtraRules',
-              'Next',
-            ])
+            for (final section in gameRuleSections)
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: CourtPaper(

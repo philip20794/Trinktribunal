@@ -27,7 +27,7 @@ class OnlineRosterManagement extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const TText('phoneRosterNotice'),
+        if (view.pendingRoster.isNotEmpty) const TText('phoneRosterNotice'),
         for (final player in view.players)
           ListTile(
             key: ValueKey('presence-${player.playerId.value}'),
