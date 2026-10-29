@@ -10,6 +10,7 @@ import 'package:trinktribunal/data/room_credential_store.dart';
 import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/features/multiplayer/connection.dart';
 import 'package:trinktribunal/features/multiplayer/me.dart';
+import 'package:trinktribunal/features/multiplayer/pending_profile.dart';
 import 'package:trinktribunal/features/multiplayer/room_tools.dart';
 import 'package:trinktribunal/features/multiplayer/invite.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
@@ -44,6 +45,7 @@ Future<({RoomController room, FakeRoomTransport transport})> pumpLobby(
   Uri? publicClientBase,
   String language = 'de',
   double textScale = 1,
+  bool pendingGuest = false,
 }) async {
   final transport = FakeRoomTransport(),
       store = RoomCredentialStore(MemoryCredentialBackend()),
@@ -84,7 +86,28 @@ Future<({RoomController room, FakeRoomTransport transport})> pumpLobby(
       'playerId': host ? 'p1' : 'p2',
     }),
   );
-  transport.sockets.last.receive(lobbySnapshot(host));
+  final snapshot = lobbySnapshot(host);
+  transport.sockets.last.receive(
+    pendingGuest
+        ? SnapshotMessage.fromJson({
+            ...snapshot.toJson(),
+            'public': {
+              ...snapshot.public.toJson(),
+              'players': [
+                for (final player in snapshot.public.players)
+                  {
+                    ...player.toJson(),
+                    if (player.playerId.value == 'p2')
+                      'profile': {
+                        ...player.profile.toJson(),
+                        'name': pendingRoomProfileName,
+                      },
+                  },
+              ],
+            },
+          })
+        : snapshot,
+  );
   await tester.pumpAndSettle();
   return (room: room, transport: transport);
 }
@@ -172,6 +195,65 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     await tester.pump();
   });
+  testWidgets('QR guest must save a name before changing tabs', (tester) async {
+    final fixture = await pumpLobby(tester, pendingGuest: true);
+    final input = find.byKey(const ValueKey('online-name'));
+    expect(tester.widget<TextField>(input).controller!.text, isEmpty);
+    expect(find.text(const AppStrings('de').get('roomNameRequired')), findsWidgets);
+    await tester.tap(find.widgetWithText(Tab, 'Gerichtssaal'));
+    await tester.pumpAndSettle();
+    expect(DefaultTabController.of(tester.element(input)).index, 0);
+    expect(find.text(const AppStrings('de').get('roomNameRequired')), findsWidgets);
+
+    await tester.enterText(input, 'Alex');
+    await tester.pump(const Duration(milliseconds: 400));
+    final edit = fixture.transport.sockets.last.sent.whereType<EditOwnProfileMessage>().single;
+    expect(edit.profile.name, 'Alex');
+    // Typing alone does not unlock the other tabs: the server must acknowledge.
+    await tester.tap(find.widgetWithText(Tab, 'Gerichtssaal'));
+    await tester.pumpAndSettle();
+    expect(DefaultTabController.of(tester.element(input)).index, 0);
+
+    final before = fixture.room.state.snapshot!;
+    fixture.transport.sockets.last.receive(
+      DeltaMessage.fromJson({
+        'type': 'delta',
+        'protocolVersion': 2,
+        'requestId': 'name-confirmed',
+        'roomId': before.roomId.value,
+        'you': before.you.value,
+        'baseRevision': before.revision,
+        'revision': before.revision + 1,
+        'publicChanges': {
+          'players': [
+            for (final player in before.public.players)
+              {
+                ...player.toJson(),
+                if (player.playerId == before.you)
+                  'profile': edit.profile.toJson(),
+              },
+          ],
+        },
+        'private': {},
+      }),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(RoomMe), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('host sees missing names and cannot start a game', (tester) async {
+    final fixture = await pumpLobby(tester, host: true, pendingGuest: true);
+    final message = const AppStrings('de').get('roomStartPendingNames', {
+      'count': 1,
+    });
+    expect(find.text(message), findsWidgets);
+    await tester.tap(find.widgetWithText(FilledButton, 'Verhandlung starten'));
+    await tester.pumpAndSettle();
+    expect(find.text(message), findsWidgets);
+    expect(fixture.transport.sockets.last.sent.whereType<StartGameMessage>(), isEmpty);
+  });
+
   testWidgets(
     'non-host sees live figures and can edit only its own profile in Me',
     (tester) async {
