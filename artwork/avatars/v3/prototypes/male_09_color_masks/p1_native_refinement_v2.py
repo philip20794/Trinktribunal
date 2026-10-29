@@ -88,13 +88,13 @@ def recolor_v2(rgb, masks, skin="original", hair="original", vest="original"):
                 V *= {"hair":.46,"brows":.56,"facial_hair":.67}[role]
             elif kind == "gray":
                 S *= .04
-                gain={"hair":1.17,"brows":1.13,"facial_hair":1.02}[role]
-                cap={"hair":192,"brows":160,"facial_hair":136}[role]
+                gain={"hair":1.17,"brows":1.08,"facial_hair":.82}[role]
+                cap={"hair":192,"brows":152,"facial_hair":112}[role]
                 V=np.minimum(cap,V*gain+{"hair":8,"brows":3,"facial_hair":0}[role])
             elif kind == "blond":
                 H[:]=17; S=np.clip(S*.53+35,0,255)
-                gain={"hair":1.33,"brows":1.16,"facial_hair":1.06}[role]
-                cap={"hair":213,"brows":165,"facial_hair":146}[role]
+                gain={"hair":1.33,"brows":1.12,"facial_hair":.95}[role]
+                cap={"hair":213,"brows":155,"facial_hair":126}[role]
                 V=np.minimum(cap,V*gain+4)
             elif kind == "copper":
                 H[:]=8; S=S*1.04+8
