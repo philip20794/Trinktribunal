@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dicebear_core/dicebear_core.dart';
+import 'package:dicebear_core/dicebear_core.dart' show Avatar, Style;
 
 import '../domain/avatar_config.dart';
 import '../l10n/app_strings.dart';
