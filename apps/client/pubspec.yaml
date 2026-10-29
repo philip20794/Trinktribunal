@@ -9,6 +9,8 @@ environment:
 
 dependencies:
   crypto: 3.0.8
+  dicebear_core: 10.7.0
+  flutter_svg: ^2.3.0
   characters: ^1.4.1
   cupertino_icons: ^2.0.0
   flutter:
@@ -45,6 +47,7 @@ flutter:
           weight: 700
   assets:
     - assets/avatars/manifest.json
+    - assets/avatars/dicebear/trinktribunal-adventurer-v1.json
     - assets/fonts/roboto_license.txt
     - assets/catalogs/manifest.json
     - assets/catalogs/questions/
