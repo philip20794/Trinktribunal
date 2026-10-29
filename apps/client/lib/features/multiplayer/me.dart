@@ -57,6 +57,7 @@ class _RoomMeState extends ConsumerState<RoomMe> {
                     config: editor.avatar,
                     size: 200,
                     label: editor.name,
+                    playerName: editor.name,
                   ),
                 ),
                 const SizedBox(height: 8),
