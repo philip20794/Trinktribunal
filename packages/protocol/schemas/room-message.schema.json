@@ -216,7 +216,7 @@
           "$ref": "#/$defs/hash"
         },
         "avatarVersion": {
-          "const": 2
+          "const": 3
         }
       }
     },
@@ -225,139 +225,247 @@
       "additionalProperties": false,
       "required": [
         "version",
+        "seed",
         "selections"
       ],
       "properties": {
         "version": {
-          "const": 2
+          "const": 3
+        },
+        "seed": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "maxLength": 64
         },
         "selections": {
           "type": "object",
           "additionalProperties": false,
           "required": [
-            "face",
-            "skin",
-            "eyes",
-            "brows",
-            "nose",
-            "mouth",
             "hair",
-            "hairColor",
-            "beard",
-            "top",
-            "topColor",
+            "eyes",
+            "eyebrows",
+            "mouth",
             "glasses",
-            "hat",
-            "extra"
+            "earrings",
+            "details",
+            "outfit",
+            "board",
+            "skinColor",
+            "hairColor",
+            "outfitColor"
           ],
           "properties": {
-            "face": {
+            "hair": {
               "enum": [
-                "round",
-                "square",
-                "long",
-                "heart"
-              ]
-            },
-            "skin": {
-              "enum": [
-                "light",
-                "medium",
-                "brown",
-                "dark",
-                "olive"
+                "long01",
+                "long02",
+                "long03",
+                "long04",
+                "long05",
+                "long06",
+                "long07",
+                "long08",
+                "long09",
+                "long10",
+                "long11",
+                "long12",
+                "long13",
+                "long14",
+                "long15",
+                "long16",
+                "long17",
+                "long18",
+                "long19",
+                "long20",
+                "long21",
+                "long22",
+                "long23",
+                "long24",
+                "long25",
+                "long26",
+                "short01",
+                "short02",
+                "short03",
+                "short04",
+                "short05",
+                "short06",
+                "short07",
+                "short08",
+                "short09",
+                "short10",
+                "short11",
+                "short12",
+                "short13",
+                "short14",
+                "short15",
+                "short16",
+                "short17",
+                "short18",
+                "short19"
               ]
             },
             "eyes": {
               "enum": [
-                "open",
-                "sleepy",
-                "wink"
+                "variant01",
+                "variant02",
+                "variant03",
+                "variant04",
+                "variant05",
+                "variant06",
+                "variant07",
+                "variant08",
+                "variant09",
+                "variant10",
+                "variant11",
+                "variant12",
+                "variant13",
+                "variant14",
+                "variant15",
+                "variant16",
+                "variant17",
+                "variant18",
+                "variant19",
+                "variant20",
+                "variant21",
+                "variant22",
+                "variant23",
+                "variant24",
+                "variant25",
+                "variant26"
               ]
             },
-            "brows": {
+            "eyebrows": {
               "enum": [
-                "calm",
-                "raised",
-                "stern"
-              ]
-            },
-            "nose": {
-              "enum": [
-                "round",
-                "long",
-                "button"
+                "variant01",
+                "variant02",
+                "variant03",
+                "variant04",
+                "variant05",
+                "variant06",
+                "variant07",
+                "variant08",
+                "variant09",
+                "variant10",
+                "variant11",
+                "variant12",
+                "variant13",
+                "variant14",
+                "variant15"
               ]
             },
             "mouth": {
               "enum": [
-                "smile",
-                "neutral",
-                "surprised",
-                "smirk"
-              ]
-            },
-            "hair": {
-              "enum": [
-                "short",
-                "curly",
-                "long",
-                "bald",
-                "ponytail"
-              ]
-            },
-            "hairColor": {
-              "enum": [
-                "brown",
-                "black",
-                "gold",
-                "gray",
-                "copper"
-              ]
-            },
-            "beard": {
-              "enum": [
-                "none",
-                "stubble",
-                "full",
-                "moustache"
-              ]
-            },
-            "top": {
-              "enum": [
-                "shirt",
-                "jacket",
-                "waistcoat"
-              ]
-            },
-            "topColor": {
-              "enum": [
-                "blue",
-                "red",
-                "green",
-                "brown",
-                "plum"
+                "variant01",
+                "variant02",
+                "variant03",
+                "variant04",
+                "variant05",
+                "variant06",
+                "variant07",
+                "variant08",
+                "variant09",
+                "variant10",
+                "variant11",
+                "variant12",
+                "variant13",
+                "variant14",
+                "variant15",
+                "variant16",
+                "variant17",
+                "variant18",
+                "variant19",
+                "variant20",
+                "variant21",
+                "variant22",
+                "variant23",
+                "variant24",
+                "variant25",
+                "variant26",
+                "variant27",
+                "variant28",
+                "variant29",
+                "variant30"
               ]
             },
             "glasses": {
               "enum": [
                 "none",
-                "round",
-                "rectangular"
+                "variant01",
+                "variant02",
+                "variant03",
+                "variant04",
+                "variant05"
               ]
             },
-            "hat": {
+            "earrings": {
               "enum": [
                 "none",
-                "cap",
-                "tricorn"
+                "variant01",
+                "variant02",
+                "variant03",
+                "variant04",
+                "variant05",
+                "variant06"
               ]
             },
-            "extra": {
+            "details": {
               "enum": [
                 "none",
-                "bowtie",
-                "badge"
+                "birthmark",
+                "blush",
+                "freckles",
+                "mustache"
+              ]
+            },
+            "outfit": {
+              "enum": [
+                "tee",
+                "hoodie",
+                "suit",
+                "vest",
+                "sport"
+              ]
+            },
+            "board": {
+              "enum": [
+                "classic",
+                "gilded"
+              ]
+            },
+            "skinColor": {
+              "enum": [
+                "#763900",
+                "#9e5622",
+                "#ecad80",
+                "#f2d3b1"
+              ]
+            },
+            "hairColor": {
+              "enum": [
+                "#0e0e0e",
+                "#3eac2c",
+                "#562306",
+                "#592454",
+                "#6a4e35",
+                "#796a45",
+                "#85c2c6",
+                "#ab2a18",
+                "#ac6511",
+                "#afafaf",
+                "#b9a05f",
+                "#cb6820",
+                "#dba3be",
+                "#e5d7a3"
+              ]
+            },
+            "outfitColor": {
+              "enum": [
+                "#87384f",
+                "#475e74",
+                "#405849",
+                "#a36a43",
+                "#6a537c",
+                "#363b43"
               ]
             }
           }
