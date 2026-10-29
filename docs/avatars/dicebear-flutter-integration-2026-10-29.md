@@ -72,3 +72,8 @@ Danach den Browser-/Android-Editor tatsächlich testen: 360×800, 320×568, 200 
 - Die bislang auswählbaren Ohrringe wurden im lokalen Style auch an die Kopfgeometrie angebunden, damit ihre Auswahl tatsächlich sichtbar wird.
 
 **Review noch erforderlich:** In Flutter die tatsächliche Darstellung des Kopfzuschnitts, der Optionsvorschauen und des HSV-Dialogs bei kleinen Bildschirmen prüfen, ebenso das lokale Speichern freier Farben und den Multiplayer-Austausch. Branch darf vor erfolgreichem `flutter pub get`, `dart format`, `flutter analyze`, `flutter test`, Node-/Server-Tests und aktualisiertem `pubspec.lock` nicht als fertig gebaut bezeichnet werden.
+
+
+## Integration nach neuem Nutzerauftrag, 29.10.2026
+
+Der Nutzer hat den Merge des Avatar-Branches ausdrücklich beauftragt. Der Stand bis 67e8586 ist mit den neueren UI-/Ein-Handy-Änderungen zusammengeführt. Der ältere Folgeauftrag oben ist durch diesen Integrationsstand ersetzt: Lockfile/DTOs, Format/Analyze und 601 Flutter-/163 Node-/447 Server-Tests grün, Web und Android-Debug frisch gebaut. Browserabnahme gemäß aktueller Nutzervorgabe übersprungen, später manuell testen. [Belege und verbleibendes Rechte-Gate](../qa/online-lobby-avatar-merge.md).

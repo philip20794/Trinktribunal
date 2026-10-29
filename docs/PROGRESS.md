@@ -2,7 +2,11 @@
 
 Stand: 29.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
-**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 160 Node-/589 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+**Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 163 Node-/601 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; unveränderte Serverruntime mit 446 Tests aus TT-067. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).
+
+## Online-Lobby und Avatar-Branch integriert, 29.10.2026
+
+**ABGESCHLOSSEN nach Unit-/Buildgates.** Direkte Raumerstellung ohne Profilformular, separate Spieleinstellungen und einklappbarer QR-/Code-/Link-Bereich mit schwebendem Pfeil. Kompakte Figuren mit schwebenden Drag-/Links-/Rechts-Aktionen. `feature/dicebear-avatar-editor` bis `67e8586` gemergt, bisherige Avatare durch lokale DiceBear-v3-Porträts ersetzt. Alte Profildaten migrieren; Protokoll-/Serveränderungen geprüft. 601 Flutter-/163 Node-/447 Server-Tests, Analyze/Format, 16 native Lobbyansichten und frische Web-/Debug-APK-/HTTP-/Offlinegates grün. [Beleg und Integrationskorrekturen](qa/online-lobby-avatar-merge.md).
 
 ## Ein Handy: feste Zahlen und manueller Abschluss, 29.10.2026
 
@@ -227,11 +231,12 @@ Am 26.10.2026 lokal durchgeführt:
 ## Übergabe zur Fortsetzung der aktiven Aufgabe
 
 ```text
-Aktueller Schwerpunkt: Ein-Handy-Spielablauf nach neuer Nutzervorgabe abgeschlossen. Beleg docs/qa/shared-phone-manual-rounds.md.
-589 Flutter-/160 Node-Tests, Analyze/Format grün. Neue Fragen erhalten Zahlen, Richter und Übergabefortschritt. Start und Fallabschluss führen direkt zur verdeckten ersten Zahl; weitere Personen per Übergabe, zuletzt zurück zum Richter und zur Fallakte.
-Ein-Handy-Screen ohne Sortierbank oder automatische Wertung. Bestehende Legacy-Controller-/Snapshot-Pfade bleiben kompatibel. Andere Modi unverändert; Trinkregelereignisse, Gruppenwechsel und Partieende bleiben an Rundengrenzen.
-UI-Inventar: 23 Abschnitte/37 Featuredateien/34 PNG-Motive/3 Quarantänen. Rechte: 20 Pakete/154 Dateien, sechs Runtime-Pakete extern ungeklärt. Keine neuen Assets, kein neuer Servercode.
-Spielregel- und Multiplayer-Harness-Korrekturen bleiben erhalten. Avatar-Arbeit auf separatem Nutzerbranch nicht integriert.
-TT-065 und TT-066 warten auf Rechte beziehungsweise echten produktionssignierten Codemagic-Artefaktbeleg; TT-069/070 bleiben davon abhängig. Kein Backenddeploy, keine zusätzlichen Signierschlüssel. Serverruntime unverändert (446 Tests aus TT-067).
+Aktueller Schwerpunkt: Online-Lobby und Avatar-v3-Integration abgeschlossen. Belege docs/qa/online-lobby-avatar-merge.md und online-lobby-avatar-builds.json.
+601 Flutter-/163 Node-/447 Server-Tests, Analyze/Format und frische Web-/Debug-APK-/HTTP-/Offlinegates grün. 16 native Lobbybilder mit echten Schriften; Browser/E2E weiterhin übersprungen.
+Direkte Raumerstellung nutzt Vorlage oder Standardprofil, Einstellungen auf separatem Screen. QR/Code/Link einklappbar ohne reservierte Pfeilzeile, kompakte Lobbyfiguren mit Drag-/Links-/Rechts-Aktionen. Serverfehler erhalten den Konfigurationsentwurf.
+Avatar-Branch bis 67e8586 integriert. Lokaler DiceBear-Renderer mit Varianten, freien Farben, Kopfporträts und Namensschild; v1/v2-Profile migrieren zu v3. Client und Worker müssen denselben neuen Avatarvertrag verwenden. Kein Backenddeploy durchgeführt.
+Ein-Handy-Ablauf, Spielregeln und Harness-Korrekturen erhalten. UI-Inventar: 23 Abschnitte/38 Featuredateien/34 PNG-Motive/3 Quarantänen. Rechte: 20 Pakete/156 Dateien, sieben Runtime-Pakete extern ungeklärt.
+Zwei unversionierte Pergament-PNGs sind separate Nutzerarbeit und bleiben unintegriert erhalten. Docs-Gate im isolierten Git-Prüfstand ausgeführt.
+TT-065 und TT-066 warten auf Rechte beziehungsweise echten produktionssignierten Codemagic-Artefaktbeleg; TT-069/070 bleiben davon abhängig. Keine zusätzlichen Signierschlüssel.
 Browser/E2E/Gerät: ÜBERSPRUNGEN – später manuell testen. Lokales Testskript neu starten, damit der Webserver den aktuellen Quellcode kompiliert.
 ```
