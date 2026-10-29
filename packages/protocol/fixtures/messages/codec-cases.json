@@ -98,12 +98,12 @@
     },
     {
       "name": "unknown-avatar-layer",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":2,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":3,\"seed\":\"fixture-default\",\"selections\":{\"hair\":\"short03\",\"eyes\":\"variant05\",\"eyebrows\":\"variant03\",\"mouth\":\"variant04\",\"glasses\":\"none\",\"earrings\":\"none\",\"details\":\"none\",\"outfit\":\"tee\",\"board\":\"classic\",\"skinColor\":\"#ecad80\",\"hairColor\":\"#6a4e35\",\"outfitColor\":\"#475e74\",\"badField\":\"evil\"}}},\"handshake\":{\"protocolVersion\":2,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":3}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":2,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":3,\"seed\":\"fixture-default\",\"selections\":{\"hair\":\"short03\",\"eyes\":\"variant05\",\"eyebrows\":\"variant03\",\"mouth\":\"variant04\",\"glasses\":\"none\",\"earrings\":\"none\",\"details\":\"none\",\"outfit\":\"tee\",\"board\":\"classic\",\"skinColor\":\"#ecad80\",\"hairColor\":\"#6a4e35\",\"outfitColor\":\"#475e74\",\"url\":\"https://invalid.test/a.svg\"}}},\"handshake\":{\"protocolVersion\":2,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":3}}",
       "code": "INVALID_MESSAGE"
     },
     {
       "name": "invalid-avatar-choice",
-      "wire": "{\"type\":\"join\",\"protocolVersion\":2,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":3,\"seed\":\"fixture-default\",\"selections\":{\"hair\":\"alien\",\"eyes\":\"variant05\",\"eyebrows\":\"variant03\",\"mouth\":\"variant04\",\"glasses\":\"none\",\"earrings\":\"none\",\"details\":\"none\",\"outfit\":\"tee\",\"board\":\"classic\",\"skinColor\":\"#ecad80\",\"hairColor\":\"#6a4e35\",\"outfitColor\":\"#475e74\"}}},\"handshake\":{\"protocolVersion\":2,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":3}}",
+      "wire": "{\"type\":\"join\",\"protocolVersion\":2,\"requestId\":\"request_1\",\"profile\":{\"name\":\"Anna\",\"avatar\":{\"version\":3,\"seed\":\"fixture-default\",\"selections\":{\"hair\":\"short03\",\"eyes\":\"variant05\",\"eyebrows\":\"variant03\",\"mouth\":\"variant04\",\"glasses\":\"none\",\"earrings\":\"none\",\"details\":\"none\",\"outfit\":\"tee\",\"board\":\"classic\",\"skinColor\":\"#ecad80\",\"hairColor\":\"#6a4e35\",\"outfitColor\":\"#475e74\",\"face\":\"triangle\"}}},\"handshake\":{\"protocolVersion\":2,\"catalogHash\":\"54603863c1abf279e33529f4bc7301b57643cace392f9942b7be14eabb5a3ab0\",\"avatarVersion\":3}}",
       "code": "INVALID_MESSAGE"
     },
     {
