@@ -26,6 +26,7 @@ class RoomTools extends ConsumerWidget {
         children: [
           if (code != null) RoomInvite(code: code),
           const SizedBox(height: 8),
+          RoomAllJudgesSwitch(snapshot: snapshot),
           ExpansionTile(
             key: const PageStorageKey('room-game-settings'),
             leading: const Icon(Icons.tune),

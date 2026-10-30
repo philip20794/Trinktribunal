@@ -1,8 +1,6 @@
 import '../support/action_text.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/room_controller.dart';
@@ -118,66 +116,40 @@ void main() {
   for (final language in ['de', 'en']) {
     for (final size in [const Size(320, 640), const Size(1440, 900)]) {
       testWidgets(
-        'inline QR opens, copies and closes repeatedly: $language, $size, 200 percent',
+        'inline QR shows only the share action: $language, $size, 200 percent',
         (tester) async {
           await tester.binding.setSurfaceSize(size);
           addTearDown(() => tester.binding.setSurfaceSize(null));
           final strings = AppStrings(language);
-          String? copied;
-          tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-            SystemChannels.platform,
-            (call) async {
-              if (call.method == 'Clipboard.setData') {
-                copied = (call.arguments as Map)['text'] as String;
-              }
-              if (call.method == 'Clipboard.hasStrings') {
-                return {'value': copied != null};
-              }
-              return null;
-            },
-          );
-          addTearDown(
-            () => tester.binding.defaultBinaryMessenger
-                .setMockMethodCallHandler(SystemChannels.platform, null),
-          );
-          final fixture = await pumpLobby(
+          await pumpLobby(
             tester,
             host: true,
             publicClientBase: Uri.parse('http://127.0.0.1:7357'),
             language: language,
             textScale: 2,
           );
-          final mouse = await tester.createGesture(
-            kind: PointerDeviceKind.mouse,
+          final invite = find.byType(RoomInvite);
+          expect(find.byType(QrImageView), findsOneWidget);
+          expect(
+            find.descendant(of: invite, matching: find.byType(SelectableText)),
+            findsNothing,
           );
-          await mouse.addPointer(location: const Offset(5, 5));
-          for (var attempt = 0; attempt < 2; attempt++) {
-            expect(find.byType(QrImageView), findsOneWidget);
-            final link =
-                'http://127.0.0.1:7357/join?room=${fixture.room.roomCode}';
-            expect(
-              tester.widget<SelectableText>(find.byType(SelectableText)).data,
-              link,
-            );
-            final copy = actionText(strings.get('roomCopyLink'));
-            await Scrollable.ensureVisible(tester.element(copy), alignment: .5);
-            await tester.pumpAndSettle();
-            await mouse.moveTo(tester.getCenter(copy));
-            await tester.tap(copy);
-            await tester.pumpAndSettle();
-            expect(copied, link);
-            expect(
-              find.byKey(const ValueKey('room-tools-close')),
-              findsNothing,
-            );
-            expect(
-              find.byKey(const ValueKey('room-tools-toggle')),
-              findsNothing,
-            );
-            expect(find.byType(RoomTools), findsOneWidget);
-            expect(tester.takeException(), isNull);
-          }
-          await mouse.removePointer();
+          expect(
+            find.descendant(
+              of: invite,
+              matching: actionText(strings.get('roomCopyLink')),
+            ),
+            findsNothing,
+          );
+          expect(
+            find.descendant(
+              of: invite,
+              matching: actionText(strings.get('roomShareLink')),
+            ),
+            findsOneWidget,
+          );
+          expect(find.byType(RoomTools), findsOneWidget);
+          expect(tester.takeException(), isNull);
           await tester.pumpWidget(const SizedBox());
           await tester.pump();
         },
