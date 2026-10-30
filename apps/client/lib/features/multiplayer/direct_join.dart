@@ -62,13 +62,15 @@ class _DirectJoinRoomScreenState extends ConsumerState<DirectJoinRoomScreen> {
           await controller.resume(existing.first);
           success = true;
         } else {
-          // The profile is deliberately incomplete until edited inside the room.
+          // Reuse the full local template; only new users need a name in-room.
           final local = (await ref.read(profileProvider.future)).profile;
           if (!mounted) return;
           success = await controller.join(
             widget.code,
             protocol.Profile.fromJson({
-              'name': pendingRoomProfileName,
+              'name': local != null && !needsRoomName(local.player.name)
+                  ? local.player.name
+                  : pendingRoomProfileName,
               'avatar':
                   (local?.avatar ?? AvatarConfig.random(SecureRandomSource()))
                       .toJson(),

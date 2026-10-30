@@ -23,7 +23,7 @@ Wrangler wurde per OAuth im bereits angemeldeten Konto autorisiert. Die Berechti
 
 Der bestehende Pages-Webclient ist unter **https://trinktribunal.pages.dev** erreichbar. `PUBLIC_CLIENT_BASE_URL` verwendet diese Origin; QR-Codes und Teilen-Links verweisen auf `/join?room=...`. Der Worker erlaubt diese eine Browser-Origin in `CLIENT_ORIGINS`. Native Android-Clients ohne Browser-Origin verwenden weiterhin dieselbe API und Token-Authentifizierung.
 
-Das bereits vorhandene Git-Pages-Projekt wird direkt mit Wrangler beliefert. Die pausierten automatischen Pages-Git-Builds bleiben pausiert. Der Webclient hat einen lokalen QR-Decoder als Fallback; Kamerabilder werden nicht hochgeladen. Kamerazugriff ist durch `Permissions-Policy: camera=(self)` auf die eigene Origin begrenzt. Die OAuth-Berechtigung `pages:write` wurde zur bestehenden lokalen Wrangler-Anmeldung hinzugefuegt; weiterhin keine Secrets im Repository.
+Das Pages-Projekt verwendet für die PWA jetzt wieder die bestehende GitHub-Anbindung: Produktionsbuilds folgen `main`; Preview-Builds bleiben aus. Android bleibt im getrennten Codemagic-Workflow, der API-Worker wird weiterhin separat veröffentlicht. Der Webclient hat einen lokalen QR-Decoder als Fallback; Kamerabilder werden nicht hochgeladen. Kamerazugriff ist durch `Permissions-Policy: camera=(self)` auf die eigene Origin begrenzt. Die OAuth-Berechtigung `pages:write` gehört zur bestehenden lokalen Wrangler-Anmeldung; keine Secrets im Repository.
 
 ## Wiederholbares Deployment
 
@@ -80,6 +80,12 @@ flutter test --no-pub --dart-define=TT_DEMO_SERVER=https://trinktribunal-api.phi
 Dieser Test erzeugt echte temporäre Räume und ist daher im normalen Testlauf ohne `TT_DEMO_SERVER` deaktiviert. Kein Installationstest auf einem physischen Android-Gerät wurde daraus abgeleitet.
 
 ## Pages aktualisieren
+
+Regulär genügt ein Push auf `main`: Cloudflare führt `bash scripts/build-pages.sh` vom Repository-Root aus und veröffentlicht bei Exitcode 0 `apps/client/build/web`. Der Befehl installiert bei Bedarf Flutter 3.47.7 für Linux x64 mit geprüftem SHA-256, fortsetzbarem Download und bis zu 15 Minuten Downloadzeit pro Versuch. Node ist in den Pages-Produktionsvariablen auf `24.20.0` gesetzt; `SKIP_DEPENDENCY_INSTALL=true` überlässt die Paketinstallation dem versionierten Script.
+
+Vor dem Web-Build laufen Dokument-/Katalog-/Node-Prüfungen, Flutter Format/Analyze/Tests, Server-Prüfungen und die Dart-/TypeScript-Parität. Der Build verwendet die öffentlichen Origins aus `docs/config/production.json`, JS/CanvasKit mit CSP und lokalen Webressourcen. Anschließend folgen Web-Härtung, Offline-Precache und der Releasecheck. Ein Fehler beendet den Build vor dem Upload; die bisherige erfolgreiche PWA bleibt online. Es werden keine Worker-Migrationen oder API-Deployments ausgelöst.
+
+Die bisherige manuelle Alternative bleibt für gezielte Wiederholungen verfügbar:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-web-release.ps1 -ConfigPath docs/config/production.json -WorkerConfigPath apps/server/wrangler.production.jsonc

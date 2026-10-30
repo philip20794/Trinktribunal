@@ -55,6 +55,34 @@ Widget host(
 );
 
 void main() {
+  testWidgets('QR join preserves both the saved name and avatar', (
+    tester,
+  ) async {
+    final local = MemoryStringStore();
+    final profile = ProfileController(ProfileStore(local));
+    final avatar = AvatarConfig.feminine();
+    await profile.save(name: 'Gespeicherte Alex', avatar: avatar);
+    final transport = FakeRoomTransport();
+    final store = RoomCredentialStore(MemoryCredentialBackend());
+    await tester.pumpWidget(
+      host(
+        const SizedBox(),
+        transport,
+        store,
+        initialRoute: '/join?room=ABCD2345',
+        profileStorage: local,
+      ),
+    );
+    for (var i = 0; i < 20 && transport.connections == 0; i++) {
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+    expect(transport.joins, 1);
+    expect(transport.lastProfile!.name, 'Gespeicherte Alex');
+    expect(transport.lastProfile!.avatar.selections, avatar.selections);
+    expect(find.byKey(const ValueKey('room-code')), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
+  });
   testWidgets(
     'create uses the local profile template and storage retry never creates a second room',
     (tester) async {

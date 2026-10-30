@@ -1,5 +1,9 @@
 # Fortschritt und Übergabe
 
+## PWA-Automatisierung und QR-Profilname, 30.10.2026
+
+QR-Beitritt übernimmt jetzt gespeicherten Namen und Avatar gemeinsam; neue Nutzer ohne Profil behalten die Namenseingabe. Ein versionierter Linux-Build für Cloudflare Pages prüft Client, Server und Webpaket vor der Veröffentlichung auf `main`. Android bleibt bei Codemagic; der API-Worker wird separat veröffentlicht. [Ablauf](CLOUDFLARE_DEPLOYMENT.md) · [Prüfbelege](qa/pwa-automation-and-qr-profile.md).
+
 ## Ungenutzte Bilddateien entfernt, 30.10.2026
 
 34 Bilder mit zusammen 7,18 MiB entfernt: alte Hintergründe, Dekorationen, Papierflächen, Regel-SVGs und eine überholte Avatar-Testgrafik. Verweise, Pubspec und Inventare bereinigt; aktive Grafiken und dokumentierte Quellen geprüft. Analyze/Format, 38 gezielte Flutter- und neun Node-Prüfungen erfolgreich. [Details](qa/asset-cleanup.md). Noch nicht gepusht.
