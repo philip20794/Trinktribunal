@@ -28,17 +28,28 @@ class RoomAllJudgesSwitch extends ConsumerWidget {
       listenable: settings,
       builder: (context, _) {
         final config = settings.config ?? snapshot.public.config;
-        return SwitchListTile(
+        return Padding(
           key: const ValueKey('room-all-judges'),
-          contentPadding: EdgeInsets.zero,
-          title: const SettingLabel(
-            title: TText('onlineAllJudges'),
-            helpKey: 'gameRulesAllJudgesBody',
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Row(
+            children: [
+              const Expanded(
+                child: SettingLabel(
+                  title: TText('onlineAllJudges'),
+                  helpKey: 'gameRulesAllJudgesBody',
+                ),
+              ),
+              Semantics(
+                label: context.tr('onlineAllJudges'),
+                child: Switch(
+                  value: config.allJudges,
+                  onChanged: settings.editable
+                      ? (value) => settings.change('allJudges', value)
+                      : null,
+                ),
+              ),
+            ],
           ),
-          value: config.allJudges,
-          onChanged: settings.editable
-              ? (value) => settings.change('allJudges', value)
-              : null,
         );
       },
     );
