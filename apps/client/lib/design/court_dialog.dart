@@ -33,7 +33,7 @@ class CourtDialog extends StatelessWidget {
       'roomForget' ||
       'roomClose' => ('dialogDelete', Icons.delete_outline_rounded),
       'roomLeave' => ('dialogLeave', Icons.logout_rounded),
-      'roomBackOnly' => ('dialogHome', Icons.home_outlined),
+      'roomBackOnly' => ('dialogBackOnly', Icons.arrow_back_rounded),
       'replaceHostedRoomConfirm' => (
         'dialogReplace',
         Icons.restart_alt_rounded,
@@ -57,19 +57,24 @@ class CourtDialog extends StatelessWidget {
         : original is Text
         ? original.data ?? context.tr(short)
         : context.tr(short);
-    final child = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ExcludeSemantics(
-          child: Icon(resume ? Icons.play_arrow_rounded : icon, size: 19),
-        ),
-        const SizedBox(height: 3),
-        Text(
-          context.tr(short),
-          semanticsLabel: fullLabel,
-          textAlign: TextAlign.center,
-        ),
-      ],
+    final child = FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ExcludeSemantics(
+            child: Icon(resume ? Icons.play_arrow_rounded : icon, size: 19),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            context.tr(short),
+            semanticsLabel: fullLabel,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            softWrap: false,
+          ),
+        ],
+      ),
     );
     if (action is FilledButton) {
       return FilledButton(
@@ -224,13 +229,20 @@ class CourtDialog extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: width * .23,
-                  right: width * .17,
-                  child: IconButton(
+                  top: width * .19,
+                  right: width * .20,
+                  child: IconButton.outlined(
                     key: const ValueKey('court-dialog-close'),
                     tooltip: MaterialLocalizations.of(context)
                         .closeButtonTooltip,
                     onPressed: () => Navigator.of(context).pop(),
+                    style: IconButton.styleFrom(
+                      foregroundColor: paperInk,
+                      side: const BorderSide(color: Color(0xFF93642F)),
+                      backgroundColor: CourtSceneTokens.cream.withValues(
+                        alpha: .6,
+                      ),
+                    ),
                     icon: const Icon(Icons.close_rounded),
                   ),
                 ),

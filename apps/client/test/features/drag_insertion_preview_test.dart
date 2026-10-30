@@ -136,8 +136,8 @@ void main() {
         await tester.pump(const Duration(milliseconds: 120));
         expect(commits, 0);
         expect(order, ids);
-        await reviewImage(tester, 'ghost-insertion-$kind');
         expect(ghosts, findsOneWidget);
+        expect(find.byKey(const ValueKey('drag-origin-ghost')), findsOneWidget);
         expect(
           tester.widget<DragPreviewSlide>(ghosts).offset,
           isNot(Offset.zero),
@@ -149,6 +149,25 @@ void main() {
               .length,
           greaterThanOrEqualTo(3),
         );
+        final neighbour = find
+            .byWidgetPredicate(
+              (widget) =>
+                  widget is DragPreviewSlide &&
+                  !widget.ghost &&
+                  widget.offset != Offset.zero,
+            )
+            .first;
+        final slide = tester.widget<DragPreviewSlide>(neighbour);
+        final transform = tester.widget<Transform>(
+          find
+              .descendant(of: neighbour, matching: find.byType(Transform))
+              .first,
+        );
+        final translation = transform.transform.getTranslation();
+        final travelled = Offset(translation.x, translation.y).distance;
+        expect(travelled, greaterThan(0));
+        expect(travelled, lessThan(slide.offset.distance));
+        await reviewImage(tester, 'ghost-insertion-$kind');
         for (final avatar in tester.widgetList<AvatarView>(
           find.byType(AvatarView),
         )) {

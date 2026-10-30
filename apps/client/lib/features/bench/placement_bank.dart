@@ -479,6 +479,7 @@ class _PlacementBankState extends State<PlacementBank> {
         (target ~/ columns - index ~/ columns) * strideY,
       ),
       ghost: ghost || id == _dragged,
+      originGhost: ghost ? null : _portrait(id, size),
       child: ghost
           ? IgnorePointer(child: _portrait(id, size))
           : _person(id, size),

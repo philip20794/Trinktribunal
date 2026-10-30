@@ -1,5 +1,13 @@
 # Fortschritt und Übergabe
 
+## Kompakte responsive Fallkartenränder, 30.10.2026
+
+Seitlicher und unterer Innenabstand der Fallkarte reduziert. Die höhenabhängige Inhaltsverkleinerung kompensiert jetzt die Breite, damit kurze Displays keine zusätzlichen Seitenränder erhalten. Inhalt unten ausgerichtet; der illustrierte Papierrand bleibt frei. Acht Prüfungen für 320–430 Pixel breite Handyansichten, unterschiedliche Kartenhöhen und normale/doppelte Schriftgröße erfolgreich; native Renderbilder geprüft. Änderungen lokal.
+
+## Dialogaktionen und sichtbares Aufrutschen, 30.10.2026
+
+Popup-X nach oben und links versetzt und umrandet; Aktionsicon und Text stehen in einer Zeile und passen sich bei Platzmangel an. Der Raum-Schließen-Dialog verwendet Pfeil und „Nur zurück“, die Fortsetzen-Erklärung ist gekürzt. Beim Umsortieren bleiben nur Ausgangs- und Zielvorschau des gezogenen Spielers transparent; Nachbarn rutschen vollständig sichtbar über 360 ms. Gezielte Tests prüfen Zwischenpositionen während der Animation, unveränderte Reihenfolge bis zum Loslassen, Rücknahme und einmalige Übernahme. Native Renderbilder für Dialog und drei Rastervarianten geprüft; Analyze ohne Befund. Änderungen lokal.
+
 ## Sortiervorschau und kompaktere Dialoge, 30.10.2026
 
 Lokale Avatar-Raster, Spielbank und Online-Sitzplätze zeigen beim Ziehen eine animierte Einfügevorschau; erst Loslassen speichert die Reihenfolge. Höhenlinienwand in Spielansichten entfernt, Online-Haltebutton nutzt die volle Breite. Dialoge haben mehr Innenabstand, kurze Aktionen mit Icons und ausschließlich ein X zum Abbrechen. Fallkarten reservieren mehr Platz unter der Zahlenbereich-Box und verkleinern den Inhalt bei Bedarf. 692 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen; neun gezielte Tests mit nativen Renderbildern einschließlich zweier zusätzlicher Padding-Prüfungen erfolgreich. Änderungen lokal, noch nicht gepusht.

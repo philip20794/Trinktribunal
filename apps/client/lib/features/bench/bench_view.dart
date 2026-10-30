@@ -298,6 +298,12 @@ class _BenchViewState extends State<BenchView> {
           key: ValueKey(('bench-preview', id, _previewEpoch)),
           offset: _previewOffsets[id] ?? Offset.zero,
           ghost: _dragged == id,
+          originGhost: AvatarView(
+            config: profile.avatar,
+            size: widget.compactControls ? 64 : 76,
+            playerName: profile.player.name,
+            showBackdrop: false,
+          ),
           child: Focus(
             focusNode: editable
                 ? _focus.putIfAbsent(

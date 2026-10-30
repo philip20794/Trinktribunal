@@ -49,9 +49,9 @@ void main() {
       await tester.tap(find.text('Popup'));
       await tester.pumpAndSettle();
       expect(find.text(const AppStrings('de').get('cancel')), findsNothing);
-      expect(find.text('Home'), findsOneWidget);
+      expect(find.text('Nur zurück'), findsOneWidget);
       expect(find.text('Löschen'), findsOneWidget);
-      expect(find.byIcon(Icons.home_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
       expect(find.byIcon(Icons.delete_outline_rounded), findsOneWidget);
       final destructive = tester.widget<Text>(find.text('Löschen'));
       expect(
@@ -64,6 +64,20 @@ void main() {
       );
       expect(paper.right - close.right, greaterThan(50));
       expect(close.top - paper.top, greaterThan(60));
+      expect(close.top - paper.top, lessThan(paper.width * .21));
+      final closeButton = tester.widget<IconButton>(
+        find.byKey(const ValueKey('court-dialog-close')),
+      );
+      expect(closeButton.style!.side!.resolve({}), isNotNull);
+      for (final (label, icon) in [
+        ('Nur zurück', Icons.arrow_back_rounded),
+        ('Löschen', Icons.delete_outline_rounded),
+      ]) {
+        expect(
+          tester.getCenter(find.text(label)).dy,
+          closeTo(tester.getCenter(find.byIcon(icon)).dy, 1),
+        );
+      }
       for (var frame = 0; frame < 3; frame++) {
         await tester.runAsync(
           () => Future<void>.delayed(const Duration(milliseconds: 50)),

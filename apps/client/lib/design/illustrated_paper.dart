@@ -330,7 +330,7 @@ class IllustratedQuestion extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth,
-              pad = width * .15,
+              pad = width * .085 + (width * .02).clamp(6.0, 10.0),
               inner = width - pad * 2;
           final scaler = MediaQuery.textScalerOf(context),
               direction = Directionality.of(context);
@@ -392,9 +392,8 @@ class IllustratedQuestion extends StatelessWidget {
             ).height,
           );
           final top = width * .33;
-          // Leave clear paper below the range box, even in short viewports.
-          // FittedBox scales the content down before sacrificing this inset.
-          final bottom = width * .22 + 12;
+          // Account for the illustrated lower edge, then leave a small inset.
+          final bottom = width * .12 + (width * .025).clamp(8.0, 12.0);
           final naturalHeight = math.max(
             width * 1.5,
             top + headerHeight + 26 + bodyHeight + 16 + scaleHeight + bottom,
@@ -413,69 +412,82 @@ class IllustratedQuestion extends StatelessWidget {
                 height: height,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(pad, top, pad, bottom),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                      width: inner,
-                      height: contentHeight,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: headerHeight,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    label.toUpperCase(),
-                                    style: paperTextStyle(
-                                      14,
-                                      weight: FontWeight.w700,
+                  child: LayoutBuilder(
+                    builder: (context, area) {
+                      final scale = math.min(
+                        1.0,
+                        area.maxHeight / contentHeight,
+                      );
+                      return FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          // Compensate for height-driven scaling so short screens
+                          // keep the same side margins instead of narrowing text.
+                          width: inner / math.max(.01, scale),
+                          height: contentHeight,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: headerHeight,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        label.toUpperCase(),
+                                        style: paperTextStyle(
+                                          14,
+                                          weight: FontWeight.w700,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: viewport == null ? 18 : 12,
-                            child: const PaperDivider(),
-                          ),
-                          SizedBox(height: viewport == null ? 8 : 4),
-                          FittedPaperText(text, height: bodyHeight),
-                          SizedBox(height: viewport == null ? 16 : 10),
-                          Container(
-                            key: const ValueKey('question-range-box'),
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: const Color(0x2DB18548),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: const Color(0x668D6C43),
                               ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  context.tr('questionRange', {'max': maximum}),
-                                  style: paperTextStyle(
-                                    14,
-                                    weight: FontWeight.w700,
+                              SizedBox(
+                                height: viewport == null ? 18 : 12,
+                                child: const PaperDivider(),
+                              ),
+                              SizedBox(height: viewport == null ? 8 : 4),
+                              FittedPaperText(text, height: bodyHeight),
+                              SizedBox(height: viewport == null ? 16 : 10),
+                              Container(
+                                key: const ValueKey('question-range-box'),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: const Color(0x2DB18548),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: const Color(0x668D6C43),
                                   ),
                                 ),
-                                const SizedBox(height: 8),
-                                _endpoint('1', low, lowHeight),
-                                const SizedBox(height: 8),
-                                _endpoint('$maximum', high, highHeight),
-                              ],
-                            ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text(
+                                      context.tr('questionRange', {
+                                        'max': maximum,
+                                      }),
+                                      style: paperTextStyle(
+                                        14,
+                                        weight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    _endpoint('1', low, lowHeight),
+                                    const SizedBox(height: 8),
+                                    _endpoint('$maximum', high, highHeight),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

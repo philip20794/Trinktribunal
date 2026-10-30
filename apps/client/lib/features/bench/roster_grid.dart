@@ -185,6 +185,7 @@ class _RosterGridState extends State<RosterGrid> {
                             strideY,
                       ),
                       ghost: _dragged == member.player.id,
+                      originGhost: portrait(),
                       child: LongPressDraggable<PlayerId>(
                         key: ValueKey('roster-drag-${member.player.id.value}'),
                         delay: const Duration(milliseconds: 180),
