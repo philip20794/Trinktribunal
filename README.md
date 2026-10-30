@@ -10,13 +10,13 @@
 4. **Jede falsch platzierte Person zählt als ein Fehler.** Der Richter trinkt **einen Schluck pro Fehler**. Jeder falsch einsortierte Spieler trinkt **genauso viele Schlucke wie der Richter**.
 5. In der nächsten Runde übernimmt ein anderer Spieler die Richterrolle.
 
-Eine Partie umfasst standardmäßig **50 Fragen/Aussagen** und **bis zu 7 zusätzliche Trinkregel-Ereignisse**, die zufällig möglichst gleichmäßig zwischen den Fragen liegen und bis zum Partieende gelten. Spieldauer, Regelanzahl und Schwierigkeit (Zahlenbereich standardmäßig bis zum aufgerundeten 1,5-Fachen der Spielerzahl) sind vor dem Start anpassbar. **Karten und Trinkregeln, die innerhalb der letzten sechs Stunden schon vorkamen, werden möglichst vermieden.** Sind alle zulässigen Inhalte kürzlich gezogen worden, haben die am seltensten verwendeten den Vorrang; innerhalb derselben Partie gibt es keine doppelten Fragen oder Regeln. Die App merkt sich dafür einen internen Zähler mit 6-Stunden-Verlauf je Inhalt.
+Eine Partie umfasst standardmäßig **50 Fragen/Aussagen** und **bis zu 7 zusätzliche Trinkregel-Ereignisse**, die zufällig möglichst gleichmäßig zwischen den Fragen liegen und bis zum Partieende gelten. Spieldauer, Regelanzahl und Schwierigkeit (Zahlenbereich standardmäßig bis zum aufgerundeten 2-Fachen der Spielerzahl) sind vor dem Start anpassbar. **Karten und Trinkregeln, die innerhalb der letzten sechs Stunden schon vorkamen, werden möglichst vermieden.** Sind alle zulässigen Inhalte kürzlich gezogen worden, haben die am seltensten verwendeten den Vorrang; innerhalb derselben Partie gibt es keine doppelten Fragen oder Regeln. Die App merkt sich dafür einen internen Zähler mit 6-Stunden-Verlauf je Inhalt.
 
 ## Spielvarianten
 
 ### 1. Ein Handy + Zahlenkarten
 
-Der Richter nutzt die App, um die Frage vorzulesen. Die übrigen Spieler ziehen je eine verdeckte Zahlenkarte aus einem gemischten Stapel. Der Zahlenbereich richtet sich nach Spieleranzahl und Schwierigkeit (standardmäßig **1 bis X**, mit **X = ⌈Spielerzahl × 1,5⌉**).
+Der Richter nutzt die App, um die Frage vorzulesen. Die übrigen Spieler ziehen je eine verdeckte Zahlenkarte aus einem gemischten Stapel. Der Zahlenbereich richtet sich nach Spieleranzahl und Schwierigkeit (standardmäßig **1 bis X**, mit **X = ⌈Spielerzahl × 2⌉**).
 
 Nach den Antworten nennt der Richter die Reihenfolge, beginnend mit der vermeintlich kleinsten Zahl. Die aufgerufenen Spieler decken ihre Karten nacheinander auf. So werden Fehler direkt sichtbar.
 

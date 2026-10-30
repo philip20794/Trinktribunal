@@ -45,7 +45,7 @@ void main() {
     );
     expect(config.targetCases, 50);
     expect(config.requestedRuleEvents, 7);
-    expect(config.factorTenths, 15);
+    expect(config.factorTenths, 20);
     expect(config.maxSecretNumber, expected['maxSecretNumber']);
     expect(config.numberRecipients, expected['numberRecipients']);
     expect(config.scheduledRuleEventCount, expected['scheduledRuleEventCount']);
@@ -312,8 +312,8 @@ void main() {
     final imported = GameConfig.fromJson(dto, capacity: capacity);
     expect(imported.toJson(), jsonDecode(jsonEncode(dto)));
     dto['factorTenths'] = 30;
-    expect(imported.factorTenths, 15);
-    expect(config.factorTenths, 15);
+    expect(imported.factorTenths, 20);
+    expect(config.factorTenths, 20);
     // Runtime mutation must also fail, even when static typing is bypassed.
     expect(
       () => (config as dynamic).factorTenths = 30,

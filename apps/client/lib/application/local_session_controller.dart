@@ -60,7 +60,7 @@ final class LocalSessionController {
     required int playerCount,
     int targetCases = 50,
     int requestedRuleEvents = 7,
-    int factorTenths = 15,
+    int factorTenths = 20,
   }) => GameConfig(
     mode: GameMode.physicalCards,
     playerCount: playerCount,

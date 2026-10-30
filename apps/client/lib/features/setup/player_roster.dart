@@ -67,7 +67,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
   final _name = TextEditingController();
   final _nameFocus = FocusNode();
   bool _busy = false;
-  int _cases = 50, _rules = 7, _factor = 15;
+  int _cases = 50, _rules = 7, _factor = 20;
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _undo;
   @override
   void dispose() {

@@ -23,7 +23,7 @@ final class GameConfig {
     required CatalogCapacity capacity,
     int targetCases = 50,
     int requestedRuleEvents = 7,
-    int factorTenths = 15,
+    int factorTenths = 20,
     bool allJudges = false,
     String contentLanguage = 'de',
   }) {

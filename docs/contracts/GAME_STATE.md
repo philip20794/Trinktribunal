@@ -19,8 +19,8 @@ Stand: Grundvertrag 26.10.2026, D-19-Ergänzung 28.10.2026 · **D-19 spezifizier
 | `playerCount` | 3–20 **wirksame** Spieler einschließlich Richter/Vorleser; 21. Join ablehnen |
 | `targetCases` F | 1–431 in Kartenmodus, 1–491 in benannten Modi; zusätzlich nach tatsächlichem gültigem Katalog begrenzen |
 | `requestedRuleEvents` R | 0–22/25 je Modus; auf höchstens F−1 Slots begrenzen; bei Inkompatibilität tatsächlich weniger aktivieren |
-| `factorTenths` | Integer 10–30 (Schritt 1), Vorgabe 15, **niemals** Gleitkommafaktor als maßgeblicher Zustand |
-| `maxSecretNumber` X | `(N * factorTenths + 9) ~/ 10`; N=8/Faktor 15 → X=12, N=20/Faktor 10/15/30 → 20/30/60 |
+| `factorTenths` | Integer 10–30 (Schritt 1), Vorgabe 20, **niemals** Gleitkommafaktor als maßgeblicher Zustand |
+| `maxSecretNumber` X | `(N * factorTenths + 9) ~/ 10`; N=8/Faktor 20 → X=16, N=20/Faktor 10/20/30 → 20/40/60 |
 | `secretRecipients` | normal: alle wirksamen Spieler **außer** Richter (N−1); alle Richter: alle N; physische Karten werden außerhalb der App verteilt |
 | `playerName` | nach Trim 1–24 Unicode-Graphem-Cluster; gleiche Anzeigenamen erlaubt, stabile `playerId` unterscheidet |
 | `uiLanguage` vs. `contentLanguage` | Gerätesprache individuell; Multiplayer-Inhaltssprache vom Host bei Partiestart eingefroren |

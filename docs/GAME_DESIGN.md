@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | **Spieldauer** | **50 Fälle** | Anzahl der Fragen/Aussagen bis zum Partierende; per Schieberegler anpassbar. |
 | **Trinkregeln** | **7** | Anzahl zusätzlich eingestreuter Regelereignisse pro Partie; per Schieberegler anpassbar. |
-| **Schwierigkeit** | **1,5 × Spielerzahl** | Zahlenbereich **1 bis X** mit `X = ceil(Spielerzahl × Faktor)`; Faktor per Schieberegler anpassbar. |
+| **Schwierigkeit** | **2 × Spielerzahl** | Zahlenbereich **1 bis X** mit `X = ceil(Spielerzahl × Faktor)`; Faktor per Schieberegler anpassbar. |
 
 **Entscheidung D-02 (26.10.2026):** Pro Partie bzw. Raum sind **3–20 aktive Spieler** erlaubt. Die Zahl regulärer Fälle beträgt **1 bis zur Zahl der im Modus geeigneten Fragen** (derzeit 491 mit Spielernamen, 431 im Kartenmodus). Die Anzahl zusätzlicher Regelereignisse ist **0 bis zur Zahl geeigneter Trinkregeln** (25 mit Spielernamen, 22 im Kartenmodus) und zusätzlich auf höchstens **F−1** Zwischenräume begrenzt. Faktor **1,0–3,0 in 0,1-Schritten**; Standardfaktor 1,5. Spielernamen umfassen nach Trim **1–24 sichtbare Unicode-Zeichen** (Graphem-Cluster); gleiche Namen sind erlaubt, wenn Spieler durch stabile IDs und einen sichtbar unterscheidbaren Avatar/Kürzel auseinandergehalten werden. Unter drei wirksamen Spielern wird pausiert; ein 21. Spieler darf nicht beitreten. Weitere Details und Tests: [D-02](decisions/D-02-config-bounds.md).
 
