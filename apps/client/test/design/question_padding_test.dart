@@ -52,7 +52,7 @@ void main() {
           );
           expect(
             paper.bottom - box.bottom,
-            inInclusiveRange(size.width * .12 + 8, size.width * .12 + 24),
+            closeTo(size.width * .12 + (size.width * .025).clamp(8.0, 12.0), 1),
           );
           expect(box.left - paper.left, inInclusiveRange(30, 48));
           expect(paper.right - box.right, closeTo(box.left - paper.left, 1));

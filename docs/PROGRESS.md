@@ -1,5 +1,9 @@
 # Fortschritt und Übergabe
 
+## CI-Korrektur der Fallkartenränder, 30.10.2026
+
+Cloudflare-Build zu `a0705d6` scheiterte an drei Padding-Prüfungen mit doppelter Schriftgröße. Die native Bildprüfung verwendete echte Schriften, die CI-Prüfung dagegen Flutter-Testschriften; unterschiedlich verteilte Resthöhe vergrößerte den gemessenen unteren Abstand. Inhalt explizit unten ausgerichtet, Prüfung auf den tatsächlichen adaptiven Innenabstand mit einem Pixel Rundungstoleranz präzisiert. Beide Schriftvarianten werden lokal erneut geprüft.
+
 ## Kompakte responsive Fallkartenränder, 30.10.2026
 
 Seitlicher und unterer Innenabstand der Fallkarte reduziert. Die höhenabhängige Inhaltsverkleinerung kompensiert jetzt die Breite, damit kurze Displays keine zusätzlichen Seitenränder erhalten. Inhalt unten ausgerichtet; der illustrierte Papierrand bleibt frei. Acht Prüfungen für 320–430 Pixel breite Handyansichten, unterschiedliche Kartenhöhen und normale/doppelte Schriftgröße erfolgreich; native Renderbilder geprüft. Änderungen lokal.

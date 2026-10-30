@@ -427,6 +427,7 @@ class IllustratedQuestion extends StatelessWidget {
                           width: inner / math.max(.01, scale),
                           height: contentHeight,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               SizedBox(
                                 height: headerHeight,
