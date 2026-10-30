@@ -1,5 +1,15 @@
 # Fortschritt und Übergabe
 
+## Sofortige Hover-Erkennung neben der Spielerleiste, 30.10.2026
+
+Regression reproduziert: Die rechte Rückgabefläche war zu Beginn der Schrumpfanimation noch 56 statt 16 Pixel breit; zusätzlich öffnete ein unsichtbarer 28-Pixel-Rand die Leiste vorzeitig. Logische Trefferfläche jetzt sofort 16 Pixel, während die Darstellung weiter weich schrumpft. Öffnen am tatsächlichen schmalen Rand, Schließen mit nur vier Pixeln Hysterese außerhalb der aufgeklappten Leiste. Hover wird mit aktueller Fingerposition und nach tatsächlichem Auto-Scroll neu berechnet. Regression prüft Ausweichen während der Leistenanimation, Randöffnung, Rückkehr zur Sortierung und Abbruch ohne gespeicherte Änderung. 22 gezielte Flutter-Tests erfolgreich; Änderungen lokal.
+
+## Mehrreihige Vorschau und zusammenhängende Avatare, 30.10.2026
+
+Seitliches Ausweichen auf die aktive Einfügereihe begrenzt; Zeilengrenzen werden als echte Einfügegrenzen erkannt. Die Spielbank akzeptiert Drops auch in den Bändern zwischen Reihen. Erst nach Loslassen gleiten betroffene Figuren auf ihre vollständigen Zielplätze, einschließlich sauberer Reihenwechsel. Individuelle Sitzplatzflächen und Rahmen entfernt. Gemeinsame `ReorderAvatarUnit` befestigt Nummer und vorhandenes Menü am Avatar; Quelle, angehobene Drag-Vorschau und Landung verwenden dieselbe visuelle Einheit. Profilgrafik und Namensschild unverändert. Tests messen stillstehende andere Reihen, animierte Reihenwechsel, Abstände der Badges während des Ziehens, fehlende Sitzplatzumrandung sowie Menüfunktion nach dem Umsortieren. Änderungen lokal.
+
+Prüfung: 717 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen; neun zusätzliche Tests mit nativen Renderbildern erfolgreich. Analyze/Format, Dokumentations- und UI-Inventarprüfung ohne Befund. Rahmenlose lokale und Online-Ansichten visuell geprüft; keine Browser-/Geräteabnahme.
+
 ## Beidseitige halbe Einfügelücke, 30.10.2026
 
 Drag-Vorschau von endgültiger Platzierung getrennt: Beide Seiten der Einfügegrenze weichen während des Ziehens um jeweils ein Viertel der Avatarbreite aus; benachbarte Figuren derselben Zeile gleiten mit. Erst Loslassen öffnet die vollständige Position über 240 ms, anschließend landet der angehobene Avatar in weiteren 240 ms. Ease-in-out für beide Phasen, Speicherung weiterhin einmal nach gültigem Drop; Abbruch und konkurrierende Serveränderungen bleiben geschützt. Stabile Hit-Flächen decken nun auch die schmalen Spaltenzwischenräume ab. Die erste Drag-Bewegung wird aus tatsächlichem Pointer-Down plus Deltas rekonstruiert, da Flutter beim anfänglichen MultiDrag-Ereignis eine ursprüngliche globale Position mit bereits aufgelaufenem Delta liefern kann. Gezielte Tests messen tatsächliche Zwischenpositionen vor Loslassen, 50-%-Lücke, beide Zeilenrichtungen, Drop direkt zwischen Karten, kontinuierliches vollständiges Öffnen und unveränderte Synchronisierung. Änderungen lokal.

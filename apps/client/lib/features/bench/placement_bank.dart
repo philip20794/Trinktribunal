@@ -39,7 +39,7 @@ class _PlacementBankState extends State<PlacementBank> {
   final _seatsScroll = ScrollController(), _poolScroll = ScrollController();
   final _surfaceKey = GlobalKey(), _gridKey = GlobalKey();
   PlayerId? _selected, _dragged;
-  int? _hoverIndex;
+  int? _hoverIndex, _hoverCell, _previewCell;
   int _previewEpoch = 0;
   bool _settling = false;
   final _targets = <int, GlobalKey>{};
@@ -48,16 +48,33 @@ class _PlacementBankState extends State<PlacementBank> {
       ? placePlayer(widget.slots, _dragged!, _hoverIndex!)
       : widget.slots;
   void _hover(PlayerId id, int index) {
-    if (_dragged == id && _hoverIndex == index) return;
+    if (_panelOpen || _settling) return;
+    if (_dragged == id && _hoverIndex == index && _previewCell == _hoverCell) {
+      return;
+    }
     setState(() {
       _dragged = id;
       _hoverIndex = index;
+      _previewCell = _hoverCell;
     });
   }
 
   int _insertion(PlayerId id, int hovered) {
     final rect = reorderCellRect(_targets[hovered]);
     if (rect == null) return hovered;
+    final cells = List.generate(
+      widget.slots.length,
+      (i) => reorderCellRect(_targets[i]) ?? Rect.zero,
+    );
+    final between = _dragPosition == null
+        ? null
+        : reorderBetweenRows(
+            cells: cells,
+            pointer: _dragPosition!,
+            source: widget.slots.indexOf(id),
+          );
+    _hoverCell = between?.cell ?? hovered;
+    if (between != null) return between.index;
     return reorderInsertionIndex(
       source: widget.slots.indexOf(id),
       hovered: hovered,
@@ -85,6 +102,7 @@ class _PlacementBankState extends State<PlacementBank> {
       _dragged = id;
       final from = widget.slots.indexOf(id);
       _hoverIndex = from < 0 ? null : from;
+      _hoverCell = from < 0 ? null : from;
       _panelOpen = false;
     });
     _edgeScroll = Timer.periodic(
@@ -93,27 +111,43 @@ class _PlacementBankState extends State<PlacementBank> {
     );
   }
 
-  void _updateDrag(DragUpdateDetails details) {
-    _dragPosition = (_dragPosition ?? details.globalPosition) + details.delta;
-    if (_dragged != null) {
-      for (var i = 0; i < widget.slots.length; i++) {
-        if (reorderCellRect(_targets[i])?.contains(_dragPosition!) == true) {
-          _hover(_dragged!, _insertion(_dragged!, i));
-          break;
-        }
+  void _refreshGridHover() {
+    final position = _dragPosition;
+    final id = _dragged;
+    if (!mounted || position == null || id == null || _panelOpen || _settling) {
+      return;
+    }
+    final grid = reorderCellRect(_gridKey);
+    if (grid == null || !grid.contains(position)) return;
+    for (var i = 0; i < widget.slots.length; i++) {
+      if (reorderCellRect(_targets[i])?.contains(position) == true) {
+        _hover(id, _insertion(id, i));
+        break;
       }
     }
+  }
+
+  void _updateDrag(DragUpdateDetails details) {
+    _dragPosition = (_dragPosition ?? details.globalPosition) + details.delta;
     final box = _surfaceKey.currentContext?.findRenderObject() as RenderBox?;
     if (box == null) return;
-    final x = box.globalToLocal(_dragPosition!).dx;
-    // A narrow edge opens the drawer; a wider exit threshold prevents flicker.
-    final open = x >= box.size.width - (_panelOpen ? 72 : 28);
+    final local = box.globalToLocal(_dragPosition!);
+    // Match the visible edge, not the still-shrinking painted drawer. Keep only
+    // a 4px exit hysteresis outside the expanded panel, avoiding a hidden band.
+    final edge = _panelOpen
+        ? PlacementBank.panelWidth + 4
+        : PlacementBank.collapsedPanelWidth;
+    final open =
+        local.dx >= box.size.width - edge &&
+        local.dy >= 0 &&
+        local.dy <= box.size.height;
     if (_panelOpen != open) {
       setState(() {
         _panelOpen = open;
         if (open) _hoverIndex = null;
       });
     }
+    _refreshGridHover();
   }
 
   void _endDrag(DraggableDetails _) {
@@ -142,12 +176,15 @@ class _PlacementBankState extends State<PlacementBank> {
         ? 10.0
         : 0.0;
     if (delta == 0) return;
-    controller.jumpTo(
-      (controller.offset + delta).clamp(
-        controller.position.minScrollExtent,
-        controller.position.maxScrollExtent,
-      ),
+    final next = (controller.offset + delta).clamp(
+      controller.position.minScrollExtent,
+      controller.position.maxScrollExtent,
     );
+    if (next == controller.offset) return;
+    controller.jumpTo(next);
+    if (!_panelOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _refreshGridHover());
+    }
   }
 
   @override
@@ -172,16 +209,24 @@ class _PlacementBankState extends State<PlacementBank> {
     super.dispose();
   }
 
-  Widget _portrait(PlayerId id, double size) => PendingOrderAvatar(
-    pending: widget.pending.contains(id),
-    child: AvatarView(
-      showBackdrop: false,
-      config: widget.profiles[id]!.avatar,
+  Widget _portrait(PlayerId id, double size, {int? position}) {
+    final seat = position ?? widget.slots.indexOf(id);
+    return ReorderAvatarUnit(
       size: size,
-      label: widget.profiles[id]!.player.name,
-      playerName: widget.profiles[id]!.player.name,
-    ),
-  );
+      number: seat < 0 ? null : seat + 1,
+      child: PendingOrderAvatar(
+        pending: widget.pending.contains(id),
+        child: AvatarView(
+          showBackdrop: false,
+          config: widget.profiles[id]!.avatar,
+          size: size,
+          label: widget.profiles[id]!.player.name,
+          playerName: widget.profiles[id]!.player.name,
+        ),
+      ),
+    );
+  }
+
   Widget _name(PlayerId id) => Tooltip(
     message: widget.profiles[id]!.player.name,
     child: Text(
@@ -361,6 +406,9 @@ class _PlacementBankState extends State<PlacementBank> {
                 right: 0,
                 top: 4,
                 bottom: 4,
+                width: collapsed
+                    ? PlacementBank.collapsedPanelWidth
+                    : PlacementBank.panelWidth,
                 child: DragTarget<PlayerId>(
                   key: const ValueKey('unplaced-return-target'),
                   onWillAcceptWithDetails: (details) =>
@@ -370,70 +418,75 @@ class _PlacementBankState extends State<PlacementBank> {
                     widget.onRemove(details.data);
                     setState(() => _selected = null);
                   },
-                  builder: (context, candidates, rejected) => AnimatedOpacity(
-                    key: const ValueKey('placement-pool-opacity'),
-                    duration: duration,
-                    opacity: collapsed ? .2 : 1,
-                    child: AnimatedContainer(
-                      key: const ValueKey('placement-pool-panel'),
+                  builder: (context, candidates, rejected) => OverflowBox(
+                    alignment: Alignment.topRight,
+                    minWidth: 0,
+                    maxWidth: PlacementBank.panelWidth,
+                    child: AnimatedOpacity(
+                      key: const ValueKey('placement-pool-opacity'),
                       duration: duration,
-                      curve: Curves.easeOutCubic,
-                      width: collapsed
-                          ? PlacementBank.collapsedPanelWidth
-                          : PlacementBank.panelWidth,
-                      decoration: BoxDecoration(
-                        color: CourtSceneTokens.panel,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: candidates.isNotEmpty || _selected != null
-                              ? CourtSceneTokens.gold
-                              : CourtSceneTokens.gold.withValues(alpha: .45),
+                      opacity: collapsed ? .2 : 1,
+                      child: AnimatedContainer(
+                        key: const ValueKey('placement-pool-panel'),
+                        duration: duration,
+                        curve: Curves.easeOutCubic,
+                        width: collapsed
+                            ? PlacementBank.collapsedPanelWidth
+                            : PlacementBank.panelWidth,
+                        decoration: BoxDecoration(
+                          color: CourtSceneTokens.panel,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: candidates.isNotEmpty || _selected != null
+                                ? CourtSceneTokens.gold
+                                : CourtSceneTokens.gold.withValues(alpha: .45),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(color: Colors.black38, blurRadius: 10),
+                          ],
                         ),
-                        boxShadow: const [
-                          BoxShadow(color: Colors.black38, blurRadius: 10),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: OverflowBox(
-                          alignment: Alignment.topRight,
-                          minWidth: PlacementBank.panelWidth - 2,
-                          maxWidth: PlacementBank.panelWidth - 2,
-                          child: InkWell(
-                            onTap: _selected != null && widget.onPlace != null
-                                ? () {
-                                    widget.onRemove(_selected!);
-                                    setState(() => _selected = null);
-                                  }
-                                : null,
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 24,
-                                  child: Icon(
-                                    Icons.people_outline,
-                                    size: 18,
-                                    color: CourtSceneTokens.gold,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Scrollbar(
-                                    controller: _poolScroll,
-                                    thumbVisibility: true,
-                                    child: ListView(
-                                      key: const ValueKey(
-                                        'placement-pool-list',
-                                      ),
-                                      controller: _poolScroll,
-                                      padding: EdgeInsets.zero,
-                                      children: [
-                                        for (final id in unplaced)
-                                          _person(id, avatarSize, pool: true),
-                                      ],
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: OverflowBox(
+                            alignment: Alignment.topRight,
+                            minWidth: PlacementBank.panelWidth - 2,
+                            maxWidth: PlacementBank.panelWidth - 2,
+                            child: InkWell(
+                              onTap: _selected != null && widget.onPlace != null
+                                  ? () {
+                                      widget.onRemove(_selected!);
+                                      setState(() => _selected = null);
+                                    }
+                                  : null,
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 24,
+                                    child: Icon(
+                                      Icons.people_outline,
+                                      size: 18,
+                                      color: CourtSceneTokens.gold,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Expanded(
+                                    child: Scrollbar(
+                                      controller: _poolScroll,
+                                      thumbVisibility: true,
+                                      child: ListView(
+                                        key: const ValueKey(
+                                          'placement-pool-list',
+                                        ),
+                                        controller: _poolScroll,
+                                        padding: EdgeInsets.zero,
+                                        children: [
+                                          for (final id in unplaced)
+                                            _person(id, avatarSize, pool: true),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -494,7 +547,7 @@ class _PlacementBankState extends State<PlacementBank> {
       }
     }
     if (id == null) {
-      return const Icon(Icons.person_outline, color: CourtSceneTokens.gold);
+      return const SizedBox.shrink();
     }
     final target = preview.indexOf(id);
     final halfGap = _dragged == null
@@ -504,6 +557,7 @@ class _PlacementBankState extends State<PlacementBank> {
             preview: preview,
             dragged: _dragged!,
             avatarWidth: size,
+            activeIndex: _hoverCell,
             cells: List.generate(
               widget.slots.length,
               (i) => Rect.fromLTWH(
@@ -570,7 +624,7 @@ class _PlacementBankState extends State<PlacementBank> {
               TrinkAvatarRenderer.visibleHeight /
               TrinkAvatarRenderer.canvasWidth,
         ),
-        child: _portrait(details.data, avatarSize),
+        child: _portrait(details.data, avatarSize, position: destination),
       );
       if (mounted) {
         if (widget.onPlace != null &&
@@ -597,50 +651,13 @@ class _PlacementBankState extends State<PlacementBank> {
               widget.onPlace!(_selected!, index);
               setState(() => _selected = null);
             },
-      child: Container(
+      child: SizedBox.expand(
         key: _targets.putIfAbsent(index, GlobalKey.new),
-        margin: const EdgeInsets.fromLTRB(2, 0, 2, 8),
-        decoration: BoxDecoration(
-          color: CourtSceneTokens.panel.withValues(alpha: .45),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: candidates.isNotEmpty
-                ? CourtSceneTokens.gold
-                : CourtSceneTokens.gold.withValues(alpha: .35),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Center(
+            child: _seatPerson(index, avatarSize, columns, strideX, strideY),
           ),
-        ),
-        child: Stack(
-          clipBehavior: Clip.none,
-          fit: StackFit.expand,
-          children: [
-            Center(
-              child: _seatPerson(index, avatarSize, columns, strideX, strideY),
-            ),
-            Positioned(
-              top: 4,
-              left: 4,
-              child: IgnorePointer(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 7,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: CourtSceneTokens.panel,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '${index + 1}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: CourtSceneTokens.gold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     ),

@@ -71,7 +71,12 @@ void main() {
           }
           expect(find.byType(NamePlate), findsNothing);
           expect(find.byType(AvatarView), findsNWidgets(count));
-          expect(find.byType(DragTarget<PlayerId>), findsNWidgets(count));
+          expect(
+            find.byWidgetPredicate(
+              (w) => w is DragTarget<PlayerId> && w.key is ValueKey<PlayerId>,
+            ),
+            findsNWidgets(count),
+          );
           expect(tester.takeException(), isNull);
         },
       );

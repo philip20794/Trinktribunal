@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:trinktribunal/design/drag_preview_slide.dart';
 import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/domain/models/ids.dart';
@@ -103,6 +104,78 @@ void main() {
       )..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'))).load();
     }
   });
+  testWidgets(
+    'drawer painting never delays grid hover outside its narrow return edge',
+    (tester) async {
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await pumpBank(tester, count: 7, animations: true);
+      final bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
+      for (var i = 0; i < 6; i++) {
+        bank.onPlace!(PlayerId('p$i'), i);
+      }
+      await tester.pumpAndSettle();
+      final original = List<PlayerId?>.of(
+        tester.widget<PlacementBank>(find.byType(PlacementBank)).slots,
+      );
+      final pool = tester.getRect(keyed('unplaced-p6'));
+      final drag = await tester.startGesture(
+        pool.topRight + const Offset(-6, 24),
+      );
+      await tester.pump(const Duration(milliseconds: 200));
+      // Hit testing switches immediately; only the drawer's paint eases smaller.
+      expect(tester.getSize(keyed('unplaced-return-target')).width, 16);
+      expect(
+        tester.getSize(keyed('placement-pool-panel')).width,
+        greaterThan(16),
+      );
+      final y = tester.getCenter(keyed('order-seat-2')).dy;
+      await drag.moveTo(Offset(338, y));
+      await tester.pump();
+      expect(
+        tester.widget<AnimatedOpacity>(keyed('placement-pool-opacity')).opacity,
+        .2,
+      );
+      final neighbour = find.byKey(
+        ValueKey(('seat-preview', PlayerId('p0'), 0)),
+      );
+      expect(tester.widget<DragPreviewSlide>(neighbour).offset.dx, lessThan(0));
+      await tester.pump(const Duration(milliseconds: 120));
+      final matrix = tester
+          .widget<Transform>(
+            find
+                .descendant(of: neighbour, matching: find.byType(Transform))
+                .first,
+          )
+          .transform;
+      expect(matrix.getTranslation().x, lessThan(0));
+      expect(
+        tester.widget<PlacementBank>(find.byType(PlacementBank)).slots,
+        original,
+      );
+      await drag.moveTo(Offset(356, y));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 220));
+      expect(
+        tester.widget<AnimatedOpacity>(keyed('placement-pool-opacity')).opacity,
+        1,
+      );
+      await drag.moveTo(Offset(298, y));
+      await tester.pump();
+      expect(
+        tester.widget<AnimatedOpacity>(keyed('placement-pool-opacity')).opacity,
+        .2,
+      );
+      expect(tester.widget<DragPreviewSlide>(neighbour).offset.dx, lessThan(0));
+      await drag.cancel();
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<PlacementBank>(find.byType(PlacementBank)).slots,
+        original,
+      );
+      expect(keyed('unplaced-p6'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
   testWidgets(
     'alphabetical heads and names stay on the right; tap places a person',
     (tester) async {
