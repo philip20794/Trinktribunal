@@ -106,7 +106,10 @@ void main() {
         storage.values['unrelated'] = 'keep';
         final action = find.text(strings.get('maintenanceProfile'));
         await tapVisible(tester, action);
-        await tapVisible(tester, find.text(strings.get('cancel')));
+        await tapVisible(
+          tester,
+          find.byKey(const ValueKey('court-dialog-close')),
+        );
         expect(storage.values.containsKey(ProfileStore.key), isTrue);
         storage.failWrite = true;
         await tapVisible(tester, action);
@@ -191,7 +194,7 @@ void main() {
         container.read(atomicStateStorageProvider) as MemoryAtomicStateStorage;
     final original = storage.primary;
     await tapVisible(tester, find.text(strings.get('maintenanceGames')));
-    await tapVisible(tester, find.text(strings.get('cancel')));
+    await tapVisible(tester, find.byKey(const ValueKey('court-dialog-close')));
     expect(storage.primary, original);
     expect(cards.state, isNotNull);
     await tapVisible(tester, find.text(strings.get('maintenanceGames')));

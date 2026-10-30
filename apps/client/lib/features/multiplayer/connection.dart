@@ -1,3 +1,4 @@
+import '../../design/court_dialog.dart';
 import '../../design/status_notice.dart';
 
 import 'package:flutter/material.dart';
@@ -90,14 +91,10 @@ class RoomConnectionScreen extends ConsumerWidget {
                 onPressed: () async {
                   final confirmed = await showDialog<bool>(
                     context: context,
-                    builder: (context) => AlertDialog(
+                    builder: (context) => CourtDialog(
                       title: const TText('roomLeaveTitle'),
                       content: const TText('roomLeaveBody'),
                       actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const TText('cancel'),
-                        ),
                         FilledButton(
                           onPressed: () => Navigator.pop(context, true),
                           child: const TText('roomLeave'),

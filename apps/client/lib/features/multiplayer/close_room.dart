@@ -1,3 +1,5 @@
+import '../../design/court_dialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,14 +16,10 @@ Future<void> confirmRoomClose(BuildContext context, WidgetRef ref) async {
   ref.read(onlineGameProvider).hideSecret();
   final confirmed = await showDialog<bool>(
     context: context,
-    builder: (context) => AlertDialog(
+    builder: (context) => CourtDialog(
       title: const TText('roomCloseTitle'),
       content: const TText('roomCloseHelp'),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          child: const TText('cancel'),
-        ),
         FilledButton(
           onPressed: () => Navigator.pop(context, true),
           child: const TText('roomClose'),

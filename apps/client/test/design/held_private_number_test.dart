@@ -149,7 +149,7 @@ void main() {
     );
   }
   testWidgets(
-    'focus loss, background and dialog hide a held value; return never reopens it',
+    'pointer ignores focus transfer; release, background and dialog conceal it',
     (tester) async {
       await pump(tester);
       var gesture = await tester.startGesture(tester.getCenter(hold));
@@ -157,8 +157,10 @@ void main() {
       await tester.pump(const Duration(milliseconds: 1200));
       FocusManager.instance.primaryFocus!.unfocus();
       await tester.pumpAndSettle();
-      expect(find.text('37'), findsNothing);
+      expect(find.text('37'), findsOneWidget);
       await gesture.up();
+      await tester.pumpAndSettle();
+      expect(find.text('37'), findsNothing);
       gesture = await tester.startGesture(tester.getCenter(hold));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 1200));

@@ -177,6 +177,45 @@ Future<void> tapText(WidgetTester tester, String text) async {
 }
 
 void main() {
+  testWidgets('the first held number survives another player becoming ready', (
+    tester,
+  ) async {
+    final fixture = await pump(tester, allJudges: true);
+    final held = await startChargedHold(
+      tester,
+      find.text(AppStrings('de').get('holdToReveal')),
+    );
+    expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, 2);
+    final base = fixture.room.state.snapshot!;
+    fixture.transport.sockets.last.receive(
+      SnapshotMessage.fromJson({
+        ...base.toJson(),
+        'revision': base.revision + 1,
+        'public': {
+          ...base.public.toJson(),
+          'players': [
+            for (final player in base.public.players)
+              {
+                ...player.toJson(),
+                if (player.playerId.value == 'p3') 'ready': true,
+              },
+          ],
+        },
+      }),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, 2);
+    for (final key in [
+      'onlineAnswerReady',
+      'phoneBeginOrder',
+      'goToCourtroom',
+    ]) {
+      expect(find.text(AppStrings('de').get(key)), findsNothing);
+    }
+    await held.up();
+    await tester.pumpAndSettle();
+    expect(tester.widget<FlipCase>(find.byType(FlipCase)).number, isNull);
+  });
   for (final language in ['de', 'en']) {
     for (final host in [false, true]) {
       testWidgets(

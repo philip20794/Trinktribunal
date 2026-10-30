@@ -76,7 +76,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(AppStrings('de').get('endHearing')), findsOneWidget);
       await numbers.tapText(tester, AppStrings('de').get('restartGame'));
-      await tester.tap(find.text(AppStrings('de').get('cancel')));
+      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<RestartGameMessage>(), isEmpty);
       await numbers.tapText(tester, AppStrings('de').get('restartGame'));

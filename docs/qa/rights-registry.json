@@ -157,11 +157,11 @@
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
-          "sha256": "d8954827ef21a91a97461c6f6680a7a1def92828cd33389df582ac721e1905d6"
+          "sha256": "7c60e9d2b2607151b1e55d53297c3a76fd783b93f72362a516fe81a4a5b1480c"
         },
         {
           "path": "apps/client/lib/design/illustrated_paper.dart",
-          "sha256": "91fda24c617daef14f2a8e0bc47f2d10c425caca46e54baeffb18ff494d48f0d"
+          "sha256": "647427aec5521973ec3c16373b48f2e0cf14b7b0872994a370639ad45a189527"
         }
       ]
     },
@@ -174,7 +174,7 @@
       "files": [
         {
           "path": "apps/client/android/app/src/main/res/drawable-nodpi/ic_launcher_foreground.png",
-          "sha256": "44f7b60649dc53c62827cf169fcae4e6a75746ed2f0be3f0c221a738ed50d52f"
+          "sha256": "10ce3a6c6d719d4cc7bad51cf24e36bc7e9309d8482dc1e1cd6fc0297b39e4f9"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
@@ -182,47 +182,47 @@
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
-          "sha256": "ce5f48d5d41af6b233f32fde336f6582abcbc6e42b78e6666283c0e8aef5582f"
+          "sha256": "b32dbf7b4851530ac776cc912fea80a01d664fee8053233cd83fcce8d8b2b222"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
-          "sha256": "49effed85fbb49b0afdc7d80d55391ba64b26a32a1819ba7c5e084f5433e93fd"
+          "sha256": "0c66c510ac08c204943f2e8dd0b9e2583d106aa249aa5aba3551b8aefd56b99f"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
-          "sha256": "ac16ce31707d00d5599256ccc8209f1391f0e9b630fad6be8ed77be3804f7418"
+          "sha256": "8b4064de3522142093cdbbfd40b41b246d7c6df6afed869601fc95dd947c1026"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
-          "sha256": "c6515bb911a0ef7d122630c8be592735312f8ec37a161efc92551161b013c193"
+          "sha256": "e0e759a3877bd4df6c716609e8fcb598ec8cc1749ddcd9a7459a0eac4c15bd88"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
-          "sha256": "7bd58464a795988c299a83244587c3dd3ee45b47823ad11f26d3c24199031223"
+          "sha256": "00129d64f0da3b2a1533613fbd437ee90c36247d3179e9d04952c68d85d0ef48"
         },
         {
           "path": "apps/client/assets/branding/trinktribunal_app_icon.png",
-          "sha256": "730f1e7006ff34f6395c0d33c2e50507cb2b2f694b87779b6ea117eac6690853"
+          "sha256": "d321447dd16d159f6a97b75fd76ead96b25dbf8c524e6ad63af671de6e74f847"
         },
         {
           "path": "apps/client/web/favicon.png",
-          "sha256": "5c304de4ac7c23ee8ff72c2f63efd3d7fa740db5c77495bf585cd122a7cb6307"
+          "sha256": "947c530d07ae4049861a8b01392f944fb9a9d2f47f88491128ff57cf391f720e"
         },
         {
           "path": "apps/client/web/icons/Icon-192.png",
-          "sha256": "7dae28027d0f7cddc2146e584cace96c9c5bc5a41a770f253e3fb97733626d04"
+          "sha256": "00129d64f0da3b2a1533613fbd437ee90c36247d3179e9d04952c68d85d0ef48"
         },
         {
           "path": "apps/client/web/icons/Icon-512.png",
-          "sha256": "ebe0100fcb72cd548e0b03d61f36a9df2d42ac345bd26dbc2337bd4d8d8e5470"
+          "sha256": "37714ddfe719d26dcba243181fb52099f24a5cf43771166aa24ad36719fa79d1"
         },
         {
           "path": "apps/client/web/icons/Icon-maskable-192.png",
-          "sha256": "fb245ae489a0978b64c9cfb72d8f40c84922b5c02211ba4f3f1c4af277944c14"
+          "sha256": "00129d64f0da3b2a1533613fbd437ee90c36247d3179e9d04952c68d85d0ef48"
         },
         {
           "path": "apps/client/web/icons/Icon-maskable-512.png",
-          "sha256": "c6f90a84b5a79d011ab25b6117627332fa8d8820c6280d714fe1280bca9c9d45"
+          "sha256": "37714ddfe719d26dcba243181fb52099f24a5cf43771166aa24ad36719fa79d1"
         }
       ]
     },
@@ -864,7 +864,7 @@
       "files": [
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/home_waage_pergament.png",
-          "sha256": "f12d66d9d8f13f602029ce66bc57c74744e7b3b312d88f30baafc5b91d65db2c"
+          "sha256": "dbc82bdae838f49bf5359e7635eec5b46cafba8008242175f9c679bf43f082fa"
         },
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/modus_karten_ziehen.png",
@@ -897,6 +897,19 @@
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/regel_beispiel_waage.png",
           "sha256": "40d938fd96b3c1c27eaf5ea0e833e1ff924c27353f67f1257c451187d053c8d9"
+        }
+      ]
+    },
+    {
+      "id": "user-supplied-popup",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "User-provided parchment popup for shared dialogs, 30.10.2026; no external license supplied.",
+      "evidence": "docs/qa/home-courtroom-design.md",
+      "files": [
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/trinktribunal_pergament_popup.png",
+          "sha256": "f98ab658e36a0a47e8017f17613929dd0a849bd965fe7e6a972c5a430249b368"
         }
       ]
     }

@@ -1,3 +1,5 @@
+import '../../design/court_dialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -79,7 +81,7 @@ class OnlineRosterManagement extends ConsumerWidget {
                         ref.read(onlineGameProvider).hideSecret();
                         final confirmed = await showDialog<bool>(
                           context: context,
-                          builder: (context) => AlertDialog(
+                          builder: (context) => CourtDialog(
                             title: const TText('roomKickTitle'),
                             content: Text(
                               context.tr('roomKickBody', {
@@ -89,10 +91,6 @@ class OnlineRosterManagement extends ConsumerWidget {
                               }),
                             ),
                             actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: const TText('cancel'),
-                              ),
                               FilledButton(
                                 onPressed: () => Navigator.pop(context, true),
                                 child: const TText('roomKick'),

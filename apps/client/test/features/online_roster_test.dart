@@ -1,3 +1,5 @@
+import 'package:trinktribunal/design/court_dialog.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -184,7 +186,7 @@ void main() {
       }
 
       await openKick();
-      await tester.tap(find.text(AppStrings('de').get('cancel')));
+      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<KickMessage>(), isEmpty);
       await openKick();
@@ -192,7 +194,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(
         find.descendant(
-          of: find.byType(AlertDialog),
+          of: find.byType(CourtDialog),
           matching: find.widgetWithText(
             FilledButton,
             AppStrings('de').get('roomKick'),

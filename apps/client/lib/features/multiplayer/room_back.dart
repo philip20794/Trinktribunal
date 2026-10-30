@@ -1,3 +1,5 @@
+import '../../design/court_dialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,14 +33,10 @@ class _RoomBackGuardState extends ConsumerState<RoomBackGuard> {
     final host = before.you == before.public.hostId;
     final choice = await showDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => CourtDialog(
         title: TText(host ? 'roomCloseTitle' : 'roomLeaveTitle'),
         content: TText(host ? 'roomBackHostHelp' : 'roomBackHelp'),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const TText('cancel'),
-          ),
           OutlinedButton(
             onPressed: () => Navigator.pop(context, 'back'),
             child: const TText('roomBackOnly'),

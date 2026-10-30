@@ -1,12 +1,10 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import 'court_theme.dart';
 
 enum CourtMotionStyle { file, stamp }
 
-/// A brief paper turn without vertical translation, or a decorative verdict stamp.
+/// Places the previous paper behind the next one, or stamps a verdict.
 class CourtMotion extends StatelessWidget {
   const CourtMotion({
     required this.child,
@@ -24,29 +22,50 @@ class CourtMotion extends StatelessWidget {
         MediaQuery.disableAnimationsOf(context) ||
         MediaQuery.accessibleNavigationOf(context);
     if (reduced) return child;
+    if (style == CourtMotionStyle.file) {
+      return AnimatedSwitcher(
+        duration: const Duration(milliseconds: 650),
+        switchOutCurve: Curves.easeInOutCubic,
+        layoutBuilder: (current, previous) => Stack(
+          alignment: Alignment.topCenter,
+          children: [?current, ...previous],
+        ),
+        transitionBuilder: (paper, animation) => AnimatedBuilder(
+          animation: animation,
+          child: paper,
+          builder: (context, content) {
+            // The next sheet rests underneath while the old one recedes.
+            if (animation.status != AnimationStatus.reverse) return content!;
+            final remaining = animation.value;
+            return IgnorePointer(
+              child: ExcludeSemantics(
+                child: Opacity(
+                  opacity: remaining,
+                  child: FractionalTranslation(
+                    translation: Offset(0, -.045 * (1 - remaining)),
+                    child: Transform.scale(
+                      scale: .94 + .06 * remaining,
+                      child: content,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        child: KeyedSubtree(key: ValueKey(replayKey), child: child),
+      );
+    }
     return TweenAnimationBuilder<double>(
       key: ValueKey(replayKey),
-      duration: style == CourtMotionStyle.file
-          ? const Duration(milliseconds: 220)
-          : CourtTokens.motionDuration(false),
+      duration: CourtTokens.motionDuration(false),
       tween: Tween(begin: 0, end: 1),
       curve: Curves.easeOutCubic,
       child: child,
-      builder: (context, value, content) => style == CourtMotionStyle.file
-          ? Transform(
-              alignment: Alignment.centerRight,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, .001)
-                ..rotateY((1 - value) * -math.pi / 2),
-              child: content,
-            )
-          : Transform.rotate(
-              angle: (1 - value) * -0.035,
-              child: Transform.scale(
-                scale: 1 + (1 - value) * 0.08,
-                child: content,
-              ),
-            ),
+      builder: (context, value, content) => Transform.rotate(
+        angle: (1 - value) * -0.035,
+        child: Transform.scale(scale: 1 + (1 - value) * 0.08, child: content),
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+import '../../design/court_dialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,7 +24,7 @@ class _DataMaintenanceState extends ConsumerState<DataMaintenance> {
     try {
       confirmed = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => CourtDialog(
           scrollable: true,
           title: TText(
             target == LocalDeletion.profile
@@ -35,10 +37,6 @@ class _DataMaintenanceState extends ConsumerState<DataMaintenance> {
                 : 'maintenanceGamesConfirm',
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const TText('cancel'),
-            ),
             FilledButton(
               onPressed: () => Navigator.pop(context, true),
               child: const TText('maintenanceDelete'),

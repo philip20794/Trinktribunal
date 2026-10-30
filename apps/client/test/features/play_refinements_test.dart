@@ -94,10 +94,6 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
-        if (own) {
-          await tester.tap(find.byType(BackButton));
-          await tester.pumpAndSettle();
-        }
         expect(controller.state!.judge!.player.id, id);
         expect(
           controller.state!.judge!.player.name,

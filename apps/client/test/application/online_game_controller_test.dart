@@ -162,7 +162,7 @@ void main() {
       },
     );
   }
-  test('own number opens voluntarily, hides on fresh view, confirmation and reconnect', () {
+  test('held number survives unchanged broadcasts, hides on release, confirmation and reconnect', () {
     fakeAsync((clock) {
       final transport = FakeRoomTransport(),
           room = RoomController(
@@ -180,6 +180,8 @@ void main() {
       expect(game.visibleNumber, 2);
       transport.sockets.last.receive(roomFixture('snapshot'));
       clock.flushMicrotasks();
+      expect(game.visibleNumber, 2);
+      game.hideSecret();
       expect(game.visibleNumber, isNull);
       expect(game.acknowledgeNumber(), isFalse);
       expect(

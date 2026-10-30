@@ -1,3 +1,4 @@
+import 'package:trinktribunal/design/court_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -36,10 +37,10 @@ void main() {
       await tester.pump();
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(CourtDialog), findsOneWidget);
       await tester.sendKeyEvent(LogicalKeyboardKey.escape);
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsNothing);
+      expect(find.byType(CourtDialog), findsNothing);
       expect(focus.hasFocus, isTrue);
       expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);
     },

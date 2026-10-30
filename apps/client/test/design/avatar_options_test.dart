@@ -1,3 +1,4 @@
+import 'package:trinktribunal/design/court_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
@@ -126,7 +127,7 @@ void main() {
         await tester.tap(skin);
         await tester.pumpAndSettle();
         expect(find.byType(AvatarColorPicker), findsOneWidget);
-        expect(find.byType(AlertDialog), findsNothing);
+        expect(find.byType(CourtDialog), findsNothing);
         final picker = find.byKey(const ValueKey('avatar-color-wheel'));
         await tester.tapAt(tester.getCenter(picker) + const Offset(95, 0));
         await tester.pumpAndSettle();

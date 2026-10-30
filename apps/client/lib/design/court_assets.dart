@@ -1,4 +1,6 @@
 abstract final class CourtAssets {
+  static const popup =
+      'assets/ui/courtroom/illustrations/trinktribunal_pergament_popup.png';
   static const wood = 'assets/ui/courtroom/backgrounds/courtroom_wood_wall.png';
   static const home = 'assets/ui/courtroom/backgrounds/home_courtroom.png';
   static const homeHero =
@@ -46,7 +48,8 @@ abstract final class CourtAssets {
   static const nativeWidths = {
     wood: 1080,
     home: 1080,
-    homeHero: 1495,
+    homeHero: 1520,
+    popup: 900,
     modeCards: 576,
     modePhone: 566,
     modePhones: 606,

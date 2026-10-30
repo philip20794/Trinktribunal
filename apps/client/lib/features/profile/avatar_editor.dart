@@ -10,7 +10,7 @@ import '../../l10n/app_strings.dart';
 import 'avatar_color_picker.dart';
 import 'avatar_options.dart';
 
-/// The sheet belongs to the editor body, keeping the screen's save footer free.
+/// Live choices overlay the footer while keeping the portrait visible.
 class AvatarEditor extends StatefulWidget {
   const AvatarEditor({
     required this.config,
@@ -38,6 +38,7 @@ class AvatarEditor extends StatefulWidget {
 }
 
 class _AvatarEditorState extends State<AvatarEditor> {
+  final _portal = OverlayPortalController();
   String? _option;
   double _dismissDrag = 0;
   final _nameFocus = FocusNode();
@@ -59,10 +60,15 @@ class _AvatarEditorState extends State<AvatarEditor> {
     super.dispose();
   }
 
-  void _closeSheet() => setState(() => _option = null);
+  void _closeSheet() {
+    _portal.hide();
+    setState(() => _option = null);
+  }
+
   void _openSheet(String key) {
     _nameFocus.unfocus();
     setState(() => _option = key);
+    _portal.show();
   }
 
   @override
@@ -174,113 +180,122 @@ class _AvatarEditorState extends State<AvatarEditor> {
                   ],
                 ),
                 if (current != null)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: sheetTop,
-                    bottom: 0,
-                    child: TweenAnimationBuilder<double>(
-                      key: ValueKey(current),
-                      tween: Tween(begin: 24, end: 0),
-                      duration: duration,
-                      builder: (context, offset, child) => Transform.translate(
-                        offset: Offset(0, offset),
-                        child: child,
-                      ),
-                      child: Focus(
-                        autofocus: true,
-                        child: BottomSheet(
-                          key: const ValueKey('avatar-editor-sheet'),
-                          enableDrag: false,
-                          onClosing: _closeSheet,
-                          backgroundColor: CourtSceneTokens.panel,
-                          elevation: 8,
-                          clipBehavior: Clip.antiAlias,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
+                  OverlayPortal.overlayChildLayoutBuilder(
+                    controller: _portal,
+                    child: SizedBox(width: bounds.maxWidth, height: available),
+                    overlayChildBuilder: (context, info) => Positioned(
+                      left: info.childPaintTransform.storage[12],
+                      width: bounds.maxWidth,
+                      top: info.childPaintTransform.storage[13] + sheetTop,
+                      bottom: MediaQuery.paddingOf(context).bottom,
+                      child: TweenAnimationBuilder<double>(
+                        key: ValueKey(current),
+                        tween: Tween(begin: 24, end: 0),
+                        duration: duration,
+                        builder: (context, offset, child) =>
+                            Transform.translate(
+                              offset: Offset(0, offset),
+                              child: child,
                             ),
-                            side: BorderSide(color: CourtSceneTokens.gold),
-                          ),
-                          builder: (context) => Column(
-                            children: [
-                              GestureDetector(
-                                key: const ValueKey('avatar-sheet-header'),
-                                behavior: HitTestBehavior.opaque,
-                                onVerticalDragStart: (_) => _dismissDrag = 0,
-                                onVerticalDragUpdate: (details) =>
-                                    _dismissDrag += details.delta.dy,
-                                onVerticalDragEnd: (details) {
-                                  if (_dismissDrag > 30 ||
-                                      (details.primaryVelocity ?? 0) > 200) {
-                                    _closeSheet();
-                                  }
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 34,
-                                      height: 4,
-                                      margin: const EdgeInsets.only(top: 8),
-                                      decoration: BoxDecoration(
-                                        color: CourtSceneTokens.gold,
-                                        borderRadius: BorderRadius.circular(4),
+                        child: Focus(
+                          autofocus: true,
+                          child: BottomSheet(
+                            key: const ValueKey('avatar-editor-sheet'),
+                            enableDrag: false,
+                            onClosing: _closeSheet,
+                            backgroundColor: CourtSceneTokens.panel,
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                              side: BorderSide(color: CourtSceneTokens.gold),
+                            ),
+                            builder: (context) => Column(
+                              children: [
+                                GestureDetector(
+                                  key: const ValueKey('avatar-sheet-header'),
+                                  behavior: HitTestBehavior.opaque,
+                                  onVerticalDragStart: (_) => _dismissDrag = 0,
+                                  onVerticalDragUpdate: (details) =>
+                                      _dismissDrag += details.delta.dy,
+                                  onVerticalDragEnd: (details) {
+                                    if (_dismissDrag > 30 ||
+                                        (details.primaryVelocity ?? 0) > 200) {
+                                      _closeSheet();
+                                    }
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 34,
+                                        height: 4,
+                                        margin: const EdgeInsets.only(top: 8),
+                                        decoration: BoxDecoration(
+                                          color: CourtSceneTokens.gold,
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 16,
-                                        right: 4,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              avatarOptionLabels[current]![english
-                                                  ? 1
-                                                  : 0],
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 16,
+                                          right: 4,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                avatarOptionLabels[current]![english
+                                                    ? 1
+                                                    : 0],
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: CourtSceneTokens.cream,
+                                                ),
+                                              ),
+                                            ),
+                                            IconButton(
+                                              key: const ValueKey(
+                                                'avatar-sheet-close',
+                                              ),
+                                              tooltip: MaterialLocalizations.of(
+                                                context,
+                                              ).closeButtonTooltip,
+                                              onPressed: _closeSheet,
+                                              icon: const Icon(
+                                                Icons.close,
                                                 color: CourtSceneTokens.cream,
                                               ),
                                             ),
-                                          ),
-                                          IconButton(
-                                            key: const ValueKey(
-                                              'avatar-sheet-close',
-                                            ),
-                                            tooltip: MaterialLocalizations.of(
-                                              context,
-                                            ).closeButtonTooltip,
-                                            onPressed: _closeSheet,
-                                            icon: const Icon(
-                                              Icons.close,
-                                              color: CourtSceneTokens.cream,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: AvatarCatalog.colorKeys.contains(current)
-                                    ? AvatarColorPicker(
-                                        key: ValueKey(current),
-                                        initialHex: widget.config[current],
-                                        english: english,
-                                        onChanged: (value) => widget.onChanged(
-                                          widget.config.withOption(
-                                            current,
-                                            value,
-                                          ),
+                                          ],
                                         ),
-                                      )
-                                    : _variants(current, english),
-                              ),
-                            ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child:
+                                      AvatarCatalog.colorKeys.contains(current)
+                                      ? AvatarColorPicker(
+                                          key: ValueKey(current),
+                                          initialHex: widget.config[current],
+                                          english: english,
+                                          onChanged: (value) =>
+                                              widget.onChanged(
+                                                widget.config.withOption(
+                                                  current,
+                                                  value,
+                                                ),
+                                              ),
+                                        )
+                                      : _variants(current, english),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

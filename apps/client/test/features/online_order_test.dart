@@ -1,3 +1,4 @@
+import 'package:trinktribunal/design/court_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -82,13 +83,13 @@ void main() {
       expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);
       final confirm = AppStrings('de').get('phoneConfirmOrder');
       await tapText(tester, confirm);
-      await tester.tap(find.text('Abbrechen'));
+      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);
       await tapText(tester, confirm);
       await tester.tap(
         find.descendant(
-          of: find.byType(AlertDialog),
+          of: find.byType(CourtDialog),
           matching: find.widgetWithText(FilledButton, confirm),
         ),
       );

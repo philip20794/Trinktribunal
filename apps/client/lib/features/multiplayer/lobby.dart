@@ -12,7 +12,6 @@ import 'courtroom.dart';
 import 'me.dart';
 import 'invitation.dart';
 import 'game_privacy.dart';
-import 'readiness_view.dart';
 import 'order_view.dart';
 import 'game_progress.dart';
 import 'game_settings.dart';
@@ -273,15 +272,7 @@ class _RoomPhaseFooter extends ConsumerWidget {
             snapshot.you ==
             (view.config.allJudges ? view.readerId : view.judgeId);
         Widget? action;
-        if (tabs.index == caseIndex &&
-            view.config.allJudges &&
-            view.phase == 'ordering') {
-          action = FilledButton.icon(
-            onPressed: () => tabs.animateTo(1),
-            icon: const Icon(Icons.sort),
-            label: const TText('goToCourtroom'),
-          );
-        } else if (!view.config.allJudges &&
+        if (!view.config.allJudges &&
             guide &&
             [
               'numbers',
@@ -297,10 +288,6 @@ class _RoomPhaseFooter extends ConsumerWidget {
               snapshot: snapshot,
               session: state,
             ),
-            'answers'
-                when !view.config.allJudges &&
-                    (guide || view.frozenRoster.contains(snapshot.you)) =>
-              ReadinessActions(snapshot: snapshot),
             'ordering'
                 when view.frozenRoster.contains(snapshot.you) &&
                     (view.config.allJudges || snapshot.you == view.judgeId) =>

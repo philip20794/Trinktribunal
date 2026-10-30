@@ -1,3 +1,5 @@
+import 'package:trinktribunal/design/court_dialog.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -73,7 +75,9 @@ void main() {
         await tester.pumpAndSettle();
         final source = find.byKey(const ValueKey('unplaced-p2'));
         final target = find.byKey(const ValueKey('order-seat-0'));
-        final gesture = await tester.startGesture(tester.getCenter(source));
+        final gesture = await tester.startGesture(
+          tester.getTopLeft(source) + const Offset(8, 20),
+        );
         await tester.pump(const Duration(milliseconds: 200));
         await gesture.moveTo(tester.getCenter(target));
         await tester.pump();
@@ -93,7 +97,7 @@ void main() {
   testWidgets(
     'a twenty-player bank scrolls upward while an avatar is dragged to an earlier seat',
     (tester) async {
-      await tester.binding.setSurfaceSize(const Size(360, 640));
+      await tester.binding.setSurfaceSize(const Size(320, 360));
       addTearDown(() => tester.binding.setSurfaceSize(null));
       final fixture = await numbers.pump(tester, allJudges: true);
       final base = fixture.room.state.snapshot!;
@@ -134,6 +138,8 @@ void main() {
         19,
       );
       await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('placement-pool-toggle')));
+      await tester.pumpAndSettle();
       final source = find.descendant(
         of: find.byKey(const ValueKey('order-seat-19')),
         matching: find.byType(Draggable<PlayerId>),
@@ -142,7 +148,9 @@ void main() {
       await tester.pumpAndSettle();
       final scroll = tester.state<ScrollableState>(scrollable);
       final before = scroll.position.pixels;
-      final gesture = await tester.startGesture(tester.getCenter(source));
+      final gesture = await tester.startGesture(
+        tester.getTopLeft(source) + const Offset(8, 20),
+      );
       await gesture.moveBy(const Offset(0, -25));
       await tester.pump();
       final bounds = tester.getRect(find.byType(RoomCourtroom));
@@ -267,13 +275,13 @@ void main() {
       expect(bank.slots, expected);
       final confirm = AppStrings('de').get('phoneConfirmOrder');
       await normal.tapText(tester, confirm);
-      await tester.tap(find.text(AppStrings('de').get('cancel')));
+      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);
       await normal.tapText(tester, confirm);
       await tester.tap(
         find.descendant(
-          of: find.byType(AlertDialog),
+          of: find.byType(CourtDialog),
           matching: find.widgetWithText(FilledButton, confirm),
         ),
       );

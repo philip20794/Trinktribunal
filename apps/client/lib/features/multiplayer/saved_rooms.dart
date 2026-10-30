@@ -1,3 +1,5 @@
+import '../../design/court_dialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,14 +12,26 @@ import 'connection.dart';
 Future<void> resumeSavedRoom(
   BuildContext context,
   WidgetRef ref,
-  RoomCredential credential,
-) async {
-  await ref.read(roomControllerProvider).resume(credential);
+  RoomCredential credential, {
+  bool replaceRoute = false,
+}) async {
+  final controller = ref.read(roomControllerProvider);
+  final active = controller.state.snapshot;
+  if (controller.state.status != RoomConnectionStatus.online ||
+      active?.roomId != credential.message.roomId ||
+      active?.you != credential.message.playerId) {
+    await controller.resume(credential);
+  }
   ref.invalidate(savedRoomsProvider);
   if (context.mounted) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const RoomConnectionScreen()),
+    final route = MaterialPageRoute<void>(
+      builder: (_) => const RoomConnectionScreen(),
     );
+    if (replaceRoute) {
+      Navigator.of(context).pushReplacement(route);
+    } else {
+      Navigator.of(context).push(route);
+    }
   }
 }
 
@@ -79,14 +93,10 @@ class SavedRooms extends ConsumerWidget {
                       onPressed: () async {
                         final confirmed = await showDialog<bool>(
                           context: context,
-                          builder: (context) => AlertDialog(
+                          builder: (context) => CourtDialog(
                             title: const TText('roomForget'),
                             content: const TText('roomForgetBody'),
                             actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: const TText('cancel'),
-                              ),
                               FilledButton(
                                 onPressed: () => Navigator.pop(context, true),
                                 child: const TText('roomForget'),
@@ -128,5 +138,52 @@ class SavedRooms extends ConsumerWidget {
             ],
           );
         },
+      );
+}
+
+/// Resume a persisted identity rather than creating another room or player.
+class CurrentRoomResumeButtons extends ConsumerWidget {
+  const CurrentRoomResumeButtons({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => ref
+      .watch(savedRoomsProvider)
+      .maybeWhen(
+        data: (loaded) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (final room in loaded.credentials.where(
+              (r) => r.pendingLeaveActionId == null,
+            ))
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: FilledButton.icon(
+                  key: ValueKey('resume-room-${room.message.roomCode}'),
+                  icon: const Icon(Icons.meeting_room_outlined),
+                  label: Text(
+                    context.tr('roomReturnActive', {
+                      'code': room.message.roomCode,
+                    }),
+                  ),
+                  onPressed: () async {
+                    try {
+                      await resumeSavedRoom(
+                        context,
+                        ref,
+                        room,
+                        replaceRoute: true,
+                      );
+                    } on Object {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: TText('roomErrorServer')),
+                        );
+                      }
+                    }
+                  },
+                ),
+              ),
+          ],
+        ),
+        orElse: () => const SizedBox.shrink(),
       );
 }

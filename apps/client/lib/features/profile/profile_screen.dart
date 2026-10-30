@@ -9,6 +9,7 @@ import '../../domain/avatar_config.dart';
 import '../../domain/selection/random_source.dart';
 import '../../l10n/app_strings.dart';
 import 'avatar_editor.dart';
+import '../../design/saved_notice.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -35,8 +36,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     setState(() => _saving = false);
     if (saved) {
       ref.invalidate(profileProvider);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(context.tr('profileSaved'))));
+      showSavedNotice(context);
+      Navigator.of(context).maybePop();
     } else {
       setState(() {});
     }

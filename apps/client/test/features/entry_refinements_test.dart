@@ -11,7 +11,6 @@ import 'package:trinktribunal/design/private_number.dart';
 import 'package:trinktribunal/design/case_stage.dart';
 import 'package:trinktribunal/design/case_file.dart';
 import 'package:trinktribunal/design/illustrated_paper.dart';
-import 'package:trinktribunal/design/court_motion.dart';
 import 'package:trinktribunal/application/roster_controller.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/domain/user_profile.dart';
@@ -55,70 +54,54 @@ class _Camera extends MobileScannerPlatform {
 }
 
 void main() {
-  testWidgets(
-    'new questions and rerolls turn inside a fixed paper viewport without a vertical slide',
-    (tester) async {
-      late StateSetter change;
-      var question = 'Kurz';
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SizedBox(
-              height: 600,
-              child: StatefulBuilder(
-                builder: (context, update) {
-                  change = update;
-                  return CaseStage(
-                    rules: 0,
-                    onRules: () {},
-                    child: CourtQuestion(
-                      animationKey: 'same-round',
-                      label: 'Fall 1',
-                      text: question,
-                      green: 'Wenig',
-                      connector: '',
-                      red: 'Viel',
-                      maximum: 5,
-                    ),
-                  );
-                },
-              ),
+  testWidgets('new questions rest underneath the slowly receding old sheet', (
+    tester,
+  ) async {
+    late StateSetter change;
+    var question = 'Kurz';
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SizedBox(
+            height: 600,
+            child: StatefulBuilder(
+              builder: (context, update) {
+                change = update;
+                return CaseStage(
+                  rules: 0,
+                  onRules: () {},
+                  child: CourtQuestion(
+                    animationKey: 'same-round',
+                    label: 'Fall 1',
+                    text: question,
+                    green: 'Wenig',
+                    connector: '',
+                    red: 'Viel',
+                    maximum: 5,
+                  ),
+                );
+              },
             ),
           ),
         ),
-      );
-      await tester.pumpAndSettle();
-      final before = tester.getRect(find.byType(IllustratedPaper));
-      final firstTurn = tester
-          .widget<TweenAnimationBuilder<double>>(
-            find.byType(TweenAnimationBuilder<double>),
-          )
-          .key;
-      change(
-        () => question = List.filled(15, 'Eine laengere Fallfrage.').join(' '),
-      );
-      await tester.pump();
-      expect(
-        tester
-            .widget<TweenAnimationBuilder<double>>(
-              find.byType(TweenAnimationBuilder<double>),
-            )
-            .key,
-        isNot(firstTurn),
-      );
-      final transform = tester.widget<Transform>(
-        find
-            .descendant(
-              of: find.byType(CourtMotion),
-              matching: find.byType(Transform),
-            )
-            .first,
-      );
-      expect(transform.transform.storage[13], 0);
-      await tester.pumpAndSettle();
-      expect(tester.getRect(find.byType(IllustratedPaper)), before);
-    },
-  );
+      ),
+    );
+    await tester.pumpAndSettle();
+    final before = tester.getRect(find.byType(IllustratedPaper));
+    change(
+      () => question = List.filled(15, 'Eine laengere Fallfrage.').join(' '),
+    );
+    await tester.pump();
+    final switcher = tester.widget<AnimatedSwitcher>(
+      find.byType(AnimatedSwitcher),
+    );
+    expect(switcher.duration, const Duration(milliseconds: 650));
+    expect(find.byType(IllustratedPaper), findsNWidgets(2));
+    await tester.pump(const Duration(milliseconds: 325));
+    expect(find.byType(IllustratedPaper), findsNWidgets(2));
+    await tester.pumpAndSettle();
+    expect(tester.getRect(find.byType(IllustratedPaper)), before);
+  });
   test(
     'a scan accepts only a valid room code or a link to the configured client',
     () {

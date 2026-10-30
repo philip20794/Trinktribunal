@@ -900,5 +900,8 @@
   "replaceHostedRoomHelp": "Du besitzt noch den Raum {codes}. Wenn du einen neuen Raum erstellst, wird der bisherige Raum für alle gelöscht.",
   "replaceHostedRoomConfirm": "Raum löschen und neu erstellen",
   "rulesAllJudgesSummary": "Jeder sortiert selbst.",
-  "rulesExtraSummary": "Neue Regeln gelten sofort."
+  "rulesExtraSummary": "Neue Regeln gelten sofort.",
+  "roomReturnActive": "Zur laufenden Runde ({code})",
+  "placementPoolToggle": "Personenauswahl ein- oder ausklappen",
+  "savedNotice": "Gespeichert"
 }

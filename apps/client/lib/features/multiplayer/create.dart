@@ -1,3 +1,5 @@
+import '../../design/court_dialog.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_strings.dart';
@@ -98,6 +100,7 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
       if (retry && _retrySave) {
         success = await controller.retrySavingCredential();
       } else {
+        String? resumeCode;
         final permitted =
             await HostedRoomController(
               controller,
@@ -106,7 +109,7 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
               if (!mounted) return false;
               return await showDialog<bool>(
                     context: context,
-                    builder: (context) => AlertDialog(
+                    builder: (context) => CourtDialog(
                       title: const TText('replaceHostedRoomTitle'),
                       content: Text(
                         context.tr('replaceHostedRoomHelp', {
@@ -114,10 +117,17 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                         }),
                       ),
                       actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const TText('cancel'),
-                        ),
+                        for (final code in codes)
+                          OutlinedButton(
+                            key: ValueKey('resume-hosted-room-$code'),
+                            onPressed: () {
+                              resumeCode = code;
+                              Navigator.pop(context, false);
+                            },
+                            child: Text(
+                              context.tr('roomReturnActive', {'code': code}),
+                            ),
+                          ),
                         FilledButton(
                           onPressed: () => Navigator.pop(context, true),
                           child: const TText('replaceHostedRoomConfirm'),
@@ -128,6 +138,15 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                   false;
             });
         if (!mounted) return;
+        if (resumeCode != null) {
+          final loaded = await ref.read(roomCredentialStoreProvider).load();
+          final credential = loaded.credentials.firstWhere(
+            (r) => r.message.roomCode == resumeCode,
+          );
+          if (!mounted) return;
+          await resumeSavedRoom(context, ref, credential, replaceRoute: true);
+          return;
+        }
         if (!permitted) {
           if (Navigator.of(context).canPop()) Navigator.pop(context);
           return;

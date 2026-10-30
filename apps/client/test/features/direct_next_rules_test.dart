@@ -1,3 +1,5 @@
+import 'package:trinktribunal/design/court_dialog.dart';
+
 import '../support/roster_setup.dart';
 
 import 'package:trinktribunal/design/hold_action_button.dart';
@@ -112,7 +114,7 @@ void main() {
         callback();
         callback();
         await tester.pumpAndSettle();
-        expect(find.byType(AlertDialog), findsNothing);
+        expect(find.byType(CourtDialog), findsNothing);
         expect(cards.state!.completedCases, 1);
         expect(
           cards.state!.lastCompletion,

@@ -82,9 +82,13 @@ class IllustratedPaper extends StatefulWidget {
     required this.height,
     required this.child,
     this.growToContent = false,
+    this.asset,
+    this.slice,
     super.key,
   });
   final bool growToContent;
+  final String? asset;
+  final Rect? slice;
   final bool rule;
   final double height;
   final Widget child;
@@ -114,8 +118,13 @@ class _IllustratedPaperState extends State<IllustratedPaper> {
     if (_bundle == bundle && _stream != null) return;
     _stream?.removeListener(_listener);
     _bundle = bundle;
-    _stream = (widget.rule ? PaperImages.ruleImage : PaperImages.caseImage)
-        .resolve(createLocalImageConfiguration(context));
+    _stream =
+        (widget.asset != null
+                ? AssetImage(widget.asset!)
+                : widget.rule
+                ? PaperImages.ruleImage
+                : PaperImages.caseImage)
+            .resolve(createLocalImageConfiguration(context));
     _stream!.addListener(_listener);
   }
 
@@ -128,7 +137,7 @@ class _IllustratedPaperState extends State<IllustratedPaper> {
   @override
   void didUpdateWidget(IllustratedPaper oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.rule != widget.rule) {
+    if (oldWidget.rule != widget.rule || oldWidget.asset != widget.asset) {
       final previous = _image;
       _image = null;
       if (previous != null) {
@@ -154,9 +163,11 @@ class _IllustratedPaperState extends State<IllustratedPaper> {
     final content = LayoutBuilder(
       builder: (context, constraints) {
         final image = _image?.image;
-        final slice = widget.rule
-            ? const Rect.fromLTRB(120, 400, 640, 800)
-            : const Rect.fromLTRB(150, 600, 870, 1100);
+        final slice =
+            widget.slice ??
+            (widget.rule
+                ? const Rect.fromLTRB(120, 400, 640, 800)
+                : const Rect.fromLTRB(150, 600, 870, 1100));
         return Stack(
           fit: widget.growToContent ? StackFit.loose : StackFit.expand,
           children: [

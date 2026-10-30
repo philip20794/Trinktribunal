@@ -11,6 +11,7 @@ import '../../l10n/app_strings.dart';
 import 'direct_join.dart';
 import 'invitation.dart';
 import 'invite.dart';
+import 'saved_rooms.dart';
 
 class JoinRoomScreen extends ConsumerStatefulWidget {
   const JoinRoomScreen({
@@ -71,6 +72,7 @@ class _JoinRoomScreenState extends ConsumerState<JoinRoomScreen> {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
+            const CurrentRoomResumeButtons(),
             if (widget.invalidInvite) const TText('roomInviteInvalid'),
             TextField(
               key: const ValueKey('room-code'),

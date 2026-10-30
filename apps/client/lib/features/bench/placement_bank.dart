@@ -39,7 +39,7 @@ class _PlacementBankState extends State<PlacementBank> {
   PlayerId? _selected;
   Timer? _edgeScroll;
   Offset? _dragPosition;
-  bool _dragging = false, _panelOpen = false;
+  bool _dragging = false, _panelOpen = false, _poolHidden = false;
 
   void _stopDrag() {
     _edgeScroll?.cancel();
@@ -222,11 +222,8 @@ class _PlacementBankState extends State<PlacementBank> {
       final height = bounds.hasBoundedHeight
           ? bounds.maxHeight
           : MediaQuery.sizeOf(context).height * .65;
-      const panelSpace = PlacementBank.panelWidth + 8;
-      final width = math.max(0.0, bounds.maxWidth - panelSpace);
-      final nameHeight = MediaQuery.textScalerOf(context).scale(12) * 2.4;
-      final numberHeight = MediaQuery.textScalerOf(context).scale(14) * 1.3;
-      final chrome = nameHeight + numberHeight + 18;
+      final width = bounds.maxWidth;
+      const chrome = 12.0;
       const ratio =
           TrinkAvatarRenderer.visibleHeight / TrinkAvatarRenderer.canvasWidth;
       final minCell = math.max(
@@ -273,7 +270,8 @@ class _PlacementBankState extends State<PlacementBank> {
               .compareTo(widget.profiles[b]!.player.name.toLowerCase());
           return result == 0 ? a.value.compareTo(b.value) : result;
         });
-      final collapsed = _dragging && !_panelOpen;
+      final collapsed =
+          (_dragging || unplaced.isEmpty || _poolHidden) && !_panelOpen;
       final duration = MediaQuery.disableAnimationsOf(context)
           ? Duration.zero
           : const Duration(milliseconds: 180);
@@ -284,7 +282,6 @@ class _PlacementBankState extends State<PlacementBank> {
           fit: StackFit.expand,
           children: [
             Positioned.fill(
-              right: panelSpace,
               child: Scrollbar(
                 controller: _seatsScroll,
                 child: GridView.builder(
@@ -297,13 +294,8 @@ class _PlacementBankState extends State<PlacementBank> {
                     mainAxisExtent: avatarSize * ratio + chrome,
                     crossAxisSpacing: 4,
                   ),
-                  itemBuilder: (context, index) => _seat(
-                    context,
-                    index,
-                    avatarSize,
-                    nameHeight,
-                    numberHeight,
-                  ),
+                  itemBuilder: (context, index) =>
+                      _seat(context, index, avatarSize),
                 ),
               ),
             ),
@@ -390,100 +382,100 @@ class _PlacementBankState extends State<PlacementBank> {
                 ),
               ),
             ),
+            Positioned(
+              top: 4,
+              right: 0,
+              child: Semantics(
+                button: true,
+                label: context.tr('placementPoolToggle'),
+                child: GestureDetector(
+                  key: const ValueKey('placement-pool-toggle'),
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => setState(() => _poolHidden = !_poolHidden),
+                  child: SizedBox(
+                    width: collapsed
+                        ? PlacementBank.collapsedPanelWidth
+                        : PlacementBank.panelWidth,
+                    height: 24,
+                    child: Icon(
+                      collapsed ? Icons.chevron_left : Icons.chevron_right,
+                      color: CourtSceneTokens.gold,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       );
     },
   );
-  Widget _seat(
-    BuildContext context,
-    int index,
-    double avatarSize,
-    double nameHeight,
-    double numberHeight,
-  ) => DragTarget<PlayerId>(
-    key: ValueKey('order-seat-$index'),
-    onWillAcceptWithDetails: (details) =>
-        widget.onPlace != null && widget.profiles.containsKey(details.data),
-    onAcceptWithDetails: (details) {
-      widget.onPlace?.call(details.data, index);
-      setState(() => _selected = null);
-    },
-    builder: (context, candidates, rejected) => InkWell(
-      onTap: _selected == null || widget.onPlace == null
-          ? null
-          : () {
-              widget.onPlace!(_selected!, index);
-              setState(() => _selected = null);
-            },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        decoration: BoxDecoration(
-          color: CourtSceneTokens.panel.withValues(alpha: .45),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: candidates.isNotEmpty
-                ? CourtSceneTokens.gold
-                : CourtSceneTokens.gold.withValues(alpha: .35),
-          ),
-        ),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Column(
+  Widget _seat(BuildContext context, int index, double avatarSize) =>
+      DragTarget<PlayerId>(
+        key: ValueKey('order-seat-$index'),
+        onWillAcceptWithDetails: (details) =>
+            widget.onPlace != null && widget.profiles.containsKey(details.data),
+        onAcceptWithDetails: (details) {
+          widget.onPlace?.call(details.data, index);
+          setState(() => _selected = null);
+        },
+        builder: (context, candidates, rejected) => InkWell(
+          onTap: _selected == null || widget.onPlace == null
+              ? null
+              : () {
+                  widget.onPlace!(_selected!, index);
+                  setState(() => _selected = null);
+                },
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            decoration: BoxDecoration(
+              color: CourtSceneTokens.panel.withValues(alpha: .45),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: candidates.isNotEmpty
+                    ? CourtSceneTokens.gold
+                    : CourtSceneTokens.gold.withValues(alpha: .35),
+              ),
+            ),
+            child: Stack(
+              fit: StackFit.expand,
               children: [
-                SizedBox(
-                  height: numberHeight,
-                  child: Text(
-                    '${index + 1}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      height: 1.3,
-                      color: CourtSceneTokens.gold,
-                    ),
-                  ),
-                ),
-                Expanded(
+                Center(
                   child: widget.slots[index] != null
-                      ? Center(child: _person(widget.slots[index]!, avatarSize))
+                      ? _person(widget.slots[index]!, avatarSize)
                       : const Icon(
                           Icons.person_outline,
                           color: CourtSceneTokens.gold,
                         ),
                 ),
-                SizedBox(
-                  height: nameHeight,
-                  child: widget.slots[index] != null
-                      ? _name(widget.slots[index]!)
-                      : const SizedBox.shrink(),
-                ),
-              ],
-            ),
-            if (widget.slots[index] != null)
-              Positioned(
-                top: 0,
-                right: 0,
-                child: SizedBox.square(
-                  dimension: 48,
-                  child: IconButton(
-                    key: ValueKey('remove-seat-$index'),
-                    alignment: Alignment.topRight,
-                    padding: const EdgeInsets.all(3),
-                    tooltip: context.tr('removeFromSeat'),
-                    onPressed: widget.onPlace == null
-                        ? null
-                        : () => widget.onRemove(widget.slots[index]!),
-                    icon: const Icon(
-                      Icons.close,
-                      size: 16,
-                      color: CourtSceneTokens.cream,
+                Positioned(
+                  top: 4,
+                  left: 4,
+                  child: IgnorePointer(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: CourtSceneTokens.panel,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${index + 1}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: CourtSceneTokens.gold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-          ],
+              ],
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }

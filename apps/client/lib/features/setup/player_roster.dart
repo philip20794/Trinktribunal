@@ -10,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/local_data_providers.dart';
 import '../../application/roster_controller.dart';
-import '../../design/avatar_view.dart';
 import '../../domain/avatar_config.dart';
 import '../../domain/selection/random_source.dart';
 import '../../domain/user_profile.dart';
@@ -19,6 +18,7 @@ import '../../data/catalogs/catalog_repository.dart';
 import '../handoff/shared_game_screen.dart';
 import 'card_mode_screen.dart';
 import '../profile/profile_screen.dart';
+import '../bench/roster_grid.dart';
 
 /// Reuses the profile editor while keeping local player IDs unchanged.
 Future<List<UserProfile>?> editLocalPerson(
@@ -234,143 +234,93 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
             child: const TText('rosterReload'),
           ),
         ),
-        data: (controller) => ReorderableListView(
-          padding: const EdgeInsets.all(16),
-          buildDefaultDragHandles: false,
-          onReorderItem: (from, to) => _act(() => controller.move(from, to)),
-          header: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (widget.allowStart && existing == null) ...[
-                OutlinedButton.icon(
-                  onPressed: _busy ? null : _options,
-                  icon: const Icon(Icons.tune),
-                  label: const TText('localGameOptions'),
-                ),
-                const SizedBox(height: 20),
-              ],
-              Text(
-                context.tr('rosterCount', {'count': controller.members.length}),
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      key: const ValueKey('quick-player-name'),
-                      controller: _name,
-                      focusNode: _nameFocus,
-                      enabled: !_busy && controller.members.length < 20,
-                      textCapitalization: TextCapitalization.words,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                        labelText: context.tr('playerName'),
+        data: (controller) => CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.all(12),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (widget.allowStart && existing == null) ...[
+                      OutlinedButton.icon(
+                        onPressed: _busy ? null : _options,
+                        icon: const Icon(Icons.tune),
+                        label: const TText('localGameOptions'),
                       ),
-                      onSubmitted: (_) => _add(controller),
+                      const SizedBox(height: 20),
+                    ],
+                    Text(
+                      context.tr('rosterCount', {
+                        'count': controller.members.length,
+                      }),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton.filled(
-                    tooltip: context.tr('rosterAdd'),
-                    onPressed: !_busy && controller.members.length < 20
-                        ? () => _add(controller)
-                        : null,
-                    icon: const Icon(Icons.add),
-                  ),
-                ],
-              ),
-              if (controller.error != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: StatusNotice(context.feedback(controller.error!)),
-                ),
-              if (controller.members.isEmpty)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
-                  child: TText('rosterEmpty'),
-                ),
-              if (catalogs.hasError)
-                TextButton(
-                  onPressed: () => ref.invalidate(catalogsProvider),
-                  child: const TText('retryCases'),
-                ),
-              const SizedBox(height: 12),
-            ],
-          ),
-          children: [
-            for (var index = 0; index < controller.members.length; index++)
-              Dismissible(
-                key: ValueKey(controller.members[index].player.id),
-                direction:
-                    _busy ||
-                        controller.isOwner(controller.members[index].player.id)
-                    ? DismissDirection.none
-                    : DismissDirection.horizontal,
-                dismissThresholds: const {
-                  DismissDirection.startToEnd: .6,
-                  DismissDirection.endToStart: .6,
-                },
-                background: _deleteBackground(Alignment.centerLeft),
-                secondaryBackground: _deleteBackground(Alignment.centerRight),
-                confirmDismiss: (_) =>
-                    _remove(controller, controller.members[index], index),
-                child: Card(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 2,
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            key: const ValueKey('quick-player-name'),
+                            controller: _name,
+                            focusNode: _nameFocus,
+                            enabled: !_busy && controller.members.length < 20,
+                            textCapitalization: TextCapitalization.words,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              labelText: context.tr('playerName'),
+                            ),
+                            onSubmitted: (_) => _add(controller),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton.filled(
+                          tooltip: context.tr('rosterAdd'),
+                          onPressed: !_busy && controller.members.length < 20
+                              ? () => _add(controller)
+                              : null,
+                          icon: const Icon(Icons.add),
+                        ),
+                      ],
                     ),
-                    leading: SizedBox.square(
-                      dimension: 40,
-                      child: AvatarView(
-                        config: controller.members[index].avatar,
-                        size: 40,
-                      ),
-                    ),
-                    subtitle:
-                        controller.isOwner(controller.members[index].player.id)
-                        ? const TText('ownPlayer')
-                        : null,
-                    title: Text(
-                      controller.members[index].player.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: _busy
-                        ? null
-                        : () => _edit(controller, controller.members[index]),
-                    trailing: ReorderableDragStartListener(
-                      index: index,
-                      enabled: !_busy,
-                      child: Tooltip(
-                        message: context.tr('reorderPlayer'),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Icon(Icons.drag_handle),
+                    if (controller.error != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: StatusNotice(
+                          context.feedback(controller.error!),
                         ),
                       ),
-                    ),
-                  ),
+                    if (controller.members.isEmpty)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: TText('rosterEmpty'),
+                      ),
+                    if (catalogs.hasError)
+                      TextButton(
+                        onPressed: () => ref.invalidate(catalogsProvider),
+                        child: const TText('retryCases'),
+                      ),
+                    const SizedBox(height: 12),
+                  ],
                 ),
               ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              sliver: RosterGrid(
+                members: controller.members,
+                enabled: !_busy,
+                onMove: (from, to) => _act(() => controller.move(from, to)),
+                onEdit: (member) => _edit(controller, member),
+                onRemove: (member, index) => _remove(controller, member, index),
+                isOwner: controller.isOwner,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-
-  Widget _deleteBackground(Alignment alignment) => Container(
-    margin: const EdgeInsets.only(bottom: 8),
-    alignment: alignment,
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    decoration: BoxDecoration(
-      color: CourtSceneTokens.crimson,
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: const Icon(Icons.delete_outline, color: CourtSceneTokens.cream),
-  );
 }
 
 class LocalGameOptionsScreen extends StatefulWidget {

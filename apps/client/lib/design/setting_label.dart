@@ -1,3 +1,5 @@
+import 'court_dialog.dart';
+
 import 'package:flutter/material.dart';
 
 import '../l10n/app_strings.dart';
@@ -15,7 +17,7 @@ class SettingLabel extends StatelessWidget {
         tooltip: context.tr(helpKey),
         onPressed: () => showDialog<void>(
           context: context,
-          builder: (context) => AlertDialog(
+          builder: (context) => CourtDialog(
             content: TText(helpKey),
             actions: [
               TextButton(

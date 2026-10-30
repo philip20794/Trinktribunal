@@ -1,5 +1,13 @@
 # Fortschritt und Übergabe
 
+## Speichern, lokale Avatar-Raster und Pergamentdialoge, 30.10.2026
+
+Lokal umgesetzt: automatische Rückkehr nach Profilspeichern mit kleinem transparentem Hinweis unten rechts; Avatar-Auswahl überdeckt die Speicherleiste. Karten- und Ein-Handy-Einrichtung verwenden sortierbare Avatar-Raster. Gemeinsame Pergamentdialoge mit neuer PNG, X und responsiven Aktionen. 683 Flutter-Tests plus zusätzlicher gezielter Online-Speichertest erfolgreich, 164 Node-Tests, Analyze/Format und Web-Release-Build erfolgreich. [Details und Prüfgrenzen](qa/home-courtroom-design.md). Noch nicht gepusht.
+
+## Kartenanimation, Raumrückkehr und Platzierungsbank, 30.10.2026
+
+Lokal überarbeitet: sanfter 650-ms-Blattwechsel, symmetrisches Zurückdrehen der Geheimzahl, Wiedereinstieg in bestehende Online-Räume über Erstellungsdialog und Beitrittsseite. Zusätzliche Antwort-/Gerichtssaalbuttons entfernt; volle Rasterbreite, schwebendes einklappbares Personenpanel und kompakte Plätze ohne doppelte Namen oder X. Fokus-/Broadcast-Unterbrechungen beim Halten korrigiert. 679 Flutter-/164 Node-Tests erfolgreich, Analyze/Format ohne Befund. [Details](qa/home-courtroom-design.md). Noch nicht gepusht.
+
 ## Home-Aktionen, Modusauswahl und Codemagic-Befund, 30.10.2026
 
 Lokal umgesetzt: zwei große Hauptaktionen für neues Spiel und Raumcode-Beitritt; deutlich sichtbare Spielregeln mit Buch-Icon. Neue geordnete Modusauswahl mit abgesetzten Voraussetzungen, bestehende lokale Wiederaufnahme erhalten. Der fehlgeschlagene Codemagic-Lauf zu `d34f084` ist im unveränderten LF-Git-Export auf ein fehlendes UI-Inventar zurückgeführt und lokal korrigiert. 676 Flutter-/164 Node-Tests erfolgreich; Node-Gate auch im frischen Git-Export geprüft. Cloudflare-Produktionsbuilds sind deaktiviert, der Eintrag zum letzten Push hat keine gestartete Build-Stufe. Parallel hinzugefügte PNG-Dateien sind noch separat zu inventarisieren. [Prüfbeleg und Grenzen](qa/home-navigation-and-ci.md). Noch nicht gepusht.

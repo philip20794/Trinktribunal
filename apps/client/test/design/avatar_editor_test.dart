@@ -1,3 +1,4 @@
+import 'package:trinktribunal/design/court_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,7 +79,7 @@ void main() {
       (size: const Size(844, 390), lang: 'en'),
     ]) {
       testWidgets(
-        'sheet follows the board and save stays free: ${scenario.size}/${scenario.lang}/$scale',
+        'sheet follows the board and covers save: ${scenario.size}/${scenario.lang}/$scale',
         (tester) async {
           addTearDown(() => tester.binding.setSurfaceSize(null));
           await host(tester, scenario.size, scale, scenario.lang);
@@ -110,9 +111,7 @@ void main() {
           expect(sheetRect.top, closeTo(currentBoard.top, 1));
           expect(
             sheetRect.bottom,
-            lessThanOrEqualTo(
-              tester.getRect(find.byType(CourtPrimaryButton)).top,
-            ),
+            greaterThan(tester.getRect(find.byType(CourtPrimaryButton)).top),
           );
           expect(tester.getRect(preview).top, lessThan(sheetRect.top));
           expect(find.byType(DropdownButtonFormField<String>), findsNothing);
@@ -145,6 +144,9 @@ void main() {
             'avatar-sheet-${scenario.size.width.toInt()}-${scale.toInt()}',
           );
           final save = find.text(AppStrings(scenario.lang).get('profileSave'));
+          expect(save.hitTestable(), findsNothing);
+          await tester.tap(key('avatar-sheet-close'));
+          await tester.pumpAndSettle();
           expect(save.hitTestable(), findsOneWidget);
           await tester.tap(save);
           await tester.pumpAndSettle();
@@ -185,8 +187,10 @@ void main() {
       final current = tester.widget<AvatarView>(preview).config['skinColor'];
       expect(current, isNot(hue));
       expect(sheet, findsOneWidget);
-      expect(find.byType(AlertDialog), findsNothing);
+      expect(find.byType(CourtDialog), findsNothing);
       await renderEditor(tester, 'avatar-colour-sheet');
+      await tester.tap(key('avatar-sheet-close'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text(const AppStrings('de').get('profileSave')));
       await tester.pumpAndSettle();
       final container = ProviderScope.containerOf(

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_strings.dart';
 import 'illustrated_paper.dart';
+import 'court_scene.dart';
+import 'court_assets.dart';
 import 'private_number.dart';
 import '../domain/avatar_config.dart';
 
@@ -117,6 +119,7 @@ class _FlipCaseState extends State<FlipCase>
   @override
   void didUpdateWidget(FlipCase oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.number == widget.number) return;
     if (widget.number == null) {
       _turn.reverse();
     } else {
@@ -139,16 +142,21 @@ class _FlipCaseState extends State<FlipCase>
         alignment: Alignment.center,
         transform: Matrix4.identity()
           ..setEntry(3, 2, .001)
-          ..rotateY(math.pi * _turn.value),
+          ..rotateY(math.pi * Curves.easeInOut.transform(_turn.value)),
         child: back
             ? Transform(
                 alignment: Alignment.center,
                 transform: Matrix4.rotationY(math.pi),
-                child: SecretNumberFace(
-                  number: widget.number,
-                  ownerName: widget.ownerName,
-                  ownerAvatar: widget.ownerAvatar,
-                ),
+                child: widget.number == null
+                    ? const CourtArt(
+                        CourtAssets.secretPaper,
+                        fit: BoxFit.contain,
+                      )
+                    : SecretNumberFace(
+                        number: widget.number,
+                        ownerName: widget.ownerName,
+                        ownerAvatar: widget.ownerAvatar,
+                      ),
               )
             : widget.front,
       );

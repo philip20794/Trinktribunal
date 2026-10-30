@@ -22,7 +22,7 @@ void main() {
           label = AppStrings('de').get('roomClose');
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
-      await tester.tap(find.text(AppStrings('de').get('cancel')));
+      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<CloseRoomMessage>(), isEmpty);
       await tester.binding.handlePopRoute();

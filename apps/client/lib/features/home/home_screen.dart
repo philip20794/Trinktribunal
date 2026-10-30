@@ -1,3 +1,5 @@
+import '../../design/court_dialog.dart';
+
 import 'dart:math' as math;
 
 import 'package:flutter/services.dart';
@@ -76,15 +78,11 @@ class HomeScreen extends ConsumerWidget {
       if (phase != null && phase != domain.GamePhase.finished) {
         final choice = await showDialog<bool>(
           context: context,
-          builder: (context) => AlertDialog(
+          builder: (context) => CourtDialog(
             scrollable: true,
             title: const TText('resumeGameTitle'),
             content: const TText('resumeGameBody'),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const TText('cancel'),
-              ),
               OutlinedButton(
                 onPressed: () => Navigator.pop(context, false),
                 child: const TText('resumeGame'),
@@ -211,15 +209,10 @@ class HomeScreen extends ConsumerWidget {
                                   onPressed: () async {
                                     final confirmed = await showDialog<bool>(
                                       context: context,
-                                      builder: (context) => AlertDialog(
+                                      builder: (context) => CourtDialog(
                                         title: const TText('homeDiscardTitle'),
                                         content: const TText('homeKeepProfile'),
                                         actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, false),
-                                            child: const TText('cancel'),
-                                          ),
                                           FilledButton(
                                             onPressed: () =>
                                                 Navigator.pop(context, true),

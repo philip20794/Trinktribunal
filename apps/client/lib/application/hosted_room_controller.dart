@@ -49,14 +49,16 @@ class HostedRoomController {
           temporary.add(room);
           await room.resume(credential);
         }
-        final state = await room.states
-            .firstWhere(
-              (s) =>
-                  s.status == RoomConnectionStatus.online ||
-                  s.status == RoomConnectionStatus.error ||
-                  s.status == RoomConnectionStatus.closed,
-            )
-            .timeout(const Duration(seconds: 12));
+        final state = room.state.status == RoomConnectionStatus.online
+            ? room.state
+            : await room.states
+                  .firstWhere(
+                    (s) =>
+                        s.status == RoomConnectionStatus.online ||
+                        s.status == RoomConnectionStatus.error ||
+                        s.status == RoomConnectionStatus.closed,
+                  )
+                  .timeout(const Duration(seconds: 12));
         final snapshot = state.snapshot;
         if (snapshot == null) {
           if ([

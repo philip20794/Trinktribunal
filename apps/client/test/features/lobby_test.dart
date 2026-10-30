@@ -369,7 +369,7 @@ void main() {
       await tester.tap(find.text('Teilnehmer entfernen'));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<KickMessage>(), isEmpty);
-      await tester.tap(find.text('Abbrechen'));
+      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<KickMessage>(), isEmpty);
       await Scrollable.ensureVisible(

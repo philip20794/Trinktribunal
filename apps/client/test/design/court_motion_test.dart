@@ -27,15 +27,7 @@ void main() {
       await tester.tap(find.text('Continue'));
       expect(taps, 1);
       await tester.pump(const Duration(milliseconds: 220));
-      final transform = tester.widget<Transform>(
-        find
-            .descendant(
-              of: find.byType(CourtMotion),
-              matching: find.byType(Transform),
-            )
-            .first,
-      );
-      expect(transform.transform.storage[13], 0);
+      expect(find.byType(AnimatedSwitcher), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );

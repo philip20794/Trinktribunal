@@ -151,8 +151,8 @@ void main() {
           container.read(profileProvider).requireValue.profile!.player.name,
           name,
         );
-        await tester.tap(find.byType(BackButton));
-        await tester.pumpAndSettle();
+        expect(find.byType(ProfileScreen), findsNothing);
+        expect(find.text(strings.get('savedNotice')), findsOneWidget);
         await tester.tap(find.byTooltip(strings.get('openProfile')));
         await tester.pumpAndSettle();
         // Name entry is now fixed above the scrolling avatar options.

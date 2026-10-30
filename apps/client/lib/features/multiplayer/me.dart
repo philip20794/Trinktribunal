@@ -9,30 +9,69 @@ import '../../l10n/app_strings.dart';
 import 'invitation.dart';
 import 'pending_profile.dart';
 import '../../design/court_scene.dart';
+import '../../design/saved_notice.dart';
+import '../../application/online_profile_controller.dart';
 
-class RoomProfileScreen extends ConsumerWidget {
+class RoomProfileScreen extends ConsumerStatefulWidget {
   const RoomProfileScreen({super.key});
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final editor = ref.watch(onlineProfileProvider);
-    return CourtScaffold(
-      title: const TText('profileTitle'),
-      body: const RoomMe(),
-      footer: CourtActionBar(
-        primary: ListenableBuilder(
-          listenable: editor,
-          builder: (context, _) => FilledButton(
-            onPressed: editor.available && editor.dirty && !editor.saving
-                ? editor.flush
-                : null,
-            child: TText(
-              editor.saving ? 'roomProfileSaving' : 'roomProfileFlush',
-            ),
+  ConsumerState<RoomProfileScreen> createState() => _RoomProfileScreenState();
+}
+
+class _RoomProfileScreenState extends ConsumerState<RoomProfileScreen> {
+  late final OnlineProfileController _editor;
+  bool _waiting = false;
+  @override
+  void initState() {
+    super.initState();
+    _editor = ref.read(onlineProfileProvider)..addListener(_saved);
+  }
+
+  @override
+  void dispose() {
+    _editor.removeListener(_saved);
+    super.dispose();
+  }
+
+  void _saved() {
+    if (!_waiting || !mounted) return;
+    if (_editor.errorCode != null) {
+      _waiting = false;
+      return;
+    }
+    if (_editor.dirty || _editor.saving) return;
+    _waiting = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      showSavedNotice(context);
+      Navigator.of(context).maybePop();
+    });
+    WidgetsBinding.instance.ensureVisualUpdate();
+  }
+
+  @override
+  Widget build(BuildContext context) => CourtScaffold(
+    title: const TText('profileTitle'),
+    body: const RoomMe(),
+    footer: CourtActionBar(
+      primary: ListenableBuilder(
+        listenable: _editor,
+        builder: (context, _) => FilledButton(
+          onPressed: _editor.available && !_editor.saving
+              ? () {
+                  FocusScope.of(context).unfocus();
+                  _waiting = true;
+                  _editor.flush();
+                  _saved();
+                }
+              : null,
+          child: TText(
+            _editor.saving ? 'roomProfileSaving' : 'roomProfileFlush',
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class RoomMe extends ConsumerStatefulWidget {

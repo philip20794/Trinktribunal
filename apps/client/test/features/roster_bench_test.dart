@@ -1,3 +1,4 @@
+import 'package:trinktribunal/features/bench/roster_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -144,7 +145,7 @@ void main() {
 
   for (final language in ['de', 'en']) {
     testWidgets(
-      'compact roster quick add, reorder, edit, swipe and undo, $language',
+      'avatar grid quick add, reorder, edit, remove and undo, $language',
       (tester) async {
         final strings = AppStrings(language);
         await tester.pumpWidget(
@@ -172,9 +173,7 @@ void main() {
         final owner = roster.members.first;
         expect(roster.isOwner(owner.player.id), isTrue);
         final before = roster.members.skip(1).map((p) => p.player.id).toList();
-        tester
-            .widget<ReorderableListView>(find.byType(ReorderableListView))
-            .onReorderItem!(1, 3);
+        tester.widget<RosterGrid>(find.byType(RosterGrid)).onMove(1, 3);
         await tester.pumpAndSettle();
         expect(roster.members.map((p) => p.player.id), [
           owner.player.id,
@@ -185,7 +184,7 @@ void main() {
         final row = find.byKey(ValueKey(before[0]));
         await showInScroll(tester, row);
         await tester.tap(
-          find.descendant(of: row, matching: find.byType(ListTile)),
+          find.descendant(of: row, matching: find.byType(InkWell)).first,
         );
         await tester.pumpAndSettle();
         await tester.enterText(
@@ -198,7 +197,11 @@ void main() {
         final person = roster.members[1];
         final deleteRow = find.byKey(ValueKey(person.player.id));
         await showInScroll(tester, deleteRow);
-        await tester.drag(deleteRow, const Offset(700, 0));
+        await tester.tap(
+          find.byKey(ValueKey('roster-menu-${person.player.id.value}')),
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(strings.get('rosterRemove')));
         await tester.pumpAndSettle();
         expect(
           roster.members.any((p) => p.player.id == person.player.id),

@@ -69,6 +69,7 @@ flutter:
     - assets/catalogs/rules/
     - assets/ui/courtroom/backgrounds/courtroom_wood_wall.png
     - assets/ui/courtroom/backgrounds/home_courtroom.png
+    - assets/ui/courtroom/illustrations/trinktribunal_pergament_popup.png
     - assets/ui/courtroom/illustrations/home_waage_pergament.png
     - assets/ui/courtroom/illustrations/modus_karten_ziehen.png
     - assets/ui/courtroom/illustrations/modus_handy_herumreichen.png

@@ -227,7 +227,8 @@
     {
       "id": "people",
       "files": [
-        "apps/client/lib/features/setup/player_roster.dart"
+        "apps/client/lib/features/setup/player_roster.dart",
+        "apps/client/lib/features/bench/roster_grid.dart"
       ],
       "modes": [
         "shared_phone"
@@ -256,7 +257,8 @@
         "apps/client/test/application/roster_controller_test.dart",
         "apps/client/test/accessibility/screen_matrix_test.dart",
         "apps/client/test/features/roster_bench_test.dart",
-        "apps/client/test/features/shared_setup_flow_test.dart"
+        "apps/client/test/features/shared_setup_flow_test.dart",
+        "apps/client/test/features/roster_grid_layout_test.dart"
       ],
       "targetTask": "TT-074",
       "implementation": {
@@ -538,7 +540,8 @@
       ],
       "tests": [
         "apps/client/test/features/room_entry_test.dart",
-        "apps/client/test/features/online_court_actions_test.dart"
+        "apps/client/test/features/online_court_actions_test.dart",
+        "apps/client/test/features/room_return_test.dart"
       ],
       "targetTask": "TT-077",
       "implementation": {
@@ -1655,20 +1658,20 @@
     },
     {
       "path": "apps/client/assets/ui/courtroom/illustrations/home_waage_pergament.png",
-      "width": 1495,
-      "height": 1018,
+      "width": 1520,
+      "height": 1035,
       "alpha_min": 0,
-      "alpha_max": 254,
-      "transparent_pixels": 645708,
-      "nonopaque_pixels": 1521910,
+      "alpha_max": 255,
+      "transparent_pixels": 670083,
+      "nonopaque_pixels": 1571955,
       "alpha_bbox": [
-        12,
-        12,
-        1489,
-        1008
+        10,
+        10,
+        1506,
+        1019
       ],
-      "bytes": 1972235,
-      "sha256": "f12d66d9d8f13f602029ce66bc57c74744e7b3b312d88f30baafc5b91d65db2c",
+      "bytes": 1654026,
+      "sha256": "dbc82bdae838f49bf5359e7635eec5b46cafba8008242175f9c679bf43f082fa",
       "review": "candidate",
       "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
     },
@@ -1823,6 +1826,25 @@
       "sha256": "40d938fd96b3c1c27eaf5ea0e833e1ff924c27353f67f1257c451187d053c8d9",
       "review": "candidate",
       "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/trinktribunal_pergament_popup.png",
+      "review": "candidate",
+      "notes": "User-provided parchment popup; rendered with preserved ornamental edges and dynamic content.",
+      "width": 900,
+      "height": 1400,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 398940,
+      "nonopaque_pixels": 1259111,
+      "alpha_bbox": [
+        15,
+        34,
+        885,
+        1366
+      ],
+      "bytes": 1481373,
+      "sha256": "f98ab658e36a0a47e8017f17613929dd0a849bd965fe7e6a972c5a430249b368"
     }
   ],
   "redesign": {

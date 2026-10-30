@@ -126,7 +126,12 @@ class _HoldActionButtonState extends State<HoldActionButton>
         focusNode: widget.focusNode ?? _localFocus,
         canRequestFocus: enabled,
         onFocusChange: (focused) {
-          if (!focused) _release();
+          // Pointer capture remains active when focus moves independently.
+          // A modal route still cancels the hold to conceal private values.
+          if (!focused &&
+              (_key != null || ModalRoute.of(context)?.isCurrent == false)) {
+            _release();
+          }
         },
         onKeyEvent: (_, event) {
           final key = event.logicalKey;

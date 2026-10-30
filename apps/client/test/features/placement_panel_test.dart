@@ -130,6 +130,12 @@ void main() {
       );
       expect(find.byType(AvatarView), findsOneWidget);
       expect(keyed('unplaced-p1'), findsNothing);
+      expect(keyed('remove-seat-0'), findsNothing);
+      expect(find.text('anna'), findsOneWidget);
+      expect(
+        tester.getSize(find.byType(GridView)).width,
+        tester.getSize(find.byType(PlacementBank)).width,
+      );
       expect(tester.takeException(), isNull);
     },
   );

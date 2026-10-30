@@ -1,3 +1,4 @@
+import '../../design/court_dialog.dart';
 import '../rules/active_rules_sheet.dart';
 import '../../design/status_notice.dart';
 
@@ -121,14 +122,10 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     try {
       return await showDialog<bool>(
             context: context,
-            builder: (context) => AlertDialog(
+            builder: (context) => CourtDialog(
               title: Text(title),
               content: Text(description),
               actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const TText('cancel'),
-                ),
                 FilledButton(
                   onPressed: () => Navigator.pop(context, true),
                   child: const TText('confirm'),

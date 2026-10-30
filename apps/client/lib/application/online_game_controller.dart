@@ -13,7 +13,26 @@ final class OnlineGameController extends ChangeNotifier {
     : _newId = newId ?? newRoomRequestId {
     _subscription = room.states.listen((_) {
       if (_disposed) return;
-      _visible = false;
+      final held = _visibleSnapshot, next = snapshot;
+      final sameCard =
+          held != null &&
+          next != null &&
+          held.roomId == next.roomId &&
+          held.you == next.you &&
+          held.public.gameId == next.public.gameId &&
+          held.public.roundId == next.public.roundId &&
+          held.private.ownNumber == next.private.ownNumber &&
+          held.public.question?.contentId == next.public.question?.contentId &&
+          mapEquals(
+            held.public.question?.bindings.values,
+            next.public.question?.bindings.values,
+          ) &&
+          ['numbers', 'answers', 'ordering'].contains(next.public.phase);
+      // Readiness broadcasts from other players must not interrupt a held number.
+      if (!sameCard) {
+        _visible = false;
+        _visibleSnapshot = null;
+      }
       _ackPending = false;
       _pending.clear();
       notifyListeners();
@@ -22,6 +41,7 @@ final class OnlineGameController extends ChangeNotifier {
   final RoomController room;
   final String Function() _newId;
   late final StreamSubscription<RoomSessionState> _subscription;
+  SnapshotMessage? _visibleSnapshot;
   bool _visible = false, _ackPending = false, _disposed = false;
   final Set<String> _pending = {};
   bool pending(String action) => _pending.contains(action);
@@ -84,6 +104,7 @@ final class OnlineGameController extends ChangeNotifier {
       false;
   void revealOwnNumber() {
     if (snapshot?.private.ownNumber == null) return;
+    _visibleSnapshot = snapshot;
     _visible = true;
     notifyListeners();
   }
@@ -91,6 +112,7 @@ final class OnlineGameController extends ChangeNotifier {
   void hideSecret() {
     if (!_visible) return;
     _visible = false;
+    _visibleSnapshot = null;
     notifyListeners();
   }
 

@@ -1,3 +1,6 @@
+import 'package:trinktribunal/domain/models/ids.dart';
+import 'package:trinktribunal/design/court_dialog.dart';
+
 import '../support/hold_action.dart';
 
 import 'dart:convert';
@@ -101,9 +104,9 @@ void main() {
           strings.get(cardMode ? 'modeCards' : 'modePhone'),
         );
         await tapVisible(tester, entry);
-        expect(find.byType(AlertDialog), findsOneWidget);
+        expect(find.byType(CourtDialog), findsOneWidget);
         await reviewImage(tester, 'phone-resume-$cardMode');
-        await tester.tap(find.text(strings.get('cancel')));
+        await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
         await tester.pumpAndSettle();
         expect(cards.state!.currentEventId, cardId);
         expect(phone.view!.roundId, phoneId);
@@ -213,7 +216,7 @@ void main() {
   }
 
   testWidgets(
-    'actual drag handle reorders compact rows without changing identities',
+    'actual avatar drag reorders the grid without changing identities',
     (tester) async {
       await host(tester, const PlayerRosterScreen(allowStart: false), 'de');
       final container = ProviderScope.containerOf(
@@ -233,18 +236,12 @@ void main() {
       final before = roster.members.toList();
       final handle = find.descendant(
         of: find.byKey(ValueKey(before.first.player.id)),
-        matching: find.byType(ReorderableDragStartListener),
+        matching: find.byType(LongPressDraggable<PlayerId>),
       );
       final target = find.byKey(ValueKey(before.last.player.id));
       final gesture = await tester.startGesture(tester.getCenter(handle));
-      await gesture.moveBy(const Offset(0, 5));
-      await tester.pump(const Duration(milliseconds: 300));
-      await gesture.moveTo(
-        Offset(
-          tester.getCenter(handle).dx,
-          tester.getBottomRight(target).dy + 80,
-        ),
-      );
+      await tester.pump(const Duration(milliseconds: 200));
+      await gesture.moveTo(tester.getCenter(target));
       await tester.pump(const Duration(milliseconds: 500));
       await gesture.up();
       await tester.pumpAndSettle();
@@ -259,7 +256,7 @@ void main() {
   );
 
   testWidgets(
-    'failed swipe retains its row; successful deletion offers undo for three seconds',
+    'failed grid deletion retains its person; successful deletion offers undo',
     (tester) async {
       await host(tester, const PlayerRosterScreen(allowStart: false), 'de');
       final container = ProviderScope.containerOf(
@@ -277,18 +274,20 @@ void main() {
       final person = roster.members.last;
       final storage = container.read(stringStoreProvider) as MemoryStringStore;
       storage.failWrite = true;
-      await tester.drag(
-        find.byKey(ValueKey(person.player.id)),
-        const Offset(500, 0),
+      await tester.tap(
+        find.byKey(ValueKey('roster-menu-${person.player.id.value}')),
       );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(const AppStrings('de').get('rosterRemove')));
       await tester.pumpAndSettle();
       expect(roster.members.last.player.id, person.player.id);
       expect(find.text('Rückgängig'), findsNothing);
       storage.failWrite = false;
-      await tester.drag(
-        find.byKey(ValueKey(person.player.id)),
-        const Offset(-500, 0),
+      await tester.tap(
+        find.byKey(ValueKey('roster-menu-${person.player.id.value}')),
       );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(const AppStrings('de').get('rosterRemove')));
       await tester.pumpAndSettle();
       expect(roster.members, hasLength(1));
       expect(roster.isOwner(roster.members.single.player.id), isTrue);

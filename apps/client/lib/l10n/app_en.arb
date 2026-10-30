@@ -624,5 +624,8 @@
   "replaceHostedRoomHelp": "You still own room {codes}. Creating a new room deletes your previous room for everyone.",
   "replaceHostedRoomConfirm": "Delete room and create new",
   "rulesAllJudgesSummary": "Everyone sets their own order.",
-  "rulesExtraSummary": "New rules apply immediately."
+  "rulesExtraSummary": "New rules apply immediately.",
+  "roomReturnActive": "Return to your round ({code})",
+  "placementPoolToggle": "Expand or collapse people panel",
+  "savedNotice": "Saved"
 }

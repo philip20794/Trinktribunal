@@ -179,7 +179,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Fall ohne Urteil abschließen'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Abbrechen'));
+      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<CompleteWithoutVerdictMessage>(), isEmpty);
       await tester.tap(find.byTooltip('Partieoptionen'));

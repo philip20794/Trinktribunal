@@ -1,3 +1,5 @@
+import 'package:trinktribunal/design/court_dialog.dart';
+
 import '../support/roster_setup.dart';
 import '../support/hold_action.dart';
 
@@ -109,7 +111,7 @@ void main() {
             cards.state!.judge,
             cards.state!.roster[cards.state!.completedCases % 3],
           );
-          expect(find.byType(AlertDialog), findsNothing);
+          expect(find.byType(CourtDialog), findsNothing);
           expect(tester.takeException(), isNull);
         }
 
