@@ -122,6 +122,10 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           final controller = ref.watch(localSessionProvider);
           final state = controller.state;
           if (state == null) return const SizedBox.shrink();
+          final content = Column(
+            mainAxisSize: MainAxisSize.min,
+            children: _game(context, controller, state),
+          );
           return CaseStage(
             judge: state.judge == null
                 ? null
@@ -155,10 +159,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                         StatusNotice(context.feedback(_error!)),
                     ],
                   ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: _game(context, controller, state),
-            ),
+            child: state.phase == GamePhase.finished
+                ? SingleChildScrollView(child: content)
+                : content,
           );
         },
       ),

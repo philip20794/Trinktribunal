@@ -42,15 +42,18 @@ class CaseStage extends StatelessWidget {
                 ),
               ),
             Expanded(
-              child: LayoutBuilder(
-                builder: (context, bounds) => FlipCase(
-                  number: number,
-                  front: CasePaperScope(
-                    maxHeight: bounds.maxHeight,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(width: bounds.maxWidth, child: child),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: LayoutBuilder(
+                  builder: (context, bounds) => FlipCase(
+                    number: number,
+                    front: CasePaperScope(
+                      maxHeight: bounds.maxHeight,
+                      child: SizedBox(
+                        width: bounds.maxWidth,
+                        height: bounds.maxHeight,
+                        child: child,
+                      ),
                     ),
                   ),
                 ),

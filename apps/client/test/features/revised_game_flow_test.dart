@@ -252,9 +252,20 @@ void main() {
             paperBounds.bottom,
             lessThanOrEqualTo(stageBounds.bottom + .1),
           );
+          // At the readable minimum only the question can scroll; the footer
+          // and card itself stay fixed, including on compact phones.
           expect(
-            find.descendant(of: stage, matching: find.byType(Scrollable)),
-            findsNothing,
+            find
+                .descendant(of: stage, matching: find.byType(Scrollable))
+                .evaluate()
+                .length,
+            find
+                .descendant(
+                  of: find.byKey(const ValueKey('case-question-area')),
+                  matching: find.byType(Scrollable),
+                )
+                .evaluate()
+                .length,
           );
           expect(find.byType(CaseProgressHeader), findsNothing);
           final refresh = find.byKey(const ValueKey('case-paper-refresh'));

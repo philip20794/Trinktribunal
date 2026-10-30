@@ -1,5 +1,11 @@
 # Fortschritt und Übergabe
 
+## Vorderkartenfläche als Layout-Basis, 30.10.2026
+
+Fallkartenasset proportional in die nach App-Bar, CTA, Richterplakette und Außenabstand verbleibende Fläche eingepasst. Gemessene `frontCardRect` und sichere `contentRect` in Quellkoordinaten ersetzen die gestreckte Grafik als Layout-Basis. Oberer Abstand begrenzt, Header/Trenner kompakt, Footer mit reservierter Höhe am unteren Inhaltsrand; nur die Frage verwendet den Rest, passt ihre Schrift von 28 bis 16 an und scrollt bei längeren Texten separat. Endpunkte bleiben zweizeilig mit lokaler Schriftanpassung und vollständigem Tooltip/Semantiktext. Online-Ergebnisanzeige erhält ihren eigenen Platz, ohne die Karte samt Text zu skalieren. Tests decken fünf logische Handyansichten von 320 × 568 bis 440 × 956 bei normaler/doppelter Schrift, sehr langen Fragen/Endpunkten, unverzerrtes Asset, fixen Footer und erreichbaren CTA ab.
+
+Prüfung: 712 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen; 20 zusätzliche Renderprüfungen und neun Node-Prüfungen erfolgreich. Analyze/Format ohne Befund. Kleine und große Renderansichten visuell geprüft; keine Abnahme auf physischen Geräten.
+
 ## Animiertes Avatar-Umsortieren mit Lücke, 30.10.2026
 
 Vorhandene Raster, DragTargets und Einfügefunktionen weiterverwendet; keine neuen Abhängigkeiten. Gezogener Avatar mit dezenter Vergrößerung und Schatten, echte mitwandernde Lücke statt Ghost-Kopien, weiches Aufrutschen über 210 ms. Nach Loslassen schwebt der Avatar in die Lücke; erst danach übernimmt der bestehende Callback die Reihenfolge genau einmal. Abbruch stellt die Vorschau zurück. Ein zwischenzeitliches Server-/Elternupdate hat Vorrang vor einem noch landenden Drop; reduzierte Bewegung überspringt Animationen. Gezielte Tests prüfen Zwischenpositionen, wandernde Lücke, Pointer-Abbruch, Rücknahme, einmalige Speicherung und konkurrierende Reihenfolgen für alle drei Rastervarianten. Änderungen lokal.

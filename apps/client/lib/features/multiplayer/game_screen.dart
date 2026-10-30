@@ -67,37 +67,44 @@ class RoomGameScreen extends ConsumerWidget {
         final rendered = question?.renderFor(names);
         return ListenableBuilder(
           listenable: game,
-          builder: (context, _) => Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (rendered != null)
-                CourtQuestion(
-                  animationKey: view.roundId,
-                  showRefresh:
-                      snapshot.you ==
-                      (view.config.allJudges ? view.readerId : view.judgeId),
-                  onRefresh: game.canReroll
-                      ? () => game.rerollCurrentQuestion(
-                          gameId: view.gameId!,
-                          roundId: view.roundId!,
-                        )
-                      : null,
-                  label: context.tr('caseProgress', {
-                    'number': view.completedCases + 1,
-                    'total': view.config.targetCases,
-                  }),
-                  text: rendered.text,
-                  green: rendered.green,
-                  connector: rendered.connector,
-                  red: rendered.red,
-                  maximum:
-                      (view.frozenRoster.length * view.config.factorTenths +
-                          9) ~/
-                      10,
-                ),
-              if (!view.config.allJudges)
-                OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
-            ],
+          builder: (context, _) => LayoutBuilder(
+            builder: (context, bounds) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (rendered != null)
+                  Flexible(
+                    flex: bounds.hasBoundedHeight ? 1 : 0,
+                    child: CourtQuestion(
+                      animationKey: view.roundId,
+                      showRefresh:
+                          snapshot.you ==
+                          (view.config.allJudges
+                              ? view.readerId
+                              : view.judgeId),
+                      onRefresh: game.canReroll
+                          ? () => game.rerollCurrentQuestion(
+                              gameId: view.gameId!,
+                              roundId: view.roundId!,
+                            )
+                          : null,
+                      label: context.tr('caseProgress', {
+                        'number': view.completedCases + 1,
+                        'total': view.config.targetCases,
+                      }),
+                      text: rendered.text,
+                      green: rendered.green,
+                      connector: rendered.connector,
+                      red: rendered.red,
+                      maximum:
+                          (view.frozenRoster.length * view.config.factorTenths +
+                              9) ~/
+                          10,
+                    ),
+                  ),
+                if (!view.config.allJudges)
+                  OnlineReveal(snapshot: snapshot, showActions: !fixedActions),
+              ],
+            ),
           ),
         );
       },

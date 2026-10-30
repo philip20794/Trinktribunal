@@ -84,9 +84,11 @@ class IllustratedPaper extends StatefulWidget {
     this.growToContent = false,
     this.asset,
     this.slice,
+    this.proportional = false,
     super.key,
   });
   final bool growToContent;
+  final bool proportional;
   final String? asset;
   final Rect? slice;
   final bool rule;
@@ -175,7 +177,11 @@ class _IllustratedPaperState extends State<IllustratedPaper> {
               child: image != null
                   ? ExcludeSemantics(
                       child: CustomPaint(
-                        painter: PaperBackgroundPainter(image, slice),
+                        painter: PaperBackgroundPainter(
+                          image,
+                          slice,
+                          proportional: widget.proportional,
+                        ),
                       ),
                     )
                   : const ColoredBox(color: CourtSceneTokens.parchment),
@@ -308,6 +314,31 @@ class PaperDivider extends StatelessWidget {
   );
 }
 
+/// Coordinates measured on fallakte_pergament_leer.png (1024 x 1536).
+/// The seal overlaps the front sheet; content starts just beneath it.
+class CaseCardGeometry {
+  CaseCardGeometry.fit(Size available) {
+    final scale = math.min(
+      available.width / assetSize.width,
+      available.height / assetSize.height,
+    );
+    size = Size(assetSize.width * scale, assetSize.height * scale);
+    frontCardRect = _scaled(sourceFrontCardRect, scale);
+    contentRect = _scaled(sourceContentRect, scale);
+  }
+  static const assetSize = Size(1024, 1536);
+  static const sourceFrontCardRect = Rect.fromLTRB(112, 192, 920, 1360);
+  static const sourceContentRect = Rect.fromLTRB(140, 326, 892, 1324);
+  late final Size size;
+  late final Rect frontCardRect, contentRect;
+  static Rect _scaled(Rect rect, double scale) => Rect.fromLTRB(
+    rect.left * scale,
+    rect.top * scale,
+    rect.right * scale,
+    rect.bottom * scale,
+  );
+}
+
 class IllustratedQuestion extends StatelessWidget {
   const IllustratedQuestion({
     required this.label,
@@ -323,225 +354,328 @@ class IllustratedQuestion extends StatelessWidget {
   final int maximum;
   final bool showRefresh;
   final VoidCallback? onRefresh;
+
   @override
-  Widget build(BuildContext context) => Center(
-    child: ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 560),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth,
-              pad = width * .085 + (width * .02).clamp(6.0, 10.0),
-              inner = width - pad * 2;
-          final scaler = MediaQuery.textScalerOf(context),
-              direction = Directionality.of(context);
-          final bodyHeight = math.max(
-            width * .40,
-            measurePaperText(text, inner, 16, scaler, direction).height,
-          );
-          final numberWidth = math.max(
-            34.0,
-            measurePaperText(
-                  '$maximum',
-                  inner,
-                  18,
-                  scaler,
-                  direction,
-                  weight: FontWeight.w700,
-                ).width +
-                10,
-          );
-          final endpointWidth = math.max(1.0, inner - numberWidth - 40);
-          final numberHeight = math.max(40.0, scaler.scale(18) * 1.5 + 22);
-          final lowHeight = math.max(
-            numberHeight,
-            measurePaperText(low, endpointWidth, 14, scaler, direction).height +
-                16,
-          );
-          final highHeight = math.max(
-            numberHeight,
-            measurePaperText(
-                  high,
-                  endpointWidth,
-                  14,
-                  scaler,
-                  direction,
-                ).height +
-                16,
-          );
-          final scaleHeight =
-              measurePaperText(
-                context.tr('questionRange', {'max': maximum}),
-                inner - 20,
-                14,
-                scaler,
-                direction,
-                weight: FontWeight.w700,
-              ).height +
-              lowHeight +
-              highHeight +
-              44;
-          final viewport = CasePaperScope.heightOf(context);
-          final headerHeight = math.max(
-            viewport == null ? 48.0 : 28.0,
-            measurePaperText(
-              label.toUpperCase(),
-              inner,
-              14,
-              scaler,
-              direction,
-            ).height,
-          );
-          final top = width * .33;
-          // Account for the illustrated lower edge, then leave a small inset.
-          final bottom = width * .12 + (width * .025).clamp(8.0, 12.0);
-          final naturalHeight = math.max(
-            width * 1.5,
-            top + headerHeight + 26 + bodyHeight + 16 + scaleHeight + bottom,
-          );
-          final height = viewport ?? naturalHeight;
-          final contentHeight =
-              headerHeight +
-              (viewport == null ? 26 : 16) +
-              bodyHeight +
-              (viewport == null ? 16 : 10) +
-              scaleHeight;
-          return Stack(
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, bounds) {
+      final width = math.min(560.0, bounds.maxWidth);
+      final scopedHeight = CasePaperScope.heightOf(context);
+      final height = math.min(
+        scopedHeight ?? double.infinity,
+        bounds.hasBoundedHeight ? bounds.maxHeight : width * 1.5,
+      );
+      final geometry = CaseCardGeometry.fit(Size(width, math.max(1, height)));
+      final content = geometry.contentRect;
+      final spacer = math.min(
+        (content.height * .018).clamp(4.0, 12.0),
+        content.height * .03,
+      );
+      final headerHeight = math.min(
+        (content.height * .085).clamp(24.0, 34.0),
+        content.height * .18,
+      );
+      final footerHeight = math.min(
+        (content.height * .34).clamp(108.0, 140.0),
+        content.height * .55,
+      );
+      return Align(
+        alignment: Alignment.topCenter,
+        heightFactor: 1,
+        child: SizedBox.fromSize(
+          size: geometry.size,
+          child: Stack(
             children: [
               IllustratedPaper(
                 rule: false,
-                height: height,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(pad, top, pad, bottom),
-                  child: LayoutBuilder(
-                    builder: (context, area) {
-                      final scale = math.min(
-                        1.0,
-                        area.maxHeight / contentHeight,
-                      );
-                      return FittedBox(
+                height: geometry.size.height,
+                proportional: true,
+                child: const SizedBox.expand(),
+              ),
+              Positioned.fromRect(
+                rect: geometry.frontCardRect,
+                child: const IgnorePointer(
+                  child: SizedBox(key: ValueKey('case-front-card')),
+                ),
+              ),
+              Positioned.fromRect(
+                rect: content,
+                child: Column(
+                  key: const ValueKey('case-content'),
+                  children: [
+                    SizedBox(
+                      key: const ValueKey('case-top-spacer'),
+                      height: spacer,
+                    ),
+                    SizedBox(
+                      key: const ValueKey('case-header'),
+                      height: headerHeight,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Positioned.fill(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: _CaseLabel(
+                                    label.toUpperCase(),
+                                    min: 10,
+                                    max: 14,
+                                    weight: FontWeight.w700,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 7,
+                                  child: PaperDivider(),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (showRefresh)
+                            Positioned(
+                              top: -10,
+                              right: -8,
+                              child: IconButton(
+                                key: const ValueKey('case-paper-refresh'),
+                                tooltip: context.tr('refreshQuestion'),
+                                onPressed: onRefresh,
+                                color: paperInk,
+                                disabledColor: Colors.black38,
+                                icon: const Icon(Icons.refresh),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: _CaseQuestionText(text, key: ValueKey(text)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: footerHeight,
+                      child: FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(
-                          // Compensate for height-driven scaling so short screens
-                          // keep the same side margins instead of narrowing text.
-                          width: inner / math.max(.01, scale),
-                          height: contentHeight,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                height: headerHeight,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        label.toUpperCase(),
-                                        style: paperTextStyle(
-                                          14,
-                                          weight: FontWeight.w700,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: viewport == null ? 18 : 12,
-                                child: const PaperDivider(),
-                              ),
-                              SizedBox(height: viewport == null ? 8 : 4),
-                              FittedPaperText(text, height: bodyHeight),
-                              SizedBox(height: viewport == null ? 16 : 10),
-                              Container(
-                                key: const ValueKey('question-range-box'),
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: const Color(0x2DB18548),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: const Color(0x668D6C43),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text(
-                                      context.tr('questionRange', {
-                                        'max': maximum,
-                                      }),
-                                      style: paperTextStyle(
-                                        14,
-                                        weight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    _endpoint('1', low, lowHeight),
-                                    const SizedBox(height: 8),
-                                    _endpoint('$maximum', high, highHeight),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          width: math.max(160, content.width),
+                          height: math.max(108, footerHeight),
+                          child: _CaseScaleFooter(
+                            low: low,
+                            high: high,
+                            maximum: maximum,
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              if (showRefresh)
-                Positioned(
-                  top: top - 18,
-                  right: pad,
-                  child: IconButton(
-                    key: const ValueKey('case-paper-refresh'),
-                    tooltip: context.tr('refreshQuestion'),
-                    onPressed: onRefresh,
-                    color: Colors.black,
-                    disabledColor: Colors.black38,
-                    icon: const Icon(Icons.refresh),
-                  ),
-                ),
             ],
-          );
-        },
-      ),
-    ),
-  );
-  Widget _endpoint(String number, String text, double height) => Container(
-    constraints: BoxConstraints(minHeight: height),
-    padding: const EdgeInsets.all(6),
-    decoration: BoxDecoration(
-      color: const Color(0x24A87C3C),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Row(
-      children: [
-        Container(
-          constraints: const BoxConstraints(minWidth: 34, minHeight: 34),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: CourtSceneTokens.crimson,
-            borderRadius: BorderRadius.circular(8),
           ),
-          child: Text(
-            number,
-            style: const TextStyle(
-              color: CourtSceneTokens.cream,
-              fontWeight: FontWeight.w700,
-              fontSize: 18,
+        ),
+      );
+    },
+  );
+}
+
+/// Fit the question alone, preserving a readable minimum. Only this area scrolls.
+class _CaseQuestionText extends StatefulWidget {
+  const _CaseQuestionText(this.text, {super.key});
+  final String text;
+  @override
+  State<_CaseQuestionText> createState() => _CaseQuestionTextState();
+}
+
+class _CaseQuestionTextState extends State<_CaseQuestionText> {
+  final _scroll = ScrollController();
+  String get text => widget.text;
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, area) {
+      final scaler = MediaQuery.textScalerOf(context);
+      final direction = Directionality.of(context);
+      final font = fitPaperFont(
+        text,
+        area.biggest,
+        scaler,
+        direction,
+        min: 16,
+        max: 28,
+      );
+      final overflows =
+          measurePaperText(text, area.maxWidth, 16, scaler, direction).height >
+          area.maxHeight;
+      final question = Text(
+        text,
+        style: paperTextStyle(font),
+        textAlign: TextAlign.center,
+      );
+      return SizedBox.expand(
+        key: const ValueKey('case-question-area'),
+        child: overflows
+            ? Scrollbar(
+                controller: _scroll,
+                child: SingleChildScrollView(
+                  key: const ValueKey('case-question-scroll'),
+                  controller: _scroll,
+                  primary: false,
+                  child: question,
+                ),
+              )
+            : Align(alignment: Alignment.topCenter, child: question),
+      );
+    },
+  );
+}
+
+/// At most two lines for scale endpoints, with a small local font adjustment.
+/// This never scales the card, the question or neighbouring layout regions.
+class _CaseLabel extends StatelessWidget {
+  const _CaseLabel(
+    this.text, {
+    this.min = 10,
+    this.max = 16,
+    this.lines = 1,
+    this.weight = FontWeight.w500,
+    this.align = TextAlign.center,
+  });
+  final String text;
+  final double min, max;
+  final int lines;
+  final FontWeight weight;
+  final TextAlign align;
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, area) {
+      final scaler = MediaQuery.textScalerOf(context);
+      final direction = Directionality.of(context);
+      bool fits(double font) {
+        final painter = TextPainter(
+          text: TextSpan(
+            text: text,
+            style: paperTextStyle(font, weight: weight),
+          ),
+          textScaler: scaler,
+          textDirection: direction,
+          maxLines: lines,
+        )..layout(maxWidth: area.maxWidth);
+        final result =
+            !painter.didExceedMaxLines && painter.height <= area.maxHeight;
+        painter.dispose();
+        return result;
+      }
+
+      var low = min, high = max;
+      for (var i = 0; i < 10; i++) {
+        final middle = (low + high) / 2;
+        if (fits(middle)) {
+          low = middle;
+        } else {
+          high = middle;
+        }
+      }
+      return Tooltip(
+        message: text,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: SizedBox(
+            width: area.maxWidth,
+            child: Text(
+              text,
+              semanticsLabel: text,
+              style: paperTextStyle(low, weight: weight),
+              textAlign: align,
+              maxLines: lines,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: FittedPaperText(text, height: height - 12, min: 14, max: 20),
+      );
+    },
+  );
+}
+
+class _CaseScaleFooter extends StatelessWidget {
+  const _CaseScaleFooter({
+    required this.low,
+    required this.high,
+    required this.maximum,
+  });
+  final String low, high;
+  final int maximum;
+  @override
+  Widget build(BuildContext context) => Container(
+    key: const ValueKey('question-range-box'),
+    padding: const EdgeInsets.all(6),
+    decoration: BoxDecoration(
+      color: const Color(0x2DB18548),
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: const Color(0x668D6C43)),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(
+          height: 16,
+          child: _CaseLabel(
+            context.tr('questionRange', {'max': maximum}),
+            max: 14,
+            weight: FontWeight.w700,
+            align: TextAlign.start,
+          ),
         ),
+        const SizedBox(height: 4),
+        Expanded(child: _endpoint('1', low)),
+        const SizedBox(height: 4),
+        Expanded(child: _endpoint('$maximum', high)),
       ],
+    ),
+  );
+  Widget _endpoint(String number, String text) => DecoratedBox(
+    decoration: BoxDecoration(
+      color: const Color(0x24A87C3C),
+      borderRadius: BorderRadius.circular(6),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 28,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: CourtSceneTokens.crimson,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text(
+                      number,
+                      style: const TextStyle(
+                        color: CourtSceneTokens.cream,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 5),
+          Expanded(child: _CaseLabel(text, lines: 2)),
+        ],
+      ),
     ),
   );
 }
@@ -688,11 +822,25 @@ class IllustratedRule extends StatelessWidget {
 
 /// Scale the nine-slice canvas directly to avoid float equality in paintImage.
 class PaperBackgroundPainter extends CustomPainter {
-  const PaperBackgroundPainter(this.image, this.slice);
+  const PaperBackgroundPainter(
+    this.image,
+    this.slice, {
+    this.proportional = false,
+  });
   final ui.Image image;
   final Rect slice;
+  final bool proportional;
   @override
   void paint(Canvas canvas, Size size) {
+    if (proportional) {
+      canvas.drawImageRect(
+        image,
+        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
+        Offset.zero & size,
+        Paint()..filterQuality = FilterQuality.medium,
+      );
+      return;
+    }
     final scale = size.width / image.width;
     canvas.save();
     canvas.scale(scale);
@@ -707,5 +855,7 @@ class PaperBackgroundPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(PaperBackgroundPainter oldDelegate) =>
-      oldDelegate.image != image || oldDelegate.slice != slice;
+      oldDelegate.image != image ||
+      oldDelegate.slice != slice ||
+      oldDelegate.proportional != proportional;
 }
