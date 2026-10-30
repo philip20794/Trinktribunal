@@ -242,11 +242,11 @@ class _RosterGridState extends State<RosterGrid> {
                 key: _targets.putIfAbsent(id, GlobalKey.new),
                 child: Stack(
                   children: [
-                    const Positioned(
+                    Positioned(
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      child: SeatHint(),
+                      child: SeatHint(number: index + 1),
                     ),
                     Center(
                       child: DragPreviewSlide(
@@ -295,7 +295,6 @@ class _RosterGridState extends State<RosterGrid> {
   );
   Widget _unit(UserProfile member, int index, double size) => ReorderAvatarUnit(
     size: size,
-    number: index + 1,
     menu: PopupMenuButton<String>(
       key: ValueKey('roster-menu-${member.player.id.value}'),
       enabled: widget.enabled,

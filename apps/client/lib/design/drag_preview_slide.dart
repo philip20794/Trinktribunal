@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-import 'court_scene.dart';
-
 const reorderMotionDuration = Duration(milliseconds: 240);
 bool _reducedMotion(BuildContext context) =>
     MediaQuery.disableAnimationsOf(context) ||
@@ -266,18 +264,16 @@ Rect? reorderCellRect(GlobalKey? key) {
       : null;
 }
 
-/// Badges belong to the portrait, not its stationary drop target.
+/// A moving portrait with optional controls; seat numbers stay on the target.
 class ReorderAvatarUnit extends StatelessWidget {
   const ReorderAvatarUnit({
     required this.size,
     required this.child,
-    this.number,
     this.menu,
     super.key,
   });
   final double size;
   final Widget child;
-  final int? number;
   final Widget? menu;
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -286,29 +282,6 @@ class ReorderAvatarUnit extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         child,
-        if (number != null)
-          Positioned(
-            top: 0,
-            left: 8,
-            child: IgnorePointer(
-              child: Container(
-                key: const ValueKey('avatar-number'),
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: CourtSceneTokens.panel,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '$number',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: CourtSceneTokens.gold,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-          ),
         if (menu != null) Positioned(top: -8, right: -8, child: menu!),
       ],
     ),

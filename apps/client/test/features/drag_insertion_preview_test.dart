@@ -135,6 +135,26 @@ void main() {
           find.byType(SeatHint).evaluate().length,
           (i) => tester.getRect(find.byType(SeatHint).at(i)),
         );
+        final numberRects = {
+          for (var i = 1; i <= ids.length; i++)
+            i: tester.getRect(find.byKey(ValueKey('seat-number-$i'))),
+        };
+        void expectFixedNumbers() {
+          for (var i = 1; i <= ids.length; i++) {
+            final badge = find.byKey(ValueKey('seat-number-$i'));
+            expect(badge, findsOneWidget);
+            expect(tester.getRect(badge), numberRects[i]);
+            final hint = find.ancestor(
+              of: badge,
+              matching: find.byType(SeatHint),
+            );
+            final rect = tester.getRect(hint);
+            expect(tester.getBottomLeft(badge).dx, closeTo(rect.left + 6, .1));
+            expect(tester.getBottomLeft(badge).dy, closeTo(rect.bottom, .1));
+          }
+        }
+
+        expectFixedNumbers();
         Finder seat(int index) => find.byKey(
           kind == 'seats'
               ? ValueKey('order-seat-$index')
@@ -177,15 +197,12 @@ void main() {
               matching: find.byType(ReorderAvatarUnit),
             )
             .first;
-        final feedbackRect = tester.getRect(feedbackUnit);
-        final feedbackNumber = tester.getRect(
-          find.descendant(
-            of: feedbackUnit,
-            matching: find.byKey(const ValueKey('avatar-number')),
-          ),
+        expectFixedNumbers();
+        expect(
+          find.descendant(of: feedbackUnit, matching: find.byType(SeatHint)),
+          findsNothing,
         );
-        expect(feedbackNumber.left, closeTo(feedbackRect.left + 8 * 1.055, 1));
-        expect(feedbackNumber.top, closeTo(feedbackRect.top, 1));
+        expect(find.byKey(const ValueKey('avatar-number')), findsNothing);
         if (kind == 'roster') {
           expect(
             find.descendant(
@@ -243,14 +260,6 @@ void main() {
           final unit = find
               .descendant(of: finder, matching: find.byType(ReorderAvatarUnit))
               .first;
-          final number = find.descendant(
-            of: unit,
-            matching: find.byKey(const ValueKey('avatar-number')),
-          );
-          expect(
-            tester.getTopLeft(number),
-            tester.getTopLeft(unit) + const Offset(8, 0),
-          );
           tester.element(unit).visitAncestorElements((element) {
             if (element.widget is DragTarget<PlayerId>) return false;
             final widget = element.widget;
@@ -260,6 +269,7 @@ void main() {
             return true;
           });
         }
+        expectFixedNumbers();
         await reviewImage(tester, 'ghost-insertion-$kind');
         await drag.moveTo(tester.getCenter(seat(1)));
         await tester.pump();

@@ -394,7 +394,12 @@ class _BenchViewState extends State<BenchView> {
         builder: (context, candidates, rejected) => Stack(
           fit: StackFit.passthrough,
           children: [
-            const Positioned(left: 0, right: 0, bottom: 0, child: SeatHint()),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: SeatHint(number: index + 1),
+            ),
             DragPreviewSlide(
               key: ValueKey(('bench-preview', id)),
               resetToken: _previewEpoch,
@@ -577,7 +582,6 @@ class _BenchViewState extends State<BenchView> {
     bool withHandle = false,
   }) => ReorderAvatarUnit(
     size: 76,
-    number: index + 1,
     menu: withHandle
         ? const SizedBox.square(
             dimension: 48,

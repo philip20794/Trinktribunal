@@ -211,16 +211,9 @@ class _PlacementBankState extends State<PlacementBank> {
     super.dispose();
   }
 
-  Widget _portrait(
-    PlayerId id,
-    double size, {
-    int? position,
-    bool feedback = false,
-  }) {
-    final seat = position ?? widget.slots.indexOf(id);
+  Widget _portrait(PlayerId id, double size, {bool feedback = false}) {
     return ReorderAvatarUnit(
       size: size,
-      number: seat < 0 ? null : seat + 1,
       child: PendingOrderAvatar(
         pending: widget.pending.contains(id),
         child: AvatarView(
@@ -633,12 +626,7 @@ class _PlacementBankState extends State<PlacementBank> {
               TrinkAvatarRenderer.visibleHeight /
               TrinkAvatarRenderer.canvasWidth,
         ),
-        child: _portrait(
-          details.data,
-          avatarSize,
-          position: destination,
-          feedback: true,
-        ),
+        child: _portrait(details.data, avatarSize, feedback: true),
       );
       if (mounted) {
         if (widget.onPlace != null &&
@@ -669,7 +657,12 @@ class _PlacementBankState extends State<PlacementBank> {
         key: _targets.putIfAbsent(index, GlobalKey.new),
         child: Stack(
           children: [
-            const Positioned(left: 0, right: 0, bottom: 0, child: SeatHint()),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: SeatHint(number: index + 1),
+            ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Center(
