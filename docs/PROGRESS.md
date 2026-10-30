@@ -1,5 +1,9 @@
 # Fortschritt und Übergabe
 
+## Adaptive Online-Bank und rechtes Personenpanel, 30.10.2026
+
+Lokal umgesetzt und geprüft: Lobby mit bis zu vier Spalten, dynamische Größen bei der eigenen Platzierung und ein feststehendes, alphabetisches Kopfporträt-Panel rechts. Das Panel scrollt unabhängig, schrumpft beim Ziehen auf 16 Pixel/20 % Deckkraft und öffnet am rechten Rand zur Rückablage. 657 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen; Analyze ohne Befund. [Details und Prüfgrenzen](qa/adaptive-online-bench.md). Noch nicht veröffentlicht.
+
 Stand: 29.10.2026. PR #5 geprüft und gemergt; größere geprüfte Schritte werden nach main gepusht, anschließend wird weitergearbeitet. [Entwicklungsplan](IMPLEMENTATION_PLAN.md) · [Workflow](DEVELOPMENT_WORKFLOW.md).
 
 **Aktuell: TT-001–064, M7.4/TT-079–084 und M7.5/TT-071–078 nach Unit-Gates abgeschlossen. M8: TT-066 vorbereitet, signierter Artefaktbeleg extern offen; TT-067/068 abgeschlossen; TT-065 bleibt wegen fehlender externer Nutzungsnachweise blockiert (28.10.2026).** Browser-/E2E-Abnahmen: ÜBERSPRUNGEN – später manuell testen. Aktuelle Gates grün: 163 Node-/610 Flutter-Tests, Analyze/Format; Dart-/TypeScript-Parität und Mutationen; 449 Servertests. Frische Web-/Offline-/Debug-APK-Builds · [TT-068](qa/help-privacy.md) · [M7.5](qa/M7_5.md).

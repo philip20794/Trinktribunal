@@ -14,6 +14,7 @@ import '../bench/bench_view.dart';
 import 'game_progress.dart';
 import 'order_view.dart';
 import 'pending_profile.dart';
+import 'lobby_bench.dart';
 import '../../l10n/app_strings.dart';
 
 class RoomCourtroom extends ConsumerStatefulWidget {
@@ -72,38 +73,52 @@ class _RoomCourtroomState extends ConsumerState<RoomCourtroom> {
   Widget build(BuildContext context) {
     final snapshot = widget.snapshot, fixedActions = widget.fixedActions;
     final players = snapshot.public.players;
-    final content = ListView(
-      padding: const EdgeInsets.all(8),
-      children: [
-        if ([
-          'numbers',
-          'answers',
-          'ordering',
-          'revealing',
-          'judged',
-        ].contains(snapshot.public.phase))
-          OnlineOrderView(snapshot: snapshot, showActions: !fixedActions)
-        else if (['paused', 'finished'].contains(snapshot.public.phase))
-          OnlineGameProgress(snapshot: snapshot, showActions: !fixedActions)
-        else
-          BenchView(
-            compactControls: true,
-            order: players.map((p) => p.playerId).toList(),
-            profiles: {
-              for (final player in players)
-                player.playerId: UserProfile(
-                  player: Player(
-                    id: player.playerId,
-                    name: needsRoomName(player.profile.name)
-                        ? context.tr('roomUnnamedPlayer')
-                        : player.profile.name,
-                  ),
-                  avatar: AvatarConfig.fromJson(player.profile.avatar.toJson()),
+    final content = snapshot.public.phase == 'lobby'
+        ? LobbyBench(snapshot: snapshot)
+        : [
+            'numbers',
+            'answers',
+            'ordering',
+            'revealing',
+            'judged',
+          ].contains(snapshot.public.phase)
+        ? Padding(
+            padding: const EdgeInsets.all(8),
+            child: OnlineOrderView(
+              snapshot: snapshot,
+              showActions: !fixedActions,
+              fillViewport: true,
+            ),
+          )
+        : ListView(
+            padding: const EdgeInsets.all(8),
+            children: [
+              if (['paused', 'finished'].contains(snapshot.public.phase))
+                OnlineGameProgress(
+                  snapshot: snapshot,
+                  showActions: !fixedActions,
+                )
+              else
+                BenchView(
+                  compactControls: true,
+                  order: players.map((p) => p.playerId).toList(),
+                  profiles: {
+                    for (final player in players)
+                      player.playerId: UserProfile(
+                        player: Player(
+                          id: player.playerId,
+                          name: needsRoomName(player.profile.name)
+                              ? context.tr('roomUnnamedPlayer')
+                              : player.profile.name,
+                        ),
+                        avatar: AvatarConfig.fromJson(
+                          player.profile.avatar.toJson(),
+                        ),
+                      ),
+                  },
                 ),
-            },
-          ),
-      ],
-    );
+            ],
+          );
     final ownResult = snapshot.public.phase == 'judged'
         ? snapshot.private.ownResult
         : null;

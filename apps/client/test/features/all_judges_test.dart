@@ -73,12 +73,11 @@ void main() {
         await tester.pumpAndSettle();
         final source = find.byKey(const ValueKey('unplaced-p2'));
         final target = find.byKey(const ValueKey('order-seat-0'));
-        await tester.ensureVisible(source);
-        await tester.pumpAndSettle();
-        await tester.drag(
-          source,
-          tester.getCenter(target) - tester.getCenter(source),
-        );
+        final gesture = await tester.startGesture(tester.getCenter(source));
+        await tester.pump(const Duration(milliseconds: 200));
+        await gesture.moveTo(tester.getCenter(target));
+        await tester.pump();
+        await gesture.up();
         await tester.pumpAndSettle();
         final bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
         expect(bank.slots.first, PlayerId('p2'));
@@ -94,7 +93,7 @@ void main() {
   testWidgets(
     'a twenty-player bank scrolls upward while an avatar is dragged to an earlier seat',
     (tester) async {
-      await tester.binding.setSurfaceSize(const Size(360, 800));
+      await tester.binding.setSurfaceSize(const Size(360, 640));
       addTearDown(() => tester.binding.setSurfaceSize(null));
       final fixture = await numbers.pump(tester, allJudges: true);
       final base = fixture.room.state.snapshot!;
@@ -130,8 +129,16 @@ void main() {
             matching: find.byType(Scrollable),
           )
           .first;
-      final source = find.byKey(const ValueKey('unplaced-p20'));
-      await tester.scrollUntilVisible(source, 350, scrollable: scrollable);
+      tester.widget<PlacementBank>(find.byType(PlacementBank)).onPlace!(
+        PlayerId('p20'),
+        19,
+      );
+      await tester.pumpAndSettle();
+      final source = find.descendant(
+        of: find.byKey(const ValueKey('order-seat-19')),
+        matching: find.byType(Draggable<PlayerId>),
+      );
+      await tester.scrollUntilVisible(source, 150, scrollable: scrollable);
       await tester.pumpAndSettle();
       final scroll = tester.state<ScrollableState>(scrollable);
       final before = scroll.position.pixels;

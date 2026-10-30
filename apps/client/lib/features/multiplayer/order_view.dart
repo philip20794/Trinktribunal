@@ -15,10 +15,12 @@ class OnlineOrderView extends ConsumerWidget {
   const OnlineOrderView({
     required this.snapshot,
     this.showActions = true,
+    this.fillViewport = false,
     super.key,
   });
   final SnapshotMessage snapshot;
   final bool showActions;
+  final bool fillViewport;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(onlineOrderProvider), view = snapshot.public;
@@ -61,6 +63,8 @@ class OnlineOrderView extends ConsumerWidget {
         if (order.any((id) => !profiles.containsKey(id))) {
           return const TText('onlineOrderMissing');
         }
+        Widget fit(Widget child) =>
+            fillViewport ? Expanded(child: child) : child;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -81,41 +85,50 @@ class OnlineOrderView extends ConsumerWidget {
                 ['numbers', 'answers', 'ordering'].contains(view.phase) &&
                 ownsOrder &&
                 !controller.confirmed)
-              PlacementBank(
-                pending: pending,
-                slots: controller.slots,
-                unplaced: controller.unplaced,
-                profiles: profiles,
-                onPlace: controller.canEdit ? controller.place : null,
-                onRemove: controller.unplace,
+              fit(
+                PlacementBank(
+                  key: ValueKey((snapshot.roomId, view.gameId, view.roundId)),
+                  pending: pending,
+                  slots: controller.slots,
+                  unplaced: controller.unplaced,
+                  profiles: profiles,
+                  onPlace: controller.canEdit ? controller.place : null,
+                  onRemove: controller.unplace,
+                ),
               )
             else
-              BenchView(
-                pending: pending,
-                order: order,
-                profiles: profiles,
-                revealedNumbers: {
-                  for (final entry in view.revealed)
-                    entry.playerId: entry.number,
-                },
-                showPositionResult:
-                    view.phase == 'judged' &&
-                    (!view.config.allJudges ||
-                        ownsOrder && snapshot.private.ownOrder != null),
-                incorrect: {
-                  if (view.phase == 'judged' &&
-                      view.config.allJudges &&
-                      ownsOrder)
-                    for (var i = 0; i < order.length; i++)
-                      if (i < truth.length && order[i] != truth[i]) order[i],
-                  if (view.phase == 'judged' && view.result != null)
-                    for (final penalty in view.result!.penalties)
-                      if (penalty.sips > 0 && penalty.playerId != view.judgeId)
-                        penalty.playerId,
-                },
-                onMove: ownsOrder && controller.canEdit
-                    ? controller.move
-                    : null,
+              fit(
+                SingleChildScrollView(
+                  child: BenchView(
+                    pending: pending,
+                    order: order,
+                    profiles: profiles,
+                    revealedNumbers: {
+                      for (final entry in view.revealed)
+                        entry.playerId: entry.number,
+                    },
+                    showPositionResult:
+                        view.phase == 'judged' &&
+                        (!view.config.allJudges ||
+                            ownsOrder && snapshot.private.ownOrder != null),
+                    incorrect: {
+                      if (view.phase == 'judged' &&
+                          view.config.allJudges &&
+                          ownsOrder)
+                        for (var i = 0; i < order.length; i++)
+                          if (i < truth.length && order[i] != truth[i])
+                            order[i],
+                      if (view.phase == 'judged' && view.result != null)
+                        for (final penalty in view.result!.penalties)
+                          if (penalty.sips > 0 &&
+                              penalty.playerId != view.judgeId)
+                            penalty.playerId,
+                    },
+                    onMove: ownsOrder && controller.canEdit
+                        ? controller.move
+                        : null,
+                  ),
+                ),
               ),
             if (showActions) OnlineOrderAction(snapshot: snapshot),
           ],
