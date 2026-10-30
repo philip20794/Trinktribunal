@@ -47,7 +47,7 @@ void main() {
       )..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'))).load();
     }
   });
-  for (final kind in ['roster', 'bench', 'seats']) {
+  for (final kind in ['roster', 'bench', 'bench-compact', 'seats']) {
     testWidgets(
       '$kind: hover previews insertion; return cancels; release commits once',
       (tester) async {
@@ -90,7 +90,8 @@ void main() {
                             ),
                           ],
                         ),
-                        'bench' => BenchView(
+                        'bench' || 'bench-compact' => BenchView(
+                          compactControls: kind == 'bench-compact',
                           order: order,
                           profiles: profiles,
                           onMove: move,
@@ -124,7 +125,9 @@ void main() {
               : ValueKey(order[index]),
         );
         final home = tester.getCenter(seat(0)),
-            destination = tester.getCenter(seat(2));
+            destination = kind == 'bench'
+                ? (tester.getCenter(seat(1)) + tester.getCenter(seat(2))) / 2
+                : (tester.getCenter(seat(2)) + tester.getCenter(seat(3))) / 2;
         Future<TestGesture> pickUp() async {
           final drag = await tester.startGesture(
             tester.getCenter(draggable(ids.first)),
@@ -175,6 +178,23 @@ void main() {
         final travelled = Offset(translation.x, translation.y).distance;
         expect(travelled, greaterThan(0));
         expect(travelled, lessThan(slide.offset.distance));
+        // Measure real targets and rendered transforms while the finger stays down.
+        final moving = tester
+            .widgetList<DragPreviewSlide>(find.byType(DragPreviewSlide))
+            .where((s) => !s.ghost && s.offset != Offset.zero)
+            .toList();
+        expect(moving.any((s) => s.offset.dx < 0), isTrue);
+        expect(moving.any((s) => s.offset.dx > 0), isTrue);
+        for (final item in moving) {
+          final finder = find.byKey(item.key!);
+          final avatar = tester.widget<AvatarView>(
+            find
+                .descendant(of: finder, matching: find.byType(AvatarView))
+                .first,
+          );
+          expect(item.offset.dy, 0);
+          expect(item.offset.dx.abs(), closeTo(avatar.size * .25, .01));
+        }
         await reviewImage(tester, 'ghost-insertion-$kind');
         await drag.moveTo(tester.getCenter(seat(1)));
         await tester.pump();
@@ -206,14 +226,49 @@ void main() {
         expect(commits, 0);
         drag = await pickUp();
         await drag.moveTo(destination);
+        await tester.pump();
         await tester.pump(const Duration(milliseconds: 300));
+        final beforeDrop = {
+          for (final slide in tester.widgetList<DragPreviewSlide>(
+            find.byType(DragPreviewSlide),
+          ))
+            if (!slide.ghost) slide.key!: slide.offset,
+        };
+        Offset rendered(Finder finder) {
+          final matrix = tester
+              .widget<Transform>(
+                find
+                    .descendant(of: finder, matching: find.byType(Transform))
+                    .first,
+              )
+              .transform;
+          return Offset(matrix.getTranslation().x, matrix.getTranslation().y);
+        }
+
         await drag.up();
         expect(commits, 0);
         await tester.pump();
         expect(find.byKey(const ValueKey('reorder-landing')), findsOneWidget);
+        final opening = tester
+            .widgetList<DragPreviewSlide>(find.byType(DragPreviewSlide))
+            .firstWhere((s) => !s.ghost && beforeDrop[s.key] != s.offset);
+        final openingFinder = find.byKey(opening.key!);
+        expect(
+          (rendered(openingFinder) - beforeDrop[opening.key]!).distance,
+          lessThan(.01),
+        );
+        await tester.pump(const Duration(milliseconds: 120));
+        expect(commits, 0);
+        expect(rendered(openingFinder), isNot(beforeDrop[opening.key]));
+        expect(rendered(openingFinder), isNot(opening.offset));
         await tester.pumpAndSettle();
         expect(commits, 1);
-        expect(order, [ids[1], ids[2], ids[0], ids[3]]);
+        expect(
+          order,
+          kind == 'bench'
+              ? [ids[1], ids[0], ids[2], ids[3]]
+              : [ids[1], ids[2], ids[0], ids[3]],
+        );
         expect(ghosts, findsNothing);
         // A server/parent update during landing wins over the pending local drop.
         drag = await pickUp();
@@ -236,6 +291,65 @@ void main() {
       expect(placePlayer(slots, ids[2], 1), [ids[0], ids[2], ids[1], ids[3]]);
       expect(slots, [ids[0], ids[1], null, ids[3]]);
       expect(placePlayer(slots, ids[3], 0), [ids[3], ids[0], ids[1], null]);
+    },
+  );
+  test(
+    'half gap is 50 percent wide in both row directions and with a pool player',
+    () {
+      for (final reversed in [false, true]) {
+        final cells = List.generate(
+          4,
+          (i) => Rect.fromLTWH((reversed ? 3 - i : i) * 100, 0, 100, 100),
+        );
+        final offsets = halfReorderGap<String>(
+          slots: ['a', 'b', 'c', 'd'],
+          preview: ['a', 'd', 'b', 'c'],
+          dragged: 'd',
+          cells: cells,
+          avatarWidth: 100,
+        );
+        expect(offsets['a']!.dx, reversed ? 25 : -25);
+        expect(offsets['b']!.dx, reversed ? -25 : 25);
+        expect((offsets['a']! - offsets['b']!).dx.abs(), 50);
+        final pool = halfReorderGap<String>(
+          slots: ['a', 'b', null, 'd'],
+          preview: ['a', 'c', 'b', 'd'],
+          dragged: 'c',
+          cells: cells,
+          avatarWidth: 100,
+        );
+        expect((pool['a']! - pool['b']!).dx.abs(), 50);
+      }
+    },
+  );
+  test(
+    'cell halves identify insertion boundaries after removing the source',
+    () {
+      const cell = Rect.fromLTWH(100, 0, 100, 100);
+      for (final reversed in [false, true]) {
+        expect(
+          reorderInsertionIndex(
+            source: 3,
+            hovered: 1,
+            cell: cell,
+            pointer: const Offset(110, 50),
+            count: 4,
+            reversed: reversed,
+          ),
+          reversed ? 2 : 1,
+        );
+        expect(
+          reorderInsertionIndex(
+            source: 3,
+            hovered: 1,
+            cell: cell,
+            pointer: const Offset(190, 50),
+            count: 4,
+            reversed: reversed,
+          ),
+          reversed ? 1 : 2,
+        );
+      }
     },
   );
 }

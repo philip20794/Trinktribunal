@@ -1,5 +1,11 @@
 # Fortschritt und Übergabe
 
+## Beidseitige halbe Einfügelücke, 30.10.2026
+
+Drag-Vorschau von endgültiger Platzierung getrennt: Beide Seiten der Einfügegrenze weichen während des Ziehens um jeweils ein Viertel der Avatarbreite aus; benachbarte Figuren derselben Zeile gleiten mit. Erst Loslassen öffnet die vollständige Position über 240 ms, anschließend landet der angehobene Avatar in weiteren 240 ms. Ease-in-out für beide Phasen, Speicherung weiterhin einmal nach gültigem Drop; Abbruch und konkurrierende Serveränderungen bleiben geschützt. Stabile Hit-Flächen decken nun auch die schmalen Spaltenzwischenräume ab. Die erste Drag-Bewegung wird aus tatsächlichem Pointer-Down plus Deltas rekonstruiert, da Flutter beim anfänglichen MultiDrag-Ereignis eine ursprüngliche globale Position mit bereits aufgelaufenem Delta liefern kann. Gezielte Tests messen tatsächliche Zwischenpositionen vor Loslassen, 50-%-Lücke, beide Zeilenrichtungen, Drop direkt zwischen Karten, kontinuierliches vollständiges Öffnen und unveränderte Synchronisierung. Änderungen lokal.
+
+Prüfung: 715 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen; sieben gezielte Tests mit nativen Renderbildern erfolgreich. Analyze/Format sowie Dokumentations- und UI-Inventarprüfung ohne Befund. Schatten und beidseitiges Ausweichen in den Renderansichten geprüft; keine Browser-/Geräteabnahme.
+
 ## Vorderkartenfläche als Layout-Basis, 30.10.2026
 
 Fallkartenasset proportional in die nach App-Bar, CTA, Richterplakette und Außenabstand verbleibende Fläche eingepasst. Gemessene `frontCardRect` und sichere `contentRect` in Quellkoordinaten ersetzen die gestreckte Grafik als Layout-Basis. Oberer Abstand begrenzt, Header/Trenner kompakt, Footer mit reservierter Höhe am unteren Inhaltsrand; nur die Frage verwendet den Rest, passt ihre Schrift von 28 bis 16 an und scrollt bei längeren Texten separat. Endpunkte bleiben zweizeilig mit lokaler Schriftanpassung und vollständigem Tooltip/Semantiktext. Online-Ergebnisanzeige erhält ihren eigenen Platz, ohne die Karte samt Text zu skalieren. Tests decken fünf logische Handyansichten von 320 × 568 bis 440 × 956 bei normaler/doppelter Schrift, sehr langen Fragen/Endpunkten, unverzerrtes Asset, fixen Footer und erreichbaren CTA ab.

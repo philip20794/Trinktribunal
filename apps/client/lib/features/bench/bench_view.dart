@@ -48,6 +48,38 @@ class _BenchViewState extends State<BenchView> {
   bool _settling = false;
   final _anchors = <PlayerId, GlobalKey>{};
   Map<PlayerId, Offset> _previewOffsets = {};
+  Map<PlayerId, Offset> _halfOffsets = {};
+  Offset? _pointer;
+
+  int _insertion(PlayerId id, int hovered) {
+    final rect = reorderCellRect(_anchors[widget.order[hovered]]);
+    if (rect == null) return hovered;
+    final row = widget.order
+        .map((id) => reorderCellRect(_anchors[id]))
+        .whereType<Rect>()
+        .where((r) => (r.top - rect.top).abs() < 1)
+        .toList();
+    return reorderInsertionIndex(
+      reversed: row.length > 1 && row.first.center.dx > row.last.center.dx,
+      source: widget.order.indexOf(id),
+      hovered: hovered,
+      cell: rect,
+      pointer: _pointer ?? rect.center,
+      count: widget.order.length,
+    );
+  }
+
+  void _dragUpdate(PlayerId id, DragUpdateDetails details) {
+    _pointer = (_pointer ?? details.globalPosition) + details.delta;
+    _edgeScroll(_pointer!);
+    for (var i = 0; i < widget.order.length; i++) {
+      if (reorderCellRect(_anchors[widget.order[i]])?.contains(_pointer!) ==
+          true) {
+        _hover(id, _insertion(id, i));
+        break;
+      }
+    }
+  }
 
   void _hover(PlayerId id, int index) {
     if (_dragged == id && _hoverIndex == index) return;
@@ -71,6 +103,15 @@ class _BenchViewState extends State<BenchView> {
       _dragged = id;
       _hoverIndex = index;
       _previewOffsets = offsets;
+      _halfOffsets = halfReorderGap<PlayerId>(
+        slots: widget.order,
+        preview: preview,
+        dragged: id,
+        avatarWidth: 76,
+        cells: widget.order
+            .map((id) => reorderCellRect(_anchors[id]) ?? Rect.zero)
+            .toList(),
+      );
     });
   }
 
@@ -80,6 +121,8 @@ class _BenchViewState extends State<BenchView> {
       _dragged = null;
       _hoverIndex = null;
       _previewOffsets = {};
+      _halfOffsets = {};
+      _pointer = null;
     });
   }
 
@@ -92,6 +135,8 @@ class _BenchViewState extends State<BenchView> {
       _dragged = null;
       _hoverIndex = null;
       _previewOffsets = {};
+      _halfOffsets = {};
+      _pointer = null;
     }
     for (final id
         in _focus.keys.where((id) => !widget.order.contains(id)).toList()) {
@@ -146,113 +191,113 @@ class _BenchViewState extends State<BenchView> {
   }
 
   @override
-  Widget build(BuildContext context) => Theme(
-    data: courtPaperTheme(),
-    child: LayoutBuilder(
-      builder: (context, constraints) {
-        final columns = widget.compactControls
-            ? (constraints.maxWidth >= 480 &&
-                      MediaQuery.textScalerOf(context).scale(16) <= 24
-                  ? 3
-                  : 2)
-            : CourtTokens.bankColumns(
-                constraints.maxWidth,
-                MediaQuery.textScalerOf(context).scale(16) / 16,
-              );
-        final rows = (widget.order.length + columns - 1) ~/ columns;
-        int tileIndex(int row, int col) => widget.compactControls
-            ? row * columns + col
-            : snakeIndex(row, col, columns);
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: widget.compactControls
-                ? 0
-                : MediaQuery.sizeOf(context).height * .62,
-            maxHeight: MediaQuery.sizeOf(context).height * .62,
-          ),
-          child: Scrollbar(
-            controller: _scroll,
-            thumbVisibility: true,
-            child: SingleChildScrollView(
+  Widget build(BuildContext context) => Listener(
+    onPointerDown: (event) => _pointer = event.position,
+    child: Theme(
+      data: courtPaperTheme(),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final columns = widget.compactControls
+              ? (constraints.maxWidth >= 480 &&
+                        MediaQuery.textScalerOf(context).scale(16) <= 24
+                    ? 3
+                    : 2)
+              : CourtTokens.bankColumns(
+                  constraints.maxWidth,
+                  MediaQuery.textScalerOf(context).scale(16) / 16,
+                );
+          final rows = (widget.order.length + columns - 1) ~/ columns;
+          int tileIndex(int row, int col) => widget.compactControls
+              ? row * columns + col
+              : snakeIndex(row, col, columns);
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: widget.compactControls
+                  ? 0
+                  : MediaQuery.sizeOf(context).height * .62,
+              maxHeight: MediaQuery.sizeOf(context).height * .62,
+            ),
+            child: Scrollbar(
               controller: _scroll,
-              child: Column(
-                children: [
-                  for (var row = 0; row < rows; row++)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Semantics(
-                            excludeSemantics: true,
-                            label: context.tr('benchRowDirection', {
-                              'from': row * columns + 1,
-                              'to': (row * columns + columns).clamp(
-                                1,
-                                widget.order.length,
-                              ),
-                            }),
-                            child: ColoredBox(
-                              color: CourtTokens.wood,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 4,
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: _scroll,
+                child: Column(
+                  children: [
+                    for (var row = 0; row < rows; row++)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Semantics(
+                              excludeSemantics: true,
+                              label: context.tr('benchRowDirection', {
+                                'from': row * columns + 1,
+                                'to': (row * columns + columns).clamp(
+                                  1,
+                                  widget.order.length,
                                 ),
-                                child: Text(
-                                  [
-                                    for (var col = 0; col < columns; col++)
-                                      if (tileIndex(row, col) <
-                                          widget.order.length)
-                                        '${tileIndex(row, col) + 1}',
-                                  ].join(
-                                    widget.compactControls || row.isEven
-                                        ? ' → '
-                                        : ' ← ',
+                              }),
+                              child: ColoredBox(
+                                color: CourtTokens.wood,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4,
                                   ),
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: CourtSceneTokens.cream,
+                                  child: Text(
+                                    [
+                                      for (var col = 0; col < columns; col++)
+                                        if (tileIndex(row, col) <
+                                            widget.order.length)
+                                          '${tileIndex(row, col) + 1}',
+                                    ].join(
+                                      widget.compactControls || row.isEven
+                                          ? ' → '
+                                          : ' ← ',
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: CourtSceneTokens.cream,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              for (var col = 0; col < columns; col++)
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                    ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                for (var col = 0; col < columns; col++)
+                                  Expanded(
                                     child:
                                         tileIndex(row, col) <
                                             widget.order.length
                                         ? _tile(tileIndex(row, col))
                                         : const SizedBox.shrink(),
                                   ),
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Container(
-                            height: 8,
-                            decoration: BoxDecoration(
-                              color: CourtTokens.wood,
-                              border: Border.all(color: CourtSceneTokens.gold),
-                              borderRadius: BorderRadius.circular(4),
+                              ],
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 4),
+                            Container(
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: CourtTokens.wood,
+                                border: Border.all(
+                                  color: CourtSceneTokens.gold,
+                                ),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     ),
   );
 
@@ -269,31 +314,24 @@ class _BenchViewState extends State<BenchView> {
           if (_settling || !editable || !widget.order.contains(details.data)) {
             return false;
           }
-          _hover(details.data, index);
+          _hover(details.data, _insertion(details.data, index));
           return true;
         },
         onMove: (details) {
           _edgeScroll(details.offset);
-          _hover(details.data, index);
-        },
-        onLeave: (_) {
-          if (!_settling && _hoverIndex == index) {
-            setState(() {
-              _hoverIndex = null;
-              _previewOffsets = {};
-            });
-          }
+          _hover(details.data, _insertion(details.data, index));
         },
         onAcceptWithDetails: (details) async {
           final from = widget.order.indexOf(details.data);
           if (from < 0 || widget.onMove == null || _settling) return;
+          final destination = _hoverIndex ?? _insertion(details.data, index);
           final moving = widget.profiles[details.data]!;
           final original = List<PlayerId>.of(widget.order);
           setState(() => _settling = true);
           const size = 76.0;
           await landReorderAvatar(
             context: context,
-            target: _anchors[id]!,
+            target: _anchors[widget.order[destination]]!,
             from: details.offset,
             size: Size(
               size,
@@ -324,8 +362,8 @@ class _BenchViewState extends State<BenchView> {
             if (widget.onMove != null &&
                 sameReorderOrder(original, widget.order) &&
                 from >= 0 &&
-                from != index) {
-              _move(id: details.data, from: from, to: index);
+                from != destination) {
+              _move(id: details.data, from: from, to: destination);
             }
             _previewEpoch++;
             _selected = null;
@@ -335,181 +373,197 @@ class _BenchViewState extends State<BenchView> {
         },
         builder: (context, candidates, rejected) => DragPreviewSlide(
           key: ValueKey(('bench-preview', id, _previewEpoch)),
-          offset: _previewOffsets[id] ?? Offset.zero,
+          offset:
+              (_settling || id == _dragged
+                  ? _previewOffsets[id]
+                  : _halfOffsets[id]) ??
+              Offset.zero,
           ghost: _dragged == id,
-          child: Focus(
-            focusNode: editable
-                ? _focus.putIfAbsent(
-                    id,
-                    () => FocusNode(debugLabel: 'bench-${id.value}'),
-                  )
-                : null,
-            canRequestFocus: editable,
-            onFocusChange: (focused) {
-              if (mounted) {
-                setState(() {
-                  if (focused) {
-                    _focused = id;
-                  } else if (_focused == id) {
-                    _focused = null;
-                  }
-                });
-              }
-            },
-            onKeyEvent: (node, event) {
-              if (!editable ||
-                  event is! KeyDownEvent ||
-                  !HardwareKeyboard.instance.isAltPressed) {
-                return KeyEventResult.ignored;
-              }
-              final delta =
-                  event.logicalKey ==
-                      (widget.compactControls
-                          ? LogicalKeyboardKey.arrowLeft
-                          : LogicalKeyboardKey.arrowUp)
-                  ? -1
-                  : event.logicalKey ==
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Focus(
+              focusNode: editable
+                  ? _focus.putIfAbsent(
+                      id,
+                      () => FocusNode(debugLabel: 'bench-${id.value}'),
+                    )
+                  : null,
+              canRequestFocus: editable,
+              onFocusChange: (focused) {
+                if (mounted) {
+                  setState(() {
+                    if (focused) {
+                      _focused = id;
+                    } else if (_focused == id) {
+                      _focused = null;
+                    }
+                  });
+                }
+              },
+              onKeyEvent: (node, event) {
+                if (!editable ||
+                    event is! KeyDownEvent ||
+                    !HardwareKeyboard.instance.isAltPressed) {
+                  return KeyEventResult.ignored;
+                }
+                final delta =
+                    event.logicalKey ==
                         (widget.compactControls
-                            ? LogicalKeyboardKey.arrowRight
-                            : LogicalKeyboardKey.arrowDown)
-                  ? 1
-                  : 0;
-              if (delta == 0 ||
-                  index + delta < 0 ||
-                  index + delta >= widget.order.length) {
-                return KeyEventResult.ignored;
-              }
-              _move(id: id, from: index, to: index + delta);
-              return KeyEventResult.handled;
-            },
-            child: AnimatedContainer(
-              duration: CourtTokens.motionDuration(
-                MediaQuery.disableAnimationsOf(context),
-              ),
-              padding: EdgeInsets.all(widget.compactControls ? 4 : 8),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color:
-                      candidates.isNotEmpty || _selected == id || _focused == id
-                      ? CourtTokens.red
-                      : Colors.transparent,
-                  width:
-                      candidates.isNotEmpty || _selected == id || _focused == id
-                      ? 3
-                      : 1,
+                            ? LogicalKeyboardKey.arrowLeft
+                            : LogicalKeyboardKey.arrowUp)
+                    ? -1
+                    : event.logicalKey ==
+                          (widget.compactControls
+                              ? LogicalKeyboardKey.arrowRight
+                              : LogicalKeyboardKey.arrowDown)
+                    ? 1
+                    : 0;
+                if (delta == 0 ||
+                    index + delta < 0 ||
+                    index + delta >= widget.order.length) {
+                  return KeyEventResult.ignored;
+                }
+                _move(id: id, from: index, to: index + delta);
+                return KeyEventResult.handled;
+              },
+              child: AnimatedContainer(
+                duration: CourtTokens.motionDuration(
+                  MediaQuery.disableAnimationsOf(context),
                 ),
-              ),
-              child: Column(
-                children: [
-                  InkWell(
-                    onTap: editable ? () => _tap(id) : null,
-                    child: Column(
-                      children: [
-                        if (widget.compactControls)
-                          _compactPortrait(profile, index, id, editable)
-                        else
-                          PendingOrderAvatar(
-                            pending: widget.pending.contains(id),
-                            child: AvatarView(
-                              showBackdrop: false,
-                              config: profile.avatar,
-                              size: 76,
-                              label: profile.player.name,
-                              playerName: profile.player.name,
+                padding: EdgeInsets.all(widget.compactControls ? 4 : 8),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color:
+                        candidates.isNotEmpty ||
+                            _selected == id ||
+                            _focused == id
+                        ? CourtTokens.red
+                        : Colors.transparent,
+                    width:
+                        candidates.isNotEmpty ||
+                            _selected == id ||
+                            _focused == id
+                        ? 3
+                        : 1,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: editable ? () => _tap(id) : null,
+                      child: Column(
+                        children: [
+                          if (widget.compactControls)
+                            _compactPortrait(profile, index, id, editable)
+                          else
+                            PendingOrderAvatar(
+                              pending: widget.pending.contains(id),
+                              child: AvatarView(
+                                showBackdrop: false,
+                                config: profile.avatar,
+                                size: 76,
+                                label: profile.player.name,
+                                playerName: profile.player.name,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    if (widget.revealedNumbers.containsKey(id))
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Semantics(
+                          label: context.tr(
+                            widget.showPositionResult
+                                ? widget.incorrect.contains(id)
+                                      ? 'wrongPosition'
+                                      : 'rightPosition'
+                                : 'revealedNumber',
+                            {'number': widget.revealedNumbers[id]},
+                          ),
+                          child: ExcludeSemantics(
+                            child: Wrap(
+                              alignment: WrapAlignment.center,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 6,
+                              children: [
+                                Text(
+                                  '${widget.revealedNumbers[id]}',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    color: CourtSceneTokens.cream,
+                                  ),
+                                ),
+                                if (widget.showPositionResult)
+                                  Icon(
+                                    widget.incorrect.contains(id)
+                                        ? Icons.cancel
+                                        : Icons.check_circle,
+                                    size: 22,
+                                    color: widget.incorrect.contains(id)
+                                        ? const Color(0xFFFFA69D)
+                                        : const Color(0xFFA8DBA8),
+                                  ),
+                              ],
                             ),
                           ),
-                      ],
-                    ),
-                  ),
-                  if (widget.revealedNumbers.containsKey(id))
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Semantics(
-                        label: context.tr(
-                          widget.showPositionResult
-                              ? widget.incorrect.contains(id)
-                                    ? 'wrongPosition'
-                                    : 'rightPosition'
-                              : 'revealedNumber',
-                          {'number': widget.revealedNumbers[id]},
                         ),
-                        child: ExcludeSemantics(
-                          child: Wrap(
-                            alignment: WrapAlignment.center,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            spacing: 6,
-                            children: [
-                              Text(
-                                '${widget.revealedNumbers[id]}',
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  color: CourtSceneTokens.cream,
-                                ),
-                              ),
-                              if (widget.showPositionResult)
-                                Icon(
-                                  widget.incorrect.contains(id)
-                                      ? Icons.cancel
-                                      : Icons.check_circle,
-                                  size: 22,
-                                  color: widget.incorrect.contains(id)
-                                      ? const Color(0xFFFFA69D)
-                                      : const Color(0xFFA8DBA8),
-                                ),
-                            ],
+                      ),
+                    if (widget.actionsBuilder != null)
+                      widget.actionsBuilder!(context, profile, index),
+                    if (editable && !widget.compactControls) ...[
+                      LongPressDraggable<PlayerId>(
+                        data: id,
+                        maxSimultaneousDrags: _settling ? 0 : 1,
+                        onDragStarted: () {
+                          _hover(id, index);
+                        },
+                        onDragUpdate: (details) => _dragUpdate(id, details),
+                        onDragEnd: (_) => _endPreview(),
+                        feedback: LiftedDragAvatar(
+                          child: AvatarView(
+                            config: profile.avatar,
+                            size: 76,
+                            playerName: profile.player.name,
+                            showBackdrop: false,
                           ),
                         ),
-                      ),
-                    ),
-                  if (widget.actionsBuilder != null)
-                    widget.actionsBuilder!(context, profile, index),
-                  if (editable && !widget.compactControls) ...[
-                    LongPressDraggable<PlayerId>(
-                      data: id,
-                      maxSimultaneousDrags: _settling ? 0 : 1,
-                      onDragStarted: () => _hover(id, index),
-                      onDragEnd: (_) => _endPreview(),
-                      feedback: LiftedDragAvatar(
-                        child: AvatarView(
-                          config: profile.avatar,
-                          size: 76,
-                          playerName: profile.player.name,
-                          showBackdrop: false,
+                        child: const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Icon(Icons.drag_indicator),
                         ),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Icon(Icons.drag_indicator),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        children: [
+                          IconButton(
+                            tooltip: context.tr('moveForward', {
+                              'position': index + 1,
+                            }),
+                            onPressed: index > 0
+                                ? () =>
+                                      _move(id: id, from: index, to: index - 1)
+                                : null,
+                            icon: const Icon(Icons.arrow_upward),
+                          ),
+                          IconButton(
+                            tooltip: context.tr('moveBack', {
+                              'position': index + 1,
+                            }),
+                            onPressed: index < widget.order.length - 1
+                                ? () =>
+                                      _move(id: id, from: index, to: index + 1)
+                                : null,
+                            icon: const Icon(Icons.arrow_downward),
+                          ),
+                        ],
                       ),
-                    ),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        IconButton(
-                          tooltip: context.tr('moveForward', {
-                            'position': index + 1,
-                          }),
-                          onPressed: index > 0
-                              ? () => _move(id: id, from: index, to: index - 1)
-                              : null,
-                          icon: const Icon(Icons.arrow_upward),
-                        ),
-                        IconButton(
-                          tooltip: context.tr('moveBack', {
-                            'position': index + 1,
-                          }),
-                          onPressed: index < widget.order.length - 1
-                              ? () => _move(id: id, from: index, to: index + 1)
-                              : null,
-                          icon: const Icon(Icons.arrow_downward),
-                        ),
-                      ],
-                    ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),
@@ -547,7 +601,10 @@ class _BenchViewState extends State<BenchView> {
                 key: ValueKey('compact-drag-${id.value}'),
                 data: id,
                 maxSimultaneousDrags: _settling ? 0 : 1,
-                onDragStarted: () => _hover(id, index),
+                onDragStarted: () {
+                  _hover(id, index);
+                },
+                onDragUpdate: (details) => _dragUpdate(id, details),
                 onDragEnd: (_) => _endPreview(),
                 feedback: LiftedDragAvatar(
                   child: AvatarView(

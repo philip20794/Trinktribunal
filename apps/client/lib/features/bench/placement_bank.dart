@@ -55,8 +55,20 @@ class _PlacementBankState extends State<PlacementBank> {
     });
   }
 
+  int _insertion(PlayerId id, int hovered) {
+    final rect = reorderCellRect(_targets[hovered]);
+    if (rect == null) return hovered;
+    return reorderInsertionIndex(
+      source: widget.slots.indexOf(id),
+      hovered: hovered,
+      cell: rect,
+      pointer: _dragPosition ?? rect.center,
+      count: widget.slots.length,
+    );
+  }
+
   Timer? _edgeScroll;
-  Offset? _dragPosition;
+  Offset? _dragPosition, _pointerDown;
   bool _dragging = false, _panelOpen = false, _poolHidden = false;
 
   void _stopDrag() {
@@ -67,6 +79,7 @@ class _PlacementBankState extends State<PlacementBank> {
 
   void _startDrag(PlayerId id) {
     _stopDrag();
+    _dragPosition = _pointerDown;
     setState(() {
       _dragging = true;
       _dragged = id;
@@ -81,10 +94,18 @@ class _PlacementBankState extends State<PlacementBank> {
   }
 
   void _updateDrag(DragUpdateDetails details) {
-    _dragPosition = details.globalPosition;
+    _dragPosition = (_dragPosition ?? details.globalPosition) + details.delta;
+    if (_dragged != null) {
+      for (var i = 0; i < widget.slots.length; i++) {
+        if (reorderCellRect(_targets[i])?.contains(_dragPosition!) == true) {
+          _hover(_dragged!, _insertion(_dragged!, i));
+          break;
+        }
+      }
+    }
     final box = _surfaceKey.currentContext?.findRenderObject() as RenderBox?;
     if (box == null) return;
-    final x = box.globalToLocal(details.globalPosition).dx;
+    final x = box.globalToLocal(_dragPosition!).dx;
     // A narrow edge opens the drawer; a wider exit threshold prevents flicker.
     final open = x >= box.size.width - (_panelOpen ? 72 : 28);
     if (_panelOpen != open) {
@@ -207,11 +228,9 @@ class _PlacementBankState extends State<PlacementBank> {
   );
   Widget _person(PlayerId id, double size, {bool pool = false}) {
     final child = pool ? _poolPerson(id) : _portrait(id, size);
-    final feedback = LiftedDragAvatar(
-      child: Transform.translate(
-        offset: Offset(-size / 2, -size * .65),
-        child: _portrait(id, size),
-      ),
+    final feedback = Transform.translate(
+      offset: Offset(-size / 2, -size * .65),
+      child: LiftedDragAvatar(child: _portrait(id, size)),
     );
     // A short hold distinguishes dragging a person from scrolling the pool.
     if (pool) {
@@ -306,111 +325,116 @@ class _PlacementBankState extends State<PlacementBank> {
       final duration = MediaQuery.disableAnimationsOf(context)
           ? Duration.zero
           : const Duration(milliseconds: 180);
-      return SizedBox(
-        key: _surfaceKey,
-        height: height,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned.fill(
-              child: Scrollbar(
-                controller: _seatsScroll,
-                child: GridView.builder(
-                  key: _gridKey,
+      return Listener(
+        onPointerDown: (event) => _pointerDown = event.position,
+        child: SizedBox(
+          key: _surfaceKey,
+          height: height,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Positioned.fill(
+                child: Scrollbar(
                   controller: _seatsScroll,
-                  padding: EdgeInsets.zero,
-                  itemCount: widget.slots.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: columns,
-                    mainAxisExtent: avatarSize * ratio + chrome,
-                    crossAxisSpacing: 4,
-                  ),
-                  itemBuilder: (context, index) => _seat(
-                    context,
-                    index,
-                    avatarSize,
-                    columns,
-                    (width + 4) / columns,
-                    avatarSize * ratio + chrome,
+                  child: GridView.builder(
+                    key: _gridKey,
+                    controller: _seatsScroll,
+                    padding: EdgeInsets.zero,
+                    itemCount: widget.slots.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: columns,
+                      mainAxisExtent: avatarSize * ratio + chrome,
+                      crossAxisSpacing: 0,
+                    ),
+                    itemBuilder: (context, index) => _seat(
+                      context,
+                      index,
+                      avatarSize,
+                      columns,
+                      width / columns,
+                      avatarSize * ratio + chrome,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              right: 0,
-              top: 4,
-              bottom: 4,
-              child: DragTarget<PlayerId>(
-                key: const ValueKey('unplaced-return-target'),
-                onWillAcceptWithDetails: (details) =>
-                    widget.onPlace != null &&
-                    widget.profiles.containsKey(details.data),
-                onAcceptWithDetails: (details) {
-                  widget.onRemove(details.data);
-                  setState(() => _selected = null);
-                },
-                builder: (context, candidates, rejected) => AnimatedOpacity(
-                  key: const ValueKey('placement-pool-opacity'),
-                  duration: duration,
-                  opacity: collapsed ? .2 : 1,
-                  child: AnimatedContainer(
-                    key: const ValueKey('placement-pool-panel'),
+              Positioned(
+                right: 0,
+                top: 4,
+                bottom: 4,
+                child: DragTarget<PlayerId>(
+                  key: const ValueKey('unplaced-return-target'),
+                  onWillAcceptWithDetails: (details) =>
+                      widget.onPlace != null &&
+                      widget.profiles.containsKey(details.data),
+                  onAcceptWithDetails: (details) {
+                    widget.onRemove(details.data);
+                    setState(() => _selected = null);
+                  },
+                  builder: (context, candidates, rejected) => AnimatedOpacity(
+                    key: const ValueKey('placement-pool-opacity'),
                     duration: duration,
-                    curve: Curves.easeOutCubic,
-                    width: collapsed
-                        ? PlacementBank.collapsedPanelWidth
-                        : PlacementBank.panelWidth,
-                    decoration: BoxDecoration(
-                      color: CourtSceneTokens.panel,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: candidates.isNotEmpty || _selected != null
-                            ? CourtSceneTokens.gold
-                            : CourtSceneTokens.gold.withValues(alpha: .45),
+                    opacity: collapsed ? .2 : 1,
+                    child: AnimatedContainer(
+                      key: const ValueKey('placement-pool-panel'),
+                      duration: duration,
+                      curve: Curves.easeOutCubic,
+                      width: collapsed
+                          ? PlacementBank.collapsedPanelWidth
+                          : PlacementBank.panelWidth,
+                      decoration: BoxDecoration(
+                        color: CourtSceneTokens.panel,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: candidates.isNotEmpty || _selected != null
+                              ? CourtSceneTokens.gold
+                              : CourtSceneTokens.gold.withValues(alpha: .45),
+                        ),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black38, blurRadius: 10),
+                        ],
                       ),
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black38, blurRadius: 10),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: OverflowBox(
-                        alignment: Alignment.topRight,
-                        minWidth: PlacementBank.panelWidth - 2,
-                        maxWidth: PlacementBank.panelWidth - 2,
-                        child: InkWell(
-                          onTap: _selected != null && widget.onPlace != null
-                              ? () {
-                                  widget.onRemove(_selected!);
-                                  setState(() => _selected = null);
-                                }
-                              : null,
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 24,
-                                child: Icon(
-                                  Icons.people_outline,
-                                  size: 18,
-                                  color: CourtSceneTokens.gold,
-                                ),
-                              ),
-                              Expanded(
-                                child: Scrollbar(
-                                  controller: _poolScroll,
-                                  thumbVisibility: true,
-                                  child: ListView(
-                                    key: const ValueKey('placement-pool-list'),
-                                    controller: _poolScroll,
-                                    padding: EdgeInsets.zero,
-                                    children: [
-                                      for (final id in unplaced)
-                                        _person(id, avatarSize, pool: true),
-                                    ],
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: OverflowBox(
+                          alignment: Alignment.topRight,
+                          minWidth: PlacementBank.panelWidth - 2,
+                          maxWidth: PlacementBank.panelWidth - 2,
+                          child: InkWell(
+                            onTap: _selected != null && widget.onPlace != null
+                                ? () {
+                                    widget.onRemove(_selected!);
+                                    setState(() => _selected = null);
+                                  }
+                                : null,
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 24,
+                                  child: Icon(
+                                    Icons.people_outline,
+                                    size: 18,
+                                    color: CourtSceneTokens.gold,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Scrollbar(
+                                    controller: _poolScroll,
+                                    thumbVisibility: true,
+                                    child: ListView(
+                                      key: const ValueKey(
+                                        'placement-pool-list',
+                                      ),
+                                      controller: _poolScroll,
+                                      padding: EdgeInsets.zero,
+                                      children: [
+                                        for (final id in unplaced)
+                                          _person(id, avatarSize, pool: true),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -418,32 +442,32 @@ class _PlacementBankState extends State<PlacementBank> {
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 4,
-              right: 0,
-              child: Semantics(
-                button: true,
-                label: context.tr('placementPoolToggle'),
-                child: GestureDetector(
-                  key: const ValueKey('placement-pool-toggle'),
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => setState(() => _poolHidden = !_poolHidden),
-                  child: SizedBox(
-                    width: collapsed
-                        ? PlacementBank.collapsedPanelWidth
-                        : PlacementBank.panelWidth,
-                    height: 24,
-                    child: Icon(
-                      collapsed ? Icons.chevron_left : Icons.chevron_right,
-                      color: CourtSceneTokens.gold,
-                      size: 20,
+              Positioned(
+                top: 4,
+                right: 0,
+                child: Semantics(
+                  button: true,
+                  label: context.tr('placementPoolToggle'),
+                  child: GestureDetector(
+                    key: const ValueKey('placement-pool-toggle'),
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => setState(() => _poolHidden = !_poolHidden),
+                    child: SizedBox(
+                      width: collapsed
+                          ? PlacementBank.collapsedPanelWidth
+                          : PlacementBank.panelWidth,
+                      height: 24,
+                      child: Icon(
+                        collapsed ? Icons.chevron_left : Icons.chevron_right,
+                        color: CourtSceneTokens.gold,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     },
@@ -473,13 +497,33 @@ class _PlacementBankState extends State<PlacementBank> {
       return const Icon(Icons.person_outline, color: CourtSceneTokens.gold);
     }
     final target = preview.indexOf(id);
+    final halfGap = _dragged == null
+        ? <PlayerId, Offset>{}
+        : halfReorderGap<PlayerId>(
+            slots: widget.slots,
+            preview: preview,
+            dragged: _dragged!,
+            avatarWidth: size,
+            cells: List.generate(
+              widget.slots.length,
+              (i) => Rect.fromLTWH(
+                i % columns * strideX,
+                i ~/ columns * strideY,
+                strideX - 4,
+                strideY - 8,
+              ),
+            ),
+          );
+
     if (target < 0) return const SizedBox.shrink();
     return DragPreviewSlide(
       key: ValueKey(('seat-preview', id, _previewEpoch)),
-      offset: Offset(
-        (target % columns - index % columns) * strideX,
-        (target ~/ columns - index ~/ columns) * strideY,
-      ),
+      offset: !_settling && id != _dragged
+          ? (halfGap[id] ?? Offset.zero)
+          : Offset(
+              (target % columns - index % columns) * strideX,
+              (target ~/ columns - index ~/ columns) * strideY,
+            ),
       ghost: ghost || id == _dragged,
       child: ghost
           ? IgnorePointer(child: _portrait(id, size))
@@ -502,26 +546,22 @@ class _PlacementBankState extends State<PlacementBank> {
           !widget.profiles.containsKey(details.data)) {
         return false;
       }
-      _hover(details.data, index);
+      _hover(details.data, _insertion(details.data, index));
       return true;
     },
-    onMove: (details) => _hover(details.data, index),
-    onLeave: (_) {
-      if (!_settling && _hoverIndex == index) {
-        setState(() => _hoverIndex = null);
-      }
-    },
+    onMove: (details) => _hover(details.data, _insertion(details.data, index)),
     onAcceptWithDetails: (details) async {
       if (_settling ||
           widget.onPlace == null ||
           !widget.profiles.containsKey(details.data)) {
         return;
       }
+      final destination = _hoverIndex ?? _insertion(details.data, index);
       final original = List<PlayerId?>.of(widget.slots);
       setState(() => _settling = true);
       await landReorderAvatar(
         context: context,
-        target: _targets[index]!,
+        target: _targets[destination]!,
         inset: const Offset(0, -4),
         from: details.offset + Offset(-avatarSize / 2, -avatarSize * .65),
         size: Size(
@@ -535,8 +575,8 @@ class _PlacementBankState extends State<PlacementBank> {
       if (mounted) {
         if (widget.onPlace != null &&
             sameReorderOrder(original, widget.slots) &&
-            original.indexOf(details.data) != index) {
-          widget.onPlace!(details.data, index);
+            original.indexOf(details.data) != destination) {
+          widget.onPlace!(details.data, destination);
         }
         _previewEpoch++;
         _selected = null;
@@ -559,7 +599,7 @@ class _PlacementBankState extends State<PlacementBank> {
             },
       child: Container(
         key: _targets.putIfAbsent(index, GlobalKey.new),
-        margin: const EdgeInsets.only(bottom: 8),
+        margin: const EdgeInsets.fromLTRB(2, 0, 2, 8),
         decoration: BoxDecoration(
           color: CourtSceneTokens.panel.withValues(alpha: .45),
           borderRadius: BorderRadius.circular(10),

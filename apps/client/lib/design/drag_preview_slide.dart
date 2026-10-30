@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-const reorderMotionDuration = Duration(milliseconds: 210);
+const reorderMotionDuration = Duration(milliseconds: 240);
 bool _reducedMotion(BuildContext context) =>
     MediaQuery.disableAnimationsOf(context) ||
     MediaQuery.accessibleNavigationOf(context);
@@ -24,7 +24,7 @@ class DragPreviewSlide extends StatelessWidget {
     duration: ghost || _reducedMotion(context)
         ? Duration.zero
         : reorderMotionDuration,
-    curve: Curves.easeOutCubic,
+    curve: Curves.easeInOutCubic,
     tween: Tween(begin: Offset.zero, end: offset),
     child: IgnorePointer(
       ignoring: ghost,
@@ -107,19 +107,23 @@ Future<void> landReorderAvatar({
       child: ExcludeSemantics(
         child: TweenAnimationBuilder<double>(
           key: const ValueKey('reorder-landing'),
-          duration: reorderMotionDuration,
-          curve: Curves.easeOutCubic,
+          duration: reorderMotionDuration * 2,
+          curve: Curves.linear,
           tween: Tween(begin: 0, end: 1),
           onEnd: () {
             if (!done.isCompleted) done.complete();
           },
           builder: (context, value, _) {
-            final rect = Rect.lerp(startRect, endRect, value)!;
+            // First open the full slot, then settle the lifted avatar into it.
+            final progress = Curves.easeInOutCubic.transform(
+              ((value - .5) * 2).clamp(0.0, 1.0),
+            );
+            final rect = Rect.lerp(startRect, endRect, progress)!;
             return Stack(
               children: [
                 Positioned.fromRect(
                   rect: rect,
-                  child: LiftedDragAvatar(lift: 1 - value, child: child),
+                  child: LiftedDragAvatar(lift: 1 - progress, child: child),
                 ),
               ],
             );
@@ -140,3 +144,76 @@ Future<void> landReorderAvatar({
 /// Reject a pending drop if a remote update changed the committed seats.
 bool sameReorderOrder<T>(Iterable<T> before, Iterable<T> after) =>
     listEquals(before.toList(), after.toList());
+
+/// Hit-test insertion boundaries against stationary cells, never moving artwork.
+int reorderInsertionIndex({
+  required int source,
+  required int hovered,
+  required Rect cell,
+  required Offset pointer,
+  required int count,
+  bool reversed = false,
+}) {
+  if (source == hovered) return hovered;
+  final delta = (pointer.dx - cell.center.dx) * (reversed ? -1 : 1);
+  final after =
+      delta > .5 ||
+      ((pointer.dx - cell.center.dx).abs() < .5 &&
+          source >= 0 &&
+          source < hovered);
+  final boundary = hovered + (after ? 1 : 0);
+  return (boundary - (source >= 0 && source < boundary ? 1 : 0)).clamp(
+    0,
+    count - 1,
+  );
+}
+
+/// A half-avatar-width gap: the two sides move by a quarter width each.
+/// Move the rest of each affected row with its neighbour to avoid collisions.
+Map<T, Offset> halfReorderGap<T>({
+  required List<T?> slots,
+  required List<T?> preview,
+  required T dragged,
+  required List<Rect> cells,
+  required double avatarWidth,
+}) {
+  final index = preview.indexOf(dragged);
+  if (index < 0 || slots.indexOf(dragged) == index) return {};
+  final before = preview.take(index).whereType<T>().toList();
+  final after = preview.skip(index + 1).whereType<T>().toList();
+  final left = before.isEmpty ? -1 : slots.indexOf(before.last);
+  final right = after.isEmpty ? -1 : slots.indexOf(after.first);
+  final direction =
+      left >= 0 &&
+          right >= 0 &&
+          (cells[left].top - cells[right].top).abs() < 1 &&
+          cells[left].center.dx > cells[right].center.dx
+      ? -1.0
+      : 1.0;
+  final result = <T, Offset>{};
+  for (var i = 0; i < slots.length; i++) {
+    final id = slots[i];
+    if (id == null || id == dragged || cells[i].isEmpty) continue;
+    final center = cells[i].center;
+    var dx = 0.0;
+    if (left >= 0 &&
+        (cells[i].top - cells[left].top).abs() < 1 &&
+        (center.dx - cells[left].center.dx) * direction <= 0) {
+      dx = -avatarWidth * .25 * direction;
+    }
+    if (right >= 0 &&
+        (cells[i].top - cells[right].top).abs() < 1 &&
+        (center.dx - cells[right].center.dx) * direction >= 0) {
+      dx = avatarWidth * .25 * direction;
+    }
+    result[id] = Offset(dx, 0);
+  }
+  return result;
+}
+
+Rect? reorderCellRect(GlobalKey? key) {
+  final box = key?.currentContext?.findRenderObject();
+  return box is RenderBox && box.hasSize
+      ? box.localToGlobal(Offset.zero) & box.size
+      : null;
+}

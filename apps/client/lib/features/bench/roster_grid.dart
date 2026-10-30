@@ -55,11 +55,37 @@ class _RosterGridState extends State<RosterGrid> {
     });
   }
 
+  Offset? _pointer;
+  int _insertion(PlayerId id, int hovered) {
+    final rect = reorderCellRect(_targets[widget.members[hovered].player.id]);
+    if (rect == null) return hovered;
+    return reorderInsertionIndex(
+      source: widget.members.indexWhere((p) => p.player.id == id),
+      hovered: hovered,
+      cell: rect,
+      pointer: _pointer ?? rect.center,
+      count: widget.members.length,
+    );
+  }
+
+  void _dragUpdate(PlayerId id, DragUpdateDetails details) {
+    _pointer = (_pointer ?? details.globalPosition) + details.delta;
+    for (var i = 0; i < widget.members.length; i++) {
+      if (reorderCellRect(_targets[widget.members[i].player.id])
+              ?.contains(_pointer!) ==
+          true) {
+        _hover(id, _insertion(id, i));
+        break;
+      }
+    }
+  }
+
   void _clearPreview() {
     if (!mounted || _settling) return;
     setState(() {
       _dragged = null;
       _hoverIndex = null;
+      _pointer = null;
     });
   }
 
@@ -70,6 +96,7 @@ class _RosterGridState extends State<RosterGrid> {
         !widget.members.any((p) => p.player.id == _dragged)) {
       _dragged = null;
       _hoverIndex = null;
+      _pointer = null;
     }
   }
 
@@ -113,15 +140,33 @@ class _RosterGridState extends State<RosterGrid> {
         }
       }
       final preview = _preview;
-      final strideX = (width + 4) / columns;
+      final strideX = width / columns;
       final strideY = size * ratio + 16;
+      final halfGap = _dragged == null
+          ? <PlayerId, Offset>{}
+          : halfReorderGap<PlayerId>(
+              slots: widget.members.map((p) => p.player.id).toList(),
+              preview: preview,
+              dragged: _dragged!,
+              avatarWidth: size,
+              cells: List.generate(
+                widget.members.length,
+                (i) => Rect.fromLTWH(
+                  i % columns * strideX,
+                  i ~/ columns * strideY,
+                  strideX - 4,
+                  strideY - 4,
+                ),
+              ),
+            );
+
       return SliverGrid.builder(
         itemCount: widget.members.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: columns,
-          mainAxisExtent: size * ratio + 12,
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
+          mainAxisExtent: strideY,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
         ),
         itemBuilder: (context, index) {
           final member = widget.members[index];
@@ -140,16 +185,12 @@ class _RosterGridState extends State<RosterGrid> {
                   !widget.members.any((p) => p.player.id == drag.data)) {
                 return false;
               }
-              _hover(drag.data, index);
+              _hover(drag.data, _insertion(drag.data, index));
               return true;
             },
-            onMove: (drag) => _hover(drag.data, index),
-            onLeave: (_) {
-              if (!_settling && _hoverIndex == index) {
-                setState(() => _hoverIndex = null);
-              }
-            },
+            onMove: (drag) => _hover(drag.data, _insertion(drag.data, index)),
             onAcceptWithDetails: (drag) async {
+              final destination = _hoverIndex ?? _insertion(drag.data, index);
               final from = widget.members.indexWhere(
                 (p) => p.player.id == drag.data,
               );
@@ -159,7 +200,7 @@ class _RosterGridState extends State<RosterGrid> {
               setState(() => _settling = true);
               await landReorderAvatar(
                 context: context,
-                target: _targets[member.player.id]!,
+                target: _targets[widget.members[destination].player.id]!,
                 from: drag.offset,
                 size: Size(size, size * ratio),
                 child: AvatarView(
@@ -175,113 +216,125 @@ class _RosterGridState extends State<RosterGrid> {
                       original,
                       widget.members.map((p) => p.player.id),
                     ) &&
-                    from != index) {
-                  widget.onMove(from, index);
+                    from != destination) {
+                  widget.onMove(from, destination);
                 }
                 _previewEpoch++;
                 _settling = false;
                 _clearPreview();
               }
             },
-            builder: (context, candidates, _) => Container(
-              key: _targets.putIfAbsent(member.player.id, GlobalKey.new),
-              decoration: BoxDecoration(
-                color: CourtSceneTokens.panel.withValues(alpha: .6),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: candidates.isEmpty
-                      ? CourtSceneTokens.gold.withValues(alpha: .4)
-                      : CourtSceneTokens.gold,
+            builder: (context, candidates, _) => Listener(
+              onPointerDown: (event) => _pointer = event.position,
+              child: Container(
+                key: _targets.putIfAbsent(member.player.id, GlobalKey.new),
+                margin: const EdgeInsets.fromLTRB(2, 0, 2, 4),
+                decoration: BoxDecoration(
+                  color: CourtSceneTokens.panel.withValues(alpha: .6),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: candidates.isEmpty
+                        ? CourtSceneTokens.gold.withValues(alpha: .4)
+                        : CourtSceneTokens.gold,
+                  ),
                 ),
-              ),
-              child: Stack(
-                clipBehavior: Clip.none,
-                fit: StackFit.expand,
-                children: [
-                  Center(
-                    child: DragPreviewSlide(
-                      key: ValueKey((
-                        'roster-preview',
-                        member.player.id,
-                        _previewEpoch,
-                      )),
-                      offset: Offset(
-                        (preview.indexOf(member.player.id) % columns -
-                                index % columns) *
-                            strideX,
-                        (preview.indexOf(member.player.id) ~/ columns -
-                                index ~/ columns) *
-                            strideY,
-                      ),
-                      ghost: _dragged == member.player.id,
-                      child: LongPressDraggable<PlayerId>(
-                        key: ValueKey('roster-drag-${member.player.id.value}'),
-                        delay: const Duration(milliseconds: 180),
-                        data: member.player.id,
-                        onDragStarted: () => _hover(member.player.id, index),
-                        onDragEnd: (_) => _clearPreview(),
-                        maxSimultaneousDrags: widget.enabled && !_settling
-                            ? 1
-                            : 0,
-                        feedback: LiftedDragAvatar(child: portrait()),
-                        childWhenDragging: portrait(),
-                        child: InkWell(
-                          onTap: widget.enabled
-                              ? () => widget.onEdit(member)
-                              : null,
-                          child: portrait(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 3,
-                    left: 3,
-                    child: IgnorePointer(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 7,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: CourtSceneTokens.panel,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          '${index + 1}',
-                          style: const TextStyle(
-                            color: CourtSceneTokens.gold,
-                            fontWeight: FontWeight.w700,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  fit: StackFit.expand,
+                  children: [
+                    Center(
+                      child: DragPreviewSlide(
+                        key: ValueKey((
+                          'roster-preview',
+                          member.player.id,
+                          _previewEpoch,
+                        )),
+                        offset: !_settling && _dragged != member.player.id
+                            ? (halfGap[member.player.id] ?? Offset.zero)
+                            : Offset(
+                                (preview.indexOf(member.player.id) % columns -
+                                        index % columns) *
+                                    strideX,
+                                (preview.indexOf(member.player.id) ~/ columns -
+                                        index ~/ columns) *
+                                    strideY,
+                              ),
+                        ghost: _dragged == member.player.id,
+                        child: LongPressDraggable<PlayerId>(
+                          key: ValueKey(
+                            'roster-drag-${member.player.id.value}',
+                          ),
+                          delay: const Duration(milliseconds: 180),
+                          data: member.player.id,
+                          onDragStarted: () {
+                            _hover(member.player.id, index);
+                          },
+                          onDragUpdate: (details) =>
+                              _dragUpdate(member.player.id, details),
+                          onDragEnd: (_) => _clearPreview(),
+                          maxSimultaneousDrags: widget.enabled && !_settling
+                              ? 1
+                              : 0,
+                          feedback: LiftedDragAvatar(child: portrait()),
+                          childWhenDragging: portrait(),
+                          child: InkWell(
+                            onTap: widget.enabled
+                                ? () => widget.onEdit(member)
+                                : null,
+                            child: portrait(),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: PopupMenuButton<String>(
-                      key: ValueKey('roster-menu-${member.player.id.value}'),
-                      enabled: widget.enabled,
-                      tooltip: context.tr('rosterEditPerson'),
-                      icon: const Icon(Icons.more_vert, size: 20),
-                      itemBuilder: (_) => [
-                        PopupMenuItem(
-                          value: 'edit',
-                          child: TText('rosterEditPerson'),
+                    Positioned(
+                      top: 3,
+                      left: 3,
+                      child: IgnorePointer(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: CourtSceneTokens.panel,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '${index + 1}',
+                            style: const TextStyle(
+                              color: CourtSceneTokens.gold,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                         ),
-                        if (!widget.isOwner(member.player.id))
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: PopupMenuButton<String>(
+                        key: ValueKey('roster-menu-${member.player.id.value}'),
+                        enabled: widget.enabled,
+                        tooltip: context.tr('rosterEditPerson'),
+                        icon: const Icon(Icons.more_vert, size: 20),
+                        itemBuilder: (_) => [
                           PopupMenuItem(
-                            value: 'remove',
-                            child: TText('rosterRemove'),
+                            value: 'edit',
+                            child: TText('rosterEditPerson'),
                           ),
-                      ],
-                      onSelected: (action) => action == 'edit'
-                          ? widget.onEdit(member)
-                          : widget.onRemove(member, index),
+                          if (!widget.isOwner(member.player.id))
+                            PopupMenuItem(
+                              value: 'remove',
+                              child: TText('rosterRemove'),
+                            ),
+                        ],
+                        onSelected: (action) => action == 'edit'
+                            ? widget.onEdit(member)
+                            : widget.onRemove(member, index),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
