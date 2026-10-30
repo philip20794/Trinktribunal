@@ -81,7 +81,7 @@ class OnlineOrderView extends ConsumerWidget {
                     : 'onlineOrderWaiting',
               ),
             if (controller.pending) const TText('onlineOrderSending'),
-            if (!view.config.allJudges && ownsOrder && controller.confirmed)
+            if (ownsOrder && controller.confirmed)
               const TText('onlineOrderConfirmed'),
             if (view.config.allJudges &&
                 ['numbers', 'answers', 'ordering'].contains(view.phase) &&
@@ -149,7 +149,9 @@ class OnlineOrderAction extends ConsumerWidget {
     final ownsOrder =
         view.frozenRoster.contains(snapshot.you) &&
         (view.config.allJudges || snapshot.you == view.judgeId);
-    if (!ownsOrder || view.phase != 'ordering') return const SizedBox.shrink();
+    if (!ownsOrder || view.config.allJudges || view.phase != 'ordering') {
+      return const SizedBox.shrink();
+    }
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) =>

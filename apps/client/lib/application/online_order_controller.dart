@@ -8,7 +8,8 @@ import '../domain/bench_order.dart';
 import '../domain/models/ids.dart';
 import 'room_controller.dart';
 
-/// Drag/tap/key changes are private local intent until one explicit confirmation.
+/// All-judge placements submit automatically once complete and ordering opens.
+/// A single judge keeps their draft private until explicit confirmation.
 final class OnlineOrderController extends ChangeNotifier {
   OnlineOrderController(this.room, {String Function()? newId})
     : _newId = newId ?? newRoomRequestId {
@@ -112,7 +113,27 @@ final class OnlineOrderController extends ChangeNotifier {
     } else if (state.errorCode != null) {
       _pending = false;
     }
+    // Defer sending when the controller is created while widgets are building.
+    // On a stale revision, wait for the refreshed authoritative snapshot.
+    if (state.errorCode == null) scheduleMicrotask(_confirmCompleteOrder);
     notifyListeners();
+  }
+
+  void _confirmCompleteOrder() {
+    final view = snapshot;
+    if (view == null ||
+        room.state.errorCode != null ||
+        !view.public.config.allJudges ||
+        !complete ||
+        view.public.gameId == null ||
+        view.public.roundId == null) {
+      return;
+    }
+    confirm(
+      gameId: view.public.gameId!,
+      roundId: view.public.roundId!,
+      confirmed: true,
+    );
   }
 
   void move(int from, int to) {
@@ -139,6 +160,7 @@ final class OnlineOrderController extends ChangeNotifier {
       ..._slots.whereType<PlayerId>(),
       ..._draft.where((p) => !_slots.contains(p)),
     ];
+    _confirmCompleteOrder();
     notifyListeners();
   }
 

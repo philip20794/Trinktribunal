@@ -98,11 +98,14 @@ void main() {
       bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
       expect(bank.unplaced, isEmpty);
       expect(bank.slots, pool);
+      expect(find.widgetWithText(FilledButton, label), findsNothing);
+      expect(bank.onPlace, isNull);
       expect(
-        tester
-            .widget<FilledButton>(find.widgetWithText(FilledButton, label))
-            .onPressed,
-        isNotNull,
+        fixture.transport.sockets.last.sent
+            .whereType<SubmitOrderMessage>()
+            .single
+            .order,
+        pool,
       );
       await reviewImage(tester, 'new-order-filled');
       receive('numbers', 'round_2', 3);
@@ -113,6 +116,10 @@ void main() {
       bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
       expect(bank.slots, everyElement(isNull));
       expect(bank.unplaced, hasLength(3));
+      expect(
+        fixture.transport.sockets.last.sent.whereType<SubmitOrderMessage>(),
+        hasLength(1),
+      );
       await reviewImage(tester, 'new-order-empty');
       expect(tester.takeException(), isNull);
     },

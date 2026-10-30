@@ -215,7 +215,7 @@ void main() {
         }
         expect(
           fixture.transport.sockets.last.sent.whereType<SubmitOrderMessage>(),
-          isEmpty,
+          hasLength(1),
         );
       },
     );

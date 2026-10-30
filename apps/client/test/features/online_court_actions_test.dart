@@ -61,6 +61,7 @@ SnapshotMessage phase(
         },
     },
     'private': {
+      if (allJudges) 'ownNumber': 2,
       'ownOrder': ?ownOrder,
       if (revealed && allJudges) 'ownResult': {'errors': 0, 'sips': 0},
     },
@@ -166,11 +167,10 @@ void main() {
                 bank.onPlace!(pool[i], i);
               }
               await tester.pumpAndSettle();
-              await press('phoneConfirmOrder');
-              await tester.tap(
-                actionText(strings.get('phoneConfirmOrder')).last,
+              expect(
+                actionText(strings.get('phoneConfirmOrder')),
+                findsNothing,
               );
-              await tester.pumpAndSettle();
               final sent = socket.sent.whereType<SubmitOrderMessage>().single;
               expect(sent.expectedRevision, 4);
               ownOrder = sent.order.map((id) => id.value).toList();
@@ -188,6 +188,7 @@ void main() {
               widgetWithActionText(Tab, strings.get('caseTabTitle')),
             );
             await tester.pumpAndSettle();
+            expect(actionText(strings.get('holdToReveal')), findsNothing);
             if (host) {
               await press('nextJudge');
               expect(

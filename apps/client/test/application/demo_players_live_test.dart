@@ -108,7 +108,7 @@ void main() {
         ),
         isTrue,
       );
-      final numbers = await until(host, (view) => view.phase == 'numbers');
+      await until(host, (view) => view.phase == 'numbers');
       // Preparation is available before the ordering phase and stays local.
       final pool = List<PlayerId>.of(order.unplaced);
       for (var i = 0; i < pool.length; i++) {
@@ -119,14 +119,6 @@ void main() {
       expect(game.acknowledgeNumber(), isTrue);
       await until(host, (view) => view.phase == 'ordering');
       expect(order.slots, pool);
-      expect(
-        order.confirm(
-          gameId: numbers.public.gameId!,
-          roundId: numbers.public.roundId!,
-          confirmed: true,
-        ),
-        isTrue,
-      );
       await until(host, (view) => view.phase == 'revealing');
       final judged = await until(host, (view) => view.phase == 'judged');
       expect(
@@ -170,14 +162,6 @@ void main() {
       game.revealOwnNumber();
       expect(game.acknowledgeNumber(), isTrue);
       await until(host, (view) => view.phase == 'ordering');
-      expect(
-        order.confirm(
-          gameId: next.public.gameId!,
-          roundId: next.public.roundId!,
-          confirmed: true,
-        ),
-        isTrue,
-      );
       final nextJudged = await until(host, (view) => view.phase == 'judged');
       expect(nextJudged.public.completedCases, 1);
       expect(nextJudged.private.ownResult, isNotNull);

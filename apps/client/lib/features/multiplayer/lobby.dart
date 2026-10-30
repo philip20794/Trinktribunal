@@ -292,9 +292,8 @@ class _RoomPhaseFooter extends ConsumerWidget {
             'ordering'
                 when tabs.index != caseIndex &&
                     view.frozenRoster.contains(snapshot.you) &&
-                    (view.config.allJudges || snapshot.you == view.judgeId) &&
-                    (!view.config.allJudges ||
-                        order.complete && !order.confirmed) =>
+                    !view.config.allJudges &&
+                    snapshot.you == view.judgeId =>
               OnlineOrderAction(snapshot: snapshot),
             'revealing' when guide && !view.config.allJudges =>
               OnlineRevealAction(snapshot: snapshot),

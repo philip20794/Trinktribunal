@@ -9,8 +9,11 @@ import 'package:trinktribunal/data/room_credential_store.dart';
 
 import '../data/room_test_support.dart';
 
+import 'package:trinktribunal/domain/models/ids.dart';
+
 SnapshotMessage orderingView({
   bool judge = true,
+  bool allJudges = false,
   String phase = 'ordering',
   int revision = 1,
   List<String>? ownOrder,
@@ -22,6 +25,7 @@ SnapshotMessage orderingView({
     'public': {
       ...base.public.toJson(),
       'phase': phase,
+      'config': {...base.public.config.toJson(), 'allJudges': allJudges},
       'judgeId': judge ? 'p2' : 'p1',
       'hostId': judge ? 'p1' : 'p2',
       'frozenRoster': ['p1', 'p2', 'p3', 'p4'],
@@ -35,6 +39,87 @@ SnapshotMessage orderingView({
 }
 
 void main() {
+  for (final preparationPhase in ['numbers', 'answers', 'ordering']) {
+    test(
+      'complete all-judge placement automatically submits from $preparationPhase and recovers stale revisions',
+      () {
+        fakeAsync((clock) {
+          final transport = FakeRoomTransport();
+          final room = RoomController(
+            transport: transport,
+            credentials: RoomCredentialStore(MemoryCredentialBackend()),
+          );
+          final order = OnlineOrderController(room);
+          unawaited(room.resume(testCredential()));
+          clock.flushMicrotasks();
+          final socket = transport.sockets.single;
+          socket.receive(roomFixture('authenticated'));
+          socket.receive(
+            orderingView(allJudges: true, phase: preparationPhase),
+          );
+          clock.flushMicrotasks();
+          final pool = List<PlayerId>.of(order.unplaced);
+          for (var i = 0; i < pool.length - 1; i++) {
+            order.place(pool[i], i);
+          }
+          expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);
+          order.place(pool.last, pool.length - 1);
+          if (preparationPhase != 'ordering') {
+            expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);
+            socket.receive(orderingView(allJudges: true, revision: 2));
+            clock.flushMicrotasks();
+          }
+          expect(order.pending, isTrue);
+          expect(order.canEdit, isFalse);
+          expect(
+            socket.sent.whereType<SubmitOrderMessage>().single.order,
+            pool,
+          );
+          // Another player's simultaneous submission can invalidate our revision.
+          socket.receive(
+            ErrorMessage.fromJson({
+              'type': 'error',
+              'protocolVersion': 2,
+              'code': 'STALE_REVISION',
+              'requestId': 'stale_order',
+            }),
+          );
+          clock.flushMicrotasks();
+          expect(socket.sent.whereType<SubmitOrderMessage>(), hasLength(1));
+          socket.receive(orderingView(allJudges: true, revision: 3));
+          clock.flushMicrotasks();
+          expect(socket.sent.whereType<SubmitOrderMessage>(), hasLength(2));
+          expect(
+            socket.sent.whereType<SubmitOrderMessage>().last.expectedRevision,
+            3,
+          );
+          socket.receive(
+            orderingView(
+              allJudges: true,
+              revision: 4,
+              ownOrder: pool.map((p) => p.value).toList(),
+            ),
+          );
+          clock.flushMicrotasks();
+          expect(order.confirmed, isTrue);
+          expect(order.pending, isFalse);
+          socket.receive(
+            orderingView(
+              allJudges: true,
+              revision: 5,
+              phase: 'revealing',
+              ownOrder: pool.map((p) => p.value).toList(),
+            ),
+          );
+          clock.flushMicrotasks();
+          expect(socket.sent.whereType<SubmitOrderMessage>(), hasLength(2));
+          order.dispose();
+          unawaited(room.dispose());
+          clock.flushMicrotasks();
+        });
+      },
+    );
+  }
   test('credential reconnect restores only the server-confirmed order and keeps it locked', () {
     fakeAsync((clock) {
       final transport = FakeRoomTransport(),

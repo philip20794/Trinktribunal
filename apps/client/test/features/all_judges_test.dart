@@ -1,7 +1,5 @@
 import '../support/action_text.dart';
 
-import 'package:trinktribunal/design/court_dialog.dart';
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -251,7 +249,7 @@ void main() {
     },
   );
   testWidgets(
-    'all judges keep their own figure and 100 moves local; own sealed echo locks only this order',
+    'all judges submit the last placement automatically; own sealed echo confirms only this order',
     (tester) async {
       final socket = await normal.pump(tester, snapshot: allJudgesView()),
           frames = socket.sent.length;
@@ -266,28 +264,19 @@ void main() {
         PlayerId('p4'),
         PlayerId('p1'),
       ];
+      expect(socket.sent.length, frames);
+      socket.receive(allJudgesView(revision: 2));
+      await tester.pumpAndSettle();
       for (var i = 0; i < expected.length; i++) {
         bank.onPlace!(expected[i], i);
       }
       await tester.pumpAndSettle();
-      expect(socket.sent.length, frames);
-      socket.receive(allJudgesView(revision: 2));
-      await tester.pumpAndSettle();
       bank = tester.widget<PlacementBank>(find.byType(PlacementBank));
       expect(bank.slots, expected);
-      final confirm = AppStrings('de').get('phoneConfirmOrder');
-      await normal.tapText(tester, confirm);
-      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
-      await tester.pumpAndSettle();
-      expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);
-      await normal.tapText(tester, confirm);
-      await tester.tap(
-        find.descendant(
-          of: find.byType(CourtDialog),
-          matching: widgetWithActionText(FilledButton, confirm),
-        ),
+      expect(
+        actionText(AppStrings('de').get('phoneConfirmOrder')),
+        findsNothing,
       );
-      await tester.pumpAndSettle();
       final sent = socket.sent.whereType<SubmitOrderMessage>().single;
       expect(sent.order.map((id) => id.value), ['p2', 'p3', 'p4', 'p1']);
       expect(sent.expectedRevision, 2);
@@ -304,7 +293,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         actionText(AppStrings('de').get('onlineOrderConfirmed')),
-        findsNothing,
+        findsOneWidget,
       );
       expect(
         tester
