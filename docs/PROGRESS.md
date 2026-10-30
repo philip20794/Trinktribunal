@@ -1,5 +1,13 @@
 # Fortschritt und Übergabe
 
+## Dezente Sitzplatzmarken und flackerfreie Avatar-Zustände, 30.10.2026
+
+Gemeinsame, nicht interaktive Sitzplatzmarkierung aus Grundlinie und zwei kurzen Endstrichen ergänzt: lokale Einrichtung, Platzierungsraster, Spielbank und Online-Warteraum. Markierungen bleiben ortsfest unter den bewegten Avatar-Einheiten, ohne Flächen oder hohe Rahmen; schwere durchgehende Sitzreihen-Unterkanten ersetzt.
+
+Flackerursache: Der Animations-Epoch-Key ersetzte bei jedem Drop alle Avatar-Unterbäume; deren FutureBuilder zeigten selbst bei fertigen SVG-Futures erneut einen Warteframe. Spieler-Keys bleiben jetzt stabil, ein separater Reset setzt nur die Verschiebungsanimation zurück. Lokales Sliver-Raster ordnet seine bestehenden Elemente per Spieler-ID um; im Sitzraster bleiben Portrait-Unterbäume über GlobalKeys erhalten. Fertige, begrenzte Render-Cache-Einträge liefern ihre SVG-Daten synchron; RepaintBoundary kapselt das SVG-Zeichnen von den Drag-Transformationen. Keine neuen Abhängigkeiten oder Änderungen an Avatar-Grafiken.
+
+Prüfung: 719 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen. Tests prüfen identische SVG-Elemente nach echten Drops sowie 50 Umsortierungen mit 20 Spielern und direkt sichtbare, warme Portrait-/Kopfbilder im ersten Remount-Frame. 15 Renderprüfungen erfolgreich; nach der letzten Layoutkorrektur zwölf gezielte Render-/Performance-Prüfungen erfolgreich. Analyze/Format sowie neun Rechte-/UI-Inventarprüfungen ohne Befund. Native Sitzplatzansichten visuell geprüft; Änderungen lokal, keine Browser-/Geräteabnahme.
+
 ## Sofortige Hover-Erkennung neben der Spielerleiste, 30.10.2026
 
 Regression reproduziert: Die rechte Rückgabefläche war zu Beginn der Schrumpfanimation noch 56 statt 16 Pixel breit; zusätzlich öffnete ein unsichtbarer 28-Pixel-Rand die Leiste vorzeitig. Logische Trefferfläche jetzt sofort 16 Pixel, während die Darstellung weiter weich schrumpft. Öffnen am tatsächlichen schmalen Rand, Schließen mit nur vier Pixeln Hysterese außerhalb der aufgeklappten Leiste. Hover wird mit aktueller Fingerposition und nach tatsächlichem Auto-Scroll neu berechnet. Regression prüft Ausweichen während der Leistenanimation, Randöffnung, Rückkehr zur Sortierung und Abbruch ohne gespeicherte Änderung. 22 gezielte Flutter-Tests erfolgreich; Änderungen lokal.

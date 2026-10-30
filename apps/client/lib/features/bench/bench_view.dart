@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/semantics.dart';
 
 import '../../design/avatar_view.dart';
+import '../../design/seat_hint.dart';
 import '../../design/drag_preview_slide.dart';
 import '../../design/pending_order_avatar.dart';
 import '../../l10n/app_strings.dart';
@@ -301,16 +302,7 @@ class _BenchViewState extends State<BenchView> {
                                 ],
                               ),
                               const SizedBox(height: 4),
-                              Container(
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  color: CourtTokens.wood,
-                                  border: Border.all(
-                                    color: CourtSceneTokens.gold,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
+                              const SizedBox(height: 8),
                             ],
                           ),
                         ),
@@ -399,168 +391,181 @@ class _BenchViewState extends State<BenchView> {
           _hover(details.data, _insertion(details.data, index));
         },
         onAcceptWithDetails: (details) => _acceptDrop(details, index),
-        builder: (context, candidates, rejected) => DragPreviewSlide(
-          key: ValueKey(('bench-preview', id, _previewEpoch)),
-          offset:
-              (_settling || id == _dragged
-                  ? _previewOffsets[id]
-                  : _halfOffsets[id]) ??
-              Offset.zero,
-          ghost: _dragged == id,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Focus(
-              focusNode: editable
-                  ? _focus.putIfAbsent(
-                      id,
-                      () => FocusNode(debugLabel: 'bench-${id.value}'),
-                    )
-                  : null,
-              canRequestFocus: editable,
-              onFocusChange: (focused) {
-                if (mounted) {
-                  setState(() {
-                    if (focused) {
-                      _focused = id;
-                    } else if (_focused == id) {
-                      _focused = null;
-                    }
-                  });
-                }
-              },
-              onKeyEvent: (node, event) {
-                if (!editable ||
-                    event is! KeyDownEvent ||
-                    !HardwareKeyboard.instance.isAltPressed) {
-                  return KeyEventResult.ignored;
-                }
-                final delta =
-                    event.logicalKey ==
-                        (widget.compactControls
-                            ? LogicalKeyboardKey.arrowLeft
-                            : LogicalKeyboardKey.arrowUp)
-                    ? -1
-                    : event.logicalKey ==
-                          (widget.compactControls
-                              ? LogicalKeyboardKey.arrowRight
-                              : LogicalKeyboardKey.arrowDown)
-                    ? 1
-                    : 0;
-                if (delta == 0 ||
-                    index + delta < 0 ||
-                    index + delta >= widget.order.length) {
-                  return KeyEventResult.ignored;
-                }
-                _move(id: id, from: index, to: index + delta);
-                return KeyEventResult.handled;
-              },
+        builder: (context, candidates, rejected) => Stack(
+          fit: StackFit.passthrough,
+          children: [
+            const Positioned(left: 0, right: 0, bottom: 0, child: SeatHint()),
+            DragPreviewSlide(
+              key: ValueKey(('bench-preview', id)),
+              resetToken: _previewEpoch,
+              offset:
+                  (_settling || id == _dragged
+                      ? _previewOffsets[id]
+                      : _halfOffsets[id]) ??
+                  Offset.zero,
+              ghost: _dragged == id,
               child: Padding(
-                padding: EdgeInsets.all(widget.compactControls ? 4 : 8),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: editable ? () => _tap(id) : null,
-                      child: Column(
-                        children: [
-                          if (widget.compactControls)
-                            _compactPortrait(profile, index, id, editable)
-                          else
-                            _avatarUnit(profile, index),
-                        ],
-                      ),
-                    ),
-                    if (widget.revealedNumbers.containsKey(id))
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Semantics(
-                          label: context.tr(
-                            widget.showPositionResult
-                                ? widget.incorrect.contains(id)
-                                      ? 'wrongPosition'
-                                      : 'rightPosition'
-                                : 'revealedNumber',
-                            {'number': widget.revealedNumbers[id]},
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Focus(
+                  focusNode: editable
+                      ? _focus.putIfAbsent(
+                          id,
+                          () => FocusNode(debugLabel: 'bench-${id.value}'),
+                        )
+                      : null,
+                  canRequestFocus: editable,
+                  onFocusChange: (focused) {
+                    if (mounted) {
+                      setState(() {
+                        if (focused) {
+                          _focused = id;
+                        } else if (_focused == id) {
+                          _focused = null;
+                        }
+                      });
+                    }
+                  },
+                  onKeyEvent: (node, event) {
+                    if (!editable ||
+                        event is! KeyDownEvent ||
+                        !HardwareKeyboard.instance.isAltPressed) {
+                      return KeyEventResult.ignored;
+                    }
+                    final delta =
+                        event.logicalKey ==
+                            (widget.compactControls
+                                ? LogicalKeyboardKey.arrowLeft
+                                : LogicalKeyboardKey.arrowUp)
+                        ? -1
+                        : event.logicalKey ==
+                              (widget.compactControls
+                                  ? LogicalKeyboardKey.arrowRight
+                                  : LogicalKeyboardKey.arrowDown)
+                        ? 1
+                        : 0;
+                    if (delta == 0 ||
+                        index + delta < 0 ||
+                        index + delta >= widget.order.length) {
+                      return KeyEventResult.ignored;
+                    }
+                    _move(id: id, from: index, to: index + delta);
+                    return KeyEventResult.handled;
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(widget.compactControls ? 4 : 8),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: editable ? () => _tap(id) : null,
+                          child: Column(
+                            children: [
+                              if (widget.compactControls)
+                                _compactPortrait(profile, index, id, editable)
+                              else
+                                _avatarUnit(profile, index),
+                            ],
                           ),
-                          child: ExcludeSemantics(
-                            child: Wrap(
-                              alignment: WrapAlignment.center,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              spacing: 6,
-                              children: [
-                                Text(
-                                  '${widget.revealedNumbers[id]}',
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w700,
-                                    color: CourtSceneTokens.cream,
-                                  ),
+                        ),
+                        if (widget.revealedNumbers.containsKey(id))
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Semantics(
+                              label: context.tr(
+                                widget.showPositionResult
+                                    ? widget.incorrect.contains(id)
+                                          ? 'wrongPosition'
+                                          : 'rightPosition'
+                                    : 'revealedNumber',
+                                {'number': widget.revealedNumbers[id]},
+                              ),
+                              child: ExcludeSemantics(
+                                child: Wrap(
+                                  alignment: WrapAlignment.center,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 6,
+                                  children: [
+                                    Text(
+                                      '${widget.revealedNumbers[id]}',
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700,
+                                        color: CourtSceneTokens.cream,
+                                      ),
+                                    ),
+                                    if (widget.showPositionResult)
+                                      Icon(
+                                        widget.incorrect.contains(id)
+                                            ? Icons.cancel
+                                            : Icons.check_circle,
+                                        size: 22,
+                                        color: widget.incorrect.contains(id)
+                                            ? const Color(0xFFFFA69D)
+                                            : const Color(0xFFA8DBA8),
+                                      ),
+                                  ],
                                 ),
-                                if (widget.showPositionResult)
-                                  Icon(
-                                    widget.incorrect.contains(id)
-                                        ? Icons.cancel
-                                        : Icons.check_circle,
-                                    size: 22,
-                                    color: widget.incorrect.contains(id)
-                                        ? const Color(0xFFFFA69D)
-                                        : const Color(0xFFA8DBA8),
-                                  ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    if (widget.actionsBuilder != null)
-                      widget.actionsBuilder!(context, profile, index),
-                    if (editable && !widget.compactControls) ...[
-                      LongPressDraggable<PlayerId>(
-                        data: id,
-                        maxSimultaneousDrags: _settling ? 0 : 1,
-                        onDragStarted: () {
-                          _hoverCell = index;
-                          _hover(id, index);
-                        },
-                        onDragUpdate: (details) => _dragUpdate(id, details),
-                        onDragEnd: (_) => _endPreview(),
-                        feedback: LiftedDragAvatar(
-                          child: _avatarUnit(profile, index),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Icon(Icons.drag_indicator),
-                        ),
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        children: [
-                          IconButton(
-                            tooltip: context.tr('moveForward', {
-                              'position': index + 1,
-                            }),
-                            onPressed: index > 0
-                                ? () =>
-                                      _move(id: id, from: index, to: index - 1)
-                                : null,
-                            icon: const Icon(Icons.arrow_upward),
+                        if (widget.actionsBuilder != null)
+                          widget.actionsBuilder!(context, profile, index),
+                        if (editable && !widget.compactControls) ...[
+                          LongPressDraggable<PlayerId>(
+                            data: id,
+                            maxSimultaneousDrags: _settling ? 0 : 1,
+                            onDragStarted: () {
+                              _hoverCell = index;
+                              _hover(id, index);
+                            },
+                            onDragUpdate: (details) => _dragUpdate(id, details),
+                            onDragEnd: (_) => _endPreview(),
+                            feedback: LiftedDragAvatar(
+                              child: _avatarUnit(profile, index),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Icon(Icons.drag_indicator),
+                            ),
                           ),
-                          IconButton(
-                            tooltip: context.tr('moveBack', {
-                              'position': index + 1,
-                            }),
-                            onPressed: index < widget.order.length - 1
-                                ? () =>
-                                      _move(id: id, from: index, to: index + 1)
-                                : null,
-                            icon: const Icon(Icons.arrow_downward),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [
+                              IconButton(
+                                tooltip: context.tr('moveForward', {
+                                  'position': index + 1,
+                                }),
+                                onPressed: index > 0
+                                    ? () => _move(
+                                        id: id,
+                                        from: index,
+                                        to: index - 1,
+                                      )
+                                    : null,
+                                icon: const Icon(Icons.arrow_upward),
+                              ),
+                              IconButton(
+                                tooltip: context.tr('moveBack', {
+                                  'position': index + 1,
+                                }),
+                                onPressed: index < widget.order.length - 1
+                                    ? () => _move(
+                                        id: id,
+                                        from: index,
+                                        to: index + 1,
+                                      )
+                                    : null,
+                                icon: const Icon(Icons.arrow_downward),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                    ],
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

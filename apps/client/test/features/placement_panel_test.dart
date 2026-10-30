@@ -135,9 +135,7 @@ void main() {
         tester.widget<AnimatedOpacity>(keyed('placement-pool-opacity')).opacity,
         .2,
       );
-      final neighbour = find.byKey(
-        ValueKey(('seat-preview', PlayerId('p0'), 0)),
-      );
+      final neighbour = find.byKey(ValueKey(('seat-preview', PlayerId('p0'))));
       expect(tester.widget<DragPreviewSlide>(neighbour).offset.dx, lessThan(0));
       await tester.pump(const Duration(milliseconds: 120));
       final matrix = tester

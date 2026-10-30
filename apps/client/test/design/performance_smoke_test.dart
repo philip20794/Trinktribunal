@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
@@ -9,6 +10,16 @@ import 'package:trinktribunal/domain/user_profile.dart';
 import 'package:trinktribunal/features/bench/bench_view.dart';
 
 void main() {
+  setUpAll(() async {
+    for (final config in [
+      AvatarConfig(),
+      AvatarConfig().withOption('hair', 'short01'),
+      AvatarConfig().withOption('hair', 'long01'),
+    ]) {
+      await TrinkAvatarRenderer.svg(config);
+      await TrinkAvatarRenderer.svg(config, showBackdrop: false);
+    }
+  });
   testWidgets(
     'twenty portraits fit together at 200 percent text without image assets',
     (tester) async {
@@ -99,6 +110,16 @@ void main() {
         );
         await tester.pumpAndSettle();
         final initialElements = find.byType(AvatarView).evaluate().length;
+        Element svgFor(PlayerId id) => tester.element(
+          find.descendant(
+            of: find.byWidgetPredicate(
+              (w) =>
+                  w is AvatarView && w.playerName == profiles[id]!.player.name,
+            ),
+            matching: find.byType(SvgPicture),
+          ),
+        );
+        final originalSvgElements = {for (final id in order) id: svgFor(id)};
         final scrollable = tester.state<ScrollableState>(
           find.byType(Scrollable).first,
         );
@@ -108,6 +129,9 @@ void main() {
           await tester.pumpAndSettle();
           expect(find.byType(AvatarView), findsNWidgets(initialElements));
           expect(order.toSet().length, 20);
+          for (final id in order) {
+            expect(identical(svgFor(id), originalSvgElements[id]), isTrue);
+          }
           expect(scrollable.position.maxScrollExtent, initialExtent);
           expect(tester.takeException(), isNull);
         }

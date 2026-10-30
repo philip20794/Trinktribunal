@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/design/drag_preview_slide.dart';
+import 'package:trinktribunal/design/seat_hint.dart';
 import 'package:trinktribunal/design/court_scene.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/domain/bench_order.dart';
@@ -120,6 +122,19 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
+        Element imageFor(PlayerId id) => tester.element(
+          find.descendant(
+            of: find.byWidgetPredicate(
+              (w) => w is AvatarView && w.playerName == id.value,
+            ),
+            matching: find.byType(SvgPicture),
+          ),
+        );
+        final originalImages = {for (final id in ids) id: imageFor(id)};
+        final seatRects = List.generate(
+          find.byType(SeatHint).evaluate().length,
+          (i) => tester.getRect(find.byType(SeatHint).at(i)),
+        );
         Finder seat(int index) => find.byKey(
           kind == 'seats'
               ? ValueKey('order-seat-$index')
@@ -143,6 +158,12 @@ void main() {
         await tester.pump(const Duration(milliseconds: 120));
         expect(commits, 0);
         expect(order, ids);
+        expect(find.byType(SeatHint), findsNWidgets(ids.length));
+        final currentSeats = List.generate(
+          find.byType(SeatHint).evaluate().length,
+          (i) => tester.getRect(find.byType(SeatHint).at(i)),
+        );
+        expect(currentSeats, seatRects);
         expect(ghosts, findsOneWidget);
         expect(find.byKey(const ValueKey('drag-origin-ghost')), findsNothing);
         final gap = tester.widget<Opacity>(
@@ -307,6 +328,14 @@ void main() {
         expect(rendered(openingFinder), isNot(opening.offset));
         await tester.pumpAndSettle();
         expect(commits, 1);
+        for (final id in ids) {
+          expect(
+            identical(imageFor(id), originalImages[id]),
+            isTrue,
+            reason:
+                'reordering must retain the already decoded SVG for ${id.value}',
+          );
+        }
         expect(
           order,
           kind == 'bench'
@@ -487,7 +516,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 250));
       Finder slide(int i) =>
-          find.byKey(ValueKey(('bench-preview', original[i], 0)));
+          find.byKey(ValueKey(('bench-preview', original[i])));
       Offset rendered(Finder finder) {
         final matrix = tester
             .widget<Transform>(

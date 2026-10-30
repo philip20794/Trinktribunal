@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../design/avatar_view.dart';
+import '../../design/seat_hint.dart';
 import '../../design/drag_preview_slide.dart';
 import '../../domain/bench_order.dart';
 import '../../design/pending_order_avatar.dart';
@@ -43,6 +44,7 @@ class _PlacementBankState extends State<PlacementBank> {
   int _previewEpoch = 0;
   bool _settling = false;
   final _targets = <int, GlobalKey>{};
+  final _portraitKeys = <PlayerId, GlobalKey>{};
 
   List<PlayerId?> get _previewSlots => _dragged != null && _hoverIndex != null
       ? placePlayer(widget.slots, _dragged!, _hoverIndex!)
@@ -209,7 +211,12 @@ class _PlacementBankState extends State<PlacementBank> {
     super.dispose();
   }
 
-  Widget _portrait(PlayerId id, double size, {int? position}) {
+  Widget _portrait(
+    PlayerId id,
+    double size, {
+    int? position,
+    bool feedback = false,
+  }) {
     final seat = position ?? widget.slots.indexOf(id);
     return ReorderAvatarUnit(
       size: size,
@@ -217,6 +224,7 @@ class _PlacementBankState extends State<PlacementBank> {
       child: PendingOrderAvatar(
         pending: widget.pending.contains(id),
         child: AvatarView(
+          key: feedback ? null : _portraitKeys.putIfAbsent(id, GlobalKey.new),
           showBackdrop: false,
           config: widget.profiles[id]!.avatar,
           size: size,
@@ -275,7 +283,7 @@ class _PlacementBankState extends State<PlacementBank> {
     final child = pool ? _poolPerson(id) : _portrait(id, size);
     final feedback = Transform.translate(
       offset: Offset(-size / 2, -size * .65),
-      child: LiftedDragAvatar(child: _portrait(id, size)),
+      child: LiftedDragAvatar(child: _portrait(id, size, feedback: true)),
     );
     // A short hold distinguishes dragging a person from scrolling the pool.
     if (pool) {
@@ -571,7 +579,8 @@ class _PlacementBankState extends State<PlacementBank> {
 
     if (target < 0) return const SizedBox.shrink();
     return DragPreviewSlide(
-      key: ValueKey(('seat-preview', id, _previewEpoch)),
+      key: ValueKey(('seat-preview', id)),
+      resetToken: _previewEpoch,
       offset: !_settling && id != _dragged
           ? (halfGap[id] ?? Offset.zero)
           : Offset(
@@ -624,7 +633,12 @@ class _PlacementBankState extends State<PlacementBank> {
               TrinkAvatarRenderer.visibleHeight /
               TrinkAvatarRenderer.canvasWidth,
         ),
-        child: _portrait(details.data, avatarSize, position: destination),
+        child: _portrait(
+          details.data,
+          avatarSize,
+          position: destination,
+          feedback: true,
+        ),
       );
       if (mounted) {
         if (widget.onPlace != null &&
@@ -653,11 +667,22 @@ class _PlacementBankState extends State<PlacementBank> {
             },
       child: SizedBox.expand(
         key: _targets.putIfAbsent(index, GlobalKey.new),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Center(
-            child: _seatPerson(index, avatarSize, columns, strideX, strideY),
-          ),
+        child: Stack(
+          children: [
+            const Positioned(left: 0, right: 0, bottom: 0, child: SeatHint()),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Center(
+                child: _seatPerson(
+                  index,
+                  avatarSize,
+                  columns,
+                  strideX,
+                  strideY,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     ),

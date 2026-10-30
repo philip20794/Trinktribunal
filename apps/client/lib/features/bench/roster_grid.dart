@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../design/avatar_view.dart';
+import '../../design/seat_hint.dart';
 import '../../design/drag_preview_slide.dart';
 import '../../domain/bench_order.dart';
 import '../../domain/models/ids.dart';
@@ -177,6 +178,13 @@ class _RosterGridState extends State<RosterGrid> {
 
       return SliverGrid.builder(
         itemCount: widget.members.length,
+        findChildIndexCallback: (key) {
+          if (key is! ValueKey<PlayerId>) return null;
+          final index = widget.members.indexWhere(
+            (p) => p.player.id == key.value,
+          );
+          return index < 0 ? null : index;
+        },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: columns,
           mainAxisExtent: strideY,
@@ -232,39 +240,51 @@ class _RosterGridState extends State<RosterGrid> {
               onPointerDown: (event) => _pointer = event.position,
               child: SizedBox.expand(
                 key: _targets.putIfAbsent(id, GlobalKey.new),
-                child: Center(
-                  child: DragPreviewSlide(
-                    key: ValueKey(('roster-preview', id, _previewEpoch)),
-                    offset: !_settling && _dragged != id
-                        ? (halfGap[id] ?? Offset.zero)
-                        : Offset(
-                            (preview.indexOf(id) % columns - index % columns) *
-                                strideX,
-                            (preview.indexOf(id) ~/ columns -
-                                    index ~/ columns) *
-                                strideY,
-                          ),
-                    ghost: _dragged == id,
-                    child: LongPressDraggable<PlayerId>(
-                      key: ValueKey('roster-drag-${id.value}'),
-                      delay: const Duration(milliseconds: 180),
-                      data: id,
-                      onDragStarted: () {
-                        _hoverCell = index;
-                        _hover(id, index);
-                      },
-                      onDragUpdate: (details) => _dragUpdate(id, details),
-                      onDragEnd: (_) => _clearPreview(),
-                      maxSimultaneousDrags: widget.enabled && !_settling
-                          ? 1
-                          : 0,
-                      feedback: LiftedDragAvatar(
-                        child: _unit(member, index, size),
-                      ),
-                      childWhenDragging: _unit(member, index, size),
-                      child: _unit(member, index, size),
+                child: Stack(
+                  children: [
+                    const Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: SeatHint(),
                     ),
-                  ),
+                    Center(
+                      child: DragPreviewSlide(
+                        key: ValueKey(('roster-preview', id)),
+                        resetToken: _previewEpoch,
+                        offset: !_settling && _dragged != id
+                            ? (halfGap[id] ?? Offset.zero)
+                            : Offset(
+                                (preview.indexOf(id) % columns -
+                                        index % columns) *
+                                    strideX,
+                                (preview.indexOf(id) ~/ columns -
+                                        index ~/ columns) *
+                                    strideY,
+                              ),
+                        ghost: _dragged == id,
+                        child: LongPressDraggable<PlayerId>(
+                          key: ValueKey('roster-drag-${id.value}'),
+                          delay: const Duration(milliseconds: 180),
+                          data: id,
+                          onDragStarted: () {
+                            _hoverCell = index;
+                            _hover(id, index);
+                          },
+                          onDragUpdate: (details) => _dragUpdate(id, details),
+                          onDragEnd: (_) => _clearPreview(),
+                          maxSimultaneousDrags: widget.enabled && !_settling
+                              ? 1
+                              : 0,
+                          feedback: LiftedDragAvatar(
+                            child: _unit(member, index, size),
+                          ),
+                          childWhenDragging: _unit(member, index, size),
+                          child: _unit(member, index, size),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

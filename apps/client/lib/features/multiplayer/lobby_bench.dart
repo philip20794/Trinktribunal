@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../data/protocol/room_message.dart';
 import '../../design/avatar_view.dart';
 import '../../design/court_scene.dart';
-import '../../design/court_theme.dart';
+import '../../design/seat_hint.dart';
 import '../../domain/avatar_config.dart';
 import '../../l10n/app_strings.dart';
 import 'pending_profile.dart';
@@ -29,8 +29,8 @@ class LobbyBench extends StatelessWidget {
       final width = math.max(0.0, constraints.maxWidth - 16);
       final height = math.max(0.0, constraints.maxHeight - 16);
       final textHeight = MediaQuery.textScalerOf(context).scale(13) * 1.3 * 2;
-      // Reserve two full name lines, portrait padding, and a wooden shelf.
-      final rowChrome = textHeight + 22;
+      // Reserve two full name lines, portrait padding, and a light seat cue.
+      final rowChrome = textHeight + 32;
       final minCellWidth = math.max(
         minAvatarSize + 16,
         MediaQuery.textScalerOf(context).scale(13) * 6,
@@ -132,6 +132,7 @@ class LobbyBench extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
+                                            const SeatHint(),
                                           ],
                                         ),
                                       );
@@ -139,14 +140,6 @@ class LobbyBench extends StatelessWidget {
                                   ),
                           ),
                       ],
-                    ),
-                    Container(
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: CourtTokens.wood,
-                        border: Border.all(color: CourtSceneTokens.gold),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
                     ),
                   ],
                 ),

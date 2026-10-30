@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dicebear_core/dicebear_core.dart' show Avatar, Style;
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -80,7 +81,14 @@ abstract final class TrinkAvatarRenderer {
     final cached = cache[key];
     if (cached != null) return cached;
     if (cache.length >= maxEntries) cache.remove(cache.keys.first);
-    return cache[key] = render();
+    // A remounted cached avatar must not spend a frame in FutureBuilder.waiting.
+    // Do not resurrect entries evicted while their original render was pending.
+    late final Future<String> pending;
+    pending = render().then((value) {
+      if (identical(cache[key], pending)) cache[key] = SynchronousFuture(value);
+      return value;
+    });
+    return cache[key] = pending;
   }
 
   static Future<String> svg(AvatarConfig config, {bool showBackdrop = true}) =>
@@ -253,24 +261,26 @@ class AvatarView extends StatelessWidget {
                 left: 0,
                 width: size,
                 height: fullHeight,
-                child: FutureBuilder<String>(
-                  future: TrinkAvatarRenderer.svg(
-                    config,
-                    showBackdrop: showBackdrop,
+                child: RepaintBoundary(
+                  child: FutureBuilder<String>(
+                    future: TrinkAvatarRenderer.svg(
+                      config,
+                      showBackdrop: showBackdrop,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Icon(Icons.person_outline);
+                      }
+                      if (!snapshot.hasData) {
+                        return const Center(child: Icon(Icons.person_outline));
+                      }
+                      return SvgPicture.string(
+                        snapshot.requireData,
+                        fit: BoxFit.fill,
+                        excludeFromSemantics: true,
+                      );
+                    },
                   ),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Icon(Icons.person_outline);
-                    }
-                    if (!snapshot.hasData) {
-                      return const Center(child: Icon(Icons.person_outline));
-                    }
-                    return SvgPicture.string(
-                      snapshot.requireData,
-                      fit: BoxFit.fill,
-                      excludeFromSemantics: true,
-                    );
-                  },
                 ),
               ),
               if (nameplateChild != null)

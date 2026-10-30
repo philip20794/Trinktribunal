@@ -11,32 +11,71 @@ bool _reducedMotion(BuildContext context) =>
     MediaQuery.accessibleNavigationOf(context);
 
 /// Move the complete portrait unit while its drop hit area remains stable.
-class DragPreviewSlide extends StatelessWidget {
+class DragPreviewSlide extends StatefulWidget {
   const DragPreviewSlide({
     required this.offset,
     required this.child,
     this.ghost = false,
+    this.resetToken = 0,
     super.key,
   });
   final Offset offset;
   final Widget child;
   final bool ghost;
+  final int resetToken;
   @override
-  Widget build(BuildContext context) => TweenAnimationBuilder<Offset>(
-    duration: ghost || _reducedMotion(context)
-        ? Duration.zero
-        : reorderMotionDuration,
-    curve: Curves.easeInOutCubic,
-    tween: Tween(begin: Offset.zero, end: offset),
+  State<DragPreviewSlide> createState() => _DragPreviewSlideState();
+}
+
+class _DragPreviewSlideState extends State<DragPreviewSlide>
+    with SingleTickerProviderStateMixin {
+  late final _move = AnimationController(
+    vsync: this,
+    duration: reorderMotionDuration,
+    value: 1,
+  );
+  late Offset _from = widget.offset, _to = widget.offset;
+  Offset get _position =>
+      Offset.lerp(_from, _to, Curves.easeInOutCubic.transform(_move.value))!;
+  @override
+  void didUpdateWidget(DragPreviewSlide oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.resetToken != widget.resetToken ||
+        widget.ghost ||
+        _reducedMotion(context)) {
+      _from = _to = widget.offset;
+      _move.value = 1;
+    } else if (oldWidget.offset != widget.offset) {
+      _from = _position;
+      _to = widget.offset;
+      _move.forward(from: 0);
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_reducedMotion(context)) _move.value = 1;
+  }
+
+  @override
+  void dispose() {
+    _move.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: _move,
     child: IgnorePointer(
-      ignoring: ghost,
+      ignoring: widget.ghost,
       child: ExcludeSemantics(
-        excluding: ghost,
-        child: Opacity(opacity: ghost ? 0 : 1, child: child),
+        excluding: widget.ghost,
+        child: Opacity(opacity: widget.ghost ? 0 : 1, child: widget.child),
       ),
     ),
-    builder: (context, position, content) => Transform.translate(
-      offset: position,
+    builder: (context, content) => Transform.translate(
+      offset: _position,
       transformHitTests: false,
       child: content,
     ),
