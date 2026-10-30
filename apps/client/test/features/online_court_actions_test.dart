@@ -1,3 +1,4 @@
+import '../support/action_text.dart';
 import '../support/hold_action.dart';
 
 import 'dart:io';
@@ -111,7 +112,7 @@ void main() {
             }
 
             Future<void> press(String key) async {
-              final target = find.text(strings.get(key));
+              final target = actionText(strings.get(key));
               expect(target, findsOneWidget);
               expect(target.hitTestable(), findsOneWidget);
               if (key == 'nextJudge') {
@@ -132,27 +133,27 @@ void main() {
                   hasLength(1),
                 );
               } else {
-                expect(find.text(strings.get('nextJudge')), findsNothing);
+                expect(actionText(strings.get('nextJudge')), findsNothing);
               }
               expect(find.byType(Tab), findsNWidgets(host ? 3 : 2));
               return;
             }
             await receive('answers', 2);
-            expect(find.text(strings.get('onlineAnswerReady')), findsNothing);
+            expect(actionText(strings.get('onlineAnswerReady')), findsNothing);
             await tester.ensureVisible(
-              find.widgetWithText(Tab, strings.get('roomMeTab')),
+              widgetWithActionText(Tab, strings.get('roomMeTab')),
             );
             await tester.tap(
-              find.widgetWithText(Tab, strings.get('roomMeTab')),
+              widgetWithActionText(Tab, strings.get('roomMeTab')),
             );
             await tester.pumpAndSettle();
-            expect(find.text(strings.get('onlineAnswerReady')), findsNothing);
+            expect(actionText(strings.get('onlineAnswerReady')), findsNothing);
             await tester.tap(
-              find.widgetWithText(Tab, strings.get('roomTitle')),
+              widgetWithActionText(Tab, strings.get('roomTitle')),
             );
             await tester.pumpAndSettle();
             await receive('answers', 3, ready: true);
-            expect(find.text(strings.get('phoneBeginOrder')), findsNothing);
+            expect(actionText(strings.get('phoneBeginOrder')), findsNothing);
             await receive('ordering', 4);
             final ownsOrder = host || allJudges;
             List<String>? ownOrder;
@@ -167,7 +168,7 @@ void main() {
               await tester.pumpAndSettle();
               await press('phoneConfirmOrder');
               await tester.tap(
-                find.text(strings.get('phoneConfirmOrder')).last,
+                actionText(strings.get('phoneConfirmOrder')).last,
               );
               await tester.pumpAndSettle();
               final sent = socket.sent.whereType<SubmitOrderMessage>().single;
@@ -175,13 +176,16 @@ void main() {
               ownOrder = sent.order.map((id) => id.value).toList();
               expect(ownOrder.length, allJudges ? 3 : 2);
             } else {
-              expect(find.text(strings.get('phoneConfirmOrder')), findsNothing);
+              expect(
+                actionText(strings.get('phoneConfirmOrder')),
+                findsNothing,
+              );
             }
             await receive('revealing', 5, ownOrder: ownOrder);
-            expect(find.text(strings.get('phoneRevealNext')), findsNothing);
+            expect(actionText(strings.get('phoneRevealNext')), findsNothing);
             await receive('judged', 6, ownOrder: ownOrder);
             await tester.tap(
-              find.widgetWithText(Tab, strings.get('caseTabTitle')),
+              widgetWithActionText(Tab, strings.get('caseTabTitle')),
             );
             await tester.pumpAndSettle();
             if (host) {
@@ -194,7 +198,7 @@ void main() {
                 6,
               );
             } else {
-              expect(find.text(strings.get('nextJudge')), findsNothing);
+              expect(actionText(strings.get('nextJudge')), findsNothing);
             }
             expect(fixture.room.state.snapshot!.public.phase, 'judged');
             expect(

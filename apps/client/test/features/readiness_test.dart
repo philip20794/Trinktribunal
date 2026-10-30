@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -109,11 +111,11 @@ void main() {
       final begin = AppStrings('de').get('phoneBeginOrder');
       expect(
         tester
-            .widget<FilledButton>(find.widgetWithText(FilledButton, begin))
+            .widget<FilledButton>(widgetWithActionText(FilledButton, begin))
             .onPressed,
         isNull,
       );
-      await tester.tap(find.text('Meine Antwort ist bereit'));
+      await tester.tap(actionText('Meine Antwort ist bereit'));
       await tester.pumpAndSettle();
       final action = socket.sent.whereType<ReadyForOrderingMessage>().single;
       expect(action.toJson().keys.toSet(), {
@@ -131,10 +133,10 @@ void main() {
         ),
         isTrue,
       );
-      expect(find.text('Deine Bereitschaft wird bestätigt …'), findsOneWidget);
+      expect(actionText('Deine Bereitschaft wird bestätigt …'), findsOneWidget);
       socket.receive(answerView(ready: true, revision: 2));
       await tester.pumpAndSettle();
-      await tester.tap(find.text(begin));
+      await tester.tap(actionText(begin));
       await tester.pumpAndSettle();
       expect(
         socket.sent.whereType<BeginOrderingMessage>().single.expectedRevision,
@@ -148,9 +150,9 @@ void main() {
     (tester) async {
       final fixture = await pump(tester, host: false),
           socket = fixture.transport.sockets.last;
-      expect(find.text(AppStrings('de').get('phoneBeginOrder')), findsNothing);
-      expect(find.text('Fall ohne Urteil abschließen'), findsNothing);
-      await tester.tap(find.text('Meine Antwort ist bereit'));
+      expect(actionText(AppStrings('de').get('phoneBeginOrder')), findsNothing);
+      expect(actionText('Fall ohne Urteil abschließen'), findsNothing);
+      await tester.tap(actionText('Meine Antwort ist bereit'));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<ReadyForOrderingMessage>(), hasLength(1));
     },
@@ -161,13 +163,13 @@ void main() {
       final fixture = await pump(tester, ready: true, offline: true),
           socket = fixture.transport.sockets.last;
       expect(
-        find.text('Verbindung unterbrochen – die Phase wartet.'),
+        actionText('Verbindung unterbrochen – die Phase wartet.'),
         findsOneWidget,
       );
       expect(
         tester
             .widget<FilledButton>(
-              find.widgetWithText(
+              widgetWithActionText(
                 FilledButton,
                 AppStrings('de').get('phoneBeginOrder'),
               ),
@@ -177,16 +179,16 @@ void main() {
       );
       await tester.tap(find.byTooltip('Partieoptionen'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Fall ohne Urteil abschließen'));
+      await tester.tap(actionText('Fall ohne Urteil abschließen'));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<CompleteWithoutVerdictMessage>(), isEmpty);
       await tester.tap(find.byTooltip('Partieoptionen'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Fall ohne Urteil abschließen'));
+      await tester.tap(actionText('Fall ohne Urteil abschließen'));
       await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(FilledButton, 'Fall abschließen'));
+      await tester.tap(widgetWithActionText(FilledButton, 'Fall abschließen'));
       await tester.pumpAndSettle();
       final action = socket.sent
           .whereType<CompleteWithoutVerdictMessage>()
@@ -203,11 +205,11 @@ void main() {
           socket = fixture.transport.sockets.last;
       await tester.tap(find.byTooltip('Partieoptionen'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Fall ohne Urteil abschließen'));
+      await tester.tap(actionText('Fall ohne Urteil abschließen'));
       await tester.pumpAndSettle();
       socket.receive(answerView(revision: 2, roundId: 'round_2'));
       await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(FilledButton, 'Fall abschließen'));
+      await tester.tap(widgetWithActionText(FilledButton, 'Fall abschließen'));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<CompleteWithoutVerdictMessage>(), isEmpty);
       expect(fixture.room.state.snapshot!.public.roundId?.value, 'round_2');

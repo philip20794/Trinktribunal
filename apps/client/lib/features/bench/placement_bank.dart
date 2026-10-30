@@ -4,6 +4,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../design/avatar_view.dart';
+import '../../design/drag_preview_slide.dart';
+import '../../domain/bench_order.dart';
 import '../../design/pending_order_avatar.dart';
 import '../../design/court_scene.dart';
 import '../../domain/models/ids.dart';
@@ -36,7 +38,21 @@ class PlacementBank extends StatefulWidget {
 class _PlacementBankState extends State<PlacementBank> {
   final _seatsScroll = ScrollController(), _poolScroll = ScrollController();
   final _surfaceKey = GlobalKey(), _gridKey = GlobalKey();
-  PlayerId? _selected;
+  PlayerId? _selected, _dragged;
+  int? _hoverIndex;
+  int _previewEpoch = 0;
+
+  List<PlayerId?> get _previewSlots => _dragged != null && _hoverIndex != null
+      ? placePlayer(widget.slots, _dragged!, _hoverIndex!)
+      : widget.slots;
+  void _hover(PlayerId id, int index) {
+    if (_dragged == id && _hoverIndex == index) return;
+    setState(() {
+      _dragged = id;
+      _hoverIndex = index;
+    });
+  }
+
   Timer? _edgeScroll;
   Offset? _dragPosition;
   bool _dragging = false, _panelOpen = false, _poolHidden = false;
@@ -47,10 +63,13 @@ class _PlacementBankState extends State<PlacementBank> {
     _dragPosition = null;
   }
 
-  void _startDrag() {
+  void _startDrag(PlayerId id) {
     _stopDrag();
     setState(() {
       _dragging = true;
+      _dragged = id;
+      final from = widget.slots.indexOf(id);
+      _hoverIndex = from < 0 ? null : from;
       _panelOpen = false;
     });
     _edgeScroll = Timer.periodic(
@@ -66,7 +85,12 @@ class _PlacementBankState extends State<PlacementBank> {
     final x = box.globalToLocal(details.globalPosition).dx;
     // A narrow edge opens the drawer; a wider exit threshold prevents flicker.
     final open = x >= box.size.width - (_panelOpen ? 72 : 28);
-    if (_panelOpen != open) setState(() => _panelOpen = open);
+    if (_panelOpen != open) {
+      setState(() {
+        _panelOpen = open;
+        if (open) _hoverIndex = null;
+      });
+    }
   }
 
   void _endDrag(DraggableDetails _) {
@@ -74,6 +98,8 @@ class _PlacementBankState extends State<PlacementBank> {
     if (!mounted) return;
     setState(() {
       _dragging = false;
+      _dragged = null;
+      _hoverIndex = null;
       _panelOpen = false;
     });
   }
@@ -107,6 +133,8 @@ class _PlacementBankState extends State<PlacementBank> {
     if (widget.onPlace == null) {
       _stopDrag();
       _dragging = false;
+      _dragged = null;
+      _hoverIndex = null;
       _panelOpen = false;
       _selected = null;
     }
@@ -123,6 +151,7 @@ class _PlacementBankState extends State<PlacementBank> {
   Widget _portrait(PlayerId id, double size) => PendingOrderAvatar(
     pending: widget.pending.contains(id),
     child: AvatarView(
+      showBackdrop: false,
       config: widget.profiles[id]!.avatar,
       size: size,
       label: widget.profiles[id]!.player.name,
@@ -190,7 +219,7 @@ class _PlacementBankState extends State<PlacementBank> {
         delay: const Duration(milliseconds: 180),
         maxSimultaneousDrags: widget.onPlace == null ? 0 : 1,
         dragAnchorStrategy: pointerDragAnchorStrategy,
-        onDragStarted: _startDrag,
+        onDragStarted: () => _startDrag(id),
         onDragUpdate: _updateDrag,
         onDragEnd: _endDrag,
         feedback: feedback,
@@ -202,11 +231,11 @@ class _PlacementBankState extends State<PlacementBank> {
       data: id,
       maxSimultaneousDrags: widget.onPlace == null ? 0 : 1,
       dragAnchorStrategy: pointerDragAnchorStrategy,
-      onDragStarted: _startDrag,
+      onDragStarted: () => _startDrag(id),
       onDragUpdate: _updateDrag,
       onDragEnd: _endDrag,
       feedback: feedback,
-      childWhenDragging: Opacity(opacity: .25, child: child),
+      childWhenDragging: child,
       child: InkWell(
         onTap: widget.onPlace == null
             ? null
@@ -294,8 +323,14 @@ class _PlacementBankState extends State<PlacementBank> {
                     mainAxisExtent: avatarSize * ratio + chrome,
                     crossAxisSpacing: 4,
                   ),
-                  itemBuilder: (context, index) =>
-                      _seat(context, index, avatarSize),
+                  itemBuilder: (context, index) => _seat(
+                    context,
+                    index,
+                    avatarSize,
+                    columns,
+                    (width + 4) / columns,
+                    avatarSize * ratio + chrome,
+                  ),
                 ),
               ),
             ),
@@ -411,71 +446,129 @@ class _PlacementBankState extends State<PlacementBank> {
       );
     },
   );
-  Widget _seat(BuildContext context, int index, double avatarSize) =>
-      DragTarget<PlayerId>(
-        key: ValueKey('order-seat-$index'),
-        onWillAcceptWithDetails: (details) =>
-            widget.onPlace != null && widget.profiles.containsKey(details.data),
-        onAcceptWithDetails: (details) {
-          widget.onPlace?.call(details.data, index);
-          setState(() => _selected = null);
-        },
-        builder: (context, candidates, rejected) => InkWell(
-          onTap: _selected == null || widget.onPlace == null
-              ? null
-              : () {
-                  widget.onPlace!(_selected!, index);
-                  setState(() => _selected = null);
-                },
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 8),
-            decoration: BoxDecoration(
-              color: CourtSceneTokens.panel.withValues(alpha: .45),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: candidates.isNotEmpty
-                    ? CourtSceneTokens.gold
-                    : CourtSceneTokens.gold.withValues(alpha: .35),
-              ),
+  Widget _seatPerson(
+    int index,
+    double size,
+    int columns,
+    double strideX,
+    double strideY,
+  ) {
+    final preview = _previewSlots;
+    var id = widget.slots[index];
+    var ghost = false;
+    if (id == null &&
+        _dragged != null &&
+        !widget.slots.contains(_dragged) &&
+        _hoverIndex != null) {
+      final vacant = widget.slots.indexOf(null, _hoverIndex!);
+      final ghostSource = vacant >= 0 ? vacant : widget.slots.lastIndexOf(null);
+      if (index == ghostSource) {
+        id = _dragged;
+        ghost = true;
+      }
+    }
+    if (id == null) {
+      return const Icon(Icons.person_outline, color: CourtSceneTokens.gold);
+    }
+    final target = preview.indexOf(id);
+    if (target < 0) return const SizedBox.shrink();
+    return DragPreviewSlide(
+      key: ValueKey(('seat-preview', id, _previewEpoch)),
+      offset: Offset(
+        (target % columns - index % columns) * strideX,
+        (target ~/ columns - index ~/ columns) * strideY,
+      ),
+      ghost: ghost || id == _dragged,
+      child: ghost
+          ? IgnorePointer(child: _portrait(id, size))
+          : _person(id, size),
+    );
+  }
+
+  Widget _seat(
+    BuildContext context,
+    int index,
+    double avatarSize,
+    int columns,
+    double strideX,
+    double strideY,
+  ) => DragTarget<PlayerId>(
+    key: ValueKey('order-seat-$index'),
+    onWillAcceptWithDetails: (details) {
+      if (widget.onPlace == null ||
+          !widget.profiles.containsKey(details.data)) {
+        return false;
+      }
+      _hover(details.data, index);
+      return true;
+    },
+    onMove: (details) => _hover(details.data, index),
+    onLeave: (_) {
+      if (_hoverIndex == index) setState(() => _hoverIndex = null);
+    },
+    onAcceptWithDetails: (details) {
+      setState(() {
+        _previewEpoch++;
+        _hoverIndex = null;
+        _dragged = null;
+        _selected = null;
+      });
+      if (widget.slots.indexOf(details.data) != index) {
+        widget.onPlace?.call(details.data, index);
+      }
+    },
+    builder: (context, candidates, rejected) => InkWell(
+      onTap: _selected == null || widget.onPlace == null
+          ? null
+          : () {
+              widget.onPlace!(_selected!, index);
+              setState(() => _selected = null);
+            },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          color: CourtSceneTokens.panel.withValues(alpha: .45),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: candidates.isNotEmpty
+                ? CourtSceneTokens.gold
+                : CourtSceneTokens.gold.withValues(alpha: .35),
+          ),
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.expand,
+          children: [
+            Center(
+              child: _seatPerson(index, avatarSize, columns, strideX, strideY),
             ),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Center(
-                  child: widget.slots[index] != null
-                      ? _person(widget.slots[index]!, avatarSize)
-                      : const Icon(
-                          Icons.person_outline,
-                          color: CourtSceneTokens.gold,
-                        ),
-                ),
-                Positioned(
-                  top: 4,
-                  left: 4,
-                  child: IgnorePointer(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 7,
-                        vertical: 3,
-                      ),
-                      decoration: BoxDecoration(
-                        color: CourtSceneTokens.panel,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '${index + 1}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: CourtSceneTokens.gold,
-                        ),
-                      ),
+            Positioned(
+              top: 4,
+              left: 4,
+              child: IgnorePointer(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: CourtSceneTokens.panel,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${index + 1}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: CourtSceneTokens.gold,
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }

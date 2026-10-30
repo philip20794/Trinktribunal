@@ -903,5 +903,15 @@
   "rulesExtraSummary": "Neue Regeln gelten sofort.",
   "roomReturnActive": "Zur laufenden Runde ({code})",
   "placementPoolToggle": "Personenauswahl ein- oder ausklappen",
-  "savedNotice": "Gespeichert"
+  "savedNotice": "Gespeichert",
+  "dialogResume": "Weiter",
+  "dialogNew": "Neu",
+  "dialogDelete": "Löschen",
+  "dialogLeave": "Verlassen",
+  "dialogHome": "Home",
+  "dialogReplace": "Ersetzen",
+  "dialogConfirm": "OK",
+  "dialogFinish": "Fertig",
+  "dialogRestart": "Neustart",
+  "dialogKick": "Entfernen"
 }

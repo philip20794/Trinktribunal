@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'package:trinktribunal/design/court_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,7 +66,7 @@ Future<FakeRoomSocket> pump(
 }
 
 Future<void> tapText(WidgetTester tester, String text) async {
-  final finder = find.text(text);
+  final finder = actionText(text);
   await tester.ensureVisible(finder);
   await tester.tap(finder);
   await tester.pumpAndSettle();
@@ -90,7 +92,7 @@ void main() {
       await tester.tap(
         find.descendant(
           of: find.byType(CourtDialog),
-          matching: find.widgetWithText(FilledButton, confirm),
+          matching: widgetWithActionText(FilledButton, confirm),
         ),
       );
       await tester.pumpAndSettle();
@@ -106,7 +108,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(
-        find.text('Deine Ordnung ist verbindlich bestätigt.'),
+        actionText('Deine Ordnung ist verbindlich bestätigt.'),
         findsOneWidget,
       );
       expect(tester.widget<BenchView>(find.byType(BenchView)).onMove, isNull);
@@ -120,7 +122,7 @@ void main() {
       expect(bank.onMove, isNull);
       expect(bank.order.map((id) => id.value), ['p2', 'p3', 'p4']);
       expect(
-        find.text(AppStrings('de').get('phoneConfirmOrder')),
+        actionText(AppStrings('de').get('phoneConfirmOrder')),
         findsNothing,
       );
       expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);

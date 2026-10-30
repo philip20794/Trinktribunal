@@ -391,7 +391,10 @@ class IllustratedQuestion extends StatelessWidget {
               direction,
             ).height,
           );
-          final top = width * .33, bottom = width * .14;
+          final top = width * .33;
+          // Leave clear paper below the range box, even in short viewports.
+          // FittedBox scales the content down before sacrificing this inset.
+          final bottom = width * .22 + 12;
           final naturalHeight = math.max(
             width * 1.5,
             top + headerHeight + 26 + bodyHeight + 16 + scaleHeight + bottom,
@@ -444,6 +447,7 @@ class IllustratedQuestion extends StatelessWidget {
                           FittedPaperText(text, height: bodyHeight),
                           SizedBox(height: viewport == null ? 16 : 10),
                           Container(
+                            key: const ValueKey('question-range-box'),
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: const Color(0x2DB18548),

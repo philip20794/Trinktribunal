@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ void main() {
       expect(socket.sent.whereType<CloseRoomMessage>(), isEmpty);
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(FilledButton, label));
+      await tester.tap(widgetWithActionText(FilledButton, label));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<CloseRoomMessage>(), hasLength(1));
       expect(f.room.state.snapshot, isNotNull);

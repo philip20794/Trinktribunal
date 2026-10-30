@@ -627,5 +627,15 @@
   "rulesExtraSummary": "New rules apply immediately.",
   "roomReturnActive": "Return to your round ({code})",
   "placementPoolToggle": "Expand or collapse people panel",
-  "savedNotice": "Saved"
+  "savedNotice": "Saved",
+  "dialogResume": "Resume",
+  "dialogNew": "New",
+  "dialogDelete": "Delete",
+  "dialogLeave": "Leave",
+  "dialogHome": "Home",
+  "dialogReplace": "Replace",
+  "dialogConfirm": "OK",
+  "dialogFinish": "Done",
+  "dialogRestart": "Restart",
+  "dialogKick": "Remove"
 }

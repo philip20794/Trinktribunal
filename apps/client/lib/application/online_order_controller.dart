@@ -134,9 +134,7 @@ final class OnlineOrderController extends ChangeNotifier {
         index >= _slots.length) {
       return;
     }
-    final previous = _slots.indexOf(id), displaced = _slots[index];
-    if (previous >= 0) _slots[previous] = displaced;
-    _slots[index] = id;
+    _slots = placePlayer(_slots, id, index);
     _draft = [
       ..._slots.whereType<PlayerId>(),
       ..._draft.where((p) => !_slots.contains(p)),

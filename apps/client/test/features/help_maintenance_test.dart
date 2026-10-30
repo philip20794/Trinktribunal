@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -48,13 +50,13 @@ void main() {
             expect(title, isNot('$prefix${section}Title'));
             expect(body, isNot('$prefix${section}Body'));
             await tester.scrollUntilVisible(
-              find.text(title),
+              actionText(title),
               220,
               scrollable: find.byType(Scrollable).first,
             );
             await tester.pumpAndSettle();
-            expect(find.text(title), findsOneWidget);
-            expect(find.text(body), findsOneWidget);
+            expect(actionText(title), findsOneWidget);
+            expect(actionText(body), findsOneWidget);
             expect(tester.takeException(), isNull);
           }
           await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
@@ -69,15 +71,15 @@ void main() {
         await host(tester, const HomeScreen(), language);
         await tester.tap(find.byTooltip(strings.get('openSettings')));
         await tester.pumpAndSettle();
-        await tapVisible(tester, find.text(strings.get('helpTitle')));
+        await tapVisible(tester, actionText(strings.get('helpTitle')));
         expect(find.byType(HelpScreen), findsOneWidget);
-        await tapVisible(tester, find.text(strings.get('gameRules')));
+        await tapVisible(tester, actionText(strings.get('gameRules')));
         expect(find.byType(GameRulesScreen), findsOneWidget);
         await tester.tap(find.byKey(const ValueKey('rules-back')));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();
-        await tapVisible(tester, find.text(strings.get('privacyTitle')));
+        await tapVisible(tester, actionText(strings.get('privacyTitle')));
         expect(
           tester.widget<HelpScreen>(find.byType(HelpScreen)).privacy,
           isTrue,
@@ -104,7 +106,7 @@ void main() {
         final storage =
             container.read(stringStoreProvider) as MemoryStringStore;
         storage.values['unrelated'] = 'keep';
-        final action = find.text(strings.get('maintenanceProfile'));
+        final action = actionText(strings.get('maintenanceProfile'));
         await tapVisible(tester, action);
         await tapVisible(
           tester,
@@ -113,14 +115,14 @@ void main() {
         expect(storage.values.containsKey(ProfileStore.key), isTrue);
         storage.failWrite = true;
         await tapVisible(tester, action);
-        await tapVisible(tester, find.text(strings.get('maintenanceDelete')));
-        expect(find.text(strings.get('maintenanceFailed')), findsOneWidget);
+        await tapVisible(tester, actionText(strings.get('maintenanceDelete')));
+        expect(actionText(strings.get('maintenanceFailed')), findsOneWidget);
         expect(storage.values.containsKey(ProfileStore.key), isTrue);
         storage.failWrite = false;
         await tapVisible(tester, action);
-        await tapVisible(tester, find.text(strings.get('maintenanceDelete')));
+        await tapVisible(tester, actionText(strings.get('maintenanceDelete')));
         expect(
-          find.text(strings.get('maintenanceProfileDeleted')),
+          actionText(strings.get('maintenanceProfileDeleted')),
           findsOneWidget,
         );
         expect(storage.values.containsKey(ProfileStore.key), isFalse);
@@ -149,8 +151,8 @@ void main() {
       entered.complete();
       await release.future;
     };
-    await tapVisible(tester, find.text(strings.get('maintenanceProfile')));
-    await tester.tap(find.text(strings.get('maintenanceDelete')));
+    await tapVisible(tester, actionText(strings.get('maintenanceProfile')));
+    await tester.tap(actionText(strings.get('maintenanceDelete')));
     await tester.pump();
     await entered.future;
     await tester.pump(const Duration(milliseconds: 400));
@@ -163,14 +165,17 @@ void main() {
     expect(find.byType(SettingsScreen), findsOneWidget);
     final deleteButton = tester.widget<OutlinedButton>(
       find.ancestor(
-        of: find.text(strings.get('maintenanceProfile')),
+        of: actionText(strings.get('maintenanceProfile')),
         matching: find.byType(OutlinedButton),
       ),
     );
     expect(deleteButton.onPressed, isNull);
     release.complete();
     await tester.pumpAndSettle();
-    expect(find.text(strings.get('maintenanceProfileDeleted')), findsOneWidget);
+    expect(
+      actionText(strings.get('maintenanceProfileDeleted')),
+      findsOneWidget,
+    );
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     expect(find.byType(HomeScreen), findsOneWidget);
@@ -193,15 +198,15 @@ void main() {
     final storage =
         container.read(atomicStateStorageProvider) as MemoryAtomicStateStorage;
     final original = storage.primary;
-    await tapVisible(tester, find.text(strings.get('maintenanceGames')));
+    await tapVisible(tester, actionText(strings.get('maintenanceGames')));
     await tapVisible(tester, find.byKey(const ValueKey('court-dialog-close')));
     expect(storage.primary, original);
     expect(cards.state, isNotNull);
-    await tapVisible(tester, find.text(strings.get('maintenanceGames')));
-    await tapVisible(tester, find.text(strings.get('maintenanceDelete')));
+    await tapVisible(tester, actionText(strings.get('maintenanceGames')));
+    await tapVisible(tester, actionText(strings.get('maintenanceDelete')));
     expect(cards.state, isNull);
     expect(storage.primary, storage.backup);
-    expect(find.text(strings.get('maintenanceGamesDeleted')), findsOneWidget);
+    expect(actionText(strings.get('maintenanceGamesDeleted')), findsOneWidget);
   });
 
   test('app-scoped deletion rejects duplicate operations and waits for durable storage', () async {

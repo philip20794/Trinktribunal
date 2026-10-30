@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/semantics.dart';
 
 import '../../design/avatar_view.dart';
+import '../../design/drag_preview_slide.dart';
 import '../../design/pending_order_avatar.dart';
 import '../../l10n/app_strings.dart';
-import '../../design/case_file.dart';
 import '../../design/court_theme.dart';
 import '../../design/court_scene.dart';
 import '../../domain/bench_order.dart';
@@ -42,11 +42,56 @@ class BenchView extends StatefulWidget {
 class _BenchViewState extends State<BenchView> {
   final _scroll = ScrollController();
   final _focus = <PlayerId, FocusNode>{};
-  PlayerId? _selected, _focused;
+  PlayerId? _selected, _focused, _dragged;
+  int? _hoverIndex;
+  int _previewEpoch = 0;
+  final _anchors = <PlayerId, GlobalKey>{};
+  Map<PlayerId, Offset> _previewOffsets = {};
+
+  void _hover(PlayerId id, int index) {
+    if (_dragged == id && _hoverIndex == index) return;
+    final from = widget.order.indexOf(id);
+    if (widget.onMove == null || from < 0) return;
+    final preview = insertPlayer(widget.order, from, index);
+    final offsets = <PlayerId, Offset>{};
+    for (final person in widget.order) {
+      final source =
+          _anchors[person]?.currentContext?.findRenderObject() as RenderBox?;
+      final targetId = widget.order[preview.indexOf(person)];
+      final target =
+          _anchors[targetId]?.currentContext?.findRenderObject() as RenderBox?;
+      if (source?.hasSize == true && target?.hasSize == true) {
+        offsets[person] =
+            target!.localToGlobal(Offset.zero) -
+            source!.localToGlobal(Offset.zero);
+      }
+    }
+    setState(() {
+      _dragged = id;
+      _hoverIndex = index;
+      _previewOffsets = offsets;
+    });
+  }
+
+  void _endPreview() {
+    if (!mounted) return;
+    setState(() {
+      _dragged = null;
+      _hoverIndex = null;
+      _previewOffsets = {};
+    });
+  }
+
   @override
   void didUpdateWidget(BenchView oldWidget) {
     super.didUpdateWidget(oldWidget);
+    _anchors.removeWhere((id, _) => !widget.order.contains(id));
     if (!widget.order.contains(_selected)) _selected = null;
+    if (widget.onMove == null || !widget.order.contains(_dragged)) {
+      _dragged = null;
+      _hoverIndex = null;
+      _previewOffsets = {};
+    }
     for (final id
         in _focus.keys.where((id) => !widget.order.contains(id)).toList()) {
       _focus.remove(id)!.dispose();
@@ -215,191 +260,218 @@ class _BenchViewState extends State<BenchView> {
     final profile = widget.profiles[id]!;
     final editable = widget.onMove != null;
     return Semantics(
+      key: _anchors.putIfAbsent(id, GlobalKey.new),
       sortKey: OrdinalSortKey(index.toDouble()),
       child: DragTarget<PlayerId>(
         key: ValueKey(id),
-        onWillAcceptWithDetails: (details) =>
-            editable && widget.order.contains(details.data),
-        onMove: (details) => _edgeScroll(details.offset),
-        onAcceptWithDetails: (details) {
-          setState(() => _selected = null);
-          _move(
-            id: details.data,
-            from: widget.order.indexOf(details.data),
-            to: index,
-          );
+        onWillAcceptWithDetails: (details) {
+          if (!editable || !widget.order.contains(details.data)) return false;
+          _hover(details.data, index);
+          return true;
         },
-        builder: (context, candidates, rejected) => Focus(
-          focusNode: editable
-              ? _focus.putIfAbsent(
-                  id,
-                  () => FocusNode(debugLabel: 'bench-${id.value}'),
-                )
-              : null,
-          canRequestFocus: editable,
-          onFocusChange: (focused) {
-            if (mounted) {
-              setState(() {
-                if (focused) {
-                  _focused = id;
-                } else if (_focused == id) {
-                  _focused = null;
-                }
-              });
-            }
-          },
-          onKeyEvent: (node, event) {
-            if (!editable ||
-                event is! KeyDownEvent ||
-                !HardwareKeyboard.instance.isAltPressed) {
-              return KeyEventResult.ignored;
-            }
-            final delta =
-                event.logicalKey ==
-                    (widget.compactControls
-                        ? LogicalKeyboardKey.arrowLeft
-                        : LogicalKeyboardKey.arrowUp)
-                ? -1
-                : event.logicalKey ==
+        onMove: (details) {
+          _edgeScroll(details.offset);
+          _hover(details.data, index);
+        },
+        onLeave: (_) {
+          if (_hoverIndex == index) {
+            setState(() {
+              _hoverIndex = null;
+              _previewOffsets = {};
+            });
+          }
+        },
+        onAcceptWithDetails: (details) {
+          final from = widget.order.indexOf(details.data);
+          setState(() {
+            _selected = null;
+            _previewEpoch++;
+            _dragged = null;
+            _hoverIndex = null;
+            _previewOffsets = {};
+          });
+          if (from >= 0 && from != index) {
+            _move(id: details.data, from: from, to: index);
+          }
+        },
+        builder: (context, candidates, rejected) => DragPreviewSlide(
+          key: ValueKey(('bench-preview', id, _previewEpoch)),
+          offset: _previewOffsets[id] ?? Offset.zero,
+          ghost: _dragged == id,
+          child: Focus(
+            focusNode: editable
+                ? _focus.putIfAbsent(
+                    id,
+                    () => FocusNode(debugLabel: 'bench-${id.value}'),
+                  )
+                : null,
+            canRequestFocus: editable,
+            onFocusChange: (focused) {
+              if (mounted) {
+                setState(() {
+                  if (focused) {
+                    _focused = id;
+                  } else if (_focused == id) {
+                    _focused = null;
+                  }
+                });
+              }
+            },
+            onKeyEvent: (node, event) {
+              if (!editable ||
+                  event is! KeyDownEvent ||
+                  !HardwareKeyboard.instance.isAltPressed) {
+                return KeyEventResult.ignored;
+              }
+              final delta =
+                  event.logicalKey ==
                       (widget.compactControls
-                          ? LogicalKeyboardKey.arrowRight
-                          : LogicalKeyboardKey.arrowDown)
-                ? 1
-                : 0;
-            if (delta == 0 ||
-                index + delta < 0 ||
-                index + delta >= widget.order.length) {
-              return KeyEventResult.ignored;
-            }
-            _move(id: id, from: index, to: index + delta);
-            return KeyEventResult.handled;
-          },
-          child: AnimatedContainer(
-            duration: CourtTokens.motionDuration(
-              MediaQuery.disableAnimationsOf(context),
-            ),
-            padding: EdgeInsets.all(widget.compactControls ? 4 : 8),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color:
-                    candidates.isNotEmpty || _selected == id || _focused == id
-                    ? CourtTokens.red
-                    : Colors.transparent,
-                width:
-                    candidates.isNotEmpty || _selected == id || _focused == id
-                    ? 3
-                    : 1,
+                          ? LogicalKeyboardKey.arrowLeft
+                          : LogicalKeyboardKey.arrowUp)
+                  ? -1
+                  : event.logicalKey ==
+                        (widget.compactControls
+                            ? LogicalKeyboardKey.arrowRight
+                            : LogicalKeyboardKey.arrowDown)
+                  ? 1
+                  : 0;
+              if (delta == 0 ||
+                  index + delta < 0 ||
+                  index + delta >= widget.order.length) {
+                return KeyEventResult.ignored;
+              }
+              _move(id: id, from: index, to: index + delta);
+              return KeyEventResult.handled;
+            },
+            child: AnimatedContainer(
+              duration: CourtTokens.motionDuration(
+                MediaQuery.disableAnimationsOf(context),
               ),
-            ),
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: editable ? () => _tap(id) : null,
-                  child: Column(
-                    children: [
-                      if (widget.compactControls)
-                        _compactPortrait(profile, index, id, editable)
-                      else
-                        PendingOrderAvatar(
-                          pending: widget.pending.contains(id),
-                          child: AvatarView(
-                            config: profile.avatar,
-                            size: 76,
-                            label: profile.player.name,
-                            playerName: profile.player.name,
+              padding: EdgeInsets.all(widget.compactControls ? 4 : 8),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color:
+                      candidates.isNotEmpty || _selected == id || _focused == id
+                      ? CourtTokens.red
+                      : Colors.transparent,
+                  width:
+                      candidates.isNotEmpty || _selected == id || _focused == id
+                      ? 3
+                      : 1,
+                ),
+              ),
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: editable ? () => _tap(id) : null,
+                    child: Column(
+                      children: [
+                        if (widget.compactControls)
+                          _compactPortrait(profile, index, id, editable)
+                        else
+                          PendingOrderAvatar(
+                            pending: widget.pending.contains(id),
+                            child: AvatarView(
+                              showBackdrop: false,
+                              config: profile.avatar,
+                              size: 76,
+                              label: profile.player.name,
+                              playerName: profile.player.name,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (widget.revealedNumbers.containsKey(id))
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Semantics(
+                        label: context.tr(
+                          widget.showPositionResult
+                              ? widget.incorrect.contains(id)
+                                    ? 'wrongPosition'
+                                    : 'rightPosition'
+                              : 'revealedNumber',
+                          {'number': widget.revealedNumbers[id]},
+                        ),
+                        child: ExcludeSemantics(
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 6,
+                            children: [
+                              Text(
+                                '${widget.revealedNumbers[id]}',
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700,
+                                  color: CourtSceneTokens.cream,
+                                ),
+                              ),
+                              if (widget.showPositionResult)
+                                Icon(
+                                  widget.incorrect.contains(id)
+                                      ? Icons.cancel
+                                      : Icons.check_circle,
+                                  size: 22,
+                                  color: widget.incorrect.contains(id)
+                                      ? const Color(0xFFFFA69D)
+                                      : const Color(0xFFA8DBA8),
+                                ),
+                            ],
                           ),
                         ),
-                    ],
-                  ),
-                ),
-                if (widget.revealedNumbers.containsKey(id))
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Semantics(
-                      label: context.tr(
-                        widget.showPositionResult
-                            ? widget.incorrect.contains(id)
-                                  ? 'wrongPosition'
-                                  : 'rightPosition'
-                            : 'revealedNumber',
-                        {'number': widget.revealedNumbers[id]},
                       ),
-                      child: ExcludeSemantics(
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 6,
-                          children: [
-                            Text(
-                              '${widget.revealedNumbers[id]}',
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w700,
-                                color: CourtSceneTokens.cream,
-                              ),
-                            ),
-                            if (widget.showPositionResult)
-                              Icon(
-                                widget.incorrect.contains(id)
-                                    ? Icons.cancel
-                                    : Icons.check_circle,
-                                size: 22,
-                                color: widget.incorrect.contains(id)
-                                    ? const Color(0xFFFFA69D)
-                                    : const Color(0xFFA8DBA8),
-                              ),
-                          ],
+                    ),
+                  if (widget.actionsBuilder != null)
+                    widget.actionsBuilder!(context, profile, index),
+                  if (editable && !widget.compactControls) ...[
+                    LongPressDraggable<PlayerId>(
+                      data: id,
+                      onDragStarted: () => _hover(id, index),
+                      onDragEnd: (_) => _endPreview(),
+                      feedback: Material(
+                        color: Colors.transparent,
+                        child: AvatarView(
+                          config: profile.avatar,
+                          size: 96,
+                          playerName: profile.player.name,
+                          showBackdrop: false,
                         ),
                       ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Icon(Icons.drag_indicator),
+                      ),
                     ),
-                  ),
-                if (widget.actionsBuilder != null)
-                  widget.actionsBuilder!(context, profile, index),
-                if (editable && !widget.compactControls) ...[
-                  LongPressDraggable<PlayerId>(
-                    data: id,
-                    feedback: Material(
-                      elevation: 4,
-                      child: SizedBox(
-                        width: 120,
-                        child: NamePlate(
-                          name: profile.player.name,
-                          position: index + 1,
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        IconButton(
+                          tooltip: context.tr('moveForward', {
+                            'position': index + 1,
+                          }),
+                          onPressed: index > 0
+                              ? () => _move(id: id, from: index, to: index - 1)
+                              : null,
+                          icon: const Icon(Icons.arrow_upward),
                         ),
-                      ),
+                        IconButton(
+                          tooltip: context.tr('moveBack', {
+                            'position': index + 1,
+                          }),
+                          onPressed: index < widget.order.length - 1
+                              ? () => _move(id: id, from: index, to: index + 1)
+                              : null,
+                          icon: const Icon(Icons.arrow_downward),
+                        ),
+                      ],
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Icon(Icons.drag_indicator),
-                    ),
-                  ),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      IconButton(
-                        tooltip: context.tr('moveForward', {
-                          'position': index + 1,
-                        }),
-                        onPressed: index > 0
-                            ? () => _move(id: id, from: index, to: index - 1)
-                            : null,
-                        icon: const Icon(Icons.arrow_upward),
-                      ),
-                      IconButton(
-                        tooltip: context.tr('moveBack', {
-                          'position': index + 1,
-                        }),
-                        onPressed: index < widget.order.length - 1
-                            ? () => _move(id: id, from: index, to: index + 1)
-                            : null,
-                        icon: const Icon(Icons.arrow_downward),
-                      ),
-                    ],
-                  ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),
@@ -418,6 +490,7 @@ class _BenchViewState extends State<BenchView> {
       alignment: Alignment.center,
       children: [
         AvatarView(
+          showBackdrop: false,
           config: profile.avatar,
           size: 76,
           label: profile.player.name,
@@ -434,14 +507,15 @@ class _BenchViewState extends State<BenchView> {
               child: LongPressDraggable<PlayerId>(
                 key: ValueKey('compact-drag-${id.value}'),
                 data: id,
+                onDragStarted: () => _hover(id, index),
+                onDragEnd: (_) => _endPreview(),
                 feedback: Material(
-                  elevation: 4,
-                  child: SizedBox(
-                    width: 120,
-                    child: NamePlate(
-                      name: profile.player.name,
-                      position: index + 1,
-                    ),
+                  color: Colors.transparent,
+                  child: AvatarView(
+                    config: profile.avatar,
+                    size: 96,
+                    playerName: profile.player.name,
+                    showBackdrop: false,
                   ),
                 ),
                 child: SizedBox.square(

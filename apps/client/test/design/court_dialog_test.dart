@@ -3,11 +3,79 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/design/court_dialog.dart';
 import 'package:trinktribunal/design/court_scene.dart';
+import 'package:trinktribunal/design/illustrated_paper.dart';
+import 'package:trinktribunal/l10n/app_strings.dart';
 
 import 'court_scene_test.dart' show reviewImage;
 import '../features/ui_cleanup_test.dart' show host;
 
 void main() {
+  testWidgets(
+    'real dialog actions are short, padded and retain their accessible meaning',
+    (tester) async {
+      await host(
+        tester,
+        CourtScaffold(
+          bodyBuilder: (context) => Center(
+            child: FilledButton(
+              onPressed: () => showDialog<void>(
+                context: context,
+                builder: (context) => CourtDialog(
+                  title: const TText('roomCloseTitle'),
+                  content: const TText('roomBackHostHelp'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const TText('cancel'),
+                    ),
+                    OutlinedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const TText('roomBackOnly'),
+                    ),
+                    FilledButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const TText('roomClose'),
+                    ),
+                  ],
+                ),
+              ),
+              child: const Text('Popup'),
+            ),
+          ),
+        ),
+        'de',
+        size: const Size(390, 844),
+      );
+      await tester.tap(find.text('Popup'));
+      await tester.pumpAndSettle();
+      expect(find.text(const AppStrings('de').get('cancel')), findsNothing);
+      expect(find.text('Home'), findsOneWidget);
+      expect(find.text('Löschen'), findsOneWidget);
+      expect(find.byIcon(Icons.home_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.delete_outline_rounded), findsOneWidget);
+      final destructive = tester.widget<Text>(find.text('Löschen'));
+      expect(
+        destructive.semanticsLabel,
+        const AppStrings('de').get('roomClose'),
+      );
+      final paper = tester.getRect(find.byType(IllustratedPaper));
+      final close = tester.getRect(
+        find.byKey(const ValueKey('court-dialog-close')),
+      );
+      expect(paper.right - close.right, greaterThan(50));
+      expect(close.top - paper.top, greaterThan(60));
+      for (var frame = 0; frame < 3; frame++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 50)),
+        );
+        await tester.pump();
+      }
+      await reviewImage(tester, 'compact-dialog-actions');
+      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
+      await tester.pumpAndSettle();
+      expect(find.byType(CourtDialog), findsNothing);
+    },
+  );
   setUpAll(() async {
     if (!const bool.fromEnvironment('TT_RENDER_REVIEW')) return;
     final font = FontLoader('CourtRoboto');
@@ -68,8 +136,15 @@ void main() {
         );
         if (scale == 1) {
           expect(
-            tester.getRect(find.text('Fortsetzen')).top,
-            closeTo(tester.getRect(find.text('Neu starten')).top, 2),
+            tester
+                .getRect(find.widgetWithText(OutlinedButton, 'Fortsetzen'))
+                .top,
+            closeTo(
+              tester
+                  .getRect(find.widgetWithText(FilledButton, 'Neu starten'))
+                  .top,
+              2,
+            ),
           );
         }
         for (var frame = 0; frame < 3; frame++) {

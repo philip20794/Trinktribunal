@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -60,13 +62,13 @@ void main() {
       socket.receive(boundary(base));
       await tester.pumpAndSettle();
       final rule = numbers.catalogs.rules['en']!.withoutPlayers.first;
-      expect(find.text(rule.text), findsOneWidget);
+      expect(actionText(rule.text), findsOneWidget);
       expect(find.textContaining('{player'), findsNothing);
       await numbers.tapText(tester, AppStrings('de').get('ruleUnderstood'));
       expect(socket.sent.whereType<ContinueRuleMessage>().single.afterCase, 1);
       expect(fixture.room.state.snapshot!.public.phase, 'rule_event');
       final continueButton = tester.widget<FilledButton>(
-        find.widgetWithText(
+        widgetWithActionText(
           FilledButton,
           AppStrings('de').get('ruleUnderstood'),
         ),
@@ -74,13 +76,13 @@ void main() {
       expect(continueButton.onPressed, isNull);
       socket.receive(boundary(base, phase: 'finished', revision: 3));
       await tester.pumpAndSettle();
-      expect(find.text(AppStrings('de').get('endHearing')), findsOneWidget);
+      expect(actionText(AppStrings('de').get('endHearing')), findsOneWidget);
       await numbers.tapText(tester, AppStrings('de').get('restartGame'));
       await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<RestartGameMessage>(), isEmpty);
       await numbers.tapText(tester, AppStrings('de').get('restartGame'));
-      await tester.tap(find.text(AppStrings('de').get('restartAction')));
+      await tester.tap(actionText(AppStrings('de').get('restartAction')));
       await tester.pumpAndSettle();
       final restart = socket.sent.whereType<RestartGameMessage>().single;
       expect(restart.confirmed, isTrue);
@@ -103,7 +105,7 @@ void main() {
         boundary(base, phase: 'finished', revision: 3, gameId: 'later_game'),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text(AppStrings('de').get('restartAction')));
+      await tester.tap(actionText(AppStrings('de').get('restartAction')));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<RestartGameMessage>(), isEmpty);
       final nonHost = boundary(base, revision: 4);
@@ -118,8 +120,8 @@ void main() {
         }),
       );
       await tester.pumpAndSettle();
-      expect(find.text(AppStrings('de').get('restartGame')), findsNothing);
-      expect(find.text(AppStrings('de').get('ruleUnderstood')), findsNothing);
+      expect(actionText(AppStrings('de').get('restartGame')), findsNothing);
+      expect(actionText(AppStrings('de').get('ruleUnderstood')), findsNothing);
     },
   );
 

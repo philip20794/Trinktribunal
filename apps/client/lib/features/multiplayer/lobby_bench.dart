@@ -104,6 +104,7 @@ class LobbyBench extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             AvatarView(
+                                              showBackdrop: false,
                                               config: AvatarConfig.fromJson(
                                                 player.profile.avatar.toJson(),
                                               ),

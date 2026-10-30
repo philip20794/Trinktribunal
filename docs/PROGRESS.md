@@ -1,5 +1,9 @@
 # Fortschritt und Übergabe
 
+## Sortiervorschau und kompaktere Dialoge, 30.10.2026
+
+Lokale Avatar-Raster, Spielbank und Online-Sitzplätze zeigen beim Ziehen eine animierte Einfügevorschau; erst Loslassen speichert die Reihenfolge. Höhenlinienwand in Spielansichten entfernt, Online-Haltebutton nutzt die volle Breite. Dialoge haben mehr Innenabstand, kurze Aktionen mit Icons und ausschließlich ein X zum Abbrechen. Fallkarten reservieren mehr Platz unter der Zahlenbereich-Box und verkleinern den Inhalt bei Bedarf. 692 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen; neun gezielte Tests mit nativen Renderbildern einschließlich zweier zusätzlicher Padding-Prüfungen erfolgreich. Änderungen lokal, noch nicht gepusht.
+
 ## PWA-Automatisierung und QR-Profilname, 30.10.2026
 
 QR-Beitritt übernimmt jetzt gespeicherten Namen und Avatar gemeinsam; neue Nutzer ohne Profil behalten die Namenseingabe. Ein versionierter Linux-Build für Cloudflare Pages prüft Client, Server und Webpaket vor der Veröffentlichung auf `main`. Android bleibt bei Codemagic; der API-Worker wird separat veröffentlicht. [Ablauf](CLOUDFLARE_DEPLOYMENT.md) · [Prüfbelege](qa/pwa-automation-and-qr-profile.md).

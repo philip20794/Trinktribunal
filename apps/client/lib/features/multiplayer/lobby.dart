@@ -241,8 +241,9 @@ class _RoomPhaseFooter extends ConsumerWidget {
         view = snapshot.public;
     final host = snapshot.you == view.hostId;
     final game = ref.watch(onlineGameProvider);
+    final order = ref.watch(onlineOrderProvider);
     return AnimatedBuilder(
-      animation: Listenable.merge([tabs, game]),
+      animation: Listenable.merge([tabs, game, order]),
       builder: (context, _) {
         final caseIndex = view.config.allJudges ? 2 : 1;
         if (host && tabs.index == caseIndex + 1) {
@@ -289,8 +290,11 @@ class _RoomPhaseFooter extends ConsumerWidget {
               session: state,
             ),
             'ordering'
-                when view.frozenRoster.contains(snapshot.you) &&
-                    (view.config.allJudges || snapshot.you == view.judgeId) =>
+                when tabs.index != caseIndex &&
+                    view.frozenRoster.contains(snapshot.you) &&
+                    (view.config.allJudges || snapshot.you == view.judgeId) &&
+                    (!view.config.allJudges ||
+                        order.complete && !order.confirmed) =>
               OnlineOrderAction(snapshot: snapshot),
             'revealing' when guide && !view.config.allJudges =>
               OnlineRevealAction(snapshot: snapshot),

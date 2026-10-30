@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'package:trinktribunal/design/court_dialog.dart';
 
 import 'dart:io';
@@ -203,7 +205,7 @@ void main() {
         }),
       );
       await tester.pumpAndSettle();
-      final courtroomTab = find.widgetWithText(
+      final courtroomTab = widgetWithActionText(
         Tab,
         AppStrings('de').get('roomTitle'),
       );
@@ -282,7 +284,7 @@ void main() {
       await tester.tap(
         find.descendant(
           of: find.byType(CourtDialog),
-          matching: find.widgetWithText(FilledButton, confirm),
+          matching: widgetWithActionText(FilledButton, confirm),
         ),
       );
       await tester.pumpAndSettle();
@@ -301,7 +303,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(
-        find.text(AppStrings('de').get('onlineOrderConfirmed')),
+        actionText(AppStrings('de').get('onlineOrderConfirmed')),
         findsNothing,
       );
       expect(
@@ -329,7 +331,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.widget<BenchView>(find.byType(BenchView)).onMove, isNull);
       expect(
-        find.text(AppStrings('de').get('phoneConfirmOrder')),
+        actionText(AppStrings('de').get('phoneConfirmOrder')),
         findsNothing,
       );
       expect(socket.sent.whereType<SubmitOrderMessage>(), isEmpty);

@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'package:trinktribunal/domain/models/ids.dart';
 import 'package:trinktribunal/design/court_dialog.dart';
 
@@ -99,8 +101,8 @@ void main() {
         await container.read(localStateTransactionProvider).save();
         final cardId = cards.state!.currentEventId,
             phoneId = phone.view!.roundId;
-        await tapVisible(tester, find.text(strings.get('homeNewGame')));
-        final entry = find.text(
+        await tapVisible(tester, actionText(strings.get('homeNewGame')));
+        final entry = actionText(
           strings.get(cardMode ? 'modeCards' : 'modePhone'),
         );
         await tapVisible(tester, entry);
@@ -111,18 +113,18 @@ void main() {
         expect(cards.state!.currentEventId, cardId);
         expect(phone.view!.roundId, phoneId);
         await tapVisible(tester, entry);
-        await tester.tap(find.text(strings.get('resumeGame')));
+        await tester.tap(actionText(strings.get('resumeGame')));
         await tester.pumpAndSettle();
         expect(
           find.byType(cardMode ? CardModeScreen : SharedGameScreen),
           findsOneWidget,
         );
-        expect(find.text(strings.get('introContinue')), findsNothing);
+        expect(actionText(strings.get('introContinue')), findsNothing);
         await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();
         await tapVisible(tester, entry);
         await tester.tap(
-          find.widgetWithText(FilledButton, strings.get('newGame')),
+          widgetWithActionText(FilledButton, strings.get('newGame')),
         );
         await tester.pumpAndSettle();
         expect(find.byType(PlayerRosterScreen), findsOneWidget);
@@ -167,22 +169,22 @@ void main() {
           FocusManager.instance.primaryFocus?.unfocus();
           await tester.pumpAndSettle();
           await reviewImage(tester, 'phone-list-$language-${scale.toInt()}');
-          await tapVisible(tester, find.text(strings.get('localGameOptions')));
+          await tapVisible(tester, actionText(strings.get('localGameOptions')));
           expect(find.byType(Slider), findsNWidgets(3));
           await reviewImage(tester, 'phone-options-$language-${scale.toInt()}');
           tester.widgetList<Slider>(find.byType(Slider)).first.onChanged!(3);
           await tester.pumpAndSettle();
-          await tester.tap(find.text(strings.get('rosterApply')));
+          await tester.tap(actionText(strings.get('rosterApply')));
           await tester.pumpAndSettle();
           expect(find.byType(Slider), findsNothing);
-          await tester.tap(find.text(strings.get('startHearing')));
+          await tester.tap(actionText(strings.get('startHearing')));
           await tester.pumpAndSettle();
           final game = container.read(sharedPhoneControllerProvider);
           expect(game.view!.config.targetCases, 3);
           expect(game.view!.numberStage, SharedNumberStage.recipientNumber);
           expect(find.byType(CourtQuestion), findsNothing);
-          expect(find.text(strings.get('yourNumber')), findsOneWidget);
-          final done = find.widgetWithText(
+          expect(actionText(strings.get('yourNumber')), findsOneWidget);
+          final done = widgetWithActionText(
             FilledButton,
             strings.get('phoneDoneNext'),
           );
@@ -191,7 +193,7 @@ void main() {
             tester,
             'phone-secret-hidden-$language-${scale.toInt()}',
           );
-          final reveal = find.text(strings.get('holdToReveal'));
+          final reveal = actionText(strings.get('holdToReveal'));
           expect(reveal.hitTestable(), findsOneWidget);
           expect(done.hitTestable(), findsOneWidget);
           final gesture = await startChargedHold(tester, reveal);
@@ -278,16 +280,16 @@ void main() {
         find.byKey(ValueKey('roster-menu-${person.player.id.value}')),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text(const AppStrings('de').get('rosterRemove')));
+      await tester.tap(actionText(const AppStrings('de').get('rosterRemove')));
       await tester.pumpAndSettle();
       expect(roster.members.last.player.id, person.player.id);
-      expect(find.text('Rückgängig'), findsNothing);
+      expect(actionText('Rückgängig'), findsNothing);
       storage.failWrite = false;
       await tester.tap(
         find.byKey(ValueKey('roster-menu-${person.player.id.value}')),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text(const AppStrings('de').get('rosterRemove')));
+      await tester.tap(actionText(const AppStrings('de').get('rosterRemove')));
       await tester.pumpAndSettle();
       expect(roster.members, hasLength(1));
       expect(roster.isOwner(roster.members.single.player.id), isTrue);
@@ -295,10 +297,10 @@ void main() {
         tester.widget<SnackBar>(find.byType(SnackBar)).duration,
         const Duration(seconds: 3),
       );
-      expect(find.text('Rückgängig'), findsOneWidget);
+      expect(actionText('Rückgängig'), findsOneWidget);
       await tester.pump(const Duration(seconds: 3));
       await tester.pumpAndSettle();
-      expect(find.text('Rückgängig'), findsNothing);
+      expect(actionText('Rückgängig'), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );

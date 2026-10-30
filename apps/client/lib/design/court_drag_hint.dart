@@ -104,6 +104,7 @@ class _CourtDragHintState extends State<CourtDragHint>
                           child: Transform.rotate(
                             angle: math.sin(t * math.pi) * .1,
                             child: AvatarView(
+                              showBackdrop: false,
                               config: widget.avatar,
                               label: widget.name,
                               size: 46,

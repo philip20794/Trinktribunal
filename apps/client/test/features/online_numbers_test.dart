@@ -15,6 +15,7 @@ import 'package:trinktribunal/data/protocol/room_message.dart';
 import 'package:trinktribunal/data/room_credential_store.dart';
 import 'package:trinktribunal/design/private_number.dart';
 import 'package:trinktribunal/design/court_theme.dart';
+import 'package:trinktribunal/design/court_scene.dart';
 import 'package:trinktribunal/features/multiplayer/connection.dart';
 import 'package:trinktribunal/features/multiplayer/invite.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
@@ -177,6 +178,48 @@ Future<void> tapText(WidgetTester tester, String text) async {
 }
 
 void main() {
+  for (final scale in [1.0, 2.0]) {
+    testWidgets(
+      'case hold fills the footer before and after completing an order: $scale',
+      (tester) async {
+        final fixture = await pump(tester, allJudges: true, textScale: scale);
+        final base = fixture.room.state.snapshot!;
+        fixture.transport.sockets.last.receive(
+          SnapshotMessage.fromJson({
+            ...base.toJson(),
+            'revision': 2,
+            'public': {...base.public.toJson(), 'phase': 'ordering'},
+          }),
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(
+          find.widgetWithText(Tab, const AppStrings('de').get('caseTabTitle')),
+        );
+        await tester.pumpAndSettle();
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(RoomConnectionScreen)),
+        );
+        final order = container.read(onlineOrderProvider);
+        for (final complete in [false, true]) {
+          if (complete) {
+            for (var i = 0; i < base.public.frozenRoster.length; i++) {
+              order.place(base.public.frozenRoster[i], i);
+            }
+            await tester.pumpAndSettle();
+          }
+          expect(find.byType(HoldActionButton), findsOneWidget);
+          expect(
+            tester.getSize(find.byType(HoldActionButton)).width,
+            closeTo(tester.getSize(find.byType(CourtActionBar)).width - 40, .1),
+          );
+        }
+        expect(
+          fixture.transport.sockets.last.sent.whereType<SubmitOrderMessage>(),
+          isEmpty,
+        );
+      },
+    );
+  }
   testWidgets('the first held number survives another player becoming ready', (
     tester,
   ) async {

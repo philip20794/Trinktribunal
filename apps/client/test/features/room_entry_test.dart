@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -179,11 +181,11 @@ void main() {
         findsOneWidget,
       );
       await tester.tap(
-        find.widgetWithText(FilledButton, 'Nur lokal vergessen'),
+        widgetWithActionText(FilledButton, 'Nur lokal vergessen'),
       );
       await tester.pumpAndSettle();
       expect((await store.load()).credentials, isEmpty);
-      expect(find.text('Partie fortsetzen'), findsNothing);
+      expect(actionText('Partie fortsetzen'), findsNothing);
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
     },
@@ -289,8 +291,8 @@ void main() {
         host(const MultiplayerEntryScreen(), transport, store),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Partie fortsetzen'), findsOneWidget);
-      await tester.tap(find.text('ABCD2345 · Spieler previous'));
+      expect(actionText('Partie fortsetzen'), findsOneWidget);
+      await tester.tap(actionText('ABCD2345 · Spieler previous'));
       await tester.pump();
       await tester.pump();
       expect(transport.joins, 0);
@@ -393,7 +395,7 @@ void main() {
       expect(payload, 'https://client.example/join?room=ABCD2345');
       expect(payload, isNot(contains(testCredential().message.resumeToken)));
       expect(payload, isNot(contains('8787')));
-      await tester.tap(find.text('Einladungslink kopieren'));
+      await tester.tap(actionText('Einladungslink kopieren'));
       await tester.pumpAndSettle();
       expect(find.textContaining('Kopieren nicht möglich.'), findsOneWidget);
       expect(find.byType(SelectableText), findsOneWidget);

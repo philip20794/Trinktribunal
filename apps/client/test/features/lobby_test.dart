@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -157,7 +159,7 @@ void main() {
               tester.widget<SelectableText>(find.byType(SelectableText)).data,
               link,
             );
-            final copy = find.text(strings.get('roomCopyLink'));
+            final copy = actionText(strings.get('roomCopyLink'));
             await Scrollable.ensureVisible(tester.element(copy), alignment: .5);
             await tester.pumpAndSettle();
             await mouse.moveTo(tester.getCenter(copy));
@@ -188,7 +190,7 @@ void main() {
     await pumpLobby(tester, host: true);
     expect(find.byType(QrImageView), findsNothing);
     expect(
-      find.text(const AppStrings('de').get('roomInviteUnavailable')),
+      actionText(const AppStrings('de').get('roomInviteUnavailable')),
       findsOneWidget,
     );
     expect(tester.takeException(), isNull);
@@ -200,14 +202,14 @@ void main() {
     final input = find.byKey(const ValueKey('online-name'));
     expect(tester.widget<TextField>(input).controller!.text, isEmpty);
     expect(
-      find.text(const AppStrings('de').get('roomNameRequired')),
+      actionText(const AppStrings('de').get('roomNameRequired')),
       findsWidgets,
     );
-    await tester.tap(find.widgetWithText(Tab, 'Gerichtssaal'));
+    await tester.tap(widgetWithActionText(Tab, 'Gerichtssaal'));
     await tester.pumpAndSettle();
     expect(DefaultTabController.of(tester.element(input)).index, 0);
     expect(
-      find.text(const AppStrings('de').get('roomNameRequired')),
+      actionText(const AppStrings('de').get('roomNameRequired')),
       findsWidgets,
     );
 
@@ -218,7 +220,7 @@ void main() {
         .single;
     expect(edit.profile.name, 'Alex');
     // Typing alone does not unlock the other tabs: the server must acknowledge.
-    await tester.tap(find.widgetWithText(Tab, 'Gerichtssaal'));
+    await tester.tap(widgetWithActionText(Tab, 'Gerichtssaal'));
     await tester.pumpAndSettle();
     expect(DefaultTabController.of(tester.element(input)).index, 0);
 
@@ -256,10 +258,10 @@ void main() {
     final fixture = await pumpLobby(tester, host: true, pendingGuest: true);
     final message = const AppStrings('de')
         .get('roomStartPendingNames', {'count': 1});
-    expect(find.text(message), findsWidgets);
-    await tester.tap(find.widgetWithText(FilledButton, 'Verhandlung starten'));
+    expect(actionText(message), findsWidgets);
+    await tester.tap(widgetWithActionText(FilledButton, 'Verhandlung starten'));
     await tester.pumpAndSettle();
-    expect(find.text(message), findsWidgets);
+    expect(actionText(message), findsWidgets);
     expect(
       fixture.transport.sockets.last.sent.whereType<StartGameMessage>(),
       isEmpty,
@@ -271,10 +273,10 @@ void main() {
     (tester) async {
       final fixture = await pumpLobby(tester),
           socket = fixture.transport.sockets.last;
-      expect(find.widgetWithText(Tab, 'Ich'), findsOneWidget);
-      expect(find.widgetWithText(Tab, 'Gerichtssaal'), findsOneWidget);
+      expect(widgetWithActionText(Tab, 'Ich'), findsOneWidget);
+      expect(widgetWithActionText(Tab, 'Gerichtssaal'), findsOneWidget);
       expect(find.byType(PopupMenuButton<String>), findsNothing);
-      await tester.tap(find.widgetWithText(Tab, 'Ich'));
+      await tester.tap(widgetWithActionText(Tab, 'Ich'));
       await tester.pumpAndSettle();
       await tester.enterText(
         find.byKey(const ValueKey('online-name')),
@@ -309,7 +311,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
-        find.text('Profil im Gerichtssaal bestätigt.'),
+        actionText('Profil im Gerichtssaal bestätigt.'),
         250,
         scrollable: find
             .descendant(
@@ -318,8 +320,8 @@ void main() {
             )
             .first,
       );
-      expect(find.text('Profil im Gerichtssaal bestätigt.'), findsOneWidget);
-      await tester.tap(find.widgetWithText(Tab, 'Gerichtssaal'));
+      expect(actionText('Profil im Gerichtssaal bestätigt.'), findsOneWidget);
+      await tester.tap(widgetWithActionText(Tab, 'Gerichtssaal'));
       await tester.pumpAndSettle();
       expect(find.textContaining('New Alex'), findsWidgets);
       expect(tester.takeException(), isNull);
@@ -366,7 +368,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byTooltip('p2 verwalten'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Teilnehmer entfernen'));
+      await tester.tap(actionText('Teilnehmer entfernen'));
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<KickMessage>(), isEmpty);
       await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
@@ -379,10 +381,10 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byTooltip('p2 verwalten'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Teilnehmer entfernen'));
+      await tester.tap(actionText('Teilnehmer entfernen'));
       await tester.pumpAndSettle();
       await tester.tap(
-        find.widgetWithText(FilledButton, 'Teilnehmer entfernen'),
+        widgetWithActionText(FilledButton, 'Teilnehmer entfernen'),
       );
       await tester.pumpAndSettle();
       final kick = socket.sent.whereType<KickMessage>().single;

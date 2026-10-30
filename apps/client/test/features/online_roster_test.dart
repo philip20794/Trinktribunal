@@ -1,3 +1,5 @@
+import '../support/action_text.dart';
+
 import 'package:trinktribunal/design/court_dialog.dart';
 
 import 'dart:io';
@@ -56,15 +58,15 @@ void main() {
       socket.receive(paused());
       await tester.pumpAndSettle();
       expect(
-        find.text(AppStrings('de').get('onlinePausePlayers')),
+        actionText(AppStrings('de').get('onlinePausePlayers')),
         findsOneWidget,
       );
-      final resume = find.widgetWithText(
+      final resume = widgetWithActionText(
         FilledButton,
         AppStrings('de').get('roomContinue'),
       );
       expect(tester.widget<FilledButton>(resume).onPressed, isNull);
-      expect(find.text(AppStrings('de').get('restartGame')), findsNothing);
+      expect(actionText(AppStrings('de').get('restartGame')), findsNothing);
       socket.receive(paused(added: true));
       await tester.pumpAndSettle();
       await numbers.tapText(tester, AppStrings('de').get('roomContinue'));
@@ -136,11 +138,11 @@ void main() {
         scrollable: scrollable,
       );
       expect(
-        find.text(AppStrings('de').get('onlineRosterJoining')),
+        actionText(AppStrings('de').get('onlineRosterJoining')),
         findsOneWidget,
       );
       expect(
-        find.text(AppStrings('de').get('onlineRosterLeaving')),
+        actionText(AppStrings('de').get('onlineRosterLeaving')),
         findsOneWidget,
       );
       final retired = base.public.players[1].profile.name,
@@ -159,7 +161,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(hostMenu);
       await tester.pumpAndSettle();
-      await tester.tap(find.text(AppStrings('de').get('roomMoveUp')));
+      await tester.tap(actionText(AppStrings('de').get('roomMoveUp')));
       await tester.pumpAndSettle();
       expect(
         socket.sent.whereType<ReorderRosterMessage>().single.playerIds.map(
@@ -181,7 +183,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(menu);
         await tester.pumpAndSettle();
-        await tester.tap(find.text(AppStrings('de').get('roomKick')));
+        await tester.tap(actionText(AppStrings('de').get('roomKick')));
         await tester.pumpAndSettle();
       }
 
@@ -195,7 +197,7 @@ void main() {
       await tester.tap(
         find.descendant(
           of: find.byType(CourtDialog),
-          matching: find.widgetWithText(
+          matching: widgetWithActionText(
             FilledButton,
             AppStrings('de').get('roomKick'),
           ),
