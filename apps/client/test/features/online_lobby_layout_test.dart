@@ -81,6 +81,41 @@ void main() {
     }
   }
   testWidgets(
+    'all-judges toggle sits above game settings and explains the rule',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(360, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await numbers.pump(
+        tester,
+        lobby: true,
+        host: true,
+        newRoom: true,
+        publicClientBase: Uri.parse('https://client.example'),
+      );
+      const strings = AppStrings('de');
+      final toggle = find.byKey(const ValueKey('room-all-judges'));
+      final info = find.byTooltip(strings.get('gameRulesAllJudgesBody'));
+      expect(toggle, findsOneWidget);
+      await tester.ensureVisible(info);
+      await tester.pumpAndSettle();
+      expect(
+        tester.getTopLeft(toggle).dy,
+        lessThan(
+          tester.getTopLeft(
+            find.byKey(const PageStorageKey('room-game-settings')),
+          ).dy,
+        ),
+      );
+      await tester.tap(info);
+      await tester.pumpAndSettle();
+      expect(
+        find.text(strings.get('gameRulesAllJudgesBody')),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
+  testWidgets(
     'guest has no room tools; all-judges courtroom has no connection roster',
     (tester) async {
       await numbers.pump(tester, lobby: true, allJudges: true);

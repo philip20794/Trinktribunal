@@ -13,6 +13,49 @@ import 'invitation.dart';
 import 'pending_profile.dart';
 import '../../design/setting_label.dart';
 
+/// Host-only option shown above the collapsible game settings.
+class RoomAllJudgesSwitch extends ConsumerWidget {
+  const RoomAllJudgesSwitch({required this.snapshot, super.key});
+  final SnapshotMessage snapshot;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (snapshot.public.phase != 'lobby') {
+      return const SizedBox.shrink();
+    }
+    final settings = ref.watch(onlineSettingsProvider);
+    return ListenableBuilder(
+      listenable: settings,
+      builder: (context, _) {
+        final config = settings.config ?? snapshot.public.config;
+        return Padding(
+          key: const ValueKey('room-all-judges'),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Row(
+            children: [
+              const Expanded(
+                child: SettingLabel(
+                  title: TText('onlineAllJudges'),
+                  helpKey: 'gameRulesAllJudgesBody',
+                ),
+              ),
+              Semantics(
+                label: context.tr('onlineAllJudges'),
+                child: Switch(
+                  value: config.allJudges,
+                  onChanged: settings.editable
+                      ? (value) => settings.change('allJudges', value)
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
 class RoomGameSettings extends ConsumerWidget {
   const RoomGameSettings({required this.snapshot, this.session, super.key});
   final SnapshotMessage snapshot;
@@ -83,14 +126,6 @@ class RoomGameSettings extends ConsumerWidget {
                   : null,
               onChangeEnd: enabled ? (_) => settings.flush() : null,
             ),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const TText('onlineAllJudges'),
-              value: config.allJudges,
-              onChanged: enabled
-                  ? (value) => settings.change('allJudges', value)
-                  : null,
-            ),
             DropdownButtonFormField<String>(
               isExpanded: true,
               key: ValueKey('online-language-${config.contentLanguage}'),
@@ -148,6 +183,7 @@ class RoomSettingsScreen extends ConsumerWidget {
                   StatusNotice(context.tr(roomErrorKey(state.errorCode)))
                 else
                   const SizedBox.shrink(),
+                RoomAllJudgesSwitch(snapshot: state.snapshot!),
                 RoomGameSettings(
                   key: const ValueKey('room-settings-editor'),
                   snapshot: state.snapshot!,

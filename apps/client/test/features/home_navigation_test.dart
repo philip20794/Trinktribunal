@@ -58,6 +58,11 @@ void main() {
         );
         expect(find.text(strings.get('homeHearingReady')), findsOneWidget);
         expect(find.text(strings.get('homeHearingQuestion')), findsOneWidget);
+        expect(
+          tester.getRect(find.text(strings.get('homeHearingQuestion'))).top -
+              tester.getRect(find.text(strings.get('homeHearingReady'))).bottom,
+          lessThanOrEqualTo(8),
+        );
         expect(find.text(strings.get('modePhone')), findsNothing);
         expect(find.text(strings.get('modeMulti')), findsNothing);
         final rules = find.byKey(const ValueKey('home-game-rules'));

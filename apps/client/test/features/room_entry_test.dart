@@ -3,7 +3,6 @@ import '../support/action_text.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -361,25 +360,10 @@ void main() {
     },
   );
   testWidgets(
-    'local QR payload is only a public invitation and clipboard failure offers a usable fallback',
+    'local QR stays a public invitation without displaying the link',
     (tester) async {
       final transport = FakeRoomTransport(),
           store = RoomCredentialStore(MemoryCredentialBackend());
-      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-        SystemChannels.platform,
-        (call) async {
-          if (call.method == 'Clipboard.setData') {
-            throw PlatformException(code: 'blocked');
-          }
-          return null;
-        },
-      );
-      addTearDown(
-        () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-          SystemChannels.platform,
-          null,
-        ),
-      );
       await tester.pumpWidget(
         host(
           const Scaffold(body: RoomInvite(code: 'ABCD2345')),
@@ -388,17 +372,14 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.byType(QrImageView), findsOneWidget);
-      final payload = tester
-          .widget<SelectableText>(find.byType(SelectableText))
-          .data!;
+      final payload = tester.widget<QrImageView>(find.byType(QrImageView)).data;
       expect(payload, 'https://client.example/join?room=ABCD2345');
       expect(payload, isNot(contains(testCredential().message.resumeToken)));
       expect(payload, isNot(contains('8787')));
-      await tester.tap(actionText('Einladungslink kopieren'));
-      await tester.pumpAndSettle();
-      expect(find.textContaining('Kopieren nicht möglich.'), findsOneWidget);
-      expect(find.byType(SelectableText), findsOneWidget);
+      expect(find.byType(SelectableText), findsNothing);
+      expect(actionText('Einladungslink kopieren'), findsNothing);
+      expect(actionText('Link teilen'), findsOneWidget);
+      expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
     },
   );
