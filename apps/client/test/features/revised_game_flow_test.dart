@@ -213,7 +213,14 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      final fields = find.byType(DropdownButtonFormField<String>);
+      final fields = find.byWidgetPredicate(
+        (widget) =>
+            widget is InkWell &&
+            widget.key is ValueKey<String> &&
+            (widget.key! as ValueKey<String>).value.startsWith(
+              'avatar-option-',
+            ),
+      );
       final rects = [for (var i = 0; i < 3; i++) tester.getRect(fields.at(i))];
       expect(rects[0].top, rects[2].top);
       expect(rects[0].left, lessThan(rects[1].left));

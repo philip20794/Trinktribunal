@@ -16,7 +16,6 @@ import 'home_profile_settings_test.dart' show tapVisible;
 const review = bool.fromEnvironment('TT_RENDER_REVIEW');
 void main() {
   setUpAll(() async {
-    if (!review) return;
     final font = FontLoader('CourtRoboto');
     for (final weight in ['regular', 'medium', 'bold']) {
       font.addFont(rootBundle.load('assets/fonts/roboto-$weight.ttf'));
@@ -68,6 +67,43 @@ void main() {
   );
 
   for (final language in ['de', 'en']) {
+    for (final phone in [const Size(320, 640), const Size(390, 844)]) {
+      testWidgets(
+        'all essential rules fit without scrolling: $language/$phone',
+        (tester) async {
+          await host(
+            tester,
+            const GameRulesScreen(),
+            language,
+            size: phone,
+            scale: 1,
+          );
+          final scrollable = find.descendant(
+            of: find.byKey(const ValueKey('rules-scroll')),
+            matching: find.byType(Scrollable),
+          );
+          expect(
+            tester.state<ScrollableState>(scrollable).position.maxScrollExtent,
+            closeTo(0, .1),
+          );
+          expect(
+            find.byKey(const ValueKey('rules-extra-users')).hitTestable(),
+            findsOneWidget,
+          );
+          expect(
+            find.byKey(const ValueKey('rules-extra-book-open')).hitTestable(),
+            findsOneWidget,
+          );
+          final correct = tester.getRect(
+            find.byKey(const ValueKey('correct-1')),
+          );
+          final judge = tester.getRect(find.byKey(const ValueKey('judge-1')));
+          expect(judge.top, closeTo(correct.top, .1));
+          expect(judge.left, greaterThan(correct.left));
+          expect(tester.takeException(), isNull);
+        },
+      );
+    }
     for (final size in [
       const Size(320, 640),
       const Size(390, 1400),
@@ -87,7 +123,7 @@ void main() {
             );
             final semantics = tester.ensureSemantics();
             try {
-              expect(find.byType(CourtArt), findsNothing);
+              expect(find.byType(CourtArt), findsNWidgets(6));
               expect(find.text(strings.get('rulesIntroTitle')), findsOneWidget);
               await reviewImage(
                 tester,
@@ -101,14 +137,10 @@ void main() {
                 'rulesJudgeOrderTitle',
                 'rulesScoringResult',
                 'rulesCorrectPerson',
-                'gameRulesAllJudgesBody',
-                'gameRulesExtraRulesBody',
               ]) {
                 final value = strings.get(key, {'count': 2});
                 expect(value, isNot(key));
-                final target = find.text(
-                  key == 'rulesJudgeOrderTitle' ? value.toUpperCase() : value,
-                );
+                final target = find.text(value).first;
                 await tester.scrollUntilVisible(
                   target,
                   220,
@@ -123,18 +155,37 @@ void main() {
                 expect(tester.takeException(), isNull);
                 if (key == 'rulesJudgeOrderTitle') {
                   expect(
-                    find.text(strings.get('rulesIncorrectLabel')),
+                    find.byWidgetPredicate(
+                      (w) => w is RulesIcon && w.name == 'x',
+                    ),
                     findsNWidgets(2),
                   );
                   expect(
-                    find.text(strings.get('rulesCorrectLabel')),
-                    findsOneWidget,
+                    find.byWidgetPredicate(
+                      (w) => w is RulesIcon && w.name == 'check',
+                    ),
+                    findsNWidgets(4),
                   );
                   await reviewImage(
                     tester,
                     'rules-example-$language-${size.width.toInt()}-${scale.toInt()}',
                   );
                 }
+              }
+              for (final extra in {
+                'users': 'gameRulesAllJudgesBody',
+                'book-open': 'gameRulesExtraRulesBody',
+              }.entries) {
+                final tile = find.byKey(ValueKey('rules-extra-${extra.key}'));
+                await tester.ensureVisible(tile);
+                await tester.pumpAndSettle();
+                await tester.tap(tile);
+                await tester.pumpAndSettle();
+                expect(find.text(strings.get(extra.value)), findsOneWidget);
+                await tester.tap(
+                  find.byKey(const ValueKey('rules-extra-close')),
+                );
+                await tester.pumpAndSettle();
               }
               await expectLater(
                 tester,

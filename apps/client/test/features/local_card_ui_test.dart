@@ -1,4 +1,5 @@
 import '../support/roster_setup.dart';
+import '../support/hold_action.dart';
 
 import 'dart:io';
 
@@ -98,7 +99,11 @@ void main() {
             ),
           );
           expect(target.hitTestable(), findsOneWidget);
-          await tester.tap(target);
+          if (cards.state!.phase == GamePhase.casePresented) {
+            await holdAction(tester, target);
+          } else {
+            await tester.tap(target);
+          }
           await tester.pumpAndSettle();
           expect(
             cards.state!.judge,

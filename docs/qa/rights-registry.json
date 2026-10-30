@@ -128,7 +128,7 @@
         },
         {
           "path": "apps/client/lib/design/avatar_view.dart",
-          "sha256": "e1bb79679241cdcc75ffd6b4ecdebccc1383018ac8d8c0210735b8cb81925770"
+          "sha256": "6cae60c69c92cb3b69f0bb65acb352879204ea134b5263d9013e642a307ad9ed"
         },
         {
           "path": "apps/client/assets/avatars/dicebear/trinktribunal-adventurer-v1.json",
@@ -157,7 +157,7 @@
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
-          "sha256": "d026b0c3a6d88087ddc3cce3f704997f42c251fb1f28d6e8240c7b6ae64edb20"
+          "sha256": "d8954827ef21a91a97461c6f6680a7a1def92828cd33389df582ac721e1905d6"
         },
         {
           "path": "apps/client/lib/design/illustrated_paper.dart",
@@ -852,6 +852,51 @@
         {
           "path": "apps/client/web/scanner/LICENSE",
           "sha256": "849b3ff4527ff587eecc78736b5685bbba7a44b071f3b944da914e832292f6c0"
+        }
+      ]
+    },
+    {
+      "id": "user-supplied-home-mode-rules",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "Vom Nutzer am 30.10.2026 fuer Home Screen, Modusauswahl und kompakte Spielregeln bereitgestellt. Keine externe Lizenz oder weitergehende Herkunftsnachweise mitgeliefert.",
+      "evidence": "docs/qa/home-courtroom-design.md",
+      "files": [
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/home_waage_pergament.png",
+          "sha256": "f12d66d9d8f13f602029ce66bc57c74744e7b3b312d88f30baafc5b91d65db2c"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/modus_karten_ziehen.png",
+          "sha256": "1170a202ef9e432cf1a36b34589fee69ab28b2b1fd5fe817e0b57d39db442955"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/modus_handy_herumreichen.png",
+          "sha256": "7fd5d175aaf2ae64d47f05758a1475147caf3077ff7e8fc0d9aa772edc51673d"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/modus_eigene_handys.png",
+          "sha256": "f3560d25f1e55ea037bb4bbc6bb980da964373ecbdfe948924918fa992892c86"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/regel_geheime_zahl.png",
+          "sha256": "06f359cbdf66b4050cd98434c2e16e01fa626114a9d19834dcf5bbd170b50307"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/regel_frage.png",
+          "sha256": "31620fa54efd390dbd93589b053a6d9b173b27ef0724a5cb39cd79eab75ad512"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/regel_sortieren.png",
+          "sha256": "ca0d62fbab57dd985fa52476b94c6e188aeac5517db4f67ac0c35a3e1feee0a1"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/regel_trinken.png",
+          "sha256": "a7e287c2e8f68c904b468ef50bdfa176f84e9959aae157f5a029d1f311989a3a"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/illustrations/regel_beispiel_waage.png",
+          "sha256": "40d938fd96b3c1c27eaf5ea0e833e1ff924c27353f67f1257c451187d053c8d9"
         }
       ]
     }

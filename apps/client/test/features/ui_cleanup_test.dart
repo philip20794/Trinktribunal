@@ -1,3 +1,5 @@
+import 'package:trinktribunal/features/setup/player_roster.dart';
+
 import '../support/roster_setup.dart';
 
 import 'package:flutter/material.dart';
@@ -11,7 +13,6 @@ import 'package:trinktribunal/design/case_file.dart';
 import 'package:trinktribunal/design/court_scene.dart';
 import 'package:trinktribunal/domain/models/game_mode.dart' as domain;
 import 'package:trinktribunal/features/home/home_screen.dart';
-import 'package:trinktribunal/features/home/mode_preview_screen.dart';
 import 'package:trinktribunal/features/rules/game_rules_screen.dart';
 import 'package:trinktribunal/features/setup/card_mode_screen.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
@@ -60,7 +61,7 @@ void main() {
 
   for (final language in ['de', 'en']) {
     testWidgets(
-      'four home entries, no diagnostic/gallery, concise rules: $language',
+      'three home actions, no diagnostic/gallery, concise rules: $language',
       (tester) async {
         final strings = AppStrings(language);
         await host(
@@ -71,12 +72,7 @@ void main() {
         );
         expect(find.byIcon(Icons.palette_outlined), findsNothing);
         expect(find.text(strings.get('catalogDiagnostics')), findsNothing);
-        for (final key in [
-          'modeCards',
-          'modePhone',
-          'modeMulti',
-          'gameRules',
-        ]) {
+        for (final key in ['homeNewGame', 'homeJoinGame', 'gameRules']) {
           expect(find.text(strings.get(key)).hitTestable(), findsOneWidget);
         }
         await reviewImage(tester, 'cleanup-home-$language');
@@ -86,52 +82,13 @@ void main() {
         await reviewImage(tester, 'cleanup-rules-$language');
         await tester.tap(find.byKey(const ValueKey('rules-back')));
         await tester.pumpAndSettle();
+        await tapVisible(tester, find.text(strings.get('homeNewGame')));
         await tapVisible(tester, find.text(strings.get('modeCards')));
-        expect(find.byType(ModePreviewScreen), findsOneWidget);
+        expect(find.byType(PlayerRosterScreen), findsOneWidget);
         await reviewImage(tester, 'cleanup-intro-cards-$language-1');
         expect(tester.takeException(), isNull);
       },
     );
-
-    for (final mode in GameMode.values) {
-      testWidgets(
-        'mode intro remains readable and continue reachable at 200 percent: $mode, $language',
-        (tester) async {
-          await host(
-            tester,
-            ModePreviewScreen(mode: mode),
-            language,
-            scale: 2,
-            size: const Size(320, 640),
-          );
-          await reviewImage(tester, 'cleanup-intro-${mode.name}-$language-2');
-          final strings = AppStrings(language);
-          final prefix = [
-            'introCards',
-            'introPhone',
-            'introOnline',
-          ][mode.index];
-          for (var step = 1; step <= 3; step++) {
-            final text = find.text(strings.get('$prefix$step'));
-            await Scrollable.ensureVisible(tester.element(text));
-            await tester.pumpAndSettle();
-            expect(text, findsOneWidget);
-            expect(tester.takeException(), isNull);
-          }
-          expect(
-            find.text(strings.get('introContinue')).hitTestable(),
-            findsOneWidget,
-          );
-          expect(
-            find.descendant(
-              of: find.byType(CourtPaper),
-              matching: find.byType(Image),
-            ),
-            findsNothing,
-          );
-        },
-      );
-    }
 
     for (final scale in [1.0, 2.0]) {
       testWidgets(

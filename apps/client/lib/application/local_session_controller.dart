@@ -38,6 +38,9 @@ final class LocalSessionController {
   final ContentHistoryStore _historyStore;
   CardGameState? _state;
   CardGameState? get state => _state;
+  void updateProfiles(List<UserProfile> profiles) => _accept(
+    _requireState().withProfiles({for (final p in profiles) p.player.id: p}),
+  );
   ContentHistory get history => _historyStore.history;
   Map<String, Object?>? toSnapshot() => _state?.toSnapshot();
   CardGameState? validateSnapshot(

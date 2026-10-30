@@ -35,20 +35,25 @@ void main() {
   ) async {
     await tester.pumpWidget(createApp());
 
-    for (final title in ['Handy + Karten', 'Ein Handy', 'Jeder ein Handy']) {
+    for (final title in [
+      'Karten ziehen',
+      'Handy herumreichen',
+      'Jeder ein eigenes Handy',
+    ]) {
+      await tester.tap(find.byKey(const ValueKey('home-new-game')));
+      await tester.pumpAndSettle();
       final entry = find.text(title);
       expect(entry, findsOneWidget);
       await tester.ensureVisible(entry);
       await tester.tap(entry);
       await tester.pumpAndSettle();
-      expect(find.text(title), findsAtLeastNWidgets(1));
-      expect(find.text('Kurz erklärt'), findsOneWidget);
+      expect(find.text('Kurz erklärt'), findsNothing);
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
-      expect(find.byType(HomeScreen), findsOneWidget);
-      expect(find.text('Handy + Karten'), findsOneWidget);
-      expect(find.text('Ein Handy'), findsOneWidget);
-      expect(find.text('Jeder ein Handy'), findsOneWidget);
+      expect(find.byType(GameModeSelectionScreen), findsOneWidget);
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('home-new-game')), findsOneWidget);
     }
   });
 
@@ -66,7 +71,7 @@ void main() {
     expect(find.text('Allgemeine Einstellungen'), findsOneWidget);
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
-    expect(find.text('Handy + Karten'), findsOneWidget);
+    expect(find.byKey(const ValueKey('home-new-game')), findsOneWidget);
   });
 
   for (final size in [const Size(360, 800), const Size(1440, 900)]) {
@@ -79,9 +84,9 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
 
       await tester.pumpWidget(createApp());
-      expect(find.text('Handy + Karten'), findsOneWidget);
-      expect(find.text('Ein Handy'), findsOneWidget);
-      expect(find.text('Jeder ein Handy'), findsOneWidget);
+      expect(find.byKey(const ValueKey('home-new-game')), findsOneWidget);
+      expect(find.byKey(const ValueKey('home-join-game')), findsOneWidget);
+      expect(find.byKey(const ValueKey('home-game-rules')), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }

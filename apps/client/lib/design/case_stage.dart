@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_strings.dart';
 import 'illustrated_paper.dart';
 import 'private_number.dart';
+import '../domain/avatar_config.dart';
 
 /// A fixed viewport for the judge, paper and floating active-rules control.
 class CaseStage extends StatelessWidget {
@@ -84,11 +85,13 @@ class FlipCase extends StatefulWidget {
     required this.front,
     required this.number,
     this.ownerName,
+    this.ownerAvatar,
     super.key,
   });
   final Widget front;
   final int? number;
   final String? ownerName;
+  final AvatarConfig? ownerAvatar;
   @override
   State<FlipCase> createState() => _FlipCaseState();
 }
@@ -144,6 +147,7 @@ class _FlipCaseState extends State<FlipCase>
                 child: SecretNumberFace(
                   number: widget.number,
                   ownerName: widget.ownerName,
+                  ownerAvatar: widget.ownerAvatar,
                 ),
               )
             : widget.front,

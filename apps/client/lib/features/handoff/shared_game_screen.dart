@@ -293,6 +293,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
           key: ValueKey('${view.roundId}:${view.recipient!.value}'),
           fullScreen: true,
           ownerName: _identity(view, view.recipient!),
+          ownerAvatar: view.profiles[view.recipient!]!.avatar,
           number: view.visibleSecret,
           onReveal: () => _showSecret(view),
           onHide: () {
@@ -377,6 +378,17 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
           judge: view.judge == null
               ? null
               : JudgePlate(
+                  onTap: () async {
+                    _act(_controller.interruptPrivateHandoff);
+                    final profiles = await editLocalPerson(
+                      context,
+                      ref,
+                      view.roster.firstWhere((p) => p.player.id == view.judge),
+                    );
+                    if (mounted && profiles != null) {
+                      _act(() => _controller.applyRoster(profiles));
+                    }
+                  },
                   profile: view.roster.firstWhere(
                     (p) => p.player.id == view.judge,
                   ),

@@ -158,16 +158,6 @@ class _HoldActionButtonState extends State<HoldActionButton>
             onPointerCancel: (event) {
               if (event.pointer == _pointer) _release();
             },
-            onPointerMove: (event) {
-              final box = context.findRenderObject() as RenderBox?;
-              if (event.pointer == _pointer &&
-                  box != null &&
-                  !(Offset.zero & box.size).contains(
-                    box.globalToLocal(event.position),
-                  )) {
-                _release();
-              }
-            },
             child: AnimatedBuilder(
               animation: _charge,
               child: Padding(

@@ -27,6 +27,7 @@ abstract final class TrinkAvatarRenderer {
   static final Map<String, Future<String>> _partCache = {};
   static final Map<String, Future<Style>> _previewStyles = {};
   static Future<Style>? _headStyle;
+  static Future<Style>? _portraitWithoutWall;
 
   static const _componentNames = {
     'hair': 'hair',
@@ -82,12 +83,34 @@ abstract final class TrinkAvatarRenderer {
     return cache[key] = render();
   }
 
-  static Future<String> svg(AvatarConfig config) => _remember(
-    _portraitCache,
-    _key(config),
-    48,
-    () async => Avatar(await _style, options(config)).svg,
-  );
+  static Future<String> svg(AvatarConfig config, {bool showBackdrop = true}) =>
+      _remember(
+        _portraitCache,
+        '${_key(config)}:$showBackdrop',
+        48,
+        () async => Avatar(
+          await (showBackdrop
+              ? _style
+              : (_portraitWithoutWall ??= _buildPortraitWithoutWall())),
+          options(config),
+        ).svg,
+      );
+
+  static Future<Style> _buildPortraitWithoutWall() async {
+    final source = await _definition;
+    final canvas = source['canvas'] as Map<String, dynamic>;
+    return Style.parse(
+      jsonEncode({
+        ...source,
+        'canvas': {
+          ...canvas,
+          'elements': (canvas['elements'] as List)
+              .where((e) => e is! Map || e['name'] != 'ttWall')
+              .toList(),
+        },
+      }),
+    );
+  }
 
   /// A real head-only DiceBear drawing: no body, backdrop, hands or board.
   /// Uses the same selected variants and colors as the full portrait.
@@ -184,6 +207,9 @@ class AvatarView extends StatelessWidget {
     this.size = 96,
     this.label = 'Menschliche Spielfigur',
     this.playerName,
+    this.nameplateChild,
+    this.onNameplateTap,
+    this.showBackdrop = true,
     super.key,
   });
 
@@ -191,6 +217,11 @@ class AvatarView extends StatelessWidget {
   final double size;
   final String label;
   final String? playerName;
+
+  /// An editor can replace the printed name without altering the portrait art.
+  final Widget? nameplateChild;
+  final VoidCallback? onNameplateTap;
+  final bool showBackdrop;
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +254,10 @@ class AvatarView extends StatelessWidget {
                 width: size,
                 height: fullHeight,
                 child: FutureBuilder<String>(
-                  future: TrinkAvatarRenderer.svg(config),
+                  future: TrinkAvatarRenderer.svg(
+                    config,
+                    showBackdrop: showBackdrop,
+                  ),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return const Icon(Icons.person_outline);
@@ -239,7 +273,36 @@ class AvatarView extends StatelessWidget {
                   },
                 ),
               ),
-              if (playerName != null && playerName!.trim().isNotEmpty)
+              if (nameplateChild != null)
+                Positioned(
+                  left: size * .15,
+                  width: size * .70,
+                  top: fullHeight * .72,
+                  height: fullHeight * .22,
+                  child: MergeSemantics(
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: GestureDetector(
+                            key: const ValueKey('avatar-nameplate-target'),
+                            behavior: HitTestBehavior.opaque,
+                            onTap: onNameplateTap,
+                          ),
+                        ),
+                        Positioned(
+                          left: size * (.237 - .15),
+                          width: size * .526,
+                          top: fullHeight * (.792 - .72),
+                          height: fullHeight * .095,
+                          child: nameplateChild!,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (nameplateChild == null &&
+                  playerName != null &&
+                  playerName!.trim().isNotEmpty)
                 Positioned(
                   left: size * .237,
                   width: size * .526,

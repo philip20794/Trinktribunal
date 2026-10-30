@@ -3,29 +3,38 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 /// An offline HSV picker: hue wheel + saturation/brightness square.
-/// The caller receives a validated opaque #RRGGBB value only on confirmation.
-class AvatarColorPickerDialog extends StatefulWidget {
-  const AvatarColorPickerDialog({
+/// Changes are previewed immediately in the surrounding editor.
+class AvatarColorPicker extends StatefulWidget {
+  const AvatarColorPicker({
     required this.initialHex,
     required this.english,
+    required this.onChanged,
     super.key,
   });
 
   final String initialHex;
   final bool english;
+  final ValueChanged<String> onChanged;
 
   @override
-  State<AvatarColorPickerDialog> createState() =>
-      _AvatarColorPickerDialogState();
+  State<AvatarColorPicker> createState() => _AvatarColorPickerState();
 }
 
-class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
+class _AvatarColorPickerState extends State<AvatarColorPicker> {
   late HSVColor _hsv;
 
   @override
   void initState() {
     super.initState();
     _hsv = HSVColor.fromColor(_fromHex(widget.initialHex));
+  }
+
+  @override
+  void didUpdateWidget(AvatarColorPicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialHex.toUpperCase() != _toHex(_hsv.toColor())) {
+      _hsv = HSVColor.fromColor(_fromHex(widget.initialHex));
+    }
   }
 
   static Color _fromHex(String hex) =>
@@ -43,6 +52,7 @@ class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
     setState(() {
       _hsv = value;
     });
+    widget.onChanged(_toHex(_hsv.toColor()));
   }
 
   void _tapWheel(Offset point, double size) {
@@ -71,63 +81,54 @@ class _AvatarColorPickerDialogState extends State<AvatarColorPickerDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final english = widget.english;
-    final wheelSize = math.min(
-      236.0,
-      math.max(160.0, MediaQuery.sizeOf(context).width - 96.0),
-    );
-    return AlertDialog(
-      backgroundColor: const Color(0xFF382017),
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      contentPadding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
-      title: Text(
-        english ? 'Choose colour' : 'Farbe wählen',
-        style: const TextStyle(color: Color(0xFFFFF1D7)),
-      ),
-      content: SingleChildScrollView(
-        child: SizedBox(
-          width: wheelSize,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: wheelSize,
-                height: wheelSize,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTapDown: (event) =>
-                      _tapWheel(event.localPosition, wheelSize),
-                  onPanStart: (event) =>
-                      _tapWheel(event.localPosition, wheelSize),
-                  onPanUpdate: (event) =>
-                      _tapWheel(event.localPosition, wheelSize),
-                  child: CustomPaint(painter: _HuePickerPainter(_hsv)),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: _hsv.toColor(),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE9BC73)),
-                ),
-              ),
-            ],
+    return LayoutBuilder(
+      builder: (context, bounds) {
+        final wheelSize = math.min(
+          236.0,
+          math.max(
+            120.0,
+            math.min(bounds.maxWidth - 32, bounds.maxHeight - 60),
           ),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(english ? 'Cancel' : 'Abbrechen'),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.of(context).pop(_toHex(_hsv.toColor())),
-          child: Text(english ? 'Apply' : 'Übernehmen'),
-        ),
-      ],
+        );
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(8),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: wheelSize,
+                  height: wheelSize,
+                  child: GestureDetector(
+                    key: const ValueKey('avatar-color-wheel'),
+                    behavior: HitTestBehavior.opaque,
+                    onTapDown: (event) =>
+                        _tapWheel(event.localPosition, wheelSize),
+                    onPanStart: (event) =>
+                        _tapWheel(event.localPosition, wheelSize),
+                    onPanUpdate: (event) =>
+                        _tapWheel(event.localPosition, wheelSize),
+                    child: Semantics(
+                      label: widget.english ? 'Colour wheel' : 'Farbkreis',
+                      child: CustomPaint(painter: _HuePickerPainter(_hsv)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: _hsv.toColor(),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: const Color(0xFFE9BC73)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

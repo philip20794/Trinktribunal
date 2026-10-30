@@ -1,6 +1,24 @@
 abstract final class CourtAssets {
   static const wood = 'assets/ui/courtroom/backgrounds/courtroom_wood_wall.png';
   static const home = 'assets/ui/courtroom/backgrounds/home_courtroom.png';
+  static const homeHero =
+      'assets/ui/courtroom/illustrations/home_waage_pergament.png';
+  static const modeCards =
+      'assets/ui/courtroom/illustrations/modus_karten_ziehen.png';
+  static const modePhone =
+      'assets/ui/courtroom/illustrations/modus_handy_herumreichen.png';
+  static const modePhones =
+      'assets/ui/courtroom/illustrations/modus_eigene_handys.png';
+  static const ruleNumber =
+      'assets/ui/courtroom/illustrations/regel_geheime_zahl.png';
+  static const ruleQuestion =
+      'assets/ui/courtroom/illustrations/regel_frage.png';
+  static const ruleSort =
+      'assets/ui/courtroom/illustrations/regel_sortieren.png';
+  static const ruleDrink =
+      'assets/ui/courtroom/illustrations/regel_trinken.png';
+  static const ruleExample =
+      'assets/ui/courtroom/illustrations/regel_beispiel_waage.png';
   static const paper = 'assets/ui/courtroom/paper/case_parchment_blank.png';
   static const caseSheet =
       'assets/ui/courtroom/paper/fallakte_pergament_leer.png';
@@ -28,6 +46,15 @@ abstract final class CourtAssets {
   static const nativeWidths = {
     wood: 1080,
     home: 1080,
+    homeHero: 1495,
+    modeCards: 576,
+    modePhone: 566,
+    modePhones: 606,
+    ruleNumber: 426,
+    ruleQuestion: 401,
+    ruleSort: 1254,
+    ruleDrink: 1254,
+    ruleExample: 1254,
     paper: 920,
     caseSheet: 1024,
     ruleSheet: 768,

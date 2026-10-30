@@ -189,10 +189,7 @@ void main() {
         );
         await tester.pumpAndSettle();
         await tester.enterText(
-          find.descendant(
-            of: find.byType(AlertDialog),
-            matching: find.byType(TextField),
-          ),
+          find.byKey(const ValueKey('profile-name')),
           'Renamed',
         );
         await tester.tap(find.text(strings.get('rosterApply')));

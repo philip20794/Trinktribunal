@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../l10n/app_strings.dart';
 import '../../design/court_scene.dart';
 import '../../design/court_theme.dart';
+import '../../design/court_assets.dart';
 import '../help/help_screen.dart';
 
 const rulesAssetRoot = 'assets/ui/trinktribunal_spielregeln_assets';
@@ -63,7 +64,7 @@ class GameRulesScreen extends StatelessWidget {
   const GameRulesScreen({super.key});
   @override
   Widget build(BuildContext context) => CourtScaffold(
-    background: null,
+    background: CourtAssets.home,
     maxWidth: 680,
     title: const TText('gameRules'),
     leading: IconButton(
@@ -83,47 +84,78 @@ class GameRulesScreen extends StatelessWidget {
         ),
       ),
     ],
-    body: ListView(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 20),
-      children: [
-        _RulesPanel(
-          child: Builder(
-            builder: (context) => Column(
+    body: SingleChildScrollView(
+      key: const ValueKey('rules-scroll'),
+      padding: const EdgeInsets.fromLTRB(8, 6, 8, 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _RulesPanel(
+            child: Column(
               children: [
-                Semantics(
-                  header: true,
-                  child: TText(
-                    'rulesIntroTitle',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge
-                        ?.copyWith(fontWeight: FontWeight.w700),
-                  ),
+                const SemanticsHeader(text: 'rulesIntroTitle'),
+                const SizedBox(height: 2),
+                const TText(
+                  'rulesIntroSubtitle',
+                  style: TextStyle(fontSize: 12),
                 ),
-                const SizedBox(height: 6),
-                const TText('rulesIntroSubtitle', textAlign: TextAlign.center),
-                const SizedBox(height: 20),
-                for (var index = 0; index < rulesStepIcons.length; index++)
-                  _Step(index + 1),
+                const SizedBox(height: 3),
+                for (var n = 1; n <= 4; n++) _Step(n),
               ],
             ),
           ),
-        ),
-        const _RulesPanel(child: _ScoringExample()),
-        const _RulesPanel(
-          child: _ExtraRule(
-            icon: 'users',
-            title: 'gameRulesAllJudgesTitle',
-            body: 'gameRulesAllJudgesBody',
+          const SizedBox(height: 8),
+          const _RulesPanel(child: _ScoringExample()),
+          const SizedBox(height: 8),
+          LayoutBuilder(
+            builder: (context, bounds) {
+              const all = _ExtraRule(
+                icon: 'users',
+                title: 'gameRulesAllJudgesTitle',
+                summary: 'rulesAllJudgesSummary',
+                body: 'gameRulesAllJudgesBody',
+              );
+              const extra = _ExtraRule(
+                icon: 'book-open',
+                title: 'gameRulesExtraRulesTitle',
+                summary: 'rulesExtraSummary',
+                body: 'gameRulesExtraRulesBody',
+              );
+              if (bounds.maxWidth < 280) {
+                return const Column(
+                  children: [all, SizedBox(height: 6), extra],
+                );
+              }
+              return const Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: all),
+                  SizedBox(width: 8),
+                  Expanded(child: extra),
+                ],
+              );
+            },
           ),
-        ),
-        const _RulesPanel(
-          child: _ExtraRule(
-            icon: 'book-open',
-            title: 'gameRulesExtraRulesTitle',
-            body: 'gameRulesExtraRulesBody',
-          ),
-        ),
-      ],
+        ],
+      ),
+    ),
+  );
+}
+
+class SemanticsHeader extends StatelessWidget {
+  const SemanticsHeader({required this.text, super.key});
+  final String text;
+  @override
+  Widget build(BuildContext context) => Semantics(
+    header: true,
+    child: TText(
+      text,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontSize: 18,
+        height: 1.1,
+        fontWeight: FontWeight.w800,
+      ),
     ),
   );
 }
@@ -132,18 +164,15 @@ class _RulesPanel extends StatelessWidget {
   const _RulesPanel({required this.child});
   final Widget child;
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: 12),
-    child: CourtPaper(
-      padding: const EdgeInsets.all(16),
-      child: DefaultTextStyle.merge(
-        style: const TextStyle(
-          fontSize: 14,
-          height: 1.45,
-          color: CourtTokens.ink,
-        ),
-        child: child,
+  Widget build(BuildContext context) => CourtPaper(
+    padding: const EdgeInsets.all(8),
+    child: DefaultTextStyle.merge(
+      style: const TextStyle(
+        fontSize: 13,
+        height: 1.15,
+        color: CourtTokens.ink,
       ),
+      child: child,
     ),
   );
 }
@@ -152,15 +181,20 @@ class _Step extends StatelessWidget {
   const _Step(this.number);
   final int number;
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(bottom: number == 4 ? 0 : 16),
+  Widget build(BuildContext context) => Container(
+    key: ValueKey('rules-step-$number'),
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    decoration: BoxDecoration(
+      border: number == 1
+          ? null
+          : const Border(top: BorderSide(color: Color(0xFFDABB83), width: .6)),
+    ),
     child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ExcludeSemantics(
           child: Container(
-            width: MediaQuery.textScalerOf(context).scale(16) + 14,
-            height: MediaQuery.textScalerOf(context).scale(16) + 14,
+            width: 24,
+            height: 24,
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               color: _accent,
@@ -170,53 +204,40 @@ class _Step extends StatelessWidget {
               '$number',
               style: const TextStyle(
                 color: CourtSceneTokens.cream,
-                fontSize: 16,
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 5),
+        CourtArt(
+          [
+            CourtAssets.ruleNumber,
+            CourtAssets.ruleQuestion,
+            CourtAssets.ruleSort,
+            CourtAssets.ruleDrink,
+          ][number - 1],
+          width: 40,
+          height: 44,
+          fit: BoxFit.contain,
+        ),
+        const SizedBox(width: 7),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _Heading(
-                icon: rulesStepIcons[number - 1],
-                text: 'rulesStep${number}Title',
+              TText(
+                'rulesStep${number}Title',
+                style: const TextStyle(
+                  fontSize: 14,
+                  height: 1.15,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 2),
               TText('rulesStep${number}Body'),
             ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-class _Heading extends StatelessWidget {
-  const _Heading({required this.icon, required this.text});
-  final String icon, text;
-  @override
-  Widget build(BuildContext context) => Semantics(
-    header: true,
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 2),
-          child: RulesIcon(icon, size: 18),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: TText(
-            text,
-            style: const TextStyle(
-              fontSize: 16,
-              height: 1.3,
-              fontWeight: FontWeight.w600,
-              color: CourtTokens.ink,
-            ),
           ),
         ),
       ],
@@ -235,36 +256,63 @@ class _ScoringExample extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const _Heading(icon: 'scale', text: 'rulesScoringTitle'),
-        const SizedBox(height: 14),
-        const TText('rulesScoringIntro'),
-        const SizedBox(height: 12),
-        const _OrderRow(judged: false),
-        const SizedBox(height: 16),
-        const _OrderRow(judged: true),
-        const SizedBox(height: 12),
-        DecoratedBox(
+        Row(
+          children: [
+            const CourtArt(
+              CourtAssets.ruleExample,
+              width: 32,
+              height: 28,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(width: 6),
+            const Expanded(child: SemanticsHeader(text: 'rulesScoringTitle')),
+          ],
+        ),
+        const SizedBox(height: 4),
+        LayoutBuilder(
+          builder: (context, bounds) {
+            final scale = MediaQuery.textScalerOf(context).scale(13) / 13;
+            if (bounds.maxWidth < 270 || scale > 1.5 && bounds.maxWidth < 480) {
+              return const Column(
+                children: [
+                  _OrderRow(judged: false),
+                  SizedBox(height: 6),
+                  _OrderRow(judged: true),
+                ],
+              );
+            }
+            return const Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: _OrderRow(judged: false)),
+                SizedBox(width: 10),
+                Expanded(child: _OrderRow(judged: true)),
+              ],
+            );
+          },
+        ),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           decoration: BoxDecoration(
             color: _sand,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(9),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  context.tr('rulesScoringResult', {'count': errors}),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                context.tr('rulesScoringResult', {'count': errors}),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
                 ),
-                const SizedBox(height: 8),
-                const _PenaltyRow('rulesJudgeRole', 'rulesTwoSips'),
-                const Divider(color: CourtTokens.border),
-                const _PenaltyRow('rulesWrongPeople', 'rulesTwoSipsEach'),
-                const Divider(color: CourtTokens.border),
-                const _PenaltyRow('rulesCorrectPerson', 'rulesNoSips'),
-              ],
-            ),
+              ),
+              const SizedBox(height: 3),
+              const _PenaltyRow('rulesJudgeRole', 'rulesTwoSips'),
+              const _PenaltyRow('rulesWrongPeople', 'rulesTwoSipsEach'),
+              const _PenaltyRow('rulesCorrectPerson', 'rulesNoSips'),
+            ],
           ),
         ),
       ],
@@ -281,24 +329,21 @@ class _OrderRow extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          context
-              .tr(judged ? 'rulesJudgeOrderTitle' : 'rulesCorrectOrderTitle')
-              .toUpperCase(),
-          style: const TextStyle(fontSize: 11, height: 1.4, letterSpacing: .4),
+        TText(
+          judged ? 'rulesJudgeOrderTitle' : 'rulesCorrectOrderTitle',
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 3),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for (var index = 0; index < values.length; index++) ...[
-              if (index > 0) const SizedBox(width: 8),
+            for (var i = 0; i < values.length; i++) ...[
+              if (i > 0) const SizedBox(width: 4),
               Expanded(
                 child: _NumberCell(
-                  number: values[index],
-                  position: index + 1,
+                  number: values[i],
+                  position: i + 1,
                   judged: judged,
-                  correct: values[index] == rulesCorrectOrder[index],
+                  correct: !judged || values[i] == rulesCorrectOrder[i],
                 ),
               ),
             ],
@@ -319,83 +364,65 @@ class _NumberCell extends StatelessWidget {
   final int number, position;
   final bool judged, correct;
   @override
-  Widget build(BuildContext context) {
-    final label = context.tr(
-      correct ? 'rulesCorrectLabel' : 'rulesIncorrectLabel',
-    );
-    final color = correct ? _right : _wrong;
-    return Semantics(
-      label: context.tr('rulesExampleCell', {
-        'position': position,
-        'number': number,
-        'status': label,
-      }),
-      excludeSemantics: true,
-      child: DecoratedBox(
-        key: ValueKey('${judged ? 'judge' : 'correct'}-$position'),
-        decoration: BoxDecoration(
-          color: !judged
-              ? _sand
-              : correct
-              ? const Color(0xFFDCEAD5)
-              : const Color(0xFFF0D0C8),
-          borderRadius: BorderRadius.circular(8),
-          border: judged
-              ? Border.all(
-                  color: correct
-                      ? const Color(0xFF6B9D6B)
-                      : const Color(0xFFD65B56),
-                )
-              : null,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-          child: Column(
-            children: [
-              Text(
-                '$number',
-                style: const TextStyle(
-                  fontSize: 20,
-                  height: 1.2,
-                  color: CourtTokens.ink,
-                ),
-              ),
-              const SizedBox(height: 6),
-              if (!judged)
-                RulesIcon('check', size: 14, color: color)
-              else
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 3,
-                  children: [
-                    RulesIcon(correct ? 'check' : 'x', size: 14, color: color),
-                    Text(
-                      label,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: color, fontSize: 11),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-        ),
+  Widget build(BuildContext context) => Semantics(
+    label: context.tr('rulesExampleCell', {
+      'position': position,
+      'number': number,
+      'status': context.tr(
+        correct ? 'rulesCorrectLabel' : 'rulesIncorrectLabel',
       ),
-    );
-  }
+    }),
+    excludeSemantics: true,
+    child: Container(
+      key: ValueKey('${judged ? 'judge' : 'correct'}-$position'),
+      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+      decoration: BoxDecoration(
+        color: !judged
+            ? _sand
+            : correct
+            ? const Color(0xFFDCEAD5)
+            : const Color(0xFFF0D0C8),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            child: Text(
+              '$number',
+              style: const TextStyle(
+                fontSize: 16,
+                height: 1.1,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const SizedBox(width: 3),
+          RulesIcon(
+            correct ? 'check' : 'x',
+            size: 12,
+            color: correct ? _right : _wrong,
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _PenaltyRow extends StatelessWidget {
   const _PenaltyRow(this.role, this.amount);
   final String role, amount;
   @override
-  Widget build(BuildContext context) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Expanded(child: TText(role)),
-      const SizedBox(width: 16),
-      Expanded(child: TText(amount, textAlign: TextAlign.right)),
-    ],
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 1),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(child: TText(role)),
+        const SizedBox(width: 6),
+        Expanded(child: TText(amount, textAlign: TextAlign.right)),
+      ],
+    ),
   );
 }
 
@@ -403,16 +430,104 @@ class _ExtraRule extends StatelessWidget {
   const _ExtraRule({
     required this.icon,
     required this.title,
+    required this.summary,
     required this.body,
   });
-  final String icon, title, body;
+  final String icon, title, summary, body;
+  Future<void> _show(BuildContext context) => showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
+    backgroundColor: CourtSceneTokens.parchment,
+    constraints: BoxConstraints(
+      maxHeight: MediaQuery.sizeOf(context).height * .7,
+    ),
+    builder: (context) => Padding(
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TText(
+            title,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: CourtTokens.ink,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Flexible(
+            child: SingleChildScrollView(
+              child: TText(
+                body,
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.4,
+                  color: CourtTokens.ink,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          FilledButton(
+            key: const ValueKey('rules-extra-close'),
+            onPressed: () => Navigator.pop(context),
+            child: Text(MaterialLocalizations.of(context).closeButtonTooltip),
+          ),
+        ],
+      ),
+    ),
+  );
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      _Heading(icon: icon, text: title),
-      const SizedBox(height: 10),
-      TText(body),
-    ],
+  Widget build(BuildContext context) => MergeSemantics(
+    child: Material(
+      color: CourtSceneTokens.parchment,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        key: ValueKey('rules-extra-$icon'),
+        onTap: () => _show(context),
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.all(9),
+          decoration: BoxDecoration(
+            border: Border.all(color: CourtSceneTokens.gold),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  RulesIcon(icon, size: 18),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: TText(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        height: 1.1,
+                        color: CourtTokens.ink,
+                      ),
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right, size: 16, color: _accent),
+                ],
+              ),
+              const SizedBox(height: 4),
+              TText(
+                summary,
+                style: const TextStyle(
+                  fontSize: 12,
+                  height: 1.15,
+                  color: CourtTokens.ink,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
   );
 }

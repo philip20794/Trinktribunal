@@ -5,6 +5,8 @@ import 'court_scene.dart';
 import 'court_assets.dart';
 import 'hold_action_button.dart';
 import 'case_stage.dart';
+import 'avatar_view.dart';
+import '../domain/avatar_config.dart';
 
 /// Shared local/online presentation; hidden values never enter text or semantics.
 class PrivateNumber extends StatefulWidget {
@@ -36,11 +38,13 @@ class HeldPrivateNumber extends StatefulWidget {
     required this.onDone,
     this.fullScreen = false,
     this.ownerName,
+    this.ownerAvatar,
     super.key,
   });
   final int? number;
   final bool fullScreen;
   final String? ownerName;
+  final AvatarConfig? ownerAvatar;
   final VoidCallback onReveal, onHide, onDone;
   @override
   State<HeldPrivateNumber> createState() => _HeldPrivateNumberState();
@@ -95,7 +99,12 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber> {
           padding: const EdgeInsets.all(4),
           child: FlipCase(
             ownerName: widget.ownerName,
-            front: SecretNumberFace(number: null, ownerName: widget.ownerName),
+            ownerAvatar: widget.ownerAvatar,
+            front: SecretNumberFace(
+              number: null,
+              ownerName: widget.ownerName,
+              ownerAvatar: widget.ownerAvatar,
+            ),
             number: _revealed ? widget.number : null,
           ),
         ),
@@ -114,9 +123,15 @@ class _HeldPrivateNumberState extends State<HeldPrivateNumber> {
 }
 
 class SecretNumberFace extends StatelessWidget {
-  const SecretNumberFace({required this.number, this.ownerName, super.key});
+  const SecretNumberFace({
+    required this.number,
+    this.ownerName,
+    this.ownerAvatar,
+    super.key,
+  });
   final int? number;
   final String? ownerName;
+  final AvatarConfig? ownerAvatar;
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => Stack(
@@ -125,7 +140,21 @@ class SecretNumberFace extends StatelessWidget {
         const CourtArt(CourtAssets.secretPaper, fit: BoxFit.contain),
         Center(
           child: number == null
-              ? ownerName != null
+              ? ownerAvatar != null
+                    ? AvatarView(
+                        config: ownerAvatar!,
+                        playerName: ownerName,
+                        label: ownerName ?? context.tr('profilePreview'),
+                        showBackdrop: false,
+                        size: (constraints.maxWidth * .65).clamp(
+                          0,
+                          constraints.maxHeight *
+                              .65 *
+                              TrinkAvatarRenderer.canvasWidth /
+                              TrinkAvatarRenderer.visibleHeight,
+                        ),
+                      )
+                    : ownerName != null
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 48),
                         child: Text(

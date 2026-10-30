@@ -44,9 +44,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Trinktribunal'), findsOneWidget);
     expect(find.byType(HomeScreen), findsOneWidget);
-    expect(find.text('Handy + Karten'), findsOneWidget);
-    expect(find.text('Ein Handy'), findsOneWidget);
-    expect(find.text('Jeder ein Handy'), findsOneWidget);
+    expect(find.byKey(const ValueKey('home-new-game')), findsOneWidget);
+    expect(find.byKey(const ValueKey('home-join-game')), findsOneWidget);
+    expect(find.byKey(const ValueKey('home-game-rules')), findsOneWidget);
     expect(find.byType(Scaffold), findsOneWidget);
   });
 }

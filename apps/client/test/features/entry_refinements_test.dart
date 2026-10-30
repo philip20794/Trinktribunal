@@ -6,6 +6,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:trinktribunal/features/multiplayer/join.dart';
 import 'package:trinktribunal/features/multiplayer/invitation.dart';
 import 'package:trinktribunal/design/hold_action_button.dart';
+import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/design/private_number.dart';
 import 'package:trinktribunal/design/case_stage.dart';
 import 'package:trinktribunal/design/case_file.dart';
@@ -212,6 +213,7 @@ void main() {
             builder: (context, update) => HeldPrivateNumber(
               fullScreen: true,
               ownerName: 'Alex',
+              ownerAvatar: AvatarConfig(),
               number: number,
               onReveal: () => update(() => number = 37),
               onHide: () => update(() => number = null),
@@ -221,7 +223,11 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Zahl von Alex'), findsOneWidget);
+      expect(find.text('Zahl von Alex'), findsNothing);
+      expect(
+        tester.widget<AvatarView>(find.byType(AvatarView)).showBackdrop,
+        isFalse,
+      );
       final button = find.byType(HoldActionButton);
       expect(
         tester.widget<HoldActionButton>(button).duration,
@@ -236,7 +242,11 @@ void main() {
       await tester.pump();
       expect(find.text('37'), findsNothing);
       await tester.pumpAndSettle();
-      expect(find.text('Zahl von Alex'), findsOneWidget);
+      expect(find.text('Zahl von Alex'), findsNothing);
+      expect(
+        tester.widget<AvatarView>(find.byType(AvatarView)).playerName,
+        'Alex',
+      );
     },
   );
 }

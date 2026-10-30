@@ -4,14 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/application/local_data_providers.dart';
 import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/features/home/home_screen.dart';
-import 'package:trinktribunal/features/home/mode_preview_screen.dart';
-import 'package:trinktribunal/features/multiplayer/create.dart';
 import 'package:trinktribunal/features/profile/profile_screen.dart';
 import 'package:trinktribunal/features/settings/settings_screen.dart';
 import 'package:trinktribunal/features/setup/player_roster.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
 import '../accessibility/screen_matrix_test.dart' show accessibilityHost;
+import '../support/hold_action.dart';
+
+import 'package:trinktribunal/design/hold_action_button.dart';
 
 Future<void> host(
   WidgetTester tester,
@@ -75,7 +76,14 @@ Future<void> tapVisible(WidgetTester tester, Finder finder) async {
   await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
   await tester.pumpAndSettle();
   expect(finder.hitTestable(), findsOneWidget);
-  await tester.tap(finder);
+  if (find
+      .ancestor(of: finder, matching: find.byType(HoldActionButton))
+      .evaluate()
+      .isNotEmpty) {
+    await holdAction(tester, finder);
+  } else {
+    await tester.tap(finder);
+  }
   await tester.pumpAndSettle();
 }
 
@@ -89,16 +97,15 @@ void main() {
         for (final entry in {
           'modeCards': PlayerRosterScreen,
           'modePhone': PlayerRosterScreen,
-          'modeMulti': MultiplayerEntryScreen,
         }.entries) {
+          await tester.tap(find.text(strings.get('homeNewGame')));
+          await tester.pumpAndSettle();
           final mode = find.text(strings.get(entry.key));
-          expect(mode.hitTestable(), findsOneWidget);
-          await tester.tap(mode);
-          await tester.pumpAndSettle();
-          expect(find.byType(ModePreviewScreen), findsOneWidget);
-          await tester.tap(find.text(strings.get('introContinue')));
-          await tester.pumpAndSettle();
+          await tapVisible(tester, mode);
           expect(find.byType(entry.value), findsOneWidget);
+          await tester.tap(find.byType(BackButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(GameModeSelectionScreen), findsOneWidget);
           await tester.tap(find.byType(BackButton));
           await tester.pumpAndSettle();
           expect(find.byType(HomeScreen), findsOneWidget);

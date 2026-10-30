@@ -69,6 +69,15 @@ flutter:
     - assets/catalogs/rules/
     - assets/ui/courtroom/backgrounds/courtroom_wood_wall.png
     - assets/ui/courtroom/backgrounds/home_courtroom.png
+    - assets/ui/courtroom/illustrations/home_waage_pergament.png
+    - assets/ui/courtroom/illustrations/modus_karten_ziehen.png
+    - assets/ui/courtroom/illustrations/modus_handy_herumreichen.png
+    - assets/ui/courtroom/illustrations/modus_eigene_handys.png
+    - assets/ui/courtroom/illustrations/regel_geheime_zahl.png
+    - assets/ui/courtroom/illustrations/regel_frage.png
+    - assets/ui/courtroom/illustrations/regel_sortieren.png
+    - assets/ui/courtroom/illustrations/regel_trinken.png
+    - assets/ui/courtroom/illustrations/regel_beispiel_waage.png
     - assets/ui/courtroom/paper/case_parchment_blank.png
     - assets/ui/courtroom/paper/fallakte_pergament_leer.png
     - assets/ui/courtroom/paper/trinktribunal_regel_pergament_leer.png

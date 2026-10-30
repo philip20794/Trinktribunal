@@ -113,33 +113,36 @@ void main() {
     );
   }
 
-  testWidgets('pointer cancellation and moving out reset the entire charge', (
-    tester,
-  ) async {
-    var completed = 0, released = 0;
-    await host(
-      tester,
-      HoldActionButton(
-        icon: Icons.arrow_forward,
-        label: 'Next',
-        onCompleted: () => completed++,
-        onReleased: () => released++,
-      ),
-    );
-    final target = find.byType(HoldActionButton);
-    final first = await tester.startGesture(tester.getCenter(target));
-    await tester.pump(const Duration(milliseconds: 900));
-    await first.cancel();
-    await tester.pump(const Duration(seconds: 2));
-    expect(completed, 0);
-    final second = await tester.startGesture(tester.getCenter(target));
-    await tester.pump(const Duration(milliseconds: 900));
-    await second.moveTo(const Offset(1, 1));
-    await tester.pump(const Duration(seconds: 2));
-    await second.up();
-    expect(completed, 0);
-    expect(released, 2);
-  });
+  testWidgets(
+    'cancellation resets charge; moving out stays held until actual pointer up',
+    (tester) async {
+      var completed = 0, released = 0;
+      await host(
+        tester,
+        HoldActionButton(
+          icon: Icons.arrow_forward,
+          label: 'Next',
+          onCompleted: () => completed++,
+          onReleased: () => released++,
+        ),
+      );
+      final target = find.byType(HoldActionButton);
+      final first = await tester.startGesture(tester.getCenter(target));
+      await tester.pump(const Duration(milliseconds: 900));
+      await first.cancel();
+      await tester.pump(const Duration(seconds: 2));
+      expect(completed, 0);
+      final second = await tester.startGesture(tester.getCenter(target));
+      await tester.pump(const Duration(milliseconds: 900));
+      await second.moveTo(const Offset(1, 1));
+      await tester.pump(const Duration(seconds: 2));
+      expect(released, 1);
+      expect(completed, 1);
+      await second.up();
+      expect(completed, 1);
+      expect(released, 2);
+    },
+  );
 
   testWidgets(
     'keyboard hold reveals after the delay and releases on key up or background',

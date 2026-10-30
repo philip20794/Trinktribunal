@@ -67,7 +67,7 @@ void main() {
     },
   );
   testWidgets(
-    'pointer hold exposes exactly its value; up/cancel/drag out hide and never advance',
+    'pointer hold stays visible outside; up/cancel hide and never advance',
     (tester) async {
       final semantics = tester.ensureSemantics();
       try {
@@ -98,11 +98,11 @@ void main() {
         await gesture.moveTo(const Offset(-10, -10));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 1200));
-        expect(find.text('37'), findsNothing);
+        expect(find.text('37'), findsOneWidget);
         await gesture.moveTo(tester.getCenter(hold));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 1200));
-        expect(find.text('37'), findsNothing);
+        expect(find.text('37'), findsOneWidget);
         await gesture.up();
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 1200));

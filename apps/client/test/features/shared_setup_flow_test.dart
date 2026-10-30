@@ -11,7 +11,6 @@ import 'package:trinktribunal/application/shared_phone_controller.dart';
 import 'package:trinktribunal/design/case_file.dart';
 import 'package:trinktribunal/design/private_number.dart';
 import 'package:trinktribunal/features/home/home_screen.dart';
-import 'package:trinktribunal/features/home/mode_preview_screen.dart';
 import 'package:trinktribunal/features/handoff/shared_game_screen.dart';
 import 'package:trinktribunal/features/setup/card_mode_screen.dart';
 import 'package:trinktribunal/features/setup/player_roster.dart';
@@ -97,6 +96,7 @@ void main() {
         await container.read(localStateTransactionProvider).save();
         final cardId = cards.state!.currentEventId,
             phoneId = phone.view!.roundId;
+        await tapVisible(tester, find.text(strings.get('homeNewGame')));
         final entry = find.text(
           strings.get(cardMode ? 'modeCards' : 'modePhone'),
         );
@@ -114,7 +114,7 @@ void main() {
           find.byType(cardMode ? CardModeScreen : SharedGameScreen),
           findsOneWidget,
         );
-        expect(find.byType(ModePreviewScreen), findsNothing);
+        expect(find.text(strings.get('introContinue')), findsNothing);
         await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();
         await tapVisible(tester, entry);
@@ -122,15 +122,13 @@ void main() {
           find.widgetWithText(FilledButton, strings.get('newGame')),
         );
         await tester.pumpAndSettle();
-        expect(find.byType(ModePreviewScreen), findsOneWidget);
+        expect(find.byType(PlayerRosterScreen), findsOneWidget);
         expect(cardMode ? cards.state == null : phone.view == null, isTrue);
         expect(
           cardMode ? phone.view!.roundId : cards.state!.currentEventId,
           cardMode ? phoneId : cardId,
         );
         expect(roster.members.length, 4);
-        await tester.tap(find.text(strings.get('introContinue')));
-        await tester.pumpAndSettle();
         expect(find.byType(PlayerRosterScreen), findsOneWidget);
         expect(tester.takeException(), isNull);
       },

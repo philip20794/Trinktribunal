@@ -15,6 +15,7 @@ import '../../l10n/app_strings.dart';
 import 'game_screen.dart';
 import '../../design/case_stage.dart';
 import 'game_progress.dart';
+import 'me.dart';
 
 class RoomCaseTab extends ConsumerWidget {
   const RoomCaseTab({required this.snapshot, super.key});
@@ -73,6 +74,16 @@ class RoomCaseTab extends ConsumerWidget {
         judge: guide == null
             ? null
             : JudgePlate(
+                onTap: guide.playerId != snapshot.you
+                    ? null
+                    : () {
+                        game.hideSecret();
+                        Navigator.of(context).push<void>(
+                          MaterialPageRoute(
+                            builder: (_) => const RoomProfileScreen(),
+                          ),
+                        );
+                      },
                 profile: UserProfile(
                   player: Player(id: guide.playerId, name: guide.profile.name),
                   avatar: AvatarConfig.fromJson(guide.profile.avatar.toJson()),

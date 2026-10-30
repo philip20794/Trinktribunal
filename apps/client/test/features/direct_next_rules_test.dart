@@ -1,5 +1,7 @@
 import '../support/roster_setup.dart';
 
+import 'package:trinktribunal/design/hold_action_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -57,8 +59,6 @@ void main() {
           'rulesStep3Body',
           'rulesStep4Body',
           'rulesScoringTitle',
-          'gameRulesAllJudgesBody',
-          'gameRulesExtraRulesBody',
         ]) {
           final finder = find.text(strings.get(key));
           await tester.scrollUntilVisible(
@@ -68,6 +68,19 @@ void main() {
           );
           expect(finder, findsOneWidget);
           expect(tester.takeException(), isNull);
+        }
+        for (final extra in {
+          'users': 'gameRulesAllJudgesBody',
+          'book-open': 'gameRulesExtraRulesBody',
+        }.entries) {
+          final tile = find.byKey(ValueKey('rules-extra-${extra.key}'));
+          await tester.ensureVisible(tile);
+          await tester.pumpAndSettle();
+          await tester.tap(tile);
+          await tester.pumpAndSettle();
+          expect(find.text(strings.get(extra.value)), findsOneWidget);
+          await tester.tap(find.byKey(const ValueKey('rules-extra-close')));
+          await tester.pumpAndSettle();
         }
       },
     );
@@ -88,10 +101,14 @@ void main() {
         final id = cards.state!.currentEventId;
         final next = find.ancestor(
           of: find.text(strings.get('nextCase')),
-          matching: find.byType(FilledButton),
+          matching: find.byType(HoldActionButton),
         );
         expect(next.hitTestable(), findsOneWidget);
-        final callback = tester.widget<FilledButton>(next).onPressed!;
+        expect(
+          tester.widget<HoldActionButton>(next).duration,
+          const Duration(milliseconds: 500),
+        );
+        final callback = tester.widget<HoldActionButton>(next).onCompleted!;
         callback();
         callback();
         await tester.pumpAndSettle();

@@ -125,17 +125,20 @@
         "defekter lokaler Stand mit bestätigtem Verwerfen",
         "gespeicherte Raumidentitäten",
         "Profil/Einstellungen/Spielregeln",
-        "Four menu items: three modes and concise rules",
         "No catalog diagnostics or design gallery in home navigation",
         "29.10: selective continue/new-game prompt",
         "29.10: compact ordered roster and separate configuration",
-        "29.10: focused handoff and held secret number; Done gated by first reveal"
+        "29.10: focused handoff and held secret number; Done gated by first reveal",
+        "30.10: Neues Spiel starten / Spiel beitreten / sichtbare Spielregeln; separate geordnete Modusauswahl mit Voraussetzungen",
+        "30.10: schwebender zentrierter Titel und Profil/Einstellungen ohne Toolbar; Waage/Pergament mit dynamischen Texten; Gold/Rot/Braun-Aktionen",
+        "Direkte Einrichtung aller drei Modi ohne vorgeschaltete Kurz-Erklaerscreens"
       ],
       "tests": [
         "apps/client/test/accessibility/screen_matrix_test.dart",
         "apps/client/test/widget_test.dart",
         "apps/client/test/features/home_profile_settings_test.dart",
-        "apps/client/test/features/shared_setup_flow_test.dart"
+        "apps/client/test/features/shared_setup_flow_test.dart",
+        "apps/client/test/features/home_navigation_test.dart"
       ],
       "targetTask": "TT-073",
       "implementation": {
@@ -149,7 +152,8 @@
       "files": [
         "apps/client/lib/features/profile/profile_screen.dart",
         "apps/client/lib/features/profile/avatar_options.dart",
-        "apps/client/lib/features/profile/avatar_color_picker.dart"
+        "apps/client/lib/features/profile/avatar_color_picker.dart",
+        "apps/client/lib/features/profile/avatar_editor.dart"
       ],
       "modes": [
         "cards",
@@ -168,12 +172,15 @@
         "große Avatar-v2-Vorschau",
         "14 Kategorien/53 Optionen",
         "Speichern/Fehler/Zurück",
-        "DiceBear v3: Varianten, HEX/HSV-Farbe, Namensschild und Kopfporträt"
+        "DiceBear v3: Varianten, HEX/HSV-Farbe, Namensschild und Kopfporträt",
+        "30.10: Name direkt auf dem Schild; Live-Varianten und Farbkreis in am Schild ausgerichteten Bottom Sheets"
       ],
       "tests": [
         "apps/client/test/application/profile_controller_test.dart",
         "apps/client/test/accessibility/screen_matrix_test.dart",
-        "apps/client/test/features/home_profile_settings_test.dart"
+        "apps/client/test/features/home_profile_settings_test.dart",
+        "apps/client/test/design/avatar_editor_test.dart",
+        "apps/client/test/design/avatar_options_test.dart"
       ],
       "targetTask": "TT-073",
       "implementation": {
@@ -289,7 +296,8 @@
         "apps/client/test/application/local_marathon_test.dart",
         "apps/client/test/design/question_card_test.dart",
         "apps/client/test/features/local_card_ui_test.dart",
-        "apps/client/test/features/ui_cleanup_test.dart"
+        "apps/client/test/features/ui_cleanup_test.dart",
+        "apps/client/test/features/play_refinements_test.dart"
       ],
       "targetTask": "TT-076",
       "implementation": {
@@ -337,7 +345,8 @@
         "apps/client/test/design/held_private_number_test.dart",
         "apps/client/test/application/local_marathon_test.dart",
         "apps/client/test/design/question_card_test.dart",
-        "apps/client/test/features/shared_setup_flow_test.dart"
+        "apps/client/test/features/shared_setup_flow_test.dart",
+        "apps/client/test/features/play_refinements_test.dart"
       ],
       "targetTask": "TT-075",
       "implementation": {
@@ -441,7 +450,8 @@
         "Geheimnisse beim Öffnen verdeckt",
         "Four illustrated steps and 2/7/11 versus 7/2/11 scoring example",
         "Real SVG back/help controls; all-judges and extra-rule cards",
-        "DE/EN, 320/390/1440 widths and 100/200% text scaling"
+        "DE/EN, 320/390/1440 widths and 100/200% text scaling",
+        "30.10: vier kompakte PNG-Schritte, nebeneinanderliegende Beispielreihen und antippbare Zusatzregeln mit vollstaendiger Erklaerung"
       ],
       "tests": [
         "apps/client/test/features/direct_next_rules_test.dart",
@@ -581,7 +591,8 @@
         "apps/client/lib/features/multiplayer/lobby.dart",
         "apps/client/lib/features/multiplayer/courtroom.dart",
         "apps/client/lib/features/multiplayer/case_tab.dart",
-        "apps/client/lib/features/multiplayer/room_tools.dart"
+        "apps/client/lib/features/multiplayer/room_tools.dart",
+        "apps/client/lib/features/multiplayer/lobby_bench.dart"
       ],
       "modes": [
         "multiplayer"
@@ -612,7 +623,8 @@
         "fixed_case_viewport_without_progress_header",
         "host_demo_players_join_with_random_avatars_and_automated_round_actions",
         "touch_seating_from_numbers_phase_with_edge_scrolling_for_twenty_players",
-        "debounced_settings_keep_newer_edits_and_rebase_stale_server_revisions"
+        "debounced_settings_keep_newer_edits_and_rebase_stale_server_revisions",
+        "30.10: adaptive Lobby und Platzierung; alphabetisches, scrollbareres rechtes Kopfportraet-Panel mit Rueckablage"
       ],
       "tests": [
         "apps/client/test/features/lobby_test.dart",
@@ -624,7 +636,9 @@
         "apps/client/test/application/online_settings_controller_test.dart",
         "apps/client/test/application/demo_players_controller_test.dart",
         "apps/client/test/application/demo_players_live_test.dart",
-        "apps/client/test/features/all_judges_test.dart"
+        "apps/client/test/features/all_judges_test.dart",
+        "apps/client/test/features/lobby_bench_test.dart",
+        "apps/client/test/features/placement_panel_test.dart"
       ],
       "targetTask": "TT-077",
       "implementation": {
@@ -872,36 +886,6 @@
       "targetTask": "TT-072",
       "implementation": {
         "task": "TT-072",
-        "status": "implemented",
-        "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
-      }
-    },
-    {
-      "id": "mode_intro",
-      "files": [
-        "apps/client/lib/features/home/mode_preview_screen.dart"
-      ],
-      "modes": [
-        "cards",
-        "shared_phone",
-        "multiplayer"
-      ],
-      "roles": [
-        "local_user"
-      ],
-      "references": [],
-      "states": [
-        "Three-step DE/EN introduction for all three modes",
-        "Continue replaces intro with the real setup",
-        "Back returns to the four-item home menu"
-      ],
-      "tests": [
-        "apps/client/test/features/home_profile_settings_test.dart",
-        "apps/client/test/features/ui_cleanup_test.dart"
-      ],
-      "targetTask": "TT-073",
-      "implementation": {
-        "task": "TT-073",
         "status": "implemented",
         "manualAcceptance": "ÜBERSPRUNGEN – später manuell testen"
       }
@@ -1668,6 +1652,177 @@
       ],
       "sha256": "cb3f0a3a464942bdf8e3e5542edeffff9349ce1a905727376efa6c96125aec42",
       "bytes": 1185173
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/home_waage_pergament.png",
+      "width": 1495,
+      "height": 1018,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "transparent_pixels": 645708,
+      "nonopaque_pixels": 1521910,
+      "alpha_bbox": [
+        12,
+        12,
+        1489,
+        1008
+      ],
+      "bytes": 1972235,
+      "sha256": "f12d66d9d8f13f602029ce66bc57c74744e7b3b312d88f30baafc5b91d65db2c",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/modus_karten_ziehen.png",
+      "width": 576,
+      "height": 558,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 34966,
+      "nonopaque_pixels": 319794,
+      "alpha_bbox": [
+        12,
+        9,
+        565,
+        555
+      ],
+      "bytes": 423442,
+      "sha256": "1170a202ef9e432cf1a36b34589fee69ab28b2b1fd5fe817e0b57d39db442955",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/modus_handy_herumreichen.png",
+      "width": 566,
+      "height": 558,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 34102,
+      "nonopaque_pixels": 314802,
+      "alpha_bbox": [
+        10,
+        11,
+        566,
+        550
+      ],
+      "bytes": 409151,
+      "sha256": "7fd5d175aaf2ae64d47f05758a1475147caf3077ff7e8fc0d9aa772edc51673d",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/modus_eigene_handys.png",
+      "width": 606,
+      "height": 558,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 47429,
+      "nonopaque_pixels": 337089,
+      "alpha_bbox": [
+        8,
+        8,
+        602,
+        547
+      ],
+      "bytes": 440666,
+      "sha256": "f3560d25f1e55ea037bb4bbc6bb980da964373ecbdfe948924918fa992892c86",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/regel_geheime_zahl.png",
+      "width": 426,
+      "height": 393,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 55652,
+      "nonopaque_pixels": 167049,
+      "alpha_bbox": [
+        11,
+        13,
+        425,
+        381
+      ],
+      "bytes": 219350,
+      "sha256": "06f359cbdf66b4050cd98434c2e16e01fa626114a9d19834dcf5bbd170b50307",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/regel_frage.png",
+      "width": 401,
+      "height": 349,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 46315,
+      "nonopaque_pixels": 139593,
+      "alpha_bbox": [
+        11,
+        9,
+        391,
+        337
+      ],
+      "bytes": 153587,
+      "sha256": "31620fa54efd390dbd93589b053a6d9b173b27ef0724a5cb39cd79eab75ad512",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/regel_sortieren.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 1017283,
+      "nonopaque_pixels": 1570875,
+      "alpha_bbox": [
+        0,
+        33,
+        1168,
+        1254
+      ],
+      "bytes": 809369,
+      "sha256": "ca0d62fbab57dd985fa52476b94c6e188aeac5517db4f67ac0c35a3e1feee0a1",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/regel_trinken.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 706238,
+      "nonopaque_pixels": 1570940,
+      "alpha_bbox": [
+        0,
+        20,
+        1206,
+        1254
+      ],
+      "bytes": 1314596,
+      "sha256": "a7e287c2e8f68c904b468ef50bdfa176f84e9959aae157f5a029d1f311989a3a",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/regel_beispiel_waage.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 834572,
+      "nonopaque_pixels": 1570955,
+      "alpha_bbox": [
+        0,
+        110,
+        1225,
+        1254
+      ],
+      "bytes": 1208046,
+      "sha256": "40d938fd96b3c1c27eaf5ea0e833e1ff924c27353f67f1257c451187d053c8d9",
+      "review": "candidate",
+      "notes": "Vom Nutzer am 30.10.2026 bereitgestellt; lokale Illustration fuer Home, Modusauswahl bzw. kompakte Spielregeln. Proportional mit BoxFit.contain eingebunden; Texte und Interaktionen liegen separat in Flutter."
     }
   ],
   "redesign": {

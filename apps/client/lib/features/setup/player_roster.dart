@@ -14,11 +14,42 @@ import '../../design/avatar_view.dart';
 import '../../domain/avatar_config.dart';
 import '../../domain/selection/random_source.dart';
 import '../../domain/user_profile.dart';
-import '../profile/avatar_options.dart';
+import '../profile/avatar_editor.dart';
 import '../../data/catalogs/catalog_repository.dart';
 import '../handoff/shared_game_screen.dart';
 import 'card_mode_screen.dart';
 import '../profile/profile_screen.dart';
+
+/// Reuses the profile editor while keeping local player IDs unchanged.
+Future<List<UserProfile>?> editLocalPerson(
+  BuildContext context,
+  WidgetRef ref,
+  UserProfile member,
+) async {
+  final controller = await ref.read(rosterProvider.future);
+  if (!context.mounted) return null;
+  if (controller.isOwner(member.player.id)) {
+    await Navigator.of(context)
+        .push<void>(MaterialPageRoute(builder: (_) => const ProfileScreen()));
+    if (!context.mounted) return null;
+    ref.invalidate(rosterProvider);
+    return List.of((await ref.read(rosterProvider.future)).members);
+  }
+  final result = await Navigator.of(context)
+      .push<({String name, AvatarConfig avatar})>(
+        MaterialPageRoute(builder: (_) => _RosterEditDialog(member: member)),
+      );
+  if (!context.mounted || result == null) return null;
+  if (!await controller.update(member.player.id, result.name, result.avatar)) {
+    if (context.mounted && controller.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.feedback(controller.error!))),
+      );
+    }
+    return null;
+  }
+  return List.of(controller.members);
+}
 
 class PlayerRosterScreen extends ConsumerStatefulWidget {
   const PlayerRosterScreen({
@@ -71,13 +102,10 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
       if (mounted) ref.invalidate(rosterProvider);
       return;
     }
-    final result = await showDialog<({String name, AvatarConfig avatar})>(
-      context: context,
-      builder: (_) => Theme(
-        data: courtPaperTheme(),
-        child: _RosterEditDialog(member: member),
-      ),
-    );
+    final result = await Navigator.of(context)
+        .push<({String name, AvatarConfig avatar})>(
+          MaterialPageRoute(builder: (_) => _RosterEditDialog(member: member)),
+        );
     if (mounted && result != null) {
       await _act(
         () => controller.update(member.player.id, result.name, result.avatar),
@@ -468,43 +496,25 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
   }
 
   @override
-  Widget build(BuildContext context) => AlertDialog(
+  Widget build(BuildContext context) => CourtScaffold(
     title: Text(
       context.tr(widget.member == null ? 'rosterAdd' : 'rosterEditPerson'),
     ),
-    content: SizedBox(
-      width: 480,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AvatarView(config: _avatar, size: 96, playerName: _name.text),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _name,
-              maxLength: 24,
-              decoration: InputDecoration(
-                labelText: context.tr('name'),
-                errorText: _error,
-              ),
-            ),
-            SizedBox(
-              height: 280,
-              child: AvatarOptions(
-                config: _avatar,
-                onChanged: (next) => setState(() => _avatar = next),
-              ),
-            ),
-          ],
-        ),
-      ),
+    body: AvatarEditor(
+      config: _avatar,
+      nameController: _name,
+      onNameChanged: (_) => setState(() => _error = null),
+      onChanged: (next) => setState(() => _avatar = next),
+      onRandomize: () =>
+          setState(() => _avatar = AvatarConfig.random(SecureRandomSource())),
+      notice: _error == null ? null : StatusNotice(_error!),
     ),
-    actions: [
-      TextButton(
+    footer: CourtActionBar(
+      secondary: TextButton(
         onPressed: () => Navigator.pop(context),
         child: const TText('cancel'),
       ),
-      FilledButton(
+      primary: FilledButton(
         onPressed: () {
           if (_name.text.trim().isEmpty) {
             setState(() => _error = context.tr('nameRequired'));
@@ -514,6 +524,6 @@ class _RosterEditDialogState extends State<_RosterEditDialog> {
         },
         child: const TText('rosterApply'),
       ),
-    ],
+    ),
   );
 }

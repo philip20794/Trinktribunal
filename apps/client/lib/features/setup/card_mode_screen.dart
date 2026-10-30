@@ -13,6 +13,7 @@ import '../../data/catalogs/catalog_repository.dart';
 import '../../data/catalogs/localized_catalog.dart';
 import '../../design/case_file.dart';
 import '../../design/judge_plate.dart';
+import '../../design/hold_action_button.dart';
 import 'player_roster.dart';
 import '../../design/case_stage.dart';
 import '../../domain/local_game_reducer.dart';
@@ -66,16 +67,24 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       footer: next == null
           ? null
           : CourtActionBar(
-              primary: FilledButton(
-                onPressed: next,
-                child: TText(
-                  current?.phase == GamePhase.finished
-                      ? 'newGame'
-                      : current?.phase == GamePhase.ruleEvent
-                      ? 'ruleUnderstood'
-                      : 'nextCase',
-                ),
-              ),
+              primary: current?.phase == GamePhase.casePresented
+                  ? HoldActionButton(
+                      icon: Icons.skip_next,
+                      duration: const Duration(milliseconds: 500),
+                      key: ValueKey('card-next-${current!.currentEventId}'),
+                      label: context.tr('nextCase'),
+                      onCompleted: next,
+                    )
+                  : FilledButton(
+                      onPressed: next,
+                      child: TText(
+                        current?.phase == GamePhase.finished
+                            ? 'newGame'
+                            : current?.phase == GamePhase.ruleEvent
+                            ? 'ruleUnderstood'
+                            : 'nextCase',
+                      ),
+                    ),
             ),
       title: const TText('modeCards'),
       actions: const [GameRulesButton()],
@@ -116,7 +125,19 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           return CaseStage(
             judge: state.judge == null
                 ? null
-                : JudgePlate(profile: state.judge!),
+                : JudgePlate(
+                    profile: state.judge!,
+                    onTap: () async {
+                      final profiles = await editLocalPerson(
+                        context,
+                        ref,
+                        state.judge!,
+                      );
+                      if (mounted && profiles != null) {
+                        _act(() => controller.updateProfiles(profiles));
+                      }
+                    },
+                  ),
             rules: state.rules.active.length,
             onRules: () => showActiveRules(
               context,

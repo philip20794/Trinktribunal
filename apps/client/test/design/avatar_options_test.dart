@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/features/profile/avatar_options.dart';
 import 'package:trinktribunal/features/profile/avatar_color_picker.dart';
+import 'package:trinktribunal/features/profile/avatar_editor.dart';
 import 'package:trinktribunal/design/avatar_view.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
 
@@ -21,7 +22,10 @@ void main() {
             data: MediaQueryData(textScaler: TextScaler.linear(scale)),
             child: Scaffold(
               body: SizedBox.expand(
-                child: AvatarOptions(config: AvatarConfig(), onChanged: (_) {}),
+                child: AvatarOptions(
+                  config: AvatarConfig(),
+                  onOpenSheet: (_) {},
+                ),
               ),
             ),
           ),
@@ -60,6 +64,8 @@ void main() {
       (tester) async {
         addTearDown(() => tester.binding.setSurfaceSize(null));
         var selected = AvatarConfig();
+        final name = TextEditingController(text: 'Alex');
+        addTearDown(name.dispose);
         await tester.binding.setSurfaceSize(const Size(380, 700));
         await tester.pumpWidget(
           MaterialApp(
@@ -68,8 +74,10 @@ void main() {
               child: Scaffold(
                 body: StatefulBuilder(
                   builder: (context, setState) => SizedBox.expand(
-                    child: AvatarOptions(
+                    child: AvatarEditor(
                       config: selected,
+                      nameController: name,
+                      onNameChanged: (_) {},
                       onChanged: (value) => setState(() => selected = value),
                     ),
                   ),
@@ -81,20 +89,31 @@ void main() {
         await tester.pumpAndSettle();
         final hair = find.byKey(const ValueKey('avatar-option-hair:short03'));
         expect(hair, findsOneWidget);
-        final hairField = tester.widget<DropdownButtonFormField<String>>(hair);
-        hairField.onChanged!('long01');
-        await tester.pump();
+        await tester.tap(hair);
+        await tester.pumpAndSettle();
+        await tester.tap(
+          find.byKey(const ValueKey('avatar-variant-hair-long01')),
+        );
+        await tester.pumpAndSettle();
         expect(selected['hair'], 'long01');
+        expect(find.byType(BottomSheet), findsOneWidget);
+        expect(find.textContaining('Variante'), findsNothing);
+        await tester.tap(find.byKey(const ValueKey('avatar-sheet-close')));
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const ValueKey('avatar-tab-1')));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(const ValueKey('avatar-tab-1')));
         await tester.pumpAndSettle();
         final outfit = find.byKey(const ValueKey('avatar-option-outfit:tee'));
-        tester.widget<DropdownButtonFormField<String>>(outfit).onChanged!(
-          'hoodie',
+        await tester.tap(outfit);
+        await tester.pumpAndSettle();
+        await tester.tap(
+          find.byKey(const ValueKey('avatar-variant-outfit-hoodie')),
         );
-        await tester.pump();
+        await tester.pumpAndSettle();
         expect(selected['outfit'], 'hoodie');
+        await tester.tap(find.byKey(const ValueKey('avatar-sheet-close')));
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const ValueKey('avatar-tab-2')));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(const ValueKey('avatar-tab-2')));
@@ -106,29 +125,22 @@ void main() {
         expect(find.byType(DropdownButtonFormField<String>), findsNothing);
         await tester.tap(skin);
         await tester.pumpAndSettle();
-        expect(find.byType(AvatarColorPickerDialog), findsOneWidget);
-        expect(find.byType(TextField), findsNothing);
-        final picker = find
-            .descendant(
-              of: find.byType(AvatarColorPickerDialog),
-              matching: find.byType(GestureDetector),
-            )
-            .first;
+        expect(find.byType(AvatarColorPicker), findsOneWidget);
+        expect(find.byType(AlertDialog), findsNothing);
+        final picker = find.byKey(const ValueKey('avatar-color-wheel'));
         await tester.tapAt(tester.getCenter(picker) + const Offset(95, 0));
-        await tester.tap(find.text(language == 'de' ? 'Übernehmen' : 'Apply'));
         await tester.pumpAndSettle();
         expect(selected['skinColor'], isNot('#ecad80'));
+        expect(find.byType(BottomSheet), findsOneWidget);
+        await tester.tap(find.byKey(const ValueKey('avatar-sheet-close')));
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const ValueKey('avatar-tab-0')));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(const ValueKey('avatar-tab-0')));
         await tester.pumpAndSettle();
         expect(
-          tester
-              .widget<DropdownButtonFormField<String>>(
-                find.byKey(const ValueKey('avatar-option-hair:long01')),
-              )
-              .initialValue,
-          'long01',
+          find.byKey(const ValueKey('avatar-option-hair:long01')),
+          findsOneWidget,
         );
         expect(find.byType(AvatarPartPreview), findsWidgets);
         expect(tester.takeException(), isNull);

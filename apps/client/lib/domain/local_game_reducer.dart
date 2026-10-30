@@ -36,6 +36,25 @@ final class CardGameState {
        questionDraws = freezeQuestionDraws(questionDraws);
 
   final List<UserProfile> roster;
+  CardGameState withProfiles(Map<PlayerId, UserProfile> profiles) =>
+      CardGameState._(
+        roster: List.unmodifiable(
+          roster.map((p) => profiles[p.player.id] ?? p),
+        ),
+        id: id,
+        config: config,
+        schedule: schedule,
+        rules: rules,
+        phase: phase,
+        completedCases: completedCases,
+        currentEventId: currentEventId,
+        currentQuestion: currentQuestion,
+        completedEventIds: completedEventIds,
+        lastCompletion: lastCompletion,
+        manualErrors: manualErrors,
+        pauseReason: pauseReason,
+        questionDraws: questionDraws,
+      );
   UserProfile? get judge =>
       roster.isEmpty ? null : roster[completedCases % roster.length];
   final GameId id;

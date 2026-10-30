@@ -1,5 +1,13 @@
 # Fortschritt und Übergabe
 
+## Home-Aktionen, Modusauswahl und Codemagic-Befund, 30.10.2026
+
+Lokal umgesetzt: zwei große Hauptaktionen für neues Spiel und Raumcode-Beitritt; deutlich sichtbare Spielregeln mit Buch-Icon. Neue geordnete Modusauswahl mit abgesetzten Voraussetzungen, bestehende lokale Wiederaufnahme erhalten. Der fehlgeschlagene Codemagic-Lauf zu `d34f084` ist im unveränderten LF-Git-Export auf ein fehlendes UI-Inventar zurückgeführt und lokal korrigiert. 676 Flutter-/164 Node-Tests erfolgreich; Node-Gate auch im frischen Git-Export geprüft. Cloudflare-Produktionsbuilds sind deaktiviert, der Eintrag zum letzten Push hat keine gestartete Build-Stufe. Parallel hinzugefügte PNG-Dateien sind noch separat zu inventarisieren. [Prüfbeleg und Grenzen](qa/home-navigation-and-ci.md). Noch nicht gepusht.
+
+## Avatar-Editor: Name auf dem Schild und Live-Bottom-Sheets, 30.10.2026
+
+Lokal umgesetzt: gemeinsamer Editor für eigenes Profil, Online-„Ich“ und lokale Personenbearbeitung. Name direkt auf dem gehaltenen Schild; bisherige Auswahlfelder mit Vorschau öffnen visuelle Varianten-Grids beziehungsweise den bestehenden Farbkreis als Live-Bottom-Sheet. Sheet-Höhe folgt der Schildposition, Speicherleiste bleibt frei. 668 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen; Analyze/Format und native Renderprüfung erfolgreich. [Details und Prüfgrenzen](qa/avatar-editor-sheets.md). Noch nicht veröffentlicht.
+
 ## Adaptive Online-Bank und rechtes Personenpanel, 30.10.2026
 
 Lokal umgesetzt und geprüft: Lobby mit bis zu vier Spalten, dynamische Größen bei der eigenen Platzierung und ein feststehendes, alphabetisches Kopfporträt-Panel rechts. Das Panel scrollt unabhängig, schrumpft beim Ziehen auf 16 Pixel/20 % Deckkraft und öffnet am rechten Rand zur Rückablage. 657 Flutter-Tests erfolgreich, vier optionale Prüfungen ausgelassen; Analyze ohne Befund. [Details und Prüfgrenzen](qa/adaptive-online-bench.md). Noch nicht veröffentlicht.
