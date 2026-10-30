@@ -41,7 +41,7 @@ Alle 14 Kategorien sind im gemeinsamen Editor für lokale und Onlineprofile ausw
 
 ## App-, Android- und PWA-Icons
 
-Die PNG-Icons und adaptive Android-Ressourcen wurden mit Nutzercommit `b7bac2d` übernommen; `1f80185` verknüpft das Favicon. Die ursprüngliche Quelldatei ist `apps/client/assets/branding/trinktribunal_app_icon.png`. Technische Abmessungen und Web-/Androidbuild wurden geprüft. Ein veröffentlichungsfähiger Herkunfts-/Nutzungsnachweis wurde damit nicht geliefert; er gehört zum offenen TT-065-Rechtenachweis. Keine Bearbeitung oder neue Lizenzbehauptung durch TT-060.
+Die PNG-Icons und adaptive Android-Ressourcen wurden mit Nutzercommit `b7bac2d` übernommen; `1f80185` verknüpft das Favicon. Nutzercommit `6f025ef` aktualisiert am 30.10.2026 elf Android-, Web- und Quell-PNGs; die zugehörigen Hashwerte im Rechteverzeichnis wurden entsprechend erneuert. Die ursprüngliche Quelldatei ist `apps/client/assets/branding/trinktribunal_app_icon.png`. Technische Abmessungen und Web-/Androidbuild wurden geprüft. Ein veröffentlichungsfähiger Herkunfts-/Nutzungsnachweis wurde damit nicht geliefert; er gehört zum offenen TT-065-Rechtenachweis. Keine Bearbeitung oder neue Lizenzbehauptung durch TT-060.
 
 ## Zusätzliche Gerichtssaal-PNGs
 
