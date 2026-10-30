@@ -819,7 +819,7 @@ export class Room extends DurableObject<Env> {
         config: {
           targetCases: 50,
           requestedRuleEvents: 7,
-          factorTenths: 15,
+          factorTenths: 20,
           allJudges: false,
           contentLanguage: 'de',
         },
