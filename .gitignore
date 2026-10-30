@@ -30,7 +30,7 @@ node_modules/
 chromedriver.log
 test-results/
 __pycache__/
-/.local/multiplayer/
+/.local/
 
 # Geheimnisse / Konfiguration
 .env

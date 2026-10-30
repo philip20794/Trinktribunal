@@ -48,11 +48,6 @@ flutter:
         - asset: assets/fonts/roboto-bold.ttf
           weight: 700
   assets:
-    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/hash.svg
-    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/message-circle.svg
-    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/arrow-down-up.svg
-    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/wine.svg
-    - assets/ui/trinktribunal_spielregeln_assets/icons/svg/scale.svg
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/users.svg
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/book-open.svg
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/arrow-left.svg
@@ -79,10 +74,8 @@ flutter:
     - assets/ui/courtroom/illustrations/regel_sortieren.png
     - assets/ui/courtroom/illustrations/regel_trinken.png
     - assets/ui/courtroom/illustrations/regel_beispiel_waage.png
-    - assets/ui/courtroom/paper/case_parchment_blank.png
     - assets/ui/courtroom/paper/fallakte_pergament_leer.png
     - assets/ui/courtroom/paper/trinktribunal_regel_pergament_leer.png
-    - assets/ui/courtroom/paper/number_card_blank.png
     - assets/ui/courtroom/branding/trinktribunal_logo.png
     - assets/ui/courtroom/illustrations/Richter-Namensplakette-mit-Avatar.png
     - assets/ui/courtroom/illustrations/phone_handover.png

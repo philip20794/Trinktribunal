@@ -5,7 +5,7 @@ import { checkUiInventory } from '../check-ui-inventory.mjs';
 
 const inventory = () => JSON.parse(readFileSync(new URL('../../docs/design/ui-inventory.json', import.meta.url), 'utf8'));
 test('screen inventory covers every real feature source and all actual PNG review hashes', () => {
-  assert.deepEqual(checkUiInventory(inventory()), { sections: 22, featureFiles: 46, assets: 47, quarantined: 3 });
+  assert.deepEqual(checkUiInventory(inventory()), { sections: 22, featureFiles: 46, assets: 27, quarantined: 0 });
 });
 test('new/unmapped sources and edited source assets cannot silently inherit an old review', () => {
   const missing = inventory(); missing.sections.shift();
@@ -18,7 +18,8 @@ test('placeholder and misleading mockup title never become a production requirem
   assert.throws(() => checkUiInventory(placeholder), /Invalid screen reference/);
   const people = inventory(); people.references.find(ref => ref.id === '10').role = 'verdict';
   assert.throws(() => checkUiInventory(people), /Incorrect placeholder/);
-  assert.throws(() => checkUiInventory(inventory(), { pubspecText: 'flutter:\n  assets:\n    - assets/ui/courtroom/\n' }), /Quarantined asset bundled/);
+  const quarantined = inventory(); quarantined.assets[0].review = 'quarantine';
+  assert.throws(() => checkUiInventory(quarantined), /Quarantined asset bundled/);
 });
 test('redesign completion requires every mapped section and preserves skipped manual acceptance', () => {
   const missing = inventory();

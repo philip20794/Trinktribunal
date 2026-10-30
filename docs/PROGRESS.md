@@ -1,5 +1,9 @@
 # Fortschritt und Übergabe
 
+## Ungenutzte Bilddateien entfernt, 30.10.2026
+
+34 Bilder mit zusammen 7,18 MiB entfernt: alte Hintergründe, Dekorationen, Papierflächen, Regel-SVGs und eine überholte Avatar-Testgrafik. Verweise, Pubspec und Inventare bereinigt; aktive Grafiken und dokumentierte Quellen geprüft. Analyze/Format, 38 gezielte Flutter- und neun Node-Prüfungen erfolgreich. [Details](qa/asset-cleanup.md). Noch nicht gepusht.
+
 ## Speichern, lokale Avatar-Raster und Pergamentdialoge, 30.10.2026
 
 Lokal umgesetzt: automatische Rückkehr nach Profilspeichern mit kleinem transparentem Hinweis unten rechts; Avatar-Auswahl überdeckt die Speicherleiste. Karten- und Ein-Handy-Einrichtung verwenden sortierbare Avatar-Raster. Gemeinsame Pergamentdialoge mit neuer PNG, X und responsiven Aktionen. 683 Flutter-Tests plus zusätzlicher gezielter Online-Speichertest erfolgreich, 164 Node-Tests, Analyze/Format und Web-Release-Build erfolgreich. [Details und Prüfgrenzen](qa/home-courtroom-design.md). Noch nicht gepusht.

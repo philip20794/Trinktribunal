@@ -8,10 +8,7 @@ import '../../design/court_assets.dart';
 import '../help/help_screen.dart';
 
 const rulesAssetRoot = 'assets/ui/trinktribunal_spielregeln_assets';
-const rulesStepIcons = ['hash', 'message-circle', 'arrow-down-up', 'wine'];
 const rulesIconNames = [
-  ...rulesStepIcons,
-  'scale',
   'users',
   'book-open',
   'arrow-left',

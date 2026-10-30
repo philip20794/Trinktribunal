@@ -1,11 +1,8 @@
 # Trinktribunal – Icons und Texte: Spielregeln
 
-Inhalt: 15 einzelne, aus dem vorgeschlagenen Screen übernommene Icon-Motive, vier Schritt-Badges sowie der gesamte Wortlaut des UI-Entwurfs.
+Aktueller Bestand: sechs verwendete SVG-Symbole für Navigation, Zusatzregeln und richtig/falsch sowie die historischen Texte des UI-Entwurfs. Nicht mehr verwendete Motive und Schritt-Badges wurden am 30.10.2026 entfernt; die vier Regelschritte und das Beispiel verwenden inzwischen die PNG-Illustrationen unter `assets/ui/courtroom/illustrations/`.
 
 - icons/svg/*.svg: freie Skalierung, transparent, Strichfarbe `currentColor` (gut für Web/Flutter/Capacitor).
-- icons/png_bordeaux/*.png: 256 × 256, transparente Fläche, Bordeauxrot #981735.
-- icons/png_creme/*.png: 256 × 256, transparente Fläche, Creme #F6E3C0 (z. B. für dunkle Kopfzeilen).
-- extras/schritt-*.svg und .png: Schritt-Badges 1–4.
 - texte/spielregeln.de.json: UI-Texte strukturiert, einschließlich des Beispiels und Illustrationsideen.
 - texte/spielregeln.de.md: alle Texte lesbar aufgelistet.
 

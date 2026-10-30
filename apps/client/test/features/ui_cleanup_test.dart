@@ -78,7 +78,6 @@ void main() {
         await reviewImage(tester, 'cleanup-home-$language');
         await tapVisible(tester, find.text(strings.get('gameRules')));
         expect(find.byType(GameRulesScreen), findsOneWidget);
-        expect(rulesStepIcons.length, 4);
         await reviewImage(tester, 'cleanup-rules-$language');
         await tester.tap(find.byKey(const ValueKey('rules-back')));
         await tester.pumpAndSettle();

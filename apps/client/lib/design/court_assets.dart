@@ -21,12 +21,10 @@ abstract final class CourtAssets {
       'assets/ui/courtroom/illustrations/regel_trinken.png';
   static const ruleExample =
       'assets/ui/courtroom/illustrations/regel_beispiel_waage.png';
-  static const paper = 'assets/ui/courtroom/paper/case_parchment_blank.png';
   static const caseSheet =
       'assets/ui/courtroom/paper/fallakte_pergament_leer.png';
   static const ruleSheet =
       'assets/ui/courtroom/paper/trinktribunal_regel_pergament_leer.png';
-  static const numberPaper = 'assets/ui/courtroom/paper/number_card_blank.png';
   static const logo = 'assets/ui/courtroom/branding/trinktribunal_logo.png';
   static const judgePlate =
       'assets/ui/courtroom/illustrations/Richter-Namensplakette-mit-Avatar.png';
@@ -58,10 +56,8 @@ abstract final class CourtAssets {
     ruleSort: 1254,
     ruleDrink: 1254,
     ruleExample: 1254,
-    paper: 920,
     caseSheet: 1024,
     ruleSheet: 768,
-    numberPaper: 690,
     logo: 1774,
     judgePlate: 2172,
     handover: 1774,

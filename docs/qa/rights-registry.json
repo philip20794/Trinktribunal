@@ -157,7 +157,7 @@
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
-          "sha256": "7c60e9d2b2607151b1e55d53297c3a76fd783b93f72362a516fe81a4a5b1480c"
+          "sha256": "63e35742cc7e294c85131ade383156fec794d56aa48a653f18f25b96120d2941"
         },
         {
           "path": "apps/client/lib/design/illustrated_paper.dart",
@@ -223,87 +223,6 @@
         {
           "path": "apps/client/web/icons/Icon-maskable-512.png",
           "sha256": "37714ddfe719d26dcba243181fb52099f24a5cf43771166aa24ad36719fa79d1"
-        }
-      ]
-    },
-    {
-      "id": "courtroom-pngs",
-      "distribution": "source-only",
-      "status": "unresolved",
-      "provenance": "33 PNG files supplied in 4672141; three replaced in 10679be. Not registered in Flutter assets. Origin/license statement requested.",
-      "evidence": "docs/qa/asset-sources.md",
-      "files": [
-        {
-          "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_chamber.png",
-          "sha256": "1082e5a3f45168abefc2402bf46f58700adaf439a040c3269a47b6ff6994afee"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/backgrounds/courtroom_seating.png",
-          "sha256": "ae930cd6eb190903324fce9f689eb493ceb727a4da9262c44101df69457c1ebc"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/backgrounds/parchment_background.png",
-          "sha256": "9cdab1d8168bcd18b6fdba271aa296dd5983e07b92714c85bc244c191432dc86"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/beer_foam.png",
-          "sha256": "a68a1b8f79853a3f897c5ef8126d134a9e662c653453eb762a5855ddabb9196b"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/courtroom_chandelier.png",
-          "sha256": "511809902322ee8a54d75991ce11f1d24a9a5f4af4474d7d9f00be7158f6bcfd"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/golden_highlight_rays.png",
-          "sha256": "7a1cf59dde8fb087e52d39f2f2a6593b5eb509eaf9eba6fcb2b5ddf647325c43"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_left.png",
-          "sha256": "95b1974c15fa8f478de1d4ceed093db412dc395a2007321e2258ef1b9f1524f4"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_right.png",
-          "sha256": "d980b106215360a35b1beba36c411e343adb826499dc060d3af4b65d6b175752"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/red_curtain_top.png",
-          "sha256": "9f90c2eef42b77de6d97946c9585ffab661f7efe653ef201ea5817a7c535b41c"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/seating_arrow_right.png",
-          "sha256": "adf60736cb97f21f90aab1e0bcd1363cfb4a175a577cbb7e227d90bc90264e28"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/seating_arrow_turn.png",
-          "sha256": "b3921fb66499305e9359a5d3d9090825999d2ecf93d2b26fdbb7aec15dd1244f"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/wall_candle.png",
-          "sha256": "2b1a7278dc972ad8d723fecf1fceeb8288aa407b9a69913ebd8da4417ef9c3d6"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/decorations/wooden_judge_bench.png",
-          "sha256": "4498be0bcfd16f1494fb7a1add499a2bb10bc0e76b22854496af8e87ec2a2e45"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/illustrations/clinking_beer_mugs.png",
-          "sha256": "1ebe976c5b67da79956ebf44d2e115c5c6e7093aacc2e8c7b395de5c9d871767"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/illustrations/number_cards_1_2_3.png",
-          "sha256": "9351b761f31220def210c91d0c4f6e8ad7464015caa37374051fd71551945c90"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/paper/lined_note_blank.png",
-          "sha256": "6c9655c646fbe8a46150412c28f59c39b574c920803d079e131f871c777b3f25"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/paper/mugshot_height_chart_blank.png",
-          "sha256": "dd50737e09f0f269d0cb4a62efc0bffd57c9817aaccc3cafd98324518b54e285"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/paper/square_parchment_blank.png",
-          "sha256": "e445fcd08892adeb40c418f2dc0d1d53d3f83d4adfdc5971ca35f72974efdaa1"
         }
       ]
     },
@@ -654,14 +573,6 @@
           "sha256": "8075a4faf1d1e61da8ec637651a31a91d5eb8192e5ce292a2f44e4e478cb308d"
         },
         {
-          "path": "apps/client/assets/ui/courtroom/paper/case_parchment_blank.png",
-          "sha256": "f33f872f73a58a508f2b4d1b99e2cbd1ae6feb4be757fc5b62be10e057c81911"
-        },
-        {
-          "path": "apps/client/assets/ui/courtroom/paper/number_card_blank.png",
-          "sha256": "280eb522765de9ca3fb7e570430dfc622c2988ce21db6cecb960e69c0aed8ea6"
-        },
-        {
           "path": "apps/client/assets/ui/courtroom/symbols/beer_mug.png",
           "sha256": "85dc0d912d70df363a291616bbc287e405734b27934f4b873805486b8b77a89f"
         },
@@ -721,26 +632,6 @@
       "evidence": "docs/qa/illustrated-rules.md",
       "files": [
         {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/hash.svg",
-          "sha256": "70cfc08796948f48112c4d266d496fa99e55118dc33cf4bb3c26b117131af11e"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/message-circle.svg",
-          "sha256": "393d739d02571ee5f3900949f2ba47c2e69ed7a4292b61587f3a522f36b6d2d3"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/arrow-down-up.svg",
-          "sha256": "7dc596406cb02df745225853406c0471e2f9d758558a06096295e0cc18120a57"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/wine.svg",
-          "sha256": "f5223990074a3b7f976873d449f5649e926cafcb88cc56863fe5ce6a780192a0"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/scale.svg",
-          "sha256": "ea97fb028a1171c81c853b69112e98da7d1d983c05032cee01e82b316b4b9b9a"
-        },
-        {
           "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/users.svg",
           "sha256": "cde92453716c2ecd1b6ec8d6b29a2e3499c4b47de5a83c3b3ee398e91edcd60c"
         },
@@ -778,40 +669,8 @@
       "evidence": "docs/qa/illustrated-rules.md",
       "files": [
         {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/contact-round.svg",
-          "sha256": "8c3e7374567e9da772b01f2c07a612096b7e17dd99e26a92ca4a53617a402bca"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/gavel.svg",
-          "sha256": "ab9e5c2dac51115f65bfff703577422f8b378db4940d1af9ebdf6bf35fff9471"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/list-ordered.svg",
-          "sha256": "909237d929c2f6bd0bb096d521c6843a29b985e9850de79315099e157ea33570"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/messages-square.svg",
-          "sha256": "4e5a4893de534fd99ddecc64baedc9d62dd8981e0df1b75795ab0a68f0f9ff64"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/schritt-1.svg",
-          "sha256": "ba9a7bbbca59210bceda05e734709c818c07227b630fa5dd9327635436e044e5"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/schritt-2.svg",
-          "sha256": "5a46cfb7f5f5f57d9cf3fd246a231bea30bb5e628b838c6346bc286551dde3b0"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/schritt-3.svg",
-          "sha256": "36c0be635bfc0e408f41be2bc8652d4ae0913619ad571c645518cb83a563c18b"
-        },
-        {
-          "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/icons/svg/schritt-4.svg",
-          "sha256": "f07ac75a55f9e8acca96abb097dd1cb7d92dbedd20a95f319206710937aff91a"
-        },
-        {
           "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/README.md",
-          "sha256": "f8e0f6ef848610a5125ae12db37ec7fd1a71377712845209f37eac6265aa21c5"
+          "sha256": "c97fb28b106a3ed90daa81aa12a339f7a2c93e962e8d71ba77ada043d6bf9619"
         },
         {
           "path": "apps/client/assets/ui/trinktribunal_spielregeln_assets/texte/spielregeln.de.json",
