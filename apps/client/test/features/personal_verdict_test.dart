@@ -70,7 +70,11 @@ void main() {
     testWidgets(
       'court displays the private $errors-error order and its matching verdict',
       (tester) async {
-        final fixture = await numbers.pump(tester, allJudges: true);
+        final fixture = await numbers.pump(
+          tester,
+          allJudges: true,
+          textScale: 2,
+        );
         final socket = fixture.transport.sockets.last;
         socket.receive(personalView(errors: errors, revision: 2));
         await tester.pumpAndSettle();
@@ -124,7 +128,7 @@ void main() {
             findsOneWidget,
           );
           await tester.tap(
-            find.byTooltip(AppStrings('de').get('roomToolsClose')),
+            find.widgetWithText(FilledButton, AppStrings('de').get('confirm')),
           );
           await tester.pumpAndSettle();
           expect(

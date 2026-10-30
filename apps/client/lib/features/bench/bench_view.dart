@@ -254,40 +254,6 @@ class _BenchViewState extends State<BenchView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Semantics(
-                                excludeSemantics: true,
-                                label: context.tr('benchRowDirection', {
-                                  'from': row * columns + 1,
-                                  'to': (row * columns + columns).clamp(
-                                    1,
-                                    widget.order.length,
-                                  ),
-                                }),
-                                child: ColoredBox(
-                                  color: CourtTokens.wood,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 4,
-                                    ),
-                                    child: Text(
-                                      [
-                                        for (var col = 0; col < columns; col++)
-                                          if (tileIndex(row, col) <
-                                              widget.order.length)
-                                            '${tileIndex(row, col) + 1}',
-                                      ].join(
-                                        widget.compactControls || row.isEven
-                                            ? ' → '
-                                            : ' ← ',
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: CourtSceneTokens.cream,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

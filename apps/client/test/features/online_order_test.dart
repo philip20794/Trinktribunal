@@ -108,8 +108,8 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(
-        actionText('Deine Ordnung ist verbindlich bestätigt.'),
-        findsOneWidget,
+        actionText(AppStrings('de').get('onlineOrderConfirmed')),
+        findsNothing,
       );
       expect(tester.widget<BenchView>(find.byType(BenchView)).onMove, isNull);
     },

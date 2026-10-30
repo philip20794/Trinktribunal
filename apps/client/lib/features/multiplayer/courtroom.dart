@@ -160,20 +160,12 @@ class _RoomCourtroomState extends ConsumerState<RoomCourtroom> {
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.all(12),
-                    child: Stack(
-                      children: [
-                        PersonalVerdict(snapshot: snapshot),
-                        Positioned(
-                          top: 6,
-                          right: 12,
-                          child: IconButton(
-                            tooltip: context.tr('roomToolsClose'),
-                            icon: const Icon(Icons.close, color: Colors.black),
-                            onPressed: () =>
-                                setState(() => _dismissedResult = round),
-                          ),
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      child: PersonalVerdict(
+                        snapshot: snapshot,
+                        onConfirm: () =>
+                            setState(() => _dismissedResult = round),
+                      ),
                     ),
                   ),
                 ),

@@ -141,7 +141,7 @@ void main() {
       await reviewImage(tester, 'online-verdict-$errors');
       if (errors > 0) {
         await tester.tap(
-          find.byTooltip(AppStrings('de').get('roomToolsClose')),
+          find.widgetWithText(FilledButton, AppStrings('de').get('confirm')),
         );
         await tester.pumpAndSettle();
         await reviewImage(tester, 'online-positions-after-verdict');

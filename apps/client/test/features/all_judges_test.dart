@@ -293,7 +293,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         actionText(AppStrings('de').get('onlineOrderConfirmed')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         tester

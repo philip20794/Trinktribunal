@@ -81,8 +81,6 @@ class OnlineOrderView extends ConsumerWidget {
                     : 'onlineOrderWaiting',
               ),
             if (controller.pending) const TText('onlineOrderSending'),
-            if (ownsOrder && controller.confirmed)
-              const TText('onlineOrderConfirmed'),
             if (view.config.allJudges &&
                 ['numbers', 'answers', 'ordering'].contains(view.phase) &&
                 ownsOrder &&
