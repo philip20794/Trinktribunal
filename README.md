@@ -53,6 +53,7 @@ Vorschau: `http://127.0.0.1:7357`. Im Flutter-Terminal lädt `r` UI-Änderungen 
 
 - [Entwicklungsplan mit 84 Aufgaben](docs/IMPLEMENTATION_PLAN.md)
 - [Android-APK-CI mit Codemagic ohne GitHub Actions](docs/CODEMAGIC_CI.md)
+- [App-Icon austauschen und alle Icon-Größen generieren](docs/APP_ICON.md)
 - [Windows-Entwicklungsworkflow: Vorschau, Multiplayer, Tests und Builds](docs/DEVELOPMENT_WORKFLOW.md)
 - [Spielhilfe](docs/USER_GUIDE.md) · [Datenschutz und lokale Löschung](docs/PRIVACY.md)
 - [Fortschritt, offene Entscheidungen und Übergabe](docs/PROGRESS.md)

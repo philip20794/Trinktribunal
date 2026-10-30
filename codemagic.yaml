@@ -60,6 +60,8 @@ workflows:
           flutter test
       - name: Dart-TypeScript-Paritaet und Mutationsnachweis
         script: node scripts/check-parity.mjs
+      - name: App-Icons aus zentraler PNG erzeugen
+        script: java -Djava.awt.headless=true scripts/GenerateAppIcons.java
       - name: Signierte Release-APK bauen
         working_directory: apps/client
         script: |

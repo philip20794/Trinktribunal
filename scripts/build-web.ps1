@@ -14,6 +14,7 @@ function Invoke-Checked {
 }
 Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'validate-data.mjs'), '--sync')
 Invoke-Checked 'node' @((Join-Path $PSScriptRoot 'generate-l10n.mjs'), '--check')
+Invoke-Checked 'java' @('-Djava.awt.headless=true', (Join-Path $PSScriptRoot 'GenerateAppIcons.java'))
 # Only replace generated output in this repository's known build directory.
 $buildRoot = [System.IO.Path]::GetFullPath((Join-Path $client 'build'))
 $output = [System.IO.Path]::GetFullPath((Join-Path $buildRoot 'web'))
