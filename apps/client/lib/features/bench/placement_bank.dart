@@ -41,6 +41,8 @@ class _PlacementBankState extends State<PlacementBank> {
   PlayerId? _selected, _dragged;
   int? _hoverIndex;
   int _previewEpoch = 0;
+  bool _settling = false;
+  final _targets = <int, GlobalKey>{};
 
   List<PlayerId?> get _previewSlots => _dragged != null && _hoverIndex != null
       ? placePlayer(widget.slots, _dragged!, _hoverIndex!)
@@ -96,6 +98,7 @@ class _PlacementBankState extends State<PlacementBank> {
   void _endDrag(DraggableDetails _) {
     _stopDrag();
     if (!mounted) return;
+    if (_settling) return;
     setState(() {
       _dragging = false;
       _dragged = null;
@@ -204,8 +207,7 @@ class _PlacementBankState extends State<PlacementBank> {
   );
   Widget _person(PlayerId id, double size, {bool pool = false}) {
     final child = pool ? _poolPerson(id) : _portrait(id, size);
-    final feedback = Material(
-      color: Colors.transparent,
+    final feedback = LiftedDragAvatar(
       child: Transform.translate(
         offset: Offset(-size / 2, -size * .65),
         child: _portrait(id, size),
@@ -217,7 +219,7 @@ class _PlacementBankState extends State<PlacementBank> {
         key: ValueKey('unplaced-${id.value}'),
         data: id,
         delay: const Duration(milliseconds: 180),
-        maxSimultaneousDrags: widget.onPlace == null ? 0 : 1,
+        maxSimultaneousDrags: widget.onPlace == null || _settling ? 0 : 1,
         dragAnchorStrategy: pointerDragAnchorStrategy,
         onDragStarted: () => _startDrag(id),
         onDragUpdate: _updateDrag,
@@ -229,7 +231,7 @@ class _PlacementBankState extends State<PlacementBank> {
     }
     return Draggable<PlayerId>(
       data: id,
-      maxSimultaneousDrags: widget.onPlace == null ? 0 : 1,
+      maxSimultaneousDrags: widget.onPlace == null || _settling ? 0 : 1,
       dragAnchorStrategy: pointerDragAnchorStrategy,
       onDragStarted: () => _startDrag(id),
       onDragUpdate: _updateDrag,
@@ -479,7 +481,6 @@ class _PlacementBankState extends State<PlacementBank> {
         (target ~/ columns - index ~/ columns) * strideY,
       ),
       ghost: ghost || id == _dragged,
-      originGhost: ghost ? null : _portrait(id, size),
       child: ghost
           ? IgnorePointer(child: _portrait(id, size))
           : _person(id, size),
@@ -496,7 +497,8 @@ class _PlacementBankState extends State<PlacementBank> {
   ) => DragTarget<PlayerId>(
     key: ValueKey('order-seat-$index'),
     onWillAcceptWithDetails: (details) {
-      if (widget.onPlace == null ||
+      if (_settling ||
+          widget.onPlace == null ||
           !widget.profiles.containsKey(details.data)) {
         return false;
       }
@@ -505,17 +507,47 @@ class _PlacementBankState extends State<PlacementBank> {
     },
     onMove: (details) => _hover(details.data, index),
     onLeave: (_) {
-      if (_hoverIndex == index) setState(() => _hoverIndex = null);
+      if (!_settling && _hoverIndex == index) {
+        setState(() => _hoverIndex = null);
+      }
     },
-    onAcceptWithDetails: (details) {
-      setState(() {
+    onAcceptWithDetails: (details) async {
+      if (_settling ||
+          widget.onPlace == null ||
+          !widget.profiles.containsKey(details.data)) {
+        return;
+      }
+      final original = List<PlayerId?>.of(widget.slots);
+      setState(() => _settling = true);
+      await landReorderAvatar(
+        context: context,
+        target: _targets[index]!,
+        inset: const Offset(0, -4),
+        from: details.offset + Offset(-avatarSize / 2, -avatarSize * .65),
+        size: Size(
+          avatarSize,
+          avatarSize *
+              TrinkAvatarRenderer.visibleHeight /
+              TrinkAvatarRenderer.canvasWidth,
+        ),
+        child: _portrait(details.data, avatarSize),
+      );
+      if (mounted) {
+        if (widget.onPlace != null &&
+            sameReorderOrder(original, widget.slots) &&
+            original.indexOf(details.data) != index) {
+          widget.onPlace!(details.data, index);
+        }
         _previewEpoch++;
-        _hoverIndex = null;
-        _dragged = null;
         _selected = null;
-      });
-      if (widget.slots.indexOf(details.data) != index) {
-        widget.onPlace?.call(details.data, index);
+        _settling = false;
+        _endDrag(
+          DraggableDetails(
+            wasAccepted: true,
+            velocity: Velocity.zero,
+            offset: details.offset,
+          ),
+        );
       }
     },
     builder: (context, candidates, rejected) => InkWell(
@@ -526,6 +558,7 @@ class _PlacementBankState extends State<PlacementBank> {
               setState(() => _selected = null);
             },
       child: Container(
+        key: _targets.putIfAbsent(index, GlobalKey.new),
         margin: const EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
           color: CourtSceneTokens.panel.withValues(alpha: .45),

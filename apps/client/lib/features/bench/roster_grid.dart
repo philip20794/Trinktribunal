@@ -36,6 +36,8 @@ class _RosterGridState extends State<RosterGrid> {
   PlayerId? _dragged;
   int? _hoverIndex;
   int _previewEpoch = 0;
+  bool _settling = false;
+  final _targets = <PlayerId, GlobalKey>{};
 
   List<PlayerId> get _preview {
     final ids = widget.members.map((p) => p.player.id).toList();
@@ -54,7 +56,7 @@ class _RosterGridState extends State<RosterGrid> {
   }
 
   void _clearPreview() {
-    if (!mounted) return;
+    if (!mounted || _settling) return;
     setState(() {
       _dragged = null;
       _hoverIndex = null;
@@ -133,7 +135,8 @@ class _RosterGridState extends State<RosterGrid> {
           return DragTarget<PlayerId>(
             key: ValueKey(member.player.id),
             onWillAcceptWithDetails: (drag) {
-              if (!widget.enabled ||
+              if (_settling ||
+                  !widget.enabled ||
                   !widget.members.any((p) => p.player.id == drag.data)) {
                 return false;
               }
@@ -142,20 +145,46 @@ class _RosterGridState extends State<RosterGrid> {
             },
             onMove: (drag) => _hover(drag.data, index),
             onLeave: (_) {
-              if (_hoverIndex == index) setState(() => _hoverIndex = null);
+              if (!_settling && _hoverIndex == index) {
+                setState(() => _hoverIndex = null);
+              }
             },
-            onAcceptWithDetails: (drag) {
+            onAcceptWithDetails: (drag) async {
               final from = widget.members.indexWhere(
                 (p) => p.player.id == drag.data,
               );
-              setState(() {
+              if (from < 0 || !widget.enabled || _settling) return;
+              final original = widget.members.map((p) => p.player.id).toList();
+              final moving = widget.members[from];
+              setState(() => _settling = true);
+              await landReorderAvatar(
+                context: context,
+                target: _targets[member.player.id]!,
+                from: drag.offset,
+                size: Size(size, size * ratio),
+                child: AvatarView(
+                  showBackdrop: false,
+                  config: moving.avatar,
+                  size: size,
+                  playerName: moving.player.name,
+                ),
+              );
+              if (mounted) {
+                if (widget.enabled &&
+                    sameReorderOrder(
+                      original,
+                      widget.members.map((p) => p.player.id),
+                    ) &&
+                    from != index) {
+                  widget.onMove(from, index);
+                }
                 _previewEpoch++;
-                _dragged = null;
-                _hoverIndex = null;
-              });
-              if (from >= 0 && from != index) widget.onMove(from, index);
+                _settling = false;
+                _clearPreview();
+              }
             },
             builder: (context, candidates, _) => Container(
+              key: _targets.putIfAbsent(member.player.id, GlobalKey.new),
               decoration: BoxDecoration(
                 color: CourtSceneTokens.panel.withValues(alpha: .6),
                 borderRadius: BorderRadius.circular(12),
@@ -185,18 +214,16 @@ class _RosterGridState extends State<RosterGrid> {
                             strideY,
                       ),
                       ghost: _dragged == member.player.id,
-                      originGhost: portrait(),
                       child: LongPressDraggable<PlayerId>(
                         key: ValueKey('roster-drag-${member.player.id.value}'),
                         delay: const Duration(milliseconds: 180),
                         data: member.player.id,
                         onDragStarted: () => _hover(member.player.id, index),
                         onDragEnd: (_) => _clearPreview(),
-                        maxSimultaneousDrags: widget.enabled ? 1 : 0,
-                        feedback: Material(
-                          color: Colors.transparent,
-                          child: portrait(),
-                        ),
+                        maxSimultaneousDrags: widget.enabled && !_settling
+                            ? 1
+                            : 0,
+                        feedback: LiftedDragAvatar(child: portrait()),
                         childWhenDragging: portrait(),
                         child: InkWell(
                           onTap: widget.enabled

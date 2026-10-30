@@ -1,5 +1,9 @@
 # Fortschritt und Übergabe
 
+## Animiertes Avatar-Umsortieren mit Lücke, 30.10.2026
+
+Vorhandene Raster, DragTargets und Einfügefunktionen weiterverwendet; keine neuen Abhängigkeiten. Gezogener Avatar mit dezenter Vergrößerung und Schatten, echte mitwandernde Lücke statt Ghost-Kopien, weiches Aufrutschen über 210 ms. Nach Loslassen schwebt der Avatar in die Lücke; erst danach übernimmt der bestehende Callback die Reihenfolge genau einmal. Abbruch stellt die Vorschau zurück. Ein zwischenzeitliches Server-/Elternupdate hat Vorrang vor einem noch landenden Drop; reduzierte Bewegung überspringt Animationen. Gezielte Tests prüfen Zwischenpositionen, wandernde Lücke, Pointer-Abbruch, Rücknahme, einmalige Speicherung und konkurrierende Reihenfolgen für alle drei Rastervarianten. Änderungen lokal.
+
 ## CI-Korrektur der Fallkartenränder, 30.10.2026
 
 Cloudflare-Build zu `a0705d6` scheiterte an drei Padding-Prüfungen mit doppelter Schriftgröße. Die native Bildprüfung verwendete echte Schriften, die CI-Prüfung dagegen Flutter-Testschriften; unterschiedlich verteilte Resthöhe vergrößerte den gemessenen unteren Abstand. Inhalt explizit unten ausgerichtet, Prüfung auf den tatsächlichen adaptiven Innenabstand mit einem Pixel Rundungstoleranz präzisiert. Beide Schriftvarianten werden lokal erneut geprüft.

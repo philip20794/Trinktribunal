@@ -55,6 +55,7 @@ void main() {
         addTearDown(() => tester.binding.setSurfaceSize(null));
         var order = List<PlayerId>.of(ids);
         var commits = 0;
+        late VoidCallback remoteUpdate;
         await tester.pumpWidget(
           MaterialApp(
             theme: courtSceneTheme(),
@@ -69,6 +70,8 @@ void main() {
                   width: 360,
                   child: StatefulBuilder(
                     builder: (context, update) {
+                      remoteUpdate = () =>
+                          update(() => order = ids.reversed.toList());
                       void move(int from, int to) => update(() {
                         commits++;
                         order = insertPlayer(order, from, to);
@@ -137,7 +140,12 @@ void main() {
         expect(commits, 0);
         expect(order, ids);
         expect(ghosts, findsOneWidget);
-        expect(find.byKey(const ValueKey('drag-origin-ghost')), findsOneWidget);
+        expect(find.byKey(const ValueKey('drag-origin-ghost')), findsNothing);
+        final gap = tester.widget<Opacity>(
+          find.descendant(of: ghosts, matching: find.byType(Opacity)).first,
+        );
+        expect(gap.opacity, 0);
+        expect(find.byType(LiftedDragAvatar), findsWidgets);
         expect(
           tester.widget<DragPreviewSlide>(ghosts).offset,
           isNot(Offset.zero),
@@ -168,6 +176,15 @@ void main() {
         expect(travelled, greaterThan(0));
         expect(travelled, lessThan(slide.offset.distance));
         await reviewImage(tester, 'ghost-insertion-$kind');
+        await drag.moveTo(tester.getCenter(seat(1)));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 230));
+        expect(commits, 0);
+        expect(order, ids);
+        expect(
+          tester.widget<DragPreviewSlide>(ghosts).offset,
+          isNot(slide.offset),
+        );
         for (final avatar in tester.widgetList<AvatarView>(
           find.byType(AvatarView),
         )) {
@@ -182,12 +199,32 @@ void main() {
         expect(ghosts, findsNothing);
         drag = await pickUp();
         await drag.moveTo(destination);
+        await tester.pump();
+        await drag.cancel();
+        await tester.pumpAndSettle();
+        expect(order, ids);
+        expect(commits, 0);
+        drag = await pickUp();
+        await drag.moveTo(destination);
         await tester.pump(const Duration(milliseconds: 300));
         await drag.up();
+        expect(commits, 0);
+        await tester.pump();
+        expect(find.byKey(const ValueKey('reorder-landing')), findsOneWidget);
         await tester.pumpAndSettle();
         expect(commits, 1);
         expect(order, [ids[1], ids[2], ids[0], ids[3]]);
         expect(ghosts, findsNothing);
+        // A server/parent update during landing wins over the pending local drop.
+        drag = await pickUp();
+        await drag.moveTo(tester.getCenter(seat(0)));
+        await tester.pump();
+        await drag.up();
+        await tester.pump();
+        remoteUpdate();
+        await tester.pumpAndSettle();
+        expect(commits, 1);
+        expect(order, ids.reversed.toList());
         expect(tester.takeException(), isNull);
       },
     );

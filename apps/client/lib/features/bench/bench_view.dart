@@ -45,6 +45,7 @@ class _BenchViewState extends State<BenchView> {
   PlayerId? _selected, _focused, _dragged;
   int? _hoverIndex;
   int _previewEpoch = 0;
+  bool _settling = false;
   final _anchors = <PlayerId, GlobalKey>{};
   Map<PlayerId, Offset> _previewOffsets = {};
 
@@ -74,7 +75,7 @@ class _BenchViewState extends State<BenchView> {
   }
 
   void _endPreview() {
-    if (!mounted) return;
+    if (!mounted || _settling) return;
     setState(() {
       _dragged = null;
       _hoverIndex = null;
@@ -265,7 +266,9 @@ class _BenchViewState extends State<BenchView> {
       child: DragTarget<PlayerId>(
         key: ValueKey(id),
         onWillAcceptWithDetails: (details) {
-          if (!editable || !widget.order.contains(details.data)) return false;
+          if (_settling || !editable || !widget.order.contains(details.data)) {
+            return false;
+          }
           _hover(details.data, index);
           return true;
         },
@@ -274,36 +277,66 @@ class _BenchViewState extends State<BenchView> {
           _hover(details.data, index);
         },
         onLeave: (_) {
-          if (_hoverIndex == index) {
+          if (!_settling && _hoverIndex == index) {
             setState(() {
               _hoverIndex = null;
               _previewOffsets = {};
             });
           }
         },
-        onAcceptWithDetails: (details) {
+        onAcceptWithDetails: (details) async {
           final from = widget.order.indexOf(details.data);
-          setState(() {
-            _selected = null;
+          if (from < 0 || widget.onMove == null || _settling) return;
+          final moving = widget.profiles[details.data]!;
+          final original = List<PlayerId>.of(widget.order);
+          setState(() => _settling = true);
+          const size = 76.0;
+          await landReorderAvatar(
+            context: context,
+            target: _anchors[id]!,
+            from: details.offset,
+            size: Size(
+              size,
+              size *
+                  TrinkAvatarRenderer.visibleHeight /
+                  TrinkAvatarRenderer.canvasWidth,
+            ),
+            child: AvatarView(
+              config: moving.avatar,
+              size: size,
+              playerName: moving.player.name,
+              showBackdrop: false,
+            ),
+            alignment: Alignment.topCenter,
+            inset: Offset(
+              0,
+              widget.compactControls
+                  ? 4 +
+                        (112 -
+                                size *
+                                    TrinkAvatarRenderer.visibleHeight /
+                                    TrinkAvatarRenderer.canvasWidth) /
+                            2
+                  : 8,
+            ),
+          );
+          if (mounted) {
+            if (widget.onMove != null &&
+                sameReorderOrder(original, widget.order) &&
+                from >= 0 &&
+                from != index) {
+              _move(id: details.data, from: from, to: index);
+            }
             _previewEpoch++;
-            _dragged = null;
-            _hoverIndex = null;
-            _previewOffsets = {};
-          });
-          if (from >= 0 && from != index) {
-            _move(id: details.data, from: from, to: index);
+            _selected = null;
+            _settling = false;
+            _endPreview();
           }
         },
         builder: (context, candidates, rejected) => DragPreviewSlide(
           key: ValueKey(('bench-preview', id, _previewEpoch)),
           offset: _previewOffsets[id] ?? Offset.zero,
           ghost: _dragged == id,
-          originGhost: AvatarView(
-            config: profile.avatar,
-            size: widget.compactControls ? 64 : 76,
-            playerName: profile.player.name,
-            showBackdrop: false,
-          ),
           child: Focus(
             focusNode: editable
                 ? _focus.putIfAbsent(
@@ -436,13 +469,13 @@ class _BenchViewState extends State<BenchView> {
                   if (editable && !widget.compactControls) ...[
                     LongPressDraggable<PlayerId>(
                       data: id,
+                      maxSimultaneousDrags: _settling ? 0 : 1,
                       onDragStarted: () => _hover(id, index),
                       onDragEnd: (_) => _endPreview(),
-                      feedback: Material(
-                        color: Colors.transparent,
+                      feedback: LiftedDragAvatar(
                         child: AvatarView(
                           config: profile.avatar,
-                          size: 96,
+                          size: 76,
                           playerName: profile.player.name,
                           showBackdrop: false,
                         ),
@@ -513,13 +546,13 @@ class _BenchViewState extends State<BenchView> {
               child: LongPressDraggable<PlayerId>(
                 key: ValueKey('compact-drag-${id.value}'),
                 data: id,
+                maxSimultaneousDrags: _settling ? 0 : 1,
                 onDragStarted: () => _hover(id, index),
                 onDragEnd: (_) => _endPreview(),
-                feedback: Material(
-                  color: Colors.transparent,
+                feedback: LiftedDragAvatar(
                   child: AvatarView(
                     config: profile.avatar,
-                    size: 96,
+                    size: 76,
                     playerName: profile.player.name,
                     showBackdrop: false,
                   ),
