@@ -13,26 +13,25 @@ ContentHistoryEntry used(String id, String eventId, [DateTime? at]) =>
     );
 
 void main() {
-  test('DE/EN production catalogs use the same categories (15/7/3)', () {
+  test('DE/EN production catalogs use exactly two categories (16/14)', () {
     final de = actualRules();
     final en = rulesFromEnglish();
     expect(
       [for (final rule in de) [rule.id, rule.category]],
       [for (final rule in en) [rule.id, rule.category]],
     );
-    for (final category in ['drinking_ritual', 'speech', 'behavior']) {
+    for (final category in ['drinking_ritual', 'other']) {
       expect(
         de.where((r) => r.category == category).length,
-        {'drinking_ritual': 15, 'speech': 7, 'behavior': 3}[category],
+        {'drinking_ritual': 16, 'other': 14}[category],
       );
     }
   });
 
-  test('nine rules cap a category at seven; behavior is not mandatory', () {
+  test('nine rules cap either of the two categories at seven', () {
     final catalog = rules([
-      for (var i = 0; i < 15; i++) ruleJson('r$i', category: 'drinking_ritual'),
-      for (var i = 0; i < 7; i++) ruleJson('s$i', category: 'speech'),
-      for (var i = 0; i < 3; i++) ruleJson('b$i', category: 'behavior'),
+      for (var i = 0; i < 16; i++) ruleJson('r$i', category: 'drinking_ritual'),
+      for (var i = 0; i < 14; i++) ruleJson('o$i', category: 'other'),
     ]);
     final drawn = <String>{};
     var history = ContentHistory([]);
@@ -48,17 +47,26 @@ void main() {
       history = history.record(used(chosen.id, 'e$i'));
     }
     final picked = [
-      for (final category in ['drinking_ritual', 'speech', 'behavior'])
+      for (final category in ['drinking_ritual', 'other'])
         catalog.where((r) => r.category == category && drawn.contains(r.id)).length,
     ];
-    expect(picked, [7, 2, 0]);
+    expect(picked, [7, 2]);
+  });
+
+  test('legacy speech and behavior rules belong to other; new rule is other', () {
+    final all = actualRules();
+    for (final id in ['swear_penalty', 'pointing_penalty', 'formal_address', 'motion_denied']) {
+      expect(all.singleWhere((r) => r.id == id).category, 'other');
+    }
+    expect(all.where((r) => r.category == 'other').length, 14);
+    expect(all.every((r) => {'drinking_ritual', 'other'}.contains(r.category)), true);
   });
 
   test('existing minimum-counter choice applies within the category', () {
     final catalog = rules([
       ruleJson('used', category: 'drinking_ritual'),
       ruleJson('fresh', category: 'drinking_ritual'),
-      ruleJson('spoken', category: 'speech'),
+      ruleJson('spoken', category: 'other'),
     ]);
     final chosen = selectCategorizedRule(
       catalog: catalog, candidates: catalog, drawnIds: {},
@@ -71,7 +79,7 @@ void main() {
   test('recent category use reduces its odds; expired use does not', () {
     final catalog = rules([
       ruleJson('r', category: 'drinking_ritual'),
-      ruleJson('s', category: 'speech'),
+      ruleJson('s', category: 'other'),
     ]);
     String chosen(ContentHistory history) => selectCategorizedRule(
       catalog: catalog, candidates: catalog, drawnIds: {},
@@ -91,7 +99,7 @@ void main() {
     final catalog = rules([
       ruleJson('r1', category: 'drinking_ritual', excludes: ['r2']),
       ruleJson('r2', category: 'drinking_ritual', excludes: ['r1']),
-      ruleJson('s1', category: 'speech'),
+      ruleJson('s1', category: 'other'),
     ]);
     final engine = DrinkingRules(
       rules: catalog, mode: GameMode.physicalCards,
@@ -130,7 +138,7 @@ void main() {
     final catalog = rules([
       ruleJson('r1', category: 'drinking_ritual'),
       ruleJson('r2', category: 'drinking_ritual'),
-      ruleJson('s1', category: 'speech'),
+      ruleJson('s1', category: 'other'),
     ]);
     final first = selectCategorizedRule(
       catalog: catalog, candidates: catalog, drawnIds: {},
