@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../design/avatar_view.dart';
+import '../../design/court_theme.dart';
 import '../../domain/avatar_config.dart';
 import '../../l10n/app_strings.dart';
 
@@ -36,9 +37,7 @@ class AvatarOptions extends StatefulWidget {
 
 class _AvatarOptionsState extends State<AvatarOptions>
     with SingleTickerProviderStateMixin {
-  static const _dark = Color(0xFF382017),
-      _cream = Color(0xFFFFF1D7),
-      _gold = Color(0xFFE9BC73);
+  static const _cream = Color(0xFFFFF1D7), _gold = Color(0xFFE9BC73);
   late final _controller = TabController(length: _tabs.length, vsync: this);
   double _drag = 0;
 
@@ -56,14 +55,17 @@ class _AvatarOptionsState extends State<AvatarOptions>
 
   InputDecoration _decoration(String title) => InputDecoration(
     labelText: title,
-    labelStyle: const TextStyle(color: _cream),
+    labelStyle: const TextStyle(
+      color: CourtTokens.ink,
+      backgroundColor: CourtTokens.avatarPaper,
+    ),
     floatingLabelBehavior: FloatingLabelBehavior.always,
     border: const OutlineInputBorder(),
     enabledBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: _gold),
     ),
     filled: true,
-    fillColor: const Color(0xFF714A32),
+    fillColor: CourtTokens.avatarPaper,
     contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
   );
 
@@ -75,7 +77,7 @@ class _AvatarOptionsState extends State<AvatarOptions>
       button: true,
       label: label,
       child: Material(
-        color: _dark,
+        color: CourtTokens.avatarPaper,
         borderRadius: BorderRadius.circular(5),
         child: InkWell(
           key: ValueKey('${widget.keyPrefix}avatar-option-$key:$selected'),
@@ -93,7 +95,10 @@ class _AvatarOptionsState extends State<AvatarOptions>
                       Text(
                         label,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: _cream, fontSize: 13),
+                        style: const TextStyle(
+                          color: CourtTokens.ink,
+                          fontSize: 13,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Container(
@@ -113,11 +118,14 @@ class _AvatarOptionsState extends State<AvatarOptions>
               : InputDecorator(
                   decoration: _decoration(label),
                   child: Center(
-                    child: AvatarPartPreview(
-                      config: widget.config,
-                      category: key,
-                      variant: selected,
-                      size: 52,
+                    child: IconTheme(
+                      data: const IconThemeData(color: CourtTokens.ink),
+                      child: AvatarPartPreview(
+                        config: widget.config,
+                        category: key,
+                        variant: selected,
+                        size: 52,
+                      ),
                     ),
                   ),
                 ),

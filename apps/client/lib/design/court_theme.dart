@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 abstract final class CourtTokens {
   static const paper = Color(0xFFF7F0E6);
+  static const avatarPaper = Color(0xFFDCC5A5);
   static const file = Color(0xFFFFFBF5);
   static const ink = Color(0xFF38251E);
   static const wood = Color(0xFF563B2F);

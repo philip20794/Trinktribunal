@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../design/avatar_view.dart';
 import '../../design/court_scene.dart';
+import '../../design/court_theme.dart';
 import '../../design/court_back_scope.dart';
 import '../../domain/avatar_config.dart';
 import '../../l10n/app_strings.dart';
@@ -219,7 +220,7 @@ class _AvatarEditorState extends State<AvatarEditor> {
                             key: const ValueKey('avatar-editor-sheet'),
                             enableDrag: false,
                             onClosing: _closeSheet,
-                            backgroundColor: CourtSceneTokens.panel,
+                            backgroundColor: CourtTokens.avatarPaper,
                             elevation: 8,
                             clipBehavior: Clip.antiAlias,
                             shape: const RoundedRectangleBorder(
@@ -249,7 +250,7 @@ class _AvatarEditorState extends State<AvatarEditor> {
                                         height: 4,
                                         margin: const EdgeInsets.only(top: 8),
                                         decoration: BoxDecoration(
-                                          color: CourtSceneTokens.gold,
+                                          color: CourtTokens.wood,
                                           borderRadius: BorderRadius.circular(
                                             4,
                                           ),
@@ -270,7 +271,7 @@ class _AvatarEditorState extends State<AvatarEditor> {
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
-                                                  color: CourtSceneTokens.cream,
+                                                  color: CourtTokens.ink,
                                                 ),
                                               ),
                                             ),
@@ -284,7 +285,7 @@ class _AvatarEditorState extends State<AvatarEditor> {
                                               onPressed: _closeSheet,
                                               icon: const Icon(
                                                 Icons.close,
-                                                color: CourtSceneTokens.cream,
+                                                color: CourtTokens.ink,
                                               ),
                                             ),
                                           ],
@@ -420,11 +421,11 @@ class _AvatarEditorState extends State<AvatarEditor> {
             ? (english ? 'None' : 'Keine')
             : '${avatarOptionLabels[category]![english ? 1 : 0]} ${index + 1}',
         child: Material(
-          color: selected ? const Color(0xFF714A32) : const Color(0xFF26130D),
+          color: CourtTokens.avatarPaper,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
-              color: selected ? CourtSceneTokens.gold : const Color(0xFF714A32),
+              color: selected ? CourtSceneTokens.crimson : CourtTokens.wood,
               width: selected ? 3 : 1,
             ),
           ),
@@ -437,11 +438,14 @@ class _AvatarEditorState extends State<AvatarEditor> {
               padding: const EdgeInsets.all(8),
               child: LayoutBuilder(
                 builder: (context, bounds) => Center(
-                  child: AvatarPartPreview(
-                    config: widget.config,
-                    category: category,
-                    variant: variant,
-                    size: math.min(bounds.maxWidth, bounds.maxHeight),
+                  child: IconTheme(
+                    data: const IconThemeData(color: CourtTokens.ink),
+                    child: AvatarPartPreview(
+                      config: widget.config,
+                      category: category,
+                      variant: variant,
+                      size: math.min(bounds.maxWidth, bounds.maxHeight),
+                    ),
                   ),
                 ),
               ),
