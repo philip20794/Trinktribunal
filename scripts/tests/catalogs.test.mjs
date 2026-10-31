@@ -97,17 +97,18 @@ test('asset check is read-only and detects missing, changed and extra assets', (
   }
 });
 
-test('four new bilingual rules are card-mode eligible and have no exclusions', () => {
+test('five recent bilingual rules are card-mode eligible and have no exclusions', () => {
   const sources = loadSources().filter(entry => entry.kind === 'rules');
   const expected = {
     verdict_carried_out: 'drinking_ritual',
-    your_honor_questions: 'speech',
-    formal_address: 'speech',
-    no_also_start: 'speech',
+    your_honor_questions: 'other',
+    formal_address: 'other',
+    no_also_start: 'other',
+    motion_denied: 'other',
   };
   for (const { catalog } of sources) {
-    assert.equal(catalog.rules.length, 29);
-    assert.equal(catalog.rules.filter(rule => !rule.players).length, 26);
+    assert.equal(catalog.rules.length, 30);
+    assert.equal(catalog.rules.filter(rule => !rule.players).length, 27);
     for (const [id, category] of Object.entries(expected)) {
       const rule = catalog.rules.find(entry => entry.id === id);
       assert.ok(rule, id);
@@ -117,5 +118,20 @@ test('four new bilingual rules are card-mode eligible and have no exclusions', (
       assert.ok(rule.text.trim());
       assert.ok(catalog.rules.every(other => !other.excludes.includes(id)));
     }
+  }
+});
+
+test('two production categories contain all rules and legacy categories are rejected', () => {
+  for (const { catalog } of loadSources().filter(source => source.kind === 'rules')) {
+    assert.equal(catalog.rules.filter(rule => rule.category === 'drinking_ritual').length, 16);
+    assert.equal(catalog.rules.filter(rule => rule.category === 'other').length, 14);
+    for (const rule of catalog.rules) assert.ok(['drinking_ritual', 'other'].includes(rule.category));
+    for (const id of ['swear_penalty', 'pointing_penalty', 'motion_denied'])
+      assert.equal(catalog.rules.find(rule => rule.id === id).category, 'other');
+  }
+  for (const legacy of ['speech', 'behavior']) {
+    const invalid = rules();
+    invalid.rules[0].category = legacy;
+    assert.throws(() => validateCatalog(invalid, 'rules'));
   }
 });
