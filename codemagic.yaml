@@ -101,15 +101,17 @@ workflows:
           command -v gh >/dev/null 2>&1 || { echo "GitHub CLI (gh) fehlt" >&2; exit 1; }
           asset="dist/trinktribunal-${CM_TAG}.apk"
           test -s "$asset"
+          cp "$asset" dist/trinktribunal.apk
           if gh release view "$CM_TAG" --repo philip20794/Trinktribunal >/dev/null 2>&1; then
-            gh release upload "$CM_TAG" "$asset" --repo philip20794/Trinktribunal --clobber
+            gh release upload "$CM_TAG" "$asset" dist/trinktribunal.apk --repo philip20794/Trinktribunal --clobber
+            gh release edit "$CM_TAG" --repo philip20794/Trinktribunal --prerelease=false --latest
           else
-            gh release create "$CM_TAG" "$asset" \
+            gh release create "$CM_TAG" "$asset" dist/trinktribunal.apk \
               --repo philip20794/Trinktribunal \
               --verify-tag \
               --title "Trinktribunal $CM_TAG" \
               --notes "Automatisch getestete, signierte Android-APK (interner Teststand)." \
-              --prerelease
+              --latest
           fi
     artifacts:
       - dist/*.apk

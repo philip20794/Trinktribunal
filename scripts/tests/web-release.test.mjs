@@ -86,6 +86,22 @@ test('precache is deterministic, integrity-complete and excludes workers/metadat
   put('api/secret.json','private');assert.throws(()=>buildPrecache(root),/Non-public/);
 });
 
+test('public App Links file is served as JSON without exposing hidden files or caching it offline',async t=>{
+  const {root,put}=fixture(t);
+  put('.well-known/assetlinks.json','[{"relation":["delegate_permission/common.handle_all_urls"]}]');
+  put('.well-known/private.json','private');put('install.js','// install bridge');
+  const metadata=prepareWeb(root);
+  assert.ok(metadata.files.some(f=>f.path==='.well-known/assetlinks.json'));
+  const cache=buildPrecache(root);
+  assert.ok(cache.files.some(f=>f.path==='install.js'));
+  assert.ok(!cache.files.some(f=>f.path.startsWith('.well-known/')));
+  const get=await serve(t,root);
+  const response=await get('/.well-known/assetlinks.json');
+  assert.equal(response.code,200);assert.match(response.headers['content-type'],/^application\/json/);
+  assert.equal((await get('/.well-known/private.json')).code,404);
+  assert.equal((await get('/.env')).code,404);
+});
+
 test('release CSP pins HTTPS and websocket origins without remote scripts or JavaScript eval',()=>{
   const policy=webSecurityPolicy('https://api.example.test:8443/');
   assert.ok(policy.includes("script-src 'self' 'wasm-unsafe-eval'"));

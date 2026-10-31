@@ -1012,19 +1012,19 @@
     },
     {
       "path": "apps/client/assets/ui/courtroom/illustrations/phone_handover.png",
-      "width": 1774,
-      "height": 887,
-      "bytes": 1224697,
-      "sha256": "8075a4faf1d1e61da8ec637651a31a91d5eb8192e5ce292a2f44e4e478cb308d",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1173296,
+      "sha256": "33b7595671e33937df74aaed291dbde4a780480e5819c5d1a02d5804b66586c6",
       "alpha_min": 0,
       "alpha_max": 255,
-      "transparent_pixels": 768249,
-      "nonopaque_pixels": 1571912,
+      "transparent_pixels": 867066,
+      "nonopaque_pixels": 1572009,
       "alpha_bbox": [
         0,
-        3,
-        1774,
-        887
+        25,
+        1672,
+        903
       ],
       "review": "candidate",
       "notes": "Aktualisiertes Übergabemotiv aus dem Workspace, visuell geprüft: transparent, ohne eingebetteten Spieltext; Contain, feste Anzeigehöhe. Separate Aktion bleibt echter Flutter-Button."
@@ -1541,6 +1541,386 @@
       ],
       "review": "candidate",
       "notes": "User-provided settings artwork, 2026-10-31. Statically inspected; proportional source geometry keeps controls inside the unmodified parchment. Icons remain separate from localized text."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/1.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2089273,
+      "sha256": "0f27881bd32d80d1aa2c109924ae8ca2ba7407f9f09c4db7af430673c03fa91c",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/10.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1941026,
+      "sha256": "71bf3d4dc4b03ac9b9ba6d4e546fbcc34c8fa0e8728a0a294e239e41e5155245",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/11.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1977647,
+      "sha256": "e2979501e5fa391c86f2951b2cffd98b2649ae145919938a01558b0c857823ba",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/12.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1960172,
+      "sha256": "509b524b28b8e8a585f036e0fcabb87f7833d16b6771062ecc5df7c54d6d52b3",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/13.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1970405,
+      "sha256": "ad13296ea9cd83d674df0b1570bb9e9eec4cee7730e1b51eb858b2c89bb2b844",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/14.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1979278,
+      "sha256": "c3368e89104601daaf2c3dcc5edfb2e6257ec4032891572c2c95ed613f34aeb7",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/15.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1971243,
+      "sha256": "d02f6dd09cdcb7ad2492aa01a8c0a9d846358e19e3446f379a2f157931b2f37f",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/16.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1974775,
+      "sha256": "98155f23b0e293cc96b1637ed25f34203bc57a990dcfd32ebdf0fb742f37ade0",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/17.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1986667,
+      "sha256": "f057e48e847ea432a1caf1bbe0a892a64ff8717a76c51fe4c4bdd389e2532647",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/18.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 1969680,
+      "sha256": "8510938c687c78a9f6b20317db72da7a7d0c148eb8fa56c777d52cc2e8573e01",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/2.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2135483,
+      "sha256": "583a9a5acda40cb2285576466eab4794d4300a5682f0eaa0536e6c1abc2c3c52",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/3.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2194226,
+      "sha256": "9e2432c884a9d4c70b73f705e52326b5ca7caa99c2941bc56e4f08d09c4a04b2",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/4.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2135275,
+      "sha256": "8b102d93b944b4e9bc87dc3d96e0c22c3ffbec04edb06da8f6c5cf481156267a",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/5.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2143817,
+      "sha256": "880f0f9028106c9d59e56d6f75584dbdd9fe6b5405a941eede44ae34cc174a1b",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/6.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2136914,
+      "sha256": "b039f47bd75aa0f4844e11dd931b8dd6d20a9ac30531d4934c9a4c2460c34961",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/7.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2140234,
+      "sha256": "441f860f4f877b2dfa2bb88743b09a70a5ab2a97261d8ef900403b16030fc016",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/8.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2195165,
+      "sha256": "f116abce305bdb5f42334dd018d972031b969d60742bf220913e255f337231f1",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/9.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 2252837,
+      "sha256": "1deecdbfd1156f828210e2f7fab57c971d487540060fcf61bc2459bc82b7b8ba",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1086,
+        1448
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/leer.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1049,
+      "height": 1499,
+      "bytes": 2300430,
+      "sha256": "d34cf79956238a76b41a9948ff4277ed3306d38847ad1c4f72f453a4fe457079",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1049,
+        1499
+      ]
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/illustrations/Karten/rueckseite.png",
+      "review": "quarantine",
+      "notes": "Existing print-card artwork from user commit ed010b5. Not bundled in the app; no new usage or rights clearance.",
+      "width": 1050,
+      "height": 1498,
+      "bytes": 1960149,
+      "sha256": "8760dabbc9dd5efebc4d105d36e992332bce0bb33f77940968960010c011c759",
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "transparent_pixels": 0,
+      "nonopaque_pixels": 0,
+      "alpha_bbox": [
+        0,
+        0,
+        1050,
+        1498
+      ]
     }
   ],
   "redesign": {

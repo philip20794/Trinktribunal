@@ -1,4 +1,8 @@
 import '../../design/court_dialog.dart';
+
+import 'dart:async';
+
+import '../../application/install_controller.dart';
 import '../../design/status_notice.dart';
 
 import 'package:flutter/material.dart';
@@ -23,6 +27,13 @@ class RoomConnectionScreen extends ConsumerWidget {
   Widget _build(BuildContext context, WidgetRef ref) {
     ref.listen(roomSessionProvider, (previous, next) {
       final status = next.asData?.value.status;
+      if (status == RoomConnectionStatus.online &&
+          next.asData?.value.snapshot != null) {
+        final code = ref.read(roomControllerProvider).roomCode;
+        if (code != null) {
+          unawaited(ref.read(installControllerProvider).act('clear', code));
+        }
+      }
       if (status == RoomConnectionStatus.closed ||
           status == RoomConnectionStatus.error) {
         ref.invalidate(savedRoomsProvider);

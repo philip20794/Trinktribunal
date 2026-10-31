@@ -31,7 +31,7 @@ export function secureReleaseHtml(html, apiBaseUrl = '') {
   // from the local bootstrap; user names/content never enter HTML construction.
   for (const script of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)) {
     const source = script[1].match(/\bsrc\s*=\s*(['"])(.*?)\1/i)?.[2];
-    if (!source || !/^(?:\.\/)?(?:offline|flutter_bootstrap)\.js$/.test(source) || script[2].trim()) {
+    if (!source || !/^(?:\.\/)?(?:install|offline|flutter_bootstrap)\.js$/.test(source) || script[2].trim()) {
       throw new Error('Release entry scripts must be local and external');
     }
   }

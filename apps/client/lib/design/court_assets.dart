@@ -70,7 +70,7 @@ abstract final class CourtAssets {
     ruleSheet: 768,
     logo: 1774,
     judgePlate: 2172,
-    handover: 1774,
+    handover: 1672,
     secretPaper: 1086,
     cards: 420,
     phone: 420,

@@ -49,6 +49,8 @@ export async function checkWebRelease(root) {
       ['/canvaskit/canvaskit.wasm', 200, 'application/wasm', 'HEAD'],
       ['/assets/assets/fonts/roboto-regular.ttf', 200, 'font/ttf', 'HEAD'],
       ['/service-worker.js', 200, 'text/javascript', 'GET'],
+      ['/install.js', 200, 'text/javascript', 'GET'],
+      ['/.well-known/assetlinks.json', 200, 'application/json', 'GET'],
     ]) {
       const response = await fetch(origin + path, { method, headers: { Accept: 'text/html' } });
       assert.equal(response.status, status, path);

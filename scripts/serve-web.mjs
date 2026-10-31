@@ -29,7 +29,7 @@ export async function createReleaseServer({root=defaultRoot}={}) {
       try { path=decodeURIComponent(raw); } catch { fail(400); return; }
       const segments=path.split('/');
       if (path.includes('\\') || path.includes('\0') || path.includes(':') || segments.includes('..')) { fail(400); return; }
-      if (segments.some(s=>s.startsWith('.')) || /^\/(?:api|ws|rooms|health)(?:\/|$)/.test(path)) { fail(404); return; }
+      if (path !== '/.well-known/assetlinks.json' && segments.some(s=>s.startsWith('.')) || /^\/(?:api|ws|rooms|health)(?:\/|$)/.test(path)) { fail(404); return; }
       let target=resolve(directory,'.'+(path==='/'?'/index.html':path));
       if (!isInside(directory,target)) { fail(403); return; }
       let info;

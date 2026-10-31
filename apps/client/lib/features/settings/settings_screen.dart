@@ -10,6 +10,7 @@ import '../help/data_maintenance.dart';
 import '../help/help_screen.dart';
 import '../../l10n/app_strings.dart';
 import 'offline_settings.dart';
+import '../../app/install_options.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -100,6 +101,13 @@ class SettingsScreen extends ConsumerWidget {
                               padding: const EdgeInsets.only(top: 12),
                               child: StatusNotice(context.tr(current.error!)),
                             ),
+                          const SizedBox(height: 24),
+                          Text(
+                            context.tr('installTitle'),
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          const InstallOptions(),
                           const SizedBox(height: 24),
                           TextButton.icon(
                             onPressed: () => Navigator.push<void>(

@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.trinktribunal",
+      "sha256_cert_fingerprints": ["ED:5E:2D:81:1D:5F:AD:10:36:CE:35:5A:8B:40:7F:B8:8D:EC:F8:28:E1:57:E9:72:3D:6B:1B:39:BF:2E:9C:54"]
+    }
+  }
+]

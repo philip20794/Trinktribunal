@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../features/home/home_screen.dart';
+import 'entry_screen.dart';
 import '../features/multiplayer/join.dart';
-import '../features/multiplayer/direct_join.dart';
 import '../features/multiplayer/invitation.dart';
 
 Route<void> generateAppRoute(RouteSettings settings) {
@@ -10,7 +9,7 @@ Route<void> generateAppRoute(RouteSettings settings) {
   if (name == '/') {
     return MaterialPageRoute<void>(
       settings: settings,
-      builder: (_) => const HomeScreen(),
+      builder: (_) => const AppEntryScreen(),
     );
   }
   final code = codeFromJoinRoute(name);
@@ -18,6 +17,6 @@ Route<void> generateAppRoute(RouteSettings settings) {
     settings: settings,
     builder: (_) => code == null
         ? const JoinRoomScreen(invalidInvite: true)
-        : DirectJoinRoomScreen(code: code),
+        : AppEntryScreen(code: code),
   );
 }

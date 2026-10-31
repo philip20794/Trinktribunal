@@ -4,6 +4,10 @@
   "start_url": ".",
   "id": ".",
   "scope": ".",
+  "prefer_related_applications": false,
+  "related_applications": [
+    {"platform":"webapp","url":"https://trinktribunal.pages.dev/manifest.json"}
+  ],
   "lang": "de",
   "icons": [
     {"src":"icons/Icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},

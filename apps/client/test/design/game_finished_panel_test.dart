@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trinktribunal/design/court_scene.dart';
 import 'package:trinktribunal/design/game_finished_panel.dart';
@@ -7,6 +8,15 @@ import 'package:trinktribunal/design/illustrated_paper.dart';
 import 'court_scene_test.dart' show host, reviewImage;
 
 void main() {
+  setUpAll(() async {
+    if (const bool.fromEnvironment('TT_RENDER_REVIEW')) {
+      final loader = FontLoader('CourtRoboto');
+      for (final font in ['regular', 'medium', 'bold']) {
+        loader.addFont(rootBundle.load('assets/fonts/roboto-$font.ttf'));
+      }
+      await loader.load();
+    }
+  });
   for (final size in [
     const Size(280, 640),
     const Size(390, 844),

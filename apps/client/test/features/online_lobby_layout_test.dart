@@ -180,6 +180,7 @@ void main() {
       );
       final stop = find.byKey(const ValueKey('stop-room-game'));
       await tester.ensureVisible(stop);
+      await tester.pumpAndSettle();
       await tester.tap(stop);
       await tester.pumpAndSettle();
       final command = fixture.transport.sockets.last.sent
