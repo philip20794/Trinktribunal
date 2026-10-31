@@ -96,3 +96,26 @@ test('asset check is read-only and detects missing, changed and extra assets', (
     assert.equal(dirname(root), resolve(tmpdir())); assert.ok(basename(root).startsWith('trinktribunal-catalog-')); rmSync(root, { recursive: true });
   }
 });
+
+test('four new bilingual rules are card-mode eligible and have no exclusions', () => {
+  const sources = loadSources().filter(entry => entry.kind === 'rules');
+  const expected = {
+    verdict_carried_out: 'drinking_ritual',
+    your_honor_questions: 'speech',
+    formal_address: 'speech',
+    no_also_start: 'speech',
+  };
+  for (const { catalog } of sources) {
+    assert.equal(catalog.rules.length, 29);
+    assert.equal(catalog.rules.filter(rule => !rule.players).length, 26);
+    for (const [id, category] of Object.entries(expected)) {
+      const rule = catalog.rules.find(entry => entry.id === id);
+      assert.ok(rule, id);
+      assert.equal(rule.category, category);
+      assert.deepEqual(rule.excludes, []);
+      assert.equal(rule.players, undefined);
+      assert.ok(rule.text.trim());
+      assert.ok(catalog.rules.every(other => !other.excludes.includes(id)));
+    }
+  }
+});
