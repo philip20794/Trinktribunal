@@ -208,7 +208,7 @@ describe('existing TT-003/007/008 fixtures and production invariants', () => {
     expect(catalogHash).toBe(currentProtocolCatalogHash);
     for (const language of ['de', 'en'] as const) {
       expect(catalogs[language].questions).toHaveLength(491);
-      expect(catalogs[language].rules).toHaveLength(25);
+      expect(catalogs[language].rules).toHaveLength(29);
       expect(Object.isFrozen(catalogs[language].questions)).toBe(true);
     }
     const signature = (language: 'de' | 'en') =>
