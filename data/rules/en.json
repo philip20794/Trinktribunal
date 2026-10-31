@@ -4,19 +4,19 @@
   "rules": [
     {
       "id": "swear_penalty",
-      "category": "speech",
+      "category": "other",
       "text": "Anyone who swears has to take a sip.",
       "excludes": []
     },
     {
       "id": "no_drink_word",
-      "category": "speech",
+      "category": "other",
       "text": "From now on, you can't say the word \"drink\" or any form of it (like \"drinking\" or \"drinks\").",
       "excludes": []
     },
     {
       "id": "no_ich_word",
-      "category": "speech",
+      "category": "other",
       "text": "You're no longer allowed to say \"I\" (except when reading something aloud).",
       "excludes": []
     },
@@ -51,7 +51,7 @@
     },
     {
       "id": "no_yes_no",
-      "category": "speech",
+      "category": "other",
       "text": "You're no longer allowed to say \"yes\" or \"no\".",
       "excludes": []
     },
@@ -107,7 +107,7 @@
     },
     {
       "id": "number_penalty",
-      "category": "speech",
+      "category": "other",
       "text": "Anyone who says a number has to take a sip.",
       "excludes": []
     },
@@ -124,31 +124,31 @@
     },
     {
       "id": "pointing_penalty",
-      "category": "behavior",
+      "category": "other",
       "text": "Anyone who points at someone with their finger has to take a sip.",
       "excludes": []
     },
     {
       "id": "no_face_touching",
-      "category": "behavior",
+      "category": "other",
       "text": "You're no longer allowed to scratch your nose or touch your face.",
       "excludes": []
     },
     {
       "id": "interrupting_penalty",
-      "category": "speech",
+      "category": "other",
       "text": "Anyone who interrupts someone else has to take a sip (unless they're pointing out a rule violation).",
       "excludes": []
     },
     {
       "id": "repeat_question_penalty",
-      "category": "speech",
+      "category": "other",
       "text": "Anyone who says \"What?\", \"Come again?\", or something similar to get the last question repeated has to take a sip (unless it was deliberately read too quietly).",
       "excludes": []
     },
     {
       "id": "permission_to_stand",
-      "category": "behavior",
+      "category": "other",
       "text": "You have to get permission from another player before standing up.",
       "excludes": []
     },
@@ -194,20 +194,26 @@
     },
     {
       "id": "your_honor_questions",
-      "category": "speech",
+      "category": "other",
       "text": "Anyone asking a question of their own must begin it with “Your Honor” (except when reading aloud).",
       "excludes": []
     },
     {
       "id": "formal_address",
-      "category": "speech",
+      "category": "other",
       "text": "From now on, address all other players formally as “Sir” or “Madam”. Anyone who addresses another player informally must drink (except when reading aloud).",
       "excludes": []
     },
     {
       "id": "no_also_start",
-      "category": "speech",
+      "category": "other",
       "text": "Anyone who begins a sentence with “So” must drink (except when reading aloud).",
+      "excludes": []
+    },
+    {
+      "id": "motion_denied",
+      "category": "other",
+      "text": "Anyone refusing a request from another player must reply with “Motion denied!”.",
       "excludes": []
     }
   ]
