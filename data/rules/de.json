@@ -4,19 +4,19 @@
   "rules": [
     {
       "id": "swear_penalty",
-      "category": "speech",
+      "category": "other",
       "text": "Wer flucht, muss einen Schluck trinken.",
       "excludes": []
     },
     {
       "id": "no_drink_word",
-      "category": "speech",
+      "category": "other",
       "text": "Es darf nicht mehr das Wort „trinken“ (oder ein Wort dieses Wortstamms) gesagt werden.",
       "excludes": []
     },
     {
       "id": "no_ich_word",
-      "category": "speech",
+      "category": "other",
       "text": "Man darf nicht mehr „Ich“ sagen (außer beim Vorlesen).",
       "excludes": []
     },
@@ -51,7 +51,7 @@
     },
     {
       "id": "no_yes_no",
-      "category": "speech",
+      "category": "other",
       "text": "Man darf nicht mehr „Ja“ oder „Nein“ sagen.",
       "excludes": []
     },
@@ -107,7 +107,7 @@
     },
     {
       "id": "number_penalty",
-      "category": "speech",
+      "category": "other",
       "text": "Wer eine Zahl sagt, muss trinken.",
       "excludes": []
     },
@@ -124,31 +124,31 @@
     },
     {
       "id": "pointing_penalty",
-      "category": "behavior",
+      "category": "other",
       "text": "Wer mit dem Finger auf jemanden zeigt, muss trinken.",
       "excludes": []
     },
     {
       "id": "no_face_touching",
-      "category": "behavior",
+      "category": "other",
       "text": "Man darf sich nicht mehr an der Nase kratzen oder ins Gesicht fassen.",
       "excludes": []
     },
     {
       "id": "interrupting_penalty",
-      "category": "speech",
+      "category": "other",
       "text": "Wer jemandem ins Wort fällt, muss trinken (außer um auf einen Regelverstoß aufmerksam zu machen).",
       "excludes": []
     },
     {
       "id": "repeat_question_penalty",
-      "category": "speech",
+      "category": "other",
       "text": "Wer „Was?“, „Wie bitte?“ oder etwas Ähnliches fragt, um die zuletzt vorgelesene Frage erneut zu hören, muss trinken (außer der Vorlesende war extra leise).",
       "excludes": []
     },
     {
       "id": "permission_to_stand",
-      "category": "behavior",
+      "category": "other",
       "text": "Wer aufstehen möchte, darf dies erst, nachdem es von einem Mitspieler erlaubt wurde.",
       "excludes": []
     },
@@ -194,20 +194,26 @@
     },
     {
       "id": "your_honor_questions",
-      "category": "speech",
+      "category": "other",
       "text": "Wer eine eigene Frage stellt, muss diese mit „Euer Ehren“ beginnen (außer beim Vorlesen).",
       "excludes": []
     },
     {
       "id": "formal_address",
-      "category": "speech",
+      "category": "other",
       "text": "Ab jetzt müssen alle Mitspieler gesiezt werden. Wer jemanden duzt, muss trinken (außer beim Vorlesen).",
       "excludes": []
     },
     {
       "id": "no_also_start",
-      "category": "speech",
+      "category": "other",
       "text": "Wer einen Satz mit „Also“ beginnt, muss trinken (außer beim Vorlesen).",
+      "excludes": []
+    },
+    {
+      "id": "motion_denied",
+      "category": "other",
+      "text": "Wer eine Bitte eines Mitspielers ablehnt, muss mit „Antrag abgelehnt!“ antworten.",
       "excludes": []
     }
   ]
