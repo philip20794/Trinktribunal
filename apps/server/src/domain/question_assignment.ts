@@ -11,6 +11,7 @@ export interface SelectionInput {
   readonly history: readonly Readonly<UsageEvent>[];
   readonly drawn: readonly string[];
   readonly now: number;
+  readonly plannedRuleEvents?: number;
 }
 export function assignContent(
   entries: readonly ContentEntry[],

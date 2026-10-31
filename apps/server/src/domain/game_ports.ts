@@ -61,7 +61,7 @@ export function gamePorts(
       activateRule(
         catalogs[state.config.contentLanguage].rules,
         state.activeRules,
-        input(state, now, state.drawnRuleIds),
+        { ...input(state, now, state.drawnRuleIds), plannedRuleEvents: state.ruleSlots.length },
         random,
       ),
     rebindRules: (state, random) =>

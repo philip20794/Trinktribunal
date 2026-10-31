@@ -49,6 +49,7 @@ Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepfle
 | `rules` | Ja | Liste der Trinkregeln. |
 | `id` | Ja | Eindeutige, **sprachunabhängige** Regel-ID; bleibt über Übersetzungen gleich. |
 | `text` | Ja | Anzeigetext; Spieler-Platzhalter als `{player1}`, `{player2}` usw. |
+| `category` | Produktive Regeln | Gemeinsame Kategorie in beiden Sprachen: `drinking_ritual`, `speech`, `behavior`. |
 | `players` | Nein | Benötigte Spielerrollen, benannt wie die Platzhalter im Text. |
 | `selection` | Ja, je Rolle | `random` bezeichnet eine server-/lokal durchgeführte Zufallsauswahl **mit D-05-Fairness-Zähler** statt voneinander unabhängiger Gleichverteilungen; umfasst auch den Richter. |
 | `differentFrom` | Nein | Rollen, die nicht denselben Spieler bekommen dürfen; z. B. `["player1"]`. |
@@ -107,3 +108,16 @@ Diese globalen Festlegungen sind Teil der Spielregeln, nicht zusätzliche Eintr�
 **Festlegung D-03:** Im Modus 1 (Handy + physische Karten) gibt es keine Spielerliste. Die drei personenbezogenen Regeln werden dort aus der automatischen Auslosung ausgeschlossen; die 22 Regeln ohne Spielerrollen bleiben verfügbar.
 
 Siehe auch [Spielkonzept](../../docs/GAME_DESIGN.md) und [Screens und Nutzerabläufe](../../docs/USER_FLOWS.md).
+
+## Kategoriengewichtete Auslosung
+
+Pro Regelereignis wird erst die Kategorie gewichtet gezogen und darin eine Regel mit
+dem kleinsten Sechs-Stunden-Zähler zufällig gewählt. Die Kategorien werden nicht
+vorab reserviert. Gewicht: `1000 × n^1,5 / (1 + bisherige Kategorieziehungen) /
+(1 + mittlere Sechs-Stunden-Nutzung)`; `n` zählt nur zum aktuellen Zeitpunkt
+zulässige Regeln. Vorher erfolgen Modus-, Konflikt- und Rollenfilter.
+Bei mindestens drei geplanten Regeln gilt pro Kategorie die Obergrenze
+`min(geplant - 1, ceil(geplant × 0,75))`, bei neun Regeln also sieben.
+Ist keine andere Kategorie mehr wählbar, wird die Obergrenze aufgehoben.
+Bereits gezogene, später deaktivierte Regeln zählen weiterhin zur Partie.
+Der Schieberegler bleibt die einzige Regelanzahleinstellung.

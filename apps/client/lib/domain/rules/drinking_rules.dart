@@ -6,6 +6,7 @@ import '../models/ids.dart';
 import '../selection/content_selection.dart';
 import '../selection/person_assignment.dart';
 import '../selection/random_source.dart';
+import '../selection/rule_category_selection.dart';
 
 bool rulesConflict(DrinkingRule a, DrinkingRule b) =>
     a.excludes.contains(b.id) || b.excludes.contains(a.id);
@@ -67,6 +68,7 @@ final class DrinkingRules {
     required RuleState state,
     required String eventId,
     required List<PlayerId> activePlayers,
+    int plannedRuleEvents = 0,
   }) {
     if (state.skippedEvents.contains(eventId)) return state;
     if (state.selection.alreadyCommitted(eventId, ContentKind.rule)) {
@@ -97,12 +99,14 @@ final class DrinkingRules {
       );
     }
     final now = clock().toUtc();
-    final rule = selectContent(
+    final rule = selectCategorizedRule(
+      catalog: rules,
       candidates: candidates,
-      kind: ContentKind.rule,
+      drawnIds: drawn,
       history: state.selection.history,
       nowUtc: now,
       random: random,
+      plannedRuleEvents: plannedRuleEvents,
     );
     final bindings = PersonAssignment(
       roles: rule.players,

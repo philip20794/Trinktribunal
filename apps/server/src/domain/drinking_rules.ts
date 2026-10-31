@@ -1,7 +1,8 @@
 import type { Assignment } from '../protocol/room_message.generated';
 import type { ContentEntry } from './catalogs';
-import { assignContent, type SelectionInput } from './question_assignment';
+import type { SelectionInput } from './question_assignment';
 import { personAssignment, recordPersons } from './selection/person_assignment';
+import { selectCategorizedRule } from './selection/rule_category_selection';
 import type { RandomIndex } from './selection/random';
 
 export function rulesConflict(a: ContentEntry, b: ContentEntry): boolean {
@@ -14,19 +15,20 @@ export function activateRule(
   random: RandomIndex,
 ): Assignment | null {
   const byId = new Map(entries.map((entry) => [entry.id, entry]));
-  return assignContent(
-    entries.filter(
-      (entry) =>
-        !active.some((rule) => {
-          const existing = byId.get(rule.contentId);
-          if (!existing) throw new Error('UNKNOWN_RULE');
-          return rulesConflict(entry, existing);
-        }),
-    ),
-    'rule',
-    input,
-    random,
+  const candidates = entries.filter(
+    (entry) =>
+      !input.drawn.includes(entry.id) &&
+      personAssignment(entry.players ?? {}, input.players, input.counts).possible &&
+      !active.some((rule) => {
+        const existing = byId.get(rule.contentId);
+        if (!existing) throw new Error('UNKNOWN_RULE');
+        return rulesConflict(entry, existing);
+      }),
   );
+  if (!candidates.length) return null;
+  const chosen = selectCategorizedRule(entries, candidates, input, random);
+  const bindings = personAssignment(chosen.players ?? {}, input.players, input.counts).bind(random)!;
+  return { contentId: chosen.id, bindings };
 }
 export function rebindRules(
   entries: readonly ContentEntry[],

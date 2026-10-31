@@ -55,12 +55,14 @@ Map<String, dynamic> ruleJson(
   String id, {
   Map<String, Object>? roles,
   List<String> excludes = const [],
+  String? category,
 }) => {
   'id': id,
   'text': roles == null
       ? 'Regel $id'
       : '${roles.keys.map((key) => '{$key}').join(' ')} {player1}',
   'excludes': excludes,
+  if (category != null) 'category': category,
   'players': ?roles,
 };
 List<Question> actualQuestions([String language = 'de']) => parseQuestions(

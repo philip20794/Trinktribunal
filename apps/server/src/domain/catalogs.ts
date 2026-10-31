@@ -12,11 +12,14 @@ import { currentProtocolCatalogHash } from '../protocol/room_message';
 import { immutable } from './game_state';
 import type { Roles } from './selection/person_assignment';
 
+export type RuleCategory = 'drinking_ritual' | 'speech' | 'behavior';
+
 export interface ContentEntry {
   readonly id: string;
   readonly text: string;
   readonly players?: Roles;
   readonly excludes?: readonly string[];
+  readonly category?: RuleCategory;
   readonly scale?: { readonly green: string; readonly connector: string; readonly red: string };
 }
 export interface Catalogs {

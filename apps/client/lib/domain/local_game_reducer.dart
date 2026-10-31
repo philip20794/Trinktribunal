@@ -367,6 +367,7 @@ final class LocalGameReducer {
         state: next.rules,
         eventId: eventId,
         activePlayers: [],
+        plannedRuleEvents: state.schedule.slots.length,
       );
       return _copy(
         next,
