@@ -208,7 +208,7 @@ describe('existing TT-003/007/008 fixtures and production invariants', () => {
     expect(catalogHash).toBe(currentProtocolCatalogHash);
     for (const language of ['de', 'en'] as const) {
       expect(catalogs[language].questions).toHaveLength(491);
-      expect(catalogs[language].rules).toHaveLength(29);
+      expect(catalogs[language].rules).toHaveLength(30);
       expect(Object.isFrozen(catalogs[language].questions)).toBe(true);
     }
     const signature = (language: 'de' | 'en') =>
@@ -263,7 +263,7 @@ describe('existing TT-003/007/008 fixtures and production invariants', () => {
   });
   it('schedules every supported density with bounded draws and no rejection loop', () => {
     for (let f = 1; f <= 491; f++)
-      for (const r of [0, 1, 7, 25]) {
+      for (const r of [0, 1, 7, 30]) {
         let calls = 0;
         const slots = planSlots(f, r, (bound) => {
           calls++;
