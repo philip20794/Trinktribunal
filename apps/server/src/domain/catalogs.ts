@@ -12,7 +12,7 @@ import { currentProtocolCatalogHash } from '../protocol/room_message';
 import { immutable } from './game_state';
 import type { Roles } from './selection/person_assignment';
 
-export type RuleCategory = 'drinking_ritual' | 'speech' | 'behavior';
+export type RuleCategory = 'drinking_ritual' | 'other';
 
 export interface ContentEntry {
   readonly id: string;
