@@ -71,3 +71,7 @@ List<Question> actualQuestions([String language = 'de']) => parseQuestions(
 List<DrinkingRule> actualRules() =>
     parseRules(File('assets/catalogs/rules/de.json').readAsStringSync())
         .entries;
+
+List<DrinkingRule> rulesFromEnglish() => parseRules(
+  File('assets/catalogs/rules/en.json').readAsStringSync(),
+).entries;
