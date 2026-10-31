@@ -104,7 +104,8 @@ void main() {
             tester,
             'avatar-editor-${scenario.size.width.toInt()}-${scale.toInt()}',
           );
-          await tester.tap(key('avatar-option-hair:short03'));
+          final initial = tester.widget<AvatarView>(preview).config;
+          await tester.tap(key('avatar-option-hair:${initial['hair']}'));
           await tester.pumpAndSettle();
           final sheetRect = tester.getRect(sheet);
           final currentBoard = tester.getRect(key('avatar-nameplate-target'));
@@ -213,7 +214,8 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
       await host(tester, const Size(390, 844), 1, 'de');
       for (final method in ['back', 'escape', 'swipe']) {
-        await tester.tap(key('avatar-option-eyes:variant05'));
+        final current = tester.widget<AvatarView>(preview).config;
+        await tester.tap(key('avatar-option-eyes:${current['eyes']}'));
         await tester.pumpAndSettle();
         if (method == 'back') {
           await tester.binding.handlePopRoute();
