@@ -185,6 +185,30 @@
         }
       },
       "excludes": []
+    },
+    {
+      "id": "verdict_carried_out",
+      "category": "drinking_ritual",
+      "text": "After drinking, you must loudly say “Verdict carried out!”.",
+      "excludes": []
+    },
+    {
+      "id": "your_honor_questions",
+      "category": "speech",
+      "text": "Anyone asking a question of their own must begin it with “Your Honor” (except when reading aloud).",
+      "excludes": []
+    },
+    {
+      "id": "formal_address",
+      "category": "speech",
+      "text": "From now on, address all other players formally as “Sir” or “Madam”. Anyone who addresses another player informally must drink (except when reading aloud).",
+      "excludes": []
+    },
+    {
+      "id": "no_also_start",
+      "category": "speech",
+      "text": "Anyone who begins a sentence with “So” must drink (except when reading aloud).",
+      "excludes": []
     }
   ]
 }
