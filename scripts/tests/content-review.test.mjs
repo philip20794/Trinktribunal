@@ -35,10 +35,10 @@ test('English corrections preserve the German perspective and scale meanings', (
   assert.equal(questions.find(q => q.id === '195-b').scale.red, 'Incredibly impressive');
 });
 
-test('final editorial ledger covers all 520 DE/EN pairs and becomes stale on any entry change', () => {
+test('final editorial ledger covers all 521 DE/EN pairs and becomes stale on any entry change', () => {
   const lines=readFileSync(new URL('../../docs/qa/content-review-ledger.tsv',import.meta.url),'utf8').trimEnd().split(/\r?\n/);
   assert.equal(lines.shift(),'kind\tid\tdeSha256\tenSha256\treviewDate\tresult\tnote');
-  assert.equal(lines.length,520);
+  assert.equal(lines.length,521);
   const entries=new Map();
   for(const line of lines) {
     const fields=line.split('\t');assert.equal(fields.length,7);
