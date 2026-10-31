@@ -6,7 +6,7 @@ import '../models/domain_error.dart';
 import 'content_selection.dart';
 import 'random_source.dart';
 
-const _categories = ['drinking_ritual', 'speech', 'behavior'];
+const _categories = ['drinking_ritual', 'other'];
 
 /// Category is chosen at each slot; the six-hour minimum-counter rule stays intact.
 DrinkingRule selectCategorizedRule({
