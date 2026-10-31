@@ -174,7 +174,7 @@
       "files": [
         {
           "path": "apps/client/android/app/src/main/res/drawable-nodpi/ic_launcher_foreground.png",
-          "sha256": "12aa9f069db875ff7335423da7283f59066e2b3d1e9c8321fdd334a17e64c32b"
+          "sha256": "fcef7d4a6f3aa97f8a547c3c3f9551fd9a26df936f3a9f8a3c6dd36547d84bae"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
@@ -182,27 +182,27 @@
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
-          "sha256": "be54b7c72c462b455f8060662ee16b57f40801bd98da25f96555a31c7c0e58c9"
+          "sha256": "8ad40166b13d1bca579176b89323f740e3580c1a1c4a55a6b3996b29ad9371af"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
-          "sha256": "46ca4f76a6871b8365a057a4002cfb2c245dd98b6410976272aa886fe7b621b8"
+          "sha256": "428306d6082341ec706a7b6ea0da8479ab0cf03dc3bec69a291481ceabe70da2"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
-          "sha256": "1a9b5f635e196b93508527c139c183d3b40c235c7864577d5b2af0ab10e604f9"
+          "sha256": "e812556854ea4e9f2815ce9e7ccb6819218acc39d4a3d210df20950ab13fe33e"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
-          "sha256": "2fe89142e577ab85c29fcabf6935e0b53d15d77f3d40515f39a277c13b54d51a"
+          "sha256": "d6f6da7df0c6c7fb3ea487bfb708e700fe248a17d3c5dbb57b8e0154549b31c8"
         },
         {
           "path": "apps/client/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
-          "sha256": "9e9db85e48f431603c9493f8ba0f4ab074756f997a57dba28c3772e15cee6979"
+          "sha256": "5f6be52e31f39c627208739b4328ec600918ae302732bfddb71c7eed36c3796d"
         },
         {
           "path": "apps/client/assets/branding/trinktribunal_app_icon.png",
-          "sha256": "3527ccdac650514744ebb2788c67c82c2cb4b09854ab35ead109687997efd501"
+          "sha256": "87febd7315861a4a3872326287ae5e6d07c1782c58c6dcbd23c5617edfb11526"
         },
         {
           "path": "apps/client/web/favicon.png",
@@ -210,19 +210,19 @@
         },
         {
           "path": "apps/client/web/icons/Icon-192.png",
-          "sha256": "9e9db85e48f431603c9493f8ba0f4ab074756f997a57dba28c3772e15cee6979"
+          "sha256": "5f6be52e31f39c627208739b4328ec600918ae302732bfddb71c7eed36c3796d"
         },
         {
           "path": "apps/client/web/icons/Icon-512.png",
-          "sha256": "9cc35d52657816e737ff63c65ed5ee170d5eea8128d42ad4a81dd74ffb57cd81"
+          "sha256": "413a174e9e5e04b43a9ee82e9ac3f515e7eb82961b4913133230fb34d70c0d7e"
         },
         {
           "path": "apps/client/web/icons/Icon-maskable-192.png",
-          "sha256": "9e9db85e48f431603c9493f8ba0f4ab074756f997a57dba28c3772e15cee6979"
+          "sha256": "5f6be52e31f39c627208739b4328ec600918ae302732bfddb71c7eed36c3796d"
         },
         {
           "path": "apps/client/web/icons/Icon-maskable-512.png",
-          "sha256": "9cc35d52657816e737ff63c65ed5ee170d5eea8128d42ad4a81dd74ffb57cd81"
+          "sha256": "413a174e9e5e04b43a9ee82e9ac3f515e7eb82961b4913133230fb34d70c0d7e"
         }
       ]
     },

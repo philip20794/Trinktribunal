@@ -36,6 +36,9 @@ if [[ "$1" == -p ]]; then printf 'https://client.example\\n'; fi
       npm: `#!/usr/bin/env bash
 printf 'npm %s\\n' "$*" >> "$TT_PAGES_TEST_LOG"
 `,
+      dart: `#!/usr/bin/env bash
+printf 'dart %s\\n' "$*" >> "$TT_PAGES_TEST_LOG"
+`,
     };
     for (const [name, content] of Object.entries(wrappers)) {
       writeFileSync(join(temporary, name), content);
@@ -52,6 +55,7 @@ printf 'npm %s\\n' "$*" >> "$TT_PAGES_TEST_LOG"
       assert.equal(result.status, 0, result.stderr);
       assert.ok(commands.indexOf('flutter test --no-pub') < commands.indexOf('flutter build web'));
       assert.ok(commands.indexOf('npm run check') < commands.indexOf('flutter build web'));
+      assert.match(commands, /dart format --output=none --set-exit-if-changed lib test tool/);
       assert.match(commands, /flutter build web --release --csp --no-pub --no-wasm-dry-run --no-web-resources-cdn/);
       assert.match(commands.trim(), /node scripts\/check-web-release\.mjs apps\/client\/build\/web$/);
     } else {

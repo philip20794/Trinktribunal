@@ -101,17 +101,16 @@ void main() {
       expect(
         tester.getTopLeft(toggle).dy,
         lessThan(
-          tester.getTopLeft(
-            find.byKey(const PageStorageKey('room-game-settings')),
-          ).dy,
+          tester
+              .getTopLeft(
+                find.byKey(const PageStorageKey('room-game-settings')),
+              )
+              .dy,
         ),
       );
       await tester.tap(info);
       await tester.pumpAndSettle();
-      expect(
-        find.text(strings.get('gameRulesAllJudgesBody')),
-        findsOneWidget,
-      );
+      expect(find.text(strings.get('gameRulesAllJudgesBody')), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );
