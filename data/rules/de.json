@@ -185,6 +185,30 @@
         }
       },
       "excludes": []
+    },
+    {
+      "id": "verdict_carried_out",
+      "category": "drinking_ritual",
+      "text": "Nach dem Trinken muss laut „Urteil vollstreckt!“ gesagt werden.",
+      "excludes": []
+    },
+    {
+      "id": "your_honor_questions",
+      "category": "speech",
+      "text": "Wer eine eigene Frage stellt, muss diese mit „Euer Ehren“ beginnen (außer beim Vorlesen).",
+      "excludes": []
+    },
+    {
+      "id": "formal_address",
+      "category": "speech",
+      "text": "Ab jetzt müssen alle Mitspieler gesiezt werden. Wer jemanden duzt, muss trinken (außer beim Vorlesen).",
+      "excludes": []
+    },
+    {
+      "id": "no_also_start",
+      "category": "speech",
+      "text": "Wer einen Satz mit „Also“ beginnt, muss trinken (außer beim Vorlesen).",
+      "excludes": []
     }
   ]
 }
