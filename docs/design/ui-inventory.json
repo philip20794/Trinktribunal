@@ -1465,6 +1465,82 @@
       ],
       "bytes": 1481373,
       "sha256": "f98ab658e36a0a47e8017f17613929dd0a849bd965fe7e6a972c5a430249b368"
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/settings/icon_faelle.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 232939,
+      "sha256": "8f389cd5bb2a8c420dbcd7082dc8b00885cec46722ef02eeb4eb1250c41dce28",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 126883,
+      "nonopaque_pixels": 139160,
+      "alpha_bbox": [
+        40,
+        44,
+        472,
+        467
+      ],
+      "review": "candidate",
+      "notes": "User-provided settings artwork, 2026-10-31. Statically inspected; proportional source geometry keeps controls inside the unmodified parchment. Icons remain separate from localized text."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/settings/icon_regeln.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 191803,
+      "sha256": "f28c9ce71101fd65b890ba62933b28f854dc42ec7e6b0cc16cc0294541a8ab47",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 151672,
+      "nonopaque_pixels": 166598,
+      "alpha_bbox": [
+        66,
+        40,
+        446,
+        472
+      ],
+      "review": "candidate",
+      "notes": "User-provided settings artwork, 2026-10-31. Statically inspected; proportional source geometry keeps controls inside the unmodified parchment. Icons remain separate from localized text."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/settings/icon_zahlenbereich.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 172745,
+      "sha256": "dc56ab8d07aa8c00303b5b7ef6883f1df9024e6821d5ad1e841c71a3434c6020",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 157581,
+      "nonopaque_pixels": 168875,
+      "alpha_bbox": [
+        40,
+        90,
+        472,
+        421
+      ],
+      "review": "candidate",
+      "notes": "User-provided settings artwork, 2026-10-31. Statically inspected; proportional source geometry keeps controls inside the unmodified parchment. Icons remain separate from localized text."
+    },
+    {
+      "path": "apps/client/assets/ui/courtroom/settings/panel_einstellungen_pergament.png",
+      "width": 1080,
+      "height": 1400,
+      "bytes": 886701,
+      "sha256": "0d79958ae2cd2a5d157d86066930e6b10bbd1ff3588ea54b3dcaf3cadf56398b",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 438433,
+      "nonopaque_pixels": 501228,
+      "alpha_bbox": [
+        42,
+        123,
+        1038,
+        1276
+      ],
+      "review": "candidate",
+      "notes": "User-provided settings artwork, 2026-10-31. Statically inspected; proportional source geometry keeps controls inside the unmodified parchment. Icons remain separate from localized text."
     }
   ],
   "redesign": {

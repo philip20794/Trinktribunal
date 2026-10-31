@@ -75,7 +75,7 @@ class RoomGameScreen extends ConsumerWidget {
                   Flexible(
                     flex: bounds.hasBoundedHeight ? 1 : 0,
                     child: CourtQuestion(
-                      animationKey: view.roundId,
+                      animationKey: (view.roundId, view.question?.contentId),
                       showRefresh:
                           snapshot.you ==
                           (view.config.allJudges

@@ -146,23 +146,17 @@ Future<({RoomController room, FakeRoomTransport transport})> pump(
 
 Future<void> tapText(WidgetTester tester, String text) async {
   var finder = find.text(text);
-  if (finder.evaluate().isEmpty &&
-      ['de', 'en'].any(
-        (language) => [
-          AppStrings(language).get('phoneReveal'),
-          AppStrings(language).get('phoneHide'),
-        ].contains(text),
-      )) {
-    finder = find.byKey(const ValueKey('compact-private-number'));
-  }
-  if (finder.evaluate().isEmpty &&
-      [
-        'de',
-        'en',
-      ].any((lang) => text == AppStrings(lang).get('localGameOptions'))) {
-    await tester.ensureVisible(find.byType(Tab).last);
-    await tester.tap(find.byType(Tab).last);
+  if ([
+    'de',
+    'en',
+  ].any((lang) => text == AppStrings(lang).get('localGameOptions'))) {
+    final roomTabs = find.descendant(
+      of: find.byKey(const ValueKey('room-tabs')),
+      matching: find.byType(Tab),
+    );
+    await tester.tap(roomTabs.last);
     await tester.pumpAndSettle();
+    return;
   }
   await tester.ensureVisible(finder);
   await tester.pumpAndSettle();

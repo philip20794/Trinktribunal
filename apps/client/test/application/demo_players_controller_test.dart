@@ -144,6 +144,50 @@ void main() {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     expect(socket.sent.whereType<SubmitOrderMessage>(), hasLength(1));
     expect(hostStore.records, isEmpty);
+    // A server-projected draft must still be confirmed by the demo participant.
+    final draft = demoView('ordering', 5);
+    socket.receive(
+      SnapshotMessage.fromJson({
+        ...draft.toJson(),
+        'private': {
+          ...draft.private.toJson(),
+          'ownOrder': ['demo1', 'p2', 'p1'],
+        },
+      }),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    expect(socket.sent.whereType<SubmitOrderMessage>(), hasLength(2));
+    expect(socket.sent.whereType<SubmitOrderMessage>().last.confirmed, isTrue);
+    final judged = demoView('judged', 6);
+    socket.receive(judged);
+    await Future<void>.delayed(const Duration(milliseconds: 2100));
+    expect(socket.sent.whereType<CompleteCaseMessage>(), isEmpty);
+    socket.receive(
+      SnapshotMessage.fromJson({
+        ...judged.toJson(),
+        'revision': 7,
+        'public': {...judged.public.toJson(), 'readerId': 'demo1'},
+      }),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 2100));
+    expect(socket.sent.whereType<CompleteCaseMessage>(), hasLength(1));
+    socket.receive(
+      SnapshotMessage.fromJson({
+        ...judged.toJson(),
+        'revision': 8,
+        'public': {
+          ...judged.public.toJson(),
+          'phase': 'rule_event',
+          'completedCases': 1,
+          'readerId': 'demo1',
+          'roundId': null,
+          'frozenRoster': [],
+        },
+        'private': <String, Object?>{},
+      }),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    expect(socket.sent.whereType<ContinueRuleMessage>(), hasLength(1));
     expect(demos.retainedSessions, 1);
     socket.receive(roomFixture('roomClosed'));
     await Future<void>.delayed(Duration.zero);

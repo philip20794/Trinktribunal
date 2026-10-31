@@ -97,10 +97,12 @@ function mutate(
     !state.game?.receipts.some((receipt) => receipt.actionId === command.actionId)
   )
     return { state, result: { ok: false, code: 'RATE_LIMITED' } };
-  if ((command.type === 'startGame' || command.type === 'restartGame') && state.historyOffer)
+  const starting =
+    command.type === 'startGame' || (command.type === 'restartGame' && !command.setupOnly);
+  if (starting && state.historyOffer)
     return { state, result: { ok: false, code: 'INVALID_PHASE' } };
   if (
-    (command.type === 'startGame' || command.type === 'restartGame') &&
+    starting &&
     state.members.some((member) => !member.revoked && member.profile?.name === PENDING_ROOM_NAME)
   )
     return { state, result: { ok: false, code: 'INVALID_NAME' } };

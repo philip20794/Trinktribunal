@@ -187,7 +187,7 @@
         "factorTenths": {
           "type": "integer",
           "minimum": 10,
-          "maximum": 30
+          "maximum": 40
         },
         "allJudges": {
           "type": "boolean"
@@ -533,7 +533,7 @@
         "number": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 60
+          "maximum": 80
         }
       }
     },
@@ -668,7 +668,7 @@
         "ownNumber": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 60
+          "maximum": 80
         },
         "ownOrder": {
           "type": "array",
@@ -1345,6 +1345,9 @@
           "$ref": "#/$defs/config"
         },
         "confirmed": {
+          "const": true
+        },
+        "setupOnly": {
           "const": true
         }
       }

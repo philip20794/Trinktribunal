@@ -1,4 +1,4 @@
-import '../../design/court_dialog.dart';
+import '../../design/game_finished_panel.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,20 +28,22 @@ class OnlineGameProgress extends ConsumerWidget {
     if (gameId == null) return const SizedBox.shrink();
     final host = snapshot.you == view.hostId,
         names = {for (final p in view.players) p.playerId: p.profile.name};
+    if (view.phase == 'finished') {
+      return ListenableBuilder(
+        listenable: game,
+        builder: (context, _) => GameFinishedPanel(
+          onNewGame: host && !game.pending('setup')
+              ? () => game.returnToSetup(gameId: gameId)
+              : null,
+          waitingForHost: !host,
+        ),
+      );
+    }
     return ListenableBuilder(
       listenable: game,
       builder: (context, _) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (view.phase == 'finished') ...[
-            CourtSeal(label: context.tr('endHearing')),
-            Text(
-              context.tr('cardFinished', {
-                'count': view.completedCases,
-                'rules': view.activeRules.length,
-              }),
-            ),
-          ],
           if (view.phase == 'rule_event') ...[const TText('newDrinkingRule')],
           if (view.activeRules.isNotEmpty)
             ExpansionTile(
@@ -90,31 +92,6 @@ class OnlineGameProgress extends ConsumerWidget {
               const TText('onlinePausePlayers'),
           ],
           if (showActions) OnlineProgressAction(snapshot: snapshot),
-          if (host && view.phase == 'finished')
-            OutlinedButton(
-              onPressed: game.pending('restart') || game.activeCount < 3
-                  ? null
-                  : () async {
-                      game.hideSecret();
-                      final confirmed = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => CourtDialog(
-                          title: const TText('restartTitle'),
-                          content: const TText('restartHelp'),
-                          actions: [
-                            FilledButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const TText('restartAction'),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (context.mounted && confirmed == true) {
-                        game.restartGame(gameId: gameId, confirmed: true);
-                      }
-                    },
-              child: const TText('restartGame'),
-            ),
         ],
       ),
     );

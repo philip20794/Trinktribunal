@@ -7,6 +7,7 @@ import '../../l10n/app_strings.dart';
 import 'invite.dart';
 import 'invitation.dart';
 import '../../design/status_notice.dart';
+
 import 'game_settings.dart';
 import 'roster_management.dart';
 
@@ -26,14 +27,28 @@ class RoomTools extends ConsumerWidget {
         children: [
           if (code != null) RoomInvite(code: code),
           const SizedBox(height: 8),
-          RoomAllJudgesSwitch(snapshot: snapshot),
-          ExpansionTile(
+          RoomGameSettings(
             key: const PageStorageKey('room-game-settings'),
-            leading: const Icon(Icons.tune),
-            title: const TText('localGameOptions'),
-            childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            children: [RoomGameSettings(snapshot: snapshot)],
+            snapshot: snapshot,
           ),
+          if (snapshot.public.gameId != null &&
+              !['lobby', 'finished'].contains(snapshot.public.phase))
+            ListenableBuilder(
+              listenable: ref.watch(onlineGameProvider),
+              builder: (context, _) => Padding(
+                padding: const EdgeInsets.all(12),
+                child: OutlinedButton.icon(
+                  key: const ValueKey('stop-room-game'),
+                  icon: const Icon(Icons.stop_circle_outlined),
+                  label: const TText('stopGame'),
+                  onPressed: ref.read(onlineGameProvider).pending('setup')
+                      ? null
+                      : () => ref
+                            .read(onlineGameProvider)
+                            .returnToSetup(gameId: snapshot.public.gameId!),
+                ),
+              ),
+            ),
 
           ListenableBuilder(
             listenable: demos,

@@ -1,0 +1,7 @@
+# Avatar-Kategorien als Tabs, 31.10.2026
+
+`AvatarOptions` verwendet einen eigenen expliziten `TabController` für Gesicht, Kleidung und Farben sowie `TabBar`/`TabBarView`. Der äußere `DefaultTabController` des Gerichtssaals bleibt für Ich, Gerichtssaal, Fallakte und Raumverwaltung zuständig. Wischen innerhalb der Optionsseiten wechselt nur die Avatar-Kategorie. Ein zusätzlicher Gestenbereich auf der Kategorienleiste fängt auch dort horizontales Wischen ab; an beiden Kategoriengrenzen wird nicht zum äußeren Tab weitergereicht. Vertikales Scrollen der Optionen und die vorhandenen Auswahl-/Farbsheets bleiben erhalten.
+
+Wischen oben beim Avatar wechselt zum nächsten äußeren Tab. In laufenden Partien erlaubt der äußere Gestenhandler jetzt ausdrücklich den Wechsel von Ich zum nächsten Tab. Die bisherigen Grenzen zwischen Gerichtssaal/Fallakte sowie die Namenspflicht bleiben erhalten. Lokal funktioniert derselbe Kategorie-Editor ohne äußere Tabs. Beschriftungen passen sich mit `FittedBox` an schmale Ansichten und große Schrift an; Farbfelder bekommen bei großer Schrift ausreichend Höhe.
+
+Acht verschachtelte Gestentests decken Lobby und laufendes Spiel, normalen/Alle-Richter-Modus sowie Host/Gast ab. Geprüft werden beide Wischrichtungen, beide Kategoriengrenzen, Wischen auf der Kategorienleiste, direkte Tab-Auswahl und Wischen oben auf dem Avatar. Dazu bleiben Profil-/Sheet-, Farb-, Tastatur-, Fallakten-, Spielfluss- und Zugänglichkeitstests Bestandteil der Regression. Die Tests verwenden eindeutige Schlüssel für äußere und innere Tabs.

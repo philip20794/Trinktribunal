@@ -149,19 +149,19 @@
       "files": [
         {
           "path": "apps/client/lib/design/case_file.dart",
-          "sha256": "733cf47d9c96a178473f45da56a7830a79aa41edacc5d03fb57c55d4f6914b88"
+          "sha256": "ceac164fd1f51d784c2e5f4ad2f9417a63b4643413b0b143b57fddd55a892f19"
         },
         {
           "path": "apps/client/lib/design/court_scene.dart",
-          "sha256": "0bf57bcd40269bd0328a402589079d48a6de94b5faac07acfda0afe3daffc78f"
+          "sha256": "a55b6f0877dc65f031b38103567a5abf7af8df4eb4fd4bd29fea0a0eaafe5d77"
         },
         {
           "path": "apps/client/lib/design/court_assets.dart",
-          "sha256": "63e35742cc7e294c85131ade383156fec794d56aa48a653f18f25b96120d2941"
+          "sha256": "3d63f03dd2d5151da88dbf652ef3b579949b26d47ea2e3d4bc14abcfc14f2626"
         },
         {
           "path": "apps/client/lib/design/illustrated_paper.dart",
-          "sha256": "205974aad9d961b83615b74819676d5a7333b8e2a4925c90d4fc4315ce416790"
+          "sha256": "dd4807017d7873ff791b8951cc028c74f49cf891c3a39007bcd079fba0cf9928"
         }
       ]
     },
@@ -769,6 +769,31 @@
         {
           "path": "apps/client/assets/ui/courtroom/illustrations/trinktribunal_pergament_popup.png",
           "sha256": "f98ab658e36a0a47e8017f17613929dd0a849bd965fe7e6a972c5a430249b368"
+        }
+      ]
+    },
+    {
+      "id": "settings-parchment-runtime",
+      "distribution": "runtime",
+      "status": "unresolved",
+      "provenance": "Four original PNG files supplied by the user for the settings redesign on 2026-10-31. No license or provenance grant inferred.",
+      "evidence": "docs/qa/settings-parchment.md",
+      "files": [
+        {
+          "path": "apps/client/assets/ui/courtroom/settings/icon_faelle.png",
+          "sha256": "8f389cd5bb2a8c420dbcd7082dc8b00885cec46722ef02eeb4eb1250c41dce28"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/settings/icon_regeln.png",
+          "sha256": "f28c9ce71101fd65b890ba62933b28f854dc42ec7e6b0cc16cc0294541a8ab47"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/settings/icon_zahlenbereich.png",
+          "sha256": "dc56ab8d07aa8c00303b5b7ef6883f1df9024e6821d5ad1e841c71a3434c6020"
+        },
+        {
+          "path": "apps/client/assets/ui/courtroom/settings/panel_einstellungen_pergament.png",
+          "sha256": "0d79958ae2cd2a5d157d86066930e6b10bbd1ff3588ea54b3dcaf3cadf56398b"
         }
       ]
     }

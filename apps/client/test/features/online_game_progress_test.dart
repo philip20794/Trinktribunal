@@ -49,7 +49,7 @@ void main() {
   });
 
   testWidgets(
-    'rule event uses host content language, continues once, and finished restart requires confirmation',
+    'rule event uses host content language, continues once, and finished returns to editable setup',
     (tester) async {
       final fixture = await numbers.pump(
             tester,
@@ -77,15 +77,11 @@ void main() {
       socket.receive(boundary(base, phase: 'finished', revision: 3));
       await tester.pumpAndSettle();
       expect(actionText(AppStrings('de').get('endHearing')), findsOneWidget);
-      await numbers.tapText(tester, AppStrings('de').get('restartGame'));
-      await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
-      await tester.pumpAndSettle();
-      expect(socket.sent.whereType<RestartGameMessage>(), isEmpty);
-      await numbers.tapText(tester, AppStrings('de').get('restartGame'));
-      await tester.tap(actionText(AppStrings('de').get('restartAction')));
+      await tester.tap(find.byKey(const ValueKey('finished-new-game')));
       await tester.pumpAndSettle();
       final restart = socket.sent.whereType<RestartGameMessage>().single;
       expect(restart.confirmed, isTrue);
+      expect(restart.setupOnly, isTrue);
       expect(restart.gameId, base.public.gameId);
       expect(restart.expectedRevision, 3);
       expect(fixture.room.state.snapshot!.public.phase, 'finished');
@@ -93,19 +89,21 @@ void main() {
   );
 
   testWidgets(
-    'restart dialog cannot target a later game and non-host has no progression controls',
+    'stale setup callback cannot reset a later game and guests have no progression controls',
     (tester) async {
       final fixture = await numbers.pump(tester, host: true, own: false),
           socket = fixture.transport.sockets.last,
           base = fixture.room.state.snapshot!;
       socket.receive(boundary(base, phase: 'finished'));
       await tester.pumpAndSettle();
-      await numbers.tapText(tester, AppStrings('de').get('restartGame'));
+      final oldAction = tester
+          .widget<FilledButton>(find.byKey(const ValueKey('finished-new-game')))
+          .onPressed!;
       socket.receive(
         boundary(base, phase: 'finished', revision: 3, gameId: 'later_game'),
       );
       await tester.pumpAndSettle();
-      await tester.tap(actionText(AppStrings('de').get('restartAction')));
+      oldAction();
       await tester.pumpAndSettle();
       expect(socket.sent.whereType<RestartGameMessage>(), isEmpty);
       final nonHost = boundary(base, revision: 4);

@@ -315,6 +315,28 @@ final class OnlineGameController extends ChangeNotifier {
     );
   }
 
+  /// Clear the current game while retaining the room, profiles and recent history.
+  bool returnToSetup({required GameId gameId}) {
+    final view = snapshot;
+    if (view == null ||
+        view.public.gameId != gameId ||
+        view.you != view.public.hostId) {
+      return false;
+    }
+    hideSecret();
+    return _send(
+      'setup',
+      RestartGameMessage.create(
+        actionId: ActionId(_newId()),
+        expectedRevision: view.revision,
+        gameId: gameId,
+        config: view.public.config,
+        confirmed: true,
+        setupOnly: true,
+      ),
+    );
+  }
+
   bool completeWithoutVerdict({
     required GameId gameId,
     required RoundId roundId,

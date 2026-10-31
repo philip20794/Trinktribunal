@@ -1,4 +1,5 @@
-import '../../design/court_dialog.dart';
+import '../../design/game_finished_panel.dart';
+
 import '../rules/active_rules_sheet.dart';
 import '../../design/status_notice.dart';
 
@@ -44,7 +45,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     with WidgetsBindingObserver {
   late final SharedPhoneController _controller;
   String? _error;
-  bool _dialogOpen = false;
+  bool _resetting = false;
   @override
   void initState() {
     super.initState();
@@ -115,30 +116,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     });
   }
 
-  Future<bool> _confirm(String title, String description) async {
-    if (_dialogOpen) return false;
-    _dialogOpen = true;
-    _act(_controller.interruptPrivateHandoff);
-    try {
-      return await showDialog<bool>(
-            context: context,
-            builder: (context) => CourtDialog(
-              title: Text(title),
-              content: Text(description),
-              actions: [
-                FilledButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const TText('confirm'),
-                ),
-              ],
-            ),
-          ) ??
-          false;
-    } finally {
-      _dialogOpen = false;
-    }
-  }
-
   Future<void> _group() async {
     _act(_controller.interruptPrivateHandoff);
     await Navigator.push<void>(
@@ -155,22 +132,20 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
     }
   }
 
-  Future<void> _restart(SharedGameView view) async {
-    final confirmed = await _confirm(
-      context.tr('newHearingTitle'),
-      context.tr('newHearingHelp'),
-    );
-    if (!mounted || !confirmed) return;
-    _act(() {
-      final roster = view.pendingRoster ?? view.roster;
-      final config = _controller.configure(
-        playerCount: roster.length,
-        targetCases: view.config.targetCases,
-        requestedRuleEvents: view.config.requestedRuleEvents,
-        factorTenths: view.config.factorTenths,
+  Future<void> _newGame() async {
+    if (_resetting) return;
+    setState(() => _resetting = true);
+    _controller.abort(confirmed: true);
+    await ref.read(localStateTransactionProvider).save();
+    if (!mounted) return;
+    final navigator = Navigator.of(context);
+    if (navigator.canPop()) {
+      navigator.pop();
+    } else {
+      navigator.pushReplacement(
+        MaterialPageRoute<void>(builder: (_) => const PlayerRosterScreen()),
       );
-      _controller.start(config: config, roster: roster, confirmedRestart: true);
-    });
+    }
   }
 
   void _activeRules(SharedGameView view) {
@@ -257,12 +232,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
         child: const TText('ruleUnderstood'),
       );
     }
-    if (view.phase == GamePhase.finished) {
-      return FilledButton(
-        onPressed: () => _restart(view),
-        child: const TText('newGame'),
-      );
-    }
     if (view.phase == GamePhase.paused) {
       return FilledButton(
         onPressed: () => _act(_controller.resumePaused),
@@ -274,7 +243,13 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
 
   @override
   Widget build(BuildContext context) {
-    final view = _controller.view!;
+    final view = _controller.view;
+    if (view == null || view.phase == GamePhase.finished) {
+      return CourtScaffold(
+        title: const TText('phoneTitle'),
+        body: GameFinishedPanel(onNewGame: _resetting ? null : _newGame),
+      );
+    }
     final rendered = view.question == null
         ? null
         : localizedQuestion(
@@ -372,23 +347,26 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
           ),
         ],
         bodyBuilder: (context) => CaseStage(
-          judge: view.judge == null
+          judge: view.displayedJudge == null
               ? null
               : JudgePlate(
-                  onTap: () async {
-                    _act(_controller.interruptPrivateHandoff);
-                    final profiles = await editLocalPerson(
-                      context,
-                      ref,
-                      view.roster.firstWhere((p) => p.player.id == view.judge),
-                    );
-                    if (mounted && profiles != null) {
-                      _act(() => _controller.applyRoster(profiles));
-                    }
-                  },
-                  profile: view.roster.firstWhere(
-                    (p) => p.player.id == view.judge,
-                  ),
+                  onTap:
+                      !view.roster.any(
+                        (p) => p.player.id == view.displayedJudge,
+                      )
+                      ? null
+                      : () async {
+                          _act(_controller.interruptPrivateHandoff);
+                          final profiles = await editLocalPerson(
+                            context,
+                            ref,
+                            view.profiles[view.displayedJudge]!,
+                          );
+                          if (mounted && profiles != null) {
+                            _act(() => _controller.applyRoster(profiles));
+                          }
+                        },
+                  profile: view.profiles[view.displayedJudge]!,
                 ),
           rules: view.activeRules.length,
           onRules: () => _activeRules(view),
@@ -414,7 +392,7 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                     GamePhase.paused,
                   ].contains(view.phase)) ...[
                 CourtQuestion(
-                  animationKey: view.roundId,
+                  animationKey: (view.roundId, view.question?.event.eventId),
                   showRefresh: true,
                   onRefresh:
                       [
@@ -476,8 +454,6 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       : context.feedback(view.pauseReason!),
                 ),
               ],
-              if (view.phase == GamePhase.finished)
-                CourtSeal(label: context.tr('endHearing')),
             ],
           ),
         ),

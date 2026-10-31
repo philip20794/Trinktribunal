@@ -73,7 +73,7 @@ test('D-02/D-10: Zahlen- und Konfigurationsgrenzen', () => {
     const allowed = c.playerCount >= 3 && c.playerCount <= 20 &&
       c.targetCases >= 1 && c.targetCases <= c.eligibleQuestions &&
       c.requestedRuleEvents >= 0 && c.requestedRuleEvents <= c.eligibleRules &&
-      c.factorTenths >= 10 && c.factorTenths <= 30 &&
+      c.factorTenths >= 10 && c.factorTenths <= 40 &&
       !(c.mode !== 'multiplayer' && c.allJudges);
     assert.equal(exp.valid, allowed);
     if (allowed) {

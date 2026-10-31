@@ -55,15 +55,15 @@ void main() {
     }
   });
   testWidgets(
-    'running game swipes only between Court and Case; auxiliary tabs still open by tap',
+    'game swipes stay between Court and Case; the avatar preview can leave Me',
     (tester) async {
       await numbers.pump(tester, allJudges: true, host: true);
       final controller = DefaultTabController.of(
-        tester.element(find.byType(TabBar)),
+        tester.element(find.byKey(const ValueKey('room-tabs'))),
       );
       expect(controller.index, 2);
       Future<void> swipe(Offset offset) async {
-        await tester.drag(find.byType(TabBarView), offset);
+        await tester.drag(find.byKey(const ValueKey('room-tab-pages')), offset);
         await tester.pumpAndSettle();
       }
 
@@ -74,11 +74,30 @@ void main() {
       await swipe(const Offset(450, 0));
       expect(controller.index, 1);
       for (final index in [0, 3]) {
-        await tester.tap(find.byType(Tab).at(index));
+        await tester.tap(
+          find
+              .descendant(
+                of: find.byKey(const ValueKey('room-tabs')),
+                matching: find.byType(Tab),
+              )
+              .at(index),
+        );
         await tester.pumpAndSettle();
         expect(controller.index, index);
-        await swipe(const Offset(-450, 0));
-        expect(controller.index, index);
+        if (index == 0) {
+          final portrait = tester.getRect(
+            find.byKey(const ValueKey('online-avatar-preview')),
+          );
+          await tester.dragFrom(
+            Offset(portrait.center.dx, portrait.top + portrait.height * .25),
+            const Offset(-450, 0),
+          );
+          await tester.pumpAndSettle();
+          expect(controller.index, 1);
+        } else {
+          await swipe(const Offset(-450, 0));
+          expect(controller.index, index);
+        }
       }
     },
   );
@@ -88,7 +107,14 @@ void main() {
       final store = MemoryStringStore();
       await numbers.pump(tester, allJudges: true, tutorialStore: store);
       expect(store.values['online.courtTutorialSeen.v1'], isNull);
-      await tester.tap(find.byType(Tab).at(1));
+      await tester.tap(
+        find
+            .descendant(
+              of: find.byKey(const ValueKey('room-tabs')),
+              matching: find.byType(Tab),
+            )
+            .at(1),
+      );
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
       expect(
@@ -105,7 +131,14 @@ void main() {
       expect(find.byType(CourtDragHint), findsNothing);
       await tester.pumpWidget(const SizedBox());
       await numbers.pump(tester, allJudges: true, tutorialStore: store);
-      await tester.tap(find.byType(Tab).at(1));
+      await tester.tap(
+        find
+            .descendant(
+              of: find.byKey(const ValueKey('room-tabs')),
+              matching: find.byType(Tab),
+            )
+            .at(1),
+      );
       await tester.pumpAndSettle();
       expect(find.byType(CourtDragHint), findsNothing);
     },
@@ -136,7 +169,14 @@ void main() {
         personalView(errors: errors, cursor: 4, revision: 2),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(Tab).at(1));
+      await tester.tap(
+        find
+            .descendant(
+              of: find.byKey(const ValueKey('room-tabs')),
+              matching: find.byType(Tab),
+            )
+            .at(1),
+      );
       await tester.pumpAndSettle();
       await reviewImage(tester, 'online-verdict-$errors');
       if (errors > 0) {

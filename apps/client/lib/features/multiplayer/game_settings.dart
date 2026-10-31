@@ -1,3 +1,5 @@
+import '../../design/game_settings_panel.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,50 +13,6 @@ import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
 import 'invitation.dart';
 import 'pending_profile.dart';
-import '../../design/setting_label.dart';
-
-/// Host-only option shown above the collapsible game settings.
-class RoomAllJudgesSwitch extends ConsumerWidget {
-  const RoomAllJudgesSwitch({required this.snapshot, super.key});
-  final SnapshotMessage snapshot;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    if (snapshot.public.phase != 'lobby') {
-      return const SizedBox.shrink();
-    }
-    final settings = ref.watch(onlineSettingsProvider);
-    return ListenableBuilder(
-      listenable: settings,
-      builder: (context, _) {
-        final config = settings.config ?? snapshot.public.config;
-        return Padding(
-          key: const ValueKey('room-all-judges'),
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            children: [
-              const Expanded(
-                child: SettingLabel(
-                  title: TText('onlineAllJudges'),
-                  helpKey: 'gameRulesAllJudgesBody',
-                ),
-              ),
-              Semantics(
-                label: context.tr('onlineAllJudges'),
-                child: Switch(
-                  value: config.allJudges,
-                  onChanged: settings.editable
-                      ? (value) => settings.change('allJudges', value)
-                      : null,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
 
 class RoomGameSettings extends ConsumerWidget {
   const RoomGameSettings({required this.snapshot, this.session, super.key});
@@ -63,101 +21,50 @@ class RoomGameSettings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (snapshot.public.phase != 'lobby') return const TText('rosterFrozen');
     final settings = ref.watch(onlineSettingsProvider);
     return ListenableBuilder(
       listenable: settings,
       builder: (context, _) {
-        final config = settings.config ?? snapshot.public.config;
-        final enabled = settings.editable;
-        Widget slider(
-          String label,
-          int value,
-          int min,
-          int max,
-          String field,
-        ) => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SettingLabel(
-              title: Text(context.tr(label, {'count': value})),
-              helpKey: field == 'targetCases'
-                  ? 'localCasesHelp'
-                  : 'localRulesHelp',
-            ),
-            Slider(
-              value: value.toDouble(),
-              min: min.toDouble(),
-              max: max.toDouble(),
-              divisions: max - min,
-              onChanged: enabled
-                  ? (n) => settings.change(field, n.round())
-                  : null,
-              onChangeEnd: enabled ? (_) => settings.flush() : null,
-            ),
-          ],
-        );
+        final config = snapshot.public.phase == 'lobby'
+            ? (settings.config ?? snapshot.public.config)
+            : snapshot.public.config;
+        final enabled = snapshot.public.phase == 'lobby' && settings.editable;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            slider('casesCount', config.targetCases, 1, 491, 'targetCases'),
-            slider(
-              'rulesCount',
-              config.requestedRuleEvents,
-              0,
-              25,
-              'requestedRuleEvents',
-            ),
-            SettingLabel(
-              helpKey: 'localFactorHelp',
-              title: Text(
-                context.tr('factor', {
-                  'value': (config.factorTenths / 10).toStringAsFixed(1),
-                }),
-              ),
-            ),
-            Slider(
-              value: config.factorTenths.toDouble(),
-              min: 10,
-              max: 30,
-              divisions: 20,
-              onChanged: enabled
-                  ? (n) => settings.change('factorTenths', n.round())
+            GameSettingsPanel(
+              cases: config.targetCases,
+              rules: config.requestedRuleEvents,
+              factorTenths: config.factorTenths,
+              enabled: enabled,
+              allJudges: config.allJudges,
+              contentLanguage: config.contentLanguage,
+              onAllJudgesChanged: enabled
+                  ? (value) => settings.change('allJudges', value)
                   : null,
-              onChangeEnd: enabled ? (_) => settings.flush() : null,
-            ),
-            DropdownButtonFormField<String>(
-              isExpanded: true,
-              key: ValueKey('online-language-${config.contentLanguage}'),
-              initialValue: config.contentLanguage,
-              decoration: InputDecoration(
-                labelText: context.tr('onlineContentLanguage'),
-              ),
-              items: const [
-                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
-                DropdownMenuItem(value: 'en', child: Text('English')),
-              ],
-              onChanged: enabled
-                  ? (value) {
-                      if (value != null) {
-                        settings.change('contentLanguage', value);
-                      }
-                    }
+              onLanguageChanged: enabled
+                  ? (value) => settings.change('contentLanguage', value)
                   : null,
+              maxCases: 150,
+              maxRules: 25,
+              onCasesChanged: enabled
+                  ? (n) => settings.change('targetCases', n)
+                  : null,
+              onRulesChanged: enabled
+                  ? (n) => settings.change('requestedRuleEvents', n)
+                  : null,
+              onFactorChanged: enabled
+                  ? (n) => settings.change('factorTenths', n)
+                  : null,
+              onChangeEnd: settings.flush,
             ),
-            const SizedBox(height: 12),
             if (settings.errorCode != null) ...[
               StatusNotice(context.tr(roomErrorKey(settings.errorCode))),
               TextButton(
                 onPressed: settings.retry,
                 child: const TText('retry'),
               ),
-            ] else
-              TText(
-                settings.dirty || settings.saving
-                    ? 'roomSettingsSaving'
-                    : 'roomSettingsAutoSave',
-              ),
+            ],
           ],
         );
       },
@@ -183,7 +90,7 @@ class RoomSettingsScreen extends ConsumerWidget {
                   StatusNotice(context.tr(roomErrorKey(state.errorCode)))
                 else
                   const SizedBox.shrink(),
-                RoomAllJudgesSwitch(snapshot: state.snapshot!),
+
                 RoomGameSettings(
                   key: const ValueKey('room-settings-editor'),
                   snapshot: state.snapshot!,

@@ -61,6 +61,7 @@ class RoomLobbyScreen extends ConsumerWidget {
                 ),
               ],
               appBarBottom: TabBar(
+                key: const ValueKey('room-tabs'),
                 isScrollable: false,
                 labelPadding: const EdgeInsets.symmetric(horizontal: 4),
                 labelStyle: const TextStyle(
@@ -207,7 +208,12 @@ class _CaseTabSyncState extends State<_CaseTabSync> {
             old.completedCases != next.completedCases ||
             oldGuide != nextGuide ||
             old.phase == 'rule_event' && next.phase != 'rule_event');
-    final target = completedName && next.config.allJudges
+    final returnedToSetup = old.phase != 'lobby' && next.phase == 'lobby';
+    final target = returnedToSetup
+        ? (widget.snapshot.you == next.hostId
+              ? (next.config.allJudges ? 3 : 2)
+              : 0)
+        : completedName && next.config.allJudges
         ? 1
         : next.config.allJudges &&
               old.phase != next.phase &&
@@ -345,7 +351,7 @@ class _RoomPhaseFooter extends ConsumerWidget {
   }
 }
 
-/// Only the two game pages participate in swiping during a running game.
+/// Avatar preview swipes leave Me; game swipes retain their Court/Case bounds.
 class _RoomTabPages extends StatefulWidget {
   const _RoomTabPages({
     required this.requiresName,
@@ -364,12 +370,13 @@ class _RoomTabPagesState extends State<_RoomTabPages> {
   @override
   Widget build(BuildContext context) {
     final pages = TabBarView(
+      key: const ValueKey('room-tab-pages'),
       physics: widget.requiresName || widget.playing
           ? const NeverScrollableScrollPhysics()
           : null,
       children: widget.children,
     );
-    if (!widget.playing || widget.requiresName || !widget.allJudges) {
+    if (!widget.playing || widget.requiresName) {
       return pages;
     }
     return GestureDetector(
@@ -380,6 +387,11 @@ class _RoomTabPagesState extends State<_RoomTabPages> {
         final velocity = details.primaryVelocity ?? 0;
         if (_drag.abs() < 40 && velocity.abs() < 200) return;
         final left = velocity.abs() >= 200 ? velocity < 0 : _drag < 0;
+        if (tabs.index == 0 && left) {
+          tabs.animateTo(1);
+          return;
+        }
+        if (!widget.allJudges) return;
         if (tabs.index == 1 && left) tabs.animateTo(2);
         if (tabs.index == 2 && !left) tabs.animateTo(1);
       },

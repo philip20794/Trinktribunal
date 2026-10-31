@@ -16,6 +16,52 @@ void main() {
       read: (path) => File(path).readAsString(),
     ).load();
   });
+  for (final host in [true, false]) {
+    testWidgets(
+      'online avatar back dismisses sheet before room dialog: host=$host',
+      (tester) async {
+        final fixture = await numbers.pump(tester, host: host, own: false);
+        await tester.tap(
+          find
+              .descendant(
+                of: find.byKey(const ValueKey('room-tabs')),
+                matching: find.byType(Tab),
+              )
+              .first,
+        );
+        await tester.pumpAndSettle();
+        final option = find.byWidgetPredicate(
+          (w) =>
+              w.key is ValueKey<String> &&
+              (w.key as ValueKey<String>).value.startsWith(
+                'online-avatar-option-hair:',
+              ),
+        );
+        await tester.tap(option);
+        await tester.pumpAndSettle();
+        expect(
+          find.byKey(const ValueKey('avatar-editor-sheet')),
+          findsOneWidget,
+        );
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+        expect(find.byKey(const ValueKey('avatar-editor-sheet')), findsNothing);
+        expect(find.byKey(const ValueKey('court-dialog-close')), findsNothing);
+        expect(
+          fixture.transport.sockets.last.sent.whereType<CloseRoomMessage>(),
+          isEmpty,
+        );
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+        expect(
+          find.byKey(const ValueKey('court-dialog-close')),
+          findsOneWidget,
+        );
+        await tester.tap(find.byKey(const ValueKey('court-dialog-close')));
+        await tester.pumpAndSettle();
+      },
+    );
+  }
   testWidgets(
     'host room close requires confirmation and does not optimistically erase the session',
     (tester) async {

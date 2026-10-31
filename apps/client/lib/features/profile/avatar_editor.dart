@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../design/avatar_view.dart';
 import '../../design/court_scene.dart';
+import '../../design/court_back_scope.dart';
 import '../../domain/avatar_config.dart';
 import '../../l10n/app_strings.dart';
 import 'avatar_color_picker.dart';
@@ -42,6 +43,18 @@ class _AvatarEditorState extends State<AvatarEditor> {
   String? _option;
   double _dismissDrag = 0;
   final _nameFocus = FocusNode();
+  CourtBackController? _back;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final next = CourtBackScope.of(context);
+    if (_back != next) {
+      _back?.unregister(this);
+      _back = next;
+      if (_option != null) _back?.register(this, _closeSheet);
+    }
+  }
 
   @override
   void initState() {
@@ -55,12 +68,14 @@ class _AvatarEditorState extends State<AvatarEditor> {
 
   @override
   void dispose() {
+    _back?.unregister(this);
     _nameFocus.removeListener(_nameFocusChanged);
     _nameFocus.dispose();
     super.dispose();
   }
 
   void _closeSheet() {
+    _back?.unregister(this);
     _portal.hide();
     setState(() => _option = null);
   }
@@ -69,6 +84,7 @@ class _AvatarEditorState extends State<AvatarEditor> {
     _nameFocus.unfocus();
     setState(() => _option = key);
     _portal.show();
+    _back?.register(this, _closeSheet);
   }
 
   @override
@@ -78,9 +94,9 @@ class _AvatarEditorState extends State<AvatarEditor> {
         ? Duration.zero
         : const Duration(milliseconds: 180);
     return PopScope(
-      canPop: _option == null,
+      canPop: _option == null || _back != null,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && _option != null) _closeSheet();
+        if (!didPop && _option != null && _back == null) _closeSheet();
       },
       child: CallbackShortcuts(
         bindings: {

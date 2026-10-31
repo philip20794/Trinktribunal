@@ -1,6 +1,6 @@
 import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
-import '../../design/setting_label.dart';
+import '../../design/game_settings_panel.dart';
 
 import 'package:flutter/material.dart';
 
@@ -151,6 +151,7 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
           cases: _cases,
           rules: _rules,
           factor: _factor,
+          playerCount: ref.read(rosterProvider).asData?.value.members.length,
         ),
       ),
     );
@@ -200,7 +201,9 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                             MaterialPageRoute(
                               builder: (_) => const CardModeScreen(),
                             ),
-                          );
+                          ).then((_) {
+                            if (mounted) setState(() {});
+                          });
                           return;
                         }
                         final config =
@@ -219,7 +222,9 @@ class _PlayerRosterScreenState extends ConsumerState<PlayerRosterScreen> {
                               roster: controller.members,
                             ),
                           ),
-                        );
+                        ).then((_) {
+                          if (mounted) setState(() {});
+                        });
                       }
                     : null,
                 child: TText(existing == null ? 'startHearing' : 'resumeGame'),
@@ -328,11 +333,13 @@ class LocalGameOptionsScreen extends StatefulWidget {
     required this.cases,
     required this.rules,
     required this.factor,
-    this.maxCases = 491,
+    this.playerCount,
+    this.maxCases = 150,
     this.maxRules = 25,
     super.key,
   });
   final int cases, rules, factor, maxCases, maxRules;
+  final int? playerCount;
   @override
   State<LocalGameOptionsScreen> createState() => _LocalGameOptionsScreenState();
 }
@@ -355,70 +362,23 @@ class _LocalGameOptionsScreenState extends State<LocalGameOptionsScreen> {
       ),
     ),
     bodyBuilder: (context) => ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       children: [
-        CourtPaper(
-          child: Builder(
-            builder: (context) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SettingLabel(
-                  helpKey: 'localCasesHelp',
-                  title: Text(
-                    context.tr('casesCount', {'count': _cases}),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-                Slider(
-                  value: _cases.toDouble(),
-                  min: 1,
-                  max: widget.maxCases.toDouble(),
-                  divisions: widget.maxCases - 1,
-                  label: '$_cases',
-                  onChanged: (v) => setState(() {
-                    _cases = v.round();
-                    if (_rules >= _cases) _rules = _cases - 1;
-                  }),
-                ),
-                SettingLabel(
-                  helpKey: 'localRulesHelp',
-                  title: Text(
-                    context.tr('rulesCount', {'count': _rules}),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-                Slider(
-                  value: _rules.toDouble(),
-                  min: 0,
-                  max: (_cases - 1).clamp(0, widget.maxRules).toDouble(),
-                  divisions: _cases > 1
-                      ? (_cases - 1).clamp(1, widget.maxRules)
-                      : null,
-                  label: '$_rules',
-                  onChanged: _cases > 1
-                      ? (v) => setState(() => _rules = v.round())
-                      : null,
-                ),
-                SettingLabel(
-                  helpKey: 'localFactorHelp',
-                  title: Text(
-                    context.tr('factor', {
-                      'value': (_factor / 10).toStringAsFixed(1),
-                    }),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-                Slider(
-                  value: _factor.toDouble(),
-                  min: 10,
-                  max: 30,
-                  divisions: 20,
-                  label: (_factor / 10).toStringAsFixed(1),
-                  onChanged: (v) => setState(() => _factor = v.round()),
-                ),
-              ],
-            ),
-          ),
+        GameSettingsPanel(
+          cases: _cases,
+          rules: _rules,
+          factorTenths: _factor,
+          playerCount: widget.playerCount,
+          maxCases: widget.maxCases,
+          maxRules: (_cases - 1).clamp(0, widget.maxRules),
+          onCasesChanged: (value) => setState(() {
+            _cases = value;
+            if (_rules >= _cases) _rules = _cases - 1;
+          }),
+          onRulesChanged: _cases > 1
+              ? (value) => setState(() => _rules = value)
+              : null,
+          onFactorChanged: (value) => setState(() => _factor = value),
         ),
       ],
     ),

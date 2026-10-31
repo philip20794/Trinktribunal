@@ -183,7 +183,9 @@ class CourtQuestion extends StatelessWidget {
       high: red,
       maximum: maximum,
       showRefresh: showRefresh,
-      onRefresh: onRefresh,
+      onRefresh: onRefresh == null
+          ? null
+          : () => CourtMotionBoundary.run(context, onRefresh!),
     ),
   );
 }

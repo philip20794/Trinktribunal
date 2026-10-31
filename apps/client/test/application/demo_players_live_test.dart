@@ -165,17 +165,7 @@ void main() {
       final nextJudged = await until(host, (view) => view.phase == 'judged');
       expect(nextJudged.public.completedCases, 1);
       expect(nextJudged.private.ownResult, isNotNull);
-      // Demo guides intentionally stop at the verdict; adding people did not
-      // corrupt the round. The host's authorized server command still advances.
-      await Future<void>.delayed(const Duration(milliseconds: 800));
-      expect(host.state.snapshot!.public.phase, 'judged');
-      expect(
-        game.completeCase(
-          gameId: nextJudged.public.gameId!,
-          roundId: nextJudged.public.roundId!,
-        ),
-        isTrue,
-      );
+      // The demo reader advances after showing the verdict, without a host action.
       final third = await until(
         host,
         (view) => view.completedCases == 2 && view.phase == 'numbers',
@@ -327,10 +317,17 @@ void main() {
       final nextJudged = await until(host, (view) => view.phase == 'judged');
       expect(nextJudged.public.completedCases, 1);
       final credential = (await store.load()).credentials.single;
+      final third = await until(
+        host,
+        (view) => view.phase == 'numbers' && view.completedCases == 2,
+      );
       await host.resume(credential);
-      final resumed = await until(host, (view) => view.phase == 'judged');
+      final resumed = await until(
+        host,
+        (view) => view.phase == 'numbers' && view.completedCases == 2,
+      );
       expect(resumed.you, nextJudged.you);
-      expect(resumed.public.roundId, nextJudged.public.roundId);
+      expect(resumed.public.roundId, third.public.roundId);
       expect(resumed.public.players, hasLength(3));
     },
     skip: _server.isEmpty

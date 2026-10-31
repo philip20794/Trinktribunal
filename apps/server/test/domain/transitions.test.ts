@@ -9,7 +9,7 @@ import {
 } from '../../src/domain/game_reducer';
 import type { GamePorts, GameState, MutableGameState, Phase } from '../../src/domain/game_state';
 import { RoomIds } from '../../src/protocol/room_message';
-import type { Config, PlayerId } from '../../src/protocol/room_message.generated';
+import type { Config } from '../../src/protocol/room_message.generated';
 
 const ids = ['A', 'B', 'C'].map(RoomIds.player);
 const config: Config = {
@@ -488,3 +488,57 @@ describe('D-08 deterministic host lifecycle', () => {
       if (phase === 'paused') expect(state.pauseReason).toBe('insufficient_players');
     });
 });
+
+for (const allJudges of [false, true]) {
+  it(`host returns active or finished game to clean editable setup: allJudges=${allJudges}`, () => {
+    const dependencies = ports([1]);
+    let active = apply(lobby({ allJudges, requestedRuleEvents: 1 }), 'startGame', dependencies);
+    active = apply(active, 'completeWithoutVerdict', dependencies);
+    expect(active.activeRules).not.toHaveLength(0);
+    for (const finished of [false, true]) {
+      let before = active;
+      if (finished) {
+        before = apply(before, 'continueRule', dependencies, { afterCase: 1 });
+        while (before.phase !== 'finished')
+          before = apply(before, 'completeWithoutVerdict', dependencies);
+      }
+      const reset = command(before, 'restartGame', { config: before.config, setupOnly: true });
+      expect(transition(before, ids[1]!, reset, dependencies)).toMatchObject({
+        ok: false,
+        code: 'UNAUTHORIZED_ACTION',
+      });
+      const result = transition(before, before.hostId, reset, dependencies);
+      expect(result).toMatchObject({ ok: true });
+      const setup = result.state;
+      expect(setup).toMatchObject({
+        phase: 'lobby',
+        gameId: null,
+        round: null,
+        judgeId: null,
+        readerId: null,
+        completedCases: 0,
+        activeRules: [],
+        drawnQuestionIds: [],
+        drawnRuleIds: [],
+        completedRoundIds: [],
+        ruleSlots: [],
+        questionDraws: [],
+        lastCompletion: null,
+        pendingRoster: null,
+      });
+      expect(setup.roster).toEqual(before.roster);
+      expect(setup.config).toEqual(before.config);
+      const edited = apply(setup, 'setConfig', dependencies, {
+        config: { ...setup.config, factorTenths: 40 },
+      });
+      const restarted = apply(edited, 'startGame', dependencies);
+      expect(restarted.gameId).not.toBe(before.gameId);
+      expect(restarted.completedCases).toBe(0);
+      expect(restarted.config.factorTenths).toBe(40);
+      expect(transition(restarted, restarted.hostId, reset, dependencies)).toMatchObject({
+        ok: false,
+        code: 'STALE_ROUND',
+      });
+    }
+  });
+}

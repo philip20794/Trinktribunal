@@ -41,6 +41,7 @@ final class SharedGameView {
           : List.unmodifiable(session._pending!),
       profiles = Map.unmodifiable(session._profiles),
       judge = session._judge,
+      displayedJudge = session._displayedJudge,
       question = session._question,
       numberStage = session._phase == GamePhase.numbers
           ? session._numberStage
@@ -88,6 +89,9 @@ final class SharedGameView {
   final Map<PlayerId, UserProfile> profiles;
   final List<UserProfile>? pendingRoster;
   final PlayerId? judge;
+
+  /// Keep the phone holder's judge plate until the next number handoff is done.
+  final PlayerId? displayedJudge;
   final ContentAssignment? question;
   final SharedNumberStage? numberStage;
   final PlayerId? recipient;
@@ -155,6 +159,14 @@ final class SharedPhoneController {
   Map<String, List<String>> _questionDraws = const {};
   String? _pauseReason;
   SharedGameView? get view => _config == null ? null : SharedGameView._(this);
+  PlayerId? get _displayedJudge =>
+      _previousJudge != null &&
+          _profiles.containsKey(_previousJudge) &&
+          (_phase == GamePhase.ruleEvent ||
+              (_phase == GamePhase.numbers &&
+                  _numberStage != SharedNumberStage.judgeHandoff))
+      ? _previousJudge
+      : _judge;
   PersonSelectionCounts get personCounts => _rules!.selection.counts;
 
   GameConfig configure({

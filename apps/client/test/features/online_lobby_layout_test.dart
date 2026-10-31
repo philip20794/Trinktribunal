@@ -37,6 +37,75 @@ void main() {
     ).load();
     await TrinkAvatarRenderer.svg(AvatarConfig());
   });
+  for (final lobby in [true, false]) {
+    for (final allJudges in [false, true]) {
+      for (final host in [false, true]) {
+        testWidgets(
+          'avatar/category swipe isolation: lobby=$lobby/allJudges=$allJudges/host=$host',
+          (tester) async {
+            await tester.binding.setSurfaceSize(const Size(390, 844));
+            addTearDown(() => tester.binding.setSurfaceSize(null));
+            await numbers.pump(
+              tester,
+              lobby: lobby,
+              allJudges: allJudges,
+              host: host,
+            );
+            final roomBar = find.byKey(const ValueKey('room-tabs'));
+            final roomTabs = find.descendant(
+              of: roomBar,
+              matching: find.byType(Tab),
+            );
+            final roomController = DefaultTabController.of(
+              tester.element(roomBar),
+            );
+            await tester.tap(roomTabs.first);
+            await tester.pumpAndSettle();
+            final categoryBar = find.byKey(
+              const ValueKey('avatar-category-tabs'),
+            );
+            final categoryController = tester
+                .widget<TabBar>(categoryBar)
+                .controller!;
+            final options = find.byKey(const ValueKey('avatar-category-pages'));
+            Future<void> swipeOptions(double dx, int expected) async {
+              await tester.drag(options, Offset(dx, 0));
+              await tester.pumpAndSettle();
+              expect(categoryController.index, expected);
+              expect(roomController.index, 0);
+            }
+
+            await swipeOptions(-260, 1);
+            await swipeOptions(-260, 2);
+            await swipeOptions(-260, 2);
+            await swipeOptions(260, 1);
+            await swipeOptions(260, 0);
+            await swipeOptions(260, 0);
+            await tester.drag(categoryBar, const Offset(-260, 0));
+            await tester.pumpAndSettle();
+            expect(categoryController.index, 1);
+            expect(roomController.index, 0);
+            await tester.tap(find.byKey(const ValueKey('avatar-tab-2')));
+            await tester.pumpAndSettle();
+            expect(categoryController.index, 2);
+            expect(roomController.index, 0);
+            final portrait = tester.getRect(
+              find.byKey(const ValueKey('online-avatar-preview')),
+            );
+            await tester.dragFrom(
+              Offset(portrait.center.dx, portrait.top + portrait.height * .25),
+              const Offset(-260, 0),
+            );
+            await tester.pumpAndSettle();
+            expect(roomController.index, 1);
+            expect(tester.takeException(), isNull);
+            await tester.pumpWidget(const SizedBox());
+            await tester.pumpAndSettle();
+          },
+        );
+      }
+    }
+  }
   for (final language in ['de', 'en']) {
     for (final scale in [1.0, 2.0]) {
       testWidgets(
@@ -81,7 +150,77 @@ void main() {
     }
   }
   testWidgets(
-    'all-judges toggle sits above game settings and explains the rule',
+    'running room administration keeps settings visible with every control disabled',
+    (tester) async {
+      final fixture = await numbers.pump(tester, host: true, allJudges: true);
+      final tabs = find.descendant(
+        of: find.byKey(const ValueKey('room-tabs')),
+        matching: find.byType(Tab),
+      );
+      await tester.tap(tabs.last);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('game-settings-paper')), findsOneWidget);
+      expect(tester.widget<Switch>(find.byType(Switch)).onChanged, isNull);
+      expect(
+        tester
+            .widget<DropdownButton<String>>(find.byType(DropdownButton<String>))
+            .onChanged,
+        isNull,
+      );
+      for (final slider in tester.widgetList<Slider>(find.byType(Slider))) {
+        expect(slider.onChanged, isNull);
+      }
+      expect(
+        find.text(const AppStrings('de').get('roomSettingsAutoSave')),
+        findsNothing,
+      );
+      expect(
+        find.text(const AppStrings('de').get('localGameOptions')),
+        findsNothing,
+      );
+      final stop = find.byKey(const ValueKey('stop-room-game'));
+      await tester.ensureVisible(stop);
+      await tester.tap(stop);
+      await tester.pumpAndSettle();
+      final command = fixture.transport.sockets.last.sent
+          .whereType<RestartGameMessage>()
+          .single;
+      expect(command.setupOnly, isTrue);
+      final base = fixture.room.state.snapshot!;
+      fixture.transport.sockets.last.receive(
+        SnapshotMessage.fromJson({
+          ...base.toJson(),
+          'revision': base.revision + 1,
+          'public': {
+            ...base.public.toJson(),
+            'phase': 'lobby',
+            'gameId': null,
+            'roundId': null,
+            'question': null,
+            'frozenRoster': [],
+            'judgeId': null,
+            'readerId': null,
+            'activeRules': [],
+            'completedCases': 0,
+          },
+          'private': <String, Object?>{},
+        }),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('stop-room-game')), findsNothing);
+      expect(tester.widget<Switch>(find.byType(Switch)).onChanged, isNotNull);
+      for (final slider in tester.widgetList<Slider>(find.byType(Slider))) {
+        expect(slider.onChanged, isNotNull);
+      }
+      expect(
+        fixture.transport.sockets.last.sent.whereType<StartGameMessage>(),
+        isEmpty,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
+  testWidgets(
+    'all-judges toggle sits inside the open parchment above cases and explains the rule',
     (tester) async {
       await tester.binding.setSurfaceSize(const Size(360, 800));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -99,14 +238,23 @@ void main() {
       await tester.ensureVisible(info);
       await tester.pumpAndSettle();
       expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('game-settings-paper')),
+          matching: toggle,
+        ),
+        findsOneWidget,
+      );
+      expect(
         tester.getTopLeft(toggle).dy,
         lessThan(
           tester
-              .getTopLeft(
-                find.byKey(const PageStorageKey('room-game-settings')),
-              )
+              .getTopLeft(find.byKey(const ValueKey('settings-cases-value')))
               .dy,
         ),
+      );
+      expect(
+        tester.widget(find.byKey(const PageStorageKey('room-game-settings'))),
+        isNot(isA<ExpansionTile>()),
       );
       await tester.tap(info);
       await tester.pumpAndSettle();
@@ -118,10 +266,23 @@ void main() {
     'guest has no room tools; all-judges courtroom has no connection roster',
     (tester) async {
       await numbers.pump(tester, lobby: true, allJudges: true);
-      expect(find.byType(Tab), findsNWidgets(3));
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('room-tabs')),
+          matching: find.byType(Tab),
+        ),
+        findsNWidgets(3),
+      );
       expect(find.byType(QrImageView), findsNothing);
       expect(find.byKey(const PageStorageKey('host-room-tools')), findsNothing);
-      await tester.tap(find.byType(Tab).at(1));
+      await tester.tap(
+        find
+            .descendant(
+              of: find.byKey(const ValueKey('room-tabs')),
+              matching: find.byType(Tab),
+            )
+            .at(1),
+      );
       await tester.pumpAndSettle();
       expect(find.byType(RoomCourtroom), findsOneWidget);
       expect(find.byKey(const ValueKey('presence-p1')), findsNothing);

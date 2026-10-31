@@ -148,7 +148,7 @@
     },
     {
       "name": "factor-bound",
-      "wire": "{\"type\":\"setConfig\",\"protocolVersion\":2,\"actionId\":\"action_1\",\"expectedRevision\":0,\"config\":{\"targetCases\":50,\"requestedRuleEvents\":7,\"factorTenths\":31,\"allJudges\":false,\"contentLanguage\":\"de\"}}",
+      "wire": "{\"type\":\"setConfig\",\"protocolVersion\":2,\"actionId\":\"action_1\",\"expectedRevision\":0,\"config\":{\"targetCases\":50,\"requestedRuleEvents\":7,\"factorTenths\":41,\"allJudges\":false,\"contentLanguage\":\"de\"}}",
       "code": "INVALID_MESSAGE"
     },
     {

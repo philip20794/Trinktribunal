@@ -122,21 +122,14 @@ void main() {
       await tester.tap(find.byType(Tab).last);
       await tester.pumpAndSettle();
       final presence = find.byKey(const PageStorageKey('room-presence'));
-      await tester.scrollUntilVisible(
-        presence,
-        200,
-        scrollable: find.byType(Scrollable).first,
-      );
+      await Scrollable.ensureVisible(tester.element(presence), alignment: .5);
+      await tester.pumpAndSettle();
       await tester.tap(
         find.descendant(of: presence, matching: find.byType(ListTile)).first,
       );
       await tester.pumpAndSettle();
-      final scrollable = find.byType(Scrollable).first;
-      await tester.scrollUntilVisible(
-        find.byType(OnlineRosterManagement),
-        250,
-        scrollable: scrollable,
-      );
+      await tester.ensureVisible(find.byType(OnlineRosterManagement));
+      await tester.pumpAndSettle();
       expect(
         actionText(AppStrings('de').get('onlineRosterJoining')),
         findsOneWidget,

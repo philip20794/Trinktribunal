@@ -11,6 +11,7 @@ import 'package:trinktribunal/design/private_number.dart';
 import 'package:trinktribunal/design/case_stage.dart';
 import 'package:trinktribunal/design/case_file.dart';
 import 'package:trinktribunal/design/illustrated_paper.dart';
+import 'package:trinktribunal/design/court_motion.dart';
 import 'package:trinktribunal/application/roster_controller.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 import 'package:trinktribunal/domain/user_profile.dart';
@@ -23,7 +24,8 @@ import '../accessibility/screen_matrix_test.dart' show accessibilityHost;
 
 class _Camera extends MobileScannerPlatform {
   final frames = StreamController<BarcodeCapture?>.broadcast();
-  int stops = 0, disposals = 0;
+  int stops = 0, disposals = 0, starts = 0;
+  bool denyPermission = false;
   @override
   Stream<BarcodeCapture?> get barcodesStream => frames.stream;
   @override
@@ -36,12 +38,20 @@ class _Camera extends MobileScannerPlatform {
     color: Colors.black,
   );
   @override
-  Future<MobileScannerViewAttributes> start(StartOptions options) async =>
-      const MobileScannerViewAttributes(
-        cameraDirection: CameraFacing.back,
-        currentTorchMode: TorchState.off,
-        size: Size(640, 480),
+  Future<MobileScannerViewAttributes> start(StartOptions options) async {
+    starts++;
+    if (denyPermission) {
+      throw const MobileScannerException(
+        errorCode: MobileScannerErrorCode.permissionDenied,
       );
+    }
+    return const MobileScannerViewAttributes(
+      cameraDirection: CameraFacing.back,
+      currentTorchMode: TorchState.off,
+      size: Size(640, 480),
+    );
+  }
+
   @override
   Future<void> stop() async {
     stops++;
@@ -54,54 +64,71 @@ class _Camera extends MobileScannerPlatform {
 }
 
 void main() {
-  testWidgets('new questions rest underneath the slowly receding old sheet', (
-    tester,
-  ) async {
-    late StateSetter change;
-    var question = 'Kurz';
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: SizedBox(
-            height: 600,
-            child: StatefulBuilder(
-              builder: (context, update) {
-                change = update;
-                return CaseStage(
-                  rules: 0,
-                  onRules: () {},
-                  child: CourtQuestion(
-                    animationKey: 'same-round',
-                    label: 'Fall 1',
-                    text: question,
-                    green: 'Wenig',
-                    connector: '',
-                    red: 'Viel',
-                    maximum: 5,
-                  ),
-                );
-              },
+  testWidgets(
+    'the complete old stack leaves right while the next stack enters left',
+    (tester) async {
+      late StateSetter change;
+      var question = 'Kurz';
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              height: 600,
+              child: StatefulBuilder(
+                builder: (context, update) {
+                  change = update;
+                  return CaseStage(
+                    rules: 0,
+                    onRules: () {},
+                    child: CourtQuestion(
+                      animationKey: 'same-round',
+                      label: 'Fall 1',
+                      text: question,
+                      green: 'Wenig',
+                      connector: '',
+                      red: 'Viel',
+                      maximum: 5,
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    final before = tester.getRect(find.byType(IllustratedPaper));
-    change(
-      () => question = List.filled(15, 'Eine laengere Fallfrage.').join(' '),
-    );
-    await tester.pump();
-    final switcher = tester.widget<AnimatedSwitcher>(
-      find.byType(AnimatedSwitcher),
-    );
-    expect(switcher.duration, const Duration(milliseconds: 650));
-    expect(find.byType(IllustratedPaper), findsNWidgets(2));
-    await tester.pump(const Duration(milliseconds: 325));
-    expect(find.byType(IllustratedPaper), findsNWidgets(2));
-    await tester.pumpAndSettle();
-    expect(tester.getRect(find.byType(IllustratedPaper)), before);
-  });
+      );
+      await tester.pumpAndSettle();
+      final before = tester.getRect(find.byType(IllustratedPaper));
+      change(
+        () => question = List.filled(15, 'Eine laengere Fallfrage.').join(' '),
+      );
+      await tester.pump();
+      expect(find.byType(AnimatedSwitcher), findsNothing);
+      expect(CourtMotion.exchangeDuration, const Duration(milliseconds: 480));
+      expect(find.byType(IllustratedPaper), findsNWidgets(2));
+      await tester.pump(const Duration(milliseconds: 240));
+      expect(
+        tester
+            .widget<FractionalTranslation>(
+              find.byKey(const ValueKey('case-stack-outgoing')),
+            )
+            .translation
+            .dx,
+        greaterThan(0),
+      );
+      expect(
+        tester
+            .widget<FractionalTranslation>(
+              find.byKey(const ValueKey('case-stack-incoming')),
+            )
+            .translation
+            .dx,
+        lessThan(0),
+      );
+      expect(find.byType(IllustratedPaper), findsNWidgets(2));
+      await tester.pumpAndSettle();
+      expect(tester.getRect(find.byType(IllustratedPaper)), before);
+    },
+  );
   test(
     'a scan accepts only a valid room code or a link to the configured client',
     () {
@@ -144,6 +171,8 @@ void main() {
   testWidgets(
     'the camera is embedded and scanning a code joins once without another click',
     (tester) async {
+      await tester.binding.setSurfaceSize(const Size(360, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
       final previous = MobileScannerPlatform.instance,
           camera = _Camera(),
           transport = FakeRoomTransport()..entryError = 'ROOM_FULL';
@@ -158,12 +187,36 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(const ValueKey('room-name')), findsNothing);
       expect(find.byKey(const ValueKey('room-submit')), findsNothing);
+      expect(camera.starts, 0);
+      final placeholder = find.byKey(const ValueKey('room-camera-placeholder'));
+      final enable = find.byKey(const ValueKey('open-room-camera'));
+      expect(placeholder, findsOneWidget);
+      expect(
+        tester.getTopLeft(enable).dy,
+        greaterThan(tester.getBottomLeft(placeholder).dy),
+      );
+      await tester.ensureVisible(enable);
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const ValueKey('open-room-camera')));
       await tester.pumpAndSettle();
       expect(
         find.byKey(const ValueKey('embedded-camera-view')),
         findsOneWidget,
       );
+      expect(camera.starts, 1);
+      expect(placeholder, findsNothing);
+      expect(enable, findsNothing);
+      expect(find.byIcon(Icons.close), findsNothing);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      await tester.pumpAndSettle();
+      expect(camera.stops, greaterThan(0));
+      expect(placeholder, findsOneWidget);
+      expect(enable, findsOneWidget);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+      expect(camera.starts, 2);
+      expect(placeholder, findsNothing);
+      expect(enable, findsNothing);
       camera.frames.add(
         BarcodeCapture(
           barcodes: [
@@ -184,6 +237,46 @@ void main() {
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
       await tester.pumpAndSettle();
+    },
+  );
+  testWidgets(
+    'camera permission failure keeps the placeholder and enable button for retry',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(360, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final previous = MobileScannerPlatform.instance;
+      final camera = _Camera()..denyPermission = true;
+      MobileScannerPlatform.instance = camera;
+      addTearDown(() async {
+        MobileScannerPlatform.instance = previous;
+        await camera.frames.close();
+      });
+      await tester.pumpWidget(accessibilityHost(const JoinRoomScreen()));
+      await tester.pumpAndSettle();
+      final enable = find.byKey(const ValueKey('open-room-camera'));
+      await tester.ensureVisible(enable);
+      await tester.pumpAndSettle();
+      await tester.tap(enable);
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('room-camera-placeholder')),
+        findsOneWidget,
+      );
+      expect(enable, findsOneWidget);
+      expect(camera.starts, 1);
+      camera.denyPermission = false;
+      await tester.tap(enable);
+      await tester.pumpAndSettle();
+      expect(camera.starts, 2);
+      expect(enable, findsNothing);
+      expect(
+        find.byKey(const ValueKey('room-camera-placeholder')),
+        findsNothing,
+      );
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpAndSettle();
+      expect(camera.disposals, greaterThan(0));
+      expect(tester.takeException(), isNull);
     },
   );
   testWidgets(

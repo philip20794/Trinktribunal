@@ -14,20 +14,20 @@ const defs={
   roomCode:text('^[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{8}$',8),
   utc:text('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$',24),
   revision:integer(0),
-  config:object({targetCases:integer(1,491),requestedRuleEvents:integer(0,25),factorTenths:integer(10,30),allJudges:{type:'boolean'},contentLanguage:{enum:['de','en']}}),
+  config:object({targetCases:integer(1,491),requestedRuleEvents:integer(0,25),factorTenths:integer(10,40),allJudges:{type:'boolean'},contentLanguage:{enum:['de','en']}}),
   handshake:object({protocolVersion:{const:2},catalogHash:ref('hash'),avatarVersion:{const:avatarManifest.version}}),
   avatar:object({version:{const:avatarManifest.version},seed:text('^[A-Za-z0-9_-]{1,64}$',64),selections:object(Object.fromEntries(Object.entries(avatarManifest.options).map(([key,values])=>[key,key.endsWith('Color') ? {type:'string',pattern:'^#[A-Fa-f0-9]{6}$',maxLength:7} : {enum:values}])))}),
   profile:object({name:{type:'string',minLength:1},avatar:ref('avatar')}),
   historyEvent:object({eventId:ref('id'),kind:{enum:['question','rule']},contentId:text('^[A-Za-z0-9_-]{1,64}$'),timestampUtc:ref('utc')}),
   historyOffer:object({importId:ref('id'),count:integer(0,ROOM_LIMITS.historyEvents),sha256:ref('hash')}),
-  revealed:object({playerId:ref('id'),number:integer(1,60)}),
+  revealed:object({playerId:ref('id'),number:integer(1,80)}),
   binding:{type:'object',propertyNames:text('^player[1-9][0-9]*$',16),maxProperties:20,additionalProperties:ref('id')},
   assignment:object({contentId:text('^[A-Za-z0-9_-]{1,64}$'),bindings:ref('binding')}),
   participant:object({playerId:ref('id'),profile:ref('profile'),connected:{type:'boolean'},ready:{type:'boolean'},orderSubmitted:{type:'boolean'},active:{type:'boolean'}},['active']),
   penalty:object({playerId:ref('id'),sips:integer(0,20)}),
   publicResult:object({errors:integer(0,20),penalties:array(ref('penalty'),20)}),
   ownResult:object({errors:integer(0,20),sips:integer(0,20)}),
-  privateView:object({ownNumber:integer(1,60),ownOrder:array(ref('id'),20,2),ownResult:ref('ownResult')},['ownNumber','ownOrder','ownResult']),
+  privateView:object({ownNumber:integer(1,80),ownOrder:array(ref('id'),20,2),ownResult:ref('ownResult')},['ownNumber','ownOrder','ownResult']),
   publicView:object({
     phase:{enum:['lobby','numbers','answers','ordering','revealing','judged','rule_event','paused','finished']},
     hostId:ref('id'),hostRevision:ref('revision'),config:ref('config'),players:array(ref('participant'),20,1),
@@ -58,7 +58,7 @@ message('authenticated',{roomId:ref('id'),playerId:ref('id'),generation:integer(
 message('requestSnapshot',{},any);
 message('setConfig',{config:ref('config')},{...host,...lobby,action:true});
 message('startGame',{},{...host,...lobby,action:true});
-message('restartGame',{gameId:ref('id'),config:ref('config'),confirmed:{const:true}},{...host,...any,action:true});
+message('restartGame',{gameId:ref('id'),config:ref('config'),confirmed:{const:true},setupOnly:{const:true}},{...host,...any,optional:['setupOnly'],action:true});
 message('editOwnProfile',{profile:ref('profile')},{...any,action:true});
 message('reorderRoster',{playerIds:array(ref('id'),20,1)},{...host,...any,action:true});
 message('kick',{targetPlayerId:ref('id'),confirmed:{const:true}},{...host,...any,action:true});

@@ -277,7 +277,7 @@ describe('existing TT-003/007/008 fixtures and production invariants', () => {
   });
   it('draws unique numbers for every supported N and factor, including all judges', () => {
     for (let n = 3; n <= 20; n++)
-      for (let factor = 10; factor <= 30; factor++)
+      for (let factor = 10; factor <= 40; factor++)
         for (const all of [false, true]) {
           const players = Array.from({ length: n }, (_, i) => RoomIds.player(`p${i}`)),
             max = numberLimit(n, factor),

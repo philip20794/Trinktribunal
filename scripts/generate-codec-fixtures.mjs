@@ -27,7 +27,7 @@ change('unconfirmed-destructive-action','completeWithoutVerdict',m=>m.confirmed=
 change('invalid-id','submitOrder',m=>m.actionId='has spaces','INVALID_MESSAGE');
 change('fractional-revision','submitOrder',m=>m.expectedRevision=1.5,'INVALID_MESSAGE');
 change('unsafe-revision','submitOrder',m=>m.expectedRevision=9007199254740992,'INVALID_MESSAGE');
-change('factor-bound','setConfig',m=>m.config.factorTenths=31,'INVALID_MESSAGE');
+change('factor-bound','setConfig',m=>m.config.factorTenths=41,'INVALID_MESSAGE');
 change('duplicate-order','submitOrder',m=>m.order=['p1','p1'],'INVALID_MESSAGE');
 change('bad-token-canonical','authenticate',m=>m.resumeToken='A'.repeat(42)+'B','CREDENTIAL_INVALID');
 change('bad-chunk-base64','projectionChunk',m=>m.data='A','INVALID_MESSAGE');

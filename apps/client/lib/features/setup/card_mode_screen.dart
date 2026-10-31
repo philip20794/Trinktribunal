@@ -1,3 +1,4 @@
+import '../../design/game_finished_panel.dart';
 import '../../design/court_scene.dart';
 import '../../design/status_notice.dart';
 
@@ -32,6 +33,24 @@ class CardModeScreen extends ConsumerStatefulWidget {
 class _CardModeScreenState extends ConsumerState<CardModeScreen> {
   String? _error;
   String? _storageWarning;
+  bool _resetting = false;
+  Future<void> _newGame() async {
+    if (_resetting) return;
+    setState(() => _resetting = true);
+    ref.read(localSessionProvider).abort(confirmed: true);
+    await ref.read(localStateTransactionProvider).save();
+    if (!mounted) return;
+    final navigator = Navigator.of(context);
+    if (navigator.canPop()) {
+      navigator.pop();
+    } else {
+      navigator.pushReplacement(
+        MaterialPageRoute<void>(
+          builder: (_) => const PlayerRosterScreen(cardMode: true),
+        ),
+      );
+    }
+  }
 
   void _act(VoidCallback action) {
     try {
@@ -53,13 +72,17 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
         ? ref.watch(localSessionProvider)
         : null;
     final current = loaded?.state;
-    final VoidCallback? next = current?.phase == GamePhase.finished
-        ? () => _act(() => loaded!.abort(confirmed: true))
-        : current?.phase == GamePhase.casePresented
+    final VoidCallback? next = current?.phase == GamePhase.casePresented
         ? () => _act(() => loaded!.advancePlayedCase(current!.currentEventId))
         : current?.phase == GamePhase.ruleEvent
         ? () => _act(() => loaded!.continueAfterRule(current!.currentEventId))
         : null;
+    if (_resetting) {
+      return const CourtScaffold(
+        title: TText('modeCards'),
+        body: GameFinishedPanel(),
+      );
+    }
     if (loaded != null && current == null) {
       return const PlayerRosterScreen(cardMode: true);
     }
@@ -122,6 +145,9 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
           final controller = ref.watch(localSessionProvider);
           final state = controller.state;
           if (state == null) return const SizedBox.shrink();
+          if (state.phase == GamePhase.finished) {
+            return GameFinishedPanel(onNewGame: _newGame);
+          }
           final content = Column(
             mainAxisSize: MainAxisSize.min,
             children: _game(context, controller, state),
@@ -185,7 +211,10 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
     return [
       if (state.phase == GamePhase.casePresented && question != null) ...[
         CourtQuestion(
-          animationKey: state.currentEventId,
+          animationKey: (
+            state.currentEventId,
+            state.currentQuestion?.event.eventId,
+          ),
           showRefresh: true,
           onRefresh: () => _act(
             () => controller.rerollCurrentQuestion(state.currentEventId),
@@ -216,16 +245,6 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
                       state.newRule!.entry as DrinkingRule,
                     ).text) ??
               context.tr('cardNoRule', {'count': state.effectiveRuleTarget}),
-        ),
-      ],
-      if (state.phase == GamePhase.finished) ...[
-        TText('endHearing', style: Theme.of(context).textTheme.headlineMedium),
-        const SizedBox(height: 12),
-        Text(
-          context.tr('cardFinished', {
-            'count': config.targetCases,
-            'rules': state.rules.active.length,
-          }),
         ),
       ],
       if (state.phase == GamePhase.paused)

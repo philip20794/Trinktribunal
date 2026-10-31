@@ -10,6 +10,7 @@ import 'package:trinktribunal/application/shared_phone_controller.dart';
 import 'package:trinktribunal/data/catalogs/catalog_repository.dart';
 import 'package:trinktribunal/design/case_file.dart';
 import 'package:trinktribunal/design/private_number.dart';
+import 'package:trinktribunal/design/judge_plate.dart';
 import 'package:trinktribunal/domain/models/game_mode.dart';
 import 'package:trinktribunal/features/handoff/shared_game_screen.dart';
 import 'package:trinktribunal/l10n/app_strings.dart';
@@ -18,6 +19,7 @@ import '../application/shared_handoff_test.dart' show people;
 import '../domain/selection_support.dart' show TestRandom;
 import '../support/memory_atomic_state_storage.dart';
 import '../support/memory_string_store.dart';
+import '../support/shared_handoff.dart';
 
 Future<void> tap(WidgetTester tester, String text) async {
   final finder = find.text(text);
@@ -42,6 +44,123 @@ void main() {
       read: (path) async => File(path).readAsStringSync(),
     ).load();
   });
+  testWidgets(
+    'finished shared-phone game clears session and returns to setup',
+    (tester) async {
+      final game = SharedPhoneController(
+        questions: catalogs.questions['de']!.entries,
+        rules: catalogs.rules['de']!.entries,
+        random: TestRandom(),
+      );
+      final roster = people(3);
+      final config = game.configure(
+        playerCount: 3,
+        targetCases: 3,
+        requestedRuleEvents: 0,
+      );
+      game.start(config: config, roster: roster);
+      while (game.view!.phase != GamePhase.finished) {
+        finishSharedNumbers(game);
+        game.completeCase(
+          game.view!.roundId,
+          confirmed: true,
+          withoutVerdict: true,
+        );
+      }
+      final container = ProviderContainer(
+        overrides: [
+          catalogsProvider.overrideWith((_) async => catalogs),
+          sharedPhoneControllerProvider.overrideWithValue(game),
+          atomicStateStorageProvider.overrideWithValue(
+            MemoryAtomicStateStorage(),
+          ),
+          stringStoreProvider.overrideWithValue(MemoryStringStore()),
+        ],
+      );
+      addTearDown(container.dispose);
+      await container.read(catalogsProvider.future);
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            home: SharedGameScreen(config: config, roster: roster),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.text(const AppStrings('de').get('gameFinishedBody')),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(const ValueKey('finished-new-game')));
+      await tester.pumpAndSettle();
+      expect(game.view, isNull);
+      expect(
+        find.text(const AppStrings('de').get('startHearing')),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpAndSettle();
+    },
+  );
+  testWidgets(
+    'new rule still shows the outgoing judge before passing the phone',
+    (tester) async {
+      final game = SharedPhoneController(
+        questions: catalogs.questions['de']!.entries,
+        rules: catalogs.rules['de']!.entries,
+        random: TestRandom(),
+      );
+      final roster = people(3);
+      final config = game.configure(
+        playerCount: 3,
+        targetCases: 3,
+        requestedRuleEvents: 2,
+      );
+      game.start(config: config, roster: roster);
+      finishSharedNumbers(game);
+      final oldJudge = game.view!.judge;
+      game.completeCase(
+        game.view!.roundId,
+        confirmed: true,
+        withoutVerdict: true,
+      );
+      expect(game.view!.phase, GamePhase.ruleEvent);
+      expect(game.view!.judge, isNot(oldJudge));
+      final container = ProviderContainer(
+        overrides: [
+          catalogsProvider.overrideWith((_) async => catalogs),
+          sharedPhoneControllerProvider.overrideWithValue(game),
+          atomicStateStorageProvider.overrideWithValue(
+            MemoryAtomicStateStorage(),
+          ),
+          stringStoreProvider.overrideWithValue(MemoryStringStore()),
+        ],
+      );
+      addTearDown(container.dispose);
+      await container.read(catalogsProvider.future);
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            home: SharedGameScreen(config: config, roster: roster),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<JudgePlate>(find.byType(JudgePlate)).profile.player.id,
+        oldJudge,
+      );
+      await tap(tester, const AppStrings('de').get('ruleUnderstood'));
+      expect(game.view!.recipient, oldJudge);
+      expect(find.byType(JudgePlate), findsNothing);
+      expect(find.byType(HeldPrivateNumber), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpAndSettle();
+    },
+  );
   for (final count in [3, 20]) {
     for (final language in ['de', 'en']) {
       testWidgets(

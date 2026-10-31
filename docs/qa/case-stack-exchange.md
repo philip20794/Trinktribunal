@@ -1,0 +1,15 @@
+# Austausch des gesamten Fallaktenstapels, 31.10.2026
+
+Die bisherige 650-ms-Wechselanimation mit nach oben zurückweichendem, verkleinertem Papier ist aus `CourtMotion` entfernt. Ein einzelner Controller tauscht jetzt den gesamten `CaseFile`-Inhalt in 480 ms mit `Curves.easeInOutCubic` aus. Bei illustrierten Fallakten umfasst dieser Inhalt das komplette vorhandene Pergament-PNG einschließlich Siegel, Büroklammer und hinterer Blätter sowie sämtliche Flutter-Texte und Kartenaktionen.
+
+Die alte Akte liegt in der Zeichenreihenfolge über der neuen. Sie wandert um 1,1 eigene Breiten nach rechts und 0,065 eigene Höhen nach unten, dreht sich bis zu zwei Grad und wird etwas transparenter. Die neue Akte beginnt um 0,16 eigene Breiten nach links und 0,018 eigene Höhen nach unten versetzt hinter der bisherigen Akte und gleitet an ihre ursprüngliche Position. Die Bewegung ist auf den Kartenbereich beschnitten; Richteranzeige, Navigation, Hintergrund und Fußleiste werden nicht transformiert. Assets, endgültige Geometrie und Layout bleiben unverändert.
+
+Die Kartenfläche blockiert Zeiger-, Fokus- und semantische Aktionen während des Austauschs. `CourtMotionBoundary` koordiniert zusätzlich die Eingabesperre der unverändert positionierten Fußleiste. Eine Aktualisierungsanforderung wird schon vor dem nächsten Frame gesperrt, damit zwei schnelle Tipps auf Neuwürfeln keine zweite Ziehung auslösen. Während eines bereits laufenden Austauschs können externe Zustandsmeldungen höchstens den zuletzt vorgemerkten Kartenstand ersetzen; es entstehen weder zusätzliche ausgehende Stapel noch parallel laufende Wechselanimationen. Reduzierte Animationen bzw. zugängliche Navigation schalten ohne Bewegung um. Die separate Animation der geheimen Zahl und die Urteils-Stempelanimation bleiben erhalten.
+
+Lokale Karten, gemeinsames Handy und Online-Fallakten koppeln die bestehende Animationskennung zusätzlich an die gezogene Frage. Damit löst auch eine andere Frage mit zufällig identischem sichtbarem Text einen Wechsel aus. Sowohl nächste Fallakte als auch Neuwürfeln verwenden dieselbe Animationshülle.
+
+Sechs neue Widgettests prüfen 280/390/760 Pixel Breite, relative Bewegung und Rotation, Stapelreihenfolge, unveränderte Positionen der übrigen UI, identische endgültige Papiergeometrie, Ende innerhalb eines Bildschirmframes nach 480 ms, Sperre von Neuwürfeln und Weiter, doppelte Tipps im selben Frame, mehrere externe Aktualisierungen sowie beide Optionen für reduzierte Bewegung. Gerenderte Start-/Mittel-/Endbilder liegen lokal unter `apps/client/build/ui-review/stack-exchange-*.png`.
+
+Verifikation: Gesamtlauf mit 778 erfolgreichen Flutter-Tests und vier optionalen Auslassungen; anschließend 25 gezielte Animations-, Kartenmodus-, Handyübergabe-, QR- und Online-Fallaktentests nach Ergänzung der Fragenkennung erfolgreich. Analyze und Format ohne Befund. Dokument-/Assetinventare und 164 Node-Tests erfolgreich; drei Linux-Shelltests auf Windows ausgelassen. Widget-Renderprüfung; keine Browserabnahme.
+
+Der lokale Produktions-Webbuild einschließlich HTTP-/Offline-Releaseprüfung ist erfolgreich. Kein Upload oder Deployment in diesem Arbeitsauftrag.

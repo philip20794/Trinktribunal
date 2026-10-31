@@ -1,0 +1,9 @@
+# Richteranzeige und Kamera beim Beitritt, 31.10.2026
+
+Im Modus mit einem herumgereichten Handy wird der nächste Richter für Zahlenverteilung und Übergabereihenfolge bereits beim Fallabschluss bestimmt. `SharedGameView.displayedJudge` zeigt während eines eingeschobenen Regelereignisses und der anschließenden privaten Zahlenübergabe weiter den bisherigen Richter. Erst wenn alle Empfänger ihre Zahl bestätigt haben, wechselt auch die Anzeige. Die vorhandenen gespeicherten Daten `previousJudge`, Phase und Übergabeetappe reichen dafür aus; kein neues Snapshotformat. Die Plakette verwendet die gespeicherten Profile auch dann, wenn der bisherige Richter inzwischen aus der aktiven Gruppe entfernt wurde; entfernte Personen sind darüber nicht bearbeitbar.
+
+Beim Raumbeitritt bleibt ein Kamerafeld als Platzhalter sichtbar. Darunter steht „Kamera freigeben“, solange keine laufende Kameravorschau verfügbar ist. Der Start erfolgt erst nach Antippen. Während der Berechtigungsanfrage ist der Button deaktiviert; nach erfolgreichem Start verschwindet er mit dem Platzhalter. Ein Schließen-Button entfällt. Verweigerte Berechtigung bzw. Kamerafehler lassen Platzhalter und erneuten Startversuch zu. Lange Fehlertexte scrollen innerhalb des Feldes. Pausieren, Wiederaufnahme und Freigabe der Kamera beim Verlassen bleiben erhalten. QR-Erkennung führt weiterhin genau einmal zum Beitritt.
+
+Regressionstests prüfen Richterübergänge mit/ohne Regel und nach Snapshot-Wiederherstellung, die tatsächlich gerenderte Richterplakette auf der Regelansicht, explizite Kamerafreigabe, Berechtigungsfehler/Retry, App-Lebenszyklus sowie automatischen einmaligen QR-Beitritt und Kamera-Dispose.
+
+Verifikation: 96 gezielte Flutter-Tests inklusive lokaler Langpartien und DE/EN-Zugänglichkeitsmatrix erfolgreich. Analyze ohne Befund; Format-, Übersetzungs-, Dokument- und Assetinventarprüfungen erfolgreich. Kameratests verwenden die simulierte Plattform; kein physischer Kameratest.

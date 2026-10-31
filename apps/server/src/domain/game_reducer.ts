@@ -551,7 +551,31 @@ function reduce(
         break;
       case 'restartGame':
         requireHost(next, actor);
-        start(next, command.config, ports, now);
+        if (command.setupOnly) {
+          configValid(command.config);
+          next.config = structuredClone(command.config);
+          next.gameId = null;
+          next.phase = 'lobby';
+          next.effectiveRoster = [...next.roster];
+          next.pendingRoster = null;
+          next.judgeId = null;
+          next.readerId = null;
+          next.round = null;
+          next.lastCompletion = null;
+          next.completedCases = 0;
+          next.completedRoundIds = [];
+          next.drawnQuestionIds = [];
+          next.questionDraws = [];
+          next.drawnRuleIds = [];
+          next.ruleSlots = [];
+          next.activeRules = [];
+          next.personCounts = next.roster.map((playerId) => ({ playerId, count: 0 }));
+          next.hostDisconnectedAt = null;
+          delete next.hostPauseState;
+          clearPause(next);
+        } else {
+          start(next, command.config, ports, now);
+        }
         break;
       case 'acknowledgeNumber': {
         requirePhase(next, 'numbers');

@@ -48,7 +48,7 @@ final class NumberAssignment {
     final recipients = roster
         .where((id) => allJudges || id != judgeId)
         .toList();
-    if (maxSecretNumber < recipients.length || maxSecretNumber > 60) {
+    if (maxSecretNumber < recipients.length || maxSecretNumber > 80) {
       throw const DomainException(
         DomainErrorCode.invalidConfig,
         'Der Zahlenbereich reicht nicht für alle Empfänger.',

@@ -75,7 +75,7 @@ void main() {
     'every player/factor combination rounds up using integer arithmetic',
     () {
       for (var n = 3; n <= 20; n++) {
-        for (var factor = 10; factor <= 30; factor++) {
+        for (var factor = 10; factor <= 40; factor++) {
           for (final allJudges in [false, true]) {
             final config = GameConfig(
               mode: GameMode.multiplayer,
@@ -137,7 +137,7 @@ void main() {
         'playerCount': [2, 21],
         'targetCases': [0, mode.maximumQuestions + 1],
         'requestedRuleEvents': [-1, mode.maximumRules + 1],
-        'factorTenths': [9, 31],
+        'factorTenths': [9, 41],
       }.entries) {
         for (final value in entry.value) {
           expect(

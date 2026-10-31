@@ -268,19 +268,24 @@ class FittedPaperText extends StatelessWidget {
     this.min = 16,
     this.max = 28,
     this.weight = FontWeight.w500,
+    this.alignment = Alignment.center,
+    this.textAlign = TextAlign.center,
     super.key,
   });
   final String text;
   final double height, min, max;
   final FontWeight weight;
+  final Alignment alignment;
+  final TextAlign textAlign;
   @override
   Widget build(BuildContext context) => SizedBox(
     height: height,
     child: LayoutBuilder(
-      builder: (context, bounds) => Center(
+      builder: (context, bounds) => Align(
+        alignment: alignment,
         child: Text(
           text,
-          textAlign: TextAlign.center,
+          textAlign: textAlign,
           style: paperTextStyle(
             fitPaperFont(
               text,
@@ -300,17 +305,47 @@ class FittedPaperText extends StatelessWidget {
 }
 
 class PaperDivider extends StatelessWidget {
-  const PaperDivider({super.key});
+  const PaperDivider({this.scale = 1, super.key});
+  final double scale;
   @override
-  Widget build(BuildContext context) => const Row(
+  Widget build(BuildContext context) => Row(
     children: [
-      Expanded(child: Divider(color: Color(0xFFBD9665))),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Icon(Icons.diamond_outlined, size: 14, color: Color(0xFFBD9665)),
+      Expanded(
+        child: Divider(color: const Color(0xFFBD9665), thickness: scale),
       ),
-      Expanded(child: Divider(color: Color(0xFFBD9665))),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10 * scale),
+        child: Icon(
+          Icons.diamond_outlined,
+          size: 14 * scale,
+          color: const Color(0xFFBD9665),
+        ),
+      ),
+      Expanded(
+        child: Divider(color: const Color(0xFFBD9665), thickness: scale),
+      ),
     ],
+  );
+}
+
+/// Shared proportional geometry for illustrated papers and their source rects.
+class PaperGeometry {
+  PaperGeometry.fit(Size available, this.assetSize) {
+    scale = math.min(
+      available.width / assetSize.width,
+      available.height / assetSize.height,
+    );
+    size = Size(assetSize.width * scale, assetSize.height * scale);
+  }
+  static const maxWidth = 560.0;
+  final Size assetSize;
+  late final double scale;
+  late final Size size;
+  Rect mapRect(Rect rect) => Rect.fromLTRB(
+    rect.left * scale,
+    rect.top * scale,
+    rect.right * scale,
+    rect.bottom * scale,
   );
 }
 
@@ -318,25 +353,16 @@ class PaperDivider extends StatelessWidget {
 /// The seal overlaps the front sheet; content starts just beneath it.
 class CaseCardGeometry {
   CaseCardGeometry.fit(Size available) {
-    final scale = math.min(
-      available.width / assetSize.width,
-      available.height / assetSize.height,
-    );
-    size = Size(assetSize.width * scale, assetSize.height * scale);
-    frontCardRect = _scaled(sourceFrontCardRect, scale);
-    contentRect = _scaled(sourceContentRect, scale);
+    final paper = PaperGeometry.fit(available, assetSize);
+    size = paper.size;
+    frontCardRect = paper.mapRect(sourceFrontCardRect);
+    contentRect = paper.mapRect(sourceContentRect);
   }
   static const assetSize = Size(1024, 1536);
   static const sourceFrontCardRect = Rect.fromLTRB(112, 192, 920, 1360);
   static const sourceContentRect = Rect.fromLTRB(140, 326, 892, 1324);
   late final Size size;
   late final Rect frontCardRect, contentRect;
-  static Rect _scaled(Rect rect, double scale) => Rect.fromLTRB(
-    rect.left * scale,
-    rect.top * scale,
-    rect.right * scale,
-    rect.bottom * scale,
-  );
 }
 
 class IllustratedQuestion extends StatelessWidget {
@@ -358,7 +384,7 @@ class IllustratedQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, bounds) {
-      final width = math.min(560.0, bounds.maxWidth);
+      final width = math.min(PaperGeometry.maxWidth, bounds.maxWidth);
       final scopedHeight = CasePaperScope.heightOf(context);
       final height = math.min(
         scopedHeight ?? double.infinity,

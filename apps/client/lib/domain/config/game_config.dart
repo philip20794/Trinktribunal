@@ -38,8 +38,8 @@ final class GameConfig {
         requestedRuleEvents > math.min(mode.maximumRules, capacity.rules)) {
       _invalid('Regelziel außerhalb des geeigneten Regelbestands.');
     }
-    if (factorTenths < 10 || factorTenths > 30) {
-      _invalid('Der Faktor muss in Zehnteln zwischen 10 und 30 liegen.');
+    if (factorTenths < 10 || factorTenths > 40) {
+      _invalid('Der Faktor muss in Zehnteln zwischen 10 und 40 liegen.');
     }
     if (allJudges && mode != GameMode.multiplayer) {
       _invalid('Alle sind Richter ist nur im Multiplayer verfügbar.');
@@ -47,7 +47,7 @@ final class GameConfig {
     if (contentLanguage != 'de' && contentLanguage != 'en') {
       _invalid('Nicht unterstützte Inhaltssprache.');
     }
-    final maximum = (playerCount * factorTenths + 9) ~/ 10;
+    final maximum = secretNumberMaximum(playerCount, factorTenths);
     if (maximum < playerCount - (allJudges ? 0 : 1)) {
       _invalid('Der Zahlenbereich reicht nicht für alle Empfänger.');
     }
@@ -123,7 +123,9 @@ final class GameConfig {
   final bool allJudges;
   final String contentLanguage;
 
-  int get maxSecretNumber => (playerCount * factorTenths + 9) ~/ 10;
+  static int secretNumberMaximum(int playerCount, int factorTenths) =>
+      (playerCount * factorTenths + 9) ~/ 10;
+  int get maxSecretNumber => secretNumberMaximum(playerCount, factorTenths);
   int get numberRecipients => playerCount - (allJudges ? 0 : 1);
   int get scheduledRuleEventCount =>
       math.min(requestedRuleEvents, targetCases - 1);

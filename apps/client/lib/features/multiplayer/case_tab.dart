@@ -50,6 +50,9 @@ class RoomCaseTab extends ConsumerWidget {
     if (view.phase == 'lobby') {
       return const Center(child: TText('onlineHostStarts'));
     }
+    if (view.phase == 'finished') {
+      return OnlineGameProgress(snapshot: snapshot, showActions: false);
+    }
     final guideId = view.config.allJudges ? view.readerId : view.judgeId;
     final guides = view.players.where((p) => p.playerId == guideId);
     final guide = guides.isEmpty ? null : guides.first;

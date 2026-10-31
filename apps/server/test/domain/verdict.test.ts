@@ -52,7 +52,7 @@ describe('normal server verdict', () => {
       allJudgesVerdict(
         [
           { playerId: a, number: 1 },
-          { playerId: b, number: 61 },
+          { playerId: b, number: 81 },
         ],
         orders,
       ),
@@ -87,7 +87,7 @@ describe('normal server verdict', () => {
     ).toThrow();
     expect(() => normalVerdict(judge, [numbers[0]!, { playerId: b, number: 1 }], [a, b])).toThrow();
     expect(() =>
-      normalVerdict(judge, [numbers[0]!, { playerId: b, number: 61 }], [a, b]),
+      normalVerdict(judge, [numbers[0]!, { playerId: b, number: 81 }], [a, b]),
     ).toThrow();
   });
 });

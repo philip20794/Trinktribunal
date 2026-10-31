@@ -6,13 +6,13 @@ Stand: TT-068, 28.10.2026. Dieselben Hinweise stehen in der App unter Einstellun
 
 | Modus | Ablauf und Grenze |
 | --- | --- |
-| Handy + echte Karten | 3–20 Personen, keine Pflichtprofile. Anzahl, Fälle, Regeln und Faktor einstellen; Standard: 50 Fälle, sieben Regeln und Faktor 2,0. Frage und Skala vorlesen, echte Zahlenkarten an alle außer den Richter verteilen. Am Tisch ordnen und urteilen. „Weiter“ zählt den gespielten Fall; die App erfindet keine Fehler-/Schluckwertung. |
+| Handy + echte Karten | 3–20 Personen, keine Pflichtprofile. Anzahl, Fälle (10–150), Regeln und Zahlenbereich einstellen; Standard: 50 Fälle, sieben Regeln und Faktor 2,0. Frage und Skala vorlesen, echte Zahlenkarten an alle außer den Richter verteilen. Am Tisch ordnen und urteilen. „Weiter“ zählt den gespielten Fall; die App erfindet keine Fehler-/Schluckwertung. |
 | Ein gemeinsames Handy | Gruppe und Sitzfolge anlegen. Nach der Akte das Handy an die angezeigte Person geben. Name/Sitz bestätigen, Zahl durch Gedrückthalten anzeigen, durch Loslassen verbergen. „Fertig“ wird erst nach dem ersten Anzeigen aktiv und übergibt an die nächste Person; der Richter bestätigt die Rückgabe. Nach Unterbrechungen erneut bestätigen; kein automatisches Weiterreichen. |
 | Für jeden ein Handy | Benötigt einen konfigurierten Server und Verbindung. Host erstellt den Raum, andere treten per Code bei. Ein Einladungslink füllt den Code aus, tritt aber nicht automatisch bei. Profil unter „Ich“, Spiel unter „Gerichtssaal“. Zahl selbst anzeigen und bestätigen; Bereitschaft und Reihenfolge gelten nach Serverbestätigung. Nach Verbindungsabbruch dieselbe gespeicherte Identität wiederaufnehmen. |
 
 ## Zahlen, Urteil und neue Fragen
 
-Die Skala reicht von 1 bis aufgerundet Personenanzahl × Faktor (1,0–3,0). Im normalen Modus trinken bei E falsch platzierten Personen der Richter und jede falsch platzierte Person jeweils E Schlucke. Korrekt platzierte Personen trinken nicht. Bei „Alle sind Richter“ bewertet jeder eine eigene Reihenfolge und trinkt nur für deren Fehler; es gibt kein zusätzliches Mittrinken für fremde Fehler.
+Die Skala reicht von 1 bis aufgerundet Personenanzahl × Multiplikator (1,0–4,0, in 0,5-Schritten). Im normalen Modus trinken bei E falsch platzierten Personen der Richter und jede falsch platzierte Person jeweils E Schlucke. Korrekt platzierte Personen trinken nicht. Bei „Alle sind Richter“ bewertet jeder eine eigene Reihenfolge und trinkt nur für deren Fehler; es gibt kein zusätzliches Mittrinken für fremde Fehler.
 
 Der Fragenwechsel links an der Akte ist vor der ersten öffentlichen Aufdeckung möglich. Fallnummer, Rollen, Zahlen und Regelplan bleiben erhalten; digitale Bestätigungen und Reihenfolgen beginnen neu. Online darf nur der aktuelle Richter beziehungsweise Vorleser wechseln. Jede angezeigte Frage zählt als gezogen. Ist kein Ersatz verfügbar, bleibt die aktuelle Frage mit Hinweis stehen.
 

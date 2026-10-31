@@ -27,7 +27,7 @@ class JoinRoomScreen extends ConsumerStatefulWidget {
 
 class _JoinRoomScreenState extends ConsumerState<JoinRoomScreen> {
   late final _code = TextEditingController(text: widget.initialCode);
-  bool _scanning = false, _entering = false;
+  bool _entering = false;
   String? _scanError;
   String? get _validCode {
     try {
@@ -47,7 +47,6 @@ class _JoinRoomScreenState extends ConsumerState<JoinRoomScreen> {
     if (_entering) return;
     setState(() {
       _entering = true;
-      _scanning = false;
     });
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(builder: (_) => DirectJoinRoomScreen(code: code)),
@@ -88,33 +87,10 @@ class _JoinRoomScreenState extends ConsumerState<JoinRoomScreen> {
               },
             ),
             const SizedBox(height: 12),
-            OutlinedButton.icon(
-              key: const ValueKey('open-room-camera'),
-              icon: Icon(_scanning ? Icons.close : Icons.qr_code_scanner),
-              label: TText(_scanning ? 'roomToolsClose' : 'roomOpenCamera'),
-              onPressed: _entering
-                  ? null
-                  : () {
-                      FocusScope.of(context).unfocus();
-                      setState(() {
-                        _scanning = !_scanning;
-                        _scanError = null;
-                      });
-                    },
-            ),
-            if (_scanning) ...[
-              const SizedBox(height: 12),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: _RoomScanner(onValue: _scanned),
-                ),
-              ),
-              const SizedBox(height: 8),
-              const TText('roomScanHint'),
-              if (_scanError != null) TText(_scanError!),
-            ],
+            _RoomScanner(onValue: _scanned),
+            const SizedBox(height: 8),
+            const TText('roomScanHint'),
+            if (_scanError != null) TText(_scanError!),
           ],
         ),
       ),
@@ -151,18 +127,18 @@ class _RoomScannerState extends State<_RoomScanner>
     super.initState();
     configureQrScanner();
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _start());
   }
 
   Future<void> _start() async {
     if (!mounted || _starting) return;
-    _starting = true;
+    FocusScope.of(context).unfocus();
+    setState(() => _starting = true);
     try {
       await _camera.start();
     } on MobileScannerException catch (_) {
       /* The view renders camera errors. */
     } finally {
-      _starting = false;
+      if (mounted) setState(() => _starting = false);
     }
   }
 
@@ -184,30 +160,81 @@ class _RoomScannerState extends State<_RoomScanner>
   }
 
   @override
-  Widget build(BuildContext context) => MobileScanner(
-    controller: _camera,
-    errorBuilder: (context, error) => ColoredBox(
-      color: CourtSceneTokens.panel,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: TText(
-            error.errorCode == MobileScannerErrorCode.permissionDenied
-                ? 'roomCameraPermission'
-                : 'roomCameraUnavailable',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    ),
-    onDetect: (capture) {
-      for (final barcode in capture.barcodes) {
-        final raw = barcode.rawValue;
-        if (raw != null) {
-          widget.onValue(raw);
-          return;
-        }
-      }
-    },
-  );
+  Widget build(BuildContext context) =>
+      ValueListenableBuilder<MobileScannerState>(
+        valueListenable: _camera,
+        builder: (context, state, _) {
+          final showingCamera =
+              state.isInitialized && state.isRunning && state.error == null;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      MobileScanner(
+                        controller: _camera,
+                        useAppLifecycleState: false,
+                        placeholderBuilder: (_) => const SizedBox.expand(),
+                        errorBuilder: (_, _) => const SizedBox.expand(),
+                        onDetect: (capture) {
+                          for (final barcode in capture.barcodes) {
+                            final raw = barcode.rawValue;
+                            if (raw != null) {
+                              widget.onValue(raw);
+                              return;
+                            }
+                          }
+                        },
+                      ),
+                      if (!showingCamera)
+                        ColoredBox(
+                          key: const ValueKey('room-camera-placeholder'),
+                          color: CourtSceneTokens.panel,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.qr_code_scanner, size: 64),
+                                    const SizedBox(height: 16),
+                                    TText(
+                                      state.error == null
+                                          ? 'roomCameraPlaceholder'
+                                          : state.error!.errorCode ==
+                                                MobileScannerErrorCode
+                                                    .permissionDenied
+                                          ? 'roomCameraPermission'
+                                          : 'roomCameraUnavailable',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              if (!showingCamera) ...[
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  key: const ValueKey('open-room-camera'),
+                  icon: const Icon(Icons.videocam_outlined),
+                  label: const TText('roomOpenCamera'),
+                  onPressed: _starting ? null : () => unawaited(_start()),
+                ),
+              ],
+            ],
+          );
+        },
+      );
 }

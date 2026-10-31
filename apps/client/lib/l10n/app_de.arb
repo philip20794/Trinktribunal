@@ -218,7 +218,7 @@
   "rosterCount": "{count} von 20 Personen · mindestens 3 benötigt",
   "casesCount": "Fälle: {count}",
   "rulesCount": "Zusätzliche Regeln: {count}",
-  "factor": "Faktor: {value}",
+  "factor": "Zahlenbereich: {value}×",
   "name": "Name",
   "nameRequired": "Bitte einen Namen eingeben.",
   "ruleSkipping": "Keine passende Regel in {count} Ereignissen. Ziel reduziert auf höchstens {max}.",
@@ -456,10 +456,10 @@
     "description": "Localized application feedback; the domain retains its stable original message.",
     "source": "Regelziel außerhalb des geeigneten Regelbestands."
   },
-  "feedbackFactorBounds": "Der Faktor muss in Zehnteln zwischen 10 und 30 liegen.",
+  "feedbackFactorBounds": "Der Faktor muss in Zehnteln zwischen 10 und 40 liegen.",
   "@feedbackFactorBounds": {
     "description": "Localized application feedback; the domain retains its stable original message.",
-    "source": "Der Faktor muss in Zehnteln zwischen 10 und 30 liegen."
+    "source": "Der Faktor muss in Zehnteln zwischen 10 und 40 liegen."
   },
   "feedbackAllJudgesMode": "Alle sind Richter ist nur im Multiplayer verfügbar.",
   "@feedbackAllJudgesMode": {
@@ -740,7 +740,7 @@
   "benchControls": "Sortiersteuerung",
   "verdictHeading": "Das Urteil",
   "playersLabel": "Spieler",
-  "factorLabel": "Faktor",
+  "factorLabel": "Zahlenbereich",
   "helpTitle": "Spielhilfe",
   "privacyTitle": "Datenschutz und Speicher",
   "privacyEndpoint": "Konfigurierter Spielserver: {origin}",
@@ -796,7 +796,7 @@
   },
   "introTitle": "Kurz erklärt",
   "introContinue": "Weiter zur Einrichtung",
-  "newGame": "Neue Partie",
+  "newGame": "Neues Spiel starten",
   "rulesMenuDescription": "Das Wichtigste auf einen Blick.",
   "introCards1": "Ihr braucht dieses Handy und Karten oder Zettel mit Zahlen von 1 bis X (X = Spieleranzahl x 2).",
   "introCards2": "Alle außer dem Richter ziehen eine Zahlenkarte und halten sie geheim.",
@@ -816,7 +816,7 @@
   "localGameOptions": "Spieleinstellungen",
   "localCasesHelp": "So viele Fragen spielt ihr in dieser Partie. Trinkregel-Ereignisse zählen nicht als Frage.",
   "localRulesHelp": "So viele zusätzliche Trinkregeln werden zwischen den Fällen eingeführt. Sie gelten bis Partieende.",
-  "localFactorHelp": "Bestimmt die höchste Geheimzahl: Personenanzahl × Faktor, aufgerundet. Ein größerer Faktor vergrößert den Zahlenraum.",
+  "localFactorHelp": "Bestimmt die höchste Kartenzahl: Spieleranzahl × Multiplikator, aufgerundet. Je höher die Kartenzahl, desto schwerer wird es für den Richter.",
   "yourNumber": "Deine Zahl",
   "roundOf": "Runde {number} von {total}",
   "passPhoneTo": "Reicht das Handy an {name}.",
@@ -889,7 +889,7 @@
   "holdToReveal": "Drücken und halten",
   "numberOfName": "Zahl von {name}",
   "ownPlayer": "Du",
-  "roomOpenCamera": "Kamera öffnen",
+  "roomOpenCamera": "Kamera freigeben",
   "roomScanHint": "Halte den QR-Code des Raums in das Kamerafeld. Du trittst automatisch bei.",
   "roomScanInvalid": "Dieser QR-Code gehört nicht zu einem gültigen Raum.",
   "roomCameraPermission": "Erlaube den Kamerazugriff, um QR-Codes zu scannen. Du kannst auch den Raumcode eingeben.",
@@ -914,5 +914,13 @@
   "dialogConfirm": "OK",
   "dialogFinish": "Fertig",
   "dialogRestart": "Neustart",
-  "dialogKick": "Entfernen"
+  "dialogKick": "Entfernen",
+  "settingsCasesTitle": "Fälle",
+  "settingsRulesTitle": "Zusätzliche Regeln",
+  "settingsNumberExample": "Bei {count} Spielern: Karten von 1 bis {maximum}",
+  "roomCameraPlaceholder": "QR-Code mit der Kamera scannen",
+  "settingsLanguageTitle": "Sprache der Fragen",
+  "settingsLanguageHelp": "Bestimmt die Sprache der Fragen und Trinkregeln in diesem Raum.",
+  "gameFinishedBody": "Alle Fälle sind abgeschlossen. Alle Trinkregeln sind aufgehoben.",
+  "stopGame": "Spiel stoppen"
 }

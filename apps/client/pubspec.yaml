@@ -48,6 +48,7 @@ flutter:
         - asset: assets/fonts/roboto-bold.ttf
           weight: 700
   assets:
+    - assets/ui/courtroom/settings/
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/users.svg
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/book-open.svg
     - assets/ui/trinktribunal_spielregeln_assets/icons/svg/arrow-left.svg

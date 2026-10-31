@@ -14,7 +14,7 @@ function trueOrder(numbers: readonly NumberAssignment[]): PlayerId[] {
   if (
     new Set(numbers.map((entry) => entry.playerId)).size !== numbers.length ||
     numbers.some(
-      (entry) => !Number.isInteger(entry.number) || entry.number < 1 || entry.number > 60,
+      (entry) => !Number.isInteger(entry.number) || entry.number < 1 || entry.number > 80,
     ) ||
     new Set(numbers.map((entry) => entry.number)).size !== numbers.length
   )

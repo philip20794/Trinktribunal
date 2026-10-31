@@ -53,6 +53,62 @@ void handoff(SharedPhoneController session) {
 }
 
 void main() {
+  for (final withRule in [false, true]) {
+    test(
+      'judge plate changes only after all numbers, survives restore: rule=$withRule',
+      () {
+        final history = ContentHistoryStore();
+        final session = controller(history: history);
+        session.start(
+          config: session.configure(
+            playerCount: 4,
+            targetCases: 3,
+            requestedRuleEvents: withRule ? 2 : 0,
+          ),
+          roster: roster(),
+        );
+        handoff(session);
+        final oldJudge = session.view!.judge;
+        session.completeCase(
+          session.view!.roundId,
+          confirmed: true,
+          withoutVerdict: true,
+        );
+        final newJudge = session.view!.judge;
+        expect(newJudge, isNot(oldJudge));
+        expect(session.view!.displayedJudge, oldJudge);
+        session.restoreValidated(
+          session.validateSnapshot(
+            jsonDecode(jsonEncode(session.toSnapshot()))
+                as Map<String, dynamic>,
+            history.history,
+          ),
+        );
+        expect(session.view!.displayedJudge, oldJudge);
+        if (withRule) {
+          expect(session.view!.phase, GamePhase.ruleEvent);
+          session.continueRule(afterCase: session.view!.completedCases);
+        }
+        while (session.view!.numberStage != SharedNumberStage.judgeHandoff) {
+          expect(session.view!.displayedJudge, oldJudge);
+          final view = openSharedRecipient(session);
+          session.revealOwnNumber(
+            roundId: view.roundId,
+            player: view.recipient!,
+          );
+          expect(session.view!.displayedJudge, oldJudge);
+          session.acknowledgeNumber(
+            roundId: view.roundId,
+            player: view.recipient!,
+          );
+        }
+        expect(session.view!.displayedJudge, newJudge);
+        session.confirmJudge(roundId: session.view!.roundId, judge: newJudge!);
+        expect(session.view!.displayedJudge, newJudge);
+        expect(session.view!.phase, GamePhase.answers);
+      },
+    );
+  }
   test('a roster change during a rule event rebinds its lost role once before the next case', () {
     final history = ContentHistoryStore(),
         session = SharedPhoneController(

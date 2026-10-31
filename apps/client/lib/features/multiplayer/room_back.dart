@@ -1,4 +1,5 @@
 import '../../design/court_dialog.dart';
+import '../../design/court_back_scope.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,9 +18,11 @@ class RoomBackGuard extends ConsumerStatefulWidget {
 }
 
 class _RoomBackGuardState extends ConsumerState<RoomBackGuard> {
+  final _overlays = CourtBackController();
   bool _allowPop = false, _dialogOpen = false, _closing = false;
 
   Future<void> _back() async {
+    if (_overlays.dismissTop()) return;
     if (_dialogOpen || _closing) return;
     _dialogOpen = true;
     ref.read(onlineGameProvider).hideSecret();
@@ -97,12 +100,21 @@ class _RoomBackGuardState extends ConsumerState<RoomBackGuard> {
         _closing = false;
       }
     });
-    return PopScope(
-      canPop: _allowPop,
-      onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) _back();
-      },
-      child: widget.child,
+    return CourtBackScope(
+      controller: _overlays,
+      child: PopScope(
+        canPop: _allowPop,
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop) _back();
+        },
+        child: widget.child,
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _overlays.clear();
+    super.dispose();
   }
 }

@@ -8,7 +8,7 @@ export function numberLimit(playerCount: number, factorTenths: number): number {
     playerCount > 20 ||
     !Number.isInteger(factorTenths) ||
     factorTenths < 10 ||
-    factorTenths > 30
+    factorTenths > 40
   )
     throw new Error('INVALID_CONFIG');
   return Math.floor((playerCount * factorTenths + 9) / 10);
@@ -28,7 +28,7 @@ export function assignNumbers(
   )
     throw new Error('INVALID_ROSTER');
   const recipients = roster.filter((id) => allJudges || id !== judgeId);
-  if (!Number.isInteger(max) || max < recipients.length || max > 60)
+  if (!Number.isInteger(max) || max < recipients.length || max > 80)
     throw new Error('INVALID_CONFIG');
   const remaining = Array.from({ length: max }, (_, index) => index + 1);
   return recipients.map((playerId) => {

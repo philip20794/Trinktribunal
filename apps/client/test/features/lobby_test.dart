@@ -308,11 +308,11 @@ void main() {
     (tester) async {
       final fixture = await pumpLobby(tester, host: true),
           socket = fixture.transport.sockets.last;
-      await tester.scrollUntilVisible(
-        find.byKey(const PageStorageKey('room-presence')),
-        200,
-        scrollable: find.byType(Scrollable).first,
+      await Scrollable.ensureVisible(
+        tester.element(find.byKey(const PageStorageKey('room-presence'))),
+        alignment: .5,
       );
+      await tester.pumpAndSettle();
       await tester.tap(
         find
             .descendant(
@@ -322,17 +322,6 @@ void main() {
             .first,
       );
       await tester.pumpAndSettle();
-      final list = find.descendant(
-        of: find.byType(TabBarView),
-        matching: find.byType(ListView),
-      );
-      await tester.scrollUntilVisible(
-        find.byTooltip('p2 verwalten'),
-        150,
-        scrollable: find
-            .descendant(of: list, matching: find.byType(Scrollable))
-            .first,
-      );
       await Scrollable.ensureVisible(
         tester.element(find.byTooltip('p2 verwalten')),
         alignment: .5,

@@ -22,7 +22,7 @@
         "playerCount": 20,
         "targetCases": 491,
         "requestedRuleEvents": 25,
-        "factorTenths": 30,
+        "factorTenths": 40,
         "allJudges": true,
         "eligibleQuestions": 491,
         "eligibleRules": 25
@@ -32,7 +32,7 @@
         "playerCount": 21,
         "targetCases": 432,
         "requestedRuleEvents": 23,
-        "factorTenths": 31,
+        "factorTenths": 41,
         "allJudges": true,
         "eligibleQuestions": 431,
         "eligibleRules": 22
@@ -49,7 +49,7 @@
       },
       {
         "valid": true,
-        "maxSecretNumber": 60,
+        "maxSecretNumber": 80,
         "numberRecipients": 20,
         "scheduledRuleEventCount": 25
       },

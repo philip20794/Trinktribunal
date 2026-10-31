@@ -28,7 +28,7 @@ void validateOrder(List<PlayerId> order, Iterable<PlayerId> recipients) {
 }
 
 List<PlayerId> _truth(Map<PlayerId, int> numbers) {
-  if (numbers.values.any((n) => n < 1 || n > 60) ||
+  if (numbers.values.any((n) => n < 1 || n > 80) ||
       numbers.values.toSet().length != numbers.length) {
     throw const DomainException(
       DomainErrorCode.invalidState,

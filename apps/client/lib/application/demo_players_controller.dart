@@ -172,7 +172,12 @@ final class _DemoPlayer {
       if (state.status == RoomConnectionStatus.online &&
           state.errorCode == null) {
         _connected = true;
-        _timer = Timer(const Duration(milliseconds: 450), _act);
+        _timer = Timer(
+          state.snapshot?.public.phase == 'judged'
+              ? const Duration(seconds: 2)
+              : const Duration(milliseconds: 450),
+          _act,
+        );
       } else if (_connected &&
           (state.status == RoomConnectionStatus.closed ||
               state.status == RoomConnectionStatus.error)) {
@@ -192,11 +197,7 @@ final class _DemoPlayer {
     final snapshot = room.state.snapshot;
     if (snapshot == null) return;
     final view = snapshot.public, game = view.gameId, round = view.roundId;
-    if (game == null ||
-        round == null ||
-        !view.frozenRoster.contains(snapshot.you)) {
-      return;
-    }
+    if (game == null) return;
     final own = view.players
         .where((p) => p.playerId == snapshot.you)
         .firstOrNull;
@@ -204,7 +205,16 @@ final class _DemoPlayer {
         snapshot.you == (view.config.allJudges ? view.readerId : view.judgeId);
     final actionId = ActionId(newRoomRequestId());
     RoomMessage? action;
-    if (view.phase == 'numbers' &&
+    if (view.phase == 'rule_event' && guide) {
+      action = ContinueRuleMessage.create(
+        actionId: actionId,
+        expectedRevision: snapshot.revision,
+        gameId: game,
+        afterCase: view.completedCases,
+      );
+    } else if (round == null || !view.frozenRoster.contains(snapshot.you)) {
+      return;
+    } else if (view.phase == 'numbers' &&
         snapshot.private.ownNumber != null &&
         own?.ready == false) {
       action = AcknowledgeNumberMessage.create(
@@ -232,7 +242,7 @@ final class _DemoPlayer {
         roundId: round,
       );
     } else if (view.phase == 'ordering' &&
-        snapshot.private.ownOrder == null &&
+        own?.orderSubmitted != true &&
         (view.config.allJudges || guide)) {
       final order =
           view.frozenRoster
@@ -254,6 +264,13 @@ final class _DemoPlayer {
         gameId: game,
         roundId: round,
         expectedCursor: view.revealCursor,
+      );
+    } else if (view.phase == 'judged' && guide) {
+      action = CompleteCaseMessage.create(
+        actionId: actionId,
+        expectedRevision: snapshot.revision,
+        gameId: game,
+        roundId: round,
       );
     }
     final key =

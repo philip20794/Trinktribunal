@@ -1,4 +1,10 @@
 abstract final class CourtAssets {
+  static const settingsPanel =
+      'assets/ui/courtroom/settings/panel_einstellungen_pergament.png';
+  static const settingsCases = 'assets/ui/courtroom/settings/icon_faelle.png';
+  static const settingsRules = 'assets/ui/courtroom/settings/icon_regeln.png';
+  static const settingsNumbers =
+      'assets/ui/courtroom/settings/icon_zahlenbereich.png';
   static const popup =
       'assets/ui/courtroom/illustrations/trinktribunal_pergament_popup.png';
   static const wood = 'assets/ui/courtroom/backgrounds/courtroom_wood_wall.png';
@@ -44,6 +50,10 @@ abstract final class CourtAssets {
 
   /// Bound decoding to both the display size and the actual source raster.
   static const nativeWidths = {
+    settingsPanel: 1080,
+    settingsCases: 512,
+    settingsRules: 512,
+    settingsNumbers: 512,
     wood: 1080,
     home: 1080,
     homeHero: 1520,

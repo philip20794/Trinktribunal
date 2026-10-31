@@ -136,23 +136,12 @@ void main() {
         );
         expect(cards.state!.manualErrors, isNull);
         expect(find.text(strings.get('nextCase')), findsNothing);
-        await tester.tap(find.byTooltip(strings.get('activeRules')));
+        expect(find.text(strings.get('gameFinishedBody')), findsOneWidget);
+        expect(find.byTooltip(strings.get('activeRules')), findsNothing);
+        await tester.tap(find.byKey(const ValueKey('finished-new-game')));
         await tester.pumpAndSettle();
-        expect(
-          find.text(strings.get('activeRulesCount', {'count': 7})),
-          findsOneWidget,
-        );
-        final back = find.text(strings.get('backToCase'));
-        await tester.scrollUntilVisible(
-          back,
-          300,
-          scrollable: find.byType(Scrollable).last,
-        );
-        await Scrollable.ensureVisible(tester.element(back), alignment: .5);
-        await tester.pumpAndSettle();
-        await tester.tap(back);
-        await tester.pumpAndSettle();
-        expect(cards.state!.completedCases, 50);
+        expect(cards.state, isNull);
+        expect(find.text(strings.get('startHearing')), findsOneWidget);
         expect(tester.takeException(), isNull);
       },
     );

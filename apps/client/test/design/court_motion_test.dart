@@ -27,7 +27,7 @@ void main() {
       await tester.tap(find.text('Continue'));
       expect(taps, 1);
       await tester.pump(const Duration(milliseconds: 220));
-      expect(find.byType(AnimatedSwitcher), findsOneWidget);
+      expect(find.byType(AnimatedSwitcher), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );

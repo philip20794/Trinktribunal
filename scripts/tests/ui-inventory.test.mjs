@@ -5,7 +5,7 @@ import { checkUiInventory } from '../check-ui-inventory.mjs';
 
 const inventory = () => JSON.parse(readFileSync(new URL('../../docs/design/ui-inventory.json', import.meta.url), 'utf8'));
 test('screen inventory covers every real feature source and all actual PNG review hashes', () => {
-  assert.deepEqual(checkUiInventory(inventory()), { sections: 22, featureFiles: 46, assets: 27, quarantined: 0 });
+  assert.deepEqual(checkUiInventory(inventory()), { sections: 22, featureFiles: 46, assets: 31, quarantined: 0 });
 });
 test('new/unmapped sources and edited source assets cannot silently inherit an old review', () => {
   const missing = inventory(); missing.sections.shift();

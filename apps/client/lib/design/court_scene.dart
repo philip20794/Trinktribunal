@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'court_assets.dart';
 import 'court_theme.dart';
+import 'court_motion.dart';
 
 abstract final class CourtSceneTokens {
   static const night = Color(0xFF26130D);
@@ -204,82 +205,84 @@ class CourtScaffold extends StatelessWidget {
   final String? background;
   final double maxWidth;
   @override
-  Widget build(BuildContext context) => Theme(
-    data: courtSceneTheme(),
-    child: Builder(
-      builder: (context) => Stack(
-        fit: StackFit.expand,
-        children: [
-          const ColoredBox(color: CourtSceneTokens.night),
-          if (background != null)
-            Positioned.fill(
+  Widget build(BuildContext context) => CourtMotionBoundary(
+    child: Theme(
+      data: courtSceneTheme(),
+      child: Builder(
+        builder: (context) => Stack(
+          fit: StackFit.expand,
+          children: [
+            const ColoredBox(color: CourtSceneTokens.night),
+            if (background != null)
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: CourtArt(background!, fit: BoxFit.cover),
+                ),
+              ),
+            const Positioned.fill(
               child: IgnorePointer(
-                child: CourtArt(background!, fit: BoxFit.cover),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0x6626130D),
+                        Color(0x9926130D),
+                        Color(0xE626130D),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          const Positioned.fill(
-            child: IgnorePointer(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0x6626130D),
-                      Color(0x9926130D),
-                      Color(0xE626130D),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: title == null
+                  ? null
+                  : AppBar(
+                      title: title,
+                      centerTitle: centerTitle,
+                      leading: leading,
+                      actions: actions,
+                      bottom: appBarBottom,
+                    ),
+              body: SafeArea(
+                child: LayoutBuilder(
+                  builder: (context, constraints) => Column(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: maxWidth),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: bodyBuilder?.call(context) ?? body!,
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (footer != null)
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: constraints.maxHeight * .6,
+                          ),
+                          child: SingleChildScrollView(
+                            child: Center(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: maxWidth),
+                                child: CourtMotionGuard(child: footer!),
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
               ),
             ),
-          ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: title == null
-                ? null
-                : AppBar(
-                    title: title,
-                    centerTitle: centerTitle,
-                    leading: leading,
-                    actions: actions,
-                    bottom: appBarBottom,
-                  ),
-            body: SafeArea(
-              child: LayoutBuilder(
-                builder: (context, constraints) => Column(
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: maxWidth),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: bodyBuilder?.call(context) ?? body!,
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (footer != null)
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight: constraints.maxHeight * .6,
-                        ),
-                        child: SingleChildScrollView(
-                          child: Center(
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(maxWidth: maxWidth),
-                              child: footer,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
