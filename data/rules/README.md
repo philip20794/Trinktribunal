@@ -113,7 +113,7 @@ Siehe auch [Spielkonzept](../../docs/GAME_DESIGN.md) und [Screens und Nutzerabl�
 
 Pro Regelereignis wird erst die Kategorie gewichtet gezogen und darin eine Regel mit
 dem kleinsten Sechs-Stunden-Zähler zufällig gewählt. Die Kategorien werden nicht
-vorab reserviert. Gewicht: `1000 × n^1,5 / (1 + bisherige Kategorieziehungen) /
+vorab reserviert. Gewicht: `1000 × n^1,5 / (1 + bisherige Kategorieziehungen / 20) /
 (1 + mittlere Sechs-Stunden-Nutzung)`; `n` zählt nur zum aktuellen Zeitpunkt
 zulässige Regeln. Vorher erfolgen Modus-, Konflikt- und Rollenfilter.
 Bei mindestens drei geplanten Regeln gilt pro Kategorie die Obergrenze

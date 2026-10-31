@@ -139,7 +139,8 @@ describe('weighted categories for drinking rules', () => {
     }
     expect(counts.drinking_ritual).toBeGreaterThan(counts.speech);
     expect(counts.speech).toBeGreaterThan(counts.behavior);
-    expect(withBehavior).toBeGreaterThan(0);
+    expect(withBehavior).toBeGreaterThan(100);
+    expect(withBehavior).toBeLessThan(200);
     expect(withoutBehavior).toBeGreaterThan(0);
   });
 

@@ -55,11 +55,11 @@ DrinkingRule selectCategorizedRule({
     final uses = group.rules.fold<int>(
       0, (sum, rule) => sum + history.recentCount(ContentKind.rule, rule.id, nowUtc),
     );
-    // n^1.5 / (1 + party picks) / (1 + mean six-hour uses).
+    // n^1.5 / (1 + party picks / 20) / (1 + mean six-hour uses).
     weights.add(
       math.max(
         1,
-        (1000 * n * math.sqrt(n) * n / ((group.picked + 1) * (n + uses))).floor(),
+        (20000 * n * math.sqrt(n) * n / ((20 + group.picked) * (n + uses))).floor(),
       ),
     );
   }

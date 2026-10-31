@@ -39,8 +39,8 @@ export function selectCategorizedRule(
     const uses = group.rules.reduce(
       (sum, rule) => sum + recentCount(input.history, 'rule', rule.id, input.now), 0,
     );
-    // n^1.5 / (1 + party picks) / (1 + mean six-hour uses).
-    return Math.max(1, Math.floor(1000 * n * Math.sqrt(n) * n / ((group.picked + 1) * (n + uses))));
+    // n^1.5 / (1 + party picks / 20) / (1 + mean six-hour uses).
+    return Math.max(1, Math.floor(20000 * n * Math.sqrt(n) * n / ((20 + group.picked) * (n + uses))));
   });
   const total = weights.reduce((sum, value) => sum + value, 0);
   let ticket = random(total);
