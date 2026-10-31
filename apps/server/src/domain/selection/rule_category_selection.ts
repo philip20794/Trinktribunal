@@ -3,7 +3,7 @@ import type { SelectionInput } from '../question_assignment';
 import { recentCount, selectContent } from './content_selection';
 import type { RandomIndex } from './random';
 
-const categories: readonly RuleCategory[] = ['drinking_ritual', 'speech', 'behavior'];
+const categories: readonly RuleCategory[] = ['drinking_ritual', 'other'];
 
 /** Draw a weighted category on demand, then use the existing minimum counter within it. */
 export function selectCategorizedRule(
