@@ -93,9 +93,10 @@ class Question extends CatalogEntry {
 }
 
 class DrinkingRule extends CatalogEntry {
-  const DrinkingRule._(super.id, super.text, super.players, this.excludes)
+  const DrinkingRule._(super.id, super.text, super.players, this.excludes, this.category)
     : super._();
   final Set<String> excludes;
+  final String? category;
 }
 
 class Catalog<T extends CatalogEntry> {
@@ -207,12 +208,17 @@ Catalog<Question> parseQuestions(String source) => _parse(source, 'questions', (
 
 Catalog<DrinkingRule> parseRules(String source) {
   final catalog = _parse(source, 'rules', (entry, language) {
-    _keys(entry, {'id', 'text', 'excludes'}, {'players'}, 'rule');
+    _keys(entry, {'id', 'text', 'excludes'}, {'players', 'category'}, 'rule');
     final id = _text(entry['id'], 'rule.id');
     if (!RegExp(r'^[a-z][a-z0-9_]*$').hasMatch(id)) {
       _invalid('$id: ungültige ID');
     }
     final text = _text(entry['text'], id);
+    final category = entry['category'];
+    if (category != null &&
+        !const {'drinking_ritual', 'speech', 'behavior'}.contains(category)) {
+      _invalid('$id: ungültige Regelkategorie');
+    }
     return DrinkingRule._(
       id,
       text,
@@ -222,6 +228,7 @@ Catalog<DrinkingRule> parseRules(String source) {
         id,
       ),
       _uniqueStrings(entry['excludes'], id),
+      category as String?,
     );
   });
   final byId = {for (final entry in catalog.entries) entry.id: entry};

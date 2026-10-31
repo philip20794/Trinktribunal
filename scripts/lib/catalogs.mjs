@@ -41,7 +41,7 @@ export function validateCatalog(catalog, kind) {
 export function validatePair(de, en, kind) {
   validateCatalog(de, kind); validateCatalog(en, kind);
   if (de.language !== 'de' || en.language !== 'en' || de.version !== en.version) fail(kind, 'language/version drift');
-  const signature = catalog => catalog[kind].map(entry => ({ id: entry.id, players: entry.players ?? {}, excludes: entry.excludes ?? [] }));
+  const signature = catalog => catalog[kind].map(entry => ({ id: entry.id, players: entry.players ?? {}, excludes: entry.excludes ?? [], ...(kind === 'rules' ? { category: entry.category ?? null } : {}) }));
   if (canonicalJson(signature(de)) !== canonicalJson(signature(en))) fail(kind, 'ID order, roles or constraints differ between languages');
 }
 
@@ -67,6 +67,8 @@ export function loadSources(root = repositoryRoot) {
       const expected = Array.from({ length: 250 }, (_, i) => ['a', 'b'].map(side => `${String(i + 1).padStart(3, '0')}-${side}`)).flat().filter(id => !removed.includes(id));
       if (canonicalJson(entries.map(entry => entry.id)) !== canonicalJson(expected)) fail(kind, 'unexpected production IDs');
     } else {
+      const validCategories = new Set(['drinking_ritual', 'speech', 'behavior']);
+      if (entries.some(entry => !validCategories.has(entry.category))) fail(kind, 'missing or invalid production rule category');
       const pairs = [['left_hand_drinking', 'two_hands_drinking'], ['two_hands_drinking', 'touch_player_while_drinking']];
       for (const [a, b] of pairs) if (!entries.find(e => e.id === a)?.excludes.includes(b) || !entries.find(e => e.id === b)?.excludes.includes(a)) fail(kind, 'missing D-04 exclusion');
       if (entries.find(e => e.id === 'imaginary_kobold')?.excludes.includes('imaginary_fly') || entries.find(e => e.id === 'imaginary_fly')?.excludes.includes('imaginary_kobold')) fail(kind, 'kobold/fly must coexist');

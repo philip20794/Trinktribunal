@@ -4,21 +4,25 @@
   "rules": [
     {
       "id": "swear_penalty",
+      "category": "speech",
       "text": "Wer flucht, muss einen Schluck trinken.",
       "excludes": []
     },
     {
       "id": "no_drink_word",
+      "category": "speech",
       "text": "Es darf nicht mehr das Wort „trinken“ (oder ein Wort dieses Wortstamms) gesagt werden.",
       "excludes": []
     },
     {
       "id": "no_ich_word",
+      "category": "speech",
       "text": "Man darf nicht mehr „Ich“ sagen (außer beim Vorlesen).",
       "excludes": []
     },
     {
       "id": "left_hand_drinking",
+      "category": "drinking_ritual",
       "text": "Jeder muss ab jetzt mit der linken Hand trinken.",
       "excludes": [
         "two_hands_drinking"
@@ -26,16 +30,19 @@
     },
     {
       "id": "imaginary_kobold",
+      "category": "drinking_ritual",
       "text": "Ab jetzt sitzt ein imaginärer Kobold auf euren Getränken. Dieser muss vor dem Trinken ab- und danach wieder auf das Glas gesetzt werden.",
       "excludes": []
     },
     {
       "id": "announce_drinking",
+      "category": "drinking_ritual",
       "text": "Wer trinken muss, muss dieses ab jetzt vorher laut ankündigen.",
       "excludes": []
     },
     {
       "id": "two_hands_drinking",
+      "category": "drinking_ritual",
       "text": "Eure Gläser sind so schwer, dass ab jetzt beide Hände zum Trinken verwendet werden müssen.",
       "excludes": [
         "left_hand_drinking",
@@ -44,36 +51,43 @@
     },
     {
       "id": "no_yes_no",
+      "category": "speech",
       "text": "Man darf nicht mehr „Ja“ oder „Nein“ sagen.",
       "excludes": []
     },
     {
       "id": "toast_neighbor",
+      "category": "drinking_ritual",
       "text": "Vor dem Trinken muss man mit einem seiner Nachbarn anstoßen (dieser muss nicht mittrinken, darf es aber natürlich).",
       "excludes": []
     },
     {
       "id": "thank_before_drinking",
+      "category": "drinking_ritual",
       "text": "Vor dem Trinken muss man sich bedanken.",
       "excludes": []
     },
     {
       "id": "imaginary_fly",
+      "category": "drinking_ritual",
       "text": "Ein imaginäres Fliegetier sitzt auf eurem Getränk, das vor dem Trinken weggepustet werden muss.",
       "excludes": []
     },
     {
       "id": "permission_before_drinking",
+      "category": "drinking_ritual",
       "text": "Vor dem Trinken muss man um Erlaubnis fragen.",
       "excludes": []
     },
     {
       "id": "closed_eyes_drinking",
+      "category": "drinking_ritual",
       "text": "Man darf nur noch mit geschlossenen Augen trinken.",
       "excludes": []
     },
     {
       "id": "touch_player_while_drinking",
+      "category": "drinking_ritual",
       "text": "Während man trinkt, muss man einen anderen Spieler berühren (mit einer Hand).",
       "excludes": [
         "two_hands_drinking"
@@ -81,21 +95,25 @@
     },
     {
       "id": "enjoyment_sound",
+      "category": "drinking_ritual",
       "text": "Nach dem Trinken muss man einen Genusslaut von sich geben (z. B. „Hmmm, lecker“, „Boah, das knallt“, „Gönnung pur“).",
       "excludes": []
     },
     {
       "id": "sniff_before_drinking",
+      "category": "drinking_ritual",
       "text": "Ab jetzt muss an dem Getränk geschnüffelt werden, bevor man etwas trinken darf.",
       "excludes": []
     },
     {
       "id": "number_penalty",
+      "category": "speech",
       "text": "Wer eine Zahl sagt, muss trinken.",
       "excludes": []
     },
     {
       "id": "toast_to_player",
+      "category": "drinking_ritual",
       "text": "Ab jetzt trinkt ihr immer auf {player1} (ruft so etwas wie „Auf {player1}!“, bevor ihr trinkt). Diese Regel gilt auch für {player1}.",
       "players": {
         "player1": {
@@ -106,31 +124,37 @@
     },
     {
       "id": "pointing_penalty",
+      "category": "behavior",
       "text": "Wer mit dem Finger auf jemanden zeigt, muss trinken.",
       "excludes": []
     },
     {
       "id": "no_face_touching",
+      "category": "behavior",
       "text": "Man darf sich nicht mehr an der Nase kratzen oder ins Gesicht fassen.",
       "excludes": []
     },
     {
       "id": "interrupting_penalty",
+      "category": "speech",
       "text": "Wer jemandem ins Wort fällt, muss trinken (außer um auf einen Regelverstoß aufmerksam zu machen).",
       "excludes": []
     },
     {
       "id": "repeat_question_penalty",
+      "category": "speech",
       "text": "Wer „Was?“, „Wie bitte?“ oder etwas Ähnliches fragt, um die zuletzt vorgelesene Frage erneut zu hören, muss trinken (außer der Vorlesende war extra leise).",
       "excludes": []
     },
     {
       "id": "permission_to_stand",
+      "category": "behavior",
       "text": "Wer aufstehen möchte, darf dies erst, nachdem es von einem Mitspieler erlaubt wurde.",
       "excludes": []
     },
     {
       "id": "apology_to_player",
+      "category": "drinking_ritual",
       "text": "Nach dem Trinken muss man sich bei {player1} entschuldigen. Wenn {player1} selbst trinkt, entschuldigt sich {player1} stattdessen bei {player2}.",
       "players": {
         "player1": {
@@ -147,6 +171,7 @@
     },
     {
       "id": "thanks_to_player",
+      "category": "drinking_ritual",
       "text": "Nach dem Trinken muss man sich bei {player1} bedanken. Wenn {player1} selbst trinkt, bedankt sich {player1} stattdessen bei {player2}.",
       "players": {
         "player1": {

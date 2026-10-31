@@ -46,6 +46,7 @@ class CatalogRepository {
         'excludes': entry is DrinkingRule
             ? entry.excludes.toList()
             : <String>[],
+        if (entry is DrinkingRule) 'category': entry.category,
       },
   ]);
 

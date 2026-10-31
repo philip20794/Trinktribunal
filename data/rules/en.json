@@ -4,21 +4,25 @@
   "rules": [
     {
       "id": "swear_penalty",
+      "category": "speech",
       "text": "Anyone who swears has to take a sip.",
       "excludes": []
     },
     {
       "id": "no_drink_word",
+      "category": "speech",
       "text": "From now on, you can't say the word \"drink\" or any form of it (like \"drinking\" or \"drinks\").",
       "excludes": []
     },
     {
       "id": "no_ich_word",
+      "category": "speech",
       "text": "You're no longer allowed to say \"I\" (except when reading something aloud).",
       "excludes": []
     },
     {
       "id": "left_hand_drinking",
+      "category": "drinking_ritual",
       "text": "From now on, everyone must drink with their left hand.",
       "excludes": [
         "two_hands_drinking"
@@ -26,16 +30,19 @@
     },
     {
       "id": "imaginary_kobold",
+      "category": "drinking_ritual",
       "text": "An imaginary little goblin is sitting on top of everyone's drink. Before taking a sip, you must lift it off your glass and put it back afterward.",
       "excludes": []
     },
     {
       "id": "announce_drinking",
+      "category": "drinking_ritual",
       "text": "Whenever you're supposed to take a sip, you have to announce it out loud first.",
       "excludes": []
     },
     {
       "id": "two_hands_drinking",
+      "category": "drinking_ritual",
       "text": "Your glasses have suddenly become so heavy that you have to use both hands whenever you drink.",
       "excludes": [
         "left_hand_drinking",
@@ -44,36 +51,43 @@
     },
     {
       "id": "no_yes_no",
+      "category": "speech",
       "text": "You're no longer allowed to say \"yes\" or \"no\".",
       "excludes": []
     },
     {
       "id": "toast_neighbor",
+      "category": "drinking_ritual",
       "text": "Before drinking, you must clink glasses with someone next to you. They don't have to drink too, but they're welcome to.",
       "excludes": []
     },
     {
       "id": "thank_before_drinking",
+      "category": "drinking_ritual",
       "text": "You have to say \"thank you\" before taking a sip.",
       "excludes": []
     },
     {
       "id": "imaginary_fly",
+      "category": "drinking_ritual",
       "text": "An imaginary flying bug is sitting on your drink. You have to blow it away before taking a sip.",
       "excludes": []
     },
     {
       "id": "permission_before_drinking",
+      "category": "drinking_ritual",
       "text": "You have to ask for permission before taking a sip.",
       "excludes": []
     },
     {
       "id": "closed_eyes_drinking",
+      "category": "drinking_ritual",
       "text": "From now on, you may only drink with your eyes closed.",
       "excludes": []
     },
     {
       "id": "touch_player_while_drinking",
+      "category": "drinking_ritual",
       "text": "Whenever you drink, you must touch another player with one hand.",
       "excludes": [
         "two_hands_drinking"
@@ -81,21 +95,25 @@
     },
     {
       "id": "enjoyment_sound",
+      "category": "drinking_ritual",
       "text": "After taking a sip, you have to make a sound of enjoyment (for example, \"Mmm, delicious!\", \"Whoa, that packs a punch!\", or \"That's the good stuff!\").",
       "excludes": []
     },
     {
       "id": "sniff_before_drinking",
+      "category": "drinking_ritual",
       "text": "From now on, you have to sniff your drink before taking a sip.",
       "excludes": []
     },
     {
       "id": "number_penalty",
+      "category": "speech",
       "text": "Anyone who says a number has to take a sip.",
       "excludes": []
     },
     {
       "id": "toast_to_player",
+      "category": "drinking_ritual",
       "text": "From now on, everyone drinks to {player1}. Say something like \"To {player1}!\" before each sip. This rule applies to {player1}, too.",
       "players": {
         "player1": {
@@ -106,31 +124,37 @@
     },
     {
       "id": "pointing_penalty",
+      "category": "behavior",
       "text": "Anyone who points at someone with their finger has to take a sip.",
       "excludes": []
     },
     {
       "id": "no_face_touching",
+      "category": "behavior",
       "text": "You're no longer allowed to scratch your nose or touch your face.",
       "excludes": []
     },
     {
       "id": "interrupting_penalty",
+      "category": "speech",
       "text": "Anyone who interrupts someone else has to take a sip (unless they're pointing out a rule violation).",
       "excludes": []
     },
     {
       "id": "repeat_question_penalty",
+      "category": "speech",
       "text": "Anyone who says \"What?\", \"Come again?\", or something similar to get the last question repeated has to take a sip (unless it was deliberately read too quietly).",
       "excludes": []
     },
     {
       "id": "permission_to_stand",
+      "category": "behavior",
       "text": "You have to get permission from another player before standing up.",
       "excludes": []
     },
     {
       "id": "apology_to_player",
+      "category": "drinking_ritual",
       "text": "After taking a sip, you must apologize to {player1}. If {player1} is the one drinking, {player1} must apologize to {player2} instead.",
       "players": {
         "player1": {
@@ -147,6 +171,7 @@
     },
     {
       "id": "thanks_to_player",
+      "category": "drinking_ritual",
       "text": "After taking a sip, you must thank {player1}. If {player1} is the one drinking, {player1} must thank {player2} instead.",
       "players": {
         "player1": {
