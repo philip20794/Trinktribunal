@@ -33,6 +33,6 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const args = process.argv.slice(2);
     if (args.some(arg => !['--sync', '--check'].includes(arg)) || args.length > 1) throw new Error('Usage: node scripts/validate-data.mjs [--sync|--check]');
     const count = syncAssets({ check: !args.includes('--sync') });
-    console.log(`Catalogs valid: 491 questions + 25 rules per DE/EN, ${count} assets ${args.includes('--sync') ? 'written' : 'checked'}.`);
+    console.log(`Catalogs valid: 491 questions + 29 rules per DE/EN, ${count} assets ${args.includes('--sync') ? 'written' : 'checked'}.`);
   } catch (error) { console.error(error.message); process.exitCode = 1; }
 }
