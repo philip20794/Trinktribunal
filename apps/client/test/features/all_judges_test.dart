@@ -185,10 +185,12 @@ void main() {
             own: false,
           ),
           socket = fixture.transport.sockets.last;
-      await numbers.tapText(tester, AppStrings('de').get('localGameOptions'));
-      tester.widget<SwitchListTile>(find.byType(SwitchListTile)).onChanged!(
-        true,
+      final toggle = find.descendant(
+        of: find.byKey(const ValueKey('room-all-judges')),
+        matching: find.byType(Switch),
       );
+      await tester.ensureVisible(toggle);
+      await tester.tap(toggle);
       await tester.pumpAndSettle();
       await tester.pump(const Duration(milliseconds: 350));
       await tester.pumpAndSettle();

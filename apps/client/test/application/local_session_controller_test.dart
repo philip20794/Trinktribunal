@@ -30,7 +30,7 @@ void main() {
       controller
           .configure(playerCount: 20, targetCases: 431, requestedRuleEvents: 22)
           .maxSecretNumber,
-      30,
+      40,
     );
     for (final n in [2, 21]) {
       expect(
