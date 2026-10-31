@@ -8,12 +8,18 @@ import { selectCategorizedRule } from '../../src/domain/selection/rule_category_
 const now = Date.parse('2026-10-31T12:00:00.000Z');
 const categories = ['drinking_ritual', 'other'] as const;
 const samples: ContentEntry[] = [
-  ...Array.from({ length: 16 }, (_, i) => ({ id: `r${i}`, text: 'r', category: 'drinking_ritual' as const })),
+  ...Array.from({ length: 16 }, (_, i) => ({
+    id: `r${i}`,
+    text: 'r',
+    category: 'drinking_ritual' as const,
+  })),
   ...Array.from({ length: 14 }, (_, i) => ({ id: `o${i}`, text: 'o', category: 'other' as const })),
 ];
 const event = (id: string, index = 0, timestamp = now): UsageEvent => ({
-  eventId: `e_${id}_${index}`, contentId: id,
-  kind: 'rule', timestampUtc: new Date(timestamp).toISOString(),
+  eventId: `e_${id}_${index}`,
+  contentId: id,
+  kind: 'rule',
+  timestampUtc: new Date(timestamp).toISOString(),
 });
 function input(
   drawn: readonly string[] = [],
@@ -23,8 +29,10 @@ function input(
   return { players: [], counts: {}, history, drawn, now, plannedRuleEvents };
 }
 function pick(
-  catalog: readonly ContentEntry[], drawn: readonly string[] = [],
-  history: readonly UsageEvent[] = [], random: (bound: number) => number = () => 0,
+  catalog: readonly ContentEntry[],
+  drawn: readonly string[] = [],
+  history: readonly UsageEvent[] = [],
+  random: (bound: number) => number = () => 0,
   planned = 9,
 ): ContentEntry {
   const candidates = catalog.filter((entry) => !drawn.includes(entry.id));
@@ -33,13 +41,16 @@ function pick(
 
 describe('weighted categories for drinking rules', () => {
   it('keeps the production assignments identical in DE and EN', () => {
-    const de = catalogs.de.rules, en = catalogs.en.rules;
+    const de = catalogs.de.rules,
+      en = catalogs.en.rules;
     expect(de.map(({ id, category }) => [id, category])).toEqual(
       en.map(({ id, category }) => [id, category]),
     );
     for (const [category, count] of [
-      ['drinking_ritual', 16], ['other', 14],
-    ] as const) expect(de.filter((rule) => rule.category === category)).toHaveLength(count);
+      ['drinking_ritual', 16],
+      ['other', 14],
+    ] as const)
+      expect(de.filter((rule) => rule.category === category)).toHaveLength(count);
   });
 
   it('migrates previous speech and behavior rules into other', () => {
@@ -59,8 +70,9 @@ describe('weighted categories for drinking rules', () => {
       drawn.push(selected.id);
       history = [...history, event(selected.id, i)];
     }
-    const counts = categories.map((category) =>
-      samples.filter((rule) => rule.category === category && drawn.includes(rule.id)).length,
+    const counts = categories.map(
+      (category) =>
+        samples.filter((rule) => rule.category === category && drawn.includes(rule.id)).length,
     );
     expect(counts).toEqual([7, 2]);
   });
@@ -85,7 +97,7 @@ describe('weighted categories for drinking rules', () => {
       { id: 'r', text: 'r', category: 'drinking_ritual' },
       { id: 's', text: 's', category: 'other' },
     ];
-    const random = (bound: number) => bound > 1 ? 300 : 0;
+    const random = (bound: number) => (bound > 1 ? 300 : 0);
     expect(pick(catalog, [], [], random).id).toBe('r');
     const recent = [event('r', 1), event('r', 2), event('r', 3)];
     expect(pick(catalog, [], recent, random).id).toBe('s');
@@ -98,8 +110,12 @@ describe('weighted categories for drinking rules', () => {
       { id: 'r1', text: 'r1', category: 'drinking_ritual', excludes: ['r2'] },
       { id: 'r2', text: 'r2', category: 'drinking_ritual', excludes: ['r1'] },
       { id: 's1', text: 's1', category: 'other' },
-      { id: 'b1', text: '{player1}', category: 'other',
-        players: { player1: { selection: 'random' } } },
+      {
+        id: 'b1',
+        text: '{player1}',
+        category: 'other',
+        players: { player1: { selection: 'random' } },
+      },
     ];
     const first = activateRule(catalog, [], input(), () => 0)!;
     expect(first.contentId).toBe('r1');
@@ -115,7 +131,10 @@ describe('weighted categories for drinking rules', () => {
   });
 
   it('keeps category-free old fixtures on the original minimum-counter logic', () => {
-    const catalog: ContentEntry[] = [{ id: 'used', text: 'used' }, { id: 'new', text: 'new' }];
+    const catalog: ContentEntry[] = [
+      { id: 'used', text: 'used' },
+      { id: 'new', text: 'new' },
+    ];
     expect(pick(catalog, [], [event('used')], () => 0).id).toBe('new');
   });
 
@@ -134,8 +153,9 @@ describe('weighted categories for drinking rules', () => {
         drawn.push(rule.id);
         counts[rule.category!] += 1;
       }
-      const categoryCounts = categories.map((category) =>
-        samples.filter((rule) => rule.category === category && drawn.includes(rule.id)).length,
+      const categoryCounts = categories.map(
+        (category) =>
+          samples.filter((rule) => rule.category === category && drawn.includes(rule.id)).length,
       );
       expect(Math.max(...categoryCounts)).toBeLessThanOrEqual(7);
       expect(Math.min(...categoryCounts)).toBeGreaterThanOrEqual(2);

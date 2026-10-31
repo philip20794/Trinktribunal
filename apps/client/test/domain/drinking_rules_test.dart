@@ -278,8 +278,10 @@ void main() {
     'four short games keep six-hour usage while resetting per-game rules',
     () {
       var history = ContentHistory([]);
+      // Isolate cross-game history from production category weights, which have
+      // their own selection tests. Ignoring history would repeat the first six.
       final engine = DrinkingRules(
-        rules: actualRules(),
+        rules: rules([for (var i = 0; i < 24; i++) ruleJson('history_$i')]),
         mode: GameMode.sharedPhone,
         random: TestRandom(),
         clock: () => now,
@@ -312,7 +314,7 @@ void main() {
         }
         history = state.selection.history;
       }
-      expect(allDrawn.length, greaterThanOrEqualTo(22));
+      expect(allDrawn.length, 24);
       expect(history.entries.length, 24);
     },
   );

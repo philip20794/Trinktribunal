@@ -20,8 +20,11 @@ DrinkingRule selectCategorizedRule({
 }) {
   if (candidates.any((rule) => rule.category == null)) {
     return selectContent(
-      candidates: candidates, kind: ContentKind.rule,
-      history: history, nowUtc: nowUtc, random: random,
+      candidates: candidates,
+      kind: ContentKind.rule,
+      history: history,
+      nowUtc: nowUtc,
+      random: random,
     );
   }
   final picked = <String, int>{for (final category in _categories) category: 0};
@@ -32,20 +35,31 @@ DrinkingRule selectCategorizedRule({
   }
   final groups = <({String category, List<DrinkingRule> rules, int picked})>[];
   for (final category in _categories) {
-    final rules = candidates.where((rule) => rule.category == category).toList();
+    final rules = candidates
+        .where((rule) => rule.category == category)
+        .toList();
     if (rules.isNotEmpty) {
-      groups.add((category: category, rules: rules, picked: picked[category] ?? 0));
+      groups.add((
+        category: category,
+        rules: rules,
+        picked: picked[category] ?? 0,
+      ));
     }
   }
   final cap = plannedRuleEvents >= 3
       ? math.min(plannedRuleEvents - 1, (plannedRuleEvents * 0.75).ceil())
       : null;
-  final underCap = groups.where((group) => cap == null || group.picked < cap).toList();
+  final underCap = groups
+      .where((group) => cap == null || group.picked < cap)
+      .toList();
   final allowed = underCap.isNotEmpty ? underCap : groups;
 
   DrinkingRule pickFrom(List<DrinkingRule> rules) => selectContent(
-    candidates: rules, kind: ContentKind.rule,
-    history: history, nowUtc: nowUtc, random: random,
+    candidates: rules,
+    kind: ContentKind.rule,
+    history: history,
+    nowUtc: nowUtc,
+    random: random,
   );
   if (allowed.length == 1) return pickFrom(allowed.single.rules);
 
@@ -53,13 +67,16 @@ DrinkingRule selectCategorizedRule({
   for (final group in allowed) {
     final n = group.rules.length;
     final uses = group.rules.fold<int>(
-      0, (sum, rule) => sum + history.recentCount(ContentKind.rule, rule.id, nowUtc),
+      0,
+      (sum, rule) =>
+          sum + history.recentCount(ContentKind.rule, rule.id, nowUtc),
     );
     // n^1.5 / (1 + party picks / 20) / (1 + mean six-hour uses).
     weights.add(
       math.max(
         1,
-        (20000 * n * math.sqrt(n) * n / ((20 + group.picked) * (n + uses))).floor(),
+        (20000 * n * math.sqrt(n) * n / ((20 + group.picked) * (n + uses)))
+            .floor(),
       ),
     );
   }
@@ -67,7 +84,8 @@ DrinkingRule selectCategorizedRule({
   var ticket = random.nextInt(total);
   if (ticket < 0 || ticket >= total) {
     throw const DomainException(
-      DomainErrorCode.invalidState, 'Ungültiger injizierter Zufallsindex.',
+      DomainErrorCode.invalidState,
+      'Ungültiger injizierter Zufallsindex.',
     );
   }
   for (var index = 0; index < allowed.length; index++) {
@@ -75,6 +93,7 @@ DrinkingRule selectCategorizedRule({
     if (ticket < 0) return pickFrom(allowed[index].rules);
   }
   throw const DomainException(
-    DomainErrorCode.invalidState, 'Ungültiger injizierter Zufallsindex.',
+    DomainErrorCode.invalidState,
+    'Ungültiger injizierter Zufallsindex.',
   );
 }

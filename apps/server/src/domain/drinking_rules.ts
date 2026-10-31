@@ -27,7 +27,9 @@ export function activateRule(
   );
   if (!candidates.length) return null;
   const chosen = selectCategorizedRule(entries, candidates, input, random);
-  const bindings = personAssignment(chosen.players ?? {}, input.players, input.counts).bind(random)!;
+  const bindings = personAssignment(chosen.players ?? {}, input.players, input.counts).bind(
+    random,
+  )!;
   return { contentId: chosen.id, bindings };
 }
 export function rebindRules(

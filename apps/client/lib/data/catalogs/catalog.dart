@@ -93,8 +93,13 @@ class Question extends CatalogEntry {
 }
 
 class DrinkingRule extends CatalogEntry {
-  const DrinkingRule._(super.id, super.text, super.players, this.excludes, this.category)
-    : super._();
+  const DrinkingRule._(
+    super.id,
+    super.text,
+    super.players,
+    this.excludes,
+    this.category,
+  ) : super._();
   final Set<String> excludes;
   final String? category;
 }

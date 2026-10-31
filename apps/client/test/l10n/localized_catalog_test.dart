@@ -82,7 +82,7 @@ void main() {
         expect(localizedRule(catalogs, 'en', rule).id, rule.id);
       }
       expect(catalogs.questions['de']!.entries.length, 491);
-      expect(catalogs.rules['en']!.entries.length, 25);
+      expect(catalogs.rules['en']!.entries.length, 30);
     },
   );
 

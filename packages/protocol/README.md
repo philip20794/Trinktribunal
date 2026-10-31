@@ -10,6 +10,8 @@ Status: **Fachliche Referenz-Fixtures aus TT-003 und Netzwerkvertrag v1 aus TT-0
 
 ## Verzeichnisstruktur
 
+Nach Änderungen an Fragen oder Regeln `node scripts/sync-catalog-metadata.mjs --sync` (oder `scripts/sync-assets.ps1`) ausführen. Dieser Schritt aktualisiert Assets, beide Manifeste, die katalogbezogenen Rechte-Prüfsummen, gemeinsame Handshake-Fixtures sowie generierte Dart-/TypeScript-Metadaten und Codec-Fälle zusammen. `--check` prüft denselben Stand ohne Änderungen. Absichtlich ungültige Handshakes und bestehende Rechte-Einstufungen bleiben erhalten.
+
 - [`fixtures/rules/`](fixtures/rules/): Konfiguration, Ereignisplanung, Inhalts- und Personenauswahl sowie Gültigkeitsfälle.
 - [`fixtures/transitions/`](fixtures/transitions/): bestätigte Abschlussaktionen, Permutationen, Richter-/Vorleserrotation und unterschiedliche Urteilsauswertungen.
 

@@ -25,7 +25,7 @@ void main() {
     expect(defaults.factorTenths, 20);
     expect(defaults.maxSecretNumber, 16);
     expect(controller.capacity.questions, 431);
-    expect(controller.capacity.rules, 22);
+    expect(controller.capacity.rules, 27);
     expect(
       controller
           .configure(playerCount: 20, targetCases: 431, requestedRuleEvents: 22)

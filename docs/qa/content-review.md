@@ -65,6 +65,16 @@ Die folgenden Listen wurden aus dem geprüften Bestand erzeugt und gegen die Que
 
 `swear_penalty`, `no_drink_word`, `no_ich_word`, `left_hand_drinking`, `imaginary_kobold`, `announce_drinking`, `two_hands_drinking`, `no_yes_no`, `toast_neighbor`, `thank_before_drinking`, `imaginary_fly`, `permission_before_drinking`, `closed_eyes_drinking`, `touch_player_while_drinking`, `enjoyment_sound`, `sniff_before_drinking`, `number_penalty`, `toast_to_player`, `pointing_penalty`, `no_face_touching`, `interrupting_penalty`, `repeat_question_penalty`, `permission_to_stand`, `apology_to_player`, `thanks_to_player`.
 
+## CI-Katalogabgleich nach Erweiterung auf 30 Regeln (31.10.2026)
+
+Codemagic-Build 19 (`76f2efe`, ID `6ae61483efa74786046f7f14`) scheiterte an sechs veralteten Rechte-Prüfsummen für Regelquellen/-Assets und beide Manifeste sowie an alten Handshake-Fixtures. Der aktuelle Gesamthash ist `8f5d8a9898784d458faecd1b626d660499bf7f0521936109da796beb6151fbb2`. Auch die kanonischen Git-Blobs der sechs Dateien entsprechen den aktualisierten Prüfsummen; der Fehler ist somit kein abweichendes macOS-Zeilenende.
+
+`node scripts/sync-catalog-metadata.mjs --sync` aktualisiert Katalog-Assets, Manifeste, katalogbezogene Rechte-Prüfsummen, gemeinsame Handshakes und generierte Codec-/DTO-Dateien zusammen. `scripts/sync-assets.ps1` verwendet denselben Ablauf; `--check` verändert keine Dateien. Regressionstests sichern den Ablauf außerhalb des Repository-Verzeichnisses sowie unveränderte absichtlich ungültige Handshakes und Rechte-Einstufungen ab.
+
+Die Folgeprüfungen korrigieren überholte Testannahmen (30 Regeln insgesamt, 27 ohne Spielerrollen), isolieren den Historientest von den Kategorie-Gewichten und formatieren die zuletzt ergänzten Kategorie-Dateien. Die unveränderten Spiellimits von 22 bzw. 25 Regelereignissen werden weiterhin geprüft. Lokaler Nachweis: sämtliche 176 aktiven Node-Tests, 91 Protokoll-/Kompatibilitätstests und 41 Regel-/Kategorie-Servertests erfolgreich; drei optionale Node-Prüfungen ausgelassen. Dart/TypeScript-Parität einschließlich Mutationsprüfungen, Generatoren, Rechte-/UI-Inventar, Format, TypeScript und Analyze erfolgreich. Ein neuer Codemagic-Lauf wird durch diesen lokalen Nachweis nicht als erfolgreich behauptet.
+
+Flutter-Gesamtlauf: 803 Tests erfolgreich, vier optionale Tests ausgelassen.
+
 ## Historische lokale Prüfung TT-005
 
 Finaler Lauf scripts/check.ps1 -Scope All: Exitcode 0, 78 Node-Tests und 17 Flutter-Tests bestanden, Format unverändert und Analyze ohne Befunde. Assetprüfung schreibfrei grün; nur der EN-Fragenhash wurde geändert. Laufende Chrome-Debugvorschau auf Port 7357 mit tatsächlichem Hot Restart in 700 ms aktualisiert. Keine agentenseitige visuelle Prüfung behauptet. Keine Actions oder Deployments.

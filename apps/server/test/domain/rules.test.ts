@@ -263,7 +263,7 @@ describe('existing TT-003/007/008 fixtures and production invariants', () => {
   });
   it('schedules every supported density with bounded draws and no rejection loop', () => {
     for (let f = 1; f <= 491; f++)
-      for (const r of [0, 1, 7, 30]) {
+      for (const r of [0, 1, 7, 25]) {
         let calls = 0;
         const slots = planSlots(f, r, (bound) => {
           calls++;

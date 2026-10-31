@@ -46,11 +46,11 @@
       "files": [
         {
           "path": "apps/client/assets/catalogs/rules/de.json",
-          "sha256": "e2e81352cd3de1919e6ce494f3a014dcc4d836b5ada42d688d8ce8f78cd1670a"
+          "sha256": "38f155a6d6950218d75d142ac19e709e1403928022142e6d2a6f9fb61ce10a2e"
         },
         {
           "path": "data/rules/de.json",
-          "sha256": "68aa3e4b9cbf9e77ba2cc537619da859e725a7fe33a7dd04931cca6c33e146e8"
+          "sha256": "667b34fb463bf920b276ad3730460825b8787bfedb9861514c141f969bd031ef"
         }
       ]
     },
@@ -63,11 +63,11 @@
       "files": [
         {
           "path": "apps/client/assets/catalogs/rules/en.json",
-          "sha256": "88d4406c2779d9e28c975c000e266ae5db96d5d03ebf0e9b3592ecf1318583f5"
+          "sha256": "92860238c147f0b027c2b0d6c98d72527d0d5b0d47b36dac1d929ac61b44b56c"
         },
         {
           "path": "data/rules/en.json",
-          "sha256": "d8cd6f4e632006dfb66a2f327be1e4f53eb38cab45dd7d9694325bf94064108c"
+          "sha256": "e34820ace027fcbb00f7f9598bedcd010f070ac838defc0e071bcdb615f51a17"
         }
       ]
     },
@@ -80,11 +80,11 @@
       "files": [
         {
           "path": "apps/client/assets/catalogs/manifest.json",
-          "sha256": "9ffa674da509340c68e2239a9f2b2a185121b18dbfa5f36688160219e2826220"
+          "sha256": "732ab0454b573e987a004ace1d9f8580769a11f526b558795d1a0425044cae31"
         },
         {
           "path": "data/manifest.json",
-          "sha256": "9ffa674da509340c68e2239a9f2b2a185121b18dbfa5f36688160219e2826220"
+          "sha256": "732ab0454b573e987a004ace1d9f8580769a11f526b558795d1a0425044cae31"
         }
       ]
     },

@@ -8,8 +8,10 @@ import 'selection_support.dart';
 
 ContentHistoryEntry used(String id, String eventId, [DateTime? at]) =>
     ContentHistoryEntry(
-      eventId: eventId, kind: ContentKind.rule,
-      contentId: id, timestampUtc: at ?? now,
+      eventId: eventId,
+      kind: ContentKind.rule,
+      contentId: id,
+      timestampUtc: at ?? now,
     );
 
 void main() {
@@ -17,8 +19,12 @@ void main() {
     final de = actualRules();
     final en = rulesFromEnglish();
     expect(
-      [for (final rule in de) [rule.id, rule.category]],
-      [for (final rule in en) [rule.id, rule.category]],
+      [
+        for (final rule in de) [rule.id, rule.category],
+      ],
+      [
+        for (final rule in en) [rule.id, rule.category],
+      ],
     );
     for (final category in ['drinking_ritual', 'other']) {
       expect(
@@ -40,7 +46,9 @@ void main() {
         catalog: catalog,
         candidates: catalog.where((r) => !drawn.contains(r.id)).toList(),
         drawnIds: drawn,
-        history: history, nowUtc: now, random: TestRandom(),
+        history: history,
+        nowUtc: now,
+        random: TestRandom(),
         plannedRuleEvents: 9,
       );
       expect(drawn.add(chosen.id), true);
@@ -48,19 +56,32 @@ void main() {
     }
     final picked = [
       for (final category in ['drinking_ritual', 'other'])
-        catalog.where((r) => r.category == category && drawn.contains(r.id)).length,
+        catalog
+            .where((r) => r.category == category && drawn.contains(r.id))
+            .length,
     ];
     expect(picked, [7, 2]);
   });
 
-  test('legacy speech and behavior rules belong to other; new rule is other', () {
-    final all = actualRules();
-    for (final id in ['swear_penalty', 'pointing_penalty', 'formal_address', 'motion_denied']) {
-      expect(all.singleWhere((r) => r.id == id).category, 'other');
-    }
-    expect(all.where((r) => r.category == 'other').length, 14);
-    expect(all.every((r) => {'drinking_ritual', 'other'}.contains(r.category)), true);
-  });
+  test(
+    'legacy speech and behavior rules belong to other; new rule is other',
+    () {
+      final all = actualRules();
+      for (final id in [
+        'swear_penalty',
+        'pointing_penalty',
+        'formal_address',
+        'motion_denied',
+      ]) {
+        expect(all.singleWhere((r) => r.id == id).category, 'other');
+      }
+      expect(all.where((r) => r.category == 'other').length, 14);
+      expect(
+        all.every((r) => {'drinking_ritual', 'other'}.contains(r.category)),
+        true,
+      );
+    },
+  );
 
   test('existing minimum-counter choice applies within the category', () {
     final catalog = rules([
@@ -69,9 +90,13 @@ void main() {
       ruleJson('spoken', category: 'other'),
     ]);
     final chosen = selectCategorizedRule(
-      catalog: catalog, candidates: catalog, drawnIds: {},
-      history: ContentHistory([used('used', 'old')]), nowUtc: now,
-      random: TestRandom(), plannedRuleEvents: 9,
+      catalog: catalog,
+      candidates: catalog,
+      drawnIds: {},
+      history: ContentHistory([used('used', 'old')]),
+      nowUtc: now,
+      random: TestRandom(),
+      plannedRuleEvents: 9,
     );
     expect(chosen.id, 'fresh');
   });
@@ -82,17 +107,33 @@ void main() {
       ruleJson('s', category: 'other'),
     ]);
     String chosen(ContentHistory history) => selectCategorizedRule(
-      catalog: catalog, candidates: catalog, drawnIds: {},
-      history: history, nowUtc: now,
-      random: TestRandom(indices: [300, 0]), plannedRuleEvents: 9,
+      catalog: catalog,
+      candidates: catalog,
+      drawnIds: {},
+      history: history,
+      nowUtc: now,
+      random: TestRandom(indices: [300, 0]),
+      plannedRuleEvents: 9,
     ).id;
     expect(chosen(ContentHistory([])), 'r');
-    expect(chosen(ContentHistory([
-      used('r', 'old1'), used('r', 'old2'), used('r', 'old3'),
-    ])), 's');
-    expect(chosen(ContentHistory([
-      used('r', 'expired', now.subtract(const Duration(hours: 6))),
-    ])), 'r');
+    expect(
+      chosen(
+        ContentHistory([
+          used('r', 'old1'),
+          used('r', 'old2'),
+          used('r', 'old3'),
+        ]),
+      ),
+      's',
+    );
+    expect(
+      chosen(
+        ContentHistory([
+          used('r', 'expired', now.subtract(const Duration(hours: 6))),
+        ]),
+      ),
+      'r',
+    );
   });
 
   test('active conflicts are filtered before choosing categories', () {
@@ -102,21 +143,29 @@ void main() {
       ruleJson('s1', category: 'other'),
     ]);
     final engine = DrinkingRules(
-      rules: catalog, mode: GameMode.physicalCards,
-      random: TestRandom(), clock: () => now,
+      rules: catalog,
+      mode: GameMode.physicalCards,
+      random: TestRandom(),
+      clock: () => now,
     );
     final first = engine.activate(
       state: RuleState(selection: selection()),
-      eventId: 'e1', activePlayers: [], plannedRuleEvents: 3,
+      eventId: 'e1',
+      activePlayers: [],
+      plannedRuleEvents: 3,
     );
     expect(first.active.single.entry.id, 'r1');
     final second = engine.activate(
-      state: first, eventId: 'e2', activePlayers: [],
+      state: first,
+      eventId: 'e2',
+      activePlayers: [],
       plannedRuleEvents: 3,
     );
     expect(second.active.map((entry) => entry.entry.id), ['r1', 's1']);
     final third = engine.activate(
-      state: second, eventId: 'e3', activePlayers: [],
+      state: second,
+      eventId: 'e3',
+      activePlayers: [],
       plannedRuleEvents: 3,
     );
     expect(third.skippedEvents, {'e3'});
@@ -127,9 +176,13 @@ void main() {
       for (var i = 0; i < 4; i++) ruleJson('r$i', category: 'drinking_ritual'),
     ]);
     final chosen = selectCategorizedRule(
-      catalog: catalog, candidates: catalog.skip(2).toList(),
-      drawnIds: {'r0', 'r1'}, history: ContentHistory([]),
-      nowUtc: now, random: TestRandom(), plannedRuleEvents: 3,
+      catalog: catalog,
+      candidates: catalog.skip(2).toList(),
+      drawnIds: {'r0', 'r1'},
+      history: ContentHistory([]),
+      nowUtc: now,
+      random: TestRandom(),
+      plannedRuleEvents: 3,
     );
     expect(chosen.id, 'r2');
   });
@@ -141,15 +194,22 @@ void main() {
       ruleJson('s1', category: 'other'),
     ]);
     final first = selectCategorizedRule(
-      catalog: catalog, candidates: catalog, drawnIds: {},
-      history: ContentHistory([]), nowUtc: now,
-      random: TestRandom(), plannedRuleEvents: 2,
+      catalog: catalog,
+      candidates: catalog,
+      drawnIds: {},
+      history: ContentHistory([]),
+      nowUtc: now,
+      random: TestRandom(),
+      plannedRuleEvents: 2,
     );
     final second = selectCategorizedRule(
       catalog: catalog,
       candidates: catalog.where((r) => r.id != first.id).toList(),
-      drawnIds: {first.id}, history: ContentHistory([]),
-      nowUtc: now, random: TestRandom(), plannedRuleEvents: 2,
+      drawnIds: {first.id},
+      history: ContentHistory([]),
+      nowUtc: now,
+      random: TestRandom(),
+      plannedRuleEvents: 2,
     );
     expect(first.category, 'drinking_ritual');
     expect(second.category, 'drinking_ritual');

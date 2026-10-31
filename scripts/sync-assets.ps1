@@ -7,5 +7,5 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
     exit 1
 }
 $mode = if ($Check) { '--check' } else { '--sync' }
-& node (Join-Path $PSScriptRoot 'validate-data.mjs') $mode
+& node (Join-Path $PSScriptRoot 'sync-catalog-metadata.mjs') $mode
 exit $LASTEXITCODE

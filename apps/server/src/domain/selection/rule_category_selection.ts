@@ -22,11 +22,13 @@ export function selectCategorizedRule(
     if (drawnIds.has(rule.id) && rule.category)
       picked.set(rule.category, (picked.get(rule.category) ?? 0) + 1);
   }
-  const groups = categories.map((category) => ({
-    category,
-    rules: candidates.filter((rule) => rule.category === category),
-    picked: picked.get(category) ?? 0,
-  })).filter((group) => group.rules.length > 0);
+  const groups = categories
+    .map((category) => ({
+      category,
+      rules: candidates.filter((rule) => rule.category === category),
+      picked: picked.get(category) ?? 0,
+    }))
+    .filter((group) => group.rules.length > 0);
   const planned = input.plannedRuleEvents ?? 0;
   const cap = planned >= 3 ? Math.min(planned - 1, Math.ceil(planned * 0.75)) : null;
   const underCap = groups.filter((group) => cap === null || group.picked < cap);
@@ -37,10 +39,14 @@ export function selectCategorizedRule(
   const weights = allowed.map((group) => {
     const n = group.rules.length;
     const uses = group.rules.reduce(
-      (sum, rule) => sum + recentCount(input.history, 'rule', rule.id, input.now), 0,
+      (sum, rule) => sum + recentCount(input.history, 'rule', rule.id, input.now),
+      0,
     );
     // n^1.5 / (1 + party picks / 20) / (1 + mean six-hour uses).
-    return Math.max(1, Math.floor(20000 * n * Math.sqrt(n) * n / ((20 + group.picked) * (n + uses))));
+    return Math.max(
+      1,
+      Math.floor((20000 * n * Math.sqrt(n) * n) / ((20 + group.picked) * (n + uses))),
+    );
   });
   const total = weights.reduce((sum, value) => sum + value, 0);
   let ticket = random(total);

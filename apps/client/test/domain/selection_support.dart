@@ -62,7 +62,7 @@ Map<String, dynamic> ruleJson(
       ? 'Regel $id'
       : '${roles.keys.map((key) => '{$key}').join(' ')} {player1}',
   'excludes': excludes,
-  if (category != null) 'category': category,
+  'category': ?category,
   'players': ?roles,
 };
 List<Question> actualQuestions([String language = 'de']) => parseQuestions(
@@ -72,6 +72,6 @@ List<DrinkingRule> actualRules() =>
     parseRules(File('assets/catalogs/rules/de.json').readAsStringSync())
         .entries;
 
-List<DrinkingRule> rulesFromEnglish() => parseRules(
-  File('assets/catalogs/rules/en.json').readAsStringSync(),
-).entries;
+List<DrinkingRule> rulesFromEnglish() =>
+    parseRules(File('assets/catalogs/rules/en.json').readAsStringSync())
+        .entries;
