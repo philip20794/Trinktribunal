@@ -19,7 +19,7 @@ Der Validator verwendet die [Fragen-](../../packages/protocol/schemas/questions.
 - Eindeutige IDs, DE/EN-ID-Menge **und Reihenfolge**, gleiche Rollen einschließlich `differentFrom` und gleiche Ausschlüsse. Texte und Skalen dürfen übersetzt sein; gleiche Texte bei verschiedenen IDs bleiben gültig.
 - Rollen aus Frage, grünem und rotem Skalenende gemeinsam sammeln; jede Rolle genau definieren, unbenutzte/fehlende Definitionen und leere `players` ablehnen. `selection=random` bleibt Datenformat, nicht der Algorithmus der späteren D-05-Engine.
 - Rollenverweise nur auf vorhandene andere Rollen; keine doppelten Referenzen. Regelausschlüsse nur auf andere vorhandene IDs und stets gegenseitig.
-- Produktionsbestand separat vom wiederverwendbaren Format prüfen: 491 Fragen und 25 Regeln je Sprache, 431/22 ohne Namen. Genau die neun dokumentierten Fragen-IDs fehlen; keine Neunummerierung. D-04-Paare verpflichtend, Kobold/Fliege vereinbar.
+- Produktionsbestand separat vom wiederverwendbaren Format prüfen: 491 Fragen und 29 Regeln je Sprache, 431/26 ohne Namen. Genau die neun dokumentierten Fragen-IDs fehlen; keine Neunummerierung. D-04-Paare verpflichtend, Kobold/Fliege vereinbar.
 - Fehlende, veränderte oder zusätzliche Assetdateien führen zu Fehlercode 1. `-Check` schreibt nichts. Synchronisierung löscht keine fremden Dateien; zusätzliche Assets müssen bewusst geprüft und entfernt werden.
 
 ## Kanonisierung und Manifest
