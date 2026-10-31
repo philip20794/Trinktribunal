@@ -29,8 +29,8 @@ void main() {
       for (final language in ['de', 'en']) {
         expect(data.questions[language]!.entries.length, 491);
         expect(data.questions[language]!.withoutPlayers.length, 431);
-        expect(data.rules[language]!.entries.length, 29);
-        expect(data.rules[language]!.withoutPlayers.length, 26);
+        expect(data.rules[language]!.entries.length, 30);
+        expect(data.rules[language]!.withoutPlayers.length, 27);
       }
       expect(() => data.questions.clear(), throwsUnsupportedError);
       expect(
