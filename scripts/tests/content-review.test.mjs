@@ -35,17 +35,17 @@ test('English corrections preserve the German perspective and scale meanings', (
   assert.equal(questions.find(q => q.id === '195-b').scale.red, 'Incredibly impressive');
 });
 
-test('final editorial ledger covers all 516 DE/EN pairs and becomes stale on any entry change', () => {
+test('final editorial ledger covers all 520 DE/EN pairs and becomes stale on any entry change', () => {
   const lines=readFileSync(new URL('../../docs/qa/content-review-ledger.tsv',import.meta.url),'utf8').trimEnd().split(/\r?\n/);
   assert.equal(lines.shift(),'kind\tid\tdeSha256\tenSha256\treviewDate\tresult\tnote');
-  assert.equal(lines.length,516);
+  assert.equal(lines.length,520);
   const entries=new Map();
   for(const line of lines) {
     const fields=line.split('\t');assert.equal(fields.length,7);
     const [kind,id,de,en,date,result,note]=fields;
     assert.ok(['questions','rules'].includes(kind));
     assert.ok(['approved','corrected'].includes(result));
-    assert.equal(date,'2026-10-28');assert.ok(note.length>0);
+    assert.equal(date,kind==='rules'?'2026-10-31':'2026-10-28');assert.ok(note.length>0);
     const key=kind+':'+id;assert.ok(!entries.has(key));entries.set(key,{de,en,result});
   }
   const hash=entry=>createHash('sha256').update(canonicalJson(entry)).digest('hex');
