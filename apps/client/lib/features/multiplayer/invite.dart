@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
@@ -55,12 +54,6 @@ class RoomInvite extends ConsumerWidget {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 8),
-          SelectableText(
-            payload,
-            key: const PageStorageKey('room-invite-link'),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
           Builder(
             builder: (context) => FilledButton.icon(
               icon: const Icon(Icons.share_outlined),
@@ -85,25 +78,6 @@ class RoomInvite extends ConsumerWidget {
                 }
               },
             ),
-          ),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.copy),
-            label: const TText('roomCopyLink'),
-            onPressed: () async {
-              var success = true;
-              try {
-                await Clipboard.setData(ClipboardData(text: payload));
-              } on Object {
-                success = false;
-              }
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: TText(success ? 'roomCopied' : 'roomCopyFailed'),
-                  ),
-                );
-              }
-            },
           ),
         ] else ...[
           Text(

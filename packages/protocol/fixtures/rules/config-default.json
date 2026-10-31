@@ -10,17 +10,17 @@
     "playerCount": 8,
     "targetCases": 50,
     "requestedRuleEvents": 7,
-    "factorTenths": 15,
+    "factorTenths": 20,
     "allJudges": false,
     "eligibleQuestions": 491,
     "eligibleRules": 25
   },
   "expected": {
     "valid": true,
-    "maxSecretNumber": 12,
+    "maxSecretNumber": 16,
     "numberRecipients": 7,
     "scheduledRuleEventCount": 7,
     "frozen": true
   },
-  "notes": "N=8, X=ceil(8*1.5)=12; normaler Richter ist kein Empfänger."
+  "notes": "N=8, X=ceil(8*2)=16; normaler Richter ist kein Empfänger."
 }

@@ -6,7 +6,7 @@ Stand: TT-068, 28.10.2026. Dieselben Hinweise stehen in der App unter Einstellun
 
 | Modus | Ablauf und Grenze |
 | --- | --- |
-| Handy + echte Karten | 3–20 Personen, keine Pflichtprofile. Anzahl, Fälle, Regeln und Faktor einstellen; Standard: 50 Fälle und sieben Regeln. Frage und Skala vorlesen, echte Zahlenkarten an alle außer den Richter verteilen. Am Tisch ordnen und urteilen. „Weiter“ zählt den gespielten Fall; die App erfindet keine Fehler-/Schluckwertung. |
+| Handy + echte Karten | 3–20 Personen, keine Pflichtprofile. Anzahl, Fälle, Regeln und Faktor einstellen; Standard: 50 Fälle, sieben Regeln und Faktor 2,0. Frage und Skala vorlesen, echte Zahlenkarten an alle außer den Richter verteilen. Am Tisch ordnen und urteilen. „Weiter“ zählt den gespielten Fall; die App erfindet keine Fehler-/Schluckwertung. |
 | Ein gemeinsames Handy | Gruppe und Sitzfolge anlegen. Nach der Akte das Handy an die angezeigte Person geben. Name/Sitz bestätigen, Zahl durch Gedrückthalten anzeigen, durch Loslassen verbergen. „Fertig“ wird erst nach dem ersten Anzeigen aktiv und übergibt an die nächste Person; der Richter bestätigt die Rückgabe. Nach Unterbrechungen erneut bestätigen; kein automatisches Weiterreichen. |
 | Für jeden ein Handy | Benötigt einen konfigurierten Server und Verbindung. Host erstellt den Raum, andere treten per Code bei. Ein Einladungslink füllt den Code aus, tritt aber nicht automatisch bei. Profil unter „Ich“, Spiel unter „Gerichtssaal“. Zahl selbst anzeigen und bestätigen; Bereitschaft und Reihenfolge gelten nach Serverbestätigung. Nach Verbindungsabbruch dieselbe gespeicherte Identität wiederaufnehmen. |
 

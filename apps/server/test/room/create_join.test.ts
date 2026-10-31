@@ -96,6 +96,7 @@ describe('atomic room creation and bounded membership in SQLite', () => {
     expect(wins).toHaveLength(1);
     expect(results.filter((r) => 'collision' in r)).toHaveLength(7);
     const stored = JSON.parse((await stateText(stub))!);
+    expect(stored.config.factorTenths).toBe(20);
     expect(stored.members).toHaveLength(1);
     expect(stored.hostId).toBe(stored.members[0].playerId);
     for (const result of results)

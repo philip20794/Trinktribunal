@@ -22,8 +22,8 @@ void main() {
     final defaults = controller.configure(playerCount: 8);
     expect(defaults.targetCases, 50);
     expect(defaults.requestedRuleEvents, 7);
-    expect(defaults.factorTenths, 15);
-    expect(defaults.maxSecretNumber, 12);
+    expect(defaults.factorTenths, 20);
+    expect(defaults.maxSecretNumber, 16);
     expect(controller.capacity.questions, 431);
     expect(controller.capacity.rules, 22);
     expect(
