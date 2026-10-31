@@ -372,10 +372,27 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      final payload = tester.widget<QrImageView>(find.byType(QrImageView)).data;
-      expect(payload, 'https://client.example/join?room=ABCD2345');
-      expect(payload, isNot(contains(testCredential().message.resumeToken)));
-      expect(payload, isNot(contains('8787')));
+      final qrPaint = tester.widget<CustomPaint>(
+        find.descendant(
+          of: find.byType(QrImageView),
+          matching: find.byType(CustomPaint),
+        ),
+      );
+      final expectedQr = QrPainter(
+        data: 'https://client.example/join?room=ABCD2345',
+        version: QrVersions.auto,
+        gapless: true,
+      );
+      await tester.runAsync(() async {
+        final actual = await (qrPaint.painter! as QrPainter).toImageData(200);
+        final expected = await expectedQr.toImageData(200);
+        expect(actual, isNotNull);
+        expect(expected, isNotNull);
+        expect(
+          actual!.buffer.asUint8List(),
+          orderedEquals(expected!.buffer.asUint8List()),
+        );
+      });
       expect(find.byType(SelectableText), findsNothing);
       expect(actionText('Einladungslink kopieren'), findsNothing);
       expect(actionText('Link teilen'), findsOneWidget);
