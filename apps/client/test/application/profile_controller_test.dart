@@ -2,13 +2,61 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trinktribunal/application/local_data_providers.dart';
 import 'package:trinktribunal/application/profile_controller.dart';
 import 'package:trinktribunal/data/profile_store.dart';
 import 'package:trinktribunal/domain/avatar_config.dart';
 
 import '../support/memory_string_store.dart';
+import '../domain/selection_support.dart' show TestRandom;
 
 void main() {
+  test('first roster uses the same random starter and persists it for the next launch', () async {
+    final storage = MemoryStringStore();
+    ProviderContainer container() => ProviderContainer(
+      overrides: [stringStoreProvider.overrideWithValue(storage)],
+    );
+    final first = container();
+    addTearDown(first.dispose);
+    final profile = await first.read(profileProvider.future);
+    final starter = profile.avatar;
+    final roster = await first.read(rosterProvider.future);
+    expect(roster.members.single.avatar.toJson(), starter.toJson());
+    expect(starter.seed, startsWith('tt-'));
+    final restored = container();
+    addTearDown(restored.dispose);
+    final saved = await restored.read(profileProvider.future);
+    expect(saved.avatar.toJson(), starter.toJson());
+  });
+  test(
+    'new profiles get a random starter that stays stable until saved',
+    () async {
+      final storage = MemoryStringStore();
+      final first = ProfileController(
+        ProfileStore(storage),
+        random: TestRandom(),
+      );
+      final other = ProfileController(
+        ProfileStore(MemoryStringStore()),
+        random: TestRandom(last: true),
+      );
+      await first.load();
+      final starter = first.avatar;
+      expect(starter.seed, isNot(AvatarConfig().seed));
+      expect(starter.selections, isNot(other.avatar.selections));
+      expect(identical(first.avatar, starter), isTrue);
+      await first.load();
+      expect(identical(first.avatar, starter), isTrue);
+      expect(await first.save(name: 'Alex', avatar: starter), isTrue);
+      final restored = ProfileController(
+        ProfileStore(storage),
+        random: TestRandom(last: true),
+      );
+      await restored.load();
+      expect(restored.avatar.toJson(), starter.toJson());
+    },
+  );
   late MemoryStringStore storage;
   late ProfileController controller;
   setUp(() {

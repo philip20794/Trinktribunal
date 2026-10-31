@@ -7,10 +7,19 @@ import '../domain/selection/random_source.dart';
 import '../domain/user_profile.dart';
 
 final class ProfileController {
-  ProfileController(this.store, {String Function()? newId})
-    : _newId = newId ?? _id;
+  ProfileController(
+    this.store, {
+    String Function()? newId,
+    RandomSource? random,
+  }) : _newId = newId ?? _id,
+       _random = random ?? SecureRandomSource();
   final ProfileStore store;
   final String Function() _newId;
+  final RandomSource _random;
+  late final AvatarConfig _starterAvatar = AvatarConfig.random(_random);
+
+  /// Reuse one random starter until the user saves their own avatar.
+  AvatarConfig get avatar => profile?.avatar ?? _starterAvatar;
   UserProfile? profile;
   String? error;
   bool saving = false;

@@ -1,7 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/avatar_config.dart';
-
 import '../data/preferences_string_store.dart';
 import '../data/profile_store.dart';
 import '../data/string_store.dart';
@@ -74,7 +72,7 @@ final rosterProvider = FutureProvider<RosterController>((ref) async {
     final settings = await ref.read(settingsProvider.future);
     if (!await profile.save(
       name: settings.value.language == 'en' ? 'Me' : 'Ich',
-      avatar: AvatarConfig(),
+      avatar: profile.avatar,
     )) {
       throw StateError('LOCAL_PROFILE_UNAVAILABLE');
     }

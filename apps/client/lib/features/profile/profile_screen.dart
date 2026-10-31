@@ -19,7 +19,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _name = TextEditingController();
-  AvatarConfig _avatar = AvatarConfig();
+  late AvatarConfig _avatar;
   bool _initialized = false, _saving = false;
   @override
   void dispose() {
@@ -78,7 +78,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         data: (controller) {
           if (!_initialized) {
             _name.text = controller.profile?.player.name ?? '';
-            _avatar = controller.profile?.avatar ?? AvatarConfig();
+            _avatar = controller.avatar;
             _initialized = true;
           }
           return AvatarEditor(
