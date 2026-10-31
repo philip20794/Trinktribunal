@@ -1,6 +1,6 @@
 # Trinkregeln: JSON-Format
 
-Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepflegt. `de.json` und `en.json` enthalten jeweils dieselben 25 Regeln mit identischen IDs, Platzhaltern, Auswahlregeln und Ausschlüssen. **Jede neue Regel muss diesem Format entsprechen.** Die Beispiele hier erläutern das Schema und sind keine zusätzlichen Regeln.
+Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepflegt. `de.json` und `en.json` enthalten jeweils dieselben 29 Regeln mit identischen IDs, Platzhaltern, Auswahlregeln und Ausschlüssen. **Jede neue Regel muss diesem Format entsprechen.** Die Beispiele hier erläutern das Schema und sind keine zusätzlichen Regeln.
 
 ## Struktur
 
@@ -93,7 +93,7 @@ Die beiden Katalogdateien enthalten dieselben reziproken `excludes`. `imaginary_
 
 Ein eigenständiger Verstoß gegen eine aktive Zusatzregel hat **genau einen Strafschluck** zur Folge, auch wenn die Regel keinen eigenen Straftext enthält. Die Gruppe erkennt und ahndet diese Verstöße manuell; App und Server berechnen nur die eigentliche Fallwertung. **Keine Strafketten:** Die Ausführung eines Strafschlucks kann keine zusätzlichen Strafschlucke auslösen. Unvermeidbare Spielhandlungen wie das notwendige Vorlesen einer Frage oder Regel und das reguläre Ansagen/Aufdecken geheimer Zahlen sind von Sprachverboten bzw. regelbezogenen Ansagestrafen ausgenommen. Sonstige freiwillige Äußerungen bleiben den aktiven Regeln unterworfen.
 
-Diese globalen Festlegungen sind Teil der Spielregeln, nicht zusätzliche Einträge in den 25 Regel-JSONs. Siehe [Beschluss D-04](../../docs/decisions/D-04-rule-conflicts.md).
+Diese globalen Festlegungen sind Teil der Spielregeln, nicht zusätzliche Einträge in den 29 Regel-JSONs. Siehe [Beschluss D-04](../../docs/decisions/D-04-rule-conflicts.md).
 
 ## Validierung
 
@@ -105,7 +105,7 @@ Diese globalen Festlegungen sind Teil der Spielregeln, nicht zusätzliche Eintr�
 - Text, Platzhalter und Rollen-IDs müssen über Sprachversionen konsistent bleiben; grammatische Formulierungen dürfen sich unterscheiden.
 - Gibt es nicht genügend geeignete Spieler oder keine kompatible Regel mehr, wird die Regel nicht erzwungen.
 
-**Festlegung D-03:** Im Modus 1 (Handy + physische Karten) gibt es keine Spielerliste. Die drei personenbezogenen Regeln werden dort aus der automatischen Auslosung ausgeschlossen; die 22 Regeln ohne Spielerrollen bleiben verfügbar.
+**Festlegung D-03:** Im Modus 1 (Handy + physische Karten) gibt es keine Spielerliste. Die drei personenbezogenen Regeln werden dort aus der automatischen Auslosung ausgeschlossen; die 26 Regeln ohne Spielerrollen bleiben verfügbar.
 
 Siehe auch [Spielkonzept](../../docs/GAME_DESIGN.md) und [Screens und Nutzerabläufe](../../docs/USER_FLOWS.md).
 
