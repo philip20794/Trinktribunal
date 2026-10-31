@@ -55,7 +55,7 @@ Eine Regel wird sofort aktiv und bleibt bis zum Ende der Partie gültig. Vor der
 
 **Zusatzregeln und Verstöße (D-04):** Ein eigenständiger Verstoß gegen eine aktive Trinkregel führt zu einem zusätzlichen Strafschluck, auch wenn die Regel das nicht ausdrücklich erwähnt. Die Gruppe stellt Verstöße selbst fest; weder App noch Server erkennen sie automatisch oder rechnen sie ins Urteil ein. Strafschlucke erzeugen keine weiteren Strafschlucke. Die zum Spielen erforderlichen Texte dürfen vorgelesen und die geheimen Zahlen regulär aufgedeckt/angesagt werden, ohne dadurch Sprachverbote oder Ansagestrafen auszulösen. Einander ausschließen sich `left_hand_drinking`/`two_hands_drinking` und `two_hands_drinking`/`touch_player_while_drinking`; Kobold und Fliege dürfen gemeinsam gelten. Siehe [D-04](decisions/D-04-rule-conflicts.md).
 
-**Kartenmodus (D-03):** Da keine Spielernamen erfasst werden, verwendet er ausschließlich die 431 Fragen ohne Spielerrollen und die 22 nicht personenbezogenen Zusatzregeln.
+**Kartenmodus (D-03):** Da keine Spielernamen erfasst werden, verwendet er ausschließlich die 431 Fragen ohne Spielerrollen und die 26 nicht personenbezogenen Zusatzregeln.
 
 ### Fair verteilte zufällige Spielerbezüge (D-05)
 
