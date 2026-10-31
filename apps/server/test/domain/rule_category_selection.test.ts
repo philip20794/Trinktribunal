@@ -6,11 +6,10 @@ import type { SelectionInput } from '../../src/domain/question_assignment';
 import { selectCategorizedRule } from '../../src/domain/selection/rule_category_selection';
 
 const now = Date.parse('2026-10-31T12:00:00.000Z');
-const categories = ['drinking_ritual', 'speech', 'behavior'] as const;
+const categories = ['drinking_ritual', 'other'] as const;
 const samples: ContentEntry[] = [
-  ...Array.from({ length: 15 }, (_, i) => ({ id: `r${i}`, text: 'r', category: 'drinking_ritual' as const })),
-  ...Array.from({ length: 7 }, (_, i) => ({ id: `s${i}`, text: 's', category: 'speech' as const })),
-  ...Array.from({ length: 3 }, (_, i) => ({ id: `b${i}`, text: 'b', category: 'behavior' as const })),
+  ...Array.from({ length: 16 }, (_, i) => ({ id: `r${i}`, text: 'r', category: 'drinking_ritual' as const })),
+  ...Array.from({ length: 14 }, (_, i) => ({ id: `o${i}`, text: 'o', category: 'other' as const })),
 ];
 const event = (id: string, index = 0, timestamp = now): UsageEvent => ({
   eventId: `e_${id}_${index}`, contentId: id,
@@ -39,11 +38,19 @@ describe('weighted categories for drinking rules', () => {
       en.map(({ id, category }) => [id, category]),
     );
     for (const [category, count] of [
-      ['drinking_ritual', 15], ['speech', 7], ['behavior', 3],
+      ['drinking_ritual', 16], ['other', 14],
     ] as const) expect(de.filter((rule) => rule.category === category)).toHaveLength(count);
   });
 
-  it('limits a nine-rule party to seven per category, without requiring all three', () => {
+  it('migrates previous speech and behavior rules into other', () => {
+    const rules = catalogs.de.rules;
+    expect(rules).toHaveLength(30);
+    for (const id of ['swear_penalty', 'pointing_penalty', 'formal_address', 'motion_denied'])
+      expect(rules.find((rule) => rule.id === id)?.category).toBe('other');
+    expect(rules.every((rule) => categories.includes(rule.category as RuleCategory))).toBe(true);
+  });
+
+  it('limits a nine-rule party to seven per category', () => {
     let history: UsageEvent[] = [];
     const drawn: string[] = [];
     for (let i = 0; i < 9; i++) {
@@ -55,7 +62,7 @@ describe('weighted categories for drinking rules', () => {
     const counts = categories.map((category) =>
       samples.filter((rule) => rule.category === category && drawn.includes(rule.id)).length,
     );
-    expect(counts).toEqual([7, 2, 0]);
+    expect(counts).toEqual([7, 2]);
   });
 
   it('does not impose category diversity for only two planned rules', () => {
@@ -68,7 +75,7 @@ describe('weighted categories for drinking rules', () => {
     const catalog: ContentEntry[] = [
       { id: 'old', text: 'old', category: 'drinking_ritual' },
       { id: 'fresh', text: 'fresh', category: 'drinking_ritual' },
-      { id: 'spoken', text: 'spoken', category: 'speech' },
+      { id: 'spoken', text: 'spoken', category: 'other' },
     ];
     expect(pick(catalog, [], [event('old')], () => 0).id).toBe('fresh');
   });
@@ -76,7 +83,7 @@ describe('weighted categories for drinking rules', () => {
   it('penalizes high historical category use, but ignores expired uses', () => {
     const catalog: ContentEntry[] = [
       { id: 'r', text: 'r', category: 'drinking_ritual' },
-      { id: 's', text: 's', category: 'speech' },
+      { id: 's', text: 's', category: 'other' },
     ];
     const random = (bound: number) => bound > 1 ? 300 : 0;
     expect(pick(catalog, [], [], random).id).toBe('r');
@@ -90,8 +97,8 @@ describe('weighted categories for drinking rules', () => {
     const catalog: ContentEntry[] = [
       { id: 'r1', text: 'r1', category: 'drinking_ritual', excludes: ['r2'] },
       { id: 'r2', text: 'r2', category: 'drinking_ritual', excludes: ['r1'] },
-      { id: 's1', text: 's1', category: 'speech' },
-      { id: 'b1', text: '{player1}', category: 'behavior',
+      { id: 's1', text: 's1', category: 'other' },
+      { id: 'b1', text: '{player1}', category: 'other',
         players: { player1: { selection: 'random' } } },
     ];
     const first = activateRule(catalog, [], input(), () => 0)!;
@@ -112,36 +119,31 @@ describe('weighted categories for drinking rules', () => {
     expect(pick(catalog, [], [event('used')], () => 0).id).toBe('new');
   });
 
-  it('varies category mixes across seeded games, and rarely uses the smallest category', () => {
+  it('varies the mix across seeded games while respecting both category caps', () => {
     let seed = 704;
     const random = (bound: number) => {
       seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
       return seed % bound;
     };
-    const counts: Record<RuleCategory, number> = {
-      drinking_ritual: 0, speech: 0, behavior: 0,
-    };
-    let withoutBehavior = 0;
-    let withBehavior = 0;
+    const observedMixes = new Set<string>();
+    const counts: Record<RuleCategory, number> = { drinking_ritual: 0, other: 0 };
     for (let game = 0; game < 250; game++) {
       const drawn: string[] = [];
       for (let index = 0; index < 9; index++) {
         const rule = pick(samples, drawn, [], random);
         drawn.push(rule.id);
-        counts[rule.category!]++;
+        counts[rule.category!] += 1;
       }
       const categoryCounts = categories.map((category) =>
         samples.filter((rule) => rule.category === category && drawn.includes(rule.id)).length,
       );
       expect(Math.max(...categoryCounts)).toBeLessThanOrEqual(7);
-      if (categoryCounts[2] === 0) withoutBehavior++;
-      else withBehavior++;
+      expect(Math.min(...categoryCounts)).toBeGreaterThanOrEqual(2);
+      observedMixes.add(categoryCounts.join(':'));
     }
-    expect(counts.drinking_ritual).toBeGreaterThan(counts.speech);
-    expect(counts.speech).toBeGreaterThan(counts.behavior);
-    expect(withBehavior).toBeGreaterThan(100);
-    expect(withBehavior).toBeLessThan(200);
-    expect(withoutBehavior).toBeGreaterThan(0);
+    expect(counts.drinking_ritual).toBeGreaterThan(0);
+    expect(counts.other).toBeGreaterThan(0);
+    expect(observedMixes.size).toBeGreaterThan(1);
   });
 
   it('rejects an invalid injected category random index', () => {
