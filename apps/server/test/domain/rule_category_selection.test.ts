@@ -49,15 +49,26 @@ describe('weighted categories for drinking rules', () => {
     );
     for (const [category, count] of [
       ['drinking_ritual', 16],
-      ['other', 36],
-      ['forbidden_words', 51],
+      ['other', 12],
+      ['forbidden_words', 11],
     ] as const)
       expect(de.filter((rule) => rule.category === category)).toHaveLength(count);
   });
 
   it('migrates previous speech and behavior rules into other', () => {
     const rules = catalogs.de.rules;
-    expect(rules).toHaveLength(103);
+    expect(rules).toHaveLength(39);
+    expect(rules.slice(30).map((rule) => rule.id)).toEqual([
+      'forbid_und',
+      'forbid_also',
+      'forbid_halt',
+      'forbid_irgendwie',
+      'forbid_so',
+      'thinking_long_pause',
+      'thinking_stretch_word',
+      'story_gesture',
+      'thinking_noise',
+    ]);
     for (const id of ['pointing_penalty', 'formal_address', 'motion_denied'])
       expect(rules.find((rule) => rule.id === id)?.category).toBe('other');
     for (const id of ['swear_penalty', 'no_drink_word', 'no_also_start', 'forbid_und'])

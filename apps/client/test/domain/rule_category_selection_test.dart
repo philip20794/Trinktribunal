@@ -15,9 +15,24 @@ ContentHistoryEntry used(String id, String eventId, [DateTime? at]) =>
     );
 
 void main() {
-  test('DE/EN production catalogs use three categories (16/36/51)', () {
+  test('DE/EN production catalogs use three categories (16/12/11)', () {
     final de = actualRules();
     final en = rulesFromEnglish();
+    expect(de.length, 39);
+    expect(
+      de.skip(30).map((rule) => rule.id).toList(),
+      [
+        'forbid_und',
+        'forbid_also',
+        'forbid_halt',
+        'forbid_irgendwie',
+        'forbid_so',
+        'thinking_long_pause',
+        'thinking_stretch_word',
+        'story_gesture',
+        'thinking_noise',
+      ],
+    );
     expect(
       [
         for (final rule in de) [rule.id, rule.category],
@@ -29,7 +44,7 @@ void main() {
     for (final category in ['drinking_ritual', 'other', 'forbidden_words']) {
       expect(
         de.where((r) => r.category == category).length,
-        {'drinking_ritual': 16, 'other': 36, 'forbidden_words': 51}[category],
+        {'drinking_ritual': 16, 'other': 12, 'forbidden_words': 11}[category],
       );
     }
   });
@@ -101,7 +116,7 @@ void main() {
       ]) {
         expect(all.singleWhere((r) => r.id == id).category, 'other');
       }
-      expect(all.where((r) => r.category == 'other').length, 36);
+      expect(all.where((r) => r.category == 'other').length, 12);
       for (final id in ['swear_penalty', 'no_ich_word', 'no_also_start', 'forbid_und']) {
         expect(all.singleWhere((r) => r.id == id).category, 'forbidden_words');
       }
