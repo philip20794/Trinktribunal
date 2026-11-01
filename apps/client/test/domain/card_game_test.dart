@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:trinktribunal/data/catalogs/catalog.dart';
 import 'package:trinktribunal/domain/config/game_config.dart';
 import 'package:trinktribunal/domain/local_game_reducer.dart';
 import 'package:trinktribunal/domain/models/content_history.dart';
@@ -56,7 +57,7 @@ void main() {
     expect(state.openingRules.map((r) => r.entry.id).toSet().length, 3);
     expect(
       state.openingRules.every((a) =>
-          (a.entry as dynamic).category == 'forbidden_words'),
+          (a.entry as DrinkingRule).category == 'forbidden_words'),
       true,
     );
     expect(state.rules.selection.history.entries.length, 3);
@@ -74,7 +75,8 @@ void main() {
   });
   test('three cases/two rule events: five files, one skip, no duplicate completions', () {
     final engine = reducer();
-    var state = startAtCase(engine, 
+    var state = startAtCase(
+      engine,
       id: GameId('demo'),
       config: config(),
       history: ContentHistory([]),
@@ -154,7 +156,8 @@ void main() {
     'invalid manual scores and missing full-order confirmation preserve state',
     () {
       final engine = reducer();
-      final state = startAtCase(engine, 
+      final state = startAtCase(
+      engine,
         id: GameId('manual'),
         config: config(),
         history: ContentHistory([]),
@@ -188,10 +191,11 @@ void main() {
       expect(state.rules.selection.history.entries.length, 4);
     },
   );
-  test('F=1 produces no rule and no synthetic score; F=50 completes exactly 50 cases', () {
+  test('F=1 has only three opening rules; F=50 retains scheduled extras', () {
     for (final count in [1, 50]) {
       final engine = reducer();
-      var state = startAtCase(engine, 
+      var state = startAtCase(
+      engine,
         id: GameId('f$count'),
         config: config(cases: count, events: 7),
         history: ContentHistory([]),
@@ -225,7 +229,8 @@ void main() {
       random: TestRandom(),
       clock: () => now,
     );
-    var state = startAtCase(engine, 
+    var state = startAtCase(
+      engine,
       id: GameId('small'),
       config: config(events: 0),
       history: ContentHistory([]),
@@ -247,7 +252,8 @@ void main() {
       random: TestRandom(),
       clock: () => now,
     );
-    var state = startAtCase(engine, 
+    var state = startAtCase(
+      engine,
       id: GameId('no-rules'),
       config: config(),
       history: ContentHistory([]),
