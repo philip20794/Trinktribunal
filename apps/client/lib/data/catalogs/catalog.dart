@@ -221,7 +221,7 @@ Catalog<DrinkingRule> parseRules(String source) {
     final text = _text(entry['text'], id);
     final category = entry['category'];
     if (category != null &&
-        !const {'drinking_ritual', 'other'}.contains(category)) {
+        !const {'drinking_ritual', 'other', 'forbidden_words'}.contains(category)) {
       _invalid('$id: ungültige Regelkategorie');
     }
     return DrinkingRule._(

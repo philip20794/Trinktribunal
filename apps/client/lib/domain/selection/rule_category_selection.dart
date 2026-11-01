@@ -6,7 +6,7 @@ import '../models/domain_error.dart';
 import 'content_selection.dart';
 import 'random_source.dart';
 
-const _categories = ['drinking_ritual', 'other'];
+const _categories = ['drinking_ritual', 'other', 'forbidden_words'];
 
 /// Category is chosen at each slot; the six-hour minimum-counter rule stays intact.
 DrinkingRule selectCategorizedRule({
@@ -47,7 +47,7 @@ DrinkingRule selectCategorizedRule({
     }
   }
   final cap = plannedRuleEvents >= 3
-      ? math.min(plannedRuleEvents - 1, (plannedRuleEvents * 0.75).ceil())
+      ? math.min(plannedRuleEvents - 1, (plannedRuleEvents * (groups.length >= 3 ? 0.50 : 0.75)).ceil())
       : null;
   final underCap = groups
       .where((group) => cap == null || group.picked < cap)

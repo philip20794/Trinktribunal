@@ -4,21 +4,26 @@
   "rules": [
     {
       "id": "swear_penalty",
-      "category": "other",
+      "category": "forbidden_words",
       "text": "Anyone who swears has to take a sip.",
       "excludes": []
     },
     {
       "id": "no_drink_word",
-      "category": "other",
+      "category": "forbidden_words",
       "text": "From now on, you can't say the word \"drink\" or any form of it (like \"drinking\" or \"drinks\").",
       "excludes": []
     },
     {
       "id": "no_ich_word",
-      "category": "other",
+      "category": "forbidden_words",
       "text": "You're no longer allowed to say \"I\" (except when reading something aloud).",
-      "excludes": []
+      "excludes": [
+        "forbid_ich_schwoere",
+        "forbid_ich_glaube",
+        "forbid_ich_meine",
+        "forbid_ich_so_er_so"
+      ]
     },
     {
       "id": "left_hand_drinking",
@@ -51,7 +56,7 @@
     },
     {
       "id": "no_yes_no",
-      "category": "other",
+      "category": "forbidden_words",
       "text": "You're no longer allowed to say \"yes\" or \"no\".",
       "excludes": []
     },
@@ -107,7 +112,7 @@
     },
     {
       "id": "number_penalty",
-      "category": "other",
+      "category": "forbidden_words",
       "text": "Anyone who says a number has to take a sip.",
       "excludes": []
     },
@@ -132,7 +137,9 @@
       "id": "no_face_touching",
       "category": "other",
       "text": "You're no longer allowed to scratch your nose or touch your face.",
-      "excludes": []
+      "excludes": [
+        "thinking_touch_face"
+      ]
     },
     {
       "id": "interrupting_penalty",
@@ -206,15 +213,481 @@
     },
     {
       "id": "no_also_start",
-      "category": "other",
+      "category": "forbidden_words",
       "text": "Anyone who begins a sentence with “So” must drink (except when reading aloud).",
-      "excludes": []
+      "excludes": [
+        "forbid_also"
+      ]
     },
     {
       "id": "motion_denied",
       "category": "other",
       "text": "Anyone refusing a request from another player must reply with “Motion denied!”.",
       "excludes": []
+    },
+    {
+      "id": "forbid_und",
+      "category": "forbidden_words",
+      "text": "Anyone who says “and” has to take a sip.",
+      "excludes": [
+        "forbid_und_zwar"
+      ]
+    },
+    {
+      "id": "forbid_also",
+      "category": "forbidden_words",
+      "text": "Anyone who says “so” has to take a sip.",
+      "excludes": [
+        "no_also_start"
+      ]
+    },
+    {
+      "id": "forbid_halt",
+      "category": "forbidden_words",
+      "text": "Anyone who says “just” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_irgendwie",
+      "category": "forbidden_words",
+      "text": "Anyone who says “somehow” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_so",
+      "category": "forbidden_words",
+      "text": "Anyone who says “like” has to take a sip.",
+      "excludes": [
+        "forbid_ich_so_er_so"
+      ]
+    },
+    {
+      "id": "forbid_eigentlich",
+      "category": "forbidden_words",
+      "text": "Anyone who says “actually” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_auf_jeden_fall",
+      "category": "forbidden_words",
+      "text": "Anyone who says “anyway” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_keine_ahnung",
+      "category": "forbidden_words",
+      "text": "Anyone who says “I don't know” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_ploetzlich",
+      "category": "forbidden_words",
+      "text": "Anyone who says “suddenly” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_tatsaechlich",
+      "category": "forbidden_words",
+      "text": "Anyone who says “in fact” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_genau",
+      "category": "forbidden_words",
+      "text": "Anyone who says “exactly” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_ich_schwoere",
+      "category": "forbidden_words",
+      "text": "Anyone who says “I swear” has to take a sip.",
+      "excludes": [
+        "no_ich_word"
+      ]
+    },
+    {
+      "id": "forbid_weisst_du",
+      "category": "forbidden_words",
+      "text": "Anyone who says “you know?” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_ich_so_er_so",
+      "category": "forbidden_words",
+      "text": "Anyone who says “I was like / he was like” has to take a sip.",
+      "excludes": [
+        "forbid_so",
+        "no_ich_word"
+      ]
+    },
+    {
+      "id": "forbid_am_ende",
+      "category": "forbidden_words",
+      "text": "Anyone who says “in the end” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_quasi",
+      "category": "forbidden_words",
+      "text": "Anyone who says “basically” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_sozusagen",
+      "category": "forbidden_words",
+      "text": "Anyone who says “so to speak” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_im_prinzip",
+      "category": "forbidden_words",
+      "text": "Anyone who says “in principle” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_im_endeffekt",
+      "category": "forbidden_words",
+      "text": "Anyone who says “at the end of the day” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_letztendlich",
+      "category": "forbidden_words",
+      "text": "Anyone who says “ultimately” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_naja",
+      "category": "forbidden_words",
+      "text": "Anyone who says “well” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_okay",
+      "category": "forbidden_words",
+      "text": "Anyone who says “okay” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_ganz_ehrlich",
+      "category": "forbidden_words",
+      "text": "Anyone who says “seriously” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_ehrlich_gesagt",
+      "category": "forbidden_words",
+      "text": "Anyone who says “honestly” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_ich_glaube",
+      "category": "forbidden_words",
+      "text": "Anyone who says “I think” has to take a sip.",
+      "excludes": [
+        "no_ich_word"
+      ]
+    },
+    {
+      "id": "forbid_ich_meine",
+      "category": "forbidden_words",
+      "text": "Anyone who says “I mean” has to take a sip.",
+      "excludes": [
+        "no_ich_word"
+      ]
+    },
+    {
+      "id": "forbid_wirklich",
+      "category": "forbidden_words",
+      "text": "Anyone who says “really” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_einfach",
+      "category": "forbidden_words",
+      "text": "Anyone who says “simply” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_total",
+      "category": "forbidden_words",
+      "text": "Anyone who says “totally” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_mega",
+      "category": "forbidden_words",
+      "text": "Anyone who says “super” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_krass",
+      "category": "forbidden_words",
+      "text": "Anyone who says “crazy” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_uebrigens",
+      "category": "forbidden_words",
+      "text": "Anyone who says “by the way” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_zum_beispiel",
+      "category": "forbidden_words",
+      "text": "Anyone who says “for example” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_auf_einmal",
+      "category": "forbidden_words",
+      "text": "Anyone who says “all of a sudden” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_und_zwar",
+      "category": "forbidden_words",
+      "text": "Anyone who says “namely” has to take a sip.",
+      "excludes": [
+        "forbid_und"
+      ]
+    },
+    {
+      "id": "forbid_pass_auf",
+      "category": "forbidden_words",
+      "text": "Anyone who says “listen” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_stell_dir_vor",
+      "category": "forbidden_words",
+      "text": "Anyone who says “imagine” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_weisst_du_noch",
+      "category": "forbidden_words",
+      "text": "Anyone who says “remember” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_das_ding_ist",
+      "category": "forbidden_words",
+      "text": "Anyone who says “the thing is” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_sagen_wir_mal",
+      "category": "forbidden_words",
+      "text": "Anyone who says “let's say” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_praktisch",
+      "category": "forbidden_words",
+      "text": "Anyone who says “practically” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_zumindest",
+      "category": "forbidden_words",
+      "text": "Anyone who says “at least” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_vielleicht",
+      "category": "forbidden_words",
+      "text": "Anyone who says “maybe” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_anscheinend",
+      "category": "forbidden_words",
+      "text": "Anyone who says “apparently” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "forbid_gefuehlt",
+      "category": "forbidden_words",
+      "text": "Anyone who says “it feels like” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_uh_um",
+      "category": "other",
+      "text": "Anyone who says “uh” or “um” while thinking has to take a sip.",
+      "excludes": [
+        "thinking_noise"
+      ]
+    },
+    {
+      "id": "thinking_look_away",
+      "category": "other",
+      "text": "Anyone who looks up or to the side while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_restart_sentence",
+      "category": "other",
+      "text": "Anyone who starts a sentence and rephrases it halfway through has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_hmm",
+      "category": "other",
+      "text": "Anyone who says “hm” or “hmm” while thinking has to take a sip.",
+      "excludes": [
+        "thinking_noise"
+      ]
+    },
+    {
+      "id": "thinking_moment",
+      "category": "other",
+      "text": "Anyone who says “hold on” or “wait a second” while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_name_that",
+      "category": "other",
+      "text": "Anyone who says “What was that called again?” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_where_was_i",
+      "category": "other",
+      "text": "Anyone who says “Where was I?” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_what_was_i_saying",
+      "category": "other",
+      "text": "Anyone who says “What was I saying?” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_let_me_think",
+      "category": "other",
+      "text": "Anyone who says “Let me think” has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_long_pause",
+      "category": "other",
+      "text": "Anyone who pauses for more than three seconds in the middle of a story has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_stretch_word",
+      "category": "other",
+      "text": "Anyone who noticeably draws out a word while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_furrow_brow",
+      "category": "other",
+      "text": "Anyone who furrows their brow while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_tilt_head",
+      "category": "other",
+      "text": "Anyone who tilts their head while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_touch_face",
+      "category": "other",
+      "text": "Anyone who touches their chin or face while thinking has to take a sip.",
+      "excludes": [
+        "no_face_touching"
+      ]
+    },
+    {
+      "id": "thinking_scratch_head",
+      "category": "other",
+      "text": "Anyone who scratches their head while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_close_eyes",
+      "category": "other",
+      "text": "Anyone who briefly closes their eyes while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_tap_fingers",
+      "category": "other",
+      "text": "Anyone who drums their fingers on the table while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_bite_lip",
+      "category": "other",
+      "text": "Anyone who bites their lower lip while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_stare",
+      "category": "other",
+      "text": "Anyone who stares into the distance while thinking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_sigh",
+      "category": "other",
+      "text": "Anyone who audibly sighs before continuing a story has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "story_gesture",
+      "category": "other",
+      "text": "Anyone who gestures with their hands while telling a story has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "story_eye_contact",
+      "category": "other",
+      "text": "Anyone who looks directly at someone to gauge their reaction while telling a story has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "story_imitate_voice",
+      "category": "other",
+      "text": "Anyone who imitates a person or their voice while telling a story has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "story_laugh_own_story",
+      "category": "other",
+      "text": "Anyone who laughs at their own story while telling it has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "story_repeat_emphasis",
+      "category": "other",
+      "text": "Anyone who repeats something several times for emphasis has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "story_dramatic_voice",
+      "category": "other",
+      "text": "Anyone who changes their voice for dramatic effect while telling a story has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "story_nod",
+      "category": "other",
+      "text": "Anyone who nods while speaking has to take a sip.",
+      "excludes": []
+    },
+    {
+      "id": "thinking_noise",
+      "category": "other",
+      "text": "Anyone who makes a thinking noise (e.g. “hmm”, “uh”, or “um”) has to take a sip.",
+      "excludes": [
+        "thinking_uh_um",
+        "thinking_hmm"
+      ]
     }
   ]
 }

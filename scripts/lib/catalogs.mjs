@@ -61,13 +61,13 @@ export function loadSources(root = repositoryRoot) {
   const removed = ['008-b', '023-a', '039-b', '041-b', '043-b', '174-a', '188-a', '205-a', '221-a'];
   for (const { kind, catalog } of catalogs) {
     const entries = catalog[kind];
-    if (entries.length !== (kind === 'questions' ? 491 : 30)) fail(kind, 'unexpected production count');
-    if (entries.filter(entry => !entry.players).length !== (kind === 'questions' ? 431 : 27)) fail(kind, 'unexpected card-mode count');
+    if (entries.length !== (kind === 'questions' ? 491 : 103)) fail(kind, 'unexpected production count');
+    if (entries.filter(entry => !entry.players).length !== (kind === 'questions' ? 431 : 100)) fail(kind, 'unexpected card-mode count');
     if (kind === 'questions') {
       const expected = Array.from({ length: 250 }, (_, i) => ['a', 'b'].map(side => `${String(i + 1).padStart(3, '0')}-${side}`)).flat().filter(id => !removed.includes(id));
       if (canonicalJson(entries.map(entry => entry.id)) !== canonicalJson(expected)) fail(kind, 'unexpected production IDs');
     } else {
-      const validCategories = new Set(['drinking_ritual', 'other']);
+      const validCategories = new Set(['drinking_ritual', 'other', 'forbidden_words']);
       if (entries.some(entry => !validCategories.has(entry.category))) fail(kind, 'missing or invalid production rule category');
       const pairs = [['left_hand_drinking', 'two_hands_drinking'], ['two_hands_drinking', 'touch_player_while_drinking']];
       for (const [a, b] of pairs) if (!entries.find(e => e.id === a)?.excludes.includes(b) || !entries.find(e => e.id === b)?.excludes.includes(a)) fail(kind, 'missing D-04 exclusion');

@@ -3,7 +3,7 @@ import type { SelectionInput } from '../question_assignment';
 import { recentCount, selectContent } from './content_selection';
 import type { RandomIndex } from './random';
 
-const categories: readonly RuleCategory[] = ['drinking_ritual', 'other'];
+const categories: readonly RuleCategory[] = ['drinking_ritual', 'other', 'forbidden_words'];
 
 /** Draw a weighted category on demand, then use the existing minimum counter within it. */
 export function selectCategorizedRule(
@@ -30,7 +30,7 @@ export function selectCategorizedRule(
     }))
     .filter((group) => group.rules.length > 0);
   const planned = input.plannedRuleEvents ?? 0;
-  const cap = planned >= 3 ? Math.min(planned - 1, Math.ceil(planned * 0.75)) : null;
+  const cap = planned >= 3 ? Math.min(planned - 1, Math.ceil(planned * (groups.length >= 3 ? 0.50 : 0.75))) : null;
   const underCap = groups.filter((group) => cap === null || group.picked < cap);
   const allowed = underCap.length ? underCap : groups; // never skip a feasible slot
   if (allowed.length === 1)
