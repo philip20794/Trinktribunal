@@ -55,7 +55,7 @@
         },
         "handshake": {
           "protocolVersion": 2,
-          "catalogHash": "5f6d1defe77e0b108c1635203348e13b21e374f55e26471a56b51c0c414a807a",
+          "catalogHash": "e69d220bfae4dbda8eb7f3dff0799d738fa7a0dadc246189a8251401d991b5ae",
           "avatarVersion": 3
         }
       },
@@ -86,7 +86,7 @@
         },
         "handshake": {
           "protocolVersion": 2,
-          "catalogHash": "5f6d1defe77e0b108c1635203348e13b21e374f55e26471a56b51c0c414a807a",
+          "catalogHash": "e69d220bfae4dbda8eb7f3dff0799d738fa7a0dadc246189a8251401d991b5ae",
           "avatarVersion": 3
         },
         "actorId": "spoofed"
@@ -123,7 +123,7 @@
         },
         "handshake": {
           "protocolVersion": 2,
-          "catalogHash": "5f6d1defe77e0b108c1635203348e13b21e374f55e26471a56b51c0c414a807a",
+          "catalogHash": "e69d220bfae4dbda8eb7f3dff0799d738fa7a0dadc246189a8251401d991b5ae",
           "avatarVersion": 3
         }
       },
@@ -154,7 +154,7 @@
         },
         "handshake": {
           "protocolVersion": 2,
-          "catalogHash": "5f6d1defe77e0b108c1635203348e13b21e374f55e26471a56b51c0c414a807a",
+          "catalogHash": "e69d220bfae4dbda8eb7f3dff0799d738fa7a0dadc246189a8251401d991b5ae",
           "avatarVersion": 3
         },
         "actorId": "spoofed"
@@ -197,7 +197,7 @@
         "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "handshake": {
           "protocolVersion": 2,
-          "catalogHash": "5f6d1defe77e0b108c1635203348e13b21e374f55e26471a56b51c0c414a807a",
+          "catalogHash": "e69d220bfae4dbda8eb7f3dff0799d738fa7a0dadc246189a8251401d991b5ae",
           "avatarVersion": 3
         }
       },
@@ -208,7 +208,7 @@
         "resumeToken": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "handshake": {
           "protocolVersion": 2,
-          "catalogHash": "5f6d1defe77e0b108c1635203348e13b21e374f55e26471a56b51c0c414a807a",
+          "catalogHash": "e69d220bfae4dbda8eb7f3dff0799d738fa7a0dadc246189a8251401d991b5ae",
           "avatarVersion": 3
         },
         "actorId": "spoofed"
@@ -228,7 +228,7 @@
         "expiresAtUtc": "2026-10-28T12:00:00.000Z",
         "handshake": {
           "protocolVersion": 2,
-          "catalogHash": "5f6d1defe77e0b108c1635203348e13b21e374f55e26471a56b51c0c414a807a",
+          "catalogHash": "e69d220bfae4dbda8eb7f3dff0799d738fa7a0dadc246189a8251401d991b5ae",
           "avatarVersion": 3
         }
       },
@@ -242,7 +242,7 @@
         "expiresAtUtc": "2026-10-28T12:00:00.000Z",
         "handshake": {
           "protocolVersion": 2,
-          "catalogHash": "5f6d1defe77e0b108c1635203348e13b21e374f55e26471a56b51c0c414a807a",
+          "catalogHash": "e69d220bfae4dbda8eb7f3dff0799d738fa7a0dadc246189a8251401d991b5ae",
           "avatarVersion": 3
         },
         "actorId": "spoofed"

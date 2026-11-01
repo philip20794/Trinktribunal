@@ -18,12 +18,7 @@
       "id": "no_ich_word",
       "category": "forbidden_words",
       "text": "Man darf nicht mehr „Ich“ sagen (außer beim Vorlesen).",
-      "excludes": [
-        "forbid_ich_schwoere",
-        "forbid_ich_glaube",
-        "forbid_ich_meine",
-        "forbid_ich_so_er_so"
-      ]
+      "excludes": []
     },
     {
       "id": "left_hand_drinking",
@@ -137,9 +132,7 @@
       "id": "no_face_touching",
       "category": "other",
       "text": "Man darf sich nicht mehr an der Nase kratzen oder ins Gesicht fassen.",
-      "excludes": [
-        "thinking_touch_face"
-      ]
+      "excludes": []
     },
     {
       "id": "interrupting_penalty",
@@ -229,9 +222,7 @@
       "id": "forbid_und",
       "category": "forbidden_words",
       "text": "Wer „und“ sagt, muss trinken.",
-      "excludes": [
-        "forbid_und_zwar"
-      ]
+      "excludes": []
     },
     {
       "id": "forbid_also",
@@ -257,317 +248,6 @@
       "id": "forbid_so",
       "category": "forbidden_words",
       "text": "Wer „so“ sagt, muss trinken.",
-      "excludes": [
-        "forbid_ich_so_er_so"
-      ]
-    },
-    {
-      "id": "forbid_eigentlich",
-      "category": "forbidden_words",
-      "text": "Wer „eigentlich“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_auf_jeden_fall",
-      "category": "forbidden_words",
-      "text": "Wer „auf jeden Fall“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_keine_ahnung",
-      "category": "forbidden_words",
-      "text": "Wer „keine Ahnung“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_ploetzlich",
-      "category": "forbidden_words",
-      "text": "Wer „plötzlich“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_tatsaechlich",
-      "category": "forbidden_words",
-      "text": "Wer „tatsächlich“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_genau",
-      "category": "forbidden_words",
-      "text": "Wer „genau“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_ich_schwoere",
-      "category": "forbidden_words",
-      "text": "Wer „ich schwöre“ sagt, muss trinken.",
-      "excludes": [
-        "no_ich_word"
-      ]
-    },
-    {
-      "id": "forbid_weisst_du",
-      "category": "forbidden_words",
-      "text": "Wer „weißt du?“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_ich_so_er_so",
-      "category": "forbidden_words",
-      "text": "Wer „ich so / er so“ sagt, muss trinken.",
-      "excludes": [
-        "forbid_so",
-        "no_ich_word"
-      ]
-    },
-    {
-      "id": "forbid_am_ende",
-      "category": "forbidden_words",
-      "text": "Wer „am Ende“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_quasi",
-      "category": "forbidden_words",
-      "text": "Wer „quasi“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_sozusagen",
-      "category": "forbidden_words",
-      "text": "Wer „sozusagen“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_im_prinzip",
-      "category": "forbidden_words",
-      "text": "Wer „im Prinzip“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_im_endeffekt",
-      "category": "forbidden_words",
-      "text": "Wer „im Endeffekt“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_letztendlich",
-      "category": "forbidden_words",
-      "text": "Wer „letztendlich“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_naja",
-      "category": "forbidden_words",
-      "text": "Wer „naja“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_okay",
-      "category": "forbidden_words",
-      "text": "Wer „okay“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_ganz_ehrlich",
-      "category": "forbidden_words",
-      "text": "Wer „ganz ehrlich“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_ehrlich_gesagt",
-      "category": "forbidden_words",
-      "text": "Wer „ehrlich gesagt“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_ich_glaube",
-      "category": "forbidden_words",
-      "text": "Wer „ich glaube“ sagt, muss trinken.",
-      "excludes": [
-        "no_ich_word"
-      ]
-    },
-    {
-      "id": "forbid_ich_meine",
-      "category": "forbidden_words",
-      "text": "Wer „ich meine“ sagt, muss trinken.",
-      "excludes": [
-        "no_ich_word"
-      ]
-    },
-    {
-      "id": "forbid_wirklich",
-      "category": "forbidden_words",
-      "text": "Wer „wirklich“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_einfach",
-      "category": "forbidden_words",
-      "text": "Wer „einfach“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_total",
-      "category": "forbidden_words",
-      "text": "Wer „total“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_mega",
-      "category": "forbidden_words",
-      "text": "Wer „mega“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_krass",
-      "category": "forbidden_words",
-      "text": "Wer „krass“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_uebrigens",
-      "category": "forbidden_words",
-      "text": "Wer „übrigens“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_zum_beispiel",
-      "category": "forbidden_words",
-      "text": "Wer „zum Beispiel“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_auf_einmal",
-      "category": "forbidden_words",
-      "text": "Wer „auf einmal“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_und_zwar",
-      "category": "forbidden_words",
-      "text": "Wer „und zwar“ sagt, muss trinken.",
-      "excludes": [
-        "forbid_und"
-      ]
-    },
-    {
-      "id": "forbid_pass_auf",
-      "category": "forbidden_words",
-      "text": "Wer „pass auf“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_stell_dir_vor",
-      "category": "forbidden_words",
-      "text": "Wer „stell dir vor“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_weisst_du_noch",
-      "category": "forbidden_words",
-      "text": "Wer „weißt du noch“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_das_ding_ist",
-      "category": "forbidden_words",
-      "text": "Wer „das Ding ist“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_sagen_wir_mal",
-      "category": "forbidden_words",
-      "text": "Wer „sagen wir mal“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_praktisch",
-      "category": "forbidden_words",
-      "text": "Wer „praktisch“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_zumindest",
-      "category": "forbidden_words",
-      "text": "Wer „zumindest“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_vielleicht",
-      "category": "forbidden_words",
-      "text": "Wer „vielleicht“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_anscheinend",
-      "category": "forbidden_words",
-      "text": "Wer „anscheinend“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "forbid_gefuehlt",
-      "category": "forbidden_words",
-      "text": "Wer „gefühlt“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_uh_um",
-      "category": "other",
-      "text": "Wer beim Nachdenken „äh“ oder „ähm“ sagt, muss trinken.",
-      "excludes": [
-        "thinking_noise"
-      ]
-    },
-    {
-      "id": "thinking_look_away",
-      "category": "other",
-      "text": "Wer beim Nachdenken nach oben oder zur Seite schaut, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_restart_sentence",
-      "category": "other",
-      "text": "Wer einen Satz anfängt und mittendrin neu formuliert, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_hmm",
-      "category": "other",
-      "text": "Wer beim Überlegen „hm“ oder „hmm“ sagt, muss trinken.",
-      "excludes": [
-        "thinking_noise"
-      ]
-    },
-    {
-      "id": "thinking_moment",
-      "category": "other",
-      "text": "Wer beim Überlegen „Moment“ oder „Warte mal“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_name_that",
-      "category": "other",
-      "text": "Wer „Wie heißt das nochmal?“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_where_was_i",
-      "category": "other",
-      "text": "Wer „Wo war ich?“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_what_was_i_saying",
-      "category": "other",
-      "text": "Wer „Was wollte ich sagen?“ sagt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_let_me_think",
-      "category": "other",
-      "text": "Wer „Lass mich überlegen“ sagt, muss trinken.",
       "excludes": []
     },
     {
@@ -583,111 +263,16 @@
       "excludes": []
     },
     {
-      "id": "thinking_furrow_brow",
-      "category": "other",
-      "text": "Wer beim Nachdenken die Stirn runzelt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_tilt_head",
-      "category": "other",
-      "text": "Wer beim Überlegen den Kopf schief legt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_touch_face",
-      "category": "other",
-      "text": "Wer sich beim Nachdenken ans Kinn oder ins Gesicht fasst, muss trinken.",
-      "excludes": [
-        "no_face_touching"
-      ]
-    },
-    {
-      "id": "thinking_scratch_head",
-      "category": "other",
-      "text": "Wer sich beim Nachdenken am Kopf kratzt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_close_eyes",
-      "category": "other",
-      "text": "Wer beim Überlegen kurz die Augen schließt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_tap_fingers",
-      "category": "other",
-      "text": "Wer beim Überlegen mit den Fingern auf den Tisch klopft, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_bite_lip",
-      "category": "other",
-      "text": "Wer sich beim Nachdenken auf die Unterlippe beißt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_stare",
-      "category": "other",
-      "text": "Wer beim Überlegen in die Ferne starrt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "thinking_sigh",
-      "category": "other",
-      "text": "Wer vor dem Weitererzählen hörbar seufzt, muss trinken.",
-      "excludes": []
-    },
-    {
       "id": "story_gesture",
       "category": "other",
       "text": "Wer beim Erzählen mit den Händen gestikuliert, muss trinken.",
       "excludes": []
     },
     {
-      "id": "story_eye_contact",
-      "category": "other",
-      "text": "Wer beim Erzählen jemanden direkt anschaut, um dessen Reaktion zu prüfen, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "story_imitate_voice",
-      "category": "other",
-      "text": "Wer beim Erzählen eine Person oder deren Stimme nachahmt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "story_laugh_own_story",
-      "category": "other",
-      "text": "Wer beim Erzählen über die eigene Geschichte lacht, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "story_repeat_emphasis",
-      "category": "other",
-      "text": "Wer etwas zur Betonung mehrfach wiederholt, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "story_dramatic_voice",
-      "category": "other",
-      "text": "Wer beim Erzählen die Stimme zur Dramatisierung verändert, muss trinken.",
-      "excludes": []
-    },
-    {
-      "id": "story_nod",
-      "category": "other",
-      "text": "Wer beim Sprechen mit dem Kopf nickt, muss trinken.",
-      "excludes": []
-    },
-    {
       "id": "thinking_noise",
       "category": "other",
-      "text": "Wer beim Nachdenken ein Denkgeräusch macht (z. B. „hmm“ oder „ähm“), muss trinken.",
-      "excludes": [
-        "thinking_uh_um",
-        "thinking_hmm"
-      ]
+      "text": "Wer ein Denkgeräusch macht (z. B. „ähm“ oder „hmm“), muss trinken.",
+      "excludes": []
     }
   ]
 }

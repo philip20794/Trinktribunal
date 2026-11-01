@@ -46,11 +46,11 @@
       "files": [
         {
           "path": "apps/client/assets/catalogs/rules/de.json",
-          "sha256": "cf1ce13691b8f5c2bfef71da98595faac5c3cf864548ff6a8a18e3c1ad6aceb6"
+          "sha256": "22bb476c7f551aa8c55fe5eb8f4517c9bec2bc7632195f1bae8391e1f8b54c36"
         },
         {
           "path": "data/rules/de.json",
-          "sha256": "ab12c7bf76bc2a06234c21d9d9e32609683a5c87b7147e7e7043ea82d4a15355"
+          "sha256": "45841b8f2e4a213ba18dc09c9b517635fdbd05d7af98fc06f8e7f02585c4be67"
         }
       ]
     },
@@ -63,11 +63,11 @@
       "files": [
         {
           "path": "apps/client/assets/catalogs/rules/en.json",
-          "sha256": "759057b3989511a1338ae87ba6f3ba9950832dea44c1c4db7ed40192c3d42062"
+          "sha256": "9a1eba824e9a1603f1c53abd0187e881cbee4d8e4d11b6201ab9ca37ae86eb97"
         },
         {
           "path": "data/rules/en.json",
-          "sha256": "e2fd5c5b4b8692c47aaf6ad51f08ead6d8b27d2239839fea2c2372b6d3949ea2"
+          "sha256": "83baad3ff8ca733a9765428f89d31b6e838d14532b5d963e0f819ed6be8d76cf"
         }
       ]
     },
