@@ -47,6 +47,8 @@ void main() {
       requestedRuleEvents: 2,
     );
     controller.start(config);
+    expect(controller.state!.openingRules.length, 3);
+    controller.continueAfterRule(controller.state!.currentEventId);
     final firstId = controller.state!.id;
     final firstQuestion = controller.state!.currentQuestion!.entry.id;
     for (var i = 0; i < 3; i++) {
@@ -60,24 +62,27 @@ void main() {
       }
     }
     expect(controller.state!.phase, GamePhase.finished);
-    expect(controller.history.entries.length, 5);
+    expect(controller.history.entries.length, 8);
     expect(() => controller.start(config), throwsA(isA<DomainException>()));
     controller.start(config, confirmedRestart: true);
+    expect(controller.state!.openingRules.length, 3);
+    controller.continueAfterRule(controller.state!.currentEventId);
     expect(controller.state!.id, isNot(firstId));
     expect(controller.state!.completedCases, 0);
-    expect(controller.state!.rules.active, isEmpty);
+    expect(controller.state!.rules.active.length, 3);
     expect(controller.state!.currentQuestion!.entry.id, isNot(firstQuestion));
-    expect(controller.history.entries.length, 6);
+    expect(controller.history.entries.length, 12);
   });
   test('cancelled completion/abort does not change state; explicit abort keeps history', () {
     controller.start(controller.configure(playerCount: 3));
+    controller.continueAfterRule(controller.state!.currentEventId);
     final initial = controller.state;
     controller.completeCase(roundId: initial!.currentEventId, confirmed: false);
     controller.abort(confirmed: false);
     expect(identical(initial, controller.state), true);
     controller.abort(confirmed: true);
     expect(controller.state, isNull);
-    expect(controller.history.entries.length, 1);
+    expect(controller.history.entries.length, 4);
     expect(
       () => controller.completeCase(roundId: 'old', confirmed: true),
       throwsA(isA<DomainException>()),

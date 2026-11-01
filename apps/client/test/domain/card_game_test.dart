@@ -23,17 +23,65 @@ LocalGameReducer reducer() => LocalGameReducer(
   clock: () => now,
 );
 
+
+/// The default production catalog presents three language rules before case one.
+CardGameState startAtCase(
+  LocalGameReducer engine, {
+  required GameId id,
+  required GameConfig config,
+  required ContentHistory history,
+}) {
+  var state = engine.start(id: id, config: config, history: history);
+  if (state.showingOpeningRules) {
+    expect(state.openingRules.length, 3);
+    state = engine.continueAfterRule(state, eventId: state.currentEventId);
+  }
+  return state;
+}
+
 void main() {
-  test('three cases/two rule events: five files, one skip, no duplicate completions', () {
+  test('three compatible language rules appear before case one even with zero extras', () {
     final engine = reducer();
     var state = engine.start(
+      id: GameId('opening'),
+      config: config(cases: 1, events: 0),
+      history: ContentHistory([]),
+    );
+    expect(state.phase, GamePhase.ruleEvent);
+    expect(state.showingOpeningRules, true);
+    expect(state.currentQuestion, isNull);
+    expect(state.completedCases, 0);
+    expect(state.schedule.slots, isEmpty);
+    expect(state.openingRules.length, 3);
+    expect(state.openingRules.map((r) => r.entry.id).toSet().length, 3);
+    expect(
+      state.openingRules.every((a) =>
+          (a.entry as dynamic).category == 'forbidden_words'),
+      true,
+    );
+    expect(state.rules.selection.history.entries.length, 3);
+    state = engine.restore(state.toSnapshot(), state.rules.selection.history);
+    expect(state.showingOpeningRules, true);
+    final eventId = state.currentEventId;
+    state = engine.continueAfterRule(state, eventId: eventId);
+    expect(state.phase, GamePhase.casePresented);
+    expect(state.rules.active.length, 3);
+    expect(state.completedCases, 0);
+    expect(
+      identical(engine.continueAfterRule(state, eventId: eventId), state),
+      true,
+    );
+  });
+  test('three cases/two rule events: five files, one skip, no duplicate completions', () {
+    final engine = reducer();
+    var state = startAtCase(engine, 
       id: GameId('demo'),
       config: config(),
       history: ContentHistory([]),
     );
     final first = state.currentEventId;
     expect(state.caseNumber, 1);
-    expect(state.rules.active, isEmpty);
+    expect(state.rules.active.length, 3);
     state = engine.completeCase(
       state,
       roundId: first,
@@ -43,7 +91,7 @@ void main() {
     );
     expect(state.phase, GamePhase.ruleEvent);
     expect(state.completedCases, 1);
-    expect(state.rules.active.length, 1);
+    expect(state.rules.active.length, 4);
     expect(
       identical(
         engine.completeCase(state, roundId: first, confirmed: true),
@@ -70,7 +118,7 @@ void main() {
     expect(state.completedCases, 2);
     expect(state.lastCompletion, CaseCompletion.withoutVerdict);
     expect(state.manualErrors, isNull);
-    expect(state.rules.active.length, 2);
+    expect(state.rules.active.length, 5);
     expect(
       identical(
         engine.completeCase(state, roundId: second, confirmed: true),
@@ -90,9 +138,9 @@ void main() {
     );
     expect(state.phase, GamePhase.finished);
     expect(state.completedCases, 3);
-    expect(state.rules.selection.history.entries.length, 5);
+    expect(state.rules.selection.history.entries.length, 8);
     expect(state.rules.selection.drawnIds(ContentKind.question).length, 3);
-    expect(state.rules.active.length, 2);
+    expect(state.rules.active.length, 5);
     expect(state.manualErrors, 0);
     expect(
       identical(
@@ -106,7 +154,7 @@ void main() {
     'invalid manual scores and missing full-order confirmation preserve state',
     () {
       final engine = reducer();
-      final state = engine.start(
+      final state = startAtCase(engine, 
         id: GameId('manual'),
         config: config(),
         history: ContentHistory([]),
@@ -137,13 +185,13 @@ void main() {
         throwsA(isA<DomainException>()),
       );
       expect(state.completedCases, 0);
-      expect(state.rules.selection.history.entries.length, 1);
+      expect(state.rules.selection.history.entries.length, 4);
     },
   );
   test('F=1 produces no rule and no synthetic score; F=50 completes exactly 50 cases', () {
     for (final count in [1, 50]) {
       final engine = reducer();
-      var state = engine.start(
+      var state = startAtCase(engine, 
         id: GameId('f$count'),
         config: config(cases: count, events: 7),
         history: ContentHistory([]),
@@ -166,7 +214,7 @@ void main() {
         expect(actions, lessThan(100));
       }
       expect(state.completedCases, count);
-      expect(state.rules.active.length, count == 1 ? 0 : 7);
+      expect(state.rules.active.length, count == 1 ? 3 : 10);
       expect(state.manualErrors, isNull);
     }
   });
@@ -177,7 +225,7 @@ void main() {
       random: TestRandom(),
       clock: () => now,
     );
-    var state = engine.start(
+    var state = startAtCase(engine, 
       id: GameId('small'),
       config: config(events: 0),
       history: ContentHistory([]),
@@ -199,7 +247,7 @@ void main() {
       random: TestRandom(),
       clock: () => now,
     );
-    var state = engine.start(
+    var state = startAtCase(engine, 
       id: GameId('no-rules'),
       config: config(),
       history: ContentHistory([]),

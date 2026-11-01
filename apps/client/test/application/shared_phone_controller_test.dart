@@ -53,6 +53,28 @@ void handoff(SharedPhoneController session) {
 }
 
 void main() {
+  test('three starting language rules are active and survive a snapshot even with zero extras', () {
+    final history = ContentHistoryStore();
+    final session = controller(history: history);
+    session.start(
+      config: session.configure(
+        playerCount: 4,
+        targetCases: 1,
+        requestedRuleEvents: 0,
+      ),
+      roster: roster(),
+    );
+    expect(session.view!.showingOpeningRules, true);
+    expect(session.view!.openingRules.length, 3);
+    expect(session.view!.question, isNull);
+    expect(session.view!.completedCases, 0);
+    final snapshot = jsonDecode(jsonEncode(session.toSnapshot())) as Map<String, dynamic>;
+    session.restoreValidated(session.validateSnapshot(snapshot, history.history));
+    expect(session.view!.openingRules.length, 3);
+    session.continueRule(afterCase: 0);
+    expect(session.view!.phase, GamePhase.numbers);
+    expect(session.view!.activeRules.length, 3);
+  });
   for (final withRule in [false, true]) {
     test(
       'judge plate changes only after all numbers, survives restore: rule=$withRule',
@@ -67,6 +89,7 @@ void main() {
           ),
           roster: roster(),
         );
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
         handoff(session);
         final oldJudge = session.view!.judge;
         session.completeCase(
@@ -138,6 +161,7 @@ void main() {
       ),
       roster: roster(),
     );
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
     session.completeCase(
       session.view!.roundId,
       confirmed: true,
@@ -169,6 +193,7 @@ void main() {
       ),
       roster: roster(),
     );
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
     final snapshot =
         jsonDecode(jsonEncode(session.toSnapshot())) as Map<String, dynamic>;
     (snapshot['rules'] as Map)['counts'] = {
@@ -201,6 +226,7 @@ void main() {
       requestedRuleEvents: 2,
     );
     session.start(config: config, roster: roster());
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
     for (var caseIndex = 0; caseIndex < 6; caseIndex++) {
       handoff(session);
       final round = session.view!.roundId;
@@ -238,7 +264,7 @@ void main() {
     }
     expect(session.view!.phase, GamePhase.finished);
     expect(session.view!.roster.length, 5);
-    expect(session.view!.activeRules.length, 2);
+    expect(session.view!.activeRules.length, 5);
     final previousQuestion = session.view!.question!.entry.id;
     final nextRoster = session.view!.roster;
     session.start(
@@ -250,8 +276,9 @@ void main() {
       roster: nextRoster,
       confirmedRestart: true,
     );
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
     expect(session.view!.question!.entry.id, isNot(previousQuestion));
-    expect(session.view!.activeRules, isEmpty);
+    expect(session.view!.activeRules.length, 3);
     expect(session.view!.visibleSecret, isNull);
   });
   test(
@@ -262,6 +289,7 @@ void main() {
         config: session.configure(playerCount: 4),
         roster: roster(),
       );
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
       final initial = openSharedRecipient(session);
       expect(initial.recipient, players[1]);
       expect(initial.visibleSecret, isNull);
@@ -294,6 +322,7 @@ void main() {
       ),
       roster: roster(),
     );
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
     handoff(session);
     final round = session.view!.roundId;
     session.beginOrdering(round);
@@ -329,6 +358,7 @@ void main() {
         requestedRuleEvents: 2,
       );
       session.start(config: config, roster: roster());
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
       for (var i = 0; i < 9; i++) {
         expect(session.view!.judge, players[i % 4]);
         final round = session.view!.roundId;
@@ -344,14 +374,15 @@ void main() {
         }
       }
       expect(session.view!.phase, GamePhase.finished);
-      expect(session.view!.activeRules.length, 2);
+      expect(session.view!.activeRules.length, 5);
       expect(
         () => session.start(config: config, roster: roster()),
         throwsA(isA<DomainException>()),
       );
       session.start(config: config, roster: roster(), confirmedRestart: true);
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
       expect(session.view!.completedCases, 0);
-      expect(session.view!.activeRules, isEmpty);
+      expect(session.view!.activeRules.length, 3);
       expect(session.view!.verdict, isNull);
       expect(session.view!.visibleSecret, isNull);
     },
@@ -366,6 +397,7 @@ void main() {
       ),
       roster: roster(),
     );
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
     final before = openSharedRecipient(session);
     final e = UserProfile(
       player: Player(id: PlayerId('E'), name: 'New'),
@@ -405,6 +437,7 @@ void main() {
         ),
         roster: roster(),
       );
+if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
       session.applyRoster(roster().take(2).toList());
       session.completeCase(
         session.view!.roundId,
@@ -412,13 +445,13 @@ void main() {
         withoutVerdict: true,
       );
       expect(session.view!.phase, GamePhase.paused);
-      expect(session.view!.activeRules, isEmpty);
+      expect(session.view!.activeRules.length, 3);
       session.applyRoster(roster().take(3).toList());
       session.resumePaused();
       expect(session.view!.phase, GamePhase.ruleEvent);
-      expect(session.view!.activeRules.length, 1);
+      expect(session.view!.activeRules.length, 4);
       session.resumePaused();
-      expect(session.view!.activeRules.length, 1);
+      expect(session.view!.activeRules.length, 4);
       session.continueRule(afterCase: 1);
       expect(session.view!.phase, GamePhase.numbers);
       expect(session.view!.completedCases, 1);
