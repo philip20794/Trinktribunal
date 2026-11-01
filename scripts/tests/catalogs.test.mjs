@@ -97,37 +97,46 @@ test('asset check is read-only and detects missing, changed and extra assets', (
   }
 });
 
-test('five recent bilingual rules are card-mode eligible and have no exclusions', () => {
+test('recent bilingual rules retain valid categories and card-mode eligibility', () => {
   const sources = loadSources().filter(entry => entry.kind === 'rules');
   const expected = {
     verdict_carried_out: 'drinking_ritual',
     your_honor_questions: 'other',
     formal_address: 'other',
-    no_also_start: 'other',
+    no_also_start: 'forbidden_words',
     motion_denied: 'other',
   };
   for (const { catalog } of sources) {
-    assert.equal(catalog.rules.length, 30);
-    assert.equal(catalog.rules.filter(rule => !rule.players).length, 27);
+    assert.equal(catalog.rules.length, 103);
+    assert.equal(catalog.rules.filter(rule => !rule.players).length, 100);
     for (const [id, category] of Object.entries(expected)) {
       const rule = catalog.rules.find(entry => entry.id === id);
       assert.ok(rule, id);
       assert.equal(rule.category, category);
-      assert.deepEqual(rule.excludes, []);
+      if (id !== 'no_also_start') assert.deepEqual(rule.excludes, []);
+      else assert.deepEqual(rule.excludes, ['forbid_also']);
       assert.equal(rule.players, undefined);
       assert.ok(rule.text.trim());
-      assert.ok(catalog.rules.every(other => !other.excludes.includes(id)));
+      if (id !== 'no_also_start') assert.ok(catalog.rules.every(other => !other.excludes.includes(id)));
     }
   }
 });
 
-test('two production categories contain all rules and legacy categories are rejected', () => {
+test('three production categories contain all rules and old categories are rejected', () => {
   for (const { catalog } of loadSources().filter(source => source.kind === 'rules')) {
     assert.equal(catalog.rules.filter(rule => rule.category === 'drinking_ritual').length, 16);
-    assert.equal(catalog.rules.filter(rule => rule.category === 'other').length, 14);
-    for (const rule of catalog.rules) assert.ok(['drinking_ritual', 'other'].includes(rule.category));
-    for (const id of ['swear_penalty', 'pointing_penalty', 'motion_denied'])
+    assert.equal(catalog.rules.filter(rule => rule.category === 'other').length, 36);
+    assert.equal(catalog.rules.filter(rule => rule.category === 'forbidden_words').length, 51);
+    for (const rule of catalog.rules)
+      assert.ok(['drinking_ritual', 'other', 'forbidden_words'].includes(rule.category));
+    for (const id of ['pointing_penalty', 'motion_denied'])
       assert.equal(catalog.rules.find(rule => rule.id === id).category, 'other');
+    for (const id of ['swear_penalty', 'no_ich_word', 'no_also_start', 'forbid_und'])
+      assert.equal(catalog.rules.find(rule => rule.id === id).category, 'forbidden_words');
+    for (const [a, b] of [['thinking_noise', 'thinking_hmm'], ['thinking_noise', 'thinking_uh_um'], ['no_also_start', 'forbid_also']]) {
+      assert.ok(catalog.rules.find(rule => rule.id === a).excludes.includes(b));
+      assert.ok(catalog.rules.find(rule => rule.id === b).excludes.includes(a));
+    }
   }
   for (const legacy of ['speech', 'behavior']) {
     const invalid = rules();

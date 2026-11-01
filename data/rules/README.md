@@ -1,6 +1,6 @@
 # Trinkregeln: JSON-Format
 
-Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepflegt. `de.json` und `en.json` enthalten jeweils dieselben 30 Regeln mit identischen IDs, Platzhaltern, Auswahlregeln und Ausschlüssen. **Jede neue Regel muss diesem Format entsprechen.** Die Beispiele hier erläutern das Schema und sind keine zusätzlichen Regeln.
+Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepflegt. `de.json` und `en.json` enthalten jeweils dieselben 103 Regeln mit identischen IDs, Platzhaltern, Auswahlregeln und Ausschlüssen. **Jede neue Regel muss diesem Format entsprechen.** Die Beispiele hier erläutern das Schema und sind keine zusätzlichen Regeln.
 
 ## Struktur
 
@@ -49,7 +49,7 @@ Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepfle
 | `rules` | Ja | Liste der Trinkregeln. |
 | `id` | Ja | Eindeutige, **sprachunabhängige** Regel-ID; bleibt über Übersetzungen gleich. |
 | `text` | Ja | Anzeigetext; Spieler-Platzhalter als `{player1}`, `{player2}` usw. |
-| `category` | Produktive Regeln | Gemeinsame Kategorie in beiden Sprachen: `drinking_ritual` (Trinkrituale), `other` (Andere; frühere Sprach- und Verhaltensregeln). |
+| `category` | Produktive Regeln | Gemeinsame Kategorie in beiden Sprachen: `drinking_ritual` (Trinkrituale), `other` (Andere; Denk- und Verhaltensregeln), `forbidden_words` (Verbotene Wörter und Ausdrücke). |
 | `players` | Nein | Benötigte Spielerrollen, benannt wie die Platzhalter im Text. |
 | `selection` | Ja, je Rolle | `random` bezeichnet eine server-/lokal durchgeführte Zufallsauswahl **mit D-05-Fairness-Zähler** statt voneinander unabhängiger Gleichverteilungen; umfasst auch den Richter. |
 | `differentFrom` | Nein | Rollen, die nicht denselben Spieler bekommen dürfen; z. B. `["player1"]`. |
@@ -85,15 +85,15 @@ Aktivierte Regeln zählen als Verwendung der jeweiligen sprachunabhängigen ID. 
 
 ## Bestätigte Konflikte und Sanktionen (D-04, 26.10.2026)
 
-Es gelten genau zwei gegenseitige Ausschlusspaare:
+Die beiden ursprünglichen D-04-Ausschlusspaare sind:
 - `left_hand_drinking` ↔ `two_hands_drinking` (linke Hand versus beide Hände).
 - `two_hands_drinking` ↔ `touch_player_while_drinking` (beide Hände am Glas versus Mitspieler mit einer Hand berühren).
 
-Die beiden Katalogdateien enthalten dieselben reziproken `excludes`. `imaginary_kobold` und `imaginary_fly` dürfen gleichzeitig aktiv sein. Andere Kombinationen sind durch D-04 nicht ausgeschlossen.
+Die beiden Katalogdateien enthalten dieselben reziproken `excludes`. `imaginary_kobold` und `imaginary_fly` dürfen gleichzeitig aktiv sein. Neue, überlappende Wortverbote und Denkregeln schließen sich ebenfalls über reziproke `excludes` aus. Die beiden ursprünglichen D-04-Paare bleiben unverändert.
 
 Ein eigenständiger Verstoß gegen eine aktive Zusatzregel hat **genau einen Strafschluck** zur Folge, auch wenn die Regel keinen eigenen Straftext enthält. Die Gruppe erkennt und ahndet diese Verstöße manuell; App und Server berechnen nur die eigentliche Fallwertung. **Keine Strafketten:** Die Ausführung eines Strafschlucks kann keine zusätzlichen Strafschlucke auslösen. Unvermeidbare Spielhandlungen wie das notwendige Vorlesen einer Frage oder Regel und das reguläre Ansagen/Aufdecken geheimer Zahlen sind von Sprachverboten bzw. regelbezogenen Ansagestrafen ausgenommen. Sonstige freiwillige Äußerungen bleiben den aktiven Regeln unterworfen.
 
-Diese globalen Festlegungen sind Teil der Spielregeln, nicht zusätzliche Einträge in den 30 Regel-JSONs. Siehe [Beschluss D-04](../../docs/decisions/D-04-rule-conflicts.md).
+Diese globalen Festlegungen sind Teil der Spielregeln, nicht zusätzliche Einträge in den 103 Regel-JSONs. Siehe [Beschluss D-04](../../docs/decisions/D-04-rule-conflicts.md).
 
 ## Validierung
 
@@ -105,19 +105,18 @@ Diese globalen Festlegungen sind Teil der Spielregeln, nicht zusätzliche Eintr�
 - Text, Platzhalter und Rollen-IDs müssen über Sprachversionen konsistent bleiben; grammatische Formulierungen dürfen sich unterscheiden.
 - Gibt es nicht genügend geeignete Spieler oder keine kompatible Regel mehr, wird die Regel nicht erzwungen.
 
-**Festlegung D-03:** Im Modus 1 (Handy + physische Karten) gibt es keine Spielerliste. Die drei personenbezogenen Regeln werden dort aus der automatischen Auslosung ausgeschlossen; die 27 Regeln ohne Spielerrollen bleiben verfügbar.
+**Festlegung D-03:** Im Modus 1 (Handy + physische Karten) gibt es keine Spielerliste. Die drei personenbezogenen Regeln werden dort aus der automatischen Auslosung ausgeschlossen; die 100 Regeln ohne Spielerrollen bleiben verfügbar.
 
 Siehe auch [Spielkonzept](../../docs/GAME_DESIGN.md) und [Screens und Nutzerabläufe](../../docs/USER_FLOWS.md).
 
 ## Kategoriengewichtete Auslosung
 
 Pro Regelereignis wird erst die Kategorie gewichtet gezogen und darin eine Regel mit
-dem kleinsten Sechs-Stunden-Zähler zufällig gewählt. Es gibt genau zwei Kategorien: `drinking_ritual` und `other`. Die Kategorien werden nicht
+dem kleinsten Sechs-Stunden-Zähler zufällig gewählt. Es gibt drei Kategorien: `drinking_ritual`, `other` und `forbidden_words`. Die Kategorien werden nicht
 vorab reserviert. Gewicht: `1000 × n^1,5 / (1 + bisherige Kategorieziehungen / 20) /
 (1 + mittlere Sechs-Stunden-Nutzung)`; `n` zählt nur zum aktuellen Zeitpunkt
 zulässige Regeln. Vorher erfolgen Modus-, Konflikt- und Rollenfilter.
-Bei mindestens drei geplanten Regeln gilt pro Kategorie die Obergrenze
-`min(geplant - 1, ceil(geplant × 0,75))`, bei neun Regeln also sieben.
+Bei mindestens drei geplanten Regeln gilt mit zwei wählbaren Kategorien pro Kategorie die Obergrenze `min(geplant - 1, ceil(geplant × 0,75))`, bei neun Regeln also sieben. Sind drei Kategorien wählbar, gilt `min(geplant - 1, ceil(geplant × 0,50))`, bei neun Regeln also fünf.
 Ist keine andere Kategorie mehr wählbar, wird die Obergrenze aufgehoben.
 Bereits gezogene, später deaktivierte Regeln zählen weiterhin zur Partie.
 Der Schieberegler bleibt die einzige Regelanzahleinstellung.

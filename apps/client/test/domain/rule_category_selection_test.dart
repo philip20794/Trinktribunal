@@ -15,7 +15,7 @@ ContentHistoryEntry used(String id, String eventId, [DateTime? at]) =>
     );
 
 void main() {
-  test('DE/EN production catalogs use exactly two categories (16/14)', () {
+  test('DE/EN production catalogs use three categories (16/36/51)', () {
     final de = actualRules();
     final en = rulesFromEnglish();
     expect(
@@ -26,10 +26,10 @@ void main() {
         for (final rule in en) [rule.id, rule.category],
       ],
     );
-    for (final category in ['drinking_ritual', 'other']) {
+    for (final category in ['drinking_ritual', 'other', 'forbidden_words']) {
       expect(
         de.where((r) => r.category == category).length,
-        {'drinking_ritual': 16, 'other': 14}[category],
+        {'drinking_ritual': 16, 'other': 36, 'forbidden_words': 51}[category],
       );
     }
   });
@@ -63,21 +63,50 @@ void main() {
     expect(picked, [7, 2]);
   });
 
+  test('three feasible categories have a five-rule cap at nine events', () {
+    final catalog = rules([
+      for (var i = 0; i < 16; i++) ruleJson('r$i', category: 'drinking_ritual'),
+      for (var i = 0; i < 14; i++) ruleJson('o$i', category: 'other'),
+      for (var i = 0; i < 20; i++) ruleJson('w$i', category: 'forbidden_words'),
+    ]);
+    final drawn = <String>{};
+    for (var i = 0; i < 9; i++) {
+      final chosen = selectCategorizedRule(
+        catalog: catalog,
+        candidates: catalog.where((r) => !drawn.contains(r.id)).toList(),
+        drawnIds: drawn,
+        history: ContentHistory([]),
+        nowUtc: now,
+        random: TestRandom(),
+        plannedRuleEvents: 9,
+      );
+      expect(drawn.add(chosen.id), true);
+    }
+    for (final category in ['drinking_ritual', 'other', 'forbidden_words']) {
+      expect(
+        catalog.where((r) => r.category == category && drawn.contains(r.id)).length,
+        lessThanOrEqualTo(5),
+      );
+    }
+  });
+
   test(
-    'legacy speech and behavior rules belong to other; new rule is other',
+    'language bans belong to forbidden_words; gestures remain other',
     () {
       final all = actualRules();
       for (final id in [
-        'swear_penalty',
         'pointing_penalty',
         'formal_address',
         'motion_denied',
       ]) {
         expect(all.singleWhere((r) => r.id == id).category, 'other');
       }
-      expect(all.where((r) => r.category == 'other').length, 14);
+      expect(all.where((r) => r.category == 'other').length, 36);
+      for (final id in ['swear_penalty', 'no_ich_word', 'no_also_start', 'forbid_und']) {
+        expect(all.singleWhere((r) => r.id == id).category, 'forbidden_words');
+      }
       expect(
-        all.every((r) => {'drinking_ritual', 'other'}.contains(r.category)),
+        all.every((r) => {'drinking_ritual', 'other', 'forbidden_words'}.contains(r.category)),
         true,
       );
     },

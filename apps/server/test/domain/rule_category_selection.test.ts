@@ -6,7 +6,7 @@ import type { SelectionInput } from '../../src/domain/question_assignment';
 import { selectCategorizedRule } from '../../src/domain/selection/rule_category_selection';
 
 const now = Date.parse('2026-10-31T12:00:00.000Z');
-const categories = ['drinking_ritual', 'other'] as const;
+const categories = ['drinking_ritual', 'other', 'forbidden_words'] as const;
 const samples: ContentEntry[] = [
   ...Array.from({ length: 16 }, (_, i) => ({
     id: `r${i}`,
@@ -14,6 +14,7 @@ const samples: ContentEntry[] = [
     category: 'drinking_ritual' as const,
   })),
   ...Array.from({ length: 14 }, (_, i) => ({ id: `o${i}`, text: 'o', category: 'other' as const })),
+  ...Array.from({ length: 20 }, (_, i) => ({ id: `w${i}`, text: 'w', category: 'forbidden_words' as const })),
 ];
 const event = (id: string, index = 0, timestamp = now): UsageEvent => ({
   eventId: `e_${id}_${index}`,
@@ -48,20 +49,23 @@ describe('weighted categories for drinking rules', () => {
     );
     for (const [category, count] of [
       ['drinking_ritual', 16],
-      ['other', 14],
+      ['other', 36],
+      ['forbidden_words', 51],
     ] as const)
       expect(de.filter((rule) => rule.category === category)).toHaveLength(count);
   });
 
   it('migrates previous speech and behavior rules into other', () => {
     const rules = catalogs.de.rules;
-    expect(rules).toHaveLength(30);
-    for (const id of ['swear_penalty', 'pointing_penalty', 'formal_address', 'motion_denied'])
+    expect(rules).toHaveLength(103);
+    for (const id of ['pointing_penalty', 'formal_address', 'motion_denied'])
       expect(rules.find((rule) => rule.id === id)?.category).toBe('other');
+    for (const id of ['swear_penalty', 'no_drink_word', 'no_also_start', 'forbid_und'])
+      expect(rules.find((rule) => rule.id === id)?.category).toBe('forbidden_words');
     expect(rules.every((rule) => categories.includes(rule.category as RuleCategory))).toBe(true);
   });
 
-  it('limits a nine-rule party to seven per category', () => {
+  it('limits a nine-rule party to five when three categories are feasible', () => {
     let history: UsageEvent[] = [];
     const drawn: string[] = [];
     for (let i = 0; i < 9; i++) {
@@ -74,7 +78,8 @@ describe('weighted categories for drinking rules', () => {
       (category) =>
         samples.filter((rule) => rule.category === category && drawn.includes(rule.id)).length,
     );
-    expect(counts).toEqual([7, 2]);
+    expect(Math.max(...counts)).toBeLessThanOrEqual(5);
+    expect(counts.reduce((sum, count) => sum + count, 0)).toBe(9);
   });
 
   it('does not impose category diversity for only two planned rules', () => {
@@ -145,7 +150,7 @@ describe('weighted categories for drinking rules', () => {
       return seed % bound;
     };
     const observedMixes = new Set<string>();
-    const counts: Record<RuleCategory, number> = { drinking_ritual: 0, other: 0 };
+    const counts: Record<RuleCategory, number> = { drinking_ritual: 0, other: 0, forbidden_words: 0 };
     for (let game = 0; game < 250; game++) {
       const drawn: string[] = [];
       for (let index = 0; index < 9; index++) {
@@ -157,12 +162,12 @@ describe('weighted categories for drinking rules', () => {
         (category) =>
           samples.filter((rule) => rule.category === category && drawn.includes(rule.id)).length,
       );
-      expect(Math.max(...categoryCounts)).toBeLessThanOrEqual(7);
-      expect(Math.min(...categoryCounts)).toBeGreaterThanOrEqual(2);
+      expect(Math.max(...categoryCounts)).toBeLessThanOrEqual(5);
       observedMixes.add(categoryCounts.join(':'));
     }
     expect(counts.drinking_ritual).toBeGreaterThan(0);
     expect(counts.other).toBeGreaterThan(0);
+    expect(counts.forbidden_words).toBeGreaterThan(0);
     expect(observedMixes.size).toBeGreaterThan(1);
   });
 
