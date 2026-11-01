@@ -816,7 +816,7 @@
   "reorderPlayer": "Reihenfolge ändern",
   "localGameOptions": "Spieleinstellungen",
   "localCasesHelp": "So viele Fragen spielt ihr in dieser Partie. Trinkregel-Ereignisse zählen nicht als Frage.",
-  "localRulesHelp": "So viele zusätzliche Trinkregeln werden zwischen den Fällen eingeführt. Sie gelten bis Partieende.",
+  "localRulesHelp": "Vor Fall 1 werden immer drei Sprachregeln aktiviert. Dieser Regler bestimmt nur, wie viele weitere Regeln zwischen den Fällen hinzukommen.",
   "localFactorHelp": "Bestimmt die höchste Kartenzahl: Spieleranzahl × Multiplikator, aufgerundet. Je höher die Kartenzahl, desto schwerer wird es für den Richter.",
   "yourNumber": "Deine Zahl",
   "roundOf": "Runde {number} von {total}",

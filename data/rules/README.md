@@ -55,6 +55,10 @@ Trinkregeln werden als sprachabhängige JSON-Kataloge unter `data/rules/` gepfle
 | `differentFrom` | Nein | Rollen, die nicht denselben Spieler bekommen dürfen; z. B. `["player1"]`. |
 | `excludes` | Nein | Regel-IDs, die nicht gleichzeitig aktiv sein dürfen; fehlend bedeutet `[]`. |
 
+## Sprachregeln zum Partiestart
+
+Unabhängig von der konfigurierten Anzahl zusätzlicher Regeln werden beim Beginn jeder neuen Partie drei miteinander verträgliche Einträge aus `forbidden_words` ausgewählt. Sie erscheinen nummeriert auf einer gemeinsamen Regelkarte vor der ersten Fallakte, gelten sofort und bleiben bis zum Partieende aktiv. Diese drei Regeln zählen weder zum Zeitplan der zusätzlichen Regelereignisse noch zur Fallanzahl. Jede Auswahl wird in der Sechs-Stunden-Historie gespeichert; dieselbe Regel kann innerhalb einer Partie nicht erneut gezogen werden.
+
 ## Zuweisung und Laufzeit
 
 1. Beim Ziehen prüft die Spiellogik, ob die Regel mit allen aktiven Regeln kompatibel ist und genügend Spieler für `differentFrom` verfügbar sind. Ausschlüsse gelten **in beide Richtungen**.

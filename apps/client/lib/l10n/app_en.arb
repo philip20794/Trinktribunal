@@ -540,7 +540,7 @@
   "reorderPlayer": "Change order",
   "localGameOptions": "Game settings",
   "localCasesHelp": "The number of questions in this game. Drinking-rule events do not count as questions.",
-  "localRulesHelp": "Extra drinking rules introduced between cases. They stay active until the game ends.",
+  "localRulesHelp": "Three language rules always start before case one. This slider only controls how many more rules appear between cases.",
   "localFactorHelp": "Sets the highest card number: player count × multiplier, rounded up. The higher the card numbers, the harder it is for the judge.",
   "yourNumber": "Your number",
   "roundOf": "Round {number} of {total}",

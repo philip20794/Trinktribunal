@@ -7,7 +7,7 @@
 | Einstellung | Standard | Bedeutung |
 | --- | --- | --- |
 | **Spieldauer** | **50 Fälle** | Anzahl der Fragen/Aussagen bis zum Partierende; per Schieberegler anpassbar. |
-| **Trinkregeln** | **7** | Anzahl zusätzlich eingestreuter Regelereignisse pro Partie; per Schieberegler anpassbar. |
+| **Trinkregeln** | **7** | Anzahl zusätzlich eingestreuter Regelereignisse zwischen den Fällen; die drei Sprachregeln zum Spielstart zählen nicht dazu. |
 | **Schwierigkeit** | **2 × Spielerzahl** | Zahlenbereich **1 bis X** mit `X = ceil(Spielerzahl × Faktor)`; Faktor per Schieberegler anpassbar. |
 
 **Entscheidung D-02 (26.10.2026):** Pro Partie bzw. Raum sind **3–20 aktive Spieler** erlaubt. Die Spieleinstellungen bieten **10 bis 150 Fälle**; geeignete Kataloggrößen bleiben technische Obergrenzen für ältere Partien und Tests. Die Anzahl zusätzlicher Regelereignisse ist **0 bis zur Zahl geeigneter Trinkregeln** (25 mit Spielernamen, 22 im Kartenmodus) und zusätzlich auf höchstens **F−1** Zwischenräume begrenzt. Zahlenbereich **1,0–4,0 in 0,5-Schritten**; Standardmultiplikator 2,0. Spielernamen umfassen nach Trim **1–24 sichtbare Unicode-Zeichen** (Graphem-Cluster); gleiche Namen sind erlaubt, wenn Spieler durch stabile IDs und einen sichtbar unterscheidbaren Avatar/Kürzel auseinandergehalten werden. Unter drei wirksamen Spielern wird pausiert; ein 21. Spieler darf nicht beitreten. Weitere Details und Tests: [D-02](decisions/D-02-config-bounds.md).
@@ -15,6 +15,10 @@
 Die geheimen Zahlen werden pro Fall **ohne Wiederholung** aus `1..X` vergeben (beim normalen Modus an alle außer dem Richter, bei „Alle sind Richter“ an alle). `X` muss mindestens so groß sein wie die Zahl der Empfänger. Der eingestellte Faktor bleibt während einer Partie fest; bei geänderter Spielerzahl wird `X` **ab dem nächsten Fall** neu berechnet.
 
 **Entscheidung D-01 (26.10.2026):** Die 50 Fälle sind **50 abgeschlossene reguläre Fälle**. Nach D-19 kann ein Fall mehrere nacheinander gezeigte Fragen verbrauchen; ein Kartenwechsel allein zählt keinen Fall. Die 7 zusätzlichen Trinkregel-Ereignisse werden zwischen regulären Fällen eingefügt, ohne die 50 Fälle zu verbrauchen. Ein Ereignis kann frühestens nach dem ersten Fall, spätestens vor dem letzten Fall auftreten; pro Zwischenraum höchstens ein Ereignis. Die `F−1` Zwischenräume werden für die gewünschte, bei kurzen Partien begrenzte Anzahl an Ereignissen in möglichst gleich große Abschnitte geteilt und pro Abschnitt wird zufällig ein Zwischenraum gewählt. Direkt benachbarte Slots sind bei genügend Zwischenräumen ausgeschlossen; sind sie unvermeidbar (F=3/R=2), bleiben sie erlaubt (D-01). Für nur einen Fall gibt es kein Regelereignis. Fallen Regeln wegen fehlender gültiger Kandidaten aus, wird dies als geringere tatsächliche Ereignisanzahl angezeigt. Ein Standardspiel umfasst also **50 Fragen und bis zu 7 Regelereignisse**.
+
+### Drei Sprachregeln vor dem ersten Fall
+
+Bei jedem Partiestart werden **immer genau drei unterschiedliche, verträgliche Regeln** aus `forbidden_words` gezogen. Sie werden sofort aktiviert und gemeinsam auf **einer Regelkarte vor Fall 1** angezeigt. Nach „Regel verstanden“ beginnt die erste Fallakte. Diese drei Regeln verbrauchen weder einen Fall noch einen der regulären Regelslots und gelten bis zum Partieende. Sie werden wie andere Regeln in die Ziehhistorie übernommen und innerhalb derselben Partie nicht erneut ausgewählt. Der Ablauf gilt im Kartenmodus, auf einem gemeinsamen Handy und im Online-Raum; bei einem Neustart werden drei neue Startregeln ausgewählt. Der Slider mit 0–25 zusätzlichen Regeln betrifft ausschließlich die späteren Zwischenfälle.
 
 ### Zufallsauswahl mit rollierender 6-Stunden-Historie
 
