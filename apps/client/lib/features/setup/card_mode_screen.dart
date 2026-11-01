@@ -232,12 +232,21 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
       ],
       if (state.phase == GamePhase.ruleEvent) ...[
         CourtRule(
-          title: state.newRule == null
+          title: state.showingOpeningRules
+              ? context.tr('openingLanguageRules')
+              : state.newRule == null
               ? context.tr('ruleGoalReduced')
               : context.tr('newRule'),
           animationKey: state.currentEventId,
-          text:
-              (state.newRule == null
+          text: state.showingOpeningRules
+              ? state.openingRules.asMap().entries.map((entry) =>
+                  '${entry.key + 1}. ${localizedRule(
+                    ref.read(catalogsProvider).requireValue,
+                    AppLanguageScope.of(context).language,
+                    entry.value.entry as DrinkingRule,
+                  ).text}',
+                ).join('\n\n')
+              : (state.newRule == null
                   ? null
                   : localizedRule(
                       ref.read(catalogsProvider).requireValue,

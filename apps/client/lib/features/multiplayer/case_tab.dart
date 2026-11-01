@@ -67,6 +67,19 @@ class RoomCaseTab extends ConsumerWidget {
       );
     }
 
+    final opening = view.phase == 'rule_event' && view.completedCases == 0;
+    final displayedRules = opening
+        ? view.activeRules.take(3).toList()
+        : view.activeRules.isEmpty
+        ? <Assignment>[]
+        : [view.activeRules.last];
+    final visibleTexts = displayedRules.map(ruleText).toList();
+    final displayedText = visibleTexts.length == (opening ? 3 : 1) &&
+            visibleTexts.every((text) => text != null)
+        ? visibleTexts.asMap().entries.map((entry) =>
+            opening ? '${entry.key + 1}. ${entry.value!}' : entry.value!,
+          ).join('\n\n')
+        : null;
     final game = ref.watch(onlineGameProvider);
     return ListenableBuilder(
       listenable: game,
@@ -93,13 +106,13 @@ class RoomCaseTab extends ConsumerWidget {
                 ),
               ),
         child: view.phase == 'rule_event'
-            ? view.activeRules.isNotEmpty &&
-                      ruleText(view.activeRules.last) != null
-                  ? CourtRule(
-                      text: ruleText(view.activeRules.last)!,
+            ? displayedText == null
+                  ? const TText('roomErrorGeneric')
+                  : CourtRule(
+                      title: opening ? context.tr('openingLanguageRules') : null,
+                      text: displayedText,
                       animationKey: '${view.gameId}:${view.completedCases}',
                     )
-                  : const TText('roomErrorGeneric')
             : !['paused', 'finished'].contains(view.phase)
             ? RoomGameScreen(snapshot: snapshot, fixedActions: true)
             : OnlineGameProgress(snapshot: snapshot, showActions: false),

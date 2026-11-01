@@ -44,7 +44,9 @@ class OnlineGameProgress extends ConsumerWidget {
       builder: (context, _) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (view.phase == 'rule_event') ...[const TText('newDrinkingRule')],
+          if (view.phase == 'rule_event') ...[
+            TText(view.completedCases == 0 ? 'openingLanguageRules' : 'newDrinkingRule'),
+          ],
           if (view.activeRules.isNotEmpty)
             ExpansionTile(
               key: ValueKey('${view.gameId}:${view.phase == 'rule_event'}'),
