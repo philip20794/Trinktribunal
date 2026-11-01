@@ -58,8 +58,8 @@ for (const allJudges of [false, true])
     expect(done.phase).toBe('rule_event');
     expect(done.game!.completedCases).toBe(1);
     expect(done.game!.questionDraws).toHaveLength(2);
-    expect(done.game!.activeRules).toHaveLength(1);
-    expect(done.game!.history).toHaveLength(3);
+    expect(done.game!.activeRules).toHaveLength(4);
+    expect(done.game!.history).toHaveLength(6);
     await f.send(f.host.peer, complete);
     expect(await f.read()).toEqual(done);
     for (const member of f.members) {

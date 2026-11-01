@@ -61,21 +61,30 @@ final class Harness {
   late LocalSessionController cards;
   late SharedPhoneController phone;
   late LocalStateTransaction transaction;
-  void startPhone({int cases = 3, int rules = 2}) => phone.start(
-    config: phone.configure(
-      playerCount: 4,
-      targetCases: cases,
-      requestedRuleEvents: rules,
-    ),
-    roster: _roster,
-  );
-  void startCards({int cases = 3, int rules = 0}) => cards.start(
-    cards.configure(
-      playerCount: 4,
-      targetCases: cases,
-      requestedRuleEvents: rules,
-    ),
-  );
+  void startPhone({int cases = 3, int rules = 2}) {
+    phone.start(
+      config: phone.configure(
+        playerCount: 4,
+        targetCases: cases,
+        requestedRuleEvents: rules,
+      ),
+      roster: _roster,
+    );
+    if (phone.view!.showingOpeningRules) phone.continueRule(afterCase: 0);
+  }
+
+  void startCards({int cases = 3, int rules = 0}) {
+    cards.start(
+      cards.configure(
+        playerCount: 4,
+        targetCases: cases,
+        requestedRuleEvents: rules,
+      ),
+    );
+    if (cards.state!.showingOpeningRules) {
+      cards.continueAfterRule(cards.state!.currentEventId);
+    }
+  }
 }
 
 void finishHandoff(SharedPhoneController phone) => finishSharedNumbers(phone);
@@ -271,7 +280,7 @@ void main() {
       final resumed = Harness(storage);
       await resumed.transaction.load();
       expect(resumed.cards.state!.completedCases, 0);
-      expect(resumed.history.history.entries.length, 1);
+      expect(resumed.history.history.entries.length, 4);
       expect(
         first.cards.state!.completedCases,
         1,
@@ -294,7 +303,7 @@ void main() {
       final resumed = Harness(storage);
       await resumed.transaction.load();
       expect(resumed.cards.state!.completedCases, 0);
-      expect(resumed.history.history.entries.length, 1);
+      expect(resumed.history.history.entries.length, 4);
       expect(resumed.transaction.error, contains('vorherige'));
       final broken = jsonDecode(storage.backup!) as Map<String, dynamic>;
       broken['history'] = [];
@@ -316,7 +325,7 @@ void main() {
     await incompatible.transaction.load();
     expect(incompatible.transaction.needsReset, true);
     expect(incompatible.cards.state, isNull);
-    expect(incompatible.history.history.entries.length, 1);
+    expect(incompatible.history.history.entries.length, 4);
     final schema = jsonDecode(storage.primary!) as Map<String, dynamic>;
     schema['formatVersion'] = 99;
     storage.primary = jsonEncode(schema);
@@ -370,13 +379,13 @@ void main() {
       final resumed = Harness(storage);
       await resumed.transaction.load();
       expect(resumed.cards.state!.completedCases, 1);
-      expect(resumed.history.history.entries.length, 2);
+      expect(resumed.history.history.entries.length, 5);
       await resumed.transaction.discardGames();
       final discarded = Harness(storage);
       await discarded.transaction.load();
       expect(discarded.cards.state, isNull);
       expect(discarded.phone.view, isNull);
-      expect(discarded.history.history.entries.length, 2);
+      expect(discarded.history.history.entries.length, 5);
     },
   );
   test('native adapter replaces complete files and ignores interrupted temporary file', () async {

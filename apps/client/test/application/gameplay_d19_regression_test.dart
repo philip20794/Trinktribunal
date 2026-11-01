@@ -42,7 +42,7 @@ void main() {
       expect(device.phone.view!.completedCases, 0);
       expect(device.cards.state!.completedCases, 0);
     }
-    expect(device.history.history.entries, hasLength(22));
+    expect(device.history.history.entries, hasLength(28));
     final cardId = device.cards.state!.currentEventId,
         phoneId = device.phone.view!.roundId;
     finishSharedNumbers(device.phone);
@@ -77,8 +77,8 @@ void main() {
     expect(device.phone.view!.completedCases, 1);
     expect(device.cards.state!.phase, GamePhase.ruleEvent);
     expect(device.phone.view!.phase, GamePhase.ruleEvent);
-    expect(device.cards.state!.rules.active, hasLength(1));
-    expect(device.phone.view!.activeRules, hasLength(1));
-    expect(device.history.history.entries, hasLength(24));
+    expect(device.cards.state!.rules.active, hasLength(4));
+    expect(device.phone.view!.activeRules, hasLength(4));
+    expect(device.history.history.entries, hasLength(30));
   });
 }

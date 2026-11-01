@@ -181,6 +181,11 @@ void main() {
           await tester.pumpAndSettle();
           final game = container.read(sharedPhoneControllerProvider);
           expect(game.view!.config.targetCases, 3);
+          expect(game.view!.showingOpeningRules, true);
+          expect(game.view!.openingRules.length, 3);
+          expect(find.byType(CourtRule), findsOneWidget);
+          await tester.tap(actionText(strings.get('ruleUnderstood')));
+          await tester.pumpAndSettle();
           expect(game.view!.numberStage, SharedNumberStage.recipientNumber);
           expect(find.byType(CourtQuestion), findsNothing);
           expect(actionText(strings.get('yourNumber')), findsOneWidget);
