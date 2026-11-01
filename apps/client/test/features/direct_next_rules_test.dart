@@ -100,6 +100,9 @@ void main() {
           tester.element(find.byType(CardModeScreen)),
         );
         final cards = container.read(localSessionProvider);
+        expect(cards.state!.showingOpeningRules, true);
+        expect(cards.state!.openingRules.length, 3);
+        await tap(tester, strings.get('ruleUnderstood'));
         final id = cards.state!.currentEventId;
         final next = find.ancestor(
           of: find.text(strings.get('nextCase')),

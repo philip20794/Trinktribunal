@@ -87,6 +87,18 @@ it('three normal cases and two rule events rotate once; restart retains owned hi
     gameId = initial.gameId!,
     judges = initial.effectiveRoster;
   expect(initial.judgeId).not.toBe(room.credential.playerId);
+  expect(initial.phase).toBe('rule_event');
+  expect(initial.round).toBeNull();
+  expect(initial.completedCases).toBe(0);
+  expect(initial.activeRules).toHaveLength(3);
+  expect(new Set(initial.drawnRuleIds).size).toBe(3);
+  await send(host.peer, createRoomMessage('continueRule', {
+    actionId: action(),
+    expectedRevision: (await read()).revision,
+    gameId,
+    afterCase: 0,
+  }));
+  expect((await read()).game!.phase).toBe('numbers');
   let oldCompletion: RoomMessage | undefined;
   for (let index = 0; index < 3; index++) {
     const before = (await read()).game!,
@@ -160,7 +172,7 @@ it('three normal cases and two rule events rotate once; restart retains owned hi
     expect(completed.round).toBeNull();
     if (index < 2) {
       expect(completed.phase).toBe('rule_event');
-      expect(completed.activeRules).toHaveLength(index + 1);
+      expect(completed.activeRules).toHaveLength(index + 4);
       const nextJudge = completed.judgeId;
       for (const member of members) {
         member.peer.send(createRoomMessage('requestSnapshot', { requestId: requestId() }));
@@ -195,8 +207,8 @@ it('three normal cases and two rule events rotate once; restart retains owned hi
   }
   const end = await read();
   expect(end.game!.drawnQuestionIds).toHaveLength(3);
-  expect(end.game!.drawnRuleIds).toHaveLength(2);
-  expect(end.game!.history).toHaveLength(5);
+  expect(end.game!.drawnRuleIds).toHaveLength(5);
+  expect(end.game!.history).toHaveLength(8);
   expect(end.game!.ruleSlots.map((s) => s.status)).toEqual(['activated', 'activated']);
   for (const member of members) {
     member.peer.send(createRoomMessage('requestSnapshot', { requestId: requestId() }));
@@ -236,16 +248,16 @@ it('three normal cases and two rule events rotate once; restart retains owned hi
   const restarted = await read();
   expect(restarted.game!.gameId).not.toBe(gameId);
   expect(restarted.game!.completedCases).toBe(0);
-  expect(restarted.game!.activeRules).toEqual([]);
-  expect(restarted.game!.history).toHaveLength(6);
-  expect(restarted.game!.history.slice(0, 5)).toEqual(end.game!.history);
+  expect(restarted.game!.activeRules).toHaveLength(3);
+  expect(restarted.game!.history).toHaveLength(11);
+  expect(restarted.game!.history.slice(0, 8)).toEqual(end.game!.history);
   host.peer.send(oldCompletion!);
   expect(await response(host.peer)).toMatchObject({ type: 'error', code: 'STALE_ROUND' });
   expect((await read()).revision).toBe(restarted.revision);
   host.peer.send(createRoomMessage('historyPull', { requestId: requestId(), cursor: null }));
   const history = await response(host.peer);
   if (history.type !== 'historyEvents') throw new Error('HISTORY');
-  expect(history.events).toHaveLength(6);
+  expect(history.events).toHaveLength(11);
   await send(
     host.peer,
     createRoomMessage('historyReceipt', { requestId: requestId(), cursor: history.cursor }),

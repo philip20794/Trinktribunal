@@ -30,6 +30,16 @@ async function configured(count: number, allJudges: boolean, cases: number, rule
       expectedRevision: (await f.read()).revision,
     }),
   );
+  const start = (await f.read()).game!;
+  expect(start.phase).toBe('rule_event');
+  expect(start.completedCases).toBe(0);
+  expect(start.activeRules).toHaveLength(3);
+  await f.send(f.host.peer, createRoomMessage('continueRule', {
+    actionId: f.action(),
+    expectedRevision: (await f.read()).revision,
+    gameId: start.gameId!,
+    afterCase: 0,
+  }));
   return f;
 }
 
@@ -243,10 +253,10 @@ for (const allJudges of [false, true]) {
     expect(finished.phase).toBe('finished');
     expect(finished.game!.completedRoundIds).toHaveLength(50);
     expect(new Set(finished.game!.drawnQuestionIds).size).toBe(50);
-    expect(finished.game!.activeRules).toHaveLength(7);
+    expect(finished.game!.activeRules).toHaveLength(10);
     expect(finished.game!.ruleSlots.every((slot) => slot.status === 'activated')).toBe(true);
     expect(finished.game!.history.filter((event) => event.kind === 'question')).toHaveLength(50);
-    expect(finished.game!.history.filter((event) => event.kind === 'rule')).toHaveLength(7);
+    expect(finished.game!.history.filter((event) => event.kind === 'rule')).toHaveLength(10);
     expect(await isolated.read()).toEqual(isolatedBefore);
     segments.push(
       await runInDurableObject(f.room.stub, (_room, ctx) => localMetrics(ctx.storage)!),
