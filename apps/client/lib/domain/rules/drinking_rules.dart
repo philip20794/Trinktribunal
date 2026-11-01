@@ -69,6 +69,7 @@ final class DrinkingRules {
     required String eventId,
     required List<PlayerId> activePlayers,
     int plannedRuleEvents = 0,
+    String? category,
   }) {
     if (state.skippedEvents.contains(eventId)) return state;
     if (state.selection.alreadyCommitted(eventId, ContentKind.rule)) {
@@ -79,6 +80,7 @@ final class DrinkingRules {
         .where(
           (rule) =>
               !drawn.contains(rule.id) &&
+              (category == null || rule.category == category) &&
               (mode.hasPlayerRegistry || rule.players.isEmpty) &&
               !state.active.any(
                 (active) => rulesConflict(rule, active.entry as DrinkingRule),

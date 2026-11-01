@@ -103,6 +103,9 @@ final class SharedGameView {
   final Verdict? verdict;
   final List<ContentAssignment> activeRules;
   final ContentAssignment? newRule;
+  bool get showingOpeningRules => phase == GamePhase.ruleEvent && completedCases == 0;
+  List<ContentAssignment> get openingRules =>
+      showingOpeningRules ? activeRules : const [];
   final int skippedRules;
   final String? pauseReason;
   String name(PlayerId id) => profiles[id]!.player.name;
@@ -251,7 +254,27 @@ final class SharedPhoneController {
     _revealCursor = 0;
     _verdict = null;
     _visible = false;
-    _beginCase();
+    _roundId = '';
+    _ruleEventId = '';
+    if (!_catalogRules.any((rule) => rule.category == 'forbidden_words')) {
+      _beginCase(); // Synthetic category-free test catalogs.
+      return;
+    }
+    for (var index = 0; index < 3; index++) {
+      final eventId = '${_gameId!.value}:opening:${index + 1}';
+      _rules = _ruleEngine.activate(
+        state: _rules!,
+        eventId: eventId,
+        activePlayers: _ids,
+        category: 'forbidden_words',
+      );
+      if (!_rules!.activations.containsKey(eventId)) {
+        _invalid('Drei miteinander verträgliche Sprachregeln fehlen.');
+      }
+    }
+    _historyStore.merge(_rules!.selection.history);
+    _ruleEventId = '${_gameId!.value}:opening';
+    _phase = GamePhase.ruleEvent;
   }
 
   void _syncHistory() {
@@ -841,6 +864,13 @@ final class SharedPhoneController {
               GamePhase.finished,
             ].contains(phase))) {
       throw const FormatException('Ungültige gespeicherte Phase');
+    }
+    if (phase == GamePhase.ruleEvent && completed == 0 &&
+        candidate._ruleEventId == '${candidate._gameId!.value}:opening' &&
+        (candidate._rules!.active.length != 3 ||
+            candidate._rules!.active.any((entry) =>
+                (entry.entry as DrinkingRule).category != 'forbidden_words'))) {
+      throw const FormatException('Ungültige Startregeln');
     }
     if (!candidate._rules!.selection.counts.values.keys.toSet().containsAll(
       candidate._ids,

@@ -64,6 +64,15 @@ export function gamePorts(
         { ...input(state, now, state.drawnRuleIds), plannedRuleEvents: state.ruleSlots.length },
         random,
       ),
+    activateOpeningRule: (state, random, now) =>
+      activateRule(
+        catalogs[state.config.contentLanguage].rules.filter(
+          (rule) => rule.category === 'forbidden_words',
+        ),
+        state.activeRules,
+        { ...input(state, now, state.drawnRuleIds), plannedRuleEvents: 0 },
+        random,
+      ),
     rebindRules: (state, random) =>
       rebindRules(
         catalogs[state.config.contentLanguage].rules,

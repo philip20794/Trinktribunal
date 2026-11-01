@@ -135,6 +135,12 @@ export interface GamePorts {
     randomIndex: (bound: number) => number,
     now: number,
   ): Assignment | null;
+  /** Select exactly one compatible forbidden-word rule during initial game setup. */
+  activateOpeningRule?(
+    state: GameState,
+    randomIndex: (bound: number) => number,
+    now: number,
+  ): Assignment | null;
   rebindRules(
     state: GameState,
     randomIndex: (bound: number) => number,

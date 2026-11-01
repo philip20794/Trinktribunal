@@ -75,6 +75,12 @@ final class CardGameState {
   int get effectiveRuleTarget =>
       schedule.slots.length - rules.skippedEvents.length;
   ContentAssignment? get newRule => rules.activations[currentEventId];
+  bool get showingOpeningRules =>
+      phase == GamePhase.ruleEvent &&
+      completedCases == 0 &&
+      currentEventId == '${id.value}:opening';
+  List<ContentAssignment> get openingRules =>
+      showingOpeningRules ? rules.active : const [];
 
   Map<String, Object?> toSnapshot() => {
     'roster': roster.map((p) => p.toJson()).toList(),
@@ -189,8 +195,10 @@ final class LocalGameReducer {
       selection: rules.selection,
     );
     final currentEvent = json['currentEventId'] as String;
-    if (question == null ||
-        question.event.kind != ContentKind.question ||
+    final opening = phase == GamePhase.ruleEvent &&
+        completed == 0 && currentEvent == '${id.value}:opening';
+    if ((!opening && question == null) ||
+        (question != null && question.event.kind != ContentKind.question) ||
         (phase == GamePhase.casePresented &&
             (currentEvent != question.event.eventId ||
                 questionDraws['${id.value}:case:${completed + 1}']!.last !=
@@ -201,7 +209,14 @@ final class LocalGameReducer {
     if (rules.selection.assignments.values.any((a) => a.bindings.isNotEmpty)) {
       throw const FormatException('Rollen im Kartenmodus');
     }
-    if (phase == GamePhase.ruleEvent &&
+    if (opening &&
+        (question != null || questionDraws.isNotEmpty ||
+            rules.active.length != 3 ||
+            rules.active.any((assignment) =>
+                (assignment.entry as DrinkingRule).category != 'forbidden_words'))) {
+      throw const FormatException('Ungültige Startregeln');
+    }
+    if (phase == GamePhase.ruleEvent && !opening &&
         (!schedule.slots.contains(completed) ||
             (!rules.activations.containsKey(currentEvent) &&
                 !rules.skippedEvents.contains(currentEvent)))) {
@@ -286,7 +301,28 @@ final class LocalGameReducer {
       currentQuestion: null,
       completedEventIds: {},
     );
-    return _nextQuestion(initial);
+    if (!drinkingRules.any((rule) => rule.category == 'forbidden_words')) {
+      return _nextQuestion(initial); // Synthetic category-free test catalogs.
+    }
+    var openingRules = initial.rules;
+    for (var index = 0; index < 3; index++) {
+      final eventId = '${id.value}:opening:${index + 1}';
+      openingRules = _rules.activate(
+        state: openingRules,
+        eventId: eventId,
+        activePlayers: [],
+        category: 'forbidden_words',
+      );
+      if (!openingRules.activations.containsKey(eventId)) {
+        _invalid('Drei miteinander verträgliche Sprachregeln fehlen.');
+      }
+    }
+    return _copy(
+      initial,
+      rules: openingRules,
+      phase: GamePhase.ruleEvent,
+      currentEventId: '${id.value}:opening',
+    );
   }
 
   CardGameState completeCase(

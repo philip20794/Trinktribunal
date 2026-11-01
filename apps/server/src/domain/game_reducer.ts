@@ -436,6 +436,20 @@ function start(state: MutableGameState, config: Config, ports: GamePorts, now: n
   state.round = null;
   state.lastCompletion = null;
   delete state.hostPauseState;
+  if (ports.activateOpeningRule) {
+    for (let index = 0; index < 3; index++) {
+      const assignment = ports.activateOpeningRule(
+        immutable(structuredClone(state)), random(ports), now,
+      );
+      if (!assignment || state.drawnRuleIds.includes(assignment.contentId))
+        reject('ROOM_UNAVAILABLE');
+      selected(state, assignment, 'rule', ports, now);
+      state.drawnRuleIds.push(assignment.contentId);
+      state.activeRules.push(structuredClone(assignment));
+    }
+    state.phase = 'rule_event';
+    return;
+  }
   beginCase(state, ports, now);
 }
 
