@@ -47,7 +47,10 @@ DrinkingRule selectCategorizedRule({
     }
   }
   final cap = plannedRuleEvents >= 3
-      ? math.min(plannedRuleEvents - 1, (plannedRuleEvents * (groups.length >= 3 ? 0.50 : 0.75)).ceil())
+      ? math.min(
+          plannedRuleEvents - 1,
+          (plannedRuleEvents * (groups.length >= 3 ? 0.50 : 0.75)).ceil(),
+        )
       : null;
   final underCap = groups
       .where((group) => cap == null || group.picked < cap)
