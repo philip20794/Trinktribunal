@@ -68,8 +68,11 @@ void main() {
     expect(session.view!.openingRules.length, 3);
     expect(session.view!.question, isNull);
     expect(session.view!.completedCases, 0);
-    final snapshot = jsonDecode(jsonEncode(session.toSnapshot())) as Map<String, dynamic>;
-    session.restoreValidated(session.validateSnapshot(snapshot, history.history));
+    final snapshot =
+        jsonDecode(jsonEncode(session.toSnapshot())) as Map<String, dynamic>;
+    session.restoreValidated(
+      session.validateSnapshot(snapshot, history.history),
+    );
     expect(session.view!.openingRules.length, 3);
     session.continueRule(afterCase: 0);
     expect(session.view!.phase, GamePhase.numbers);
@@ -89,7 +92,9 @@ void main() {
           ),
           roster: roster(),
         );
-        if (session.view!.showingOpeningRules) session.continueRule(afterCase: 0);
+        if (session.view!.showingOpeningRules) {
+          session.continueRule(afterCase: 0);
+        }
         handoff(session);
         final oldJudge = session.view!.judge;
         session.completeCase(

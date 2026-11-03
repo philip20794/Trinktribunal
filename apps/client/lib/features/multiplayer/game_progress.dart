@@ -45,7 +45,11 @@ class OnlineGameProgress extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (view.phase == 'rule_event') ...[
-            TText(view.completedCases == 0 ? 'openingLanguageRules' : 'newDrinkingRule'),
+            TText(
+              view.completedCases == 0
+                  ? 'openingLanguageRules'
+                  : 'newDrinkingRule',
+            ),
           ],
           if (view.activeRules.isNotEmpty)
             ExpansionTile(

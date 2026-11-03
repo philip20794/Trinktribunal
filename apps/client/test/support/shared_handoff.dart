@@ -14,6 +14,9 @@ SharedGameView openSharedRecipient(SharedPhoneController session) {
 }
 
 void finishSharedNumbers(SharedPhoneController session) {
+  if (session.view!.showingOpeningRules) {
+    session.continueRule(afterCase: 0);
+  }
   while (session.view!.phase == GamePhase.numbers) {
     var view = session.view!;
     if (view.numberStage == SharedNumberStage.judgeHandoff) {

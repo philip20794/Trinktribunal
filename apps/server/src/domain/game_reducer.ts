@@ -439,7 +439,9 @@ function start(state: MutableGameState, config: Config, ports: GamePorts, now: n
   if (ports.activateOpeningRule) {
     for (let index = 0; index < 3; index++) {
       const assignment = ports.activateOpeningRule(
-        immutable(structuredClone(state)), random(ports), now,
+        immutable(structuredClone(state)),
+        random(ports),
+        now,
       );
       if (!assignment || state.drawnRuleIds.includes(assignment.contentId))
         reject('ROOM_UNAVAILABLE');

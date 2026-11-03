@@ -4,14 +4,15 @@ import 'package:trinktribunal/domain/models/content_history.dart';
 import 'package:trinktribunal/domain/models/game_mode.dart';
 import 'package:trinktribunal/domain/models/ids.dart';
 
-import 'card_game_test.dart' show reducer, config;
+import 'card_game_test.dart' show reducer, config, startAtCase;
 import '../data/local_state_transaction_test.dart' show Harness;
 import '../support/memory_atomic_state_storage.dart';
 
 void main() {
   test('normal physical Next completes exactly one case/slot without a recorded verdict', () {
     final engine = reducer();
-    var state = engine.start(
+    var state = startAtCase(
+      engine,
       id: GameId('next'),
       config: config(),
       history: ContentHistory([]),
@@ -27,7 +28,7 @@ void main() {
         'played_without_recorded_verdict',
       );
       expect(engine.advancePlayedCase(state, roundId: id), same(state));
-      expect(state.rules.active.length, i < 3 ? i : 2);
+      expect(state.rules.active.length, 3 + (i < 3 ? i : 2));
       if (i < 3) {
         expect(state.phase, GamePhase.ruleEvent);
         state = engine.continueAfterRule(state, eventId: state.currentEventId);
@@ -51,7 +52,8 @@ void main() {
     );
     expect(restored.cards.state!.manualErrors, isNull);
     final engine = reducer(),
-        original = engine.start(
+        original = startAtCase(
+          engine,
           id: GameId('legacy'),
           config: config(),
           history: ContentHistory([]),

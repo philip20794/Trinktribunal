@@ -22,6 +22,8 @@ Future<ProviderContainer> cards(WidgetTester tester) async {
   await addTestPlayers(tester);
   await tester.tap(find.text(const AppStrings('de').get('startHearing')));
   await tester.pumpAndSettle();
+  await tester.tap(find.text(const AppStrings('de').get('ruleUnderstood')));
+  await tester.pumpAndSettle();
   return ProviderScope.containerOf(tester.element(find.byType(CardModeScreen)));
 }
 

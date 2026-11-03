@@ -210,6 +210,7 @@ void main() {
             ),
           );
           await tester.pumpAndSettle();
+          await tap(tester, strings.get('ruleUnderstood'));
           expect(find.byType(CaseFile), findsNothing);
           expect(find.byType(HeldPrivateNumber), findsOneWidget);
           String identity() => strings.get('phoneIdentity', {

@@ -103,7 +103,8 @@ final class SharedGameView {
   final Verdict? verdict;
   final List<ContentAssignment> activeRules;
   final ContentAssignment? newRule;
-  bool get showingOpeningRules => phase == GamePhase.ruleEvent && completedCases == 0;
+  bool get showingOpeningRules =>
+      phase == GamePhase.ruleEvent && completedCases == 0;
   List<ContentAssignment> get openingRules =>
       showingOpeningRules ? activeRules : const [];
   final int skippedRules;
@@ -865,11 +866,14 @@ final class SharedPhoneController {
             ].contains(phase))) {
       throw const FormatException('Ungültige gespeicherte Phase');
     }
-    if (phase == GamePhase.ruleEvent && completed == 0 &&
+    if (phase == GamePhase.ruleEvent &&
+        completed == 0 &&
         candidate._ruleEventId == '${candidate._gameId!.value}:opening' &&
         (candidate._rules!.active.length != 3 ||
-            candidate._rules!.active.any((entry) =>
-                (entry.entry as DrinkingRule).category != 'forbidden_words'))) {
+            candidate._rules!.active.any(
+              (entry) =>
+                  (entry.entry as DrinkingRule).category != 'forbidden_words',
+            ))) {
       throw const FormatException('Ungültige Startregeln');
     }
     if (!candidate._rules!.selection.counts.values.keys.toSet().containsAll(

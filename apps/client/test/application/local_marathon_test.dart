@@ -64,6 +64,8 @@ void main() {
       config: device.phone.configure(playerCount: 8),
       roster: roster,
     );
+    device.cards.continueAfterRule(device.cards.state!.currentEventId);
+    device.phone.continueRule(afterCase: 0);
     final cardQuestions = <String>{}, phoneQuestions = <String>{};
     var cardRules = 0, phoneRules = 0;
     for (var index = 0; index < 50; index++) {
@@ -135,8 +137,8 @@ void main() {
     expect(phoneQuestions.length, 50);
     expect(cardRules, 7);
     expect(phoneRules, 7);
-    expect(device.cards.state!.rules.active.length, 7);
-    expect(device.phone.view!.activeRules.length, 7);
-    expect(device.history.history.entries.length, 114);
+    expect(device.cards.state!.rules.active.length, 10);
+    expect(device.phone.view!.activeRules.length, 10);
+    expect(device.history.history.entries.length, 120);
   });
 }

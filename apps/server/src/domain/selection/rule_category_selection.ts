@@ -30,7 +30,10 @@ export function selectCategorizedRule(
     }))
     .filter((group) => group.rules.length > 0);
   const planned = input.plannedRuleEvents ?? 0;
-  const cap = planned >= 3 ? Math.min(planned - 1, Math.ceil(planned * (groups.length >= 3 ? 0.50 : 0.75))) : null;
+  const cap =
+    planned >= 3
+      ? Math.min(planned - 1, Math.ceil(planned * (groups.length >= 3 ? 0.5 : 0.75)))
+      : null;
   const underCap = groups.filter((group) => cap === null || group.picked < cap);
   const allowed = underCap.length ? underCap : groups; // never skip a feasible slot
   if (allowed.length === 1)

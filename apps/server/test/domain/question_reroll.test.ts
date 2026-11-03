@@ -49,7 +49,21 @@ function start(ports: GamePorts, allJudges = false) {
   });
   const result = transition(lobby, players[0]!, command(lobby, 'startGame'), ports);
   if (!result.ok) throw new Error(result.code);
-  return result.state;
+  const opened = transition(
+    result.state,
+    players[0]!,
+    {
+      type: 'continueRule',
+      protocolVersion: 2,
+      actionId: `opening_${actionId++}`,
+      expectedRevision: result.state.revision,
+      gameId: result.state.gameId,
+      afterCase: 0,
+    },
+    ports,
+  );
+  if (!opened.ok) throw new Error(opened.code);
+  return opened.state;
 }
 function draw(state: GameState, ports: GamePorts, actor = state.judgeId ?? state.readerId!) {
   const result = rerollCurrentQuestion(state, actor, command(state), ports);
@@ -117,7 +131,7 @@ describe('question-instance reroll core (D-19)', () => {
       judge: state.judgeId,
       question: state.round!.question.contentId,
       drawn: state.drawnQuestionIds.length,
-      history: state.history.length,
+      history: state.history.filter((event) => event.kind === 'question').length,
       slots: state.ruleSlots.map((s) => s.afterCase),
       numbers: Object.fromEntries(state.round!.numbers.map((n) => [n.playerId, n.number])),
     }).toEqual(fixture.expected);
@@ -214,7 +228,7 @@ describe('question-instance reroll core (D-19)', () => {
     }
     const totals = Object.fromEntries(state.personCounts.map((p) => [p.playerId, p.count]));
     for (const id of players.slice(0, 3)) expect(totals[id]).toBe(selectedCounts[id] ?? 0);
-    expect(state.history).toHaveLength(51);
+    expect(state.history.filter((event) => event.kind === 'question')).toHaveLength(51);
     expect(totals.E ?? 0).toBe(0);
     expect(
       Math.max(...players.slice(0, 3).map((id) => totals[id]!)) -

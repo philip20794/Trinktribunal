@@ -114,6 +114,16 @@ it('large permitted Unicode profiles travel as bounded private snapshots and lob
     }),
   );
   expect(await result(host.peer)).toMatchObject({ type: 'ack' });
+  const opening = (await read()).game!;
+  host.peer.send(
+    createRoomMessage('continueRule', {
+      actionId: RoomIds.action('opening_rules'),
+      expectedRevision: (await read()).revision,
+      gameId: opening.gameId!,
+      afterCase: 0,
+    }),
+  );
+  expect(await result(host.peer)).toMatchObject({ type: 'ack' });
   const state = await read();
   expect(state.phase).toBe('numbers');
   for (const [index, peer] of peers.entries()) {

@@ -46,6 +46,7 @@ void main() {
           ),
       ],
     );
+    game.continueRule(afterCase: 0);
     final snapshot = jsonEncode(game.toSnapshot());
     final view = game.view!;
     final english = localizedQuestion(
@@ -82,7 +83,7 @@ void main() {
         expect(localizedRule(catalogs, 'en', rule).id, rule.id);
       }
       expect(catalogs.questions['de']!.entries.length, 491);
-      expect(catalogs.rules['en']!.entries.length, 30);
+      expect(catalogs.rules['en']!.entries.length, 39);
     },
   );
 
@@ -99,6 +100,7 @@ void main() {
       game.start(
         game.configure(playerCount: 8, targetCases: 3, requestedRuleEvents: 0),
       );
+      game.continueAfterRule(game.state!.currentEventId);
       final id = game.state!.id.value;
       final questionId = game.state!.currentQuestion!.entry.id;
       final historyLength = game.history.entries.length;

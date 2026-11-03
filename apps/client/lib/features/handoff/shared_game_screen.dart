@@ -430,14 +430,18 @@ class _SharedGameScreenState extends ConsumerState<SharedGameScreen>
                       : context.tr('newRule'),
                   animationKey: '${view.gameId}:${view.completedCases}',
                   text: view.showingOpeningRules
-                      ? view.openingRules.asMap().entries.map((entry) {
-                          final rule = localizedRule(
-                            ref.read(catalogsProvider).requireValue,
-                            AppLanguageScope.of(context).language,
-                            entry.value.entry as DrinkingRule,
-                          );
-                          return '${entry.key + 1}. ${rule.render(rule.text, entry.value.names(view.names))}';
-                        }).join('\n\n')
+                      ? view.openingRules
+                            .asMap()
+                            .entries
+                            .map((entry) {
+                              final rule = localizedRule(
+                                ref.read(catalogsProvider).requireValue,
+                                AppLanguageScope.of(context).language,
+                                entry.value.entry as DrinkingRule,
+                              );
+                              return '${entry.key + 1}. ${rule.render(rule.text, entry.value.names(view.names))}';
+                            })
+                            .join('\n\n')
                       : view.newRule == null
                       ? context.tr('phoneNoRule', {
                           'count':

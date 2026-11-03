@@ -34,12 +34,15 @@ async function configured(count: number, allJudges: boolean, cases: number, rule
   expect(start.phase).toBe('rule_event');
   expect(start.completedCases).toBe(0);
   expect(start.activeRules).toHaveLength(3);
-  await f.send(f.host.peer, createRoomMessage('continueRule', {
-    actionId: f.action(),
-    expectedRevision: (await f.read()).revision,
-    gameId: start.gameId!,
-    afterCase: 0,
-  }));
+  await f.send(
+    f.host.peer,
+    createRoomMessage('continueRule', {
+      actionId: f.action(),
+      expectedRevision: (await f.read()).revision,
+      gameId: start.gameId!,
+      afterCase: 0,
+    }),
+  );
   return f;
 }
 

@@ -160,5 +160,5 @@ it('four private verdicts 2/4/0/0 share only the authorized prefix, persist over
   expect(end.readerId).toBe(f.initial.effectiveRoster[3]);
   expect(end.judgeId).toBeNull();
   expect(end.round).toBeNull();
-  expect(end.drawnRuleIds).toHaveLength(2);
+  expect(end.drawnRuleIds).toHaveLength(5);
 });

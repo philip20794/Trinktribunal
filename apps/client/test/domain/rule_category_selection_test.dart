@@ -19,20 +19,17 @@ void main() {
     final de = actualRules();
     final en = rulesFromEnglish();
     expect(de.length, 39);
-    expect(
-      de.skip(30).map((rule) => rule.id).toList(),
-      [
-        'forbid_und',
-        'forbid_also',
-        'forbid_halt',
-        'forbid_irgendwie',
-        'forbid_so',
-        'thinking_long_pause',
-        'thinking_stretch_word',
-        'story_gesture',
-        'thinking_noise',
-      ],
-    );
+    expect(de.skip(30).map((rule) => rule.id).toList(), [
+      'forbid_und',
+      'forbid_also',
+      'forbid_halt',
+      'forbid_irgendwie',
+      'forbid_so',
+      'thinking_long_pause',
+      'thinking_stretch_word',
+      'story_gesture',
+      'thinking_noise',
+    ]);
     expect(
       [
         for (final rule in de) [rule.id, rule.category],
@@ -99,33 +96,39 @@ void main() {
     }
     for (final category in ['drinking_ritual', 'other', 'forbidden_words']) {
       expect(
-        catalog.where((r) => r.category == category && drawn.contains(r.id)).length,
+        catalog
+            .where((r) => r.category == category && drawn.contains(r.id))
+            .length,
         lessThanOrEqualTo(5),
       );
     }
   });
 
-  test(
-    'language bans belong to forbidden_words; gestures remain other',
-    () {
-      final all = actualRules();
-      for (final id in [
-        'pointing_penalty',
-        'formal_address',
-        'motion_denied',
-      ]) {
-        expect(all.singleWhere((r) => r.id == id).category, 'other');
-      }
-      expect(all.where((r) => r.category == 'other').length, 12);
-      for (final id in ['swear_penalty', 'no_ich_word', 'no_also_start', 'forbid_und']) {
-        expect(all.singleWhere((r) => r.id == id).category, 'forbidden_words');
-      }
-      expect(
-        all.every((r) => {'drinking_ritual', 'other', 'forbidden_words'}.contains(r.category)),
-        true,
-      );
-    },
-  );
+  test('language bans belong to forbidden_words; gestures remain other', () {
+    final all = actualRules();
+    for (final id in ['pointing_penalty', 'formal_address', 'motion_denied']) {
+      expect(all.singleWhere((r) => r.id == id).category, 'other');
+    }
+    expect(all.where((r) => r.category == 'other').length, 12);
+    for (final id in [
+      'swear_penalty',
+      'no_ich_word',
+      'no_also_start',
+      'forbid_und',
+    ]) {
+      expect(all.singleWhere((r) => r.id == id).category, 'forbidden_words');
+    }
+    expect(
+      all.every(
+        (r) => {
+          'drinking_ritual',
+          'other',
+          'forbidden_words',
+        }.contains(r.category),
+      ),
+      true,
+    );
+  });
 
   test('existing minimum-counter choice applies within the category', () {
     final catalog = rules([

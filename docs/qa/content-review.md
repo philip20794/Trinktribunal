@@ -1,5 +1,25 @@
 # Redaktioneller Abgleich (TT-005 / TT-061)
 
+## Live-Build-Reparatur vom 03.11.2026
+
+Cloudflare Pages hat den Build von `4ac297e` im Node-Testschritt abgebrochen
+(Deployment `18e2cb6b-88fe-4be3-b024-c3a161b7ad5b`). Die Live-URL lieferte
+weiterhin `fa34ae9`. Die Tests und das Review-Ledger enthielten noch den Stand
+mit 30 Regeln, obwohl `main` bereits 39 Regeln sowie drei Startregeln hatte.
+
+Das Ledger umfasst jetzt 491 Fragen und 39 Regeln je Sprache. Die aktuellen
+DE/EN-Regeltexte, Kategorien, Rollen und gegenseitigen Ausschlüsse wurden
+abgeglichen; insbesondere schließen sich `no_also_start` und `forbid_also`
+gegenseitig aus. Inhaltsänderungen ohne erneuten Ledger-Abgleich bleiben ein
+Testfehler. Die bisherigen Rechte-Einstufungen bleiben bestehen.
+
+Die Spielablauf-Tests bestätigen zuerst die drei Startregeln und prüfen danach
+weiterhin Ziehen, Übergaben, Wiederherstellung, Privatsphäre und zusätzliche
+Regelereignisse. Formatabweichungen aus den letzten Main-Änderungen sind
+bereinigt. Der Protokollvertrag erlaubt nun `continueRule.afterCase = 0` für die
+Startregeln; negative Werte bleiben ungültig und sind in Dart und Node getestet.
+Die Build-Gates werden nicht übersprungen.
+
 Stand: 28.10.2026. TT-005 prüfte am 26.10.2026 die 60 personenbezogenen Fragen, alle 25 Regeln und bekannte Konflikt-/Materialfälle. TT-061 ergänzt jetzt die vollständige Schlussredaktion aller 491 Fragen mit beiden Skalen sowie sämtlicher 25 Regeln in DE und EN. Technische Strukturprüfung: [TT-004](TT-004.md). Nutzungsrechte bleiben TT-065. Abschlusslauf TT-061 **ERLEDIGT nach Unit-Gates**; Browser/E2E **ÜBERSPRUNGEN – später manuell testen** gemäß Nutzervorgabe.
 
 ## Vollständiger Schlussreview TT-061

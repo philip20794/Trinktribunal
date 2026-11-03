@@ -11,6 +11,28 @@ Map<String, dynamic> fixture(String name) => jsonDecode(
 ) as Map<String, dynamic>;
 
 void main() {
+  test(
+    'opening rule acknowledgement accepts case zero and rejects negative cases',
+    () {
+      final message = {
+        'type': 'continueRule',
+        'protocolVersion': 2,
+        'actionId': 'opening',
+        'expectedRevision': 1,
+        'gameId': 'game',
+        'afterCase': 0,
+      };
+      expect(
+        decodeRoomMessage(jsonEncode(message)),
+        isA<ContinueRuleMessage>(),
+      );
+      message['afterCase'] = -1;
+      expect(
+        () => decodeRoomMessage(jsonEncode(message)),
+        throwsA(isA<ProtocolDecodeException>()),
+      );
+    },
+  );
   final fixtures = fixture('room-v2')['fixtures'] as List;
   for (final value in fixtures) {
     final row = value as Map<String, dynamic>;

@@ -60,6 +60,14 @@ test('handshake rejects incompatible content; credentials never enter ACK/error/
   for(const type of ['ack','error','startGame','submitOrder','snapshot'])assert.throws(()=>validateRoomMessage({...sample(type),resumeToken:'A'.repeat(43)}));
   m.resumeToken='A'.repeat(42)+'B';assert.throws(()=>validateRoomMessage(m),/NONCANONICAL_TOKEN/);
 });
+
+test('opening rules can continue before case one; negative case numbers are rejected',()=>{
+  const message=sample('continueRule');
+  message.afterCase=0;
+  validateRoomMessage(message);
+  message.afterCase=-1;
+  assert.throws(()=>validateRoomMessage(message));
+});
 test('fixed verifier vectors bind the same synthetic credential to its own room',()=>{
   const vectors=JSON.parse(readFileSync(new URL('../../packages/protocol/fixtures/messages/resume-verifiers.json',import.meta.url),'utf8')).vectors;
   for(const vector of vectors)assert.equal(resumeVerifier(vector.roomId,vector.resumeToken),vector.expectedVerifier);

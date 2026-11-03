@@ -129,7 +129,7 @@ void main() {
           await next();
         }
         expect(cards.state!.completedCases, 50);
-        expect(cards.state!.rules.active.length, 7);
+        expect(cards.state!.rules.active.length, 10);
         expect(
           cards.state!.lastCompletion,
           CaseCompletion.playedWithoutRecordedVerdict,

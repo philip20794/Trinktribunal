@@ -92,12 +92,15 @@ it('three normal cases and two rule events rotate once; restart retains owned hi
   expect(initial.completedCases).toBe(0);
   expect(initial.activeRules).toHaveLength(3);
   expect(new Set(initial.drawnRuleIds).size).toBe(3);
-  await send(host.peer, createRoomMessage('continueRule', {
-    actionId: action(),
-    expectedRevision: (await read()).revision,
-    gameId,
-    afterCase: 0,
-  }));
+  await send(
+    host.peer,
+    createRoomMessage('continueRule', {
+      actionId: action(),
+      expectedRevision: (await read()).revision,
+      gameId,
+      afterCase: 0,
+    }),
+  );
   expect((await read()).game!.phase).toBe('numbers');
   let oldCompletion: RoomMessage | undefined;
   for (let index = 0; index < 3; index++) {

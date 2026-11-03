@@ -239,21 +239,24 @@ class _CardModeScreenState extends ConsumerState<CardModeScreen> {
               : context.tr('newRule'),
           animationKey: state.currentEventId,
           text: state.showingOpeningRules
-              ? state.openingRules.asMap().entries.map((entry) =>
-                  '${entry.key + 1}. ${localizedRule(
-                    ref.read(catalogsProvider).requireValue,
-                    AppLanguageScope.of(context).language,
-                    entry.value.entry as DrinkingRule,
-                  ).text}',
-                ).join('\n\n')
+              ? state.openingRules
+                    .asMap()
+                    .entries
+                    .map(
+                      (entry) =>
+                          '${entry.key + 1}. ${localizedRule(ref.read(catalogsProvider).requireValue, AppLanguageScope.of(context).language, entry.value.entry as DrinkingRule).text}',
+                    )
+                    .join('\n\n')
               : (state.newRule == null
-                  ? null
-                  : localizedRule(
-                      ref.read(catalogsProvider).requireValue,
-                      AppLanguageScope.of(context).language,
-                      state.newRule!.entry as DrinkingRule,
-                    ).text) ??
-              context.tr('cardNoRule', {'count': state.effectiveRuleTarget}),
+                        ? null
+                        : localizedRule(
+                            ref.read(catalogsProvider).requireValue,
+                            AppLanguageScope.of(context).language,
+                            state.newRule!.entry as DrinkingRule,
+                          ).text) ??
+                    context.tr('cardNoRule', {
+                      'count': state.effectiveRuleTarget,
+                    }),
         ),
       ],
       if (state.phase == GamePhase.paused)

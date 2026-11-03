@@ -66,6 +66,9 @@ void main() {
               ),
             );
           }
+          if (!shared) {
+            cards.continueAfterRule(cards.state!.currentEventId);
+          }
           if (shared) {
             phone.start(config: config, roster: roster);
             finishSharedNumbers(phone);
@@ -127,7 +130,7 @@ void main() {
           } else {
             expect(cards.state!.currentEventId, isNot(before));
             expect(cards.state!.completedCases, 0);
-            expect(cards.history.entries, hasLength(3));
+            expect(cards.history.entries, hasLength(6));
           }
           final saved = shared ? phone.toSnapshot() : cards.toSnapshot();
           await tester.tap(

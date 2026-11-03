@@ -140,15 +140,16 @@ describe('atomic authoritative game actions in actual SQLite/hibernating room', 
     expect(await host.peer.next()).toMatchObject({
       type: 'snapshot',
       revision: before.revision + 1,
-      public: { phase: 'numbers' },
+      public: { phase: 'rule_event' },
     });
     const after = await read(room.stub);
     expect(after.revision).toBe(before.revision + 1);
-    expect(after.game!.history).toHaveLength(1);
-    expect(after.game!.drawnQuestionIds).toHaveLength(1);
+    expect(after.game!.history).toHaveLength(3);
+    expect(after.game!.drawnQuestionIds).toHaveLength(0);
     expect(after.game!.receipts).toHaveLength(1);
-    expect(after.game!.round!.numbers).toHaveLength(2);
-    const bound = new Set(Object.values(after.game!.round!.question.bindings));
+    expect(after.game!.round).toBeNull();
+    expect(after.game!.activeRules).toHaveLength(3);
+    const bound = new Set();
     for (const entry of after.game!.personCounts)
       expect(entry.count).toBe(bound.has(entry.playerId) ? 1 : 0);
     expect(after.historyOwners?.[after.game!.history[0]!.eventId]).toBe(room.credential.playerId);
@@ -181,7 +182,7 @@ describe('atomic authoritative game actions in actual SQLite/hibernating room', 
     const resumed = await authenticated(room.code, room.credential);
     await send(resumed.peer, action(await read(room.stub), 'startGame'));
     const state = await read(room.stub);
-    expect(state.game!.history).toHaveLength(1);
+    expect(state.game!.history).toHaveLength(3);
     expect(state.game!.receipts).toHaveLength(1);
   });
 
@@ -207,6 +208,7 @@ describe('atomic authoritative game actions in actual SQLite/hibernating room', 
     const { room, host } = await group();
     await send(host.peer, action(await read(room.stub), 'setConfig', { config }));
     await send(host.peer, action(await read(room.stub), 'startGame'));
+    await send(host.peer, action(await read(room.stub), 'continueRule', { afterCase: 0 }));
     const started = await read(room.stub),
       command = action(started, 'completeWithoutVerdict');
     await send(host.peer, command);
@@ -216,7 +218,7 @@ describe('atomic authoritative game actions in actual SQLite/hibernating room', 
     expect(completed.game!.ruleSlots[0]!.status).toBe('activated');
     expect(completed.game!.lastCompletion!.score).toBeNull();
     expect(completed.game!.drawnQuestionIds).toEqual(started.game!.drawnQuestionIds);
-    expect(completed.game!.history).toHaveLength(2);
+    expect(completed.game!.history).toHaveLength(5);
     const oldJudge = started.game!.judgeId!,
       seats = started.game!.effectiveRoster;
     expect(completed.game!.judgeId).toBe(seats[(seats.indexOf(oldJudge) + 1) % seats.length]);
@@ -235,6 +237,7 @@ describe('atomic authoritative game actions in actual SQLite/hibernating room', 
   it('restart preserves room usage, resets person counts and invalidates old-game actions', async () => {
     const { room, host } = await group();
     await send(host.peer, action(await read(room.stub), 'startGame'));
+    await send(host.peer, action(await read(room.stub), 'continueRule', { afterCase: 0 }));
     const old = await read(room.stub),
       oldCommand = action(old, 'completeWithoutVerdict');
     await send(host.peer, oldCommand);
@@ -245,8 +248,10 @@ describe('atomic authoritative game actions in actual SQLite/hibernating room', 
     expect(state.game!.gameId).not.toBe(old.game!.gameId);
     expect(state.game!.history.slice(0, before.game!.history.length)).toEqual(before.game!.history);
     expect(state.game!.completedCases).toBe(0);
-    expect(state.game!.drawnQuestionIds).toHaveLength(1);
-    const bound = new Set(Object.values(state.game!.round!.question.bindings));
+    expect(state.game!.drawnQuestionIds).toHaveLength(0);
+    expect(state.game!.round).toBeNull();
+    expect(state.game!.activeRules).toHaveLength(3);
+    const bound = new Set();
     for (const entry of state.game!.personCounts)
       expect(entry.count).toBe(bound.has(entry.playerId) ? 1 : 0);
     host.peer.send(oldCommand);

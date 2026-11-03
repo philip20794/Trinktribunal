@@ -87,12 +87,15 @@ export async function allJudgesRoom(
     const opening = (await read()).game!;
     expect(opening.phase).toBe('rule_event');
     expect(opening.activeRules).toHaveLength(3);
-    await send(host.peer, createRoomMessage('continueRule', {
-      actionId: action(),
-      expectedRevision: (await read()).revision,
-      gameId: opening.gameId!,
-      afterCase: 0,
-    }));
+    await send(
+      host.peer,
+      createRoomMessage('continueRule', {
+        actionId: action(),
+        expectedRevision: (await read()).revision,
+        gameId: opening.gameId!,
+        afterCase: 0,
+      }),
+    );
   }
   const initial = (await read()).game!;
   const command = async (type: 'acknowledgeNumber' | 'readyForOrdering' | 'beginOrdering') => {

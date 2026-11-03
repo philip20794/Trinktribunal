@@ -74,11 +74,18 @@ class RoomCaseTab extends ConsumerWidget {
         ? <Assignment>[]
         : [view.activeRules.last];
     final visibleTexts = displayedRules.map(ruleText).toList();
-    final displayedText = visibleTexts.length == (opening ? 3 : 1) &&
+    final displayedText =
+        visibleTexts.length == (opening ? 3 : 1) &&
             visibleTexts.every((text) => text != null)
-        ? visibleTexts.asMap().entries.map((entry) =>
-            opening ? '${entry.key + 1}. ${entry.value!}' : entry.value!,
-          ).join('\n\n')
+        ? visibleTexts
+              .asMap()
+              .entries
+              .map(
+                (entry) => opening
+                    ? '${entry.key + 1}. ${entry.value!}'
+                    : entry.value!,
+              )
+              .join('\n\n')
         : null;
     final game = ref.watch(onlineGameProvider);
     return ListenableBuilder(
@@ -109,7 +116,9 @@ class RoomCaseTab extends ConsumerWidget {
             ? displayedText == null
                   ? const TText('roomErrorGeneric')
                   : CourtRule(
-                      title: opening ? context.tr('openingLanguageRules') : null,
+                      title: opening
+                          ? context.tr('openingLanguageRules')
+                          : null,
                       text: displayedText,
                       animationKey: '${view.gameId}:${view.completedCases}',
                     )

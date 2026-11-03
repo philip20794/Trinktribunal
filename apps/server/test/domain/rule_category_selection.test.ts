@@ -14,7 +14,11 @@ const samples: ContentEntry[] = [
     category: 'drinking_ritual' as const,
   })),
   ...Array.from({ length: 14 }, (_, i) => ({ id: `o${i}`, text: 'o', category: 'other' as const })),
-  ...Array.from({ length: 20 }, (_, i) => ({ id: `w${i}`, text: 'w', category: 'forbidden_words' as const })),
+  ...Array.from({ length: 20 }, (_, i) => ({
+    id: `w${i}`,
+    text: 'w',
+    category: 'forbidden_words' as const,
+  })),
 ];
 const event = (id: string, index = 0, timestamp = now): UsageEvent => ({
   eventId: `e_${id}_${index}`,
@@ -161,7 +165,11 @@ describe('weighted categories for drinking rules', () => {
       return seed % bound;
     };
     const observedMixes = new Set<string>();
-    const counts: Record<RuleCategory, number> = { drinking_ritual: 0, other: 0, forbidden_words: 0 };
+    const counts: Record<RuleCategory, number> = {
+      drinking_ritual: 0,
+      other: 0,
+      forbidden_words: 0,
+    };
     for (let game = 0; game < 250; game++) {
       const drawn: string[] = [];
       for (let index = 0; index < 9; index++) {

@@ -66,9 +66,9 @@ describe('atomic question reroll persistence', () => {
         }
         return repository.read()!;
       });
-      expect(result.game!.history).toHaveLength(11);
+      expect(result.game!.history).toHaveLength(14);
       expect(result.game!.questionDraws).toHaveLength(11);
-      expect(Object.keys(result.historyOwners!)).toHaveLength(11);
+      expect(Object.keys(result.historyOwners!)).toHaveLength(14);
       expect(result.revision).toBe(initial.revision + 10);
       await evictDurableObject(f.room.stub);
       const resumed = await authenticated(f.room.code, f.room.credential);
@@ -111,7 +111,7 @@ describe('atomic question reroll persistence', () => {
         ok: true,
         duplicate: false,
       });
-      expect(repository.read()!.game!.history).toHaveLength(2);
+      expect(repository.read()!.game!.history).toHaveLength(5);
     });
   });
 

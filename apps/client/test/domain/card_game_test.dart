@@ -24,7 +24,6 @@ LocalGameReducer reducer() => LocalGameReducer(
   clock: () => now,
 );
 
-
 /// The default production catalog presents three language rules before case one.
 CardGameState startAtCase(
   LocalGameReducer engine, {
@@ -56,8 +55,9 @@ void main() {
     expect(state.openingRules.length, 3);
     expect(state.openingRules.map((r) => r.entry.id).toSet().length, 3);
     expect(
-      state.openingRules.every((a) =>
-          (a.entry as DrinkingRule).category == 'forbidden_words'),
+      state.openingRules.every(
+        (a) => (a.entry as DrinkingRule).category == 'forbidden_words',
+      ),
       true,
     );
     expect(state.rules.selection.history.entries.length, 3);
@@ -157,7 +157,7 @@ void main() {
     () {
       final engine = reducer();
       final state = startAtCase(
-      engine,
+        engine,
         id: GameId('manual'),
         config: config(),
         history: ContentHistory([]),
@@ -195,7 +195,7 @@ void main() {
     for (final count in [1, 50]) {
       final engine = reducer();
       var state = startAtCase(
-      engine,
+        engine,
         id: GameId('f$count'),
         config: config(cases: count, events: 7),
         history: ContentHistory([]),

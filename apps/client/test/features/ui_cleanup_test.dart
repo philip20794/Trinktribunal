@@ -113,6 +113,7 @@ void main() {
             tester.element(find.byType(CardModeScreen)),
           );
           final cards = container.read(localSessionProvider);
+          await tapVisible(tester, find.text(strings.get('ruleUnderstood')));
           expect(find.byType(CourtQuestion), findsOneWidget);
           expect(
             find.descendant(
@@ -148,22 +149,23 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byTooltip(strings.get('activeRules')));
           await tester.pumpAndSettle();
-          final empty = find.text(strings.get('rulesNone'));
-          await tester.scrollUntilVisible(
-            empty,
-            120,
-            scrollable: find.byType(Scrollable).last,
-          );
-          await tester.pumpAndSettle();
-          expect(empty, findsOneWidget);
+          expect(find.text(strings.get('rulesNone')), findsNothing);
+          expect(cards.state!.rules.active.length, 3);
+          final firstRule = container
+              .read(catalogsProvider)
+              .requireValue
+              .rules[language]!
+              .byId[cards.state!.rules.active.first.entry.id]!;
+          final ruleText = find.text(firstRule.text);
+          expect(ruleText, findsOneWidget);
           expect(
-            DefaultTextStyle.of(tester.element(empty)).style.color,
+            DefaultTextStyle.of(tester.element(ruleText)).style.color,
             CourtSceneTokens.cream,
           );
           expect(find.text(strings.get('rulesHelp')), findsNothing);
           await reviewImage(
             tester,
-            'cleanup-empty-rules-$language-${scale.toInt()}',
+            'cleanup-opening-rules-$language-${scale.toInt()}',
           );
           await tapVisible(tester, find.text(strings.get('backToCase')));
           await tapVisible(tester, find.text(strings.get('nextCase')));

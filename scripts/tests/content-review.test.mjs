@@ -21,6 +21,7 @@ for (const language of ['de', 'en']) {
     const rules = sources.find(e => e.kind === 'rules' && e.catalog.language === language).catalog.rules;
     const edges = rules.flatMap(rule => rule.excludes.map(other => `${rule.id}:${other}`)).sort();
     assert.deepEqual(edges, [
+      'forbid_also:no_also_start', 'no_also_start:forbid_also',
       'left_hand_drinking:two_hands_drinking', 'two_hands_drinking:left_hand_drinking',
       'two_hands_drinking:touch_player_while_drinking', 'touch_player_while_drinking:two_hands_drinking',
     ].sort());
@@ -35,17 +36,17 @@ test('English corrections preserve the German perspective and scale meanings', (
   assert.equal(questions.find(q => q.id === '195-b').scale.red, 'Incredibly impressive');
 });
 
-test('final editorial ledger covers all 521 DE/EN pairs and becomes stale on any entry change', () => {
+test('final editorial ledger covers all production DE/EN pairs and becomes stale on any entry change', () => {
   const lines=readFileSync(new URL('../../docs/qa/content-review-ledger.tsv',import.meta.url),'utf8').trimEnd().split(/\r?\n/);
   assert.equal(lines.shift(),'kind\tid\tdeSha256\tenSha256\treviewDate\tresult\tnote');
-  assert.equal(lines.length,521);
+  assert.equal(lines.length,sources.filter(s=>s.catalog.language==='de').reduce((count,s)=>count+s.catalog[s.kind].length,0));
   const entries=new Map();
   for(const line of lines) {
     const fields=line.split('\t');assert.equal(fields.length,7);
     const [kind,id,de,en,date,result,note]=fields;
     assert.ok(['questions','rules'].includes(kind));
     assert.ok(['approved','corrected'].includes(result));
-    assert.equal(date,kind==='rules'?'2026-10-31':'2026-10-28');assert.ok(note.length>0);
+    assert.match(date,/^2026-\d{2}-\d{2}$/);assert.ok(note.length>0);
     const key=kind+':'+id;assert.ok(!entries.has(key));entries.set(key,{de,en,result});
   }
   const hash=entry=>createHash('sha256').update(canonicalJson(entry)).digest('hex');

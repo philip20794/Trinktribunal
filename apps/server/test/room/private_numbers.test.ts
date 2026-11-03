@@ -76,6 +76,16 @@ async function setup(allJudges = false) {
     }),
   );
   await frame(host.peer, 'ack');
+  const opening = (await read()).game!;
+  host.peer.send(
+    createRoomMessage('continueRule', {
+      actionId: RoomIds.action('opening_rules'),
+      expectedRevision: (await read()).revision,
+      gameId: opening.gameId!,
+      afterCase: 0,
+    }),
+  );
+  await frame(host.peer, 'ack');
   const state = await read(),
     views: SnapshotMessage[] = [];
   for (const member of members) {

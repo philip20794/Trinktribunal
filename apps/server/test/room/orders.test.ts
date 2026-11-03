@@ -54,6 +54,16 @@ async function setup() {
     }),
   );
   await result(host.peer);
+  const opening = (await read()).game!;
+  host.peer.send(
+    createRoomMessage('continueRule', {
+      actionId: RoomIds.action('opening_rules'),
+      expectedRevision: (await read()).revision,
+      gameId: opening.gameId!,
+      afterCase: 0,
+    }),
+  );
+  expect(await result(host.peer)).toMatchObject({ type: 'ack' });
   const command = async (type: 'acknowledgeNumber' | 'readyForOrdering' | 'beginOrdering') => {
     const state = await read();
     return createRoomMessage(type, {
