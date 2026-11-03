@@ -1,6 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:crypto/crypto.dart';
+
+import 'updating_catalog_repository.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'catalog.dart';
@@ -18,12 +22,24 @@ class Catalogs {
     Map<String, Catalog<Question>> questions,
     Map<String, Catalog<DrinkingRule>> rules, {
     Map<String, String> contentHashes = const {},
+    this.source = 'bundled',
+    this.updateChecked = false,
   }) : questions = Map.unmodifiable(questions),
        rules = Map.unmodifiable(rules),
        contentHashes = Map.unmodifiable(contentHashes);
   final Map<String, Catalog<Question>> questions;
   final Map<String, Catalog<DrinkingRule>> rules;
   final Map<String, String> contentHashes;
+  final String source;
+  final bool updateChecked;
+
+  Catalogs withStatus(String source, bool checked) => Catalogs(
+    questions,
+    rules,
+    contentHashes: contentHashes,
+    source: source,
+    updateChecked: checked,
+  );
   String get signature => jsonEncode([
     for (final key in (contentHashes.keys.toList()..sort()))
       [key, contentHashes[key]],
@@ -31,9 +47,12 @@ class Catalogs {
 }
 
 class CatalogRepository {
-  CatalogRepository({Future<String> Function(String)? read})
-    : _read = read ?? rootBundle.loadString;
+  CatalogRepository({
+    Future<String> Function(String)? read,
+    this.verifyHashes = false,
+  }) : _read = read ?? rootBundle.loadString;
   final Future<String> Function(String) _read;
+  final bool verifyHashes;
 
   String _signature(Catalog catalog) => jsonEncode([
     for (final CatalogEntry entry in catalog.entries)
@@ -83,6 +102,11 @@ class CatalogRepository {
         path = 'assets/catalogs/${descriptor['path']}';
         hashes['$kind:$language'] = descriptor['sha256'] as String;
         final source = await _read(path);
+        if (verifyHashes &&
+            sha256.convert(utf8.encode(source)).toString() !=
+                descriptor['sha256']) {
+          throw const CatalogFormatException('Catalog checksum mismatch');
+        }
         final Catalog catalog;
         if (kind == 'questions') {
           final parsed = parseQuestions(source);
@@ -93,7 +117,10 @@ class CatalogRepository {
           rules[language as String] = parsed;
           catalog = parsed;
         }
-        if (catalog.language != language ||
+        if ((verifyHashes && descriptor['contentVersion'] == null) ||
+            (descriptor['contentVersion'] != null &&
+                descriptor['contentVersion'] != catalog.contentVersion) ||
+            catalog.language != language ||
             jsonEncode(catalog.entries.map((e) => e.id).toList()) !=
                 jsonEncode(descriptor['ids'])) {
           throw const CatalogFormatException(
@@ -117,7 +144,7 @@ class CatalogRepository {
 }
 
 final catalogRepositoryProvider = Provider<CatalogRepository>(
-  (ref) => CatalogRepository(),
+  (ref) => UpdatingCatalogRepository(),
 );
 final catalogsProvider = FutureProvider<Catalogs>(
   (ref) => ref.watch(catalogRepositoryProvider).load(),

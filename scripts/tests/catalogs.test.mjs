@@ -145,3 +145,16 @@ test('three production categories contain all rules and old categories are rejec
     assert.throws(() => validateCatalog(invalid, 'rules'));
   }
 });
+
+test('content versions are positive integers independent of the format version', () => {
+  for (const invalidVersion of [0, -1, 1.5, '2']) {
+    const invalid = rules();
+    invalid.contentVersion = invalidVersion;
+    assert.throws(() => validateCatalog(invalid, 'rules'));
+  }
+  const valid = rules();
+  valid.contentVersion = 42;
+  validateCatalog(valid, 'rules');
+  assert.equal(valid.version, 1);
+  for (const {catalog} of loadSources()) assert.ok(catalog.contentVersion >= 1);
+});

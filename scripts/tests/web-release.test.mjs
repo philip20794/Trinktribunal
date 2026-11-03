@@ -106,6 +106,7 @@ test('release CSP pins HTTPS and websocket origins without remote scripts or Jav
   const policy=webSecurityPolicy('https://api.example.test:8443/');
   assert.ok(policy.includes("script-src 'self' 'wasm-unsafe-eval'"));
   assert.ok(policy.includes("connect-src 'self' https://api.example.test:8443 wss://api.example.test:8443"));
+  assert.ok(policy.includes('https://raw.githubusercontent.com/philip20794/Trinktribunal/main/apps/client/assets/catalogs/'));
   assert.ok(!policy.includes("'unsafe-eval'"));
   assert.ok(!policy.includes('https:;'));
   assert.ok(webSecurityPolicy('http://localhost:8787').includes('ws://localhost:8787'));

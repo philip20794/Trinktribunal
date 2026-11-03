@@ -942,5 +942,15 @@
   "installFailed": "Die Installation konnte nicht geöffnet werden. Du kannst im Browser weiterspielen.",
   "installInviteExpired": "Die gespeicherte Einladung ist abgelaufen. Nutze den Raumcode oder öffne den QR-Link erneut.",
   "installIosInviteHelp": "Dein Raumcode: {code}. Falls die Einladung nach der Installation fehlt, öffne „Raum beitreten“ und gib diesen Code ein.",
-  "installCopyCode": "Raumcode kopieren: {code}"
+  "installCopyCode": "Raumcode kopieren: {code}",
+  "contentVersions": "Fragen- und Regelversionen",
+  "contentVersionsHelp": "Bei jedem App-Start werden neue JSON-Versionen von GitHub geprüft. Ohne Verbindung bleibt der letzte gültige Stand verfügbar.",
+  "contentVersionRow": "{kind} ({language}): Version {version}",
+  "contentQuestions": "Fragen",
+  "contentRules": "Regeln",
+  "contentSourceBundled": "Stand: mit der App ausgeliefert",
+  "contentSourceCached": "Stand: gespeichertes Update",
+  "contentSourceDownloaded": "Stand: beim Start aktualisiert",
+  "contentCheckSuccess": "Abgleich mit GitHub erfolgreich.",
+  "contentCheckUnavailable": "GitHub-Abgleich nicht möglich oder Update ungültig. Vorhandene Inhalte bleiben verfügbar."
 }

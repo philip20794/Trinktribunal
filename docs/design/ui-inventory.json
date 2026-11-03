@@ -193,7 +193,8 @@
       "id": "settings",
       "files": [
         "apps/client/lib/features/settings/settings_screen.dart",
-        "apps/client/lib/features/settings/offline_settings.dart"
+        "apps/client/lib/features/settings/offline_settings.dart",
+        "apps/client/lib/features/settings/catalog_versions.dart"
       ],
       "modes": [
         "cards",
@@ -210,12 +211,14 @@
         "DE/EN-Oberfläche",
         "Laden/Fehler/Wiederholen",
         "Offline bereit/nicht verfügbar/Update/Fehler",
-        "laufendes Spiel sperrt Ersetzen/Löschen"
+        "laufendes Spiel sperrt Ersetzen/Löschen",
+        "catalog_versions_and_startup_update_status"
       ],
       "tests": [
         "apps/client/test/application/settings_controller_test.dart",
         "apps/client/test/accessibility/interaction_test.dart",
-        "apps/client/test/features/home_profile_settings_test.dart"
+        "apps/client/test/features/home_profile_settings_test.dart",
+        "apps/client/test/data/catalog_update_test.dart"
       ],
       "targetTask": "TT-073",
       "implementation": {

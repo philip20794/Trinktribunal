@@ -666,5 +666,15 @@
   "installFailed": "Installation could not be opened. You can keep playing in your browser.",
   "installInviteExpired": "The saved invitation has expired. Use the room code or open the QR link again.",
   "installIosInviteHelp": "Your room code: {code}. If the invitation is missing after installation, open Join room and enter this code.",
-  "installCopyCode": "Copy room code: {code}"
+  "installCopyCode": "Copy room code: {code}",
+  "contentVersions": "Question and rule versions",
+  "contentVersionsHelp": "Every app launch checks GitHub for new JSON versions. Offline, the last valid content remains available.",
+  "contentVersionRow": "{kind} ({language}): version {version}",
+  "contentQuestions": "Questions",
+  "contentRules": "Rules",
+  "contentSourceBundled": "Source: bundled with the app",
+  "contentSourceCached": "Source: saved update",
+  "contentSourceDownloaded": "Source: updated at startup",
+  "contentCheckSuccess": "GitHub check successful.",
+  "contentCheckUnavailable": "GitHub unavailable or update invalid. Existing content remains available."
 }

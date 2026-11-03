@@ -1,3 +1,4 @@
+import 'catalog_versions.dart';
 import '../../design/status_notice.dart';
 import '../../design/court_scene.dart';
 
@@ -108,6 +109,8 @@ class SettingsScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 8),
                           const InstallOptions(),
+                          const SizedBox(height: 24),
+                          const CatalogVersions(),
                           const SizedBox(height: 24),
                           TextButton.icon(
                             onPressed: () => Navigator.push<void>(

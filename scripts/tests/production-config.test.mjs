@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { checkProductionConfig } from '../check-production-config.mjs';
 import { checkWebPolicy } from '../check-web-release.mjs';
-import { webSecurityPolicy } from '../web-security.mjs';
+import { webSecurityPolicy, catalogUpdateSource } from '../web-security.mjs';
 
 const read = path => JSON.parse(readFileSync(new URL('../../' + path, import.meta.url), 'utf8'));
 function fixture() { return [read('docs/config/production.example.json'), read('apps/server/wrangler.release.example.jsonc')]; }
@@ -49,7 +49,7 @@ test('worker must keep one local SQLite room binding and avoid undeclared resour
 });
 test('CanvasKit Wasm permission and inline styles do not imply JavaScript eval or inline scripts', () => {
   const policy = webSecurityPolicy('https://api.example.org');
-  assert.deepEqual(checkWebPolicy(policy), ["'self'", 'https://api.example.org', 'wss://api.example.org']);
+  assert.deepEqual(checkWebPolicy(policy), ["'self'", 'https://api.example.org', 'wss://api.example.org', catalogUpdateSource]);
 });
 test('release policy rejects JavaScript eval, inline scripts and remote entry-script origins', () => {
   const policy = webSecurityPolicy();

@@ -61,6 +61,7 @@ export function loadSources(root = repositoryRoot) {
   const removed = ['008-b', '023-a', '039-b', '041-b', '043-b', '174-a', '188-a', '205-a', '221-a'];
   for (const { kind, catalog } of catalogs) {
     const entries = catalog[kind];
+    if (!Number.isInteger(catalog.contentVersion) || catalog.contentVersion < 1) fail(kind, 'contentVersion must be a positive integer');
     if (entries.length !== (kind === 'questions' ? 491 : 39)) fail(kind, 'unexpected production count');
     if (entries.filter(entry => !entry.players).length !== (kind === 'questions' ? 431 : 36)) fail(kind, 'unexpected card-mode count');
     if (kind === 'questions') {
@@ -83,7 +84,7 @@ export function createBundle(catalogs) {
     const path = `${kind}/${catalog.language}.json`;
     const content = canonicalJson(catalog) + '\n';
     files.set(path, content);
-    return { path, source, kind, language: catalog.language, formatVersion: catalog.version, ids: catalog[kind].map(entry => entry.id), sha256: createHash('sha256').update(content, 'utf8').digest('hex') };
+    return { path, source, kind, language: catalog.language, formatVersion: catalog.version, contentVersion: catalog.contentVersion, ids: catalog[kind].map(entry => entry.id), sha256: createHash('sha256').update(content, 'utf8').digest('hex') };
   }) };
   validateSchema(manifest, readSchema('catalog-manifest'));
   files.set('manifest.json', canonicalJson(manifest) + '\n');

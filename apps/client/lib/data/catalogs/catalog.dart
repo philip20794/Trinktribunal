@@ -105,9 +105,10 @@ class DrinkingRule extends CatalogEntry {
 }
 
 class Catalog<T extends CatalogEntry> {
-  Catalog._(this.language, List<T> entries)
+  Catalog._(this.language, this.contentVersion, List<T> entries)
     : entries = List.unmodifiable(entries);
   final String language;
+  final int contentVersion;
   final List<T> entries;
   late final Map<String, T> byId = Map.unmodifiable({
     for (final entry in entries) entry.id: entry,
@@ -170,12 +171,16 @@ Catalog<T> _parse<T extends CatalogEntry>(
     _invalid('$kind: ungültiges JSON');
   }
   final data = _object(decoded, kind);
-  _keys(data, {'version', 'language', kind}, {}, kind);
+  _keys(data, {'version', 'language', kind}, {'contentVersion'}, kind);
   if (data['version'] is! int || data['version'] != 1) {
     _invalid('$kind: nicht unterstützte Version');
   }
   if (!['de', 'en'].contains(data['language'])) {
     _invalid('$kind: unbekannte Sprache');
+  }
+  final contentVersion = data['contentVersion'] ?? 1;
+  if (contentVersion is! int || contentVersion < 1) {
+    _invalid('$kind: invalid contentVersion');
   }
   final entries = _list(data[kind], kind);
   if (entries.isEmpty) _invalid('$kind: leerer Katalog');
@@ -185,7 +190,7 @@ Catalog<T> _parse<T extends CatalogEntry>(
   if (parsed.map((e) => e.id).toSet().length != parsed.length) {
     _invalid('$kind: doppelte IDs');
   }
-  return Catalog._(data['language'] as String, parsed);
+  return Catalog._(data['language'] as String, contentVersion, parsed);
 }
 
 Catalog<Question> parseQuestions(String source) => _parse(source, 'questions', (
@@ -221,7 +226,11 @@ Catalog<DrinkingRule> parseRules(String source) {
     final text = _text(entry['text'], id);
     final category = entry['category'];
     if (category != null &&
-        !const {'drinking_ritual', 'other', 'forbidden_words'}.contains(category)) {
+        !const {
+          'drinking_ritual',
+          'other',
+          'forbidden_words',
+        }.contains(category)) {
       _invalid('$id: ungültige Regelkategorie');
     }
     return DrinkingRule._(

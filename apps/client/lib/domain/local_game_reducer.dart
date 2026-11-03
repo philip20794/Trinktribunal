@@ -195,12 +195,15 @@ final class LocalGameReducer {
       selection: rules.selection,
     );
     final currentEvent = json['currentEventId'] as String;
-    final opening = phase == GamePhase.ruleEvent &&
-        completed == 0 && currentEvent == '${id.value}:opening';
+    final opening =
+        phase == GamePhase.ruleEvent &&
+        completed == 0 &&
+        currentEvent == '${id.value}:opening';
     if ((!opening && question == null) ||
         (question != null && question.event.kind != ContentKind.question) ||
         (phase == GamePhase.casePresented &&
-            (currentEvent != question.event.eventId ||
+            (question == null ||
+                currentEvent != question.event.eventId ||
                 questionDraws['${id.value}:case:${completed + 1}']!.last !=
                     currentEvent ||
                 events.contains(currentEvent)))) {
@@ -210,13 +213,18 @@ final class LocalGameReducer {
       throw const FormatException('Rollen im Kartenmodus');
     }
     if (opening &&
-        (question != null || questionDraws.isNotEmpty ||
+        (question != null ||
+            questionDraws.isNotEmpty ||
             rules.active.length != 3 ||
-            rules.active.any((assignment) =>
-                (assignment.entry as DrinkingRule).category != 'forbidden_words'))) {
+            rules.active.any(
+              (assignment) =>
+                  (assignment.entry as DrinkingRule).category !=
+                  'forbidden_words',
+            ))) {
       throw const FormatException('Ungültige Startregeln');
     }
-    if (phase == GamePhase.ruleEvent && !opening &&
+    if (phase == GamePhase.ruleEvent &&
+        !opening &&
         (!schedule.slots.contains(completed) ||
             (!rules.activations.containsKey(currentEvent) &&
                 !rules.skippedEvents.contains(currentEvent)))) {

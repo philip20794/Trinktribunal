@@ -93,6 +93,10 @@
           }
         }
       }
+    },
+    "contentVersion": {
+      "type": "integer",
+      "minimum": 1
     }
   }
 }

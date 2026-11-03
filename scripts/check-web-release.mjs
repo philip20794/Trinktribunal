@@ -4,7 +4,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createReleaseServer } from './serve-web.mjs';
 import { measureWeb } from './web-performance.mjs';
-import { releasePolicy } from './web-security.mjs';
+import { releasePolicy, catalogUpdateSource } from './web-security.mjs';
 import { httpsOrigin } from './check-android-release.mjs';
 
 export function checkWebPolicy(policy) {
@@ -14,6 +14,7 @@ export function checkWebPolicy(policy) {
   const connections = /(?:^|;\s*)connect-src\s+([^;]+)/.exec(policy ?? '')?.[1].split(/\s+/) ?? [];
   assert.ok(connections.includes("'self'"));
   for (const origin of connections.filter(value => value !== "'self'")) {
+    if (origin === catalogUpdateSource) continue;
     if (origin.startsWith('wss://')) httpsOrigin(origin.replace('wss://', 'https://'));
     else httpsOrigin(origin);
   }

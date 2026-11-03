@@ -30,8 +30,22 @@ SHA-256 umfasst die **genauen UTF-8-Bytes der kanonischen Katalogdatei einschlie
 
 ## Flutter-Grenze
 
-`lib/data/catalogs/catalog.dart` enthält unveränderliche typisierte Fragen, Regeln und Rollen sowie strukturierte `CatalogFormatException`-Fehler. Der injizierbare `CatalogRepository` liest lokal gebündelte Assets, prüft Manifestversion, erlaubte Pfade, Vollständigkeit, IDs, Sprachparität und Katalogformat. IO-/JSON-Ladefehler tragen als `CatalogLoadException` den betroffenen Pfad. Der Build-/Checkschritt prüft die tatsächlichen SHA-256-Inhalte; Flutter prüft Hashsyntax/Manifestkonsistenz, berechnet zur Laufzeit **keine** Prüfsumme. Dies ist kein Download-/Signaturvertrauen für fremde Kataloge; spätere Updatepakete brauchen einen eigenen Vertrag.
+`lib/data/catalogs/catalog.dart` liefert unveraenderliche typisierte Fragen, Regeln und Rollen. `CatalogRepository` validiert Manifestformat, Pfade, Vollstaendigkeit, IDs, Sprachparitaet und Katalogformat. Fuer heruntergeladene und gespeicherte Updates prueft es zusaetzlich SHA-256 der exakten UTF-8-Dateien und die Uebereinstimmung der Inhaltsversionen.
+
+### Live-Inhalte ohne neuen App-Build
+
+`version: 1` bleibt die technische Formatversion. Das neue Feld `contentVersion` ist eine positive, aufsteigende Ganzzahl je JSON-Datei, beispielsweise `contentVersion: 2`. Alle vier redaktionellen Produktionsdateien starten mit Inhaltsversion 1. Kleine historische Testfixtures duerfen das optionale Feld weglassen (Version 1).
+
+Veroeffentlichung einer Inhaltsaenderung:
+
+1. Die Quelle unter `data/questions/top-ten/{de,en}.json` oder `data/rules/{de,en}.json` aendern und in jeder geaenderten Datei `contentVersion` erhoehen. DE/EN muessen weiterhin dieselben IDs, Rollen und Ausschluesse enthalten.
+2. `node scripts/sync-catalog-metadata.mjs --sync` ausfuehren. Dadurch entstehen die kanonischen JSON-Dateien, Manifeste, Protokollmetadaten und aktualisierten Inventar-Pruefsummen. Ein Flutter-/APK-/Web-Build ist dafuer nicht erforderlich.
+3. Quellen, generierte Katalogdateien und Manifeste gemeinsam nach GitHub `main` bringen. Fuer den separaten Online-Server gelten weiterhin dessen Build-/Protokollvertraege; Die Inhaltsaktualisierung ersetzt keinen Server-Rollout, der neue Auswahlregeln oder neue Online-Inhalts-IDs unterstuetzen muss.
+
+`UpdatingCatalogRepository` wird einmal pro App-Prozess/ProviderScope geladen, vor Wiederherstellung einer lokalen Partie. APK, Browser und installierte PWA verwenden denselben HTTP- und Preferences-Code. Quelle ist das oeffentliche GitHub-Repository `philip20794/Trinktribunal`, Branch `main`, Pfad `apps/client/assets/catalogs/`. Jeder Start liest das Manifest mit einer frischen Query gegen veraltete HTTP-Caches. Bei identischen Versionen/Hashes bleibt es bei dieser einen Anfrage. Andernfalls werden alle vier Dateien geladen, vollstaendig validiert und als ein JSON-Paket gespeichert. Die PWA-Serviceworker-Regeln lassen diese externen Anfragen unberuehrt.
+
+Es gibt ein Gesamtzeitlimit von sechs Sekunden fuer die Netzwerkanfragen. Netzwerk-, Speicher-, Format- und Pruefsummenfehler lassen die letzte gueltige Version bestehen; ohne Cache dienen die mitgelieferten Assets als Rueckfall. Aeltere Versionen sowie geaenderte Inhalte mit unveraenderter Versionsnummer werden nicht uebernommen. Git-Commits waehrend eines Downloads koennen daher hoechstens einen verworfenen Download ausloesen. Das Update wird beim naechsten Start erneut versucht. Ein spaeter abgeschlossener Timeout-Download schreibt keinen Cache. Bei fehlgeschlagenem Speichern ist der gepruefte Download fuer den laufenden Start nutzbar.
+
+Die Einstellungen zeigen die tatsaechliche `contentVersion` aller vier geladenen Kataloge, deren Herkunft und das Ergebnis des Startabgleichs. Ein laufender Scope wechselt seine Kataloge nicht im Hintergrund. Eine gespeicherte lokale Partie mit abweichender Katalogsignatur bleibt gemaess bestehendem Wiederherstellungsvertrag gesperrt und muss verworfen werden; Spielstaende werden nicht still migriert. Die bisherige Debug-Katalogdiagnose bleibt erhalten. Die erste Auslieferung dieses Features benoetigt einmalig einen neuen App-Build; danach genuegen Inhaltsveroeffentlichungen.
 
 Eine reine Renderfunktion ersetzt Fragetext und beide Skalenenden aus derselben gelieferten Rollenbindung. Sie lost niemanden aus und verändert keine Fairnesszähler. Zufall, Verlauf, Auswahl und dauerhafte Bindung gehören in TT-007/008 und die spätere Serverengine.
-
-Der Riverpod-Ladeprovider wird einmal pro Scope geladen, erlaubt einen Testadapter und wiederholt deterministische Formatfehler nicht automatisch. Die Debug-Startseite hat eine aufklappbare „Katalogdiagnose“ mit Anzahlen, Modusfilter, Fehlermeldung und manuellem Neuversuch. Releasebuilds zeigen dieses Entwicklungswerkzeug nicht. Kataloge sind lokal gebündelt; eine vollständige Offline-Web-App entsteht erst in TT-030/031.

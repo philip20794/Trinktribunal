@@ -1,3 +1,5 @@
+export const catalogUpdateSource = 'https://raw.githubusercontent.com/philip20794/Trinktribunal/main/apps/client/assets/catalogs/';
+
 export function webSecurityPolicy(apiBaseUrl = '') {
   const connections = ["'self'"];
   if (apiBaseUrl) {
@@ -12,6 +14,8 @@ export function webSecurityPolicy(apiBaseUrl = '') {
     api.protocol = api.protocol === 'https:' ? 'wss:' : 'ws:';
     connections.push(api.origin);
   }
+  // Versioned content updates are fetched directly from the public repository.
+  connections.push(catalogUpdateSource);
   return [
     "default-src 'self'", "base-uri 'self'", "object-src 'none'",
     "script-src 'self' 'wasm-unsafe-eval'", "script-src-attr 'none'",
